@@ -2,9 +2,142 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Menu, X, ShoppingBag, ChevronLeft, ChevronRight, Plus, Minus, ArrowRight, Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { collections, products, getProduct, getProductsByCollection, getCollection, getFeaturedProducts, getFeaturedCollections } from '@/lib/data/products';
-import { getCart, addToCart, removeFromCart, updateQuantity, getCartItemCount } from '@/lib/store/cart';
+import { Menu, X, ShoppingBag, ChevronLeft, ChevronRight, Plus, Minus, ArrowRight, Play, Pause, Volume2, VolumeX, Loader2 } from 'lucide-react';
+import { 
+  collections as mockCollections, 
+  products as mockProducts, 
+  getProduct, 
+  getProductsByCollection, 
+  getCollection, 
+  getFeaturedProducts, 
+  getFeaturedCollections,
+  getProductAsync,
+  getProductsByCollectionAsync,
+  getCollectionAsync,
+  getProducts,
+  isUsingShopify
+} from '@/lib/data/products';
+import { getCart, addToCart, removeFromCart, updateQuantity, getCartItemCount, getCheckoutUrl } from '@/lib/store/cart';
+
+// ============ PREMIUM LOADING COMPONENT ============
+function LoadingSpinner({ size = 'default', text = '' }) {
+  const sizeClasses = {
+    small: 'w-4 h-4',
+    default: 'w-6 h-6',
+    large: 'w-8 h-8',
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center gap-4">
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+        className={sizeClasses[size]}
+      >
+        <Loader2 className="w-full h-full text-white/50" strokeWidth={1.5} />
+      </motion.div>
+      {text && (
+        <p className="text-white/40 text-xs tracking-[0.2em] uppercase">{text}</p>
+      )}
+    </div>
+  );
+}
+
+// ============ PREMIUM LOADING SKELETON ============
+function ProductSkeleton() {
+  return (
+    <div className="animate-pulse">
+      <div className="aspect-[3/4] bg-white/5 mb-4" />
+      <div className="h-4 bg-white/5 w-3/4 mb-2" />
+      <div className="h-3 bg-white/5 w-1/2 mb-2" />
+      <div className="h-4 bg-white/5 w-1/4" />
+    </div>
+  );
+}
+
+function ProductGridSkeleton({ count = 8 }) {
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+      {Array.from({ length: count }).map((_, i) => (
+        <ProductSkeleton key={i} />
+      ))}
+    </div>
+  );
+}
+
+function ProductPageSkeleton() {
+  return (
+    <div className="min-h-screen bg-black">
+      <div className="grid lg:grid-cols-2 min-h-screen">
+        {/* Image Skeleton */}
+        <div className="relative h-screen lg:sticky lg:top-0 bg-white/5 animate-pulse" />
+        
+        {/* Content Skeleton */}
+        <div className="p-6 lg:p-16 flex flex-col justify-center">
+          <div className="animate-pulse space-y-6">
+            <div className="h-3 bg-white/5 w-24" />
+            <div className="h-12 bg-white/5 w-3/4" />
+            <div className="h-8 bg-white/5 w-20" />
+            <div className="space-y-2">
+              <div className="h-4 bg-white/5 w-full" />
+              <div className="h-4 bg-white/5 w-5/6" />
+              <div className="h-4 bg-white/5 w-4/6" />
+            </div>
+            <div className="flex gap-3 pt-4">
+              <div className="h-12 bg-white/5 w-20" />
+              <div className="h-12 bg-white/5 w-20" />
+              <div className="h-12 bg-white/5 w-20" />
+            </div>
+            <div className="h-14 bg-white/10 w-full mt-6" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============ PREMIUM ERROR STATE ============
+function ErrorState({ message = 'Something went wrong', onRetry }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col items-center justify-center py-24 px-6 text-center"
+    >
+      <div className="w-16 h-16 border border-white/20 flex items-center justify-center mb-6">
+        <X className="w-6 h-6 text-white/40" strokeWidth={1} />
+      </div>
+      <p className="text-white/60 text-sm mb-6 max-w-md">{message}</p>
+      {onRetry && (
+        <button
+          onClick={onRetry}
+          className="px-8 py-3 text-xs tracking-[0.2em] uppercase border border-white/30 text-white/70 hover:bg-white hover:text-black transition-all"
+        >
+          Try Again
+        </button>
+      )}
+    </motion.div>
+  );
+}
+
+// ============ EMPTY STATE ============
+function EmptyState({ title = 'No products found', description = '' }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col items-center justify-center py-24 px-6 text-center"
+    >
+      <div className="w-16 h-16 border border-white/20 flex items-center justify-center mb-6">
+        <ShoppingBag className="w-6 h-6 text-white/40" strokeWidth={1} />
+      </div>
+      <h3 className="text-white text-lg mb-2">{title}</h3>
+      {description && (
+        <p className="text-white/50 text-sm max-w-md">{description}</p>
+      )}
+    </motion.div>
+  );
+}
 
 // ============ NAVIGATION COMPONENT - VOLLEBAK STYLE ============
 function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }) {
@@ -151,6 +284,15 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
 function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdateQuantity, onRemoveItem }) {
   const items = cart?.items || [];
   const total = cart?.total || 0;
+  const checkoutUrl = getCheckoutUrl();
+  
+  const handleCheckout = () => {
+    if (checkoutUrl && checkoutUrl !== '/checkout') {
+      window.location.href = checkoutUrl;
+    } else {
+      alert('Checkout will be available when Shopify is connected');
+    }
+  };
   
   return (
     <AnimatePresence>
@@ -231,7 +373,10 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
                     <span>${total.toFixed(2)}</span>
                   </div>
                   <p className="text-xs text-white/40">Shipping calculated at checkout</p>
-                  <button className="w-full py-4 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors">
+                  <button 
+                    onClick={handleCheckout}
+                    className="w-full py-4 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors"
+                  >
                     Checkout
                   </button>
                 </div>
@@ -245,7 +390,7 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
 }
 
 // ============ FULL-BLEED HERO SECTION - VOLLEBAK STYLE ============
-function HeroSection({ product, onShopClick, videoUrl }) {
+function HeroSection({ onShopClick, videoUrl }) {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef(null);
@@ -365,12 +510,14 @@ function HeroSection({ product, onShopClick, videoUrl }) {
 
 // ============ FULL-BLEED PRODUCT HERO - VOLLEBAK STYLE ============
 function ProductHero({ product, onBuyClick, reverse = false }) {
+  if (!product) return null;
+  
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black">
       {/* Full Image */}
       <div className="absolute inset-0">
         <img
-          src={product.heroImage || product.images[0]}
+          src={product.heroImage || product.images?.[0]}
           alt={product.name}
           className="w-full h-full object-cover"
         />
@@ -393,7 +540,7 @@ function ProductHero({ product, onBuyClick, reverse = false }) {
             {product.name}
           </h2>
           <p className="text-white/60 text-sm md:text-base uppercase tracking-[0.2em] mb-6">
-            {product.tagline || product.description.slice(0, 80)}
+            {product.tagline || product.description?.slice(0, 80)}
           </p>
           <button
             onClick={() => onBuyClick(product.id)}
@@ -409,7 +556,7 @@ function ProductHero({ product, onBuyClick, reverse = false }) {
 }
 
 // ============ HORIZONTAL PRODUCT CAROUSEL - VOLLEBAK STYLE ============
-function ProductCarousel({ title, products: carouselProducts, onProductClick }) {
+function ProductCarousel({ title, products: carouselProducts, onProductClick, isLoading = false }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef(null);
 
@@ -422,6 +569,29 @@ function ProductCarousel({ title, products: carouselProducts, onProductClick }) 
       containerRef.current.scrollTo({ left: newScroll, behavior: 'smooth' });
     }
   };
+
+  if (isLoading) {
+    return (
+      <section className="py-16 lg:py-24 bg-black">
+        <div className="px-6 lg:px-16 mb-8 lg:mb-12">
+          <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-light tracking-tight">
+            {title}
+          </h2>
+        </div>
+        <div className="px-6 lg:px-16">
+          <div className="flex gap-4 lg:gap-6">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex-shrink-0 w-72 lg:w-80">
+                <ProductSkeleton />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!carouselProducts || carouselProducts.length === 0) return null;
 
   return (
     <section className="py-16 lg:py-24 bg-black">
@@ -473,14 +643,14 @@ function ProductCarousel({ title, products: carouselProducts, onProductClick }) 
           >
             <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
               <img
-                src={product.images[0]}
+                src={product.images?.[0] || product.heroImage}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
             </div>
             <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
-            <p className="text-white/40 text-xs mb-2 line-clamp-2">{product.tagline || product.description.slice(0, 60)}...</p>
+            <p className="text-white/40 text-xs mb-2 line-clamp-2">{product.tagline || product.description?.slice(0, 60)}...</p>
             <p className="text-white text-sm">${product.price}</p>
           </motion.div>
         ))}
@@ -552,6 +722,8 @@ function PressSection() {
 
 // ============ COLLECTION SHOWCASE - VOLLEBAK STYLE ============
 function CollectionShowcase({ collection, onExplore }) {
+  if (!collection) return null;
+  
   return (
     <section className="relative h-[80vh] w-full overflow-hidden bg-black">
       <div className="absolute inset-0">
@@ -634,12 +806,62 @@ function Footer() {
   );
 }
 
-// ============ COLLECTIONS PAGE - VOLLEBAK STYLE ============
-function CollectionsPage({ onProductClick, selectedCollection }) {
-  const collection = selectedCollection ? getCollection(selectedCollection) : null;
-  const displayProducts = selectedCollection 
-    ? getProductsByCollection(selectedCollection)
-    : products;
+// ============ COLLECTIONS PAGE - WITH SHOPIFY DATA LOADING ============
+function CollectionsPage({ onProductClick, selectedCollection, onCollectionChange }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [collection, setCollection] = useState(null);
+  const [displayProducts, setDisplayProducts] = useState([]);
+  const [allCollections, setAllCollections] = useState(mockCollections);
+
+  // Load collection and products
+  useEffect(() => {
+    async function loadData() {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        if (selectedCollection) {
+          // Load specific collection
+          const collectionData = await getCollectionAsync(selectedCollection);
+          setCollection(collectionData);
+          
+          // Load products for this collection
+          const products = await getProductsByCollectionAsync(selectedCollection);
+          setDisplayProducts(products);
+        } else {
+          // Load all products
+          setCollection(null);
+          const products = await getProducts();
+          setDisplayProducts(products);
+        }
+      } catch (err) {
+        console.error('Error loading collection data:', err);
+        setError('Failed to load products. Please try again.');
+        
+        // Fallback to mock data
+        if (selectedCollection) {
+          setCollection(getCollection(selectedCollection));
+          setDisplayProducts(getProductsByCollection(selectedCollection));
+        } else {
+          setDisplayProducts(mockProducts);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadData();
+  }, [selectedCollection]);
+
+  const handleRetry = () => {
+    setError(null);
+    setIsLoading(true);
+    // Re-trigger the effect
+    const timer = setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
 
   return (
     <div className="min-h-screen bg-black pt-24 lg:pt-32">
@@ -650,21 +872,27 @@ function CollectionsPage({ onProductClick, selectedCollection }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-light mb-4">
-            {collection ? collection.name : 'All Products'}
-          </h1>
+          <div className="flex items-center gap-4 mb-4">
+            <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-light">
+              {collection ? collection.name : 'All Products'}
+            </h1>
+            {isLoading && <LoadingSpinner size="small" />}
+          </div>
           <p className="text-white/50 text-sm md:text-base max-w-xl">
             {collection ? collection.description : 'Explore our complete collection of luxury essentials'}
           </p>
+          {isUsingShopify() && (
+            <p className="text-green-500/60 text-xs mt-2 tracking-wider">● Connected to Shopify</p>
+          )}
         </motion.div>
 
         {/* Collection Filter */}
         {!selectedCollection && (
           <div className="flex flex-wrap gap-3 mt-8">
-            {collections.map((col) => (
+            {allCollections.map((col) => (
               <button
                 key={col.id}
-                onClick={() => onProductClick(null, col.id)}
+                onClick={() => onCollectionChange(col.id)}
                 className="px-5 py-2 text-xs tracking-[0.15em] uppercase border border-white/20 text-white/70 hover:bg-white hover:text-black transition-all"
               >
                 {col.name}
@@ -672,55 +900,162 @@ function CollectionsPage({ onProductClick, selectedCollection }) {
             ))}
           </div>
         )}
+
+        {/* Back to all button when in collection */}
+        {selectedCollection && (
+          <button
+            onClick={() => onCollectionChange(null)}
+            className="mt-6 text-white/50 text-xs tracking-wider uppercase hover:text-white transition-colors flex items-center gap-2"
+          >
+            <ArrowRight className="w-4 h-4 rotate-180" />
+            View All Products
+          </button>
+        )}
       </div>
 
+      {/* Error State */}
+      {error && !isLoading && (
+        <div className="px-6 lg:px-16">
+          <ErrorState message={error} onRetry={handleRetry} />
+        </div>
+      )}
+
+      {/* Loading State */}
+      {isLoading && (
+        <div className="px-6 lg:px-16 pb-24">
+          <ProductGridSkeleton count={8} />
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!isLoading && !error && displayProducts.length === 0 && (
+        <div className="px-6 lg:px-16 pb-24">
+          <EmptyState 
+            title="No products found" 
+            description={selectedCollection ? "This collection is empty." : "Check back soon for new arrivals."}
+          />
+        </div>
+      )}
+
       {/* Product Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 px-6 lg:px-16 pb-24">
-        {displayProducts.map((product, index) => (
-          <motion.div
-            key={product.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
-            onClick={() => onProductClick(product.id)}
-            className="cursor-pointer group"
-          >
-            <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="text-white text-xs tracking-wider uppercase">Quick View</span>
+      {!isLoading && !error && displayProducts.length > 0 && (
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 px-6 lg:px-16 pb-24">
+          {displayProducts.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              onClick={() => onProductClick(product.id)}
+              className="cursor-pointer group"
+            >
+              <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
+                <img
+                  src={product.images?.[0] || product.heroImage}
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-xs tracking-wider uppercase">Quick View</span>
+                </div>
               </div>
-            </div>
-            <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
-            <p className="text-white/40 text-xs mb-2 line-clamp-1">{product.tagline || ''}</p>
-            <p className="text-white text-sm">${product.price}</p>
-          </motion.div>
-        ))}
-      </div>
+              <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
+              <p className="text-white/40 text-xs mb-2 line-clamp-1">{product.tagline || ''}</p>
+              <p className="text-white text-sm">${product.price}</p>
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
-// ============ PRODUCT PAGE - VOLLEBAK STYLE ============
+// ============ PRODUCT PAGE - WITH SHOPIFY DATA LOADING ============
 function ProductPage({ productId, onAddToCart, onBack }) {
-  const product = getProduct(productId);
-  const [selectedColor, setSelectedColor] = useState(product?.variants?.colors?.[0] || '');
-  const [selectedSize, setSelectedSize] = useState(product?.variants?.sizes?.[0] || '');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [product, setProduct] = useState(null);
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedSize, setSelectedSize] = useState('');
   const [currentImage, setCurrentImage] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
 
-  if (!product) return null;
+  // Load product data
+  useEffect(() => {
+    async function loadProduct() {
+      if (!productId) return;
+      
+      setIsLoading(true);
+      setError(null);
 
-  const handleAddToCart = () => {
+      try {
+        const productData = await getProductAsync(productId);
+        
+        if (productData) {
+          setProduct(productData);
+          setSelectedColor(productData.variants?.colors?.[0] || 'Default');
+          setSelectedSize(productData.variants?.sizes?.[0] || 'One Size');
+          setCurrentImage(0);
+        } else {
+          setError('Product not found');
+        }
+      } catch (err) {
+        console.error('Error loading product:', err);
+        setError('Failed to load product. Please try again.');
+        
+        // Try fallback to mock data
+        const mockProduct = getProduct(productId);
+        if (mockProduct) {
+          setProduct(mockProduct);
+          setSelectedColor(mockProduct.variants?.colors?.[0] || 'Default');
+          setSelectedSize(mockProduct.variants?.sizes?.[0] || 'One Size');
+          setError(null);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadProduct();
+  }, [productId]);
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    
     setIsAdding(true);
-    onAddToCart(product, selectedColor, selectedSize);
-    setTimeout(() => setIsAdding(false), 1500);
+    try {
+      await onAddToCart(product, selectedColor, selectedSize);
+    } finally {
+      setTimeout(() => setIsAdding(false), 1500);
+    }
   };
+
+  // Loading State
+  if (isLoading) {
+    return <ProductPageSkeleton />;
+  }
+
+  // Error State
+  if (error && !product) {
+    return (
+      <div className="min-h-screen bg-black pt-24 flex items-center justify-center">
+        <ErrorState message={error} onRetry={onBack} />
+      </div>
+    );
+  }
+
+  // No product
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-black pt-24 flex items-center justify-center">
+        <EmptyState title="Product not found" description="This product may have been removed or doesn't exist." />
+      </div>
+    );
+  }
+
+  const collectionName = getCollection(product.collection)?.name || product.collection;
 
   return (
     <div className="min-h-screen bg-black">
@@ -735,14 +1070,14 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             className="absolute inset-0"
           >
             <img
-              src={product.images[currentImage]}
+              src={product.images?.[currentImage] || product.heroImage}
               alt={product.name}
               className="w-full h-full object-cover"
             />
           </motion.div>
           
           {/* Image Navigation */}
-          {product.images.length > 1 && (
+          {product.images && product.images.length > 1 && (
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
               {product.images.map((_, index) => (
                 <button
@@ -773,22 +1108,29 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-white/40 text-xs tracking-[0.2em] uppercase mb-4">
-              {getCollection(product.collection)?.name}
+              {collectionName}
             </p>
             <h1 className="text-white text-4xl md:text-5xl font-light mb-4">{product.name}</h1>
             <p className="text-white text-2xl mb-8">${product.price}</p>
+            
+            {/* Tagline */}
+            {product.tagline && (
+              <p className="text-white/80 text-xs tracking-wider uppercase mb-6 border-l-2 border-white/30 pl-4">
+                {product.tagline}
+              </p>
+            )}
             
             <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg">
               {product.description}
             </p>
 
             {/* Color Selection */}
-            {product.variants?.colors && (
+            {product.variants?.colors && product.variants.colors.length > 0 && product.variants.colors[0] !== 'Default' && (
               <div className="mb-8">
                 <p className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
                   Color — {selectedColor}
                 </p>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   {product.variants.colors.map((color) => (
                     <button
                       key={color}
@@ -807,7 +1149,7 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             )}
 
             {/* Size Selection */}
-            {product.variants?.sizes && product.variants.sizes[0] !== 'One Size' && (
+            {product.variants?.sizes && product.variants.sizes.length > 0 && product.variants.sizes[0] !== 'One Size' && (
               <div className="mb-10">
                 <p className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
                   Size — {selectedSize}
@@ -834,20 +1176,39 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             <button
               onClick={handleAddToCart}
               disabled={isAdding}
-              className="w-full py-5 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors disabled:opacity-50"
+              className="w-full py-5 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-3"
             >
-              {isAdding ? 'Added to Bag' : 'Add to Bag'}
+              {isAdding ? (
+                <>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  >
+                    <Loader2 className="w-4 h-4" />
+                  </motion.div>
+                  Added to Bag
+                </>
+              ) : (
+                'Add to Bag'
+              )}
             </button>
 
+            {/* Shopify indicator */}
+            {isUsingShopify() && (
+              <p className="text-green-500/60 text-xs mt-4 text-center tracking-wider">● Live Shopify Data</p>
+            )}
+
             {/* Product Details */}
-            <div className="mt-12 pt-8 border-t border-white/10">
-              <h3 className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">Details</h3>
-              <ul className="space-y-2">
-                {product.details?.map((detail, index) => (
-                  <li key={index} className="text-white/60 text-sm">• {detail}</li>
-                ))}
-              </ul>
-            </div>
+            {product.details && product.details.length > 0 && (
+              <div className="mt-12 pt-8 border-t border-white/10">
+                <h3 className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">Details</h3>
+                <ul className="space-y-2">
+                  {product.details.map((detail, index) => (
+                    <li key={index} className="text-white/60 text-sm">• {detail}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
@@ -985,11 +1346,31 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState({ items: [], total: 0 });
   const [cartCount, setCartCount] = useState(0);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [isLoadingFeatured, setIsLoadingFeatured] = useState(true);
 
+  // Load cart from localStorage on mount
   useEffect(() => {
     const savedCart = getCart();
     setCart(savedCart);
     setCartCount(getCartItemCount());
+  }, []);
+
+  // Load featured products
+  useEffect(() => {
+    async function loadFeatured() {
+      setIsLoadingFeatured(true);
+      try {
+        const products = await getProducts(8);
+        setFeaturedProducts(products);
+      } catch (err) {
+        console.error('Error loading featured products:', err);
+        setFeaturedProducts(getFeaturedProducts(8));
+      } finally {
+        setIsLoadingFeatured(false);
+      }
+    }
+    loadFeatured();
   }, []);
 
   const handleNavigate = (page, collection = null) => {
@@ -1008,6 +1389,10 @@ export default function App() {
       setCurrentPage('product');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCollectionChange = (collectionId) => {
+    setSelectedCollection(collectionId);
   };
 
   const handleAddToCart = async (product, color, size) => {
@@ -1029,10 +1414,10 @@ export default function App() {
     setCartCount(getCartItemCount());
   };
 
-  // Get featured products for homepage
-  const featuredProducts = getFeaturedProducts(8);
-  const heroProduct = products.find(p => p.id === 'bomber-jacket');
-  const secondHeroProduct = products.find(p => p.id === 'oversized-hoodie');
+  // Get hero products
+  const heroProduct = featuredProducts.find(p => p.id === 'bomber-jacket') || featuredProducts[4];
+  const secondHeroProduct = featuredProducts.find(p => p.id === 'oversized-hoodie') || featuredProducts[1];
+  const essentialsCollection = mockCollections[0];
 
   return (
     <div className="min-h-screen bg-black">
@@ -1056,12 +1441,22 @@ export default function App() {
           <>
             <HeroSection onShopClick={() => handleNavigate('collections')} />
             <ProductHero product={heroProduct} onBuyClick={handleProductClick} />
-            <ProductCarousel title="Featured Products" products={featuredProducts} onProductClick={handleProductClick} />
-            <CollectionShowcase collection={collections[0]} onExplore={(id) => handleNavigate('collections', id)} />
+            <ProductCarousel 
+              title="Featured Products" 
+              products={featuredProducts} 
+              onProductClick={handleProductClick}
+              isLoading={isLoadingFeatured}
+            />
+            <CollectionShowcase collection={essentialsCollection} onExplore={(id) => handleNavigate('collections', id)} />
             <BrandStatement onLearnMore={() => handleNavigate('about')} />
             <PressSection />
             <ProductHero product={secondHeroProduct} onBuyClick={handleProductClick} reverse />
-            <ProductCarousel title="New Arrivals" products={products.slice(4, 12)} onProductClick={handleProductClick} />
+            <ProductCarousel 
+              title="New Arrivals" 
+              products={featuredProducts.slice(4, 12)} 
+              onProductClick={handleProductClick}
+              isLoading={isLoadingFeatured}
+            />
             <Footer />
           </>
         )}
@@ -1071,6 +1466,7 @@ export default function App() {
             <CollectionsPage
               onProductClick={handleProductClick}
               selectedCollection={selectedCollection}
+              onCollectionChange={handleCollectionChange}
             />
             <Footer />
           </>
