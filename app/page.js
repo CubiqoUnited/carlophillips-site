@@ -17,7 +17,18 @@ import {
   getProducts,
   isUsingShopify
 } from '@/lib/data/products';
-import { getCart, addToCart, removeFromCart, updateQuantity, getCartItemCount, getCheckoutUrl } from '@/lib/store/cart';
+import { 
+  getCart, 
+  addToCart, 
+  removeFromCart, 
+  updateQuantity, 
+  getCartItemCount, 
+  getCheckoutUrl, 
+  isCheckoutAvailable,
+  redirectToCheckout,
+  initializeCart,
+  isUsingShopifyCart 
+} from '@/lib/store/cart';
 
 // ============ PREMIUM LOADING COMPONENT ============
 function LoadingSpinner({ size = 'default', text = '' }) {
@@ -280,17 +291,50 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
   );
 }
 
-// ============ CART SIDEBAR - PREMIUM STYLE ============
-function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdateQuantity, onRemoveItem }) {
+// ============ CART SIDEBAR - PREMIUM STYLE WITH SHOPIFY INTEGRATION ============
+function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdateQuantity, onRemoveItem, onRefresh }) {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updatingItem, setUpdatingItem] = useState(null);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  
   const items = cart?.items || [];
   const total = cart?.total || 0;
-  const checkoutUrl = getCheckoutUrl();
+  const checkoutUrl = cart?.checkoutUrl || getCheckoutUrl();
+  const isShopifyCart = isUsingShopifyCart();
+  
+  const handleQuantityChange = async (itemKey, newQuantity) => {
+    setUpdatingItem(itemKey);
+    setIsUpdating(true);
+    try {
+      await onUpdateQuantity(itemKey, newQuantity);
+    } finally {
+      setIsUpdating(false);
+      setUpdatingItem(null);
+    }
+  };
+  
+  const handleRemove = async (itemKey) => {
+    setUpdatingItem(itemKey);
+    setIsUpdating(true);
+    try {
+      await onRemoveItem(itemKey);
+    } finally {
+      setIsUpdating(false);
+      setUpdatingItem(null);
+    }
+  };
   
   const handleCheckout = () => {
-    if (checkoutUrl && checkoutUrl !== '/checkout') {
+    if (checkoutUrl) {
+      setIsCheckingOut(true);
+      console.log('[Cart] Redirecting to checkout:', checkoutUrl);
       window.location.href = checkoutUrl;
+    } else if (isShopifyCart) {
+      // Shopify configured but no checkout URL - should not happen
+      alert('Unable to proceed to checkout. Please try again.');
     } else {
-      alert('Checkout will be available when Shopify is connected');
+      // Not using Shopify - show message
+      alert('Checkout will be available when Shopify is connected. Add your Shopify credentials to enable checkout.');
     }
   };
   
@@ -314,71 +358,145 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
             className="fixed right-0 top-0 bottom-0 z-[101] w-full max-w-lg bg-black text-white"
           >
             <div className="flex flex-col h-full">
+              {/* Header */}
               <div className="flex items-center justify-between px-6 h-20 border-b border-white/10">
-                <h2 className="text-sm tracking-[0.3em] uppercase">Your Bag ({items.length})</h2>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-sm tracking-[0.3em] uppercase">Your Bag ({items.length})</h2>
+                  {isUpdating && (
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    >
+                      <Loader2 className="w-4 h-4 text-white/50" />
+                    </motion.div>
+                  )}
+                </div>
                 <button onClick={onClose} className="hover:opacity-60 transition-opacity">
                   <X className="w-5 h-5" strokeWidth={1.5} />
                 </button>
               </div>
 
+              {/* Cart Items */}
               <div className="flex-1 overflow-auto p-6">
                 {items.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <ShoppingBag className="w-16 h-16 mb-6 text-white/30" strokeWidth={1} />
-                    <p className="text-white/50 text-sm tracking-wider">Your bag is empty</p>
+                    <p className="text-white/50 text-sm tracking-wider mb-2">Your bag is empty</p>
+                    <button 
+                      onClick={onClose}
+                      className="text-white/70 text-xs tracking-wider uppercase hover:text-white transition-colors"
+                    >
+                      Continue Shopping
+                    </button>
                   </div>
                 ) : (
                   <div className="space-y-8">
-                    {items.map((item) => (
-                      <div key={item.key} className="flex gap-6">
-                        <div className="w-28 h-36 bg-neutral-900 overflow-hidden">
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-sm tracking-wide mb-1">{item.name}</h3>
-                          <p className="text-xs text-white/50 mb-3">{item.color} / {item.size}</p>
-                          <p className="text-sm mb-4">${item.price}</p>
-                          <div className="flex items-center gap-4">
-                            <button
-                              onClick={() => onUpdateQuantity(item.key, item.quantity - 1)}
-                              className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
-                            >
-                              <Minus className="w-3 h-3" />
-                            </button>
-                            <span className="text-sm w-6 text-center">{item.quantity}</span>
-                            <button
-                              onClick={() => onUpdateQuantity(item.key, item.quantity + 1)}
-                              className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
-                            >
-                              <Plus className="w-3 h-3" />
-                            </button>
-                            <button
-                              onClick={() => onRemoveItem(item.key)}
-                              className="ml-auto text-xs text-white/50 hover:text-white transition-colors tracking-wider uppercase"
-                            >
-                              Remove
-                            </button>
+                    {items.map((item) => {
+                      const isItemUpdating = updatingItem === item.key;
+                      return (
+                        <motion.div 
+                          key={item.key} 
+                          className={`flex gap-6 transition-opacity ${isItemUpdating ? 'opacity-50' : 'opacity-100'}`}
+                          layout
+                        >
+                          <div className="w-28 h-36 bg-neutral-900 overflow-hidden flex-shrink-0">
+                            <img 
+                              src={item.image} 
+                              alt={item.name} 
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
                           </div>
-                        </div>
-                      </div>
-                    ))}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-sm tracking-wide mb-1 truncate">{item.name}</h3>
+                            <p className="text-xs text-white/50 mb-3">{item.color} / {item.size}</p>
+                            <p className="text-sm mb-4">${item.price.toFixed(2)}</p>
+                            <div className="flex items-center gap-4">
+                              <button
+                                onClick={() => handleQuantityChange(item.key, item.quantity - 1)}
+                                disabled={isUpdating}
+                                className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="text-sm w-6 text-center">{item.quantity}</span>
+                              <button
+                                onClick={() => handleQuantityChange(item.key, item.quantity + 1)}
+                                disabled={isUpdating}
+                                className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={() => handleRemove(item.key)}
+                                disabled={isUpdating}
+                                className="ml-auto text-xs text-white/50 hover:text-white transition-colors tracking-wider uppercase disabled:opacity-50"
+                              >
+                                {isItemUpdating ? 'Removing...' : 'Remove'}
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
 
+              {/* Footer with Checkout */}
               {items.length > 0 && (
                 <div className="border-t border-white/10 p-6 space-y-4">
+                  {/* Subtotal */}
                   <div className="flex justify-between text-sm">
                     <span className="text-white/70">Subtotal</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span className="font-medium">${total.toFixed(2)}</span>
                   </div>
-                  <p className="text-xs text-white/40">Shipping calculated at checkout</p>
+                  
+                  {/* Shipping note */}
+                  <p className="text-xs text-white/40">
+                    Shipping & taxes calculated at checkout
+                  </p>
+                  
+                  {/* Checkout Button */}
                   <button 
                     onClick={handleCheckout}
-                    className="w-full py-4 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors"
+                    disabled={isCheckingOut || items.length === 0}
+                    className="w-full py-4 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    Checkout
+                    {isCheckingOut ? (
+                      <>
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        >
+                          <Loader2 className="w-4 h-4" />
+                        </motion.div>
+                        Processing...
+                      </>
+                    ) : (
+                      'Checkout'
+                    )}
                   </button>
+                  
+                  {/* Continue Shopping */}
+                  <button 
+                    onClick={onClose}
+                    className="w-full py-3 text-white/70 text-xs tracking-[0.15em] uppercase hover:text-white transition-colors"
+                  >
+                    Continue Shopping
+                  </button>
+                  
+                  {/* Shopify indicator */}
+                  {isShopifyCart && checkoutUrl && (
+                    <p className="text-green-500/60 text-[10px] text-center tracking-wider mt-2">
+                      ● Secure checkout powered by Shopify
+                    </p>
+                  )}
+                  {!isShopifyCart && (
+                    <p className="text-yellow-500/60 text-[10px] text-center tracking-wider mt-2">
+                      ● Demo mode - Connect Shopify for checkout
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -1344,16 +1462,33 @@ export default function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cart, setCart] = useState({ items: [], total: 0 });
+  const [cart, setCart] = useState({ items: [], total: 0, checkoutUrl: '' });
   const [cartCount, setCartCount] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isLoadingFeatured, setIsLoadingFeatured] = useState(true);
+  const [isCartLoading, setIsCartLoading] = useState(true);
 
-  // Load cart from localStorage on mount
+  // Initialize cart on mount - sync with Shopify if configured
   useEffect(() => {
-    const savedCart = getCart();
-    setCart(savedCart);
-    setCartCount(getCartItemCount());
+    async function initCart() {
+      setIsCartLoading(true);
+      try {
+        console.log('[App] Initializing cart...');
+        const initializedCart = await initializeCart();
+        setCart(initializedCart);
+        setCartCount(getCartItemCount());
+        console.log('[App] Cart initialized:', initializedCart);
+      } catch (error) {
+        console.error('[App] Cart initialization failed:', error);
+        // Fallback to local cart
+        const localCart = getCart();
+        setCart(localCart);
+        setCartCount(getCartItemCount());
+      } finally {
+        setIsCartLoading(false);
+      }
+    }
+    initCart();
   }, []);
 
   // Load featured products
@@ -1396,6 +1531,7 @@ export default function App() {
   };
 
   const handleAddToCart = async (product, color, size) => {
+    console.log('[App] Adding to cart:', product.name, color, size);
     const updatedCart = await addToCart(product, color, size);
     setCart(updatedCart);
     setCartCount(getCartItemCount());
@@ -1403,14 +1539,22 @@ export default function App() {
   };
 
   const handleUpdateQuantity = async (itemKey, quantity) => {
+    console.log('[App] Updating quantity:', itemKey, quantity);
     const updatedCart = await updateQuantity(itemKey, quantity);
     setCart(updatedCart);
     setCartCount(getCartItemCount());
   };
 
   const handleRemoveItem = async (itemKey) => {
+    console.log('[App] Removing item:', itemKey);
     const updatedCart = await removeFromCart(itemKey);
     setCart(updatedCart);
+    setCartCount(getCartItemCount());
+  };
+  
+  const handleCartRefresh = async () => {
+    const refreshedCart = await initializeCart();
+    setCart(refreshedCart);
     setCartCount(getCartItemCount());
   };
 
@@ -1434,6 +1578,7 @@ export default function App() {
         cart={cart}
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
+        onRefresh={handleCartRefresh}
       />
 
       <main>
