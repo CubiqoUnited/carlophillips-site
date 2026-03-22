@@ -1,78 +1,70 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ShoppingBag, Search, ChevronDown, Plus, Minus, ArrowRight, Play, Pause } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { Menu, X, ShoppingBag, ChevronLeft, ChevronRight, Plus, Minus, ArrowRight, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { collections, products, getProduct, getProductsByCollection, getCollection, getFeaturedProducts, getFeaturedCollections } from '@/lib/data/products';
-import { getCart, addToCart, removeFromCart, updateQuantity, clearCart, getCartItemCount } from '@/lib/store/cart';
+import { getCart, addToCart, removeFromCart, updateQuantity, getCartItemCount } from '@/lib/store/cart';
 
-// ============ NAVIGATION COMPONENT ============
-function Navigation({ onCartClick, cartCount, currentPage, onNavigate }) {
+// ============ NAVIGATION COMPONENT - VOLLEBAK STYLE ============
+function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const bgClass = isTransparent && !isScrolled 
+    ? 'bg-transparent' 
+    : 'bg-black/90 backdrop-blur-md';
+
   return (
     <>
       <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? 'bg-background/95 backdrop-blur-md border-b border-border' : 'bg-transparent'
-        }`}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${bgClass}`}
       >
-        <nav className="container mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20">
-            {/* Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(true)}
-              className="p-2 -ml-2 hover:opacity-60 transition-opacity"
-              aria-label="Open menu"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
+        <nav className="flex items-center justify-between px-6 lg:px-10 h-16 lg:h-20">
+          {/* Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
+          >
+            <Menu className="w-5 h-5" strokeWidth={1.5} />
+            <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">Menu</span>
+          </button>
 
-            {/* Logo */}
-            <button
-              onClick={() => onNavigate('home')}
-              className="absolute left-1/2 -translate-x-1/2"
-            >
-              <h1 className="luxury-heading text-xl md:text-2xl tracking-[0.3em]">
-                CARLOPHILLIPS
-              </h1>
-            </button>
+          {/* Logo */}
+          <button
+            onClick={() => onNavigate('home')}
+            className="absolute left-1/2 -translate-x-1/2"
+          >
+            <h1 className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
+              Carlophillips
+            </h1>
+          </button>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-4">
-              <button className="p-2 hover:opacity-60 transition-opacity hidden md:block">
-                <Search className="w-5 h-5" />
-              </button>
-              <button
-                onClick={onCartClick}
-                className="p-2 -mr-2 hover:opacity-60 transition-opacity relative"
-                aria-label="Open cart"
-              >
-                <ShoppingBag className="w-5 h-5" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-foreground text-background text-xs flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
+          {/* Cart */}
+          <button
+            onClick={onCartClick}
+            className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
+          >
+            <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">
+              Bag {cartCount > 0 && `(${cartCount})`}
+            </span>
+            <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
+          </button>
         </nav>
       </motion.header>
 
-      {/* Full Screen Menu */}
+      {/* Full Screen Menu - Vollebak Style */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -80,62 +72,71 @@ function Navigation({ onCartClick, cartCount, currentPage, onNavigate }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-[100] bg-background"
+            className="fixed inset-0 z-[100] bg-black"
           >
-            <div className="container mx-auto px-6 lg:px-12 h-full">
-              <div className="flex items-center justify-between h-20">
+            <div className="h-full flex flex-col">
+              {/* Menu Header */}
+              <div className="flex items-center justify-between px-6 lg:px-10 h-16 lg:h-20">
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-2 -ml-2 hover:opacity-60 transition-opacity"
+                  className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5" strokeWidth={1.5} />
+                  <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">Close</span>
                 </button>
-                <h1 className="luxury-heading text-xl md:text-2xl tracking-[0.3em]">
-                  CARLOPHILLIPS
+                <h1 className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
+                  Carlophillips
                 </h1>
-                <div className="w-9" />
+                <div className="w-20" />
               </div>
 
-              <div className="flex flex-col justify-center h-[calc(100%-5rem)] pb-20">
-                <nav className="space-y-6">
+              {/* Menu Content */}
+              <div className="flex-1 flex items-center justify-center">
+                <nav className="text-center space-y-2">
                   {[
                     { id: 'home', label: 'Home' },
-                    { id: 'collections', label: 'Collections' },
+                    { id: 'collections', label: 'Shop All' },
+                    { id: 'essentials', label: 'Essentials', collection: true },
+                    { id: 'outerwear', label: 'Outerwear', collection: true },
+                    { id: 'accessories', label: 'Accessories', collection: true },
+                    { id: 'home-collection', label: 'Home & Living', collection: true },
                     { id: 'about', label: 'About' },
                     { id: 'lookbook', label: 'Lookbook' },
                   ].map((item, index) => (
                     <motion.div
                       key={item.id}
-                      initial={{ opacity: 0, x: -50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.5 }}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05, duration: 0.5 }}
                     >
                       <button
                         onClick={() => {
-                          onNavigate(item.id);
+                          if (item.collection) {
+                            onNavigate('collections', item.id === 'home-collection' ? 'home' : item.id);
+                          } else {
+                            onNavigate(item.id);
+                          }
                           setIsMenuOpen(false);
                         }}
-                        className="block text-4xl md:text-6xl font-light tracking-wide hover:opacity-60 transition-opacity"
-                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        className="block text-white text-4xl md:text-6xl lg:text-7xl font-light tracking-wide hover:opacity-50 transition-opacity py-1"
+                        style={{ fontFamily: 'system-ui' }}
                       >
                         {item.label}
                       </button>
                     </motion.div>
                   ))}
                 </nav>
+              </div>
 
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="mt-16 pt-8 border-t border-border"
-                >
-                  <div className="flex gap-8 text-sm tracking-wider text-muted-foreground">
-                    <a href="#" className="hover:text-foreground transition-colors">Instagram</a>
-                    <a href="#" className="hover:text-foreground transition-colors">Pinterest</a>
-                    <a href="#" className="hover:text-foreground transition-colors">Contact</a>
+              {/* Menu Footer */}
+              <div className="px-6 lg:px-10 py-8 border-t border-white/10">
+                <div className="flex justify-between items-center text-white/50 text-xs tracking-[0.15em] uppercase">
+                  <div className="flex gap-8">
+                    <a href="#" className="hover:text-white transition-colors">Instagram</a>
+                    <a href="#" className="hover:text-white transition-colors">TikTok</a>
                   </div>
-                </motion.div>
+                  <span>Free shipping over $200</span>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -145,111 +146,89 @@ function Navigation({ onCartClick, cartCount, currentPage, onNavigate }) {
   );
 }
 
-// ============ CART SIDEBAR COMPONENT ============
+// ============ CART SIDEBAR - PREMIUM STYLE ============
 function CartSidebar({ isOpen, onClose, cart, onUpdateQuantity, onRemoveItem }) {
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[100] bg-black/50"
+            className="fixed inset-0 z-[100] bg-black/70"
           />
 
-          {/* Sidebar */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 z-[101] w-full max-w-md bg-background border-l border-border"
+            className="fixed right-0 top-0 bottom-0 z-[101] w-full max-w-lg bg-black text-white"
           >
             <div className="flex flex-col h-full">
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 h-20 border-b border-border">
-                <h2 className="luxury-heading text-lg tracking-[0.2em]">Your Bag</h2>
-                <button
-                  onClick={onClose}
-                  className="p-2 -mr-2 hover:opacity-60 transition-opacity"
-                >
-                  <X className="w-5 h-5" />
+              <div className="flex items-center justify-between px-6 h-20 border-b border-white/10">
+                <h2 className="text-sm tracking-[0.3em] uppercase">Your Bag ({cart.items.length})</h2>
+                <button onClick={onClose} className="hover:opacity-60 transition-opacity">
+                  <X className="w-5 h-5" strokeWidth={1.5} />
                 </button>
               </div>
 
-              {/* Cart Items */}
               <div className="flex-1 overflow-auto p-6">
                 {cart.items.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
-                    <ShoppingBag className="w-12 h-12 mb-4 text-muted-foreground" />
-                    <p className="text-muted-foreground luxury-text">Your bag is empty</p>
+                    <ShoppingBag className="w-16 h-16 mb-6 text-white/30" strokeWidth={1} />
+                    <p className="text-white/50 text-sm tracking-wider">Your bag is empty</p>
                   </div>
                 ) : (
-                  <div className="space-y-6">
+                  <div className="space-y-8">
                     {cart.items.map((item) => (
-                      <div key={item.key} className="flex gap-4">
-                        <div className="w-24 h-32 bg-muted overflow-hidden">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                          />
+                      <div key={item.key} className="flex gap-6">
+                        <div className="w-28 h-36 bg-neutral-900 overflow-hidden">
+                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-medium text-sm">{item.name}</h3>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {item.color} / {item.size}
-                          </p>
-                          <p className="text-sm mt-2">${item.price}</p>
-                          <div className="flex items-center gap-3 mt-3">
+                          <h3 className="text-sm tracking-wide mb-1">{item.name}</h3>
+                          <p className="text-xs text-white/50 mb-3">{item.color} / {item.size}</p>
+                          <p className="text-sm mb-4">${item.price}</p>
+                          <div className="flex items-center gap-4">
                             <button
                               onClick={() => onUpdateQuantity(item.key, item.quantity - 1)}
-                              className="p-1 hover:opacity-60 transition-opacity"
+                              className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
                             >
                               <Minus className="w-3 h-3" />
                             </button>
                             <span className="text-sm w-6 text-center">{item.quantity}</span>
                             <button
                               onClick={() => onUpdateQuantity(item.key, item.quantity + 1)}
-                              className="p-1 hover:opacity-60 transition-opacity"
+                              className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
                             >
                               <Plus className="w-3 h-3" />
                             </button>
+                            <button
+                              onClick={() => onRemoveItem(item.key)}
+                              className="ml-auto text-xs text-white/50 hover:text-white transition-colors tracking-wider uppercase"
+                            >
+                              Remove
+                            </button>
                           </div>
                         </div>
-                        <button
-                          onClick={() => onRemoveItem(item.key)}
-                          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          Remove
-                        </button>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Footer */}
               {cart.items.length > 0 && (
-                <div className="border-t border-border p-6 space-y-4">
+                <div className="border-t border-white/10 p-6 space-y-4">
                   <div className="flex justify-between text-sm">
-                    <span>Subtotal</span>
+                    <span className="text-white/70">Subtotal</span>
                     <span>${cart.total.toFixed(2)}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Shipping and taxes calculated at checkout
-                  </p>
-                  <button className="w-full luxury-button bg-foreground text-background hover:bg-foreground/90">
+                  <p className="text-xs text-white/40">Shipping calculated at checkout</p>
+                  <button className="w-full py-4 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors">
                     Checkout
-                  </button>
-                  <button
-                    onClick={onClose}
-                    className="w-full luxury-button border border-border hover:bg-muted"
-                  >
-                    Continue Shopping
                   </button>
                 </div>
               )}
@@ -261,75 +240,101 @@ function CartSidebar({ isOpen, onClose, cart, onUpdateQuantity, onRemoveItem }) 
   );
 }
 
-// ============ VIDEO HERO COMPONENT ============
-function VideoHero({ onShopClick }) {
+// ============ FULL-BLEED HERO SECTION - VOLLEBAK STYLE ============
+function HeroSection({ product, onShopClick, videoUrl }) {
+  const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef(null);
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-  // Placeholder video - user can replace with their own
   const placeholderVideo = 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4';
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black">
-      {/* Video Background */}
-      <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          onLoadedData={() => setVideoLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${
-            videoLoaded ? 'opacity-60' : 'opacity-0'
-          }`}
-        >
-          <source src={placeholderVideo} type="video/mp4" />
-        </video>
-        {/* Fallback gradient if video doesn't load */}
-        {!videoLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-neutral-800 to-black" />
+      {/* Video/Image Background */}
+      <motion.div style={{ y }} className="absolute inset-0">
+        {videoUrl ? (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted={isMuted}
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={videoUrl || placeholderVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover opacity-70"
+          >
+            <source src={placeholderVideo} type="video/mp4" />
+          </video>
         )}
-      </div>
+      </motion.div>
 
-      {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-end pb-24 px-6 lg:px-12">
+      <motion.div 
+        style={{ opacity }}
+        className="absolute inset-0 flex flex-col justify-end p-6 lg:p-16 pb-24 lg:pb-32"
+      >
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl"
+          transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-4xl"
         >
-          <p className="text-white/70 text-xs tracking-[0.3em] uppercase mb-4">
+          <p className="text-white/60 text-xs tracking-[0.3em] uppercase mb-4 lg:mb-6">
             Summer 2025 Collection
           </p>
-          <h2
-            className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[0.95] mb-8"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          >
+          <h1 className="text-white text-5xl md:text-7xl lg:text-[8rem] font-light leading-[0.9] mb-6 lg:mb-8 tracking-tight">
             Quiet<br />Luxury
-          </h2>
-          <p className="text-white/70 text-sm md:text-base max-w-md luxury-text mb-8">
-            A curated collection of timeless essentials designed for those who appreciate understated elegance.
+          </h1>
+          <p className="text-white/70 text-sm md:text-base max-w-lg mb-8 lg:mb-10 leading-relaxed">
+            A curated collection of timeless essentials. Designed for those who appreciate understated elegance and uncompromising quality.
           </p>
           <button
             onClick={onShopClick}
-            className="luxury-button bg-white text-black hover:bg-white/90 inline-flex items-center gap-3"
+            className="group inline-flex items-center gap-4 text-white text-xs tracking-[0.25em] uppercase border-b border-white/30 pb-2 hover:border-white transition-colors"
           >
-            Shop Collection
-            <ArrowRight className="w-4 h-4" />
+            Shop Now
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
           </button>
         </motion.div>
 
         {/* Video Controls */}
-        <div className="absolute bottom-8 right-6 lg:right-12">
+        <div className="absolute bottom-8 right-6 lg:right-16 flex gap-3">
           <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="p-3 border border-white/30 text-white/70 hover:text-white hover:border-white/60 transition-all"
+            onClick={() => {
+              if (videoRef.current) {
+                if (isPlaying) {
+                  videoRef.current.pause();
+                } else {
+                  videoRef.current.play();
+                }
+                setIsPlaying(!isPlaying);
+              }
+            }}
+            className="w-10 h-10 border border-white/30 flex items-center justify-center text-white/70 hover:text-white hover:border-white transition-all"
           >
             {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={() => setIsMuted(!isMuted)}
+            className="w-10 h-10 border border-white/30 flex items-center justify-center text-white/70 hover:text-white hover:border-white transition-all"
+          >
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
         </div>
 
@@ -337,119 +342,142 @@ function VideoHero({ onShopClick }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          transition={{ delay: 2 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50"
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
+            animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-px h-12 bg-gradient-to-b from-white/0 via-white/50 to-white/0"
-          />
+            className="flex flex-col items-center gap-2"
+          >
+            <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+            <div className="w-px h-8 bg-gradient-to-b from-white/50 to-transparent" />
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+}
+
+// ============ FULL-BLEED PRODUCT HERO - VOLLEBAK STYLE ============
+function ProductHero({ product, onBuyClick, reverse = false }) {
+  return (
+    <section className="relative h-screen w-full overflow-hidden bg-black">
+      {/* Full Image */}
+      <div className="absolute inset-0">
+        <img
+          src={product.heroImage || product.images[0]}
+          alt={product.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Gradient Overlay */}
+      <div className={`absolute inset-0 ${reverse ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-black/80 via-black/40 to-transparent`} />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+
+      {/* Content */}
+      <div className={`absolute inset-0 flex items-end lg:items-center p-6 lg:p-16 pb-24 lg:pb-16 ${reverse ? 'lg:justify-end' : ''}`}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className={`max-w-xl ${reverse ? 'lg:text-right' : ''}`}
+        >
+          <h2 className="text-white text-4xl md:text-5xl lg:text-6xl font-light leading-tight mb-4 tracking-tight">
+            {product.name}
+          </h2>
+          <p className="text-white/60 text-sm md:text-base uppercase tracking-[0.2em] mb-6">
+            {product.tagline || product.description.slice(0, 80)}
+          </p>
+          <button
+            onClick={() => onBuyClick(product.id)}
+            className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border border-white/30 px-8 py-4 hover:bg-white hover:text-black transition-all"
+          >
+            Buy Now
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </motion.div>
       </div>
     </section>
   );
 }
 
-// ============ COLLECTIONS GRID COMPONENT ============
-function CollectionsGrid({ onCollectionClick }) {
-  const featuredCollections = getFeaturedCollections();
+// ============ HORIZONTAL PRODUCT CAROUSEL - VOLLEBAK STYLE ============
+function ProductCarousel({ title, products: carouselProducts, onProductClick }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const containerRef = useRef(null);
+
+  const scrollTo = (direction) => {
+    if (containerRef.current) {
+      const scrollAmount = 400;
+      const newScroll = direction === 'left' 
+        ? containerRef.current.scrollLeft - scrollAmount
+        : containerRef.current.scrollLeft + scrollAmount;
+      containerRef.current.scrollTo({ left: newScroll, behavior: 'smooth' });
+    }
+  };
 
   return (
-    <section className="py-24 px-6 lg:px-12">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-16"
-      >
-        <h2 className="luxury-heading text-3xl md:text-4xl mb-4">Collections</h2>
-        <p className="text-muted-foreground luxury-text max-w-xl mx-auto">
-          Explore our curated selections, each piece thoughtfully designed for the modern individual.
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
-        {featuredCollections.map((collection, index) => (
-          <motion.div
-            key={collection.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: index * 0.1 }}
-            className={`relative overflow-hidden cursor-pointer group ${
-              index === 0 ? 'md:col-span-2 h-[60vh]' : 'h-[50vh]'
-            }`}
-            onClick={() => onCollectionClick(collection.id)}
-          >
-            <div className="absolute inset-0 bg-black">
-              <img
-                src={collection.image}
-                alt={collection.name}
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700"
-              />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-8 lg:p-12">
-              <h3 className="text-white luxury-heading text-2xl md:text-3xl mb-2">
-                {collection.name}
-              </h3>
-              <p className="text-white/70 text-sm luxury-text mb-4 max-w-md">
-                {collection.description}
-              </p>
-              <span className="text-white text-xs tracking-[0.2em] uppercase flex items-center gap-2 group-hover:gap-4 transition-all">
-                Explore
-                <ArrowRight className="w-4 h-4" />
-              </span>
-            </div>
-          </motion.div>
-        ))}
+    <section className="py-16 lg:py-24 bg-black">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 lg:px-16 mb-8 lg:mb-12">
+        <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-light tracking-tight">
+          {title}
+        </h2>
+        <div className="flex items-center gap-4">
+          <span className="text-white/50 text-sm tracking-wider">
+            {String(currentIndex + 1).padStart(2, '0')} / {String(carouselProducts.length).padStart(2, '0')}
+          </span>
+          <div className="flex gap-2">
+            <button 
+              onClick={() => scrollTo('left')}
+              className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => scrollTo('right')}
+              className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
       </div>
-    </section>
-  );
-}
 
-// ============ FEATURED PRODUCTS COMPONENT ============
-function FeaturedProducts({ onProductClick }) {
-  const featured = getFeaturedProducts(4);
-
-  return (
-    <section className="py-24 px-6 lg:px-12 bg-muted/30">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-16"
+      {/* Carousel */}
+      <div 
+        ref={containerRef}
+        className="flex gap-4 lg:gap-6 overflow-x-auto scrollbar-hide px-6 lg:px-16 pb-4"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        onScroll={(e) => {
+          const index = Math.round(e.target.scrollLeft / 400);
+          setCurrentIndex(Math.min(index, carouselProducts.length - 1));
+        }}
       >
-        <h2 className="luxury-heading text-3xl md:text-4xl mb-4">Featured</h2>
-        <p className="text-muted-foreground luxury-text">
-          Handpicked pieces from our latest collections
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 max-w-7xl mx-auto">
-        {featured.map((product, index) => (
+        {carouselProducts.map((product, index) => (
           <motion.div
             key={product.id}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: index * 0.1 }}
-            className="group cursor-pointer"
+            transition={{ delay: index * 0.05 }}
             onClick={() => onProductClick(product.id)}
+            className="flex-shrink-0 w-72 lg:w-80 cursor-pointer group"
           >
-            <div className="relative aspect-[3/4] overflow-hidden bg-muted mb-4">
+            <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
               <img
                 src={product.images[0]}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
             </div>
-            <h3 className="text-sm font-medium mb-1">{product.name}</h3>
-            <p className="text-sm text-muted-foreground">${product.price}</p>
+            <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
+            <p className="text-white/40 text-xs mb-2 line-clamp-2">{product.tagline || product.description.slice(0, 60)}...</p>
+            <p className="text-white text-sm">${product.price}</p>
           </motion.div>
         ))}
       </div>
@@ -457,104 +485,144 @@ function FeaturedProducts({ onProductClick }) {
   );
 }
 
-// ============ BRAND STORY COMPONENT ============
-function BrandStory() {
+// ============ BRAND STATEMENT SECTION ============
+function BrandStatement({ onLearnMore }) {
   return (
-    <section className="py-24 lg:py-32">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+    <section className="py-24 lg:py-40 bg-black">
+      <div className="max-w-5xl mx-auto px-6 lg:px-16 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="text-white/40 text-xs tracking-[0.3em] uppercase mb-8">Our Philosophy</p>
+          <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-8 tracking-tight">
+            We design clothes for people who value quality over quantity, substance over trends.
+          </h2>
+          <p className="text-white/50 text-sm md:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
+            Every piece is crafted with intention, using premium materials sourced from ethical suppliers. 
+            We partner with print-on-demand and dropshipping services that share our commitment to sustainability.
+          </p>
+          <button 
+            onClick={onLearnMore}
+            className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border-b border-white/30 pb-2 hover:border-white transition-colors"
           >
-            <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-6">
-              Our Philosophy
-            </p>
-            <h2
-              className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] mb-8"
-              style={{ fontFamily: 'Cormorant Garamond, serif' }}
-            >
-              Less, but better.
-            </h2>
-            <p className="luxury-text text-muted-foreground mb-6">
-              Carlophillips is built on the belief that true luxury lies in simplicity. 
-              Each piece in our collection is designed with intention, crafted to 
-              transcend seasons and trends.
-            </p>
-            <p className="luxury-text text-muted-foreground mb-8">
-              We partner with ethical manufacturers and prioritize sustainable practices, 
-              because luxury should never come at the cost of our planet.
-            </p>
-            <button className="luxury-button border border-foreground hover:bg-foreground hover:text-background transition-colors">
-              Learn More
-            </button>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
-          >
-            <div className="aspect-[4/5] overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1698306871917-7b91b07a0bb4?w=800&q=80"
-                alt="Brand story"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-muted" />
-          </motion.div>
-        </div>
+            Learn More
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-// ============ FOOTER COMPONENT ============
+// ============ PRESS LOGOS SECTION - VOLLEBAK STYLE ============
+function PressSection() {
+  const pressItems = [
+    { name: 'VOGUE', quote: '"Understated luxury at its finest"' },
+    { name: 'GQ', quote: '"The future of sustainable fashion"' },
+    { name: 'HYPEBEAST', quote: '"Minimal, intentional, perfect"' },
+    { name: 'HIGHSNOBIETY', quote: '"Quality that speaks for itself"' },
+  ];
+
+  return (
+    <section className="py-16 bg-black border-y border-white/10">
+      <div className="overflow-hidden">
+        <motion.div 
+          animate={{ x: [0, -1000] }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          className="flex gap-16 lg:gap-24 whitespace-nowrap"
+        >
+          {[...pressItems, ...pressItems, ...pressItems].map((item, index) => (
+            <div key={index} className="flex items-center gap-4 lg:gap-6">
+              <span className="text-white/30 text-2xl lg:text-3xl font-light tracking-[0.2em]">{item.name}</span>
+              <span className="text-white/50 text-sm italic">{item.quote}</span>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============ COLLECTION SHOWCASE - VOLLEBAK STYLE ============
+function CollectionShowcase({ collection, onExplore }) {
+  return (
+    <section className="relative h-[80vh] w-full overflow-hidden bg-black">
+      <div className="absolute inset-0">
+        <img
+          src={collection.image}
+          alt={collection.name}
+          className="w-full h-full object-cover opacity-80"
+        />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+      
+      <div className="absolute inset-0 flex items-end p-6 lg:p-16 pb-16 lg:pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <h3 className="text-white text-4xl md:text-5xl lg:text-6xl font-light mb-4">{collection.name}</h3>
+          <p className="text-white/60 text-sm md:text-base uppercase tracking-[0.15em] mb-6 max-w-md">
+            {collection.description}
+          </p>
+          <button
+            onClick={() => onExplore(collection.id)}
+            className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border border-white/30 px-8 py-4 hover:bg-white hover:text-black transition-all"
+          >
+            Explore Collection
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============ FOOTER - PREMIUM STYLE ============
 function Footer() {
   return (
-    <footer className="bg-foreground text-background py-16 lg:py-24">
-      <div className="container mx-auto px-6 lg:px-12">
+    <footer className="bg-black text-white py-16 lg:py-24 border-t border-white/10">
+      <div className="px-6 lg:px-16">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-2">
-            <h3 className="luxury-heading text-2xl tracking-[0.3em] mb-6">CARLOPHILLIPS</h3>
-            <p className="luxury-text text-background/70 max-w-sm">
-              A modern luxury lifestyle brand for those who appreciate understated elegance and timeless design.
+            <h3 className="text-2xl tracking-[0.3em] font-light mb-6">CARLOPHILLIPS</h3>
+            <p className="text-white/50 text-sm leading-relaxed max-w-md">
+              A modern luxury lifestyle brand. Premium clothing, jewelry, accessories, and home items 
+              designed for those who appreciate understated elegance.
             </p>
           </div>
           <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase mb-4">Shop</h4>
-            <ul className="space-y-3 text-sm text-background/70">
-              <li><a href="#" className="hover:text-background transition-colors">All Products</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Essentials</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Outerwear</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Accessories</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Home</a></li>
+            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">Shop</h4>
+            <ul className="space-y-3 text-sm text-white/50">
+              <li><a href="#" className="hover:text-white transition-colors">All Products</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Essentials</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Outerwear</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Accessories</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Home & Living</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase mb-4">Company</h4>
-            <ul className="space-y-3 text-sm text-background/70">
-              <li><a href="#" className="hover:text-background transition-colors">About</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Sustainability</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Contact</a></li>
+            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">Company</h4>
+            <ul className="space-y-3 text-sm text-white/50">
+              <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Sustainability</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Shipping & Returns</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-background/20 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-background/50">
-            © 2025 Carlophillips. All rights reserved.
-          </p>
-          <div className="flex gap-6 text-xs text-background/50">
-            <a href="#" className="hover:text-background transition-colors">Privacy</a>
-            <a href="#" className="hover:text-background transition-colors">Terms</a>
-            <a href="#" className="hover:text-background transition-colors">Shipping</a>
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-white/30">© 2025 Carlophillips. All rights reserved.</p>
+          <div className="flex gap-6 text-xs text-white/30">
+            <a href="#" className="hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <a href="#" className="hover:text-white transition-colors">Cookies</a>
           </div>
         </div>
       </div>
@@ -562,74 +630,71 @@ function Footer() {
   );
 }
 
-// ============ COLLECTIONS PAGE ============
-function CollectionsPage({ onProductClick, onCollectionClick, selectedCollection }) {
+// ============ COLLECTIONS PAGE - VOLLEBAK STYLE ============
+function CollectionsPage({ onProductClick, selectedCollection }) {
   const collection = selectedCollection ? getCollection(selectedCollection) : null;
   const displayProducts = selectedCollection 
     ? getProductsByCollection(selectedCollection)
     : products;
 
   return (
-    <div className="pt-28 pb-24 px-6 lg:px-12 min-h-screen">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-16"
-      >
-        <h1 className="luxury-heading text-4xl md:text-5xl mb-4">
-          {collection ? collection.name : 'All Products'}
-        </h1>
-        <p className="text-muted-foreground luxury-text max-w-xl mx-auto">
-          {collection ? collection.description : 'Explore our complete collection of luxury essentials'}
-        </p>
-      </motion.div>
+    <div className="min-h-screen bg-black pt-24 lg:pt-32">
+      {/* Header */}
+      <div className="px-6 lg:px-16 mb-12 lg:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-light mb-4">
+            {collection ? collection.name : 'All Products'}
+          </h1>
+          <p className="text-white/50 text-sm md:text-base max-w-xl">
+            {collection ? collection.description : 'Explore our complete collection of luxury essentials'}
+          </p>
+        </motion.div>
 
-      {/* Collection Filter */}
-      {!selectedCollection && (
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {collections.map((col) => (
-            <button
-              key={col.id}
-              onClick={() => onCollectionClick(col.id)}
-              className="px-6 py-2 text-xs tracking-[0.15em] uppercase border border-border hover:bg-foreground hover:text-background transition-colors"
-            >
-              {col.name}
-            </button>
-          ))}
-        </div>
-      )}
+        {/* Collection Filter */}
+        {!selectedCollection && (
+          <div className="flex flex-wrap gap-3 mt-8">
+            {collections.map((col) => (
+              <button
+                key={col.id}
+                onClick={() => onProductClick(null, col.id)}
+                className="px-5 py-2 text-xs tracking-[0.15em] uppercase border border-white/20 text-white/70 hover:bg-white hover:text-black transition-all"
+              >
+                {col.name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 max-w-7xl mx-auto">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 px-6 lg:px-16 pb-24">
         {displayProducts.map((product, index) => (
           <motion.div
             key={product.id}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
-            className="group cursor-pointer"
             onClick={() => onProductClick(product.id)}
+            className="cursor-pointer group"
           >
-            <div className="relative aspect-[3/4] overflow-hidden bg-muted mb-4">
+            <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
               <img
                 src={product.images[0]}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-              <button 
-                className="absolute bottom-4 left-4 right-4 luxury-button bg-background text-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onProductClick(product.id);
-                }}
-              >
-                Quick View
-              </button>
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-white text-xs tracking-wider uppercase">Quick View</span>
+              </div>
             </div>
-            <h3 className="text-sm font-medium mb-1">{product.name}</h3>
-            <p className="text-sm text-muted-foreground">${product.price}</p>
+            <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
+            <p className="text-white/40 text-xs mb-2 line-clamp-1">{product.tagline || ''}</p>
+            <p className="text-white text-sm">${product.price}</p>
           </motion.div>
         ))}
       </div>
@@ -637,7 +702,7 @@ function CollectionsPage({ onProductClick, onCollectionClick, selectedCollection
   );
 }
 
-// ============ PRODUCT PAGE ============
+// ============ PRODUCT PAGE - VOLLEBAK STYLE ============
 function ProductPage({ productId, onAddToCart, onBack }) {
   const product = getProduct(productId);
   const [selectedColor, setSelectedColor] = useState(product?.variants?.colors?.[0] || '');
@@ -645,104 +710,89 @@ function ProductPage({ productId, onAddToCart, onBack }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
 
-  if (!product) {
-    return (
-      <div className="pt-28 pb-24 px-6 lg:px-12 min-h-screen flex items-center justify-center">
-        <p>Product not found</p>
-      </div>
-    );
-  }
+  if (!product) return null;
 
   const handleAddToCart = () => {
     setIsAdding(true);
     onAddToCart(product, selectedColor, selectedSize);
-    setTimeout(() => setIsAdding(false), 1000);
+    setTimeout(() => setIsAdding(false), 1500);
   };
 
   return (
-    <div className="pt-28 pb-24 min-h-screen">
-      <div className="container mx-auto px-6 lg:px-12">
-        {/* Back Button */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          onClick={onBack}
-          className="mb-8 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-        >
-          <ArrowRight className="w-4 h-4 rotate-180" />
-          Back to collection
-        </motion.button>
-
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
-          {/* Image Gallery */}
+    <div className="min-h-screen bg-black">
+      <div className="grid lg:grid-cols-2 min-h-screen">
+        {/* Image Section */}
+        <div className="relative h-screen lg:sticky lg:top-0">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            key={currentImage}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+          >
+            <img
+              src={product.images[currentImage]}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+          
+          {/* Image Navigation */}
+          {product.images.length > 1 && (
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+              {product.images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImage(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentImage === index ? 'bg-white w-6' : 'bg-white/40'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Product Info */}
+        <div className="p-6 lg:p-16 flex flex-col justify-center">
+          <button
+            onClick={onBack}
+            className="text-white/50 text-xs tracking-wider uppercase mb-8 hover:text-white transition-colors self-start flex items-center gap-2"
+          >
+            <ArrowRight className="w-4 h-4 rotate-180" />
+            Back
+          </button>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="aspect-[3/4] overflow-hidden bg-muted mb-4">
-              <img
-                src={product.images[currentImage]}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {product.images.length > 1 && (
-              <div className="flex gap-4">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImage(index)}
-                    className={`w-20 h-24 overflow-hidden border-2 transition-colors ${
-                      currentImage === index ? 'border-foreground' : 'border-transparent'
-                    }`}
-                  >
-                    <img
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-          </motion.div>
-
-          {/* Product Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:py-8"
-          >
-            <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4">
+            <p className="text-white/40 text-xs tracking-[0.2em] uppercase mb-4">
               {getCollection(product.collection)?.name}
             </p>
-            <h1
-              className="text-3xl md:text-4xl font-light mb-4"
-              style={{ fontFamily: 'Cormorant Garamond, serif' }}
-            >
-              {product.name}
-            </h1>
-            <p className="text-xl mb-8">${product.price}</p>
-
-            <p className="luxury-text text-muted-foreground mb-8">
+            <h1 className="text-white text-4xl md:text-5xl font-light mb-4">{product.name}</h1>
+            <p className="text-white text-2xl mb-8">${product.price}</p>
+            
+            <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg">
               {product.description}
             </p>
 
             {/* Color Selection */}
             {product.variants?.colors && (
-              <div className="mb-6">
-                <p className="text-xs tracking-[0.15em] uppercase mb-3">Color: {selectedColor}</p>
+              <div className="mb-8">
+                <p className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
+                  Color — {selectedColor}
+                </p>
                 <div className="flex gap-3">
                   {product.variants.colors.map((color) => (
                     <button
                       key={color}
                       onClick={() => setSelectedColor(color)}
-                      className={`px-4 py-2 text-xs border transition-colors ${
+                      className={`px-5 py-3 text-xs tracking-wider border transition-all ${
                         selectedColor === color
-                          ? 'border-foreground bg-foreground text-background'
-                          : 'border-border hover:border-foreground'
+                          ? 'border-white bg-white text-black'
+                          : 'border-white/20 text-white/70 hover:border-white'
                       }`}
                     >
                       {color}
@@ -754,17 +804,19 @@ function ProductPage({ productId, onAddToCart, onBack }) {
 
             {/* Size Selection */}
             {product.variants?.sizes && product.variants.sizes[0] !== 'One Size' && (
-              <div className="mb-8">
-                <p className="text-xs tracking-[0.15em] uppercase mb-3">Size: {selectedSize}</p>
+              <div className="mb-10">
+                <p className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
+                  Size — {selectedSize}
+                </p>
                 <div className="flex flex-wrap gap-3">
                   {product.variants.sizes.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`w-12 h-12 text-xs border transition-colors ${
+                      className={`w-14 h-14 text-xs tracking-wider border transition-all ${
                         selectedSize === size
-                          ? 'border-foreground bg-foreground text-background'
-                          : 'border-border hover:border-foreground'
+                          ? 'border-white bg-white text-black'
+                          : 'border-white/20 text-white/70 hover:border-white'
                       }`}
                     >
                       {size}
@@ -778,19 +830,17 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             <button
               onClick={handleAddToCart}
               disabled={isAdding}
-              className="w-full luxury-button bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 mb-4"
+              className="w-full py-5 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors disabled:opacity-50"
             >
-              {isAdding ? 'Added!' : 'Add to Bag'}
+              {isAdding ? 'Added to Bag' : 'Add to Bag'}
             </button>
 
             {/* Product Details */}
-            <div className="mt-12 pt-8 border-t border-border">
-              <h3 className="text-xs tracking-[0.15em] uppercase mb-4">Details</h3>
+            <div className="mt-12 pt-8 border-t border-white/10">
+              <h3 className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">Details</h3>
               <ul className="space-y-2">
                 {product.details?.map((detail, index) => (
-                  <li key={index} className="text-sm text-muted-foreground luxury-text">
-                    • {detail}
-                  </li>
+                  <li key={index} className="text-white/60 text-sm">• {detail}</li>
                 ))}
               </ul>
             </div>
@@ -801,94 +851,63 @@ function ProductPage({ productId, onAddToCart, onBack }) {
   );
 }
 
-// ============ ABOUT PAGE ============
+// ============ ABOUT PAGE - PREMIUM STYLE ============
 function AboutPage() {
   return (
-    <div className="pt-28 pb-24 min-h-screen">
+    <div className="min-h-screen bg-black pt-24">
       {/* Hero */}
-      <section className="px-6 lg:px-12 mb-24">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center"
-        >
-          <h1
-            className="text-5xl md:text-7xl font-light mb-8"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+      <section className="h-[60vh] relative">
+        <img
+          src="https://images.unsplash.com/photo-1698306871917-7b91b07a0bb4?w=1600&q=80"
+          alt="About"
+          className="w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 flex items-end p-6 lg:p-16 pb-16">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-white text-5xl md:text-7xl lg:text-8xl font-light"
           >
-            About Carlophillips
-          </h1>
-          <p className="luxury-text text-muted-foreground text-lg">
-            We believe in the power of thoughtful design to transform everyday moments into experiences of quiet luxury.
-          </p>
-        </motion.div>
+            About Us
+          </motion.h1>
+        </div>
       </section>
 
-      {/* Story Section */}
-      <section className="px-6 lg:px-12 mb-24">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 max-w-6xl mx-auto items-center">
+      {/* Story */}
+      <section className="py-24 lg:py-32 px-6 lg:px-16">
+        <div className="max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="aspect-[4/5] overflow-hidden bg-muted"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1564518160120-94178fcdf5d4?w=800&q=80"
-              alt="Our Story"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="luxury-heading text-2xl mb-6">Our Story</h2>
-            <p className="luxury-text text-muted-foreground mb-6">
+            <p className="text-white text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed mb-12">
               Carlophillips was founded on a simple principle: that luxury should be accessible, 
-              sustainable, and timeless. We reject the notion that quality must come at the expense 
-              of our values.
+              sustainable, and timeless.
             </p>
-            <p className="luxury-text text-muted-foreground mb-6">
+            <p className="text-white/50 text-base leading-relaxed mb-8">
+              We reject the notion that quality must come at the expense of our values. 
               Every piece in our collection is designed with intention, using premium materials 
-              sourced from ethical suppliers. We work with print-on-demand and dropshipping partners 
-              who share our commitment to reducing waste and environmental impact.
+              sourced from ethical suppliers.
             </p>
-            <p className="luxury-text text-muted-foreground">
-              Our goal is to create pieces that you'll cherish for years—not seasons—crafted 
-              with care and designed to transcend fleeting trends.
+            <p className="text-white/50 text-base leading-relaxed">
+              We work with print-on-demand and dropshipping partners who share our commitment 
+              to reducing waste and environmental impact. Our goal is to create pieces that 
+              you'll cherish for years—not seasons.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Values */}
-      <section className="bg-muted/30 py-24 px-6 lg:px-12">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="luxury-heading text-2xl text-center mb-16"
-          >
-            Our Values
-          </motion.h2>
-          <div className="grid md:grid-cols-3 gap-12">
+      <section className="py-24 lg:py-32 border-t border-white/10">
+        <div className="px-6 lg:px-16">
+          <h2 className="text-white text-3xl md:text-4xl font-light mb-16 text-center">Our Values</h2>
+          <div className="grid md:grid-cols-3 gap-12 lg:gap-16 max-w-5xl mx-auto">
             {[
-              {
-                title: 'Sustainability',
-                description: 'We produce only what is ordered, eliminating overproduction and reducing waste in the fashion industry.',
-              },
-              {
-                title: 'Quality',
-                description: 'Premium materials and expert craftsmanship ensure every piece meets our exacting standards.',
-              },
-              {
-                title: 'Timelessness',
-                description: 'We design pieces meant to last—both in construction and style. No fast fashion here.',
-              },
+              { title: 'Sustainability', desc: 'We produce only what is ordered, eliminating overproduction.' },
+              { title: 'Quality', desc: 'Premium materials and expert craftsmanship in every piece.' },
+              { title: 'Timelessness', desc: 'Designs meant to last—both in construction and style.' },
             ].map((value, index) => (
               <motion.div
                 key={value.title}
@@ -898,10 +917,8 @@ function AboutPage() {
                 transition={{ delay: index * 0.1 }}
                 className="text-center"
               >
-                <h3 className="text-lg font-medium mb-4">{value.title}</h3>
-                <p className="luxury-text text-muted-foreground text-sm">
-                  {value.description}
-                </p>
+                <h3 className="text-white text-xl mb-4">{value.title}</h3>
+                <p className="text-white/50 text-sm leading-relaxed">{value.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -911,50 +928,43 @@ function AboutPage() {
   );
 }
 
-// ============ LOOKBOOK PAGE ============
+// ============ LOOKBOOK PAGE - EDITORIAL STYLE ============
 function LookbookPage() {
-  const lookbookImages = [
-    'https://images.unsplash.com/photo-1698306871917-7b91b07a0bb4?w=800&q=80',
-    'https://images.unsplash.com/photo-1614179689741-0ebd3f0ff34b?w=800&q=80',
-    'https://images.pexels.com/photos/6070179/pexels-photo-6070179.jpeg?w=800',
-    'https://images.unsplash.com/photo-1709600677254-0e961c8ed94e?w=800&q=80',
-    'https://images.unsplash.com/photo-1550029402-8280f657d8d1?w=800&q=80',
-    'https://images.pexels.com/photos/2986445/pexels-photo-2986445.jpeg?w=800',
+  const images = [
+    'https://images.unsplash.com/photo-1698306871917-7b91b07a0bb4?w=1200&q=80',
+    'https://images.unsplash.com/photo-1614179689741-0ebd3f0ff34b?w=1200&q=80',
+    'https://images.pexels.com/photos/6070179/pexels-photo-6070179.jpeg?w=1200',
+    'https://images.unsplash.com/photo-1709600677254-0e961c8ed94e?w=1200&q=80',
+    'https://images.unsplash.com/photo-1550029402-8280f657d8d1?w=1200&q=80',
+    'https://images.pexels.com/photos/2986445/pexels-photo-2986445.jpeg?w=1200',
   ];
 
   return (
-    <div className="pt-28 pb-24 min-h-screen">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-16 px-6"
-      >
-        <h1
-          className="text-5xl md:text-7xl font-light mb-4"
-          style={{ fontFamily: 'Cormorant Garamond, serif' }}
+    <div className="min-h-screen bg-black pt-24">
+      <div className="px-6 lg:px-16 mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
         >
-          Lookbook
-        </h1>
-        <p className="text-muted-foreground luxury-text">Summer 2025</p>
-      </motion.div>
+          <h1 className="text-white text-5xl md:text-7xl font-light mb-4">Lookbook</h1>
+          <p className="text-white/50 text-sm tracking-wider">Summer 2025</p>
+        </motion.div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 max-w-7xl mx-auto">
-        {lookbookImages.map((image, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 pb-1">
+        {images.map((image, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: index * 0.1 }}
-            className={`overflow-hidden ${
-              index % 3 === 0 ? 'md:col-span-2 aspect-[2/1]' : 'aspect-[3/4]'
-            }`}
+            className={`overflow-hidden ${index % 3 === 0 ? 'md:col-span-2 aspect-[2/1]' : 'aspect-square'}`}
           >
             <img
               src={image}
               alt={`Lookbook ${index + 1}`}
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
             />
           </motion.div>
         ))}
@@ -963,7 +973,7 @@ function LookbookPage() {
   );
 }
 
-// ============ MAIN APP COMPONENT ============
+// ============ MAIN APP ============
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -972,29 +982,27 @@ export default function App() {
   const [cart, setCart] = useState({ items: [], total: 0 });
   const [cartCount, setCartCount] = useState(0);
 
-  // Load cart from localStorage on mount
   useEffect(() => {
     const savedCart = getCart();
     setCart(savedCart);
     setCartCount(getCartItemCount());
   }, []);
 
-  const handleNavigate = (page) => {
+  const handleNavigate = (page, collection = null) => {
     setCurrentPage(page);
     setSelectedProduct(null);
-    setSelectedCollection(null);
+    setSelectedCollection(collection);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleProductClick = (productId) => {
-    setSelectedProduct(productId);
-    setCurrentPage('product');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleCollectionClick = (collectionId) => {
-    setSelectedCollection(collectionId);
-    setCurrentPage('collections');
+  const handleProductClick = (productId, collectionId = null) => {
+    if (collectionId) {
+      setSelectedCollection(collectionId);
+      setCurrentPage('collections');
+    } else if (productId) {
+      setSelectedProduct(productId);
+      setCurrentPage('product');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -1017,13 +1025,18 @@ export default function App() {
     setCartCount(getCartItemCount());
   };
 
+  // Get featured products for homepage
+  const featuredProducts = getFeaturedProducts(8);
+  const heroProduct = products.find(p => p.id === 'bomber-jacket');
+  const secondHeroProduct = products.find(p => p.id === 'oversized-hoodie');
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black">
       <Navigation
         onCartClick={() => setIsCartOpen(true)}
         cartCount={cartCount}
-        currentPage={currentPage}
         onNavigate={handleNavigate}
+        isTransparent={currentPage === 'home'}
       />
 
       <CartSidebar
@@ -1037,10 +1050,14 @@ export default function App() {
       <main>
         {currentPage === 'home' && (
           <>
-            <VideoHero onShopClick={() => handleNavigate('collections')} />
-            <CollectionsGrid onCollectionClick={handleCollectionClick} />
-            <FeaturedProducts onProductClick={handleProductClick} />
-            <BrandStory />
+            <HeroSection onShopClick={() => handleNavigate('collections')} />
+            <ProductHero product={heroProduct} onBuyClick={handleProductClick} />
+            <ProductCarousel title="Featured Products" products={featuredProducts} onProductClick={handleProductClick} />
+            <CollectionShowcase collection={collections[0]} onExplore={(id) => handleNavigate('collections', id)} />
+            <BrandStatement onLearnMore={() => handleNavigate('about')} />
+            <PressSection />
+            <ProductHero product={secondHeroProduct} onBuyClick={handleProductClick} reverse />
+            <ProductCarousel title="New Arrivals" products={products.slice(4, 12)} onProductClick={handleProductClick} />
             <Footer />
           </>
         )}
@@ -1049,7 +1066,6 @@ export default function App() {
           <>
             <CollectionsPage
               onProductClick={handleProductClick}
-              onCollectionClick={handleCollectionClick}
               selectedCollection={selectedCollection}
             />
             <Footer />
