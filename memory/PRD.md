@@ -1,189 +1,211 @@
 # Carlophillips - Production-Ready Headless Storefront
 
 ## Project Overview
-Premium luxury ecommerce website for Carlophillips - a modern **male-dominant, unisex, metrosexual** lifestyle brand selling clothing, jewelry & watches, accessories, and home items using a print-on-demand and dropshipping model.
+Premium luxury ecommerce website for Carlophillips - a modern **male-dominant, unisex, metrosexual** lifestyle brand. Built with a headless commerce architecture ready for Shopify integration.
 
-**Brand Identity:** Sophisticated masculine minimalism. Designed for the modern man who values quality, understated elegance, and timeless design.
+---
 
-## Tech Stack
+## Architecture
+
+### Tech Stack
 - **Frontend:** Next.js 14, React, Tailwind CSS, Framer Motion
 - **Backend:** Next.js API Routes, MongoDB
 - **Commerce:** Shopify Storefront API (headless)
 - **Design:** Vollebak-inspired premium aesthetic
 
----
-
-## Folder Structure
-
+### Folder Structure
 ```
 /app
 ├── app/
 │   ├── page.js                    # Main app with all components
 │   ├── layout.js                  # Root layout
-│   ├── globals.css                # Global styles
-│   └── api/[[...path]]/route.js   # Backend API routes
+│   ├── globals.css                # Global styles (dark theme)
+│   └── api/[[...path]]/route.js   # Backend API
 ├── lib/
 │   ├── config/
 │   │   └── shopify.js             # Shopify configuration
 │   ├── shopify/
-│   │   ├── index.js               # Shopify exports
+│   │   ├── index.js               # Module exports
 │   │   ├── client.js              # Storefront API client
-│   │   ├── types.js               # Type definitions & fragments
+│   │   ├── types.js               # GraphQL types & fragments
 │   │   ├── queries.js             # GraphQL queries
 │   │   └── mutations.js           # Cart mutations
 │   ├── data/
-│   │   ├── products.js            # Data service layer
-│   │   └── mock-data.js           # Fallback mock data
+│   │   ├── products.js            # Data service layer (auto-fallback)
+│   │   └── mock-data.js           # Mock data for development
 │   └── store/
 │       └── cart.js                # Cart management
-├── components/
-│   └── ui/                        # shadcn components
-├── .env                           # Environment variables
-└── memory/
-    └── PRD.md                     # This file
+└── .env                           # Environment variables
 ```
 
 ---
 
 ## Shopify Integration
 
-### Configuration
-Add to `.env`:
-```
+### Quick Start
+1. Add to `.env`:
+```bash
 NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=your_storefront_access_token
+NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=your_token
+```
+2. Restart server: `sudo supervisorctl restart nextjs`
+3. App automatically switches from mock data to live Shopify data
+
+### Setup Instructions
+1. Log into Shopify Admin
+2. Go to Settings > Apps and sales channels > Develop apps
+3. Create app named "Carlophillips Storefront"
+4. Configure Storefront API scopes:
+   - `unauthenticated_read_product_listings`
+   - `unauthenticated_read_product_inventory`
+   - `unauthenticated_read_product_tags`
+   - `unauthenticated_write_checkouts`
+   - `unauthenticated_read_checkouts`
+   - `unauthenticated_read_content`
+5. Install app and copy Storefront API access token
+
+### API Features
+
+#### Products
+```javascript
+import { getProducts, getProductAsync } from '@/lib/data/products';
+
+// Get all products (with Shopify or mock fallback)
+const products = await getProducts();
+
+// Get single product
+const product = await getProductAsync('bomber-jacket');
 ```
 
-### Automatic Fallback
-The app automatically:
-1. Checks if Shopify credentials are configured
-2. Falls back to mock data if not configured
-3. Logs warnings when Shopify requests fail
+#### Collections
+```javascript
+import { getCollections, getCollectionAsync } from '@/lib/data/products';
 
-### Cart Flow
-1. **Local Mode:** Cart stored in localStorage
-2. **Shopify Mode:** 
-   - Creates Shopify Cart via API
-   - Syncs items with Shopify
-   - Checkout redirects to Shopify's hosted checkout
+const collections = await getCollections();
+const essentials = await getCollectionAsync('essentials');
+```
+
+#### Cart
+```javascript
+import { addToCart, getCart, updateQuantity, getCheckoutUrl } from '@/lib/store/cart';
+
+// Add to cart (works with both mock and Shopify)
+await addToCart(product, 'Black', 'M', 1);
+
+// Get checkout URL (redirects to Shopify checkout when connected)
+const checkoutUrl = getCheckoutUrl();
+```
+
+### Production Safety
+- **Automatic fallback:** If Shopify fails, app uses mock data
+- **Retry logic:** 3 retries with exponential backoff
+- **Request timeout:** 10 second timeout
+- **Rate limiting:** Handles Shopify throttling gracefully
+- **Cache:** 5-minute cache for products/collections
+- **Graceful degradation:** UI never breaks
 
 ---
 
 ## Data Layer
 
-### Products Service (`lib/data/products.js`)
-```javascript
-// Async methods (use with Shopify)
-getProducts()
-getProductAsync(id)
-getProductsByCollectionAsync(collectionId)
-searchProducts(query)
+### Mock Data (lib/data/mock-data.js)
+Male/metrosexual focused product catalog:
+- **Essentials:** Tees, hoodies, crewnecks, joggers
+- **Outerwear:** Bomber jackets, overshirts, vests
+- **Accessories:** Leather backpack, cardholder, belt, cap
+- **Jewelry & Watches:** Cuban chains, signet rings, bracelets, field watches
+- **Home & Living:** Wool throws, ceramic mugs, candles
 
-// Sync methods (use with mock data)
-getProductsSync()
+### Service Layer (lib/data/products.js)
+```javascript
+// Sync methods (immediate, uses mock/cache)
 getProduct(id)
+getProductsSync()
 getProductsByCollection(collectionId)
 getFeaturedProducts(limit)
-getCollection(id)
-getFeaturedCollections()
+
+// Async methods (with Shopify support)
+getProductAsync(id)
+getProducts(limit)
+getProductsByCollectionAsync(collectionId)
+searchProducts(query)
 ```
 
-### Cart Service (`lib/store/cart.js`)
+---
+
+## Cart System
+
+### Local Mode (No Shopify)
+- Cart stored in localStorage
+- Full functionality for development
+- Checkout button shows placeholder
+
+### Shopify Mode (With Credentials)
+- Cart created via Shopify Cart API
+- Items synced with Shopify
+- Checkout redirects to Shopify hosted checkout
+
+### API
 ```javascript
-getCart()
-addToCart(product, color, size, quantity)
-removeFromCart(itemKey)
-updateQuantity(itemKey, quantity)
-clearCart()
-getCartItemCount()
-getCheckoutUrl()
-syncCartWithShopify()
+// Core operations
+getCart()           // Get current cart
+addToCart(...)      // Add item
+removeFromCart(key) // Remove item
+updateQuantity(...) // Update quantity
+clearCart()         // Clear cart
+
+// Utilities
+getCartItemCount()  // Total items
+getCheckoutUrl()    // Shopify checkout URL
+redirectToCheckout() // Redirect to checkout
+
+// Sync
+syncCartWithShopify()  // Sync on app init
 ```
 
 ---
 
-## Product Collections
+## Environment Variables
 
-### Male/Metrosexual Focus
-1. **Essentials** - Premium tees, hoodies, crewnecks, joggers
-2. **Outerwear** - Bomber jackets, overshirts, quilted vests
-3. **Accessories** - Leather backpack, cardholder, belt, cap
-4. **Jewelry & Watches** - Cuban chains, signet rings, cuff bracelets, field watches
-5. **Home & Living** - Wool throws, ceramic mugs, scented candles
+```bash
+# Required for MongoDB
+MONGO_URL=mongodb://localhost:27017
+DB_NAME=carlophillips
 
-### Product Categories (Printify/CJ Compatible)
-- **Printify:** T-shirts, hoodies, sweatshirts, joggers, jackets
-- **CJ Dropshipping:** Jewelry, watches, leather goods
+# Application
+NEXT_PUBLIC_BASE_URL=https://your-domain.com
 
----
+# Shopify (optional - enables live data)
+NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
+NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=your_token
 
-## API Endpoints
-
-### Health & Products
-- `GET /api/health` - API health check
-- `GET /api/products` - All products
-- `GET /api/products/:id` - Single product
-- `GET /api/collections` - All collections
-- `GET /api/collections/:id` - Collection with products
-
-### Cart
-- `GET /api/cart/:sessionId` - Get cart
-- `POST /api/cart/add` - Add item
-- `POST /api/cart/update` - Update quantity
-- `POST /api/cart/remove` - Remove item
-- `DELETE /api/cart/:sessionId` - Clear cart
-
-### Newsletter
-- `POST /api/newsletter` - Subscribe
+# Optional: Analytics
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_META_PIXEL_ID=
+NEXT_PUBLIC_TIKTOK_PIXEL_ID=
+```
 
 ---
 
-## Key Features
+## Status
 
-### UI/UX (Vollebak-Inspired)
-- ✅ Full-bleed hero sections with video
-- ✅ Full-screen navigation menu
-- ✅ Horizontal product carousels with counter
-- ✅ Split-screen product pages
-- ✅ Premium cart sidebar
-- ✅ Smooth Framer Motion animations
-- ✅ Dark theme throughout
+### Completed ✓
+- Premium Vollebak-style UI
+- Video hero section
+- Product carousels
+- Split-screen product pages
+- Cart sidebar with animations
+- Full-screen navigation
+- Mock data system
+- Shopify client with retry/fallback
+- Cart with Shopify sync support
+- Environment configuration
 
-### Commerce
-- ✅ Product browsing by collection
-- ✅ Variant selection (color/size)
-- ✅ Add to cart functionality
-- ✅ Cart quantity management
-- ✅ Checkout redirect ready
+### Using Mock Data
+Products are currently **MOCKED** for development. Add Shopify credentials to `.env` to switch to live data.
 
-### Architecture
-- ✅ Clean folder structure
-- ✅ Shopify integration scaffold
-- ✅ Type definitions (JSDoc)
-- ✅ Mock data fallback
-- ✅ Environment variable config
-
----
-
-## Next Steps
-
-### To Go Live with Shopify:
-1. Create Shopify store and add products
-2. Create a private app with Storefront API access
+### Next Steps
+1. Create Shopify store
+2. Add products (map handles to mock data)
 3. Add credentials to `.env`
-4. Map product handles between Shopify and frontend
-
-### Future Enhancements:
-- [ ] Product search functionality
-- [ ] Wishlist / saved items
-- [ ] User accounts (Shopify Customer API)
-- [ ] Product filtering (price, size, color)
-- [ ] Related products
-- [ ] Reviews (Judge.me integration)
-- [ ] Email marketing (Klaviyo)
-- [ ] Analytics (GA, Meta Pixel)
-
----
-
-## Mock Data Note
-Currently using **MOCK** data for products. The UI is fully functional and ready for Shopify integration. When Shopify credentials are added, the app will automatically switch to live data.
+4. Test checkout flow
