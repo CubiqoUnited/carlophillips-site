@@ -98,6 +98,7 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
                     { id: 'collections', label: 'Shop All' },
                     { id: 'essentials', label: 'Essentials', collection: true },
                     { id: 'outerwear', label: 'Outerwear', collection: true },
+                    { id: 'jewelry', label: 'Jewelry & Watches', collection: true },
                     { id: 'accessories', label: 'Accessories', collection: true },
                     { id: 'home-collection', label: 'Home & Living', collection: true },
                     { id: 'about', label: 'About' },
@@ -147,7 +148,10 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
 }
 
 // ============ CART SIDEBAR - PREMIUM STYLE ============
-function CartSidebar({ isOpen, onClose, cart, onUpdateQuantity, onRemoveItem }) {
+function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdateQuantity, onRemoveItem }) {
+  const items = cart?.items || [];
+  const total = cart?.total || 0;
+  
   return (
     <AnimatePresence>
       {isOpen && (
@@ -169,21 +173,21 @@ function CartSidebar({ isOpen, onClose, cart, onUpdateQuantity, onRemoveItem }) 
           >
             <div className="flex flex-col h-full">
               <div className="flex items-center justify-between px-6 h-20 border-b border-white/10">
-                <h2 className="text-sm tracking-[0.3em] uppercase">Your Bag ({cart.items.length})</h2>
+                <h2 className="text-sm tracking-[0.3em] uppercase">Your Bag ({items.length})</h2>
                 <button onClick={onClose} className="hover:opacity-60 transition-opacity">
                   <X className="w-5 h-5" strokeWidth={1.5} />
                 </button>
               </div>
 
               <div className="flex-1 overflow-auto p-6">
-                {cart.items.length === 0 ? (
+                {items.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <ShoppingBag className="w-16 h-16 mb-6 text-white/30" strokeWidth={1} />
                     <p className="text-white/50 text-sm tracking-wider">Your bag is empty</p>
                   </div>
                 ) : (
                   <div className="space-y-8">
-                    {cart.items.map((item) => (
+                    {items.map((item) => (
                       <div key={item.key} className="flex gap-6">
                         <div className="w-28 h-36 bg-neutral-900 overflow-hidden">
                           <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -220,11 +224,11 @@ function CartSidebar({ isOpen, onClose, cart, onUpdateQuantity, onRemoveItem }) 
                 )}
               </div>
 
-              {cart.items.length > 0 && (
+              {items.length > 0 && (
                 <div className="border-t border-white/10 p-6 space-y-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-white/70">Subtotal</span>
-                    <span>${cart.total.toFixed(2)}</span>
+                    <span>${total.toFixed(2)}</span>
                   </div>
                   <p className="text-xs text-white/40">Shipping calculated at checkout</p>
                   <button className="w-full py-4 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors">
@@ -1006,21 +1010,21 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleAddToCart = (product, color, size) => {
-    const updatedCart = addToCart(product, color, size);
+  const handleAddToCart = async (product, color, size) => {
+    const updatedCart = await addToCart(product, color, size);
     setCart(updatedCart);
     setCartCount(getCartItemCount());
     setIsCartOpen(true);
   };
 
-  const handleUpdateQuantity = (itemKey, quantity) => {
-    const updatedCart = updateQuantity(itemKey, quantity);
+  const handleUpdateQuantity = async (itemKey, quantity) => {
+    const updatedCart = await updateQuantity(itemKey, quantity);
     setCart(updatedCart);
     setCartCount(getCartItemCount());
   };
 
-  const handleRemoveItem = (itemKey) => {
-    const updatedCart = removeFromCart(itemKey);
+  const handleRemoveItem = async (itemKey) => {
+    const updatedCart = await removeFromCart(itemKey);
     setCart(updatedCart);
     setCartCount(getCartItemCount());
   };
