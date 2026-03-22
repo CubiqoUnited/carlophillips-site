@@ -18,12 +18,18 @@ Premium luxury ecommerce website for Carlophillips - a modern **male-dominant, u
 /app
 ├── app/
 │   ├── page.js                    # Main app with all components
-│   ├── layout.js                  # Root layout
+│   ├── layout.js                  # Root layout with SEO metadata
 │   ├── globals.css                # Global styles (dark theme)
 │   └── api/[[...path]]/route.js   # Backend API
 ├── lib/
+│   ├── assets/
+│   │   ├── index.js               # Asset exports
+│   │   └── brand-assets.js        # Brand asset placeholders & utilities
 │   ├── config/
 │   │   └── shopify.js             # Shopify configuration
+│   ├── content/
+│   │   ├── index.js               # Content exports
+│   │   └── site-content.js        # Editorial content configuration
 │   ├── shopify/
 │   │   ├── index.js               # Module exports
 │   │   ├── client.js              # Storefront API client
@@ -35,6 +41,9 @@ Premium luxury ecommerce website for Carlophillips - a modern **male-dominant, u
 │   │   └── mock-data.js           # Mock data for development
 │   └── store/
 │       └── cart.js                # Cart management
+├── public/
+│   ├── robots.txt                 # SEO robots file
+│   └── site.webmanifest           # PWA manifest
 └── .env                           # Environment variables
 ```
 
@@ -200,6 +209,20 @@ NEXT_PUBLIC_TIKTOK_PIXEL_ID=
 - Shopify client with retry/fallback
 - Cart with Shopify sync support
 - Environment configuration
+- **Editorial content separated from code (lib/content/site-content.js)**
+- **Brand asset placeholders configured (lib/assets/brand-assets.js)**
+- **SEO metadata and Open Graph tags**
+- **PWA manifest and robots.txt**
+- **Accessibility improvements (ARIA labels, keyboard navigation)**
+- **Optimized image loading with fallbacks**
+- **Mobile responsive design**
+
+### Brand Assets Ready for Upload
+The following assets have placeholder slots ready to be replaced:
+- **Hero Video:** Replace URL in `/lib/assets/brand-assets.js`
+- **Campaign Stills:** 6 slots for editorial photography
+- **Collection Banners:** Banners for each collection
+- **Logo Files:** Primary, light, dark variants + favicons
 
 ### Using Mock Data
 Products are currently **MOCKED** for development. Add Shopify credentials to `.env` to switch to live data.
@@ -209,3 +232,39 @@ Products are currently **MOCKED** for development. Add Shopify credentials to `.
 2. Add products (map handles to mock data)
 3. Add credentials to `.env`
 4. Test checkout flow
+5. Upload brand assets (video, campaign images, logo)
+
+---
+
+## Content Management
+
+### Editorial Content (lib/content/site-content.js)
+All editorial text is centralized for easy updates:
+```javascript
+import { homepage, aboutContent, footerContent } from '@/lib/content';
+
+// Access hero content
+homepage.hero.headline     // "Quiet\nLuxury"
+homepage.hero.description  // "A curated collection..."
+homepage.brandStatement    // Philosophy section content
+```
+
+### Brand Assets (lib/assets/brand-assets.js)
+Manage all media assets centrally:
+```javascript
+import { getHeroVideoUrl, getCampaignImages, getLogoUrl } from '@/lib/assets';
+
+const videoUrl = getHeroVideoUrl();      // Returns brand video or fallback
+const images = getCampaignImages();       // Returns campaign stills array
+const logo = getLogoUrl('primary');       // Returns logo URL or null (uses text)
+```
+
+### Asset Specifications
+| Asset Type | Recommended Size | Format |
+|------------|-----------------|--------|
+| Hero Video | 1920x1080 or 4K | MP4 (H.264) |
+| Campaign Stills | 1600x1200px | JPG/WebP |
+| Collection Banners | 1200x800px | JPG/WebP |
+| Logo (Primary) | Vector | SVG |
+| Favicon | 32x32, 192x192, 512x512 | PNG |
+| OG Image | 1200x630px | JPG |

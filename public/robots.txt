@@ -1,0 +1,19 @@
+# CARLOPHILLIPS - Robots.txt
+# https://carlophillips.com
+
+User-agent: *
+Allow: /
+
+# Block admin and API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow search engines to crawl all pages
+Allow: /collections
+Allow: /products
+Allow: /about
+Allow: /lookbook
+
+# Sitemap location
+Sitemap: https://carlophillips.com/sitemap.xml

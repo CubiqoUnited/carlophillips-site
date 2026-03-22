@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Menu, X, ShoppingBag, ChevronLeft, ChevronRight, Plus, Minus, ArrowRight, Play, Pause, Volume2, VolumeX, Loader2 } from 'lucide-react';
+import { Menu, X, ShoppingBag, ChevronLeft, ChevronRight, Plus, Minus, ArrowRight, Play, Pause, Volume2, VolumeX, Loader2, Instagram, Mail } from 'lucide-react';
+
+// Data imports
 import { 
   collections as mockCollections, 
   products as mockProducts, 
@@ -17,6 +19,7 @@ import {
   getProducts,
   isUsingShopify
 } from '@/lib/data/products';
+
 import { 
   getCart, 
   addToCart, 
@@ -30,6 +33,58 @@ import {
   isUsingShopifyCart 
 } from '@/lib/store/cart';
 
+// Content & Assets imports
+import { 
+  site, 
+  homepage, 
+  collections as collectionsContent, 
+  about as aboutContent, 
+  lookbook as lookbookContent, 
+  product as productContent, 
+  cart as cartContent, 
+  footer as footerContent, 
+  navigation as navigationContent 
+} from '@/lib/content';
+
+import { 
+  getHeroVideoUrl, 
+  getHeroPosterUrl, 
+  getLogoUrl, 
+  hasLogoImage, 
+  getCampaignImages, 
+  getCollectionBanner,
+  getPlaceholder 
+} from '@/lib/assets';
+
+// ============ OPTIMIZED IMAGE COMPONENT ============
+function OptimizedImage({ src, alt, className = '', loading = 'lazy', sizes = '100vw', priority = false, onLoad, onError }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const placeholder = getPlaceholder('product');
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+    onLoad?.();
+  };
+
+  const handleError = () => {
+    setHasError(true);
+    onError?.();
+  };
+
+  return (
+    <img
+      src={hasError ? placeholder : src}
+      alt={alt}
+      className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+      loading={priority ? 'eager' : loading}
+      decoding="async"
+      onLoad={handleLoad}
+      onError={handleError}
+    />
+  );
+}
+
 // ============ PREMIUM LOADING COMPONENT ============
 function LoadingSpinner({ size = 'default', text = '' }) {
   const sizeClasses = {
@@ -39,7 +94,7 @@ function LoadingSpinner({ size = 'default', text = '' }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="flex flex-col items-center justify-center gap-4" role="status" aria-label="Loading">
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
@@ -57,7 +112,7 @@ function LoadingSpinner({ size = 'default', text = '' }) {
 // ============ PREMIUM LOADING SKELETON ============
 function ProductSkeleton() {
   return (
-    <div className="animate-pulse">
+    <div className="animate-pulse" aria-hidden="true">
       <div className="aspect-[3/4] bg-white/5 mb-4" />
       <div className="h-4 bg-white/5 w-3/4 mb-2" />
       <div className="h-3 bg-white/5 w-1/2 mb-2" />
@@ -68,7 +123,7 @@ function ProductSkeleton() {
 
 function ProductGridSkeleton({ count = 8 }) {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6" role="status" aria-label="Loading products">
       {Array.from({ length: count }).map((_, i) => (
         <ProductSkeleton key={i} />
       ))}
@@ -78,12 +133,9 @@ function ProductGridSkeleton({ count = 8 }) {
 
 function ProductPageSkeleton() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black" role="status" aria-label="Loading product">
       <div className="grid lg:grid-cols-2 min-h-screen">
-        {/* Image Skeleton */}
         <div className="relative h-screen lg:sticky lg:top-0 bg-white/5 animate-pulse" />
-        
-        {/* Content Skeleton */}
         <div className="p-6 lg:p-16 flex flex-col justify-center">
           <div className="animate-pulse space-y-6">
             <div className="h-3 bg-white/5 w-24" />
@@ -114,9 +166,10 @@ function ErrorState({ message = 'Something went wrong', onRetry }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col items-center justify-center py-24 px-6 text-center"
+      role="alert"
     >
       <div className="w-16 h-16 border border-white/20 flex items-center justify-center mb-6">
-        <X className="w-6 h-6 text-white/40" strokeWidth={1} />
+        <X className="w-6 h-6 text-white/40" strokeWidth={1} aria-hidden="true" />
       </div>
       <p className="text-white/60 text-sm mb-6 max-w-md">{message}</p>
       {onRetry && (
@@ -140,13 +193,38 @@ function EmptyState({ title = 'No products found', description = '' }) {
       className="flex flex-col items-center justify-center py-24 px-6 text-center"
     >
       <div className="w-16 h-16 border border-white/20 flex items-center justify-center mb-6">
-        <ShoppingBag className="w-6 h-6 text-white/40" strokeWidth={1} />
+        <ShoppingBag className="w-6 h-6 text-white/40" strokeWidth={1} aria-hidden="true" />
       </div>
       <h3 className="text-white text-lg mb-2">{title}</h3>
       {description && (
         <p className="text-white/50 text-sm max-w-md">{description}</p>
       )}
     </motion.div>
+  );
+}
+
+// ============ LOGO COMPONENT ============
+function Logo({ className = '', onClick }) {
+  const logoUrl = getLogoUrl('light');
+  
+  if (logoUrl) {
+    return (
+      <button onClick={onClick} className={className} aria-label={`${site.name} - Go to homepage`}>
+        <img 
+          src={logoUrl} 
+          alt={site.name} 
+          className="h-6 md:h-8 w-auto"
+        />
+      </button>
+    );
+  }
+  
+  return (
+    <button onClick={onClick} className={className} aria-label={`${site.name} - Go to homepage`}>
+      <span className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
+        {site.name}
+      </span>
+    </button>
   );
 }
 
@@ -159,7 +237,7 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -174,36 +252,36 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${bgClass}`}
+        role="banner"
       >
-        <nav className="flex items-center justify-between px-6 lg:px-10 h-16 lg:h-20">
+        <nav className="flex items-center justify-between px-6 lg:px-10 h-16 lg:h-20" aria-label="Main navigation">
           {/* Menu Button */}
           <button
             onClick={() => setIsMenuOpen(true)}
             className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
+            aria-label="Open menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="main-menu"
           >
-            <Menu className="w-5 h-5" strokeWidth={1.5} />
-            <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">Menu</span>
+            <Menu className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
+            <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">{navigationContent.actions.menu}</span>
           </button>
 
           {/* Logo */}
-          <button
-            onClick={() => onNavigate('home')}
-            className="absolute left-1/2 -translate-x-1/2"
-          >
-            <h1 className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
-              Carlophillips
-            </h1>
-          </button>
+          <div className="absolute left-1/2 -translate-x-1/2">
+            <Logo onClick={() => onNavigate('home')} />
+          </div>
 
           {/* Cart */}
           <button
             onClick={onCartClick}
             className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
+            aria-label={`Shopping bag with ${cartCount} items`}
           >
             <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">
-              Bag {cartCount > 0 && `(${cartCount})`}
+              {navigationContent.actions.bag} {cartCount > 0 && `(${cartCount})`}
             </span>
-            <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
+            <ShoppingBag className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
           </button>
         </nav>
       </motion.header>
@@ -212,11 +290,15 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
+            id="main-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
             className="fixed inset-0 z-[100] bg-black"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
           >
             <div className="h-full flex flex-col">
               {/* Menu Header */}
@@ -224,31 +306,22 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
                 <button
                   onClick={() => setIsMenuOpen(false)}
                   className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
+                  aria-label="Close menu"
                 >
-                  <X className="w-5 h-5" strokeWidth={1.5} />
-                  <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">Close</span>
+                  <X className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
+                  <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">{navigationContent.actions.close}</span>
                 </button>
-                <h1 className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
-                  Carlophillips
-                </h1>
+                <span className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
+                  {site.name}
+                </span>
                 <div className="w-20" />
               </div>
 
               {/* Menu Content */}
-              <div className="flex-1 flex items-center justify-center">
-                <nav className="text-center space-y-2">
-                  {[
-                    { id: 'home', label: 'Home' },
-                    { id: 'collections', label: 'Shop All' },
-                    { id: 'essentials', label: 'Essentials', collection: true },
-                    { id: 'outerwear', label: 'Outerwear', collection: true },
-                    { id: 'jewelry', label: 'Jewelry & Watches', collection: true },
-                    { id: 'accessories', label: 'Accessories', collection: true },
-                    { id: 'home-collection', label: 'Home & Living', collection: true },
-                    { id: 'about', label: 'About' },
-                    { id: 'lookbook', label: 'Lookbook' },
-                  ].map((item, index) => (
-                    <motion.div
+              <nav className="flex-1 flex items-center justify-center" aria-label="Site navigation">
+                <ul className="text-center space-y-2">
+                  {navigationContent.menu.map((item, index) => (
+                    <motion.li
                       key={item.id}
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -268,19 +341,35 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
                       >
                         {item.label}
                       </button>
-                    </motion.div>
+                    </motion.li>
                   ))}
-                </nav>
-              </div>
+                </ul>
+              </nav>
 
               {/* Menu Footer */}
               <div className="px-6 lg:px-10 py-8 border-t border-white/10">
-                <div className="flex justify-between items-center text-white/50 text-xs tracking-[0.15em] uppercase">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-white/50 text-xs tracking-[0.15em] uppercase">
                   <div className="flex gap-8">
-                    <a href="#" className="hover:text-white transition-colors">Instagram</a>
-                    <a href="#" className="hover:text-white transition-colors">TikTok</a>
+                    <a 
+                      href={site.social.instagram} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="hover:text-white transition-colors"
+                      aria-label="Follow us on Instagram"
+                    >
+                      Instagram
+                    </a>
+                    <a 
+                      href={site.social.tiktok} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="hover:text-white transition-colors"
+                      aria-label="Follow us on TikTok"
+                    >
+                      TikTok
+                    </a>
                   </div>
-                  <span>Free shipping over $200</span>
+                  {site.banner && <span>{site.banner.text}</span>}
                 </div>
               </div>
             </div>
@@ -327,13 +416,10 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
   const handleCheckout = () => {
     if (checkoutUrl) {
       setIsCheckingOut(true);
-      console.log('[Cart] Redirecting to checkout:', checkoutUrl);
       window.location.href = checkoutUrl;
     } else if (isShopifyCart) {
-      // Shopify configured but no checkout URL - should not happen
       alert('Unable to proceed to checkout. Please try again.');
     } else {
-      // Not using Shopify - show message
       alert('Checkout will be available when Shopify is connected. Add your Shopify credentials to enable checkout.');
     }
   };
@@ -348,31 +434,40 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 z-[100] bg-black/70"
+            aria-hidden="true"
           />
 
-          <motion.div
+          <motion.aside
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
             className="fixed right-0 top-0 bottom-0 z-[101] w-full max-w-lg bg-black text-white"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Shopping cart"
           >
             <div className="flex flex-col h-full">
               {/* Header */}
               <div className="flex items-center justify-between px-6 h-20 border-b border-white/10">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-sm tracking-[0.3em] uppercase">Your Bag ({items.length})</h2>
+                  <h2 className="text-sm tracking-[0.3em] uppercase">{cartContent.title} ({items.length})</h2>
                   {isUpdating && (
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                      aria-hidden="true"
                     >
                       <Loader2 className="w-4 h-4 text-white/50" />
                     </motion.div>
                   )}
                 </div>
-                <button onClick={onClose} className="hover:opacity-60 transition-opacity">
-                  <X className="w-5 h-5" strokeWidth={1.5} />
+                <button 
+                  onClick={onClose} 
+                  className="hover:opacity-60 transition-opacity"
+                  aria-label="Close cart"
+                >
+                  <X className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
                 </button>
               </div>
 
@@ -380,84 +475,81 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
               <div className="flex-1 overflow-auto p-6">
                 {items.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
-                    <ShoppingBag className="w-16 h-16 mb-6 text-white/30" strokeWidth={1} />
-                    <p className="text-white/50 text-sm tracking-wider mb-2">Your bag is empty</p>
+                    <ShoppingBag className="w-16 h-16 mb-6 text-white/30" strokeWidth={1} aria-hidden="true" />
+                    <p className="text-white/50 text-sm tracking-wider mb-2">{cartContent.emptyMessage}</p>
                     <button 
                       onClick={onClose}
                       className="text-white/70 text-xs tracking-wider uppercase hover:text-white transition-colors"
                     >
-                      Continue Shopping
+                      {cartContent.continueShopping}
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-8">
+                  <ul className="space-y-8">
                     {items.map((item) => {
                       const isItemUpdating = updatingItem === item.key;
                       return (
-                        <motion.div 
+                        <motion.li 
                           key={item.key} 
                           className={`flex gap-6 transition-opacity ${isItemUpdating ? 'opacity-50' : 'opacity-100'}`}
                           layout
                         >
                           <div className="w-28 h-36 bg-neutral-900 overflow-hidden flex-shrink-0">
-                            <img 
+                            <OptimizedImage 
                               src={item.image} 
                               alt={item.name} 
                               className="w-full h-full object-cover"
-                              loading="lazy"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
                             <h3 className="text-sm tracking-wide mb-1 truncate">{item.name}</h3>
                             <p className="text-xs text-white/50 mb-3">{item.color} / {item.size}</p>
-                            <p className="text-sm mb-4">${item.price.toFixed(2)}</p>
+                            <p className="text-sm mb-4">{site.currency.symbol}{item.price.toFixed(2)}</p>
                             <div className="flex items-center gap-4">
                               <button
                                 onClick={() => handleQuantityChange(item.key, item.quantity - 1)}
                                 disabled={isUpdating}
                                 className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                aria-label="Decrease quantity"
                               >
-                                <Minus className="w-3 h-3" />
+                                <Minus className="w-3 h-3" aria-hidden="true" />
                               </button>
-                              <span className="text-sm w-6 text-center">{item.quantity}</span>
+                              <span className="text-sm w-6 text-center" aria-label={`Quantity: ${item.quantity}`}>{item.quantity}</span>
                               <button
                                 onClick={() => handleQuantityChange(item.key, item.quantity + 1)}
                                 disabled={isUpdating}
                                 className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                aria-label="Increase quantity"
                               >
-                                <Plus className="w-3 h-3" />
+                                <Plus className="w-3 h-3" aria-hidden="true" />
                               </button>
                               <button
                                 onClick={() => handleRemove(item.key)}
                                 disabled={isUpdating}
                                 className="ml-auto text-xs text-white/50 hover:text-white transition-colors tracking-wider uppercase disabled:opacity-50"
+                                aria-label={`Remove ${item.name} from cart`}
                               >
                                 {isItemUpdating ? 'Removing...' : 'Remove'}
                               </button>
                             </div>
                           </div>
-                        </motion.div>
+                        </motion.li>
                       );
                     })}
-                  </div>
+                  </ul>
                 )}
               </div>
 
               {/* Footer with Checkout */}
               {items.length > 0 && (
                 <div className="border-t border-white/10 p-6 space-y-4">
-                  {/* Subtotal */}
                   <div className="flex justify-between text-sm">
-                    <span className="text-white/70">Subtotal</span>
-                    <span className="font-medium">${total.toFixed(2)}</span>
+                    <span className="text-white/70">{cartContent.subtotal}</span>
+                    <span className="font-medium">{site.currency.symbol}{total.toFixed(2)}</span>
                   </div>
                   
-                  {/* Shipping note */}
-                  <p className="text-xs text-white/40">
-                    Shipping & taxes calculated at checkout
-                  </p>
+                  <p className="text-xs text-white/40">{cartContent.shippingNote}</p>
                   
-                  {/* Checkout Button */}
                   <button 
                     onClick={handleCheckout}
                     disabled={isCheckingOut || items.length === 0}
@@ -468,39 +560,38 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
                         <motion.div
                           animate={{ rotate: 360 }}
                           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                          aria-hidden="true"
                         >
                           <Loader2 className="w-4 h-4" />
                         </motion.div>
                         Processing...
                       </>
                     ) : (
-                      'Checkout'
+                      cartContent.checkoutButton
                     )}
                   </button>
                   
-                  {/* Continue Shopping */}
                   <button 
                     onClick={onClose}
                     className="w-full py-3 text-white/70 text-xs tracking-[0.15em] uppercase hover:text-white transition-colors"
                   >
-                    Continue Shopping
+                    {cartContent.continueShopping}
                   </button>
                   
-                  {/* Shopify indicator */}
                   {isShopifyCart && checkoutUrl && (
                     <p className="text-green-500/60 text-[10px] text-center tracking-wider mt-2">
-                      ● Secure checkout powered by Shopify
+                      {cartContent.status.shopifyConnected}
                     </p>
                   )}
                   {!isShopifyCart && (
                     <p className="text-yellow-500/60 text-[10px] text-center tracking-wider mt-2">
-                      ● Demo mode - Connect Shopify for checkout
+                      {cartContent.status.demoMode}
                     </p>
                   )}
                 </div>
               )}
             </div>
-          </motion.div>
+          </motion.aside>
         </>
       )}
     </AnimatePresence>
@@ -508,7 +599,7 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
 }
 
 // ============ FULL-BLEED HERO SECTION - VOLLEBAK STYLE ============
-function HeroSection({ onShopClick, videoUrl }) {
+function HeroSection({ onShopClick }) {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef(null);
@@ -516,40 +607,34 @@ function HeroSection({ onShopClick, videoUrl }) {
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-  const placeholderVideo = 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4';
+  const videoUrl = getHeroVideoUrl();
+  const posterUrl = getHeroPosterUrl();
+  const heroContent = homepage.hero;
+
+  // Parse headline for line breaks
+  const headlineParts = heroContent.headline.split('\n');
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black">
+    <section className="relative h-screen w-full overflow-hidden bg-black" aria-label="Hero section">
       {/* Video/Image Background */}
       <motion.div style={{ y }} className="absolute inset-0">
-        {videoUrl ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted={isMuted}
-            loop
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src={videoUrl || placeholderVideo} type="video/mp4" />
-          </video>
-        ) : (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover opacity-70"
-          >
-            <source src={placeholderVideo} type="video/mp4" />
-          </video>
-        )}
+        <video
+          ref={videoRef}
+          autoPlay
+          muted={isMuted}
+          loop
+          playsInline
+          poster={posterUrl}
+          className="w-full h-full object-cover"
+          aria-hidden="true"
+        >
+          <source src={videoUrl} type="video/mp4" />
+        </video>
       </motion.div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" aria-hidden="true" />
 
       {/* Content */}
       <motion.div 
@@ -563,20 +648,25 @@ function HeroSection({ onShopClick, videoUrl }) {
           className="max-w-4xl"
         >
           <p className="text-white/60 text-xs tracking-[0.3em] uppercase mb-4 lg:mb-6">
-            Summer 2025 Collection
+            {heroContent.eyebrow}
           </p>
           <h1 className="text-white text-5xl md:text-7xl lg:text-[8rem] font-light leading-[0.9] mb-6 lg:mb-8 tracking-tight">
-            Quiet<br />Luxury
+            {headlineParts.map((part, i) => (
+              <span key={i}>
+                {part}
+                {i < headlineParts.length - 1 && <br />}
+              </span>
+            ))}
           </h1>
           <p className="text-white/70 text-sm md:text-base max-w-lg mb-8 lg:mb-10 leading-relaxed">
-            A curated collection of timeless essentials. Designed for those who appreciate understated elegance and uncompromising quality.
+            {heroContent.description}
           </p>
           <button
             onClick={onShopClick}
             className="group inline-flex items-center gap-4 text-white text-xs tracking-[0.25em] uppercase border-b border-white/30 pb-2 hover:border-white transition-colors"
           >
-            Shop Now
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+            {heroContent.cta.text}
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
           </button>
         </motion.div>
 
@@ -594,14 +684,16 @@ function HeroSection({ onShopClick, videoUrl }) {
               }
             }}
             className="w-10 h-10 border border-white/30 flex items-center justify-center text-white/70 hover:text-white hover:border-white transition-all"
+            aria-label={isPlaying ? 'Pause video' : 'Play video'}
           >
-            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            {isPlaying ? <Pause className="w-4 h-4" aria-hidden="true" /> : <Play className="w-4 h-4" aria-hidden="true" />}
           </button>
           <button
             onClick={() => setIsMuted(!isMuted)}
             className="w-10 h-10 border border-white/30 flex items-center justify-center text-white/70 hover:text-white hover:border-white transition-all"
+            aria-label={isMuted ? 'Unmute video' : 'Mute video'}
           >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            {isMuted ? <VolumeX className="w-4 h-4" aria-hidden="true" /> : <Volume2 className="w-4 h-4" aria-hidden="true" />}
           </button>
         </div>
 
@@ -611,6 +703,7 @@ function HeroSection({ onShopClick, videoUrl }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 2 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50"
+          aria-hidden="true"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
@@ -632,20 +725,18 @@ function ProductHero({ product, onBuyClick, reverse = false }) {
   
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black">
-      {/* Full Image */}
       <div className="absolute inset-0">
-        <img
+        <OptimizedImage
           src={product.heroImage || product.images?.[0]}
           alt={product.name}
           className="w-full h-full object-cover"
+          priority
         />
       </div>
 
-      {/* Gradient Overlay */}
-      <div className={`absolute inset-0 ${reverse ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-black/80 via-black/40 to-transparent`} />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+      <div className={`absolute inset-0 ${reverse ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-black/80 via-black/40 to-transparent`} aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" aria-hidden="true" />
 
-      {/* Content */}
       <div className={`absolute inset-0 flex items-end lg:items-center p-6 lg:p-16 pb-24 lg:pb-16 ${reverse ? 'lg:justify-end' : ''}`}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -665,7 +756,7 @@ function ProductHero({ product, onBuyClick, reverse = false }) {
             className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border border-white/30 px-8 py-4 hover:bg-white hover:text-black transition-all"
           >
             Buy Now
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </button>
         </motion.div>
       </div>
@@ -690,7 +781,7 @@ function ProductCarousel({ title, products: carouselProducts, onProductClick, is
 
   if (isLoading) {
     return (
-      <section className="py-16 lg:py-24 bg-black">
+      <section className="py-16 lg:py-24 bg-black" aria-label={title}>
         <div className="px-6 lg:px-16 mb-8 lg:mb-12">
           <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-light tracking-tight">
             {title}
@@ -712,28 +803,30 @@ function ProductCarousel({ title, products: carouselProducts, onProductClick, is
   if (!carouselProducts || carouselProducts.length === 0) return null;
 
   return (
-    <section className="py-16 lg:py-24 bg-black">
+    <section className="py-16 lg:py-24 bg-black" aria-label={title}>
       {/* Header */}
       <div className="flex items-center justify-between px-6 lg:px-16 mb-8 lg:mb-12">
         <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-light tracking-tight">
           {title}
         </h2>
         <div className="flex items-center gap-4">
-          <span className="text-white/50 text-sm tracking-wider">
+          <span className="text-white/50 text-sm tracking-wider" aria-live="polite">
             {String(currentIndex + 1).padStart(2, '0')} / {String(carouselProducts.length).padStart(2, '0')}
           </span>
           <div className="flex gap-2">
             <button 
               onClick={() => scrollTo('left')}
               className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
+              aria-label="Scroll left"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-5 h-5" aria-hidden="true" />
             </button>
             <button 
               onClick={() => scrollTo('right')}
               className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
+              aria-label="Scroll right"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -748,9 +841,11 @@ function ProductCarousel({ title, products: carouselProducts, onProductClick, is
           const index = Math.round(e.target.scrollLeft / 400);
           setCurrentIndex(Math.min(index, carouselProducts.length - 1));
         }}
+        role="list"
+        aria-label={`${title} products`}
       >
         {carouselProducts.map((product, index) => (
-          <motion.div
+          <motion.article
             key={product.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -758,19 +853,22 @@ function ProductCarousel({ title, products: carouselProducts, onProductClick, is
             transition={{ delay: index * 0.05 }}
             onClick={() => onProductClick(product.id)}
             className="flex-shrink-0 w-72 lg:w-80 cursor-pointer group"
+            role="listitem"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && onProductClick(product.id)}
           >
             <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
-              <img
+              <OptimizedImage
                 src={product.images?.[0] || product.heroImage}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" aria-hidden="true" />
             </div>
             <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
             <p className="text-white/40 text-xs mb-2 line-clamp-2">{product.tagline || product.description?.slice(0, 60)}...</p>
-            <p className="text-white text-sm">${product.price}</p>
-          </motion.div>
+            <p className="text-white text-sm">{site.currency.symbol}{product.price}</p>
+          </motion.article>
         ))}
       </div>
     </section>
@@ -779,8 +877,10 @@ function ProductCarousel({ title, products: carouselProducts, onProductClick, is
 
 // ============ BRAND STATEMENT SECTION ============
 function BrandStatement({ onLearnMore }) {
+  const statement = homepage.brandStatement;
+  
   return (
-    <section className="py-24 lg:py-40 bg-black">
+    <section className="py-24 lg:py-40 bg-black" aria-labelledby="brand-statement-heading">
       <div className="max-w-5xl mx-auto px-6 lg:px-16 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -788,20 +888,19 @@ function BrandStatement({ onLearnMore }) {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <p className="text-white/40 text-xs tracking-[0.3em] uppercase mb-8">Our Philosophy</p>
-          <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-8 tracking-tight">
-            We design clothes for people who value quality over quantity, substance over trends.
+          <p className="text-white/40 text-xs tracking-[0.3em] uppercase mb-8">{statement.eyebrow}</p>
+          <h2 id="brand-statement-heading" className="text-white text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-8 tracking-tight">
+            {statement.headline}
           </h2>
           <p className="text-white/50 text-sm md:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
-            Every piece is crafted with intention, using premium materials sourced from ethical suppliers. 
-            We partner with print-on-demand and dropshipping services that share our commitment to sustainability.
+            {statement.description}
           </p>
           <button 
             onClick={onLearnMore}
             className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border-b border-white/30 pb-2 hover:border-white transition-colors"
           >
-            Learn More
-            <ArrowRight className="w-4 h-4" />
+            {statement.cta.text}
+            <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </button>
         </motion.div>
       </div>
@@ -811,20 +910,16 @@ function BrandStatement({ onLearnMore }) {
 
 // ============ PRESS LOGOS SECTION - VOLLEBAK STYLE ============
 function PressSection() {
-  const pressItems = [
-    { name: 'VOGUE', quote: '"Understated luxury at its finest"' },
-    { name: 'GQ', quote: '"The future of sustainable fashion"' },
-    { name: 'HYPEBEAST', quote: '"Minimal, intentional, perfect"' },
-    { name: 'HIGHSNOBIETY', quote: '"Quality that speaks for itself"' },
-  ];
+  const pressItems = homepage.press;
 
   return (
-    <section className="py-16 bg-black border-y border-white/10">
+    <section className="py-16 bg-black border-y border-white/10" aria-label="Press mentions">
       <div className="overflow-hidden">
         <motion.div 
           animate={{ x: [0, -1000] }}
           transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
           className="flex gap-16 lg:gap-24 whitespace-nowrap"
+          aria-hidden="true"
         >
           {[...pressItems, ...pressItems, ...pressItems].map((item, index) => (
             <div key={index} className="flex items-center gap-4 lg:gap-6">
@@ -833,6 +928,15 @@ function PressSection() {
             </div>
           ))}
         </motion.div>
+      </div>
+      {/* Screen reader text */}
+      <div className="sr-only">
+        <h2>Press mentions</h2>
+        <ul>
+          {pressItems.map((item, index) => (
+            <li key={index}>{item.name}: {item.quote}</li>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -843,15 +947,15 @@ function CollectionShowcase({ collection, onExplore }) {
   if (!collection) return null;
   
   return (
-    <section className="relative h-[80vh] w-full overflow-hidden bg-black">
+    <section className="relative h-[80vh] w-full overflow-hidden bg-black" aria-labelledby={`collection-${collection.id}-heading`}>
       <div className="absolute inset-0">
-        <img
+        <OptimizedImage
           src={collection.image}
           alt={collection.name}
           className="w-full h-full object-cover opacity-80"
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" aria-hidden="true" />
       
       <div className="absolute inset-0 flex items-end p-6 lg:p-16 pb-16 lg:pb-24">
         <motion.div
@@ -860,7 +964,9 @@ function CollectionShowcase({ collection, onExplore }) {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h3 className="text-white text-4xl md:text-5xl lg:text-6xl font-light mb-4">{collection.name}</h3>
+          <h3 id={`collection-${collection.id}-heading`} className="text-white text-4xl md:text-5xl lg:text-6xl font-light mb-4">
+            {collection.name}
+          </h3>
           <p className="text-white/60 text-sm md:text-base uppercase tracking-[0.15em] mb-6 max-w-md">
             {collection.description}
           </p>
@@ -869,7 +975,7 @@ function CollectionShowcase({ collection, onExplore }) {
             className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border border-white/30 px-8 py-4 hover:bg-white hover:text-black transition-all"
           >
             Explore Collection
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </button>
         </motion.div>
       </div>
@@ -878,46 +984,88 @@ function CollectionShowcase({ collection, onExplore }) {
 }
 
 // ============ FOOTER - PREMIUM STYLE ============
-function Footer() {
+function Footer({ onNavigate }) {
   return (
-    <footer className="bg-black text-white py-16 lg:py-24 border-t border-white/10">
+    <footer className="bg-black text-white py-16 lg:py-24 border-t border-white/10" role="contentinfo">
       <div className="px-6 lg:px-16">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-2">
-            <h3 className="text-2xl tracking-[0.3em] font-light mb-6">CARLOPHILLIPS</h3>
-            <p className="text-white/50 text-sm leading-relaxed max-w-md">
-              A modern luxury lifestyle brand. Premium clothing, jewelry, accessories, and home items 
-              designed for those who appreciate understated elegance.
+            <h3 className="text-2xl tracking-[0.3em] font-light mb-6">{site.name}</h3>
+            <p className="text-white/50 text-sm leading-relaxed max-w-md mb-6">
+              {footerContent.description}
             </p>
+            {/* Social Links */}
+            <div className="flex gap-4">
+              <a 
+                href={site.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
+                aria-label="Follow us on Instagram"
+              >
+                <Instagram className="w-4 h-4" aria-hidden="true" />
+              </a>
+              <a 
+                href={`mailto:hello@carlophillips.com`}
+                className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
+                aria-label="Contact us via email"
+              >
+                <Mail className="w-4 h-4" aria-hidden="true" />
+              </a>
+            </div>
           </div>
-          <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">Shop</h4>
+          <nav aria-label="Shop navigation">
+            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">{footerContent.navigation.shop.title}</h4>
             <ul className="space-y-3 text-sm text-white/50">
-              <li><a href="#" className="hover:text-white transition-colors">All Products</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Essentials</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Outerwear</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Accessories</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Home & Living</a></li>
+              {footerContent.navigation.shop.links.map((link, i) => (
+                <li key={i}>
+                  <button 
+                    onClick={() => {
+                      if (link.href === '/collections') {
+                        onNavigate('collections');
+                      } else if (link.href.startsWith('/collections/')) {
+                        const collectionId = link.href.replace('/collections/', '');
+                        onNavigate('collections', collectionId);
+                      }
+                    }}
+                    className="hover:text-white transition-colors text-left"
+                  >
+                    {link.label}
+                  </button>
+                </li>
+              ))}
             </ul>
-          </div>
-          <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">Company</h4>
+          </nav>
+          <nav aria-label="Company navigation">
+            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">{footerContent.navigation.company.title}</h4>
             <ul className="space-y-3 text-sm text-white/50">
-              <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Sustainability</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Shipping & Returns</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+              {footerContent.navigation.company.links.map((link, i) => (
+                <li key={i}>
+                  <button 
+                    onClick={() => {
+                      if (link.href === '/about') {
+                        onNavigate('about');
+                      }
+                    }}
+                    className="hover:text-white transition-colors text-left"
+                  >
+                    {link.label}
+                  </button>
+                </li>
+              ))}
             </ul>
-          </div>
+          </nav>
         </div>
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/30">© 2025 Carlophillips. All rights reserved.</p>
-          <div className="flex gap-6 text-xs text-white/30">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Cookies</a>
-          </div>
+          <p className="text-xs text-white/30">{footerContent.copyright}</p>
+          <nav className="flex gap-6 text-xs text-white/30" aria-label="Legal navigation">
+            {footerContent.legal.map((link, i) => (
+              <button key={i} className="hover:text-white transition-colors">
+                {link.label}
+              </button>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
@@ -932,7 +1080,6 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
   const [displayProducts, setDisplayProducts] = useState([]);
   const [allCollections, setAllCollections] = useState(mockCollections);
 
-  // Load collection and products
   useEffect(() => {
     async function loadData() {
       setIsLoading(true);
@@ -940,15 +1087,11 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
 
       try {
         if (selectedCollection) {
-          // Load specific collection
           const collectionData = await getCollectionAsync(selectedCollection);
           setCollection(collectionData);
-          
-          // Load products for this collection
           const products = await getProductsByCollectionAsync(selectedCollection);
           setDisplayProducts(products);
         } else {
-          // Load all products
           setCollection(null);
           const products = await getProducts();
           setDisplayProducts(products);
@@ -957,7 +1100,6 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
         console.error('Error loading collection data:', err);
         setError('Failed to load products. Please try again.');
         
-        // Fallback to mock data
         if (selectedCollection) {
           setCollection(getCollection(selectedCollection));
           setDisplayProducts(getProductsByCollection(selectedCollection));
@@ -975,11 +1117,13 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
   const handleRetry = () => {
     setError(null);
     setIsLoading(true);
-    // Re-trigger the effect
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       window.location.reload();
     }, 100);
   };
+
+  const pageTitle = collection ? collection.name : collectionsContent.allProducts.title;
+  const pageDescription = collection ? collection.description : collectionsContent.allProducts.description;
 
   return (
     <div className="min-h-screen bg-black pt-24 lg:pt-32">
@@ -992,12 +1136,12 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
         >
           <div className="flex items-center gap-4 mb-4">
             <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-light">
-              {collection ? collection.name : 'All Products'}
+              {pageTitle}
             </h1>
             {isLoading && <LoadingSpinner size="small" />}
           </div>
           <p className="text-white/50 text-sm md:text-base max-w-xl">
-            {collection ? collection.description : 'Explore our complete collection of luxury essentials'}
+            {pageDescription}
           </p>
           {isUsingShopify() && (
             <p className="text-green-500/60 text-xs mt-2 tracking-wider">● Connected to Shopify</p>
@@ -1006,7 +1150,7 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
 
         {/* Collection Filter */}
         {!selectedCollection && (
-          <div className="flex flex-wrap gap-3 mt-8">
+          <nav className="flex flex-wrap gap-3 mt-8" aria-label="Filter by collection">
             {allCollections.map((col) => (
               <button
                 key={col.id}
@@ -1016,16 +1160,16 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
                 {col.name}
               </button>
             ))}
-          </div>
+          </nav>
         )}
 
-        {/* Back to all button when in collection */}
+        {/* Back to all button */}
         {selectedCollection && (
           <button
             onClick={() => onCollectionChange(null)}
             className="mt-6 text-white/50 text-xs tracking-wider uppercase hover:text-white transition-colors flex items-center gap-2"
           >
-            <ArrowRight className="w-4 h-4 rotate-180" />
+            <ArrowRight className="w-4 h-4 rotate-180" aria-hidden="true" />
             View All Products
           </button>
         )}
@@ -1057,32 +1201,38 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
 
       {/* Product Grid */}
       {!isLoading && !error && displayProducts.length > 0 && (
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 px-6 lg:px-16 pb-24">
+        <div 
+          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 px-6 lg:px-16 pb-24"
+          role="list"
+          aria-label="Products"
+        >
           {displayProducts.map((product, index) => (
-            <motion.div
+            <motion.article
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
               onClick={() => onProductClick(product.id)}
               className="cursor-pointer group"
+              role="listitem"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && onProductClick(product.id)}
             >
               <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
-                <img
+                <OptimizedImage
                   src={product.images?.[0] || product.heroImage}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" aria-hidden="true" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-white text-xs tracking-wider uppercase">Quick View</span>
                 </div>
               </div>
-              <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
+              <h2 className="text-white text-sm tracking-wide mb-1">{product.name}</h2>
               <p className="text-white/40 text-xs mb-2 line-clamp-1">{product.tagline || ''}</p>
-              <p className="text-white text-sm">${product.price}</p>
-            </motion.div>
+              <p className="text-white text-sm">{site.currency.symbol}{product.price}</p>
+            </motion.article>
           ))}
         </div>
       )}
@@ -1100,7 +1250,6 @@ function ProductPage({ productId, onAddToCart, onBack }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
 
-  // Load product data
   useEffect(() => {
     async function loadProduct() {
       if (!productId) return;
@@ -1123,7 +1272,6 @@ function ProductPage({ productId, onAddToCart, onBack }) {
         console.error('Error loading product:', err);
         setError('Failed to load product. Please try again.');
         
-        // Try fallback to mock data
         const mockProduct = getProduct(productId);
         if (mockProduct) {
           setProduct(mockProduct);
@@ -1150,12 +1298,10 @@ function ProductPage({ productId, onAddToCart, onBack }) {
     }
   };
 
-  // Loading State
   if (isLoading) {
     return <ProductPageSkeleton />;
   }
 
-  // Error State
   if (error && !product) {
     return (
       <div className="min-h-screen bg-black pt-24 flex items-center justify-center">
@@ -1164,7 +1310,6 @@ function ProductPage({ productId, onAddToCart, onBack }) {
     );
   }
 
-  // No product
   if (!product) {
     return (
       <div className="min-h-screen bg-black pt-24 flex items-center justify-center">
@@ -1187,16 +1332,17 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             transition={{ duration: 0.5 }}
             className="absolute inset-0"
           >
-            <img
+            <OptimizedImage
               src={product.images?.[currentImage] || product.heroImage}
-              alt={product.name}
+              alt={`${product.name} - Image ${currentImage + 1}`}
               className="w-full h-full object-cover"
+              priority
             />
           </motion.div>
           
           {/* Image Navigation */}
           {product.images && product.images.length > 1 && (
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+            <nav className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2" aria-label="Product images">
               {product.images.map((_, index) => (
                 <button
                   key={index}
@@ -1204,9 +1350,11 @@ function ProductPage({ productId, onAddToCart, onBack }) {
                   className={`w-2 h-2 rounded-full transition-all ${
                     currentImage === index ? 'bg-white w-6' : 'bg-white/40'
                   }`}
+                  aria-label={`View image ${index + 1}`}
+                  aria-current={currentImage === index ? 'true' : undefined}
                 />
               ))}
-            </div>
+            </nav>
           )}
         </div>
 
@@ -1216,7 +1364,7 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             onClick={onBack}
             className="text-white/50 text-xs tracking-wider uppercase mb-8 hover:text-white transition-colors self-start flex items-center gap-2"
           >
-            <ArrowRight className="w-4 h-4 rotate-180" />
+            <ArrowRight className="w-4 h-4 rotate-180" aria-hidden="true" />
             Back
           </button>
 
@@ -1229,9 +1377,8 @@ function ProductPage({ productId, onAddToCart, onBack }) {
               {collectionName}
             </p>
             <h1 className="text-white text-4xl md:text-5xl font-light mb-4">{product.name}</h1>
-            <p className="text-white text-2xl mb-8">${product.price}</p>
+            <p className="text-white text-2xl mb-8">{site.currency.symbol}{product.price}</p>
             
-            {/* Tagline */}
             {product.tagline && (
               <p className="text-white/80 text-xs tracking-wider uppercase mb-6 border-l-2 border-white/30 pl-4">
                 {product.tagline}
@@ -1244,10 +1391,10 @@ function ProductPage({ productId, onAddToCart, onBack }) {
 
             {/* Color Selection */}
             {product.variants?.colors && product.variants.colors.length > 0 && product.variants.colors[0] !== 'Default' && (
-              <div className="mb-8">
-                <p className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
-                  Color — {selectedColor}
-                </p>
+              <fieldset className="mb-8">
+                <legend className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
+                  {productContent.labels.color} — {selectedColor}
+                </legend>
                 <div className="flex flex-wrap gap-3">
                   {product.variants.colors.map((color) => (
                     <button
@@ -1258,20 +1405,21 @@ function ProductPage({ productId, onAddToCart, onBack }) {
                           ? 'border-white bg-white text-black'
                           : 'border-white/20 text-white/70 hover:border-white'
                       }`}
+                      aria-pressed={selectedColor === color}
                     >
                       {color}
                     </button>
                   ))}
                 </div>
-              </div>
+              </fieldset>
             )}
 
             {/* Size Selection */}
             {product.variants?.sizes && product.variants.sizes.length > 0 && product.variants.sizes[0] !== 'One Size' && (
-              <div className="mb-10">
-                <p className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
-                  Size — {selectedSize}
-                </p>
+              <fieldset className="mb-10">
+                <legend className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
+                  {productContent.labels.size} — {selectedSize}
+                </legend>
                 <div className="flex flex-wrap gap-3">
                   {product.variants.sizes.map((size) => (
                     <button
@@ -1282,12 +1430,13 @@ function ProductPage({ productId, onAddToCart, onBack }) {
                           ? 'border-white bg-white text-black'
                           : 'border-white/20 text-white/70 hover:border-white'
                       }`}
+                      aria-pressed={selectedSize === size}
                     >
                       {size}
                     </button>
                   ))}
                 </div>
-              </div>
+              </fieldset>
             )}
 
             {/* Add to Cart */}
@@ -1301,25 +1450,26 @@ function ProductPage({ productId, onAddToCart, onBack }) {
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    aria-hidden="true"
                   >
                     <Loader2 className="w-4 h-4" />
                   </motion.div>
-                  Added to Bag
+                  {productContent.labels.addedToBag}
                 </>
               ) : (
-                'Add to Bag'
+                productContent.labels.addToBag
               )}
             </button>
 
             {/* Shopify indicator */}
-            {isUsingShopify() && (
-              <p className="text-green-500/60 text-xs mt-4 text-center tracking-wider">● Live Shopify Data</p>
+            {isUsingShopify() && productContent.shopifyIndicator.connected && (
+              <p className="text-green-500/60 text-xs mt-4 text-center tracking-wider">{productContent.shopifyIndicator.connected}</p>
             )}
 
             {/* Product Details */}
             {product.details && product.details.length > 0 && (
               <div className="mt-12 pt-8 border-t border-white/10">
-                <h3 className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">Details</h3>
+                <h2 className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">{productContent.labels.details}</h2>
                 <ul className="space-y-2">
                   {product.details.map((detail, index) => (
                     <li key={index} className="text-white/60 text-sm">• {detail}</li>
@@ -1336,14 +1486,17 @@ function ProductPage({ productId, onAddToCart, onBack }) {
 
 // ============ ABOUT PAGE - PREMIUM STYLE ============
 function AboutPage() {
+  const about = aboutContent;
+  
   return (
-    <div className="min-h-screen bg-black pt-24">
+    <article className="min-h-screen bg-black pt-24">
       {/* Hero */}
       <section className="h-[60vh] relative">
-        <img
-          src="https://images.unsplash.com/photo-1698306871917-7b91b07a0bb4?w=1600&q=80"
-          alt="About"
+        <OptimizedImage
+          src={about.hero.image}
+          alt={about.hero.title}
           className="w-full h-full object-cover opacity-60"
+          priority
         />
         <div className="absolute inset-0 flex items-end p-6 lg:p-16 pb-16">
           <motion.h1
@@ -1351,47 +1504,38 @@ function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-white text-5xl md:text-7xl lg:text-8xl font-light"
           >
-            About Us
+            {about.hero.title}
           </motion.h1>
         </div>
       </section>
 
       {/* Story */}
-      <section className="py-24 lg:py-32 px-6 lg:px-16">
+      <section className="py-24 lg:py-32 px-6 lg:px-16" aria-labelledby="story-heading">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
+            <h2 id="story-heading" className="sr-only">Our Story</h2>
             <p className="text-white text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed mb-12">
-              Carlophillips was founded on a simple principle: that luxury should be accessible, 
-              sustainable, and timeless.
+              {about.story.headline}
             </p>
-            <p className="text-white/50 text-base leading-relaxed mb-8">
-              We reject the notion that quality must come at the expense of our values. 
-              Every piece in our collection is designed with intention, using premium materials 
-              sourced from ethical suppliers.
-            </p>
-            <p className="text-white/50 text-base leading-relaxed">
-              We work with print-on-demand and dropshipping partners who share our commitment 
-              to reducing waste and environmental impact. Our goal is to create pieces that 
-              you'll cherish for years—not seasons.
-            </p>
+            {about.story.paragraphs.map((paragraph, i) => (
+              <p key={i} className="text-white/50 text-base leading-relaxed mb-8">
+                {paragraph}
+              </p>
+            ))}
           </motion.div>
         </div>
       </section>
 
       {/* Values */}
-      <section className="py-24 lg:py-32 border-t border-white/10">
+      <section className="py-24 lg:py-32 border-t border-white/10" aria-labelledby="values-heading">
         <div className="px-6 lg:px-16">
-          <h2 className="text-white text-3xl md:text-4xl font-light mb-16 text-center">Our Values</h2>
+          <h2 id="values-heading" className="text-white text-3xl md:text-4xl font-light mb-16 text-center">Our Values</h2>
           <div className="grid md:grid-cols-3 gap-12 lg:gap-16 max-w-5xl mx-auto">
-            {[
-              { title: 'Sustainability', desc: 'We produce only what is ordered, eliminating overproduction.' },
-              { title: 'Quality', desc: 'Premium materials and expert craftsmanship in every piece.' },
-              { title: 'Timelessness', desc: 'Designs meant to last—both in construction and style.' },
-            ].map((value, index) => (
+            {about.values.map((value, index) => (
               <motion.div
                 key={value.title}
                 initial={{ opacity: 0, y: 30 }}
@@ -1401,58 +1545,53 @@ function AboutPage() {
                 className="text-center"
               >
                 <h3 className="text-white text-xl mb-4">{value.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{value.desc}</p>
+                <p className="text-white/50 text-sm leading-relaxed">{value.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 }
 
 // ============ LOOKBOOK PAGE - EDITORIAL STYLE ============
 function LookbookPage() {
-  const images = [
-    'https://images.unsplash.com/photo-1698306871917-7b91b07a0bb4?w=1200&q=80',
-    'https://images.unsplash.com/photo-1614179689741-0ebd3f0ff34b?w=1200&q=80',
-    'https://images.pexels.com/photos/6070179/pexels-photo-6070179.jpeg?w=1200',
-    'https://images.unsplash.com/photo-1709600677254-0e961c8ed94e?w=1200&q=80',
-    'https://images.unsplash.com/photo-1550029402-8280f657d8d1?w=1200&q=80',
-    'https://images.pexels.com/photos/2986445/pexels-photo-2986445.jpeg?w=1200',
-  ];
+  const lookbook = lookbookContent;
+  const campaignImages = getCampaignImages();
 
   return (
-    <div className="min-h-screen bg-black pt-24">
+    <article className="min-h-screen bg-black pt-24">
       <div className="px-6 lg:px-16 mb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h1 className="text-white text-5xl md:text-7xl font-light mb-4">Lookbook</h1>
-          <p className="text-white/50 text-sm tracking-wider">Summer 2025</p>
+          <h1 className="text-white text-5xl md:text-7xl font-light mb-4">{lookbook.title}</h1>
+          <p className="text-white/50 text-sm tracking-wider">{lookbook.subtitle}</p>
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 pb-1">
-        {images.map((image, index) => (
-          <motion.div
-            key={index}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 pb-1" role="list" aria-label="Lookbook images">
+        {campaignImages.map((image, index) => (
+          <motion.figure
+            key={image.id}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: index * 0.1 }}
             className={`overflow-hidden ${index % 3 === 0 ? 'md:col-span-2 aspect-[2/1]' : 'aspect-square'}`}
+            role="listitem"
           >
-            <img
-              src={image}
-              alt={`Lookbook ${index + 1}`}
+            <OptimizedImage
+              src={image.src}
+              alt={image.alt}
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
             />
-          </motion.div>
+          </motion.figure>
         ))}
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -1468,19 +1607,16 @@ export default function App() {
   const [isLoadingFeatured, setIsLoadingFeatured] = useState(true);
   const [isCartLoading, setIsCartLoading] = useState(true);
 
-  // Initialize cart on mount - sync with Shopify if configured
+  // Initialize cart on mount
   useEffect(() => {
     async function initCart() {
       setIsCartLoading(true);
       try {
-        console.log('[App] Initializing cart...');
         const initializedCart = await initializeCart();
         setCart(initializedCart);
         setCartCount(getCartItemCount());
-        console.log('[App] Cart initialized:', initializedCart);
       } catch (error) {
         console.error('[App] Cart initialization failed:', error);
-        // Fallback to local cart
         const localCart = getCart();
         setCart(localCart);
         setCartCount(getCartItemCount());
@@ -1508,14 +1644,14 @@ export default function App() {
     loadFeatured();
   }, []);
 
-  const handleNavigate = (page, collection = null) => {
+  const handleNavigate = useCallback((page, collection = null) => {
     setCurrentPage(page);
     setSelectedProduct(null);
     setSelectedCollection(collection);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
-  const handleProductClick = (productId, collectionId = null) => {
+  const handleProductClick = useCallback((productId, collectionId = null) => {
     if (collectionId) {
       setSelectedCollection(collectionId);
       setCurrentPage('collections');
@@ -1524,43 +1660,42 @@ export default function App() {
       setCurrentPage('product');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
-  const handleCollectionChange = (collectionId) => {
+  const handleCollectionChange = useCallback((collectionId) => {
     setSelectedCollection(collectionId);
-  };
+  }, []);
 
-  const handleAddToCart = async (product, color, size) => {
-    console.log('[App] Adding to cart:', product.name, color, size);
+  const handleAddToCart = useCallback(async (product, color, size) => {
     const updatedCart = await addToCart(product, color, size);
     setCart(updatedCart);
     setCartCount(getCartItemCount());
     setIsCartOpen(true);
-  };
+  }, []);
 
-  const handleUpdateQuantity = async (itemKey, quantity) => {
-    console.log('[App] Updating quantity:', itemKey, quantity);
+  const handleUpdateQuantity = useCallback(async (itemKey, quantity) => {
     const updatedCart = await updateQuantity(itemKey, quantity);
     setCart(updatedCart);
     setCartCount(getCartItemCount());
-  };
+  }, []);
 
-  const handleRemoveItem = async (itemKey) => {
-    console.log('[App] Removing item:', itemKey);
+  const handleRemoveItem = useCallback(async (itemKey) => {
     const updatedCart = await removeFromCart(itemKey);
     setCart(updatedCart);
     setCartCount(getCartItemCount());
-  };
+  }, []);
   
-  const handleCartRefresh = async () => {
+  const handleCartRefresh = useCallback(async () => {
     const refreshedCart = await initializeCart();
     setCart(refreshedCart);
     setCartCount(getCartItemCount());
-  };
+  }, []);
 
-  // Get hero products
-  const heroProduct = featuredProducts.find(p => p.id === 'bomber-jacket') || featuredProducts[4];
-  const secondHeroProduct = featuredProducts.find(p => p.id === 'oversized-hoodie') || featuredProducts[1];
+  // Get hero products from content config
+  const heroConfig = homepage.featuredSections.productHero1;
+  const secondHeroConfig = homepage.featuredSections.productHero2;
+  const heroProduct = featuredProducts.find(p => p.id === heroConfig.productId) || featuredProducts[heroConfig.fallbackIndex];
+  const secondHeroProduct = featuredProducts.find(p => p.id === secondHeroConfig.productId) || featuredProducts[secondHeroConfig.fallbackIndex];
   const essentialsCollection = mockCollections[0];
 
   return (
@@ -1581,13 +1716,13 @@ export default function App() {
         onRefresh={handleCartRefresh}
       />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         {currentPage === 'home' && (
           <>
             <HeroSection onShopClick={() => handleNavigate('collections')} />
             <ProductHero product={heroProduct} onBuyClick={handleProductClick} />
             <ProductCarousel 
-              title="Featured Products" 
+              title={homepage.featuredSections.carousels[0].title}
               products={featuredProducts} 
               onProductClick={handleProductClick}
               isLoading={isLoadingFeatured}
@@ -1597,12 +1732,12 @@ export default function App() {
             <PressSection />
             <ProductHero product={secondHeroProduct} onBuyClick={handleProductClick} reverse />
             <ProductCarousel 
-              title="New Arrivals" 
+              title={homepage.featuredSections.carousels[1].title}
               products={featuredProducts.slice(4, 12)} 
               onProductClick={handleProductClick}
               isLoading={isLoadingFeatured}
             />
-            <Footer />
+            <Footer onNavigate={handleNavigate} />
           </>
         )}
 
@@ -1613,7 +1748,7 @@ export default function App() {
               selectedCollection={selectedCollection}
               onCollectionChange={handleCollectionChange}
             />
-            <Footer />
+            <Footer onNavigate={handleNavigate} />
           </>
         )}
 
@@ -1624,21 +1759,21 @@ export default function App() {
               onAddToCart={handleAddToCart}
               onBack={() => handleNavigate('collections')}
             />
-            <Footer />
+            <Footer onNavigate={handleNavigate} />
           </>
         )}
 
         {currentPage === 'about' && (
           <>
             <AboutPage />
-            <Footer />
+            <Footer onNavigate={handleNavigate} />
           </>
         )}
 
         {currentPage === 'lookbook' && (
           <>
             <LookbookPage />
-            <Footer />
+            <Footer onNavigate={handleNavigate} />
           </>
         )}
       </main>
