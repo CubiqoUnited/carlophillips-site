@@ -673,43 +673,69 @@ function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdate
   );
 }
 
-// ============ FULL-BLEED HERO SECTION - VOLLEBAK STYLE ============
+// ============ FULL-BLEED HERO SECTION - ANIMATED SLIDESHOW ============
 function HeroSection({ onShopClick }) {
-  const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const videoRef = useRef(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-  const videoUrl = getHeroVideoUrl();
-  const posterUrl = getHeroPosterUrl();
   const heroContent = homepage.hero;
+  
+  // CARLOPHILLIPS Runway Images
+  const runwayImages = [
+    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/sh50hn5b_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_30%20AM.png',
+    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/kehwslds_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_34%20AM.png',
+    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/x9tb3b3j_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_16%20AM.png',
+    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/7e9h695p_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_12%20AM.png',
+    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/q016zor3_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_07%20AM.png',
+    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/g483a1wb_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_02%20AM.png',
+    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/d1y2z1zu_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_19_53%20AM.png',
+  ];
+
+  // Auto-advance slideshow
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % runwayImages.length);
+    }, 5000); // Change image every 5 seconds
+    
+    return () => clearInterval(interval);
+  }, [runwayImages.length]);
 
   // Parse headline for line breaks
   const headlineParts = heroContent.headline.split('\n');
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black" aria-label="Hero section">
-      {/* Video/Image Background */}
+      {/* Animated Image Slideshow with Ken Burns Effect */}
       <motion.div style={{ y }} className="absolute inset-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted={isMuted}
-          loop
-          playsInline
-          poster={posterUrl}
-          className="w-full h-full object-cover"
-          aria-hidden="true"
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </video>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1.15,
+              transition: { 
+                opacity: { duration: 1 },
+                scale: { duration: 8, ease: 'linear' }
+              }
+            }}
+            exit={{ opacity: 0, transition: { duration: 1 } }}
+            className="absolute inset-0"
+          >
+            <img
+              src={runwayImages[currentImageIndex]}
+              alt={`CARLOPHILLIPS Runway Look ${currentImageIndex + 1}`}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
       </motion.div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" aria-hidden="true" />
 
       {/* Content */}
       <motion.div 
@@ -745,31 +771,20 @@ function HeroSection({ onShopClick }) {
           </button>
         </motion.div>
 
-        {/* Video Controls */}
-        <div className="absolute bottom-8 right-6 lg:right-16 flex gap-3">
-          <button
-            onClick={() => {
-              if (videoRef.current) {
-                if (isPlaying) {
-                  videoRef.current.pause();
-                } else {
-                  videoRef.current.play();
-                }
-                setIsPlaying(!isPlaying);
-              }
-            }}
-            className="w-10 h-10 border border-white/30 flex items-center justify-center text-white/70 hover:text-white hover:border-white transition-all"
-            aria-label={isPlaying ? 'Pause video' : 'Play video'}
-          >
-            {isPlaying ? <Pause className="w-4 h-4" aria-hidden="true" /> : <Play className="w-4 h-4" aria-hidden="true" />}
-          </button>
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className="w-10 h-10 border border-white/30 flex items-center justify-center text-white/70 hover:text-white hover:border-white transition-all"
-            aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-          >
-            {isMuted ? <VolumeX className="w-4 h-4" aria-hidden="true" /> : <Volume2 className="w-4 h-4" aria-hidden="true" />}
-          </button>
+        {/* Slideshow Indicators */}
+        <div className="absolute bottom-8 right-6 lg:right-16 flex gap-2">
+          {runwayImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentImageIndex(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                currentImageIndex === index 
+                  ? 'bg-white w-8' 
+                  : 'bg-white/40 hover:bg-white/60'
+              }`}
+              aria-label={`View slide ${index + 1}`}
+            />
+          ))}
         </div>
 
         {/* Scroll Indicator */}
