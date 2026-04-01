@@ -56,6 +56,43 @@ import {
   getPlaceholder 
 } from '@/lib/assets';
 
+// Brand imports
+import { 
+  brands, 
+  brandOrder, 
+  defaultBrand, 
+  detectBrandFromDomain, 
+  getBrand, 
+  getAllBrands 
+} from '@/lib/brands';
+
+// ============ BRAND SWITCHER COMPONENT ============
+function BrandSwitcher({ currentBrand, onBrandChange }) {
+  const allBrands = getAllBrands();
+  
+  return (
+    <div className="flex items-center gap-1">
+      {allBrands.map((brand) => {
+        const isActive = currentBrand === brand.id;
+        return (
+          <button
+            key={brand.id}
+            onClick={() => onBrandChange(brand.id)}
+            className={`px-3 py-1.5 text-[10px] tracking-[0.15em] uppercase transition-all duration-300 ${
+              isActive 
+                ? 'bg-white text-black' 
+                : 'text-white/60 hover:text-white'
+            }`}
+            aria-pressed={isActive}
+          >
+            {brand.id === 'carlophillips' ? 'CP' : brand.id === 'lovecarlo' ? 'LOVE' : 'HOME'}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 // ============ OPTIMIZED IMAGE COMPONENT ============
 function OptimizedImage({ src, alt, className = '', loading = 'lazy', sizes = '100vw', priority = false, onLoad, onError }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -229,9 +266,10 @@ function Logo({ className = '', onClick }) {
 }
 
 // ============ NAVIGATION COMPONENT - VOLLEBAK STYLE ============
-function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }) {
+function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true, currentBrand, onBrandChange }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const brand = getBrand(currentBrand);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -254,6 +292,25 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${bgClass}`}
         role="banner"
       >
+        {/* Brand Switcher Bar */}
+        <div className="hidden md:flex justify-center items-center py-2 border-b border-white/10 bg-black/50">
+          <div className="flex items-center gap-6">
+            {getAllBrands().map((b) => (
+              <button
+                key={b.id}
+                onClick={() => onBrandChange(b.id)}
+                className={`text-[11px] tracking-[0.2em] uppercase transition-all duration-300 ${
+                  currentBrand === b.id 
+                    ? 'text-white' 
+                    : 'text-white/40 hover:text-white/70'
+                }`}
+              >
+                {b.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <nav className="flex items-center justify-between px-6 lg:px-10 h-16 lg:h-20" aria-label="Main navigation">
           {/* Menu Button */}
           <button
@@ -267,22 +324,40 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true }
             <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">{navigationContent.actions.menu}</span>
           </button>
 
-          {/* Logo */}
+          {/* Logo - Shows current brand */}
           <div className="absolute left-1/2 -translate-x-1/2">
-            <Logo onClick={() => onNavigate('home')} />
+            <button 
+              onClick={() => onNavigate('home')} 
+              className="flex flex-col items-center"
+              aria-label={`${brand.name} - Go to homepage`}
+            >
+              <span className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
+                {brand.name}
+              </span>
+              {brand.id !== 'carlophillips' && (
+                <span className="text-white/40 text-[9px] tracking-[0.15em] uppercase">
+                  by CARLOPHILLIPS
+                </span>
+              )}
+            </button>
           </div>
 
-          {/* Cart */}
-          <button
-            onClick={onCartClick}
-            className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
-            aria-label={`Shopping bag with ${cartCount} items`}
-          >
-            <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">
-              {navigationContent.actions.bag} {cartCount > 0 && `(${cartCount})`}
-            </span>
-            <ShoppingBag className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
-          </button>
+          {/* Mobile Brand Switcher + Cart */}
+          <div className="flex items-center gap-4">
+            <div className="md:hidden">
+              <BrandSwitcher currentBrand={currentBrand} onBrandChange={onBrandChange} />
+            </div>
+            <button
+              onClick={onCartClick}
+              className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
+              aria-label={`Shopping bag with ${cartCount} items`}
+            >
+              <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">
+                {navigationContent.actions.bag} {cartCount > 0 && `(${cartCount})`}
+              </span>
+              <ShoppingBag className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
+            </button>
+          </div>
         </nav>
       </motion.header>
 
@@ -1606,6 +1681,27 @@ export default function App() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isLoadingFeatured, setIsLoadingFeatured] = useState(true);
   const [isCartLoading, setIsCartLoading] = useState(true);
+  const [currentBrand, setCurrentBrand] = useState(defaultBrand);
+
+  // Detect brand from domain on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const detectedBrand = detectBrandFromDomain(window.location.hostname);
+      setCurrentBrand(detectedBrand);
+    }
+  }, []);
+
+  // Get current brand config
+  const brand = getBrand(currentBrand);
+
+  // Handle brand change
+  const handleBrandChange = useCallback((brandId) => {
+    setCurrentBrand(brandId);
+    setCurrentPage('home');
+    setSelectedProduct(null);
+    setSelectedCollection(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   // Initialize cart on mount
   useEffect(() => {
@@ -1705,6 +1801,8 @@ export default function App() {
         cartCount={cartCount}
         onNavigate={handleNavigate}
         isTransparent={currentPage === 'home'}
+        currentBrand={currentBrand}
+        onBrandChange={handleBrandChange}
       />
 
       <CartSidebar
