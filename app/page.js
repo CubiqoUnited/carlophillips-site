@@ -682,13 +682,11 @@ function HeroSection({ onShopClick }) {
 
   const heroContent = homepage.hero;
   
-  // CARLOPHILLIPS Runway Images
+  // CARLOPHILLIPS Runway Images - Individual model shots only (no lineup)
   const runwayImages = [
-    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/sh50hn5b_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_30%20AM.png',
     'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/kehwslds_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_34%20AM.png',
     'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/x9tb3b3j_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_16%20AM.png',
     'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/7e9h695p_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_12%20AM.png',
-    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/q016zor3_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_07%20AM.png',
     'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/g483a1wb_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_02%20AM.png',
     'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/d1y2z1zu_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_19_53%20AM.png',
   ];
@@ -712,12 +710,12 @@ function HeroSection({ onShopClick }) {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentImageIndex}
-            initial={{ opacity: 0, scale: 1.1 }}
+            initial={{ opacity: 0, scale: 1.05 }}
             animate={{ 
               opacity: 1, 
-              scale: 1.15,
+              scale: 1.1,
               transition: { 
-                opacity: { duration: 1 },
+                opacity: { duration: 1.2 },
                 scale: { duration: 8, ease: 'linear' }
               }
             }}
@@ -727,7 +725,8 @@ function HeroSection({ onShopClick }) {
             <img
               src={runwayImages[currentImageIndex]}
               alt={`CARLOPHILLIPS Runway Look ${currentImageIndex + 1}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain object-center"
+              style={{ backgroundColor: '#000' }}
             />
           </motion.div>
         </AnimatePresence>
@@ -735,7 +734,7 @@ function HeroSection({ onShopClick }) {
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" aria-hidden="true" />
 
       {/* Content */}
       <motion.div 
