@@ -294,7 +294,7 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true, 
       >
         {/* Brand Switcher Bar */}
         <div className="hidden md:flex justify-center items-center py-2 border-b border-white/10 bg-black/50">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-12">
             {getAllBrands().map((b) => (
               <button
                 key={b.id}
