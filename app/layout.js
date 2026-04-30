@@ -3,8 +3,8 @@ import './globals.css';
 // SEO and Metadata Configuration
 const siteConfig = {
   name: 'CARLOPHILLIPS',
-  tagline: 'Quiet Luxury',
-  description: 'A modern luxury lifestyle brand. Premium clothing, jewelry, accessories, and home items designed for those who appreciate understated elegance and uncompromising quality.',
+  tagline: 'Geometric Luxury',
+  description: 'A modern menswear identity built from clean geometry, quiet luxury, and precise everyday pieces.',
   url: process.env.NEXT_PUBLIC_BASE_URL || 'https://carlophillips.com',
   locale: 'en_US',
   type: 'website',
@@ -15,6 +15,8 @@ const siteConfig = {
     'premium essentials',
     'sustainable fashion',
     'quiet luxury',
+    'geometric luxury',
+    'houndstooth polo',
     'minimalist style',
     'designer accessories',
     'mens jewelry',

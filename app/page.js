@@ -684,6 +684,8 @@ function HeroSection({ onShopClick }) {
   
   // CARLOPHILLIPS Runway Images - Individual model shots only (no lineup)
   const runwayImages = [
+    '/products/first-review/carlo-houndstooth-runway-polo-hero.png',
+    '/products/first-review/carlo-houndstooth-runway-polo-alt.png',
     'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/kehwslds_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_34%20AM.png',
     'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/x9tb3b3j_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_16%20AM.png',
     'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/7e9h695p_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_12%20AM.png',
