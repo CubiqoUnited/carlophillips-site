@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 // MongoDB connection
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017';
 const DB_NAME = process.env.DB_NAME || 'carlophillips';
+const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
 
 let client = null;
 let db = null;
@@ -31,6 +32,50 @@ function corsHeaders() {
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+async function appendNewsletterToGoogleSheet(subscriber) {
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+    return { configured: false, saved: false };
+  }
+
+  const response = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(subscriber),
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Google Sheets webhook returned ${response.status}`);
+  }
+
+  return { configured: true, saved: true };
+}
+
+async function saveNewsletterToMongo(subscriber) {
+  const db = await connectToDatabase();
+
+  await db.collection('newsletter').updateOne(
+    { email: subscriber.email },
+    {
+      $set: {
+        ...subscriber,
+        updatedAt: new Date().toISOString(),
+      },
+      $setOnInsert: {
+        id: uuidv4(),
+        subscribedAt: subscriber.subscribedAt,
+      },
+    },
+    { upsert: true }
+  );
+
+  return { saved: true };
 }
 
 // OPTIONS handler for CORS
@@ -258,30 +303,53 @@ export async function POST(request, { params }) {
 
     // Subscribe to newsletter
     if (pathString === 'newsletter') {
-      const { email } = body;
+      const email = String(body.email || '').trim().toLowerCase();
       
-      if (!email) {
+      if (!email || !isValidEmail(email)) {
         return NextResponse.json(
-          { error: 'Email is required' },
+          { error: 'A valid email is required' },
           { status: 400, headers: corsHeaders() }
         );
       }
-      
-      const db = await connectToDatabase();
-      
-      await db.collection('newsletter').updateOne(
-        { email },
-        { 
-          $set: { 
-            email, 
-            subscribedAt: new Date().toISOString() 
-          } 
-        },
-        { upsert: true }
-      );
+
+      const now = new Date().toISOString();
+      const subscriber = {
+        email,
+        source: String(body.source || 'website').slice(0, 80),
+        page: String(body.page || '').slice(0, 200),
+        subscribedAt: now,
+        userAgent: request.headers.get('user-agent') || '',
+      };
+
+      const storage = {
+        googleSheets: { configured: Boolean(GOOGLE_SHEETS_WEBHOOK_URL), saved: false },
+        mongo: { saved: false },
+      };
+      const errors = [];
+
+      try {
+        storage.googleSheets = await appendNewsletterToGoogleSheet(subscriber);
+      } catch (error) {
+        console.error('Google Sheets newsletter save failed:', error);
+        errors.push('googleSheets');
+      }
+
+      try {
+        storage.mongo = await saveNewsletterToMongo(subscriber);
+      } catch (error) {
+        console.error('Mongo newsletter save failed:', error);
+        errors.push('mongo');
+      }
+
+      if (!storage.googleSheets.saved && !storage.mongo.saved) {
+        return NextResponse.json(
+          { error: 'Unable to save email right now' },
+          { status: 503, headers: corsHeaders() }
+        );
+      }
       
       return NextResponse.json(
-        { success: true, message: 'Successfully subscribed' },
+        { success: true, message: 'Successfully subscribed', storage, warnings: errors },
         { headers: corsHeaders() }
       );
     }

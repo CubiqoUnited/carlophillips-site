@@ -706,7 +706,11 @@ function HeroSection({ onShopClick }) {
   const headlineParts = heroContent.headline.split('\n');
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black" aria-label="Hero section">
+    <section className="relative min-h-screen w-full overflow-hidden bg-[#050707]" aria-label="Hero section">
+      <div className="absolute inset-x-0 bottom-0 z-[1] h-[24vh] bg-gradient-to-t from-black via-black/80 to-transparent" aria-hidden="true" />
+      <div className="absolute left-0 top-0 z-[1] h-full w-full bg-[radial-gradient(circle_at_78%_28%,rgba(123,165,154,0.16),transparent_28%),linear-gradient(90deg,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.48)_36%,rgba(0,0,0,0.12)_70%)]" aria-hidden="true" />
+      <div className="absolute inset-0 z-[1] opacity-[0.08] mix-blend-screen" style={{ backgroundImage: 'linear-gradient(115deg, transparent 0 47%, rgba(255,255,255,0.45) 48%, transparent 49% 100%)', backgroundSize: '28px 28px' }} aria-hidden="true" />
+
       {/* Animated Image Slideshow with Ken Burns Effect */}
       <motion.div style={{ y }} className="absolute inset-0">
         <AnimatePresence mode="wait">
@@ -727,21 +731,17 @@ function HeroSection({ onShopClick }) {
             <img
               src={runwayImages[currentImageIndex]}
               alt={`CARLOPHILLIPS Runway Look ${currentImageIndex + 1}`}
-              className="w-full h-full object-contain object-center"
+              className="w-full h-full object-cover object-center opacity-80 saturate-[0.72] contrast-[1.08]"
               style={{ backgroundColor: '#000' }}
             />
           </motion.div>
         </AnimatePresence>
       </motion.div>
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" aria-hidden="true" />
-
       {/* Content */}
       <motion.div 
         style={{ opacity }}
-        className="absolute inset-0 flex flex-col justify-end p-6 lg:p-16 pb-24 lg:pb-32"
+        className="absolute inset-0 z-10 flex flex-col justify-end p-6 lg:p-16 pb-24 lg:pb-32"
       >
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -749,10 +749,10 @@ function HeroSection({ onShopClick }) {
           transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-4xl"
         >
-          <p className="text-white/60 text-xs tracking-[0.3em] uppercase mb-4 lg:mb-6">
+          <p className="text-[#78a89c] text-xs tracking-[0.34em] uppercase mb-4 lg:mb-6">
             {heroContent.eyebrow}
           </p>
-          <h1 className="text-white text-5xl md:text-7xl lg:text-[8rem] font-light leading-[0.9] mb-6 lg:mb-8 tracking-tight">
+          <h1 className="text-white text-5xl md:text-7xl lg:text-[8rem] font-light leading-[0.9] mb-6 lg:mb-8 tracking-normal">
             {headlineParts.map((part, i) => (
               <span key={i}>
                 {part}
@@ -765,12 +765,17 @@ function HeroSection({ onShopClick }) {
           </p>
           <button
             onClick={onShopClick}
-            className="group inline-flex items-center gap-4 text-white text-xs tracking-[0.25em] uppercase border-b border-white/30 pb-2 hover:border-white transition-colors"
+            className="group inline-flex items-center gap-4 text-white text-xs tracking-[0.25em] uppercase border-b border-[#78a89c]/60 pb-2 hover:border-white transition-colors"
           >
             {heroContent.cta.text}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
           </button>
         </motion.div>
+
+        <div className="absolute right-6 top-28 hidden max-w-[18rem] border-l border-[#78a89c]/40 pl-5 text-right lg:block">
+          <p className="text-[#78a89c] text-[11px] tracking-[0.32em] uppercase">CARLOPHILLIPS</p>
+          <p className="mt-2 text-white/42 text-[11px] uppercase tracking-[0.2em]">Black stone runway / cold weather geometry</p>
+        </div>
 
         {/* Slideshow Indicators */}
         <div className="absolute bottom-8 right-6 lg:right-16 flex gap-2">
@@ -780,7 +785,7 @@ function HeroSection({ onShopClick }) {
               onClick={() => setCurrentImageIndex(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 currentImageIndex === index 
-                  ? 'bg-white w-8' 
+                  ? 'bg-[#78a89c] w-8' 
                   : 'bg-white/40 hover:bg-white/60'
               }`}
               aria-label={`View slide ${index + 1}`}
@@ -1075,11 +1080,87 @@ function CollectionShowcase({ collection, onExplore }) {
 }
 
 // ============ FOOTER - PREMIUM STYLE ============
+function NewsletterSignup() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle');
+  const [message, setMessage] = useState('');
+  const newsletter = footerContent.newsletter;
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      setStatus('error');
+      setMessage('Enter a valid email address.');
+      return;
+    }
+
+    setStatus('loading');
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: normalizedEmail,
+          source: 'footer',
+          page: typeof window !== 'undefined' ? window.location.pathname : '/',
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || newsletter.error);
+      }
+
+      setEmail('');
+      setStatus('success');
+      setMessage(newsletter.success);
+    } catch (error) {
+      setStatus('error');
+      setMessage(error.message || newsletter.error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="max-w-md" aria-label="Join the CARLOPHILLIPS private list">
+      <p className="text-[#78a89c] text-[11px] tracking-[0.28em] uppercase mb-3">{newsletter.eyebrow}</p>
+      <h4 className="text-white text-2xl md:text-3xl font-light leading-tight mb-6">{newsletter.title}</h4>
+      <div className="flex flex-col sm:flex-row border border-white/20 bg-white/[0.03] focus-within:border-[#78a89c]/70 transition-colors">
+        <label htmlFor="newsletter-email" className="sr-only">{newsletter.placeholder}</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder={newsletter.placeholder}
+          autoComplete="email"
+          required
+          className="min-h-14 flex-1 bg-transparent px-4 text-sm text-white placeholder:text-white/35 outline-none"
+        />
+        <button
+          type="submit"
+          disabled={status === 'loading'}
+          className="min-h-14 border-t border-white/10 px-6 text-xs uppercase tracking-[0.24em] text-white transition-colors hover:bg-white hover:text-black disabled:cursor-wait disabled:opacity-60 sm:border-l sm:border-t-0"
+        >
+          {status === 'loading' ? 'Saving' : newsletter.button}
+        </button>
+      </div>
+      <p className={`mt-3 min-h-5 text-xs ${status === 'error' ? 'text-red-300' : 'text-white/45'}`} role="status" aria-live="polite">
+        {message}
+      </p>
+    </form>
+  );
+}
+
 function Footer({ onNavigate }) {
   return (
     <footer className="bg-black text-white py-16 lg:py-24 border-t border-white/10" role="contentinfo">
       <div className="px-6 lg:px-16">
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 mb-16">
           <div className="md:col-span-2">
             <h3 className="text-2xl tracking-[0.3em] font-light mb-6">{site.name}</h3>
             <p className="text-white/50 text-sm leading-relaxed max-w-md mb-6">
@@ -1105,6 +1186,10 @@ function Footer({ onNavigate }) {
               </a>
             </div>
           </div>
+          <NewsletterSignup />
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-12 mb-16">
           <nav aria-label="Shop navigation">
             <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">{footerContent.navigation.shop.title}</h4>
             <ul className="space-y-3 text-sm text-white/50">
@@ -1745,7 +1830,11 @@ export default function App() {
       setIsLoadingFeatured(true);
       try {
         const products = await getProducts(8);
-        setFeaturedProducts(products);
+        const stagedCpoProduct = getProduct('cp-offshore-cpo-overshirt');
+        const qaProducts = stagedCpoProduct && !products.some((product) => product.id === stagedCpoProduct.id)
+          ? [stagedCpoProduct, ...products]
+          : products;
+        setFeaturedProducts(qaProducts.slice(0, 8));
       } catch (err) {
         console.error('Error loading featured products:', err);
         setFeaturedProducts(getFeaturedProducts(8));
