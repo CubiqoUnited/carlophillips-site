@@ -9,8 +9,8 @@ Use this file for handoffs, manual QA notes, and any browser/admin actions taken
 - Local Vercel link: `.vercel/project.json` created for Vercel project `folderforcpsite` (`prj_xj3rXVLG6FpsRsSeClyawDJzE1CC`) in team `Cubiqo` (`team_Q25fvpJOPiIeoG3hfxtCVkhW`). The project has domain `www.carlophillips.com`.
 - Vercel CLI: authenticated locally as `aditya-7307`; `vercel project ls` sees `folderforcpsite`.
 - Vercel preview: latest QA deployment `dpl_GkXhBAhiVPu5v7rEGjERZHGi9ymN` is Ready at `https://folderforcpsite-5uh80g0ks-cubiqo-projects-d7156840.vercel.app`; `vercel curl / --deployment folderforcpsite-5uh80g0ks-cubiqo-projects-d7156840.vercel.app` can access protected preview content.
-- Vercel env audit: Preview branch env vars are configured for `qa` and `codex/readiness-checklist`: `NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN`, `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN`, `MONGO_URL`, `DB_NAME`, and generated `REVALIDATION_SECRET`.
-- Vercel env setup checklist added at `docs/vercel-env-setup.md`; `GOOGLE_SHEETS_WEBHOOK_URL` and `SHOPIFY_WEBHOOK_SIGNING_SECRET` are still not configured because no local values were present.
+- Vercel env audit: Preview branch env vars are configured for `qa` and `codex/readiness-checklist`: `NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN`, `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN`, `MONGO_URL`, `DB_NAME`, generated `REVALIDATION_SECRET`, and generated `SHOPIFY_WEBHOOK_SIGNING_SECRET`.
+- Vercel env setup checklist added at `docs/vercel-env-setup.md`; `GOOGLE_SHEETS_WEBHOOK_URL` is still not configured because a real deployed Google Apps Script web app URL is required.
 - GitHub branch protection API: still blocked with `403` because GitHub requires Pro or a public repo for branch protection on this private repository.
 - Env file present locally: `.env`; `.env.local` was created from it for Next.js local development. Keep both ignored.
 - Storefront integration present: Shopify Storefront API products, collections, cart operations, checkout URL redirect.
