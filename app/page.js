@@ -331,11 +331,16 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true, 
               className="flex flex-col items-center"
               aria-label={`${brand.name} - Go to homepage`}
             >
-              <span className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
+              <span className="text-white text-xs sm:text-sm md:text-base tracking-[0.18em] sm:tracking-[0.3em] md:tracking-[0.4em] font-light uppercase">
+                <span className="sm:hidden">
+                  {brand.id === 'carlophillips' ? 'CP' : brand.id === 'lovecarlo' ? 'LOVE' : 'HOME'}
+                </span>
+                <span className="hidden sm:inline">
                 {brand.name}
+                </span>
               </span>
               {brand.id !== 'carlophillips' && (
-                <span className="text-white/40 text-[9px] tracking-[0.15em] uppercase">
+                <span className="hidden sm:inline text-white/40 text-[9px] tracking-[0.15em] uppercase">
                   by CARLOPHILLIPS
                 </span>
               )}
@@ -344,7 +349,7 @@ function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true, 
 
           {/* Mobile Brand Switcher + Cart */}
           <div className="flex items-center gap-4">
-            <div className="md:hidden">
+            <div className="hidden sm:block md:hidden">
               <BrandSwitcher currentBrand={currentBrand} onBrandChange={onBrandChange} />
             </div>
             <button
