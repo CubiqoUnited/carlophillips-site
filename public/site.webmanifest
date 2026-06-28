@@ -1,0 +1,25 @@
+{
+  "name": "CARLOPHILLIPS",
+  "short_name": "CARLOPHILLIPS",
+  "description": "A modern luxury lifestyle brand. Premium clothing, jewelry, accessories, and home items.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle", "fashion"]
+}
