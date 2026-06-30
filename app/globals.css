@@ -159,6 +159,31 @@
     transform: translateZ(70px);
   }
 
+  video.premium-stage-image,
+  iframe.premium-stage-image,
+  model-viewer.premium-stage-image {
+    border: 0;
+    background: transparent;
+  }
+
+  .premium-product-stage--rich .premium-stage-turntable {
+    width: 86%;
+    height: 84%;
+  }
+
+  .premium-product-stage--rich .premium-stage-image {
+    transform: translateZ(36px);
+  }
+
+  .premium-product-stage--rich video.premium-stage-image,
+  .premium-product-stage--rich iframe.premium-stage-image {
+    object-fit: cover;
+  }
+
+  .premium-product-stage--rich model-viewer.premium-stage-image {
+    --poster-color: transparent;
+  }
+
   .premium-stage-shadow {
     position: absolute;
     z-index: 2;

@@ -150,14 +150,52 @@ function getEditorialImage(product) {
   return editorialProductImages.find(({ match }) => match.test(searchable))?.src || null;
 }
 
-function getPrimaryImage(product, index = 0) {
-  const images = product?.images?.filter(Boolean) || [];
-  if (index === 0) {
-    const editorialImage = getEditorialImage(product);
-    if (editorialImage) return editorialImage;
+function makeImageMedia(url, alt = 'Product image', id = url) {
+  return {
+    id,
+    type: 'image',
+    url,
+    previewUrl: url,
+    alt,
+  };
+}
+
+function getProductMedia(product) {
+  const shopifyMedia = (product?.media || []).filter(item => item?.url || item?.previewUrl);
+
+  if (shopifyMedia.length > 0) {
+    return shopifyMedia.map((item, index) => ({
+      ...item,
+      id: item.id || `${product.id}-media-${index}`,
+      alt: item.alt || product.name,
+      previewUrl: item.previewUrl || item.url,
+    }));
   }
-  if (index === 0 && product?.heroImage) return product.heroImage;
-  return images[index] || product?.heroImage || images[0] || getPlaceholder('product');
+
+  const imageMedia = [product?.heroImage, ...(product?.images || [])]
+    .filter(Boolean)
+    .filter((image, index, allImages) => allImages.indexOf(image) === index)
+    .map((image, index) => makeImageMedia(image, product?.name, `${product?.id || 'product'}-image-${index}`));
+
+  if (imageMedia.length > 0) {
+    return imageMedia;
+  }
+
+  const editorialImage = getEditorialImage(product);
+  return editorialImage ? [makeImageMedia(editorialImage, product?.name, `${product?.id || 'product'}-editorial`)] : [];
+}
+
+function getPrimaryMedia(product, index = 0) {
+  const media = getProductMedia(product);
+  return media[index] || media[0] || makeImageMedia(getPlaceholder('product'), product?.name);
+}
+
+function getMediaPreviewSrc(media) {
+  return media?.previewUrl || media?.url || getPlaceholder('product');
+}
+
+function getPrimaryImage(product, index = 0) {
+  return getMediaPreviewSrc(getPrimaryMedia(product, index));
 }
 
 function getProductSpecs(product) {
@@ -171,14 +209,80 @@ function getProductSpecs(product) {
   ].filter(Boolean).slice(0, 3);
 }
 
-function PremiumProductStage({ product, src, alt, variant = 'card', className = '', priority = false }) {
-  if (!product) return null;
+function ProductMedia({ media, product, className = '', priority = false, controls = false }) {
+  const alt = media?.alt || product?.name || 'Product media';
+  const preview = getMediaPreviewSrc(media);
 
-  const imageSrc = src || getPrimaryImage(product);
-  const specs = getProductSpecs(product);
+  if (media?.type === 'video' && media.url) {
+    return (
+      <video
+        className={className}
+        poster={preview !== media.url ? preview : undefined}
+        autoPlay={!controls}
+        muted
+        loop
+        playsInline
+        controls={controls}
+        preload={priority ? 'auto' : 'metadata'}
+        aria-label={alt}
+      >
+        {(media.sources?.length ? media.sources : [{ url: media.url, mimeType: 'video/mp4' }]).map((source) => (
+          <source key={source.url} src={source.url} type={source.mimeType || 'video/mp4'} />
+        ))}
+      </video>
+    );
+  }
+
+  if (media?.type === 'external_video' && media.url) {
+    return (
+      <iframe
+        className={className}
+        src={media.url}
+        title={alt}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        loading={priority ? 'eager' : 'lazy'}
+      />
+    );
+  }
+
+  if (media?.type === 'model_3d' && media.url) {
+    return (
+      <model-viewer
+        class={className}
+        src={media.url}
+        poster={preview}
+        alt={alt}
+        camera-controls
+        auto-rotate
+        rotation-per-second="18deg"
+        shadow-intensity="0.65"
+        exposure="0.95"
+        ar
+      />
+    );
+  }
 
   return (
-    <div className={`premium-product-stage premium-product-stage--${variant} ${className}`}>
+    <OptimizedImage
+      src={media?.url || preview}
+      alt={alt}
+      className={className}
+      priority={priority}
+    />
+  );
+}
+
+function PremiumProductStage({ product, media, src, alt, variant = 'card', className = '', priority = false }) {
+  if (!product) return null;
+
+  const stageMedia = media || (src ? makeImageMedia(src, alt || product.name) : getPrimaryMedia(product));
+  const imageSrc = getMediaPreviewSrc(stageMedia);
+  const specs = getProductSpecs(product);
+  const isRichMedia = ['video', 'external_video', 'model_3d'].includes(stageMedia?.type);
+
+  return (
+    <div className={`premium-product-stage premium-product-stage--${variant} ${isRichMedia ? 'premium-product-stage--rich' : ''} ${className}`}>
       <div className="premium-stage-grid" aria-hidden="true" />
       <div className="premium-stage-glass" aria-hidden="true" />
       <motion.div
@@ -186,23 +290,20 @@ function PremiumProductStage({ product, src, alt, variant = 'card', className = 
         animate={{ rotateY: [-10, 10, -10], rotateX: [1, -2, 1], y: [0, -8, 0] }}
         transition={{ duration: variant === 'hero' || variant === 'detail' ? 9 : 7, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <OptimizedImage
-          src={imageSrc}
-          alt={alt || product.name}
-          className="premium-stage-image"
-          priority={priority}
-        />
+        <ProductMedia media={stageMedia} product={product} className="premium-stage-image" priority={priority} />
       </motion.div>
       <div className="premium-stage-shadow" aria-hidden="true" />
-      <div className="premium-stage-reflection" aria-hidden="true">
-        <OptimizedImage
-          src={imageSrc}
-          alt=""
-          className="premium-stage-reflection-image"
-        />
-      </div>
+      {stageMedia?.type === 'image' && (
+        <div className="premium-stage-reflection" aria-hidden="true">
+          <OptimizedImage
+            src={imageSrc}
+            alt=""
+            className="premium-stage-reflection-image"
+          />
+        </div>
+      )}
       <div className="premium-stage-scan" aria-hidden="true" />
-      <div className="premium-stage-badge" aria-hidden="true">360 MATERIAL VIEW</div>
+      <div className="premium-stage-badge" aria-hidden="true">{stageMedia?.type === 'model_3d' ? 'LIVE 3D MODEL' : stageMedia?.type === 'image' ? 'MATERIAL VIEW' : 'MOTION PRODUCT VIEW'}</div>
       <div className="premium-stage-specs" aria-hidden="true">
         {specs.map((spec, index) => (
           <span key={`${spec}-${index}`}>{spec}</span>
@@ -1492,9 +1593,7 @@ function ProductPage({ productId, onAddToCart, onBack }) {
   }
 
   const collectionName = getCollection(product.collection)?.name || product.collection;
-  const productImages = [getEditorialImage(product), product.heroImage, ...(product.images || [])]
-    .filter(Boolean)
-    .filter((image, index, allImages) => allImages.indexOf(image) === index);
+  const productMedia = getProductMedia(product);
 
   return (
     <div className="min-h-screen bg-black">
@@ -1510,31 +1609,36 @@ function ProductPage({ productId, onAddToCart, onBack }) {
           >
             <PremiumProductStage
               product={product}
-              src={productImages[currentImage] || getPrimaryImage(product, currentImage)}
-              alt={`${product.name} - Image ${currentImage + 1}`}
+              media={productMedia[currentImage] || getPrimaryMedia(product, currentImage)}
+              alt={`${product.name} - Media ${currentImage + 1}`}
               variant="detail"
               priority
             />
           </motion.div>
           
           {/* Image Navigation */}
-          {productImages.length > 1 && (
+          {productMedia.length > 1 && (
             <nav className="absolute bottom-6 left-6 right-6 flex gap-3 overflow-x-auto scrollbar-hide lg:left-10 lg:right-10" aria-label="Product images">
-              {productImages.slice(0, 6).map((image, index) => (
+              {productMedia.slice(0, 8).map((media, index) => (
                 <button
-                  key={index}
+                  key={media.id || index}
                   onClick={() => setCurrentImage(index)}
                   className={`h-20 w-16 shrink-0 border transition-all bg-black/60 ${
                     currentImage === index ? 'border-white' : 'border-white/15 hover:border-white/45'
                   }`}
-                  aria-label={`View image ${index + 1}`}
+                  aria-label={`View media ${index + 1}`}
                   aria-current={currentImage === index ? 'true' : undefined}
                 >
                   <OptimizedImage
-                    src={image}
+                    src={getMediaPreviewSrc(media)}
                     alt=""
                     className="h-full w-full object-contain p-1"
                   />
+                  {media.type !== 'image' && (
+                    <span className="absolute inset-x-1 bottom-1 bg-white text-black text-[8px] uppercase tracking-wider">
+                      {media.type === 'model_3d' ? '3D' : 'Video'}
+                    </span>
+                  )}
                 </button>
               ))}
             </nav>

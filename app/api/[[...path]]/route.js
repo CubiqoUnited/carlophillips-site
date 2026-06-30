@@ -31,12 +31,20 @@ export async function GET(request, { params }) {
   try {
     // Health check endpoint
     if (pathString === '' || pathString === 'health') {
+      const hasShopifyDomain = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
+      const hasShopifyToken = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN);
+      const shopifyConnected = hasShopifyDomain && hasShopifyToken;
+
       return NextResponse.json(
         { 
-          status: 'ok', 
+          status: shopifyConnected ? 'ok' : 'degraded',
           service: 'CARLOPHILLIPS Headless API',
-          message: 'All systems operational',
-          shopify: 'Connected',
+          message: shopifyConnected ? 'All systems operational' : 'Shopify Storefront API environment is incomplete',
+          shopify: shopifyConnected ? 'Connected' : 'Not configured',
+          shopifyEnvironment: {
+            hasDomain: hasShopifyDomain,
+            hasToken: hasShopifyToken,
+          },
           timestamp: new Date().toISOString(),
           version: '1.0.0'
         },
