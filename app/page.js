@@ -1672,9 +1672,16 @@ function ProductPage({ productId, onAddToCart, onBack }) {
               </p>
             )}
             
-            <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg">
-              {product.description}
-            </p>
+            {product.descriptionHtml ? (
+              <div
+                className="product-rich-description text-white/60 text-sm leading-relaxed mb-10 max-w-lg"
+                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+              />
+            ) : (
+              <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg">
+                {product.description}
+              </p>
+            )}
 
             <div className="grid grid-cols-3 gap-px bg-white/10 mb-10 max-w-xl">
               {getProductSpecs(product).map((spec, index) => (
@@ -1763,7 +1770,7 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             )}
 
             {/* Product Details */}
-            {product.details && product.details.length > 0 && (
+            {!product.descriptionHtml && product.details && product.details.length > 0 && (
               <div className="mt-12 pt-8 border-t border-white/10">
                 <h2 className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">{productContent.labels.details}</h2>
                 <ul className="space-y-2">

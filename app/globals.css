@@ -267,6 +267,20 @@
   }
 }
 
+.product-rich-description p {
+  margin-bottom: 1rem;
+}
+
+.product-rich-description p:last-child {
+  margin-bottom: 0;
+}
+
+.product-rich-description strong,
+.product-rich-description b {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 500;
+}
+
 @keyframes premium-scan {
   0%, 16% {
     transform: translateY(0);
