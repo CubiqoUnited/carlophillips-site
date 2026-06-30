@@ -18,6 +18,93 @@ function corsHeaders() {
   };
 }
 
+async function auditShopifyMedia() {
+  const storeDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+  const storefrontToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN;
+
+  if (!storeDomain || !storefrontToken) {
+    return {
+      status: 'degraded',
+      shopify: 'Not configured',
+      products: [],
+      mediaTypeCounts: {},
+    };
+  }
+
+  const query = `
+    query ProductMediaAudit($first: Int = 50) {
+      products(first: $first, sortKey: TITLE) {
+        edges {
+          node {
+            handle
+            title
+            media(first: 20) {
+              edges {
+                node {
+                  mediaContentType
+                  ... on MediaImage { image { url } }
+                  ... on Video { sources { url mimeType } previewImage { url } }
+                  ... on ExternalVideo { embeddedUrl host originUrl previewImage { url } }
+                  ... on Model3d { sources { url mimeType } previewImage { url } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await fetch(`https://${storeDomain}/api/2024-01/graphql.json`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': storefrontToken,
+    },
+    body: JSON.stringify({ query, variables: { first: 50 } }),
+    cache: 'no-store',
+  });
+
+  const payload = await response.json();
+
+  if (!response.ok || payload.errors) {
+    return {
+      status: 'error',
+      shopify: 'Query failed',
+      errors: payload.errors?.map(error => error.message) || [`HTTP ${response.status}`],
+      products: [],
+      mediaTypeCounts: {},
+    };
+  }
+
+  const products = payload.data.products.edges.map(({ node }) => {
+    const mediaTypes = node.media.edges.map(edge => edge.node.mediaContentType);
+    return {
+      title: node.title,
+      handle: node.handle,
+      mediaCount: mediaTypes.length,
+      mediaTypes: [...new Set(mediaTypes)],
+      hasMotionOr3d: mediaTypes.some(type => ['VIDEO', 'EXTERNAL_VIDEO', 'MODEL_3D'].includes(type)),
+    };
+  });
+
+  const mediaTypeCounts = products.reduce((counts, product) => {
+    product.mediaTypes.forEach(type => {
+      counts[type] = (counts[type] || 0) + 1;
+    });
+    return counts;
+  }, {});
+
+  return {
+    status: 'ok',
+    shopify: 'Connected',
+    productCount: products.length,
+    mediaTypeCounts,
+    productsWithoutMotionOr3d: products.filter(product => !product.hasMotionOr3d).length,
+    products,
+  };
+}
+
 // OPTIONS handler for CORS
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders() });
@@ -50,6 +137,10 @@ export async function GET(request, { params }) {
         },
         { headers: corsHeaders() }
       );
+    }
+
+    if (pathString === 'shopify/media-audit') {
+      return NextResponse.json(await auditShopifyMedia(), { headers: corsHeaders() });
     }
 
     // All product/cart data comes from Shopify
