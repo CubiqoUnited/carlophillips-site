@@ -122,6 +122,96 @@ function OptimizedImage({ src, alt, className = '', loading = 'lazy', sizes = '1
   );
 }
 
+const editorialProductImages = [
+  { match: /bomber|jacket|outerwear|overshirt|vest/i, src: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=1800&q=85' },
+  { match: /hoodie|sweatshirt|crewneck|fleece/i, src: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=1800&q=85' },
+  { match: /tee|t-shirt|shirt|essential/i, src: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1800&q=85' },
+  { match: /jogger|pant|trouser/i, src: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=1800&q=85' },
+  { match: /backpack|bag|leather|accessor/i, src: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=1800&q=85' },
+  { match: /cap|hat/i, src: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=1800&q=85' },
+  { match: /necklace|chain/i, src: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1800&q=85' },
+  { match: /ring|bracelet|jewelry/i, src: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=1800&q=85' },
+  { match: /watch/i, src: 'https://images.unsplash.com/photo-1622434641406-a158123450f9?w=1800&q=85' },
+  { match: /blanket|throw|home|living/i, src: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?w=1800&q=85' },
+  { match: /mug|ceramic/i, src: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=1800&q=85' },
+  { match: /candle|scent/i, src: 'https://images.unsplash.com/photo-1602607650424-99f05c0ea9a2?w=1800&q=85' },
+];
+
+function getEditorialImage(product) {
+  const searchable = [
+    product?.id,
+    product?.name,
+    product?.collection,
+    product?.productType,
+    product?.vendor,
+    ...(product?.tags || []),
+  ].filter(Boolean).join(' ');
+
+  return editorialProductImages.find(({ match }) => match.test(searchable))?.src || null;
+}
+
+function getPrimaryImage(product, index = 0) {
+  const images = product?.images?.filter(Boolean) || [];
+  if (index === 0) {
+    const editorialImage = getEditorialImage(product);
+    if (editorialImage) return editorialImage;
+  }
+  if (index === 0 && product?.heroImage) return product.heroImage;
+  return images[index] || product?.heroImage || images[0] || getPlaceholder('product');
+}
+
+function getProductSpecs(product) {
+  const details = product?.details?.filter(Boolean) || [];
+  if (details.length >= 3) return details.slice(0, 3);
+
+  return [
+    product?.productType || product?.collection || 'Premium build',
+    product?.vendor || 'Shopify connected',
+    product?.availableForSale === false ? 'Limited availability' : 'Order ready',
+  ].filter(Boolean).slice(0, 3);
+}
+
+function PremiumProductStage({ product, src, alt, variant = 'card', className = '', priority = false }) {
+  if (!product) return null;
+
+  const imageSrc = src || getPrimaryImage(product);
+  const specs = getProductSpecs(product);
+
+  return (
+    <div className={`premium-product-stage premium-product-stage--${variant} ${className}`}>
+      <div className="premium-stage-grid" aria-hidden="true" />
+      <div className="premium-stage-glass" aria-hidden="true" />
+      <motion.div
+        className="premium-stage-turntable"
+        animate={{ rotateY: [-10, 10, -10], rotateX: [1, -2, 1], y: [0, -8, 0] }}
+        transition={{ duration: variant === 'hero' || variant === 'detail' ? 9 : 7, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <OptimizedImage
+          src={imageSrc}
+          alt={alt || product.name}
+          className="premium-stage-image"
+          priority={priority}
+        />
+      </motion.div>
+      <div className="premium-stage-shadow" aria-hidden="true" />
+      <div className="premium-stage-reflection" aria-hidden="true">
+        <OptimizedImage
+          src={imageSrc}
+          alt=""
+          className="premium-stage-reflection-image"
+        />
+      </div>
+      <div className="premium-stage-scan" aria-hidden="true" />
+      <div className="premium-stage-badge" aria-hidden="true">360 MATERIAL VIEW</div>
+      <div className="premium-stage-specs" aria-hidden="true">
+        {specs.map((spec, index) => (
+          <span key={`${spec}-${index}`}>{spec}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ============ PREMIUM LOADING COMPONENT ============
 function LoadingSpinner({ size = 'default', text = '' }) {
   const sizeClasses = {
@@ -725,16 +815,15 @@ function HeroSection({ onShopClick }) {
             <img
               src={runwayImages[currentImageIndex]}
               alt={`CARLOPHILLIPS Runway Look ${currentImageIndex + 1}`}
-              className="w-full h-full object-contain object-center"
-              style={{ backgroundColor: '#000' }}
+              className="w-full h-full object-cover object-center"
             />
           </motion.div>
         </AnimatePresence>
       </motion.div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/10" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/62 via-black/18 to-transparent" aria-hidden="true" />
 
       {/* Content */}
       <motion.div 
@@ -813,41 +902,46 @@ function ProductHero({ product, onBuyClick, reverse = false }) {
   if (!product) return null;
   
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black">
-      <div className="absolute inset-0">
-        <OptimizedImage
-          src={product.heroImage || product.images?.[0]}
-          alt={product.name}
-          className="w-full h-full object-cover"
-          priority
-        />
-      </div>
-
-      <div className={`absolute inset-0 ${reverse ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-black/80 via-black/40 to-transparent`} aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" aria-hidden="true" />
-
-      <div className={`absolute inset-0 flex items-end lg:items-center p-6 lg:p-16 pb-24 lg:pb-16 ${reverse ? 'lg:justify-end' : ''}`}>
+    <section className="relative min-h-screen w-full overflow-hidden bg-black border-y border-white/10">
+      <div className={`absolute inset-0 ${reverse ? 'bg-[radial-gradient(circle_at_72%_40%,rgba(255,255,255,0.16),transparent_28%)]' : 'bg-[radial-gradient(circle_at_28%_42%,rgba(255,255,255,0.16),transparent_28%)]'}`} aria-hidden="true" />
+      <div className="grid min-h-screen lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
+        <div className={`${reverse ? 'lg:order-2' : ''} flex items-center justify-center p-4 sm:p-8 lg:p-16 pt-24 lg:pt-16`}>
+          <PremiumProductStage product={product} variant="hero" priority />
+        </div>
+        <div className={`flex items-end lg:items-center p-6 lg:p-16 pb-20 lg:pb-16 ${reverse ? 'lg:order-1 lg:justify-end lg:text-right' : ''}`}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className={`max-w-xl ${reverse ? 'lg:text-right' : ''}`}
+          className="max-w-xl"
         >
+          <p className="text-white/45 text-[10px] tracking-[0.28em] uppercase mb-5">
+            Engineered product view
+          </p>
           <h2 className="text-white text-4xl md:text-5xl lg:text-6xl font-light leading-tight mb-4 tracking-tight">
             {product.name}
           </h2>
           <p className="text-white/60 text-sm md:text-base uppercase tracking-[0.2em] mb-6">
             {product.tagline || product.description?.slice(0, 80)}
           </p>
+          <div className={`grid grid-cols-3 gap-px bg-white/10 mb-8 ${reverse ? 'lg:ml-auto' : ''} max-w-md`}>
+            {getProductSpecs(product).map((spec, index) => (
+              <div key={`${spec}-${index}`} className="bg-black/80 px-3 py-4">
+                <span className="block text-white/35 text-[9px] tracking-[0.2em] uppercase mb-2">0{index + 1}</span>
+                <span className="block text-white/75 text-[11px] leading-snug">{spec}</span>
+              </div>
+            ))}
+          </div>
           <button
             onClick={() => onBuyClick(product.id)}
             className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border border-white/30 px-8 py-4 hover:bg-white hover:text-black transition-all"
           >
-            Buy Now
+            Inspect Product
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </button>
         </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -946,16 +1040,11 @@ function ProductCarousel({ title, products: carouselProducts, onProductClick, is
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && onProductClick(product.id)}
           >
-            <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
-              <OptimizedImage
-                src={product.images?.[0] || product.heroImage}
-                alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" aria-hidden="true" />
+            <div className="mb-4 relative">
+              <PremiumProductStage product={product} variant="card" />
             </div>
             <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
-            <p className="text-white/40 text-xs mb-2 line-clamp-2">{product.tagline || product.description?.slice(0, 60)}...</p>
+            <p className="text-white/40 text-xs mb-2 line-clamp-2">{product.tagline || product.description?.slice(0, 90)}</p>
             <p className="text-white text-sm">{site.currency.symbol}{product.price}</p>
           </motion.article>
         ))}
@@ -1307,13 +1396,8 @@ function CollectionsPage({ onProductClick, selectedCollection, onCollectionChang
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && onProductClick(product.id)}
             >
-              <div className="aspect-[3/4] overflow-hidden bg-neutral-900 mb-4 relative">
-                <OptimizedImage
-                  src={product.images?.[0] || product.heroImage}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" aria-hidden="true" />
+              <div className="mb-4 relative">
+                <PremiumProductStage product={product} variant="grid" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-white text-xs tracking-wider uppercase">Quick View</span>
                 </div>
@@ -1408,40 +1492,50 @@ function ProductPage({ productId, onAddToCart, onBack }) {
   }
 
   const collectionName = getCollection(product.collection)?.name || product.collection;
+  const productImages = [getEditorialImage(product), product.heroImage, ...(product.images || [])]
+    .filter(Boolean)
+    .filter((image, index, allImages) => allImages.indexOf(image) === index);
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="grid lg:grid-cols-2 min-h-screen">
+      <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] min-h-screen">
         {/* Image Section */}
-        <div className="relative h-screen lg:sticky lg:top-0">
+        <div className="relative min-h-[78vh] lg:h-screen lg:sticky lg:top-0 bg-[#050505] overflow-hidden">
           <motion.div
             key={currentImage}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 flex items-center justify-center p-4 sm:p-8 lg:p-12"
           >
-            <OptimizedImage
-              src={product.images?.[currentImage] || product.heroImage}
+            <PremiumProductStage
+              product={product}
+              src={productImages[currentImage] || getPrimaryImage(product, currentImage)}
               alt={`${product.name} - Image ${currentImage + 1}`}
-              className="w-full h-full object-cover"
+              variant="detail"
               priority
             />
           </motion.div>
           
           {/* Image Navigation */}
-          {product.images && product.images.length > 1 && (
-            <nav className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2" aria-label="Product images">
-              {product.images.map((_, index) => (
+          {productImages.length > 1 && (
+            <nav className="absolute bottom-6 left-6 right-6 flex gap-3 overflow-x-auto scrollbar-hide lg:left-10 lg:right-10" aria-label="Product images">
+              {productImages.slice(0, 6).map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentImage(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    currentImage === index ? 'bg-white w-6' : 'bg-white/40'
+                  className={`h-20 w-16 shrink-0 border transition-all bg-black/60 ${
+                    currentImage === index ? 'border-white' : 'border-white/15 hover:border-white/45'
                   }`}
                   aria-label={`View image ${index + 1}`}
                   aria-current={currentImage === index ? 'true' : undefined}
-                />
+                >
+                  <OptimizedImage
+                    src={image}
+                    alt=""
+                    className="h-full w-full object-contain p-1"
+                  />
+                </button>
               ))}
             </nav>
           )}
@@ -1477,6 +1571,15 @@ function ProductPage({ productId, onAddToCart, onBack }) {
             <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg">
               {product.description}
             </p>
+
+            <div className="grid grid-cols-3 gap-px bg-white/10 mb-10 max-w-xl">
+              {getProductSpecs(product).map((spec, index) => (
+                <div key={`${spec}-${index}`} className="bg-black px-3 py-4">
+                  <span className="block text-white/35 text-[9px] tracking-[0.2em] uppercase mb-2">Spec 0{index + 1}</span>
+                  <span className="block text-white/75 text-[11px] leading-snug">{spec}</span>
+                </div>
+              ))}
+            </div>
 
             {/* Color Selection */}
             {product.variants?.colors && product.variants.colors.length > 0 && product.variants.colors[0] !== 'Default' && (
