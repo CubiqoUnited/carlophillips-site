@@ -105,6 +105,60 @@ async function auditShopifyMedia() {
   };
 }
 
+async function auditPremiumReadiness() {
+  const audit = await auditShopifyMedia();
+
+  if (audit.status !== 'ok') {
+    return {
+      ...audit,
+      readiness: 'blocked',
+      nextAction: 'Restore Shopify Storefront API configuration before auditing premium readiness.',
+    };
+  }
+
+  const products = audit.products.map(product => {
+    const hasImage = product.mediaTypes.includes('IMAGE');
+    const hasMotion = product.mediaTypes.includes('VIDEO') || product.mediaTypes.includes('EXTERNAL_VIDEO');
+    const has3d = product.mediaTypes.includes('MODEL_3D');
+    const score = [hasImage, hasMotion, has3d].filter(Boolean).length;
+
+    return {
+      ...product,
+      premiumReadiness: score === 3 ? 'ready' : score === 2 ? 'partial' : 'media-poor',
+      requiredAdds: [
+        product.mediaCount < 6 ? 'Add 6-8 Shopify product media assets' : null,
+        hasMotion ? null : 'Add product/editorial video media',
+        has3d ? null : 'Add 3D model or 360 product spin asset',
+      ].filter(Boolean),
+    };
+  });
+
+  const ready = products.filter(product => product.premiumReadiness === 'ready').length;
+  const partial = products.filter(product => product.premiumReadiness === 'partial').length;
+  const mediaPoor = products.filter(product => product.premiumReadiness === 'media-poor').length;
+
+  return {
+    status: 'ok',
+    shopify: 'Connected',
+    readiness: mediaPoor === 0 ? 'scalable' : 'media-gap',
+    summary: {
+      productCount: products.length,
+      ready,
+      partial,
+      mediaPoor,
+      productsWithoutMotionOr3d: audit.productsWithoutMotionOr3d,
+      mediaTypeCounts: audit.mediaTypeCounts,
+    },
+    appPath: [
+      'Cappasity or Spin Studio for 360/3D-style product viewing',
+      'Zakeke for real-time 3D/customizer/AI visual production if customization becomes core',
+      'Loox or Judge.me for photo reviews after product media baseline is fixed',
+      'Klaviyo for lifecycle and abandoned checkout flows',
+    ],
+    products,
+  };
+}
+
 // OPTIONS handler for CORS
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders() });
@@ -141,6 +195,10 @@ export async function GET(request, { params }) {
 
     if (pathString === 'shopify/media-audit') {
       return NextResponse.json(await auditShopifyMedia(), { headers: corsHeaders() });
+    }
+
+    if (pathString === 'shopify/premium-readiness') {
+      return NextResponse.json(await auditPremiumReadiness(), { headers: corsHeaders() });
     }
 
     // All product/cart data comes from Shopify
