@@ -1912,6 +1912,43 @@ export default function App() {
     }
   }, []);
 
+  // Hydrate the single-page storefront from direct production URLs.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const path = window.location.pathname.replace(/\/$/, '');
+
+    if (path === '/shop' || path === '/collections') {
+      setCurrentPage('collections');
+      setSelectedProduct(null);
+      setSelectedCollection(null);
+      return;
+    }
+
+    if (path.startsWith('/products/')) {
+      const handle = decodeURIComponent(path.split('/products/')[1] || '').split('/')[0];
+      if (handle) {
+        setCurrentPage('product');
+        setSelectedProduct(handle);
+        setSelectedCollection(null);
+      }
+      return;
+    }
+
+    if (path === '/about') {
+      setCurrentPage('about');
+      setSelectedProduct(null);
+      setSelectedCollection(null);
+      return;
+    }
+
+    if (path === '/lookbook') {
+      setCurrentPage('lookbook');
+      setSelectedProduct(null);
+      setSelectedCollection(null);
+    }
+  }, []);
+
   // Get current brand config
   const brand = getBrand(currentBrand);
 
