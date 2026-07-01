@@ -95,9 +95,22 @@ function BrandSwitcher({ currentBrand, onBrandChange }) {
 
 // ============ OPTIMIZED IMAGE COMPONENT ============
 function OptimizedImage({ src, alt, className = '', loading = 'lazy', sizes = '100vw', priority = false, onLoad, onError }) {
+  const imgRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const placeholder = getPlaceholder('product');
+
+  useEffect(() => {
+    setIsLoaded(false);
+    setHasError(false);
+  }, [src]);
+
+  useEffect(() => {
+    const image = imgRef.current;
+    if (image?.complete && image.naturalWidth > 0) {
+      setIsLoaded(true);
+    }
+  }, [src]);
 
   const handleLoad = () => {
     setIsLoaded(true);
@@ -111,6 +124,7 @@ function OptimizedImage({ src, alt, className = '', loading = 'lazy', sizes = '1
 
   return (
     <img
+      ref={imgRef}
       src={hasError ? placeholder : src}
       alt={alt}
       className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
@@ -277,33 +291,20 @@ function PremiumProductStage({ product, media, src, alt, variant = 'card', class
   if (!product) return null;
 
   const stageMedia = media || (src ? makeImageMedia(src, alt || product.name) : getPrimaryMedia(product));
-  const imageSrc = getMediaPreviewSrc(stageMedia);
   const specs = getProductSpecs(product);
   const isRichMedia = ['video', 'external_video', 'model_3d'].includes(stageMedia?.type);
 
   return (
     <div className={`premium-product-stage premium-product-stage--${variant} ${isRichMedia ? 'premium-product-stage--rich' : ''} ${className}`}>
-      <div className="premium-stage-grid" aria-hidden="true" />
-      <div className="premium-stage-glass" aria-hidden="true" />
+      <div className="premium-stage-backdrop" aria-hidden="true" />
       <motion.div
-        className="premium-stage-turntable"
-        animate={{ rotateY: [-10, 10, -10], rotateX: [1, -2, 1], y: [0, -8, 0] }}
-        transition={{ duration: variant === 'hero' || variant === 'detail' ? 9 : 7, repeat: Infinity, ease: 'easeInOut' }}
+        className="premium-stage-image-frame"
+        animate={isRichMedia ? { y: [0, -6, 0] } : undefined}
+        whileHover={!isRichMedia ? { scale: 1.025 } : undefined}
+        transition={{ duration: 7, repeat: isRichMedia ? Infinity : 0, ease: 'easeInOut' }}
       >
         <ProductMedia media={stageMedia} product={product} className="premium-stage-image" priority={priority} />
       </motion.div>
-      <div className="premium-stage-shadow" aria-hidden="true" />
-      {stageMedia?.type === 'image' && (
-        <div className="premium-stage-reflection" aria-hidden="true">
-          <OptimizedImage
-            src={imageSrc}
-            alt=""
-            className="premium-stage-reflection-image"
-          />
-        </div>
-      )}
-      <div className="premium-stage-scan" aria-hidden="true" />
-      <div className="premium-stage-badge" aria-hidden="true">{stageMedia?.type === 'model_3d' ? 'LIVE 3D MODEL' : stageMedia?.type === 'image' ? 'MATERIAL VIEW' : 'MOTION PRODUCT VIEW'}</div>
       <div className="premium-stage-specs" aria-hidden="true">
         {specs.map((spec, index) => (
           <span key={`${spec}-${index}`}>{spec}</span>
@@ -873,13 +874,11 @@ function HeroSection({ onShopClick }) {
 
   const heroContent = homepage.hero;
   
-  // CARLOPHILLIPS Runway Images - Individual model shots only (no lineup)
   const runwayImages = [
-    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/kehwslds_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_34%20AM.png',
-    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/x9tb3b3j_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_16%20AM.png',
-    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/7e9h695p_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_12%20AM.png',
-    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/g483a1wb_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_20_02%20AM.png',
-    'https://customer-assets.emergentagent.com/job_c8d11765-3066-436d-8118-a3922c519218/artifacts/d1y2z1zu_ChatGPT%20Image%20Mar%2024%2C%202026%2C%2008_19_53%20AM.png',
+    '/brand-boards/carlophillips-drop-board.png',
+    '/brand-boards/carlo-system-board.png',
+    '/brand-boards/love-carlo-board.png',
+    '/brand-boards/identity-board.png',
   ];
 
   // Auto-advance slideshow
@@ -897,7 +896,7 @@ function HeroSection({ onShopClick }) {
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black" aria-label="Hero section">
       {/* Animated Image Slideshow with Ken Burns Effect */}
-      <motion.div style={{ y }} className="absolute inset-0">
+      <motion.div style={{ y }} className="absolute inset-y-0 right-0 w-full lg:w-[68vw] opacity-90">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentImageIndex}
@@ -911,20 +910,20 @@ function HeroSection({ onShopClick }) {
               }
             }}
             exit={{ opacity: 0, transition: { duration: 1 } }}
-            className="absolute inset-0"
+            className="absolute inset-0 flex items-center justify-center"
           >
             <img
               src={runwayImages[currentImageIndex]}
-              alt={`CARLOPHILLIPS Runway Look ${currentImageIndex + 1}`}
-              className="w-full h-full object-cover object-center"
+              alt={`CARLOPHILLIPS visual system ${currentImageIndex + 1}`}
+              className="h-[82vh] w-auto max-w-[min(72vw,860px)] object-contain object-center"
             />
           </motion.div>
         </AnimatePresence>
       </motion.div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/10" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/62 via-black/18 to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/24 to-black/10" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/62 to-black/10" aria-hidden="true" />
 
       {/* Content */}
       <motion.div 
@@ -1018,7 +1017,7 @@ function ProductHero({ product, onBuyClick, reverse = false }) {
           className="max-w-xl"
         >
           <p className="text-white/45 text-[10px] tracking-[0.28em] uppercase mb-5">
-            Engineered product view
+            Current collection
           </p>
           <h2 className="text-white text-4xl md:text-5xl lg:text-6xl font-light leading-tight mb-4 tracking-tight">
             {product.name}
@@ -1216,6 +1215,80 @@ function PressSection() {
             <li key={index}>{item.name}: {item.quote}</li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+// ============ BRAND SYSTEM BOARDS ============
+function BrandBoardsSection() {
+  const boards = [
+    {
+      title: 'CARLOPHILLIPS',
+      src: '/brand-boards/carlophillips-drop-board.png',
+      alt: 'CARLOPHILLIPS apparel and accessories brand board',
+    },
+    {
+      title: 'CARLO SYSTEM',
+      src: '/brand-boards/carlo-system-board.png',
+      alt: 'CARLOPHILLIPS full product system board',
+    },
+    {
+      title: 'LOVE, CARLO',
+      src: '/brand-boards/love-carlo-board.png',
+      alt: 'love, Carlo identity and product board',
+    },
+  ];
+
+  return (
+    <section className="bg-black border-y border-white/10 py-16 lg:py-24" aria-labelledby="brand-system-heading">
+      <div className="px-6 lg:px-16 mb-10 lg:mb-14">
+        <p className="text-white/40 text-[10px] tracking-[0.28em] uppercase mb-4">Visual system</p>
+        <h2 id="brand-system-heading" className="text-white text-4xl md:text-5xl lg:text-6xl font-light tracking-tight max-w-4xl">
+          The collection already has a world. The storefront now has to carry it.
+        </h2>
+      </div>
+
+      <div className="grid lg:grid-cols-[1.12fr_0.88fr] gap-px bg-white/10">
+        <motion.figure
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="relative min-h-[72vh] bg-[#050505] overflow-hidden"
+        >
+          <OptimizedImage
+            src={boards[0].src}
+            alt={boards[0].alt}
+            className="absolute inset-0 h-full w-full object-contain p-6 lg:p-10"
+            priority
+          />
+          <figcaption className="absolute left-6 bottom-6 text-white text-xs tracking-[0.22em] uppercase">
+            {boards[0].title}
+          </figcaption>
+        </motion.figure>
+
+        <div className="grid gap-px bg-white/10">
+          {boards.slice(1).map((board, index) => (
+            <motion.figure
+              key={board.src}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: index * 0.08 }}
+              className="relative min-h-[36vh] bg-[#050505] overflow-hidden"
+            >
+              <OptimizedImage
+                src={board.src}
+                alt={board.alt}
+                className="absolute inset-0 h-full w-full object-contain p-6 lg:p-8"
+              />
+              <figcaption className="absolute left-6 bottom-6 text-white text-xs tracking-[0.22em] uppercase">
+                {board.title}
+              </figcaption>
+            </motion.figure>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -2083,6 +2156,7 @@ export default function App() {
         {currentPage === 'home' && (
           <>
             <HeroSection onShopClick={() => handleNavigate('collections')} />
+            <BrandBoardsSection />
             <ProductHero product={heroProduct} onBuyClick={handleProductClick} />
             <ProductCarousel 
               title={homepage.featuredSections.carousels[0].title}
