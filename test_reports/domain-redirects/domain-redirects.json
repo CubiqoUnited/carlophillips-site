@@ -1,0 +1,47 @@
+{
+  "date": "2026-07-04",
+  "canonicalDestination": "https://www.carlophillips.com",
+  "spaceshipRedirects": [
+    {
+      "domain": "lovecarlo.com",
+      "target": "https://www.carlophillips.com",
+      "type": "301 Permanent",
+      "validatedHttp": true
+    },
+    {
+      "domain": "www.lovecarlo.com",
+      "target": "https://www.carlophillips.com",
+      "type": "301 Permanent",
+      "validatedHttp": true
+    },
+    {
+      "domain": "houseofcarlphillips.com",
+      "target": "https://www.carlophillips.com",
+      "type": "301 Permanent",
+      "validatedHttp": true
+    },
+    {
+      "domain": "www.houseofcarlphillips.com",
+      "target": "https://www.carlophillips.com",
+      "type": "301 Permanent",
+      "validatedHttp": true
+    }
+  ],
+  "vercelDomainsAdded": [
+    "lovecarlo.com",
+    "www.lovecarlo.com",
+    "houseofcarlphillips.com",
+    "www.houseofcarlphillips.com"
+  ],
+  "vercelWarningExpected": true,
+  "vercelWarningReason": "DNS remains on Spaceship URL Redirect service instead of Vercel A records.",
+  "nextConfigRedirectHosts": [
+    "carlophillips.com",
+    "lovecarlo.com",
+    "www.lovecarlo.com",
+    "houseofcarlphillips.com",
+    "www.houseofcarlphillips.com"
+  ],
+  "buildPassed": true,
+  "productionDeployed": false
+}

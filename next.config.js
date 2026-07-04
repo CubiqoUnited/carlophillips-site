@@ -18,6 +18,23 @@ const nextConfig = {
     maxInactiveAge: 10000,
     pagesBufferLength: 2,
   },
+  async redirects() {
+    const canonicalHost = "https://www.carlophillips.com";
+    const brandRedirectHosts = [
+      "carlophillips.com",
+      "lovecarlo.com",
+      "www.lovecarlo.com",
+      "houseofcarlphillips.com",
+      "www.houseofcarlphillips.com",
+    ];
+
+    return brandRedirectHosts.map((host) => ({
+      source: "/:path*",
+      has: [{ type: "host", value: host }],
+      destination: `${canonicalHost}/:path*`,
+      permanent: true,
+    }));
+  },
   async headers() {
     return [
       {
