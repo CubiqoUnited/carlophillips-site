@@ -1,1292 +1,344 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Menu, X, ShoppingBag, ChevronLeft, ChevronRight, Plus, Minus, ArrowRight, Play, Pause, Volume2, VolumeX, Loader2, Instagram, Mail } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
+import { canRenderProducts } from '@/lib/config/product-visibility';
 
-// Data imports
-import { 
-  collections as mockCollections, 
-  products as mockProducts, 
-  getProduct, 
-  getProductsByCollection, 
-  getCollection, 
-  getFeaturedProducts, 
-  getFeaturedCollections,
-  getProductAsync,
-  getProductsByCollectionAsync,
-  getCollectionAsync,
-  getProducts,
-  isUsingShopify
-} from '@/lib/data/products';
+const brands = ['CARLOPHILLIPS', 'loveCarlo', 'HouseOfCarlo'];
 
-import { 
-  getCart, 
-  addToCart, 
-  removeFromCart, 
-  updateQuantity, 
-  getCartItemCount, 
-  getCheckoutUrl, 
-  isCheckoutAvailable,
-  redirectToCheckout,
-  initializeCart,
-  isUsingShopifyCart 
-} from '@/lib/store/cart';
-
-// Content & Assets imports
-import { 
-  site, 
-  homepage, 
-  collections as collectionsContent, 
-  about as aboutContent, 
-  lookbook as lookbookContent, 
-  product as productContent, 
-  cart as cartContent, 
-  footer as footerContent, 
-  navigation as navigationContent 
-} from '@/lib/content';
-
-import { 
-  getHeroVideoUrl, 
-  getHeroPosterUrl, 
-  getLogoUrl, 
-  hasLogoImage, 
-  getCampaignImages, 
-  getCollectionBanner,
-  getPlaceholder 
-} from '@/lib/assets';
-
-// Brand imports
-import { 
-  brands, 
-  brandOrder, 
-  defaultBrand, 
-  detectBrandFromDomain, 
-  getBrand, 
-  getAllBrands 
-} from '@/lib/brands';
-
-// ============ BRAND SWITCHER COMPONENT ============
-function BrandSwitcher({ currentBrand, onBrandChange }) {
-  const allBrands = getAllBrands();
-  
-  return (
-    <div className="flex items-center gap-1">
-      {allBrands.map((brand) => {
-        const isActive = currentBrand === brand.id;
-        return (
-          <button
-            key={brand.id}
-            onClick={() => onBrandChange(brand.id)}
-            className={`px-3 py-1.5 text-[10px] tracking-[0.15em] uppercase transition-all duration-300 ${
-              isActive 
-                ? 'bg-white text-black' 
-                : 'text-white/60 hover:text-white'
-            }`}
-            aria-pressed={isActive}
-          >
-            {brand.id === 'carlophillips' ? 'CP' : brand.id === 'lovecarlo' ? 'LOVE' : 'HOME'}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-// ============ OPTIMIZED IMAGE COMPONENT ============
-function OptimizedImage({ src, alt, className = '', loading = 'lazy', sizes = '100vw', priority = false, onLoad, onError }) {
-  const imgRef = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const placeholder = getPlaceholder('product');
-
-  useEffect(() => {
-    setIsLoaded(false);
-    setHasError(false);
-  }, [src]);
-
-  useEffect(() => {
-    const image = imgRef.current;
-    if (image?.complete && image.naturalWidth > 0) {
-      setIsLoaded(true);
-    }
-  }, [src]);
-
-  const handleLoad = () => {
-    setIsLoaded(true);
-    onLoad?.();
-  };
-
-  const handleError = () => {
-    setHasError(true);
-    onError?.();
-  };
-
-  return (
-    <img
-      ref={imgRef}
-      src={hasError ? placeholder : src}
-      alt={alt}
-      className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
-      loading={priority ? 'eager' : loading}
-      decoding="async"
-      onLoad={handleLoad}
-      onError={handleError}
-    />
-  );
-}
-
-const editorialProductImages = [
-  { match: /bomber|jacket|outerwear|overshirt|vest/i, src: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=1800&q=85' },
-  { match: /hoodie|sweatshirt|crewneck|fleece/i, src: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=1800&q=85' },
-  { match: /tee|t-shirt|shirt|essential/i, src: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1800&q=85' },
-  { match: /jogger|pant|trouser/i, src: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=1800&q=85' },
-  { match: /backpack|bag|leather|accessor/i, src: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=1800&q=85' },
-  { match: /cap|hat/i, src: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=1800&q=85' },
-  { match: /necklace|chain/i, src: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1800&q=85' },
-  { match: /ring|bracelet|jewelry/i, src: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=1800&q=85' },
-  { match: /watch/i, src: 'https://images.unsplash.com/photo-1622434641406-a158123450f9?w=1800&q=85' },
-  { match: /blanket|throw|home|living/i, src: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?w=1800&q=85' },
-  { match: /mug|ceramic/i, src: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=1800&q=85' },
-  { match: /candle|scent/i, src: 'https://images.unsplash.com/photo-1602607650424-99f05c0ea9a2?w=1800&q=85' },
+const editorialPanels = [
+  {
+    label: 'Apparel',
+    title: 'Cut, weight, proportion.',
+    body: 'The first apparel language is being edited around restraint and material presence.',
+  },
+  {
+    label: 'Objects',
+    title: 'Useful things with silence.',
+    body: 'Accessories and daily objects will enter only when form, finish, and use are resolved.',
+  },
+  {
+    label: 'Identity',
+    title: 'A graphic system, not decoration.',
+    body: 'Marks, scale, placement, and negative space are being treated as product decisions.',
+  },
+  {
+    label: 'Future drop',
+    title: 'Release by approval.',
+    body: 'Nothing enters the store until media, construction, fulfillment, and pricing are ready.',
+  },
 ];
 
-function getEditorialImage(product) {
-  const searchable = [
-    product?.id,
-    product?.name,
-    product?.collection,
-    product?.productType,
-    product?.vendor,
-    ...(product?.tags || []),
-  ].filter(Boolean).join(' ');
+const architectureModules = [
+  'Product film',
+  'Studio image',
+  'Detail story',
+  'Fit notes',
+  'Material record',
+  'Release page',
+];
 
-  return editorialProductImages.find(({ match }) => match.test(searchable))?.src || null;
-}
+function AppShell() {
+  const pathname = usePathname() || '/';
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [bagOpen, setBagOpen] = useState(false);
+  const productsVisible = canRenderProducts();
 
-function makeImageMedia(url, alt = 'Product image', id = url) {
-  return {
-    id,
-    type: 'image',
-    url,
-    previewUrl: url,
-    alt,
-  };
-}
-
-function getProductMedia(product) {
-  const shopifyMedia = (product?.media || []).filter(item => item?.url || item?.previewUrl);
-
-  if (shopifyMedia.length > 0) {
-    return shopifyMedia.map((item, index) => ({
-      ...item,
-      id: item.id || `${product.id}-media-${index}`,
-      alt: item.alt || product.name,
-      previewUrl: item.previewUrl || item.url,
-    }));
-  }
-
-  const imageMedia = [product?.heroImage, ...(product?.images || [])]
-    .filter(Boolean)
-    .filter((image, index, allImages) => allImages.indexOf(image) === index)
-    .map((image, index) => makeImageMedia(image, product?.name, `${product?.id || 'product'}-image-${index}`));
-
-  if (imageMedia.length > 0) {
-    return imageMedia;
-  }
-
-  const editorialImage = getEditorialImage(product);
-  return editorialImage ? [makeImageMedia(editorialImage, product?.name, `${product?.id || 'product'}-editorial`)] : [];
-}
-
-function getPrimaryMedia(product, index = 0) {
-  const media = getProductMedia(product);
-  return media[index] || media[0] || makeImageMedia(getPlaceholder('product'), product?.name);
-}
-
-function getMediaPreviewSrc(media) {
-  return media?.previewUrl || media?.url || getPlaceholder('product');
-}
-
-function getPrimaryImage(product, index = 0) {
-  return getMediaPreviewSrc(getPrimaryMedia(product, index));
-}
-
-function getProductSpecs(product) {
-  const details = product?.details?.filter(Boolean) || [];
-  if (details.length >= 3) return details.slice(0, 3);
-
-  return [
-    product?.productType || product?.collection || 'Premium build',
-    product?.vendor || 'Shopify connected',
-    product?.availableForSale === false ? 'Limited availability' : 'Order ready',
-  ].filter(Boolean).slice(0, 3);
-}
-
-function ProductMedia({ media, product, className = '', priority = false, controls = false }) {
-  const alt = media?.alt || product?.name || 'Product media';
-  const preview = getMediaPreviewSrc(media);
-
-  if (media?.type === 'video' && media.url) {
-    return (
-      <video
-        className={className}
-        poster={preview !== media.url ? preview : undefined}
-        autoPlay={!controls}
-        muted
-        loop
-        playsInline
-        controls={controls}
-        preload={priority ? 'auto' : 'metadata'}
-        aria-label={alt}
-      >
-        {(media.sources?.length ? media.sources : [{ url: media.url, mimeType: 'video/mp4' }]).map((source) => (
-          <source key={source.url} src={source.url} type={source.mimeType || 'video/mp4'} />
-        ))}
-      </video>
-    );
-  }
-
-  if (media?.type === 'external_video' && media.url) {
-    return (
-      <iframe
-        className={className}
-        src={media.url}
-        title={alt}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-        loading={priority ? 'eager' : 'lazy'}
-      />
-    );
-  }
-
-  if (media?.type === 'model_3d' && media.url) {
-    return (
-      <model-viewer
-        class={className}
-        src={media.url}
-        poster={preview}
-        alt={alt}
-        camera-controls
-        auto-rotate
-        rotation-per-second="18deg"
-        shadow-intensity="0.65"
-        exposure="0.95"
-        ar
-      />
-    );
-  }
+  const route = getRoute(pathname);
 
   return (
-    <OptimizedImage
-      src={media?.url || preview}
-      alt={alt}
-      className={className}
-      priority={priority}
-    />
+    <main id="main-content" className="min-h-screen bg-[#020202] text-white selection:bg-white selection:text-black">
+      <Header onMenu={() => setMenuOpen(true)} onBag={() => setBagOpen(true)} />
+      {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
+      {bagOpen && <BagOverlay onClose={() => setBagOpen(false)} />}
+
+      {route === 'home' && <HomePage productsVisible={productsVisible} />}
+      {route === 'collection' && <CollectionEmptyPage />}
+      {route === 'product' && <ProductUnreleasedPage />}
+      {route === 'about' && <AboutPage />}
+      {route === 'bag' && <BagPage onBack={() => setBagOpen(true)} />}
+
+      <Footer />
+    </main>
   );
 }
 
-function PremiumProductStage({ product, media, src, alt, variant = 'card', className = '', priority = false }) {
-  if (!product) return null;
-
-  const stageMedia = media || (src ? makeImageMedia(src, alt || product.name) : getPrimaryMedia(product));
-  const specs = getProductSpecs(product);
-  const isRichMedia = ['video', 'external_video', 'model_3d'].includes(stageMedia?.type);
-
-  return (
-    <div className={`premium-product-stage premium-product-stage--${variant} ${isRichMedia ? 'premium-product-stage--rich' : ''} ${className}`}>
-      <div className="premium-stage-backdrop" aria-hidden="true" />
-      <motion.div
-        className="premium-stage-image-frame"
-        animate={isRichMedia ? { y: [0, -6, 0] } : undefined}
-        whileHover={!isRichMedia ? { scale: 1.025 } : undefined}
-        transition={{ duration: 7, repeat: isRichMedia ? Infinity : 0, ease: 'easeInOut' }}
-      >
-        <ProductMedia media={stageMedia} product={product} className="premium-stage-image" priority={priority} />
-      </motion.div>
-      <div className="premium-stage-specs" aria-hidden="true">
-        {specs.map((spec, index) => (
-          <span key={`${spec}-${index}`}>{spec}</span>
-        ))}
-      </div>
-    </div>
-  );
+function getRoute(pathname) {
+  if (pathname.startsWith('/products/')) return 'product';
+  if (pathname.startsWith('/shop') || pathname.startsWith('/collections')) return 'collection';
+  if (pathname.startsWith('/about') || pathname.startsWith('/lookbook')) return 'about';
+  if (pathname.startsWith('/cart') || pathname.startsWith('/bag')) return 'bag';
+  return 'home';
 }
 
-// ============ PREMIUM LOADING COMPONENT ============
-function LoadingSpinner({ size = 'default', text = '' }) {
-  const sizeClasses = {
-    small: 'w-4 h-4',
-    default: 'w-6 h-6',
-    large: 'w-8 h-8',
-  };
-
+function Header({ onMenu, onBag }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4" role="status" aria-label="Loading">
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-        className={sizeClasses[size]}
-      >
-        <Loader2 className="w-full h-full text-white/50" strokeWidth={1.5} />
-      </motion.div>
-      {text && (
-        <p className="text-white/40 text-xs tracking-[0.2em] uppercase">{text}</p>
-      )}
-    </div>
-  );
-}
-
-// ============ PREMIUM LOADING SKELETON ============
-function ProductSkeleton() {
-  return (
-    <div className="animate-pulse" aria-hidden="true">
-      <div className="aspect-[3/4] bg-white/5 mb-4" />
-      <div className="h-4 bg-white/5 w-3/4 mb-2" />
-      <div className="h-3 bg-white/5 w-1/2 mb-2" />
-      <div className="h-4 bg-white/5 w-1/4" />
-    </div>
-  );
-}
-
-function ProductGridSkeleton({ count = 8 }) {
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6" role="status" aria-label="Loading products">
-      {Array.from({ length: count }).map((_, i) => (
-        <ProductSkeleton key={i} />
-      ))}
-    </div>
-  );
-}
-
-function ProductPageSkeleton() {
-  return (
-    <div className="min-h-screen bg-black" role="status" aria-label="Loading product">
-      <div className="grid lg:grid-cols-2 min-h-screen">
-        <div className="relative h-screen lg:sticky lg:top-0 bg-white/5 animate-pulse" />
-        <div className="p-6 lg:p-16 flex flex-col justify-center">
-          <div className="animate-pulse space-y-6">
-            <div className="h-3 bg-white/5 w-24" />
-            <div className="h-12 bg-white/5 w-3/4" />
-            <div className="h-8 bg-white/5 w-20" />
-            <div className="space-y-2">
-              <div className="h-4 bg-white/5 w-full" />
-              <div className="h-4 bg-white/5 w-5/6" />
-              <div className="h-4 bg-white/5 w-4/6" />
-            </div>
-            <div className="flex gap-3 pt-4">
-              <div className="h-12 bg-white/5 w-20" />
-              <div className="h-12 bg-white/5 w-20" />
-              <div className="h-12 bg-white/5 w-20" />
-            </div>
-            <div className="h-14 bg-white/10 w-full mt-6" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============ PREMIUM ERROR STATE ============
-function ErrorState({ message = 'Something went wrong', onRetry }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-24 px-6 text-center"
-      role="alert"
-    >
-      <div className="w-16 h-16 border border-white/20 flex items-center justify-center mb-6">
-        <X className="w-6 h-6 text-white/40" strokeWidth={1} aria-hidden="true" />
-      </div>
-      <p className="text-white/60 text-sm mb-6 max-w-md">{message}</p>
-      {onRetry && (
+    <header className="fixed left-0 right-0 top-0 z-40 border-b border-white/10 bg-black/70 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-[1800px] items-center justify-between px-5 sm:px-8 lg:h-20 lg:px-12">
         <button
-          onClick={onRetry}
-          className="px-8 py-3 text-xs tracking-[0.2em] uppercase border border-white/30 text-white/70 hover:bg-white hover:text-black transition-all"
+          type="button"
+          onClick={onMenu}
+          className="inline-flex h-11 w-11 items-center justify-center border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+          aria-label="Open navigation"
         >
-          Try Again
+          <Menu className="h-5 w-5" strokeWidth={1.4} />
         </button>
-      )}
-    </motion.div>
-  );
-}
 
-// ============ EMPTY STATE ============
-function EmptyState({ title = 'No products found', description = '' }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-24 px-6 text-center"
-    >
-      <div className="w-16 h-16 border border-white/20 flex items-center justify-center mb-6">
-        <ShoppingBag className="w-6 h-6 text-white/40" strokeWidth={1} aria-hidden="true" />
+        <Link href="/" className="absolute left-1/2 -translate-x-1/2 text-xs tracking-[0.36em] text-white sm:text-sm md:hidden">
+          CARLOPHILLIPS
+        </Link>
+
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 text-[10px] uppercase tracking-[0.22em] text-white/45 md:flex" aria-label="Brand navigation">
+          {brands.map((brand) => (
+            <Link key={brand} href={brand === 'CARLOPHILLIPS' ? '/' : '/about'} className="transition hover:text-white">
+              {brand}
+            </Link>
+          ))}
+        </nav>
+
+        <button
+          type="button"
+          onClick={onBag}
+          className="inline-flex h-11 w-11 items-center justify-center border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white md:ml-8"
+          aria-label="Open bag"
+        >
+          <ShoppingBag className="h-5 w-5" strokeWidth={1.4} />
+        </button>
       </div>
-      <h3 className="text-white text-lg mb-2">{title}</h3>
-      {description && (
-        <p className="text-white/50 text-sm max-w-md">{description}</p>
-      )}
-    </motion.div>
+    </header>
   );
 }
 
-// ============ LOGO COMPONENT ============
-function Logo({ className = '', onClick }) {
-  const logoUrl = getLogoUrl('light');
-  
-  if (logoUrl) {
-    return (
-      <button onClick={onClick} className={className} aria-label={`${site.name} - Go to homepage`}>
-        <img 
-          src={logoUrl} 
-          alt={site.name} 
-          className="h-6 md:h-8 w-auto"
-        />
-      </button>
-    );
-  }
-  
+function MenuOverlay({ onClose }) {
   return (
-    <button onClick={onClick} className={className} aria-label={`${site.name} - Go to homepage`}>
-      <span className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
-        {site.name}
-      </span>
-    </button>
+    <div className="fixed inset-0 z-50 bg-black/95 px-6 py-6 text-white">
+      <div className="mx-auto flex max-w-[1600px] justify-between">
+        <span className="text-xs tracking-[0.34em] text-white/60">CARLOPHILLIPS</span>
+        <button
+          type="button"
+          onClick={onClose}
+          className="inline-flex h-11 w-11 items-center justify-center border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+          aria-label="Close navigation"
+        >
+          <X className="h-5 w-5" strokeWidth={1.4} />
+        </button>
+      </div>
+      <nav className="mx-auto mt-24 grid max-w-[1600px] gap-5 text-5xl font-light tracking-[-0.04em] sm:text-7xl lg:text-8xl" aria-label="Main menu">
+        <Link onClick={onClose} href="/" className="text-white transition hover:text-white/55">Home</Link>
+        <Link onClick={onClose} href="/shop" className="text-white transition hover:text-white/55">First drop</Link>
+        <Link onClick={onClose} href="/collections" className="text-white transition hover:text-white/55">Collections</Link>
+        <Link onClick={onClose} href="/about" className="text-white transition hover:text-white/55">Studio</Link>
+      </nav>
+    </div>
   );
 }
 
-// ============ NAVIGATION COMPONENT - VOLLEBAK STYLE ============
-function Navigation({ onCartClick, cartCount, onNavigate, isTransparent = true, currentBrand, onBrandChange }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const brand = getBrand(currentBrand);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const bgClass = isTransparent && !isScrolled 
-    ? 'bg-transparent' 
-    : 'bg-black/90 backdrop-blur-md';
+function HomePage({ productsVisible }) {
+  const releaseLine = productsVisible ? 'Approved releases enabled.' : 'Approved releases only.';
 
   return (
     <>
-      <motion.header
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${bgClass}`}
-        role="banner"
-      >
-        {/* Brand Switcher Bar */}
-        <div className="hidden md:flex justify-center items-center py-2 border-b border-white/10 bg-black/50">
-          <div className="flex items-center gap-12">
-            {getAllBrands().map((b) => (
-              <button
-                key={b.id}
-                onClick={() => onBrandChange(b.id)}
-                className={`text-[11px] tracking-[0.2em] uppercase transition-all duration-300 ${
-                  currentBrand === b.id 
-                    ? 'text-white' 
-                    : 'text-white/40 hover:text-white/70'
-                }`}
-              >
-                {b.name}
-              </button>
-            ))}
-          </div>
+      <section className="relative flex min-h-screen items-end overflow-hidden border-b border-white/10 px-5 pb-12 pt-28 sm:px-8 lg:px-12 lg:pb-16">
+        <div className="absolute inset-0 opacity-70" aria-hidden="true">
+          <div className="absolute inset-x-0 top-0 h-px bg-white/30" />
+          <div className="absolute left-[12%] top-24 h-[72vh] w-px bg-white/10" />
+          <div className="absolute right-[18%] top-36 h-[56vh] w-px bg-white/10" />
+          <div className="absolute bottom-[22%] left-0 right-0 h-px bg-white/10" />
         </div>
 
-        <nav className="flex items-center justify-between px-6 lg:px-10 h-16 lg:h-20" aria-label="Main navigation">
-          {/* Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
-            aria-label="Open menu"
-            aria-expanded={isMenuOpen}
-            aria-controls="main-menu"
-          >
-            <Menu className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
-            <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">{navigationContent.actions.menu}</span>
-          </button>
-
-          {/* Logo - Shows current brand */}
-          <div className="absolute left-1/2 -translate-x-1/2">
-            <button 
-              onClick={() => onNavigate('home')} 
-              className="flex flex-col items-center"
-              aria-label={`${brand.name} - Go to homepage`}
-            >
-              <span className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
-                {brand.name}
-              </span>
-              {brand.id !== 'carlophillips' && (
-                <span className="text-white/40 text-[9px] tracking-[0.15em] uppercase">
-                  by CARLOPHILLIPS
-                </span>
-              )}
-            </button>
+        <div className="relative z-10 grid w-full max-w-[1800px] gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+          <div>
+            <p className="mb-8 text-[10px] uppercase tracking-[0.32em] text-white/45">Collection in preparation</p>
+            <h1 className="max-w-5xl text-[18vw] font-light leading-[0.82] tracking-[-0.08em] sm:text-[15vw] lg:text-[9.5vw]">
+              Gesture<br />of Luxury
+            </h1>
           </div>
 
-          {/* Mobile Brand Switcher + Cart */}
-          <div className="flex items-center gap-4">
-            <div className="md:hidden">
-              <BrandSwitcher currentBrand={currentBrand} onBrandChange={onBrandChange} />
+          <div className="max-w-xl lg:ml-auto">
+            <p className="text-xl font-light leading-snug text-white/72 sm:text-2xl">
+              An editorial product system for premium essentials, graphic restraint, and future-ready apparel.
+            </p>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/shop"
+                className="inline-flex items-center justify-center gap-3 border border-white px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white transition hover:bg-white hover:text-black"
+              >
+                Preview the first drop
+                <ArrowRight className="h-4 w-4" strokeWidth={1.3} />
+              </Link>
+              <Link
+                href="/about"
+                className="inline-flex items-center justify-center border border-white/15 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/65 transition hover:border-white/45 hover:text-white"
+              >
+                Enter the studio
+              </Link>
             </div>
-            <button
-              onClick={onCartClick}
-              className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
-              aria-label={`Shopping bag with ${cartCount} items`}
-            >
-              <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">
-                {navigationContent.actions.bag} {cartCount > 0 && `(${cartCount})`}
-              </span>
-              <ShoppingBag className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
-            </button>
+            <p className="mt-8 text-xs leading-relaxed text-white/35">{releaseLine}</p>
           </div>
-        </nav>
-      </motion.header>
+        </div>
+      </section>
 
-      {/* Full Screen Menu - Vollebak Style */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            id="main-menu"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-[100] bg-black"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Navigation menu"
-          >
-            <div className="h-full flex flex-col">
-              {/* Menu Header */}
-              <div className="flex items-center justify-between px-6 lg:px-10 h-16 lg:h-20">
-                <button
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-white hover:opacity-60 transition-opacity flex items-center gap-3"
-                  aria-label="Close menu"
-                >
-                  <X className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
-                  <span className="hidden md:inline text-xs tracking-[0.2em] uppercase">{navigationContent.actions.close}</span>
-                </button>
-                <span className="text-white text-sm md:text-base tracking-[0.4em] font-light uppercase">
-                  {site.name}
-                </span>
-                <div className="w-20" />
-              </div>
-
-              {/* Menu Content */}
-              <nav className="flex-1 flex items-center justify-center" aria-label="Site navigation">
-                <ul className="text-center space-y-2">
-                  {navigationContent.menu.map((item, index) => (
-                    <motion.li
-                      key={item.id}
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.5 }}
-                    >
-                      <button
-                        onClick={() => {
-                          if (item.collection) {
-                            onNavigate('collections', item.id === 'home-collection' ? 'home' : item.id);
-                          } else {
-                            onNavigate(item.id);
-                          }
-                          setIsMenuOpen(false);
-                        }}
-                        className="block text-white text-4xl md:text-6xl lg:text-7xl font-light tracking-wide hover:opacity-50 transition-opacity py-1"
-                        style={{ fontFamily: 'system-ui' }}
-                      >
-                        {item.label}
-                      </button>
-                    </motion.li>
-                  ))}
-                </ul>
-              </nav>
-
-              {/* Menu Footer */}
-              <div className="px-6 lg:px-10 py-8 border-t border-white/10">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-white/50 text-xs tracking-[0.15em] uppercase">
-                  <div className="flex gap-8">
-                    <a 
-                      href={site.social.instagram} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="hover:text-white transition-colors"
-                      aria-label="Follow us on Instagram"
-                    >
-                      Instagram
-                    </a>
-                    <a 
-                      href={site.social.tiktok} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="hover:text-white transition-colors"
-                      aria-label="Follow us on TikTok"
-                    >
-                      TikTok
-                    </a>
-                  </div>
-                  {site.banner && <span>{site.banner.text}</span>}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <ManifestoSection />
+      <ProductSystemSection />
+      <MediaArchitectureSection />
     </>
   );
 }
 
-// ============ CART SIDEBAR - PREMIUM STYLE WITH SHOPIFY INTEGRATION ============
-function CartSidebar({ isOpen, onClose, cart = { items: [], total: 0 }, onUpdateQuantity, onRemoveItem, onRefresh }) {
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [updatingItem, setUpdatingItem] = useState(null);
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-  
-  const items = cart?.items || [];
-  const total = cart?.total || 0;
-  const checkoutUrl = cart?.checkoutUrl || getCheckoutUrl();
-  const isShopifyCart = isUsingShopifyCart();
-  
-  const handleQuantityChange = async (itemKey, newQuantity) => {
-    setUpdatingItem(itemKey);
-    setIsUpdating(true);
-    try {
-      await onUpdateQuantity(itemKey, newQuantity);
-    } finally {
-      setIsUpdating(false);
-      setUpdatingItem(null);
-    }
-  };
-  
-  const handleRemove = async (itemKey) => {
-    setUpdatingItem(itemKey);
-    setIsUpdating(true);
-    try {
-      await onRemoveItem(itemKey);
-    } finally {
-      setIsUpdating(false);
-      setUpdatingItem(null);
-    }
-  };
-  
-  const handleCheckout = () => {
-    if (checkoutUrl) {
-      setIsCheckingOut(true);
-      window.location.href = checkoutUrl;
-    } else if (isShopifyCart) {
-      alert('Unable to proceed to checkout. Please try again.');
-    } else {
-      alert('Checkout will be available when Shopify is connected. Add your Shopify credentials to enable checkout.');
-    }
-  };
-  
+function ManifestoSection() {
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 z-[100] bg-black/70"
-            aria-hidden="true"
-          />
-
-          <motion.aside
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 z-[101] w-full max-w-lg bg-black text-white"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Shopping cart"
-          >
-            <div className="flex flex-col h-full">
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 h-20 border-b border-white/10">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-sm tracking-[0.3em] uppercase">{cartContent.title} ({items.length})</h2>
-                  {isUpdating && (
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                      aria-hidden="true"
-                    >
-                      <Loader2 className="w-4 h-4 text-white/50" />
-                    </motion.div>
-                  )}
-                </div>
-                <button 
-                  onClick={onClose} 
-                  className="hover:opacity-60 transition-opacity"
-                  aria-label="Close cart"
-                >
-                  <X className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
-                </button>
-              </div>
-
-              {/* Cart Items */}
-              <div className="flex-1 overflow-auto p-6">
-                {items.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-center">
-                    <ShoppingBag className="w-16 h-16 mb-6 text-white/30" strokeWidth={1} aria-hidden="true" />
-                    <p className="text-white/50 text-sm tracking-wider mb-2">{cartContent.emptyMessage}</p>
-                    <button 
-                      onClick={onClose}
-                      className="text-white/70 text-xs tracking-wider uppercase hover:text-white transition-colors"
-                    >
-                      {cartContent.continueShopping}
-                    </button>
-                  </div>
-                ) : (
-                  <ul className="space-y-8">
-                    {items.map((item) => {
-                      const isItemUpdating = updatingItem === item.key;
-                      return (
-                        <motion.li 
-                          key={item.key} 
-                          className={`flex gap-6 transition-opacity ${isItemUpdating ? 'opacity-50' : 'opacity-100'}`}
-                          layout
-                        >
-                          <div className="w-28 h-36 bg-neutral-900 overflow-hidden flex-shrink-0">
-                            <OptimizedImage 
-                              src={item.image} 
-                              alt={item.name} 
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-sm tracking-wide mb-1 truncate">{item.name}</h3>
-                            <p className="text-xs text-white/50 mb-3">{item.color} / {item.size}</p>
-                            <p className="text-sm mb-4">{site.currency.symbol}{item.price.toFixed(2)}</p>
-                            <div className="flex items-center gap-4">
-                              <button
-                                onClick={() => handleQuantityChange(item.key, item.quantity - 1)}
-                                disabled={isUpdating}
-                                className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                aria-label="Decrease quantity"
-                              >
-                                <Minus className="w-3 h-3" aria-hidden="true" />
-                              </button>
-                              <span className="text-sm w-6 text-center" aria-label={`Quantity: ${item.quantity}`}>{item.quantity}</span>
-                              <button
-                                onClick={() => handleQuantityChange(item.key, item.quantity + 1)}
-                                disabled={isUpdating}
-                                className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                aria-label="Increase quantity"
-                              >
-                                <Plus className="w-3 h-3" aria-hidden="true" />
-                              </button>
-                              <button
-                                onClick={() => handleRemove(item.key)}
-                                disabled={isUpdating}
-                                className="ml-auto text-xs text-white/50 hover:text-white transition-colors tracking-wider uppercase disabled:opacity-50"
-                                aria-label={`Remove ${item.name} from cart`}
-                              >
-                                {isItemUpdating ? 'Removing...' : 'Remove'}
-                              </button>
-                            </div>
-                          </div>
-                        </motion.li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </div>
-
-              {/* Footer with Checkout */}
-              {items.length > 0 && (
-                <div className="border-t border-white/10 p-6 space-y-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-white/70">{cartContent.subtotal}</span>
-                    <span className="font-medium">{site.currency.symbol}{total.toFixed(2)}</span>
-                  </div>
-                  
-                  <p className="text-xs text-white/40">{cartContent.shippingNote}</p>
-                  
-                  <button 
-                    onClick={handleCheckout}
-                    disabled={isCheckingOut || items.length === 0}
-                    className="w-full py-4 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    {isCheckingOut ? (
-                      <>
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                          aria-hidden="true"
-                        >
-                          <Loader2 className="w-4 h-4" />
-                        </motion.div>
-                        Processing...
-                      </>
-                    ) : (
-                      cartContent.checkoutButton
-                    )}
-                  </button>
-                  
-                  <button 
-                    onClick={onClose}
-                    className="w-full py-3 text-white/70 text-xs tracking-[0.15em] uppercase hover:text-white transition-colors"
-                  >
-                    {cartContent.continueShopping}
-                  </button>
-                  
-                  {isShopifyCart && checkoutUrl && (
-                    <p className="text-green-500/60 text-[10px] text-center tracking-wider mt-2">
-                      {cartContent.status.shopifyConnected}
-                    </p>
-                  )}
-                  {!isShopifyCart && (
-                    <p className="text-yellow-500/60 text-[10px] text-center tracking-wider mt-2">
-                      {cartContent.status.demoMode}
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
+    <section className="border-b border-white/10 px-5 py-24 sm:px-8 lg:px-12 lg:py-36">
+      <div className="mx-auto grid max-w-[1700px] gap-12 lg:grid-cols-[0.45fr_1fr]">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-white/40">Editorial manifesto</p>
+        <div className="space-y-12">
+          <h2 className="max-w-6xl text-5xl font-light leading-[0.95] tracking-[-0.055em] text-white sm:text-7xl lg:text-8xl">
+            Not merch. A product language.
+          </h2>
+          <div className="grid gap-8 text-lg leading-relaxed text-white/58 md:grid-cols-3">
+            <p>Built around restraint, proportion, and material presence.</p>
+            <p>The first drop is being prepared with a slower threshold for approval.</p>
+            <p>Nothing public should feel unfinished, inflated, or louder than the object itself.</p>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
-// ============ FULL-BLEED HERO SECTION - ANIMATED SLIDESHOW ============
-function HeroSection({ onShopClick }) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
-
-  const heroContent = homepage.hero;
-  
-  const runwayImages = [
-    '/brand-boards/carlophillips-drop-board.png',
-    '/brand-boards/carlo-system-board.png',
-    '/brand-boards/love-carlo-board.png',
-    '/brand-boards/identity-board.png',
-  ];
-
-  // Auto-advance slideshow
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % runwayImages.length);
-    }, 5000); // Change image every 5 seconds
-    
-    return () => clearInterval(interval);
-  }, [runwayImages.length]);
-
-  // Parse headline for line breaks
-  const headlineParts = heroContent.headline.split('\n');
-
+function ProductSystemSection() {
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black" aria-label="Hero section">
-      {/* Animated Image Slideshow with Ken Burns Effect */}
-      <motion.div style={{ y }} className="absolute inset-y-0 right-0 w-full lg:w-[68vw] opacity-90">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentImageIndex}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1.1,
-              transition: { 
-                opacity: { duration: 1.2 },
-                scale: { duration: 8, ease: 'linear' }
-              }
-            }}
-            exit={{ opacity: 0, transition: { duration: 1 } }}
-            className="absolute inset-0 flex items-center justify-center"
-          >
-            <img
-              src={runwayImages[currentImageIndex]}
-              alt={`CARLOPHILLIPS visual system ${currentImageIndex + 1}`}
-              className="h-[82vh] w-auto max-w-[min(72vw,860px)] object-contain object-center"
-            />
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/24 to-black/10" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/62 to-black/10" aria-hidden="true" />
-
-      {/* Content */}
-      <motion.div 
-        style={{ opacity }}
-        className="absolute inset-0 flex flex-col justify-end p-6 lg:p-16 pb-24 lg:pb-32"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-4xl"
-        >
-          <p className="text-white/60 text-xs tracking-[0.3em] uppercase mb-4 lg:mb-6">
-            {heroContent.eyebrow}
+    <section className="border-b border-white/10 px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <div className="mx-auto max-w-[1700px]">
+        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="mb-5 text-[10px] uppercase tracking-[0.3em] text-white/40">Product system placeholders</p>
+            <h2 className="max-w-3xl text-4xl font-light tracking-[-0.045em] sm:text-6xl">Release architecture without exposed inventory.</h2>
+          </div>
+          <p className="max-w-md text-sm leading-relaxed text-white/45">
+            These panels reserve the hierarchy for future approved work without showing unfinished catalog assets.
           </p>
-          <h1 className="text-white text-5xl md:text-7xl lg:text-[8rem] font-light leading-[0.9] mb-6 lg:mb-8 tracking-tight">
-            {headlineParts.map((part, i) => (
-              <span key={i}>
-                {part}
-                {i < headlineParts.length - 1 && <br />}
-              </span>
-            ))}
+        </div>
+        <div className="grid gap-px bg-white/10 md:grid-cols-2 xl:grid-cols-4">
+          {editorialPanels.map((panel, index) => (
+            <article key={panel.label} className="min-h-[360px] bg-[#050505] p-6 sm:p-8">
+              <div className="mb-20 flex items-center justify-between text-[10px] uppercase tracking-[0.26em] text-white/36">
+                <span>{panel.label}</span>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+              </div>
+              <h3 className="mb-5 text-2xl font-light tracking-[-0.035em] text-white">{panel.title}</h3>
+              <p className="text-sm leading-relaxed text-white/50">{panel.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MediaArchitectureSection() {
+  return (
+    <section className="px-5 py-24 sm:px-8 lg:px-12 lg:py-36">
+      <div className="mx-auto grid max-w-[1700px] gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
+        <div className="flex min-h-[640px] flex-col justify-between border border-white/10 bg-[#060606] p-7 sm:p-10">
+          <div>
+            <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">Media-ready architecture</p>
+            <h2 className="text-5xl font-light leading-[0.95] tracking-[-0.055em] sm:text-7xl">
+              Built for the moment real assets arrive.
+            </h2>
+          </div>
+          <p className="max-w-xl text-base leading-relaxed text-white/52">
+            The shell is prepared for film, studio photography, specification modules, and release storytelling without pretending those assets already exist.
+          </p>
+        </div>
+        <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+          {architectureModules.map((module, index) => (
+            <div key={module} className="flex min-h-[190px] items-end justify-between bg-black p-6">
+              <span className="text-lg font-light text-white/78">{module}</span>
+              <span className="text-[10px] tracking-[0.24em] text-white/28">{String(index + 1).padStart(2, '0')}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CollectionEmptyPage() {
+  return (
+    <section className="flex min-h-screen items-center border-b border-white/10 px-5 pt-28 sm:px-8 lg:px-12">
+      <div className="mx-auto grid w-full max-w-[1700px] gap-12 lg:grid-cols-[1fr_0.8fr] lg:items-end">
+        <div>
+          <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">Collection room</p>
+          <h1 className="max-w-5xl text-6xl font-light leading-[0.9] tracking-[-0.065em] sm:text-8xl lg:text-9xl">
+            The first drop is being prepared.
           </h1>
-          <p className="text-white/70 text-sm md:text-base max-w-lg mb-8 lg:mb-10 leading-relaxed">
-            {heroContent.description}
-          </p>
-          <button
-            onClick={onShopClick}
-            className="group inline-flex items-center gap-4 text-white text-xs tracking-[0.25em] uppercase border-b border-white/30 pb-2 hover:border-white transition-colors"
-          >
-            {heroContent.cta.text}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
-          </button>
-        </motion.div>
-
-        {/* Slideshow Indicators */}
-        <div className="absolute bottom-8 right-6 lg:right-16 flex gap-2">
-          {runwayImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentImageIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                currentImageIndex === index 
-                  ? 'bg-white w-8' 
-                  : 'bg-white/40 hover:bg-white/60'
-              }`}
-              aria-label={`View slide ${index + 1}`}
-            />
-          ))}
         </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50"
-          aria-hidden="true"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex flex-col items-center gap-2"
-          >
-            <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
-            <div className="w-px h-8 bg-gradient-to-b from-white/50 to-transparent" />
-          </motion.div>
-        </motion.div>
-      </motion.div>
-    </section>
-  );
-}
-
-// ============ FULL-BLEED PRODUCT HERO - VOLLEBAK STYLE ============
-function ProductHero({ product, onBuyClick, reverse = false }) {
-  if (!product) return null;
-  
-  return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-black border-y border-white/10">
-      <div className={`absolute inset-0 ${reverse ? 'bg-[radial-gradient(circle_at_72%_40%,rgba(255,255,255,0.16),transparent_28%)]' : 'bg-[radial-gradient(circle_at_28%_42%,rgba(255,255,255,0.16),transparent_28%)]'}`} aria-hidden="true" />
-      <div className="grid min-h-screen lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
-        <div className={`${reverse ? 'lg:order-2' : ''} flex items-center justify-center p-4 sm:p-8 lg:p-16 pt-24 lg:pt-16`}>
-          <PremiumProductStage product={product} variant="hero" priority />
-        </div>
-        <div className={`flex items-end lg:items-center p-6 lg:p-16 pb-20 lg:pb-16 ${reverse ? 'lg:order-1 lg:justify-end lg:text-right' : ''}`}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-xl"
-        >
-          <p className="text-white/45 text-[10px] tracking-[0.28em] uppercase mb-5">
-            Current collection
+        <div className="max-w-xl lg:ml-auto">
+          <p className="text-xl leading-relaxed text-white/58">
+            Products will appear here after studio media, pricing, and fulfillment approval.
           </p>
-          <h2 className="text-white text-4xl md:text-5xl lg:text-6xl font-light leading-tight mb-4 tracking-tight">
-            {product.name}
-          </h2>
-          <p className="text-white/60 text-sm md:text-base uppercase tracking-[0.2em] mb-6">
-            {product.tagline || product.description?.slice(0, 80)}
-          </p>
-          <div className={`grid grid-cols-3 gap-px bg-white/10 mb-8 ${reverse ? 'lg:ml-auto' : ''} max-w-md`}>
-            {getProductSpecs(product).map((spec, index) => (
-              <div key={`${spec}-${index}`} className="bg-black/80 px-3 py-4">
-                <span className="block text-white/35 text-[9px] tracking-[0.2em] uppercase mb-2">0{index + 1}</span>
-                <span className="block text-white/75 text-[11px] leading-snug">{spec}</span>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={() => onBuyClick(product.id)}
-            className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border border-white/30 px-8 py-4 hover:bg-white hover:text-black transition-all"
+          <Link
+            href="/"
+            className="mt-10 inline-flex items-center gap-3 border border-white/20 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/70 transition hover:border-white hover:text-white"
           >
-            Inspect Product
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </button>
-        </motion.div>
+            Return home
+            <ArrowRight className="h-4 w-4" strokeWidth={1.3} />
+          </Link>
         </div>
       </div>
     </section>
   );
 }
 
-// ============ HORIZONTAL PRODUCT CAROUSEL - VOLLEBAK STYLE ============
-function ProductCarousel({ title, products: carouselProducts, onProductClick, isLoading = false }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const containerRef = useRef(null);
-
-  const scrollTo = (direction) => {
-    if (containerRef.current) {
-      const scrollAmount = 400;
-      const newScroll = direction === 'left' 
-        ? containerRef.current.scrollLeft - scrollAmount
-        : containerRef.current.scrollLeft + scrollAmount;
-      containerRef.current.scrollTo({ left: newScroll, behavior: 'smooth' });
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <section className="py-16 lg:py-24 bg-black" aria-label={title}>
-        <div className="px-6 lg:px-16 mb-8 lg:mb-12">
-          <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-light tracking-tight">
-            {title}
-          </h2>
-        </div>
-        <div className="px-6 lg:px-16">
-          <div className="flex gap-4 lg:gap-6">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex-shrink-0 w-72 lg:w-80">
-                <ProductSkeleton />
-              </div>
-            ))}
+function ProductUnreleasedPage() {
+  return (
+    <section className="flex min-h-screen items-center px-5 pt-28 sm:px-8 lg:px-12">
+      <div className="mx-auto grid w-full max-w-[1700px] gap-12 lg:grid-cols-[0.8fr_1fr] lg:items-center">
+        <div className="aspect-[4/5] border border-white/10 bg-[#050505] p-6">
+          <div className="flex h-full flex-col justify-between border border-white/10 p-6">
+            <span className="text-[10px] uppercase tracking-[0.28em] text-white/36">Unreleased object</span>
+            <span className="max-w-xs text-sm leading-relaxed text-white/42">Media withheld until release approval.</span>
           </div>
         </div>
-      </section>
-    );
-  }
-
-  if (!carouselProducts || carouselProducts.length === 0) return null;
-
-  return (
-    <section className="py-16 lg:py-24 bg-black" aria-label={title}>
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 lg:px-16 mb-8 lg:mb-12">
-        <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-light tracking-tight">
-          {title}
-        </h2>
-        <div className="flex items-center gap-4">
-          <span className="text-white/50 text-sm tracking-wider" aria-live="polite">
-            {String(currentIndex + 1).padStart(2, '0')} / {String(carouselProducts.length).padStart(2, '0')}
-          </span>
-          <div className="flex gap-2">
-            <button 
-              onClick={() => scrollTo('left')}
-              className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="w-5 h-5" aria-hidden="true" />
-            </button>
-            <button 
-              onClick={() => scrollTo('right')}
-              className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="w-5 h-5" aria-hidden="true" />
-            </button>
-          </div>
+        <div>
+          <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">Release gate</p>
+          <h1 className="max-w-4xl text-6xl font-light leading-[0.9] tracking-[-0.065em] sm:text-8xl">
+            This object has not entered release.
+          </h1>
+          <p className="mt-10 max-w-xl text-lg leading-relaxed text-white/56">
+            Product pages open only after media, pricing, and fulfillment approval.
+          </p>
+          <Link
+            href="/shop"
+            className="mt-10 inline-flex items-center gap-3 border border-white/20 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/70 transition hover:border-white hover:text-white"
+          >
+            View collection state
+            <ArrowRight className="h-4 w-4" strokeWidth={1.3} />
+          </Link>
         </div>
       </div>
-
-      {/* Carousel */}
-      <div 
-        ref={containerRef}
-        className="flex gap-4 lg:gap-6 overflow-x-auto scrollbar-hide px-6 lg:px-16 pb-4"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        onScroll={(e) => {
-          const index = Math.round(e.target.scrollLeft / 400);
-          setCurrentIndex(Math.min(index, carouselProducts.length - 1));
-        }}
-        role="list"
-        aria-label={`${title} products`}
-      >
-        {carouselProducts.map((product, index) => (
-          <motion.article
-            key={product.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.05 }}
-            onClick={() => onProductClick(product.id)}
-            className="flex-shrink-0 w-72 lg:w-80 cursor-pointer group"
-            role="listitem"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && onProductClick(product.id)}
-          >
-            <div className="mb-4 relative">
-              <PremiumProductStage product={product} variant="card" />
-            </div>
-            <h3 className="text-white text-sm tracking-wide mb-1">{product.name}</h3>
-            <p className="text-white/40 text-xs mb-2 line-clamp-2">{product.tagline || product.description?.slice(0, 90)}</p>
-            <p className="text-white text-sm">{site.currency.symbol}{product.price}</p>
-          </motion.article>
-        ))}
-      </div>
     </section>
   );
 }
 
-// ============ BRAND STATEMENT SECTION ============
-function BrandStatement({ onLearnMore }) {
-  const statement = homepage.brandStatement;
-  
+function AboutPage() {
   return (
-    <section className="py-24 lg:py-40 bg-black" aria-labelledby="brand-statement-heading">
-      <div className="max-w-5xl mx-auto px-6 lg:px-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <p className="text-white/40 text-xs tracking-[0.3em] uppercase mb-8">{statement.eyebrow}</p>
-          <h2 id="brand-statement-heading" className="text-white text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-8 tracking-tight">
-            {statement.headline}
-          </h2>
-          <p className="text-white/50 text-sm md:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
-            {statement.description}
-          </p>
-          <button 
-            onClick={onLearnMore}
-            className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border-b border-white/30 pb-2 hover:border-white transition-colors"
-          >
-            {statement.cta.text}
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </button>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-// ============ PRESS LOGOS SECTION - VOLLEBAK STYLE ============
-function PressSection() {
-  const pressItems = homepage.press;
-
-  return (
-    <section className="py-16 bg-black border-y border-white/10" aria-label="Press mentions">
-      <div className="overflow-hidden">
-        <motion.div 
-          animate={{ x: [0, -1000] }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-          className="flex gap-16 lg:gap-24 whitespace-nowrap"
-          aria-hidden="true"
-        >
-          {[...pressItems, ...pressItems, ...pressItems].map((item, index) => (
-            <div key={index} className="flex items-center gap-4 lg:gap-6">
-              <span className="text-white/30 text-2xl lg:text-3xl font-light tracking-[0.2em]">{item.name}</span>
-              <span className="text-white/50 text-sm italic">{item.quote}</span>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-      {/* Screen reader text */}
-      <div className="sr-only">
-        <h2>Press mentions</h2>
-        <ul>
-          {pressItems.map((item, index) => (
-            <li key={index}>{item.name}: {item.quote}</li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-// ============ BRAND SYSTEM BOARDS ============
-function BrandBoardsSection() {
-  const boards = [
-    {
-      title: 'CARLOPHILLIPS',
-      src: '/brand-boards/carlophillips-drop-board.png',
-      alt: 'CARLOPHILLIPS apparel and accessories brand board',
-    },
-    {
-      title: 'CARLO SYSTEM',
-      src: '/brand-boards/carlo-system-board.png',
-      alt: 'CARLOPHILLIPS full product system board',
-    },
-    {
-      title: 'LOVE, CARLO',
-      src: '/brand-boards/love-carlo-board.png',
-      alt: 'love, Carlo identity and product board',
-    },
-  ];
-
-  return (
-    <section className="bg-black border-y border-white/10 py-16 lg:py-24" aria-labelledby="brand-system-heading">
-      <div className="px-6 lg:px-16 mb-10 lg:mb-14">
-        <p className="text-white/40 text-[10px] tracking-[0.28em] uppercase mb-4">Visual system</p>
-        <h2 id="brand-system-heading" className="text-white text-4xl md:text-5xl lg:text-6xl font-light tracking-tight max-w-4xl">
-          The collection already has a world. The storefront now has to carry it.
-        </h2>
-      </div>
-
-      <div className="grid lg:grid-cols-[1.12fr_0.88fr] gap-px bg-white/10">
-        <motion.figure
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative min-h-[72vh] bg-[#050505] overflow-hidden"
-        >
-          <OptimizedImage
-            src={boards[0].src}
-            alt={boards[0].alt}
-            className="absolute inset-0 h-full w-full object-contain p-6 lg:p-10"
-            priority
-          />
-          <figcaption className="absolute left-6 bottom-6 text-white text-xs tracking-[0.22em] uppercase">
-            {boards[0].title}
-          </figcaption>
-        </motion.figure>
-
-        <div className="grid gap-px bg-white/10">
-          {boards.slice(1).map((board, index) => (
-            <motion.figure
-              key={board.src}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.08 }}
-              className="relative min-h-[36vh] bg-[#050505] overflow-hidden"
-            >
-              <OptimizedImage
-                src={board.src}
-                alt={board.alt}
-                className="absolute inset-0 h-full w-full object-contain p-6 lg:p-8"
-              />
-              <figcaption className="absolute left-6 bottom-6 text-white text-xs tracking-[0.22em] uppercase">
-                {board.title}
-              </figcaption>
-            </motion.figure>
+    <section className="px-5 pt-32 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-[1700px]">
+        <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">Studio notes</p>
+        <h1 className="max-w-6xl text-6xl font-light leading-[0.9] tracking-[-0.065em] sm:text-8xl lg:text-9xl">
+          CARLOPHILLIPS is being composed.
+        </h1>
+        <div className="mt-20 grid gap-px bg-white/10 lg:grid-cols-3">
+          {['Restraint', 'Proportion', 'Presence'].map((value) => (
+            <article key={value} className="min-h-[300px] bg-[#050505] p-8">
+              <h2 className="mb-8 text-3xl font-light tracking-[-0.04em]">{value}</h2>
+              <p className="text-sm leading-relaxed text-white/52">
+                A working principle for future releases, applied before anything becomes public.
+              </p>
+            </article>
           ))}
         </div>
       </div>
@@ -1294,926 +346,67 @@ function BrandBoardsSection() {
   );
 }
 
-// ============ COLLECTION SHOWCASE - VOLLEBAK STYLE ============
-function CollectionShowcase({ collection, onExplore }) {
-  if (!collection) return null;
-  
+function BagPage({ onBack }) {
   return (
-    <section className="relative h-[80vh] w-full overflow-hidden bg-black" aria-labelledby={`collection-${collection.id}-heading`}>
-      <div className="absolute inset-0">
-        <OptimizedImage
-          src={collection.image}
-          alt={collection.name}
-          className="w-full h-full object-cover opacity-80"
-        />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" aria-hidden="true" />
-      
-      <div className="absolute inset-0 flex items-end p-6 lg:p-16 pb-16 lg:pb-24">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+    <section className="flex min-h-screen items-center px-5 pt-28 sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-3xl border border-white/10 bg-[#050505] p-8 sm:p-12">
+        <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">Bag</p>
+        <h1 className="text-5xl font-light tracking-[-0.055em] sm:text-7xl">Your bag is empty.</h1>
+        <p className="mt-8 max-w-lg text-base leading-relaxed text-white/52">
+          Releases are not open yet. The bag will activate when the first approved drop enters the store.
+        </p>
+        <button
+          type="button"
+          onClick={onBack}
+          className="mt-10 inline-flex items-center gap-3 border border-white/20 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/70 transition hover:border-white hover:text-white"
         >
-          <h3 id={`collection-${collection.id}-heading`} className="text-white text-4xl md:text-5xl lg:text-6xl font-light mb-4">
-            {collection.name}
-          </h3>
-          <p className="text-white/60 text-sm md:text-base uppercase tracking-[0.15em] mb-6 max-w-md">
-            {collection.description}
-          </p>
-          <button
-            onClick={() => onExplore(collection.id)}
-            className="inline-flex items-center gap-3 text-white text-xs tracking-[0.25em] uppercase border border-white/30 px-8 py-4 hover:bg-white hover:text-black transition-all"
-          >
-            Explore Collection
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </button>
-        </motion.div>
+          View bag panel
+        </button>
       </div>
     </section>
   );
 }
 
-// ============ FOOTER - PREMIUM STYLE ============
-function Footer({ onNavigate }) {
+function BagOverlay({ onClose }) {
   return (
-    <footer className="bg-black text-white py-16 lg:py-24 border-t border-white/10" role="contentinfo">
-      <div className="px-6 lg:px-16">
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
-          <div className="md:col-span-2">
-            <h3 className="text-2xl tracking-[0.3em] font-light mb-6">{site.name}</h3>
-            <p className="text-white/50 text-sm leading-relaxed max-w-md mb-6">
-              {footerContent.description}
-            </p>
-            {/* Social Links */}
-            <div className="flex gap-4">
-              <a 
-                href={site.social.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
-                aria-label="Follow us on Instagram"
-              >
-                <Instagram className="w-4 h-4" aria-hidden="true" />
-              </a>
-              <a 
-                href={`mailto:hello@carlophillips.com`}
-                className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-all"
-                aria-label="Contact us via email"
-              >
-                <Mail className="w-4 h-4" aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-          <nav aria-label="Shop navigation">
-            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">{footerContent.navigation.shop.title}</h4>
-            <ul className="space-y-3 text-sm text-white/50">
-              {footerContent.navigation.shop.links.map((link, i) => (
-                <li key={i}>
-                  <button 
-                    onClick={() => {
-                      if (link.href === '/collections') {
-                        onNavigate('collections');
-                      } else if (link.href.startsWith('/collections/')) {
-                        const collectionId = link.href.replace('/collections/', '');
-                        onNavigate('collections', collectionId);
-                      }
-                    }}
-                    className="hover:text-white transition-colors text-left"
-                  >
-                    {link.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <nav aria-label="Company navigation">
-            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 text-white/70">{footerContent.navigation.company.title}</h4>
-            <ul className="space-y-3 text-sm text-white/50">
-              {footerContent.navigation.company.links.map((link, i) => (
-                <li key={i}>
-                  <button 
-                    onClick={() => {
-                      if (link.href === '/about') {
-                        onNavigate('about');
-                      }
-                    }}
-                    className="hover:text-white transition-colors text-left"
-                  >
-                    {link.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+    <aside className="fixed bottom-0 right-0 top-0 z-50 flex w-full flex-col border-l border-white/10 bg-black p-6 text-white sm:w-[460px]" aria-label="Bag">
+      <div className="flex items-center justify-between border-b border-white/10 pb-5">
+        <span className="text-[10px] uppercase tracking-[0.28em] text-white/55">Bag</span>
+        <button
+          type="button"
+          onClick={onClose}
+          className="inline-flex h-10 w-10 items-center justify-center border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+          aria-label="Close bag"
+        >
+          <X className="h-4 w-4" strokeWidth={1.4} />
+        </button>
+      </div>
+      <div className="flex flex-1 flex-col justify-center">
+        <h2 className="text-4xl font-light tracking-[-0.045em]">No release is open.</h2>
+        <p className="mt-6 text-sm leading-relaxed text-white/48">
+          The bag will remain empty until an approved object enters release.
+        </p>
+      </div>
+    </aside>
+  );
+}
 
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/30">{footerContent.copyright}</p>
-          <nav className="flex gap-6 text-xs text-white/30" aria-label="Legal navigation">
-            {footerContent.legal.map((link, i) => (
-              <button key={i} className="hover:text-white transition-colors">
-                {link.label}
-              </button>
-            ))}
-          </nav>
+function Footer() {
+  return (
+    <footer className="border-t border-white/10 px-5 py-12 sm:px-8 lg:px-12">
+      <div className="mx-auto flex max-w-[1700px] flex-col justify-between gap-8 text-[10px] uppercase tracking-[0.24em] text-white/35 md:flex-row">
+        <div className="flex flex-wrap gap-5">
+          {brands.map((brand) => (
+            <span key={brand}>{brand}</span>
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-5">
+          <a href="mailto:hello@carlophillips.com" className="transition hover:text-white">Contact</a>
+          <Link href="/bag" className="transition hover:text-white">Bag</Link>
         </div>
       </div>
     </footer>
   );
 }
 
-// ============ COLLECTIONS PAGE - WITH SHOPIFY DATA LOADING ============
-function CollectionsPage({ onProductClick, selectedCollection, onCollectionChange }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [collection, setCollection] = useState(null);
-  const [displayProducts, setDisplayProducts] = useState([]);
-  const [allCollections, setAllCollections] = useState(mockCollections);
-
-  useEffect(() => {
-    async function loadData() {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        if (selectedCollection) {
-          const collectionData = await getCollectionAsync(selectedCollection);
-          setCollection(collectionData);
-          const products = await getProductsByCollectionAsync(selectedCollection);
-          setDisplayProducts(products);
-        } else {
-          setCollection(null);
-          const products = await getProducts();
-          setDisplayProducts(products);
-        }
-      } catch (err) {
-        console.error('Error loading collection data:', err);
-        setError('Failed to load products. Please try again.');
-        
-        if (selectedCollection) {
-          setCollection(getCollection(selectedCollection));
-          setDisplayProducts(getProductsByCollection(selectedCollection));
-        } else {
-          setDisplayProducts(mockProducts);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadData();
-  }, [selectedCollection]);
-
-  const handleRetry = () => {
-    setError(null);
-    setIsLoading(true);
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
-  };
-
-  const pageTitle = collection ? collection.name : collectionsContent.allProducts.title;
-  const pageDescription = collection ? collection.description : collectionsContent.allProducts.description;
-
-  return (
-    <div className="min-h-screen bg-black pt-24 lg:pt-32">
-      {/* Header */}
-      <div className="px-6 lg:px-16 mb-12 lg:mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-light">
-              {pageTitle}
-            </h1>
-            {isLoading && <LoadingSpinner size="small" />}
-          </div>
-          <p className="text-white/50 text-sm md:text-base max-w-xl">
-            {pageDescription}
-          </p>
-          {isUsingShopify() && (
-            <p className="text-green-500/60 text-xs mt-2 tracking-wider">● Connected to Shopify</p>
-          )}
-        </motion.div>
-
-        {/* Collection Filter */}
-        {!selectedCollection && (
-          <nav className="flex flex-wrap gap-3 mt-8" aria-label="Filter by collection">
-            {allCollections.map((col) => (
-              <button
-                key={col.id}
-                onClick={() => onCollectionChange(col.id)}
-                className="px-5 py-2 text-xs tracking-[0.15em] uppercase border border-white/20 text-white/70 hover:bg-white hover:text-black transition-all"
-              >
-                {col.name}
-              </button>
-            ))}
-          </nav>
-        )}
-
-        {/* Back to all button */}
-        {selectedCollection && (
-          <button
-            onClick={() => onCollectionChange(null)}
-            className="mt-6 text-white/50 text-xs tracking-wider uppercase hover:text-white transition-colors flex items-center gap-2"
-          >
-            <ArrowRight className="w-4 h-4 rotate-180" aria-hidden="true" />
-            View All Products
-          </button>
-        )}
-      </div>
-
-      {/* Error State */}
-      {error && !isLoading && (
-        <div className="px-6 lg:px-16">
-          <ErrorState message={error} onRetry={handleRetry} />
-        </div>
-      )}
-
-      {/* Loading State */}
-      {isLoading && (
-        <div className="px-6 lg:px-16 pb-24">
-          <ProductGridSkeleton count={8} />
-        </div>
-      )}
-
-      {/* Empty State */}
-      {!isLoading && !error && displayProducts.length === 0 && (
-        <div className="px-6 lg:px-16 pb-24">
-          <EmptyState 
-            title="No products found" 
-            description={selectedCollection ? "This collection is empty." : "Check back soon for new arrivals."}
-          />
-        </div>
-      )}
-
-      {/* Product Grid */}
-      {!isLoading && !error && displayProducts.length > 0 && (
-        <div 
-          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 px-6 lg:px-16 pb-24"
-          role="list"
-          aria-label="Products"
-        >
-          {displayProducts.map((product, index) => (
-            <motion.article
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
-              onClick={() => onProductClick(product.id)}
-              className="cursor-pointer group"
-              role="listitem"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && onProductClick(product.id)}
-            >
-              <div className="mb-4 relative">
-                <PremiumProductStage product={product} variant="grid" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-white text-xs tracking-wider uppercase">Quick View</span>
-                </div>
-              </div>
-              <h2 className="text-white text-sm tracking-wide mb-1">{product.name}</h2>
-              <p className="text-white/40 text-xs mb-2 line-clamp-1">{product.tagline || ''}</p>
-              <p className="text-white text-sm">{site.currency.symbol}{product.price}</p>
-            </motion.article>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ============ PRODUCT PAGE - WITH SHOPIFY DATA LOADING ============
-function ProductPage({ productId, onAddToCart, onBack }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [product, setProduct] = useState(null);
-  const [selectedColor, setSelectedColor] = useState('');
-  const [selectedSize, setSelectedSize] = useState('');
-  const [currentImage, setCurrentImage] = useState(0);
-  const [isAdding, setIsAdding] = useState(false);
-
-  useEffect(() => {
-    async function loadProduct() {
-      if (!productId) return;
-      
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const productData = await getProductAsync(productId);
-        
-        if (productData) {
-          setProduct(productData);
-          setSelectedColor(productData.variants?.colors?.[0] || 'Default');
-          setSelectedSize(productData.variants?.sizes?.[0] || 'One Size');
-          setCurrentImage(0);
-        } else {
-          setError('Product not found');
-        }
-      } catch (err) {
-        console.error('Error loading product:', err);
-        setError('Failed to load product. Please try again.');
-        
-        const mockProduct = getProduct(productId);
-        if (mockProduct) {
-          setProduct(mockProduct);
-          setSelectedColor(mockProduct.variants?.colors?.[0] || 'Default');
-          setSelectedSize(mockProduct.variants?.sizes?.[0] || 'One Size');
-          setError(null);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadProduct();
-  }, [productId]);
-
-  const handleAddToCart = async () => {
-    if (!product) return;
-    
-    setIsAdding(true);
-    try {
-      await onAddToCart(product, selectedColor, selectedSize);
-    } finally {
-      setTimeout(() => setIsAdding(false), 1500);
-    }
-  };
-
-  if (isLoading) {
-    return <ProductPageSkeleton />;
-  }
-
-  if (error && !product) {
-    return (
-      <div className="min-h-screen bg-black pt-24 flex items-center justify-center">
-        <ErrorState message={error} onRetry={onBack} />
-      </div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-black pt-24 flex items-center justify-center">
-        <EmptyState title="Product not found" description="This product may have been removed or doesn't exist." />
-      </div>
-    );
-  }
-
-  const collectionName = getCollection(product.collection)?.name || product.collection;
-  const productMedia = getProductMedia(product);
-
-  return (
-    <div className="min-h-screen bg-black">
-      <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] min-h-screen">
-        {/* Image Section */}
-        <div className="relative min-h-[78vh] lg:h-screen lg:sticky lg:top-0 bg-[#050505] overflow-hidden">
-          <motion.div
-            key={currentImage}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-0 flex items-center justify-center p-4 sm:p-8 lg:p-12"
-          >
-            <PremiumProductStage
-              product={product}
-              media={productMedia[currentImage] || getPrimaryMedia(product, currentImage)}
-              alt={`${product.name} - Media ${currentImage + 1}`}
-              variant="detail"
-              priority
-            />
-          </motion.div>
-          
-          {/* Image Navigation */}
-          {productMedia.length > 1 && (
-            <nav className="absolute bottom-6 left-6 right-6 flex gap-3 overflow-x-auto scrollbar-hide lg:left-10 lg:right-10" aria-label="Product images">
-              {productMedia.slice(0, 8).map((media, index) => (
-                <button
-                  key={media.id || index}
-                  onClick={() => setCurrentImage(index)}
-                  className={`h-20 w-16 shrink-0 border transition-all bg-black/60 ${
-                    currentImage === index ? 'border-white' : 'border-white/15 hover:border-white/45'
-                  }`}
-                  aria-label={`View media ${index + 1}`}
-                  aria-current={currentImage === index ? 'true' : undefined}
-                >
-                  <OptimizedImage
-                    src={getMediaPreviewSrc(media)}
-                    alt=""
-                    className="h-full w-full object-contain p-1"
-                  />
-                  {media.type !== 'image' && (
-                    <span className="absolute inset-x-1 bottom-1 bg-white text-black text-[8px] uppercase tracking-wider">
-                      {media.type === 'model_3d' ? '3D' : 'Video'}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </nav>
-          )}
-        </div>
-
-        {/* Product Info */}
-        <div className="p-6 lg:p-16 flex flex-col justify-center">
-          <button
-            onClick={onBack}
-            className="text-white/50 text-xs tracking-wider uppercase mb-8 hover:text-white transition-colors self-start flex items-center gap-2"
-          >
-            <ArrowRight className="w-4 h-4 rotate-180" aria-hidden="true" />
-            Back
-          </button>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <p className="text-white/40 text-xs tracking-[0.2em] uppercase mb-4">
-              {collectionName}
-            </p>
-            <h1 className="text-white text-4xl md:text-5xl font-light mb-4">{product.name}</h1>
-            <p className="text-white text-2xl mb-8">{site.currency.symbol}{product.price}</p>
-            
-            {product.tagline && (
-              <p className="text-white/80 text-xs tracking-wider uppercase mb-6 border-l-2 border-white/30 pl-4">
-                {product.tagline}
-              </p>
-            )}
-            
-            {product.descriptionHtml ? (
-              <div
-                className="product-rich-description text-white/60 text-sm leading-relaxed mb-10 max-w-lg"
-                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-              />
-            ) : (
-              <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg">
-                {product.description}
-              </p>
-            )}
-
-            <div className="grid grid-cols-3 gap-px bg-white/10 mb-10 max-w-xl">
-              {getProductSpecs(product).map((spec, index) => (
-                <div key={`${spec}-${index}`} className="bg-black px-3 py-4">
-                  <span className="block text-white/35 text-[9px] tracking-[0.2em] uppercase mb-2">Spec 0{index + 1}</span>
-                  <span className="block text-white/75 text-[11px] leading-snug">{spec}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Color Selection */}
-            {product.variants?.colors && product.variants.colors.length > 0 && product.variants.colors[0] !== 'Default' && (
-              <fieldset className="mb-8">
-                <legend className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
-                  {productContent.labels.color} — {selectedColor}
-                </legend>
-                <div className="flex flex-wrap gap-3">
-                  {product.variants.colors.map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className={`px-5 py-3 text-xs tracking-wider border transition-all ${
-                        selectedColor === color
-                          ? 'border-white bg-white text-black'
-                          : 'border-white/20 text-white/70 hover:border-white'
-                      }`}
-                      aria-pressed={selectedColor === color}
-                    >
-                      {color}
-                    </button>
-                  ))}
-                </div>
-              </fieldset>
-            )}
-
-            {/* Size Selection */}
-            {product.variants?.sizes && product.variants.sizes.length > 0 && product.variants.sizes[0] !== 'One Size' && (
-              <fieldset className="mb-10">
-                <legend className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">
-                  {productContent.labels.size} — {selectedSize}
-                </legend>
-                <div className="flex flex-wrap gap-3">
-                  {product.variants.sizes.map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`w-14 h-14 text-xs tracking-wider border transition-all ${
-                        selectedSize === size
-                          ? 'border-white bg-white text-black'
-                          : 'border-white/20 text-white/70 hover:border-white'
-                      }`}
-                      aria-pressed={selectedSize === size}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </fieldset>
-            )}
-
-            {/* Add to Cart */}
-            <button
-              onClick={handleAddToCart}
-              disabled={isAdding}
-              className="w-full py-5 bg-white text-black text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-3"
-            >
-              {isAdding ? (
-                <>
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                    aria-hidden="true"
-                  >
-                    <Loader2 className="w-4 h-4" />
-                  </motion.div>
-                  {productContent.labels.addedToBag}
-                </>
-              ) : (
-                productContent.labels.addToBag
-              )}
-            </button>
-
-            {/* Shopify indicator */}
-            {isUsingShopify() && productContent.shopifyIndicator.connected && (
-              <p className="text-green-500/60 text-xs mt-4 text-center tracking-wider">{productContent.shopifyIndicator.connected}</p>
-            )}
-
-            {/* Product Details */}
-            {!product.descriptionHtml && product.details && product.details.length > 0 && (
-              <div className="mt-12 pt-8 border-t border-white/10">
-                <h2 className="text-white/50 text-xs tracking-[0.15em] uppercase mb-4">{productContent.labels.details}</h2>
-                <ul className="space-y-2">
-                  {product.details.map((detail, index) => (
-                    <li key={index} className="text-white/60 text-sm">• {detail}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </motion.div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============ ABOUT PAGE - PREMIUM STYLE ============
-function AboutPage() {
-  const about = aboutContent;
-  
-  return (
-    <article className="min-h-screen bg-black pt-24">
-      {/* Hero */}
-      <section className="h-[60vh] relative">
-        <OptimizedImage
-          src={about.hero.image}
-          alt={about.hero.title}
-          className="w-full h-full object-cover opacity-60"
-          priority
-        />
-        <div className="absolute inset-0 flex items-end p-6 lg:p-16 pb-16">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-white text-5xl md:text-7xl lg:text-8xl font-light"
-          >
-            {about.hero.title}
-          </motion.h1>
-        </div>
-      </section>
-
-      {/* Story */}
-      <section className="py-24 lg:py-32 px-6 lg:px-16" aria-labelledby="story-heading">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 id="story-heading" className="sr-only">Our Story</h2>
-            <p className="text-white text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed mb-12">
-              {about.story.headline}
-            </p>
-            {about.story.paragraphs.map((paragraph, i) => (
-              <p key={i} className="text-white/50 text-base leading-relaxed mb-8">
-                {paragraph}
-              </p>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-24 lg:py-32 border-t border-white/10" aria-labelledby="values-heading">
-        <div className="px-6 lg:px-16">
-          <h2 id="values-heading" className="text-white text-3xl md:text-4xl font-light mb-16 text-center">Our Values</h2>
-          <div className="grid md:grid-cols-3 gap-12 lg:gap-16 max-w-5xl mx-auto">
-            {about.values.map((value, index) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <h3 className="text-white text-xl mb-4">{value.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{value.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </article>
-  );
-}
-
-// ============ LOOKBOOK PAGE - EDITORIAL STYLE ============
-function LookbookPage() {
-  const lookbook = lookbookContent;
-  const campaignImages = getCampaignImages();
-
-  return (
-    <article className="min-h-screen bg-black pt-24">
-      <div className="px-6 lg:px-16 mb-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h1 className="text-white text-5xl md:text-7xl font-light mb-4">{lookbook.title}</h1>
-          <p className="text-white/50 text-sm tracking-wider">{lookbook.subtitle}</p>
-        </motion.div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 pb-1" role="list" aria-label="Lookbook images">
-        {campaignImages.map((image, index) => (
-          <motion.figure
-            key={image.id}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: index * 0.1 }}
-            className={`overflow-hidden ${index % 3 === 0 ? 'md:col-span-2 aspect-[2/1]' : 'aspect-square'}`}
-            role="listitem"
-          >
-            <OptimizedImage
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
-            />
-          </motion.figure>
-        ))}
-      </div>
-    </article>
-  );
-}
-
-// ============ MAIN APP ============
-export default function App() {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedCollection, setSelectedCollection] = useState(null);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cart, setCart] = useState({ items: [], total: 0, checkoutUrl: '' });
-  const [cartCount, setCartCount] = useState(0);
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [isLoadingFeatured, setIsLoadingFeatured] = useState(true);
-  const [isCartLoading, setIsCartLoading] = useState(true);
-  const [currentBrand, setCurrentBrand] = useState(defaultBrand);
-
-  // Detect brand from domain on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const detectedBrand = detectBrandFromDomain(window.location.hostname);
-      setCurrentBrand(detectedBrand);
-    }
-  }, []);
-
-  // Hydrate the single-page storefront from direct production URLs.
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const path = window.location.pathname.replace(/\/$/, '');
-
-    if (path === '/shop' || path === '/collections') {
-      setCurrentPage('collections');
-      setSelectedProduct(null);
-      setSelectedCollection(null);
-      return;
-    }
-
-    if (path.startsWith('/products/')) {
-      const handle = decodeURIComponent(path.split('/products/')[1] || '').split('/')[0];
-      if (handle) {
-        setCurrentPage('product');
-        setSelectedProduct(handle);
-        setSelectedCollection(null);
-      }
-      return;
-    }
-
-    if (path === '/about') {
-      setCurrentPage('about');
-      setSelectedProduct(null);
-      setSelectedCollection(null);
-      return;
-    }
-
-    if (path === '/lookbook') {
-      setCurrentPage('lookbook');
-      setSelectedProduct(null);
-      setSelectedCollection(null);
-    }
-  }, []);
-
-  // Get current brand config
-  const brand = getBrand(currentBrand);
-
-  // Handle brand change
-  const handleBrandChange = useCallback((brandId) => {
-    setCurrentBrand(brandId);
-    setCurrentPage('home');
-    setSelectedProduct(null);
-    setSelectedCollection(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  // Initialize cart on mount
-  useEffect(() => {
-    async function initCart() {
-      setIsCartLoading(true);
-      try {
-        const initializedCart = await initializeCart();
-        setCart(initializedCart);
-        setCartCount(getCartItemCount());
-      } catch (error) {
-        console.error('[App] Cart initialization failed:', error);
-        const localCart = getCart();
-        setCart(localCart);
-        setCartCount(getCartItemCount());
-      } finally {
-        setIsCartLoading(false);
-      }
-    }
-    initCart();
-  }, []);
-
-  // Load featured products
-  useEffect(() => {
-    async function loadFeatured() {
-      setIsLoadingFeatured(true);
-      try {
-        const products = await getProducts(8);
-        setFeaturedProducts(products);
-      } catch (err) {
-        console.error('Error loading featured products:', err);
-        setFeaturedProducts(getFeaturedProducts(8));
-      } finally {
-        setIsLoadingFeatured(false);
-      }
-    }
-    loadFeatured();
-  }, []);
-
-  const handleNavigate = useCallback((page, collection = null) => {
-    setCurrentPage(page);
-    setSelectedProduct(null);
-    setSelectedCollection(collection);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  const handleProductClick = useCallback((productId, collectionId = null) => {
-    if (collectionId) {
-      setSelectedCollection(collectionId);
-      setCurrentPage('collections');
-    } else if (productId) {
-      setSelectedProduct(productId);
-      setCurrentPage('product');
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  const handleCollectionChange = useCallback((collectionId) => {
-    setSelectedCollection(collectionId);
-  }, []);
-
-  const handleAddToCart = useCallback(async (product, color, size) => {
-    const updatedCart = await addToCart(product, color, size);
-    setCart(updatedCart);
-    setCartCount(getCartItemCount());
-    setIsCartOpen(true);
-  }, []);
-
-  const handleUpdateQuantity = useCallback(async (itemKey, quantity) => {
-    const updatedCart = await updateQuantity(itemKey, quantity);
-    setCart(updatedCart);
-    setCartCount(getCartItemCount());
-  }, []);
-
-  const handleRemoveItem = useCallback(async (itemKey) => {
-    const updatedCart = await removeFromCart(itemKey);
-    setCart(updatedCart);
-    setCartCount(getCartItemCount());
-  }, []);
-  
-  const handleCartRefresh = useCallback(async () => {
-    const refreshedCart = await initializeCart();
-    setCart(refreshedCart);
-    setCartCount(getCartItemCount());
-  }, []);
-
-  // Get hero products from content config
-  const heroConfig = homepage.featuredSections.productHero1;
-  const secondHeroConfig = homepage.featuredSections.productHero2;
-  const heroProduct = featuredProducts.find(p => p.id === heroConfig.productId) || featuredProducts[heroConfig.fallbackIndex];
-  const secondHeroProduct = featuredProducts.find(p => p.id === secondHeroConfig.productId) || featuredProducts[secondHeroConfig.fallbackIndex];
-  const essentialsCollection = mockCollections[0];
-
-  return (
-    <div className="min-h-screen bg-black">
-      <Navigation
-        onCartClick={() => setIsCartOpen(true)}
-        cartCount={cartCount}
-        onNavigate={handleNavigate}
-        isTransparent={currentPage === 'home'}
-        currentBrand={currentBrand}
-        onBrandChange={handleBrandChange}
-      />
-
-      <CartSidebar
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cart={cart}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onRefresh={handleCartRefresh}
-      />
-
-      <main id="main-content" tabIndex={-1}>
-        {currentPage === 'home' && (
-          <>
-            <HeroSection onShopClick={() => handleNavigate('collections')} />
-            <BrandBoardsSection />
-            <ProductHero product={heroProduct} onBuyClick={handleProductClick} />
-            <ProductCarousel 
-              title={homepage.featuredSections.carousels[0].title}
-              products={featuredProducts} 
-              onProductClick={handleProductClick}
-              isLoading={isLoadingFeatured}
-            />
-            <CollectionShowcase collection={essentialsCollection} onExplore={(id) => handleNavigate('collections', id)} />
-            <BrandStatement onLearnMore={() => handleNavigate('about')} />
-            <PressSection />
-            <ProductHero product={secondHeroProduct} onBuyClick={handleProductClick} reverse />
-            <ProductCarousel 
-              title={homepage.featuredSections.carousels[1].title}
-              products={featuredProducts.slice(4, 12)} 
-              onProductClick={handleProductClick}
-              isLoading={isLoadingFeatured}
-            />
-            <Footer onNavigate={handleNavigate} />
-          </>
-        )}
-
-        {currentPage === 'collections' && (
-          <>
-            <CollectionsPage
-              onProductClick={handleProductClick}
-              selectedCollection={selectedCollection}
-              onCollectionChange={handleCollectionChange}
-            />
-            <Footer onNavigate={handleNavigate} />
-          </>
-        )}
-
-        {currentPage === 'product' && (
-          <>
-            <ProductPage
-              productId={selectedProduct}
-              onAddToCart={handleAddToCart}
-              onBack={() => handleNavigate('collections')}
-            />
-            <Footer onNavigate={handleNavigate} />
-          </>
-        )}
-
-        {currentPage === 'about' && (
-          <>
-            <AboutPage />
-            <Footer onNavigate={handleNavigate} />
-          </>
-        )}
-
-        {currentPage === 'lookbook' && (
-          <>
-            <LookbookPage />
-            <Footer onNavigate={handleNavigate} />
-          </>
-        )}
-      </main>
-    </div>
-  );
-}
+export default AppShell;

@@ -3,32 +3,25 @@ import './globals.css';
 // SEO and Metadata Configuration
 const siteConfig = {
   name: 'CARLOPHILLIPS',
-  tagline: 'Quiet Luxury',
-  description: 'A modern luxury lifestyle brand. Premium clothing, jewelry, accessories, and home items designed for those who appreciate understated elegance and uncompromising quality.',
+  tagline: 'Gesture of Luxury',
+  description: 'A premium editorial brand system preparing its first approved release.',
   url: process.env.NEXT_PUBLIC_BASE_URL || 'https://carlophillips.com',
   locale: 'en_US',
   type: 'website',
   twitterHandle: '@carlophillips',
   keywords: [
-    'luxury fashion',
-    'mens clothing',
     'premium essentials',
-    'sustainable fashion',
-    'quiet luxury',
-    'minimalist style',
-    'designer accessories',
-    'mens jewelry',
-    'contemporary menswear',
-    'ethical fashion',
+    'editorial fashion',
+    'brand system',
+    'future-ready apparel',
+    'premium release',
+    'minimal design',
   ],
 };
 
 export const metadata = {
   // Basic Metadata
-  title: {
-    default: `${siteConfig.name} | ${siteConfig.tagline}`,
-    template: `%s | ${siteConfig.name}`,
-  },
+  title: `${siteConfig.name} | ${siteConfig.tagline}`,
   description: siteConfig.description,
   keywords: siteConfig.keywords,
   
@@ -153,15 +146,11 @@ export default function RootLayout({ children }) {
         {/* Preconnect to external resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="preconnect" href="https://images.pexels.com" />
         <link rel="preconnect" href="https://cdn.shopify.com" />
         
         {/* DNS Prefetch for performance */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://storage.googleapis.com" />
         <link rel="dns-prefetch" href="https://cdn.shopify.com" />
-        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js" />
         
         {/* JSON-LD Structured Data */}
         <script
