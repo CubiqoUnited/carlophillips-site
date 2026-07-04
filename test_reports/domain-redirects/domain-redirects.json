@@ -6,25 +6,29 @@
       "domain": "lovecarlo.com",
       "target": "https://www.carlophillips.com",
       "type": "301 Permanent",
-      "validatedHttp": true
+      "validatedHttp": true,
+      "validatedHttps": true
     },
     {
       "domain": "www.lovecarlo.com",
       "target": "https://www.carlophillips.com",
       "type": "301 Permanent",
-      "validatedHttp": true
+      "validatedHttp": true,
+      "validatedHttps": true
     },
     {
       "domain": "houseofcarlphillips.com",
       "target": "https://www.carlophillips.com",
       "type": "301 Permanent",
-      "validatedHttp": true
+      "validatedHttp": true,
+      "validatedHttps": true
     },
     {
       "domain": "www.houseofcarlphillips.com",
       "target": "https://www.carlophillips.com",
       "type": "301 Permanent",
-      "validatedHttp": true
+      "validatedHttp": true,
+      "validatedHttps": true
     }
   ],
   "vercelDomainsAdded": [
@@ -43,5 +47,21 @@
     "www.houseofcarlphillips.com"
   ],
   "buildPassed": true,
-  "productionDeployed": false
+  "redirectCommit": "3a3ed2519ea1843c798ef1da4eb2dcd2116dbe0c",
+  "staging": {
+    "deploymentUrl": "https://carlophillips-site-jhe7svnh9-cubiqo-projects-d7156840.vercel.app",
+    "branchAlias": "https://carlophillips-site-git-staging-cubiqo-projects-d7156840.vercel.app",
+    "status": "Ready",
+    "branchAliasHttpStatus": 200,
+    "customDomain": "https://staging.carlophillips.com",
+    "customDomainDnsResolved": false
+  },
+  "production": {
+    "deploymentUrl": "https://carlophillips-site-kuhp1um33-cubiqo-projects-d7156840.vercel.app",
+    "canonicalAlias": "https://www.carlophillips.com",
+    "status": "Ready",
+    "canonicalHttpStatus": 200
+  },
+  "productionDeployed": true,
+  "httpsPropagationStatus": "Source-domain HTTPS redirects validated successfully for all four brand-entry domains."
 }
