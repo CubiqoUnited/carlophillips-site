@@ -1,0 +1,91 @@
+{
+  "product": "CARLOPHILLIPS Signature Hoodie",
+  "shopify_product_id": "9432704909549",
+  "shopify_handle": "carlophillips-signature-hoodie",
+  "product_status": "Draft",
+  "production_ready": false,
+  "required_media_standard": [
+    "front product image",
+    "back or angle product image",
+    "logo/detail/material close-up",
+    "on-model editorial image",
+    "lifestyle/campaign image",
+    "360/spin asset or documented production blocker",
+    "3D/AR/try-on asset or documented production blocker",
+    "short product video or documented production blocker"
+  ],
+  "matrix": [
+    {
+      "requirement": "front image",
+      "status": "complete",
+      "source": "Apliiq real asset: media/apliiq-5958463-black-front-original.jpg",
+      "blocker": "Not yet attached to Shopify in this export-only pass.",
+      "tool_checked": "Apliiq saved designs and black product record",
+      "payment_or_credits_required": "no",
+      "next_step": "Attach approved black front original to Shopify Draft product through a confirmed safe upload path."
+    },
+    {
+      "requirement": "back/angle image",
+      "status": "missing",
+      "source": "none",
+      "blocker": "Apliiq exposed only front image id 6399; no back/angle gallery or download control was visible.",
+      "tool_checked": "Apliiq saved designs and black product record",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Open Apliiq editor/mockup export manually if available, or generate/photograph a truthful back/angle product asset."
+    },
+    {
+      "requirement": "CP embroidery detail",
+      "status": "partial",
+      "source": "media/apliiq-5958463-black-cp-detail-crop.jpg and Apliiq embroidery record",
+      "blocker": "Crop is truthful but not a true embroidery macro/proof.",
+      "tool_checked": "Apliiq black product record",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Export Apliiq embroidery proof if available, or create a real macro detail from a sample."
+    },
+    {
+      "requirement": "on-model/editorial",
+      "status": "missing",
+      "source": "none",
+      "blocker": "Apliiq did not provide on-model image in the accessible product record.",
+      "tool_checked": "Apliiq",
+      "payment_or_credits_required": "not visible in Apliiq; Modelize/other app may require credits",
+      "next_step": "Use Modelize or another approved model-media workflow only if free/safe, or shoot real model photography."
+    },
+    {
+      "requirement": "lifestyle/campaign",
+      "status": "missing",
+      "source": "none",
+      "blocker": "Apliiq did not provide lifestyle/campaign imagery.",
+      "tool_checked": "Apliiq",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Create campaign imagery after back/detail/on-model base assets are available."
+    },
+    {
+      "requirement": "360/spin",
+      "status": "documented blocker",
+      "source": "none",
+      "blocker": "No real multi-angle set exists. Spin tools need actual angle frames or app-specific generation.",
+      "tool_checked": "Apliiq",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Create/export an angle set, then use Spin Studio or ZS Spin View after permission and billing checks."
+    },
+    {
+      "requirement": "3D/AR/try-on",
+      "status": "documented blocker",
+      "source": "none",
+      "blocker": "No exact-product 3D/AR/try-on asset exists.",
+      "tool_checked": "Apliiq",
+      "payment_or_credits_required": "not visible in Apliiq; likely app-specific if using Zakeke/Angle/LEVAR/try-on tools",
+      "next_step": "Evaluate 3D/AR app only after static media is complete and with explicit billing approval withheld."
+    },
+    {
+      "requirement": "video",
+      "status": "documented blocker",
+      "source": "none",
+      "blocker": "No real video or approved product-video output exists.",
+      "tool_checked": "Apliiq",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Create a short product video from final approved product assets or inspect a video app with no paid approval."
+    }
+  ]
+}

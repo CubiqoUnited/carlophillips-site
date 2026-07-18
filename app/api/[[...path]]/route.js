@@ -128,7 +128,7 @@ async function auditPremiumReadiness() {
       requiredAdds: [
         product.mediaCount < 6 ? 'Add 6-8 Shopify product media assets' : null,
         hasMotion ? null : 'Add product/editorial video media',
-        has3d ? null : 'Add 3D model or 360 product spin asset',
+        has3d ? null : 'Add richer product media only when real assets are available',
       ].filter(Boolean),
     };
   });
@@ -150,8 +150,6 @@ async function auditPremiumReadiness() {
       mediaTypeCounts: audit.mediaTypeCounts,
     },
     appPath: [
-      'Cappasity or Spin Studio for 360/3D-style product viewing',
-      'Zakeke for real-time 3D/customizer/AI visual production if customization becomes core',
       'Loox or Judge.me for photo reviews after product media baseline is fixed',
       'Klaviyo for lifecycle and abandoned checkout flows',
     ],

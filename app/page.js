@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
-import { canRenderProducts } from '@/lib/config/product-visibility';
+import { canRenderDraftProductPreviews, canRenderProducts } from '@/lib/config/product-visibility';
+import { signatureHoodiePreview } from '@/lib/data/signature-hoodie-preview';
 
 const brands = ['CARLOPHILLIPS', 'loveCarlo', 'HouseOfCarlo'];
 
@@ -45,6 +46,8 @@ function AppShell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [bagOpen, setBagOpen] = useState(false);
   const productsVisible = canRenderProducts();
+  const draftProductPreviewsVisible = canRenderDraftProductPreviews();
+  const isSignatureHoodiePreview = draftProductPreviewsVisible && pathname.endsWith(`/${signatureHoodiePreview.handle}`);
 
   const route = getRoute(pathname);
 
@@ -55,8 +58,14 @@ function AppShell() {
       {bagOpen && <BagOverlay onClose={() => setBagOpen(false)} />}
 
       {route === 'home' && <HomePage productsVisible={productsVisible} />}
-      {route === 'collection' && <CollectionEmptyPage />}
-      {route === 'product' && <ProductUnreleasedPage />}
+      {route === 'collection' && <CollectionPage showSignatureHoodie={draftProductPreviewsVisible} />}
+      {route === 'product' && (
+        isSignatureHoodiePreview ? (
+          <SignatureHoodiePreviewPage product={signatureHoodiePreview} />
+        ) : (
+          <ProductUnreleasedPage />
+        )
+      )}
       {route === 'about' && <AboutPage />}
       {route === 'bag' && <BagPage onBack={() => setBagOpen(true)} />}
 
@@ -66,7 +75,7 @@ function AppShell() {
 }
 
 function getRoute(pathname) {
-  if (pathname.startsWith('/products/')) return 'product';
+  if (pathname.startsWith('/products/') || pathname.startsWith('/carlo/')) return 'product';
   if (pathname.startsWith('/shop') || pathname.startsWith('/collections')) return 'collection';
   if (pathname.startsWith('/about') || pathname.startsWith('/lookbook')) return 'about';
   if (pathname.startsWith('/cart') || pathname.startsWith('/bag')) return 'bag';
@@ -213,8 +222,8 @@ function ProductSystemSection() {
       <div className="mx-auto max-w-[1700px]">
         <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <p className="mb-5 text-[10px] uppercase tracking-[0.3em] text-white/40">Product system placeholders</p>
-            <h2 className="max-w-3xl text-4xl font-light tracking-[-0.045em] sm:text-6xl">Release architecture without exposed inventory.</h2>
+            <p className="mb-5 text-[10px] uppercase tracking-[0.3em] text-white/40">Product system</p>
+            <h2 className="max-w-3xl text-4xl font-light tracking-[-0.045em] sm:text-6xl">Release architecture with a tighter threshold.</h2>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-white/45">
             These panels reserve the hierarchy for future approved work without showing unfinished catalog assets.
@@ -265,7 +274,34 @@ function MediaArchitectureSection() {
   );
 }
 
-function CollectionEmptyPage() {
+function CollectionPage({ showSignatureHoodie }) {
+  if (showSignatureHoodie) {
+    return (
+      <section className="min-h-screen border-b border-white/10 px-5 pb-20 pt-28 sm:px-8 sm:pt-32 lg:px-12 lg:pt-36">
+        <div className="mx-auto grid max-w-[1600px] gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
+          <div className="max-w-3xl">
+            <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">Spring 2026 Collection</p>
+            <h1 className="text-5xl font-light leading-[0.98] tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl xl:text-8xl">
+              First garment in review
+            </h1>
+            <p className="mt-8 max-w-xl text-base leading-relaxed text-white/56 sm:text-lg">
+              One signature hoodie is staged for page, image, pricing, and release approval.
+            </p>
+            <Link
+              href={`/products/${signatureHoodiePreview.handle}`}
+              className="mt-10 inline-flex items-center gap-3 border border-white/24 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/76 transition hover:border-white hover:text-white"
+            >
+              Review hoodie
+              <ArrowRight className="h-4 w-4" strokeWidth={1.3} />
+            </Link>
+          </div>
+
+          <ProductPreviewCard product={signatureHoodiePreview} />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="flex min-h-screen items-center border-b border-white/10 px-5 pt-28 sm:px-8 lg:px-12">
       <div className="mx-auto grid w-full max-w-[1700px] gap-12 lg:grid-cols-[1fr_0.8fr] lg:items-end">
@@ -289,6 +325,143 @@ function CollectionEmptyPage() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ProductPreviewCard({ product }) {
+  return (
+    <Link href={`/products/${product.handle}`} className="group block">
+      <div className="grid gap-px bg-white/10 sm:grid-cols-[0.78fr_1fr]">
+        <div className="flex aspect-[4/5] items-center justify-center bg-[#24231f] p-8 sm:aspect-auto">
+          <img
+            src={product.media[0].src}
+            alt={product.media[0].alt}
+            className="max-h-full max-w-full object-contain transition duration-700 group-hover:scale-[1.025]"
+          />
+        </div>
+        <div className="flex min-h-[360px] flex-col justify-between bg-[#050505] p-6 sm:p-8 lg:min-h-[520px]">
+          <div>
+            <p className="mb-6 text-[10px] uppercase tracking-[0.26em] text-white/34">{product.statusLabel}</p>
+            <h2 className="max-w-lg text-3xl font-light leading-[0.98] tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl">
+              {product.title}
+            </h2>
+          </div>
+          <div>
+            <p className="max-w-md text-sm leading-relaxed text-white/52">{product.description}</p>
+            <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5 text-xs text-white/48">
+              <span>{product.color}</span>
+              <span>{product.decoration}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function SignatureHoodiePreviewPage({ product }) {
+  return (
+    <>
+      <section className="grid min-h-screen border-b border-white/10 pt-24 lg:grid-cols-[1.04fr_0.96fr] lg:pt-20">
+        <div className="border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10">
+          <ProductMediaGallery media={product.media} />
+        </div>
+
+        <div className="flex items-center px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
+          <div className="w-full max-w-3xl">
+            <p className="mb-7 text-[10px] uppercase tracking-[0.28em] text-white/38">{product.statusLabel}</p>
+            <h1 className="max-w-3xl text-4xl font-light leading-[0.98] tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl xl:text-7xl">
+              {product.title}
+            </h1>
+            <p className="mt-7 text-2xl font-light text-white/72">{formatPrice(product.price)}</p>
+            <p className="mt-8 max-w-xl text-base leading-relaxed text-white/58 sm:text-lg">{product.description}</p>
+
+            <div className="mt-10 border-t border-white/10 pt-7">
+              <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+                <div className="bg-black py-5 pr-5">
+                  <p className="mb-3 text-[10px] uppercase tracking-[0.24em] text-white/35">Color</p>
+                  <p className="text-sm text-white/72">{product.color}</p>
+                </div>
+                <div className="bg-black py-5 sm:pl-5">
+                  <p className="mb-3 text-[10px] uppercase tracking-[0.24em] text-white/35">Mark</p>
+                  <p className="text-sm text-white/72">{product.decoration}</p>
+                </div>
+              </div>
+
+              <div className="mt-9">
+                <p className="mb-4 text-[10px] uppercase tracking-[0.24em] text-white/35">Size review</p>
+                <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+                  {product.sizes.map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      disabled
+                      className="h-12 border border-white/12 text-xs text-white/42"
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                disabled
+                className="mt-8 flex h-14 w-full items-center justify-center border border-white/18 text-[10px] uppercase tracking-[0.24em] text-white/44"
+              >
+                Staged for review
+              </button>
+              <p className="mt-4 text-xs leading-relaxed text-white/35">
+                Purchasing is paused while this garment completes image and fit review.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-white/10 px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+        <div className="mx-auto grid max-w-[1700px] gap-14 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/38">Product story</p>
+            <h2 className="max-w-3xl text-5xl font-light leading-[0.95] tracking-[-0.055em] sm:text-7xl">
+              Built around one restrained mark.
+            </h2>
+          </div>
+          <div className="space-y-12">
+            <p className="max-w-3xl text-xl font-light leading-relaxed text-white/58">{product.story}</p>
+            <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+              {product.details.map(([label, value]) => (
+                <div key={label} className="min-h-32 bg-[#050505] p-6">
+                  <p className="mb-6 text-[10px] uppercase tracking-[0.24em] text-white/35">{label}</p>
+                  <p className="text-lg font-light text-white/78">{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function ProductMediaGallery({ media }) {
+  return (
+    <div className="grid gap-px bg-white/10 lg:min-h-[calc(100vh-5rem)] lg:grid-cols-2">
+      {media.map((item, index) => (
+        <figure key={item.src} className={index === 0 ? 'bg-[#24231f] lg:col-span-2' : 'bg-[#f4f1ee]'}>
+          <div className={index === 0 ? 'aspect-[5/4] lg:aspect-[16/10]' : 'aspect-[4/5]'}>
+            <img
+              src={item.src}
+              alt={item.alt}
+              className={index === 0 ? 'h-full w-full object-contain object-center p-8 sm:p-12' : 'h-full w-full object-cover object-center'}
+            />
+          </div>
+          <figcaption className="border-t border-black/10 bg-black px-5 py-4 text-[10px] uppercase tracking-[0.22em] text-white/42">
+            {item.label}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
   );
 }
 
@@ -321,6 +494,14 @@ function ProductUnreleasedPage() {
       </div>
     </section>
   );
+}
+
+function formatPrice(value) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  }).format(value);
 }
 
 function AboutPage() {
