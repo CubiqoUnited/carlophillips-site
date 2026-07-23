@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { evaluateCorsRequest } from '../../../lib/http/cors-policy';
 
 /**
  * CARLOPHILLIPS API Routes
@@ -9,13 +10,40 @@ import { NextResponse } from 'next/server';
  * Future: Add Supabase for custom features (wishlists, reviews, etc.)
  */
 
-// Helper for CORS headers
-function corsHeaders() {
-  return {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
+function corsDecision(request) {
+  const requestUrl = new URL(request.url);
+  const requestHost = request.headers.get('host');
+  const requestOrigin = requestHost
+    ? `${requestUrl.protocol}//${requestHost}`
+    : requestUrl.origin;
+
+  return evaluateCorsRequest(
+    request.headers.get('origin'),
+    process.env.CORS_ORIGINS,
+    requestOrigin
+  );
+}
+
+function deniedCorsResponse(decision) {
+  return NextResponse.json(
+    {
+      error: 'Forbidden',
+      code: 'CORS_ORIGIN_DENIED',
+      message: 'The request origin is not allowed.',
+    },
+    { status: 403, headers: decision.headers }
+  );
+}
+
+function jsonWithCors(request, body, init = {}) {
+  const decision = corsDecision(request);
+  return NextResponse.json(body, {
+    ...init,
+    headers: {
+      ...decision.headers,
+      ...(init.headers || {}),
+    },
+  });
 }
 
 async function auditShopifyMedia() {
@@ -158,12 +186,17 @@ async function auditPremiumReadiness() {
 }
 
 // OPTIONS handler for CORS
-export async function OPTIONS() {
-  return NextResponse.json({}, { headers: corsHeaders() });
+export async function OPTIONS(request) {
+  const decision = corsDecision(request);
+  if (!decision.allowed) return deniedCorsResponse(decision);
+  return new NextResponse(null, { status: 204, headers: decision.headers });
 }
 
 // Main request handler
 export async function GET(request, { params }) {
+  const decision = corsDecision(request);
+  if (!decision.allowed) return deniedCorsResponse(decision);
+
   const { path = [] } = await params;
   const pathString = path.join('/');
   
@@ -174,7 +207,8 @@ export async function GET(request, { params }) {
       const hasShopifyToken = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN);
       const shopifyConnected = hasShopifyDomain && hasShopifyToken;
 
-      return NextResponse.json(
+      return jsonWithCors(
+        request,
         { 
           status: shopifyConnected ? 'ok' : 'degraded',
           service: 'CARLOPHILLIPS Headless API',
@@ -187,40 +221,45 @@ export async function GET(request, { params }) {
           timestamp: new Date().toISOString(),
           version: '1.0.0'
         },
-        { headers: corsHeaders() }
+        {}
       );
     }
 
     if (pathString === 'shopify/media-audit') {
-      return NextResponse.json(await auditShopifyMedia(), { headers: corsHeaders() });
+      return jsonWithCors(request, await auditShopifyMedia());
     }
 
     if (pathString === 'shopify/premium-readiness') {
-      return NextResponse.json(await auditPremiumReadiness(), { headers: corsHeaders() });
+      return jsonWithCors(request, await auditPremiumReadiness());
     }
 
     // All product/cart data comes from Shopify
     // Future custom endpoints can be added here (e.g., wishlists, reviews)
     
     // 404 for unknown routes
-    return NextResponse.json(
+    return jsonWithCors(
+      request,
       { 
         error: 'Not found',
         message: 'All commerce data is managed by Shopify Storefront API'
       },
-      { status: 404, headers: corsHeaders() }
+      { status: 404 }
     );
 
   } catch (error) {
     console.error('API Error:', error);
-    return NextResponse.json(
+    return jsonWithCors(
+      request,
       { error: 'Internal server error' },
-      { status: 500, headers: corsHeaders() }
+      { status: 500 }
     );
   }
 }
 
 export async function POST(request, { params }) {
+  const decision = corsDecision(request);
+  if (!decision.allowed) return deniedCorsResponse(decision);
+
   const { path = [] } = await params;
   const pathString = path.join('/');
   
@@ -228,43 +267,50 @@ export async function POST(request, { params }) {
     // All cart operations are handled by Shopify Storefront API
     // Future custom endpoints (wishlists, reviews, etc.) can be added here
     
-    return NextResponse.json(
+    return jsonWithCors(
+      request,
       { 
         error: 'Not found',
         message: 'Cart operations are handled by Shopify Storefront API'
       },
-      { status: 404, headers: corsHeaders() }
+      { status: 404 }
     );
 
   } catch (error) {
     console.error('API Error:', error);
-    return NextResponse.json(
+    return jsonWithCors(
+      request,
       { error: 'Internal server error' },
-      { status: 500, headers: corsHeaders() }
+      { status: 500 }
     );
   }
 }
 
 export async function DELETE(request, { params }) {
+  const decision = corsDecision(request);
+  if (!decision.allowed) return deniedCorsResponse(decision);
+
   const { path = [] } = await params;
   const pathString = path.join('/');
   
   try {
     // All cart operations are handled by Shopify Storefront API
     
-    return NextResponse.json(
+    return jsonWithCors(
+      request,
       { 
         error: 'Not found',
         message: 'Cart operations are handled by Shopify Storefront API'
       },
-      { status: 404, headers: corsHeaders() }
+      { status: 404 }
     );
 
   } catch (error) {
     console.error('API Error:', error);
-    return NextResponse.json(
+    return jsonWithCors(
+      request,
       { error: 'Internal server error' },
-      { status: 500, headers: corsHeaders() }
+      { status: 500 }
     );
   }
 }

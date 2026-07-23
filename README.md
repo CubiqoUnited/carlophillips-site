@@ -68,7 +68,11 @@ Copy `.env.example` and supply values only in ignored local files or the appropr
 | `SHOPIFY_STOREFRONT_TOKEN` | Preferred server-only Storefront API token |
 | `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` | Shopify Storefront domain |
 | `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` | Public Storefront API token; never put the actual value in reports |
-| `CORS_ORIGINS` | Allowed API origin for the environment |
+| `CORS_ORIGINS` | Exact comma-separated HTTP(S) origins allowed to call `/api` cross-origin; wildcards and paths are rejected |
+
+## Response security
+
+Storefront pages deny third-party framing with both `X-Frame-Options: DENY` and CSP `frame-ancestors 'none'`. Global CORS headers are intentionally absent. API requests without an `Origin` header and same-origin requests remain available; a cross-origin request must exactly match `CORS_ORIGINS` or it receives `403 CORS_ORIGIN_DENIED` before route work. Production adds HSTS only when the deployment environment is explicitly production.
 
 ## Repository map
 

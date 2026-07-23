@@ -16,7 +16,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Production and preview HTTP endpoints were diagnosed as `402 DEPLOYMENT_DISABLED` on 2026-07-22.
 - Canonical `main` and `staging` were recorded at `d172cfb`; the Hoodie preview branch is at `425f50b`.
 - The current Product Owner-supplied Shopify installed-app snapshot is preserved in `docs/shopify-capability-access-audit.md`; installed status does not prove API, Admin/Flow, app-credential, browser, or human access.
-- The live Shopify read-only audit was attempted through the existing Google account. Shopify accepted the account path but stopped at a one-time email-code gate before the Admin or installed-app inventory became visible; the verification tab is preserved.
+- The live Shopify read-only audit was attempted through the existing Google account. Shopify accepted the account path but stopped at a one-time email-code gate before Admin or installed-app inventory. The verification tab was preserved at Cycle 5 close but did not survive the later task-continuation boundary; a fresh Shopify login tab is open without a new code request.
 - The App Router now runs on Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`; async route params were migrated and the full local regression passed.
 
 ## Not yet proven
@@ -71,6 +71,14 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The first production-dependency audit found 38 advisories (1 critical, 15 high, 21 moderate, 1 low). Unused direct Axios/UUID dependencies were removed and stale lodash/PostCSS/sharp resolutions were upgraded; the final production-dependency audit reports zero advisories. PostCSS and sharp are temporary security overrides beyond Next 15.5.21's declared ranges and passed clean install/build regression.
 - Frozen clean install, zero-warning lint, 85 tests, production-dependency audit (zero advisories), and production build passed. `yarn verify` composes all four gates; `yarn check` is intentionally not used because Yarn Classic reserves that command. Tooling-policy tests pin the verified framework/runtime, Yarn-only lock strategy, and temporary security resolutions. Exact 1440×1000 and 390×844 browser checks showed the source-labeled Hoodie with purchasing disabled; the mobile document had no horizontal overflow and both viewports had no console/page errors. The local bag remained fixture-labeled with checkout disabled and no checkout link.
 
+## Cycle 6 verification
+
+- The previous global framing policy (`ALLOWALL` plus `frame-ancestors *`) and wildcard CORS defaults have been removed.
+- All page responses now deny framing, opt out of sensitive browser capabilities, prevent MIME sniffing, and use a strict-origin referrer policy. HSTS is emitted only for an explicitly production deployment environment.
+- API CORS is request-aware: no-Origin and same-origin traffic remain available; exact configured cross-origin traffic receives a matching allow-origin header; unlisted or invalid origins receive `403 CORS_ORIGIN_DENIED` before route work.
+- `CORS_ORIGINS` accepts only exact comma-separated HTTP(S) origins. Wildcards, credentials, paths, queries, hashes, and non-HTTP protocols are ignored.
+- `yarn verify` passed with zero-warning lint, 18 files/95 tests, zero production advisories across 193 packages, and a successful 13-route build. Live HTTP plus desktop/mobile browser evidence is stored under `test_reports/cp-fitness-cycle-6/`.
+
 ## External blockers
 
 ### Vercel hosting disabled
@@ -89,7 +97,7 @@ Resume point: set `COMMERCE_DATA_MODE=shopify`, open the selected product route,
 
 Observed blocker: the authorized browser audit reached Shopify's “Verify your email to continue” screen after selecting the existing Google account. Admin, installed-app names, settings, permissions, and billing screens were not reachable, so the Product Owner-supplied inventory remains unverified.
 
-Human action: enter the one-time code in the preserved Shopify verification tab and click Verify. Do not send or record the code in project artifacts.
+Human action: in the current Shopify login tab, choose **Continue with Google**, select the existing account, then enter Shopify's one-time code if prompted. Do not send or record the code in project artifacts.
 
 Resume point: begin at Shopify installed-app inventory, then inspect P0 Shopify Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder surfaces; record access class/settings/permission or billing evidence without secrets or changes. Do not infer access from installation.
 

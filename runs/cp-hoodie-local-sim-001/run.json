@@ -18,7 +18,7 @@
       ],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, then observe and fingerprint the Hoodie provider-to-Shopify mapping without ordering or accepting charges."
       }
     },
@@ -56,7 +56,7 @@
       "evidence": ["test_reports/cp-fitness-cycle-5/shopify-readonly-audit.json"],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at Shopify installed-app inventory, then inspect Storefront/cart and the named P0 apps read-only without approving charges or changing state."
       }
     },
@@ -68,6 +68,16 @@
       "status": "succeeded",
       "attempts": 1,
       "evidence": ["test_reports/cp-fitness-cycle-5/verification.json"],
+      "blocker": null
+    },
+    {
+      "workItemId": "response-security-hardening",
+      "lane": "commerce-frontend",
+      "capability": "fail-closed-response-policy",
+      "adapter": "nextjs-security-headers-and-cors",
+      "status": "succeeded",
+      "attempts": 1,
+      "evidence": ["test_reports/cp-fitness-cycle-6/verification.json"],
       "blocker": null
     },
     {
@@ -128,6 +138,14 @@
       "workItemId": "framework-security-migration",
       "status": "succeeded",
       "recordedAt": "2026-07-23T03:12:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-response-security-hardened",
+      "idempotencyKey": "cp-hoodie-local-sim-001:response-security-hardening:attempt-1",
+      "workItemId": "response-security-hardening",
+      "status": "succeeded",
+      "recordedAt": "2026-07-23T03:34:00Z",
       "actor": "CP Fitness Delivery Agent"
     }
   ],

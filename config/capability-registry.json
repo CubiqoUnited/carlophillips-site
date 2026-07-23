@@ -21,7 +21,7 @@
       "alternatives": [],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at Shopify installed-app inventory, then inspect Carlophillips Headless/Storefront settings read-only before any cart test."
       }
     },
@@ -37,7 +37,7 @@
       "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, and observe the Hoodie provider-to-Shopify mapping without ordering, sampling, or enabling fulfillment."
       }
     },
@@ -53,7 +53,7 @@
       "alternatives": ["spin-studio", "zs-spin-view"],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect Spin Studio and ZS-Spin-View settings/billing read-only, and select neither until evidence and Product Owner approval."
       }
     },
@@ -69,7 +69,7 @@
       "alternatives": ["modelize"],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect Modelize access/credits/settings read-only, and record inputs, outputs, provenance controls, and Draft-safe export path."
       }
     },
@@ -85,7 +85,7 @@
       "alternatives": [],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect Flow access/templates read-only, and record supported triggers/actions without enabling or editing a workflow."
       }
     },
@@ -101,7 +101,7 @@
       "alternatives": [],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect MyDesigns access/API/billing read-only, and record whether Draft-safe bulk jobs are actually callable."
       }
     },
@@ -117,7 +117,7 @@
       "alternatives": [],
       "blocker": {
         "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
-        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect CS Trending Products Finder access/export/billing read-only, and record source, date, confidence, and callable surface."
       }
     },

@@ -10,7 +10,9 @@ On 2026-07-22, the in-app browser had no open tab to claim, so Shopify Admin was
 
 No Admin page, installed-app list, app settings, permission details, billing screen, product, order, customer, credential, or secret was opened. No code was read, entered, or recorded. No resend, charge, write, generation, publish, order, fulfillment, or message action was taken.
 
-Exact human action: enter the one-time code in the preserved Shopify verification tab and click **Verify**. Do not share or record the code.
+Current handoff note: the verification tab did not persist across the subsequent task-continuation boundary. A fresh Shopify login tab was opened without selecting an account or requesting another code.
+
+Exact human action: in the current Shopify login tab, choose **Continue with Google**, select the existing account, then enter Shopify's one-time code if prompted. Do not share or record the code.
 
 Exact resume point: begin at Shopify installed-app inventory. Confirm the reported names, then inspect Carlophillips Headless/Storefront-cart, Apliiq, Modelize, Spin Studio, ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder read-only. Record each actual API/Admin/Flow/app-API/browser/human/unavailable surface, scopes by name only, billing boundary, Draft safety, and app-specific resume point. Stop before every mutation or charge.
 

@@ -57,7 +57,8 @@
 
 ## Next unblocked local cycle
 
-- [ ] Tighten permissive response/security headers without breaking required storefront embedding or local development.
+- [x] Replace permissive framing and wildcard CORS with tested fail-closed page/API response policy.
+- [x] Prove same-origin local use, exact allow-list behavior, denied-origin behavior, and desktop/mobile storefront regression.
 - [x] Run a production-dependency audit, remove unused vulnerable direct dependencies, and resolve the current advisory set to zero.
 - [x] Make the supported-version/dependency audit policy machine-checkable in the normal quality gate.
 - [ ] Retire temporary transitive overrides when Next declares patched ranges.

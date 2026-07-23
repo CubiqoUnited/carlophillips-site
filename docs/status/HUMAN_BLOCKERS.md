@@ -26,7 +26,9 @@ Resume point: use `COMMERCE_DATA_MODE=shopify`, capture the source-labeled produ
 
 Observed blocker: the existing Google account path reached Shopify's six-digit email verification screen before Admin. Installed-app names, API/Admin/Flow/app-credential access, scopes, billing/credits, Draft safety, and export consequences were therefore not live-verified.
 
-Human action: enter the one-time code in the preserved Shopify verification tab and click Verify. Do not share or record the code.
+Current handoff: the prior verification tab did not persist across the task continuation. A fresh Shopify login tab is open, but no new login/OTP request was triggered.
+
+Human action: in the current Shopify login tab, choose **Continue with Google**, select the existing account, then enter Shopify's one-time code if prompted. Do not share or record the code.
 
 Resume point: start at installed-app inventory, then attempt each named P0 surface, record sanitized findings or an app-specific blocker, and resume only proven read-only `PipelineRun` work without stopping other safe work.
 
