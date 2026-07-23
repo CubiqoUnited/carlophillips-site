@@ -35,6 +35,11 @@ function product(variantOrder = ['large', 'small']) {
   return {
     handle: 'test-product',
     name: 'Test Product',
+    description: 'Heavyweight cotton hoodie.',
+    vendor: 'Observed vendor',
+    productType: 'Hoodie',
+    tagline: 'SIGNATURE',
+    details: ['Heavyweight cotton hoodie.'],
     currency: 'USD',
     price: 128,
     compareAtPrice: 128,
@@ -276,6 +281,67 @@ describe('product observation truth contract', () => {
     expect(second.variantFingerprint).toBe(first.variantFingerprint);
     expect(second.commerceFactsFingerprint).not.toBe(first.commerceFactsFingerprint);
     expect(second.observationFingerprint).not.toBe(first.observationFingerprint);
+  });
+
+  it.each([
+    ['description', product => { product.description = 'Changed description.'; }],
+    ['vendor', product => { product.vendor = 'Changed vendor'; }],
+    ['product type', product => { product.productType = 'Changed type'; }],
+    ['tagline', product => { product.tagline = 'CHANGED'; }],
+    ['details', product => { product.details = ['Changed detail.']; }],
+  ])('binds customer-visible %s into commerce facts', (_field, mutate) => {
+    const reviewedProduct = product();
+    const changedProduct = product();
+    mutate(changedProduct);
+    const reviewed = createProductObservation({
+      source: 'shopify',
+      environment: 'preview',
+      observedAt,
+      product: reviewedProduct,
+      capabilityEvidence,
+    });
+    const changed = createProductObservation({
+      source: 'shopify',
+      environment: 'preview',
+      observedAt,
+      product: changedProduct,
+      capabilityEvidence,
+    });
+
+    expect(changed.variantFingerprint).toBe(reviewed.variantFingerprint);
+    expect(changed.commerceFactsFingerprint).not.toBe(reviewed.commerceFactsFingerprint);
+    expect(changed.observationFingerprint).not.toBe(reviewed.observationFingerprint);
+  });
+
+  it('canonicalizes customer copy and rejects malformed reviewed-copy facts', () => {
+    const input = product();
+    input.description = '  Heavyweight cotton hoodie.  ';
+    input.vendor = '  Observed vendor ';
+    input.details = ['  First detail. ', '', 'Second detail.'];
+    const observation = createProductObservation({
+      source: 'shopify',
+      environment: 'preview',
+      observedAt,
+      product: input,
+      capabilityEvidence,
+    });
+
+    expect(observation.product).toMatchObject({
+      description: 'Heavyweight cotton hoodie.',
+      vendor: 'Observed vendor',
+      details: ['First detail.', 'Second detail.'],
+    });
+
+    observation.product.details = [' valid-looking but non-canonical '];
+    expect(reviewProductObservation({
+      observation,
+      expectedHandle: 'test-product',
+      capabilityDecision: readyCapability,
+      reviewApproval: approvalFor(observation),
+    }).blockers.map(item => item.code)).toEqual(expect.arrayContaining([
+      'PRODUCT_OBSERVATION_INTEGRITY_MISMATCH',
+      'PRODUCT_OBSERVATION_FACTS_INVALID',
+    ]));
   });
 
   it('requires capability evidence tied to the exact ready decision', () => {

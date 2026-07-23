@@ -15,6 +15,11 @@ function productFacts(overrides = {}) {
     name = 'Observed product',
     amount = '128.00',
     availableForSale = true,
+    description = 'Observed description',
+    vendor = 'Observed vendor',
+    productType = 'Hoodie',
+    tagline = 'SIGNATURE',
+    details = ['Observed description'],
     variantId = 'sanitized-test-variant',
     variantTitle = 'Default Title',
     optionValue = 'Default Title',
@@ -22,6 +27,11 @@ function productFacts(overrides = {}) {
   return {
     handle,
     name,
+    description,
+    vendor,
+    productType,
+    tagline,
+    details,
     price: Number(amount),
     compareAtPrice: Number(amount),
     currency: 'USD',
@@ -130,6 +140,11 @@ describe('release-bound observation visibility', () => {
     ['price', { amount: '129.00' }],
     ['availability', { availableForSale: false }],
     ['title', { name: 'Changed observed product' }],
+    ['description', { description: 'Changed observed description' }],
+    ['vendor', { vendor: 'Changed observed vendor' }],
+    ['product type', { productType: 'Changed type' }],
+    ['tagline', { tagline: 'CHANGED' }],
+    ['details', { details: ['Changed observed detail'] }],
   ])('withholds changed %s facts even when variant identity is otherwise stable', (_label, changes) => {
     const reviewed = observe();
     const releaseRecord = bindReviewedObservation(reviewed);
@@ -161,6 +176,46 @@ describe('release-bound observation visibility', () => {
       shopifyProduct: current,
       releaseRecord,
     }).reason).toBe('PRODUCT_VARIANT_FINGERPRINT_STALE');
+  });
+
+  it('derives every rendered Shopify copy field from the reviewed observation, not outer payload fields', () => {
+    const reviewed = observe();
+    const releaseRecord = bindReviewedObservation(reviewed);
+    const current = observe({ observedAt: '2026-07-24T12:30:00Z' });
+    Object.assign(current, {
+      title: 'Injected outer title',
+      name: 'Injected outer name',
+      description: 'Injected outer description',
+      vendor: 'Injected outer vendor',
+      productType: 'Injected outer type',
+      tagline: 'INJECTED',
+      details: ['Injected outer detail'],
+      story: 'Injected outer story',
+      descriptionHtml: '<script>Injected outer HTML</script>',
+    });
+
+    const decision = evaluateObservationVisibility({
+      environment: 'preview',
+      shopifyProduct: current,
+      releaseRecord,
+    });
+
+    expect(decision.ready).toBe(true);
+    expect(decision.product).toMatchObject({
+      id: 'test-product',
+      handle: 'test-product',
+      title: 'Observed product',
+      name: 'Observed product',
+      description: 'Observed description',
+      vendor: 'Observed vendor',
+      productType: 'Hoodie',
+      tagline: 'SIGNATURE',
+      details: ['Observed description'],
+    });
+    expect(JSON.stringify(decision.product)).not.toContain('Injected outer');
+    expect(JSON.stringify(decision.product)).not.toContain('INJECTED');
+    expect(decision.product).not.toHaveProperty('descriptionHtml');
+    expect(decision.product).not.toHaveProperty('story');
   });
 
   it('denies tampered and missing observation envelopes without exposing a product', () => {

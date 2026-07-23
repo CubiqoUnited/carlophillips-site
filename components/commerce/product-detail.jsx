@@ -167,7 +167,7 @@ export function CommerceProductDetail({
               Purchasing disabled
             </button>
             <p className="mt-4 text-xs leading-relaxed text-white/35">
-              Purchasing remains disabled. Source availability does not equal release approval.
+              {product.commerceExplanation}
               {cartActivation?.reason ? ` Cart gate: ${cartActivation.reason}.` : ''}
             </p>
           </div>
@@ -178,7 +178,7 @@ export function CommerceProductDetail({
         <div className="mx-auto grid max-w-[1700px] gap-14 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/38">Truth record</p>
-            <h2 className="max-w-3xl text-5xl font-light leading-[0.95] tracking-[-0.055em] sm:text-7xl">Observed facts, unresolved release.</h2>
+            <h2 className="max-w-3xl text-5xl font-light leading-[0.95] tracking-[-0.055em] sm:text-7xl">{product.truthHeading}</h2>
           </div>
           <div className="space-y-12">
             <p className="max-w-3xl text-xl font-light leading-relaxed text-white/58">{product.story}</p>

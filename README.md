@@ -14,6 +14,14 @@ binds source, environment, timestamp, and capability evidence. Exact
 fingerprint/handle approval can produce only a candidate release patch. No
 observation-review function applies that patch.
 
+The same reviewed commerce-facts fingerprint covers customer-visible title,
+plain description, vendor, product type, tagline, and ordered details. The
+release boundary rebuilds the product from those canonical observation facts;
+it does not spread arbitrary adapter copy or render Shopify `descriptionHtml`.
+Release wording is decision-aware: private Preview review and Released
+production facts are never both labeled “approval pending.” Product story is
+neutral and unavailable until a separate reviewed story source exists.
+
 Shopify media is filtered independently from product facts. Durable Media
 Registry assets store only a hash of the reviewed storefront identity, media
 type, canonical URL, and preview URL plus evidence—not raw Shopify media IDs or

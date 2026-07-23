@@ -11,7 +11,7 @@ Shopify cart, checkout, payment, or order operations are available.
 | Shop/collections | `components/commerce/catalog-boundary.jsx` → server catalog decision | Individually release-filtered product observations |
 | Product detail | `app/products/[handle]/page.js` → Commerce Gateway → release/media evidence | Source-labeled product review; never cart authority |
 | Shopify product transport | `lib/providers/shopify/storefront-product-adapter.js` | Server-only, one product-by-handle read |
-| Product observation | `lib/commerce/product-observation.js` plus `observation-visibility-policy.js` | Sanitized canonical candidate, non-applying review, and runtime identity/facts freshness decision |
+| Product observation | `lib/commerce/product-observation.js` plus `observation-visibility-policy.js` | Sanitized canonical candidate, non-applying review, runtime identity/facts freshness, and whitelist-derived customer copy |
 | Storefront media | `lib/commerce/media-visibility-policy.js` plus Media Registry | Per-asset hashed identity/type/URL binding; partial approved Preview, complete required production coverage |
 | Bag/cart presentation | `app/bag/page.js` and `/cart` alias | Activation decision only; no cart is fetched or created |
 | API health | `app/api/[[...path]]/route.js` | Generic service state; no catalog payload or credential diagnostics |
@@ -33,6 +33,18 @@ they could bypass the active Product Release Record and Commerce Gateway:
 
 Pure normalization remains in `lib/shopify/normalize.js`. It contains no
 transport, credential, cart, checkout, or mutation behavior.
+
+The observation owns Shopify-derived title, plain description, vendor, product
+type, tagline, ordered details, price, availability, and option facts. The
+release product is rebuilt from those values. Transport-only `descriptionHtml`,
+raw product/variant IDs, arbitrary story text, and edited outer copy are not
+passed to the view model.
+
+The view model owns release-status language. Local is observation/fixture
+review, Preview is private release review, and a production Released decision
+states that product facts are released while cart and checkout remain
+separately disabled. It uses a neutral unavailable story rather than inventing
+marketing copy or trusting an outer payload story.
 
 ## Customer cart activation contract
 

@@ -26,10 +26,30 @@
     "capabilityEvidence": { "type": ["string", "null"] },
     "product": {
       "type": "object",
-      "required": ["handle", "title", "currency", "minimumPrice", "maximumPrice", "availableForSale"],
+      "required": [
+        "handle",
+        "title",
+        "description",
+        "vendor",
+        "productType",
+        "tagline",
+        "details",
+        "currency",
+        "minimumPrice",
+        "maximumPrice",
+        "availableForSale"
+      ],
       "properties": {
         "handle": { "type": "string", "minLength": 1 },
         "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "vendor": { "type": "string" },
+        "productType": { "type": "string" },
+        "tagline": { "type": "string" },
+        "details": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
         "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
         "minimumPrice": { "type": "number", "minimum": 0 },
         "maximumPrice": { "type": "number", "minimum": 0 },

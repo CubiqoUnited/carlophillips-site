@@ -173,6 +173,11 @@ describe('truth contracts', () => {
       product: {
         handle: 'test-product',
         title: 'Test Product',
+        description: '',
+        vendor: '',
+        productType: '',
+        tagline: '',
+        details: [],
         currency: 'USD',
         minimumPrice: 128,
         maximumPrice: 128,
@@ -195,6 +200,9 @@ describe('truth contracts', () => {
       },
     };
     expect(validateProductObservation(observation)).toBe(true);
+    const missingReviewedCopy = structuredClone(observation);
+    delete missingReviewedCopy.product.description;
+    expect(validateProductObservation(missingReviewedCopy)).toBe(false);
     expect(validateProductObservation({ ...observation, environment: 'preview' })).toBe(false);
     expect(validateProductObservation({
       ...observation,

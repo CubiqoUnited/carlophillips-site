@@ -7,7 +7,7 @@ describe('Shopify normalization', () => {
       id: 'gid://shopify/Product/1',
       handle: 'signature-hoodie',
       title: 'Signature Hoodie',
-      description: 'Heavyweight hoodie',
+      description: 'Heavyweight hoodie\nEmbroidered chest mark',
       descriptionHtml: '<p>Heavyweight hoodie</p>',
       productType: 'Hoodie',
       vendor: 'Apliiq',
@@ -55,6 +55,13 @@ describe('Shopify normalization', () => {
     expect(product.handle).toBe('signature-hoodie');
     expect(product.price).toBe(128);
     expect(product.currency).toBe('USD');
+    expect(product).toMatchObject({
+      description: 'Heavyweight hoodie\nEmbroidered chest mark',
+      vendor: 'Apliiq',
+      productType: 'Hoodie',
+      tagline: 'SIGNATURE',
+      details: ['Heavyweight hoodie', 'Embroidered chest mark'],
+    });
     expect(product.media.map(item => item.type)).toEqual(['image', 'video']);
     expect(product.shopifyVariants['Black-M']).toBe('gid://shopify/ProductVariant/1');
     expect(product.availableForSale).toBe(true);

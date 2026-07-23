@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 16
+# Current Status — Fitness Cycle 17
 
 Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -15,6 +15,8 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - Pure Shopify response normalization plus one server-only, read-only product adapter; broad product/cart clients and mutation exports are removed.
 - Canonical Product Observation and review contracts hash raw variant references; separately bind variant identity, commerce facts, and the full review envelope; require evidence tied to a ready product-read capability; and return only a non-applying candidate release patch.
 - Preview/production visibility validates the fresh sanitized observation, then compares variant identity and commerce facts to reviewed release bindings. A new read timestamp does not cause false staleness; changed facts, malformed envelopes, and tampering are withheld per candidate.
+- Commerce facts now include all Shopify-derived customer copy. The release product is whitelist-derived from the validated observation, so outer title/description/vendor/type/tagline/details/story/HTML cannot override reviewed presentation.
+- View-model status language is environment/release-aware: Preview says private review; production Released says facts are released and isolates the still-disabled cart/checkout gate. Story remains neutrally unavailable without reviewed evidence.
 - Shopify media is filtered through approved, evidence-backed, hashed Media Registry bindings before the view model. Preview exposes partial-media review truth; production requires current coverage for every non-waived modality and fallback.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
 - Executable capability discovery and dedicated source-labeled bag/cart Server Component routes.

@@ -61,6 +61,40 @@ describe('release source policy', () => {
     });
   });
 
+  it('returns only observation-bound customer copy from the complete Preview release path', () => {
+    const shopifyProduct = createObservedShopifyProduct('test-product', 'preview');
+    Object.assign(shopifyProduct, {
+      title: 'Outer injected title',
+      name: 'Outer injected name',
+      description: 'Outer injected description',
+      vendor: 'Outer injected vendor',
+      productType: 'Outer injected type',
+      tagline: 'OUTER INJECTED TAGLINE',
+      details: ['Outer injected detail'],
+      story: 'Outer injected story',
+      descriptionHtml: '<script>outer injected HTML</script>',
+    });
+
+    const decision = resolveProductSource({
+      environment: 'preview',
+      shopifyProduct,
+      releaseRecord: createCompleteReleaseRecord('staged'),
+      mediaManifest: createCompleteMediaManifest(),
+    });
+
+    expect(decision.product).toMatchObject({
+      title: 'Observed product',
+      description: 'Observed product description.',
+      vendor: 'Observed vendor',
+      productType: 'Hoodie',
+      tagline: 'SIGNATURE',
+      details: ['Observed product description.'],
+    });
+    expect(JSON.stringify(decision.product)).not.toContain('Outer injected');
+    expect(decision.product).not.toHaveProperty('descriptionHtml');
+    expect(decision.product).not.toHaveProperty('story');
+  });
+
   it.each(['preview', 'production'])('denies an observed Shopify product without a release record in %s', environment => {
     expect(resolveProductSource({
       environment,

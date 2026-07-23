@@ -124,9 +124,15 @@
 
 ## Next customer-visible product-facts cycle
 
-- [ ] Extend reviewed commerce facts to every customer-visible Shopify field: description, vendor, product type, and any rendered detail/tagline.
-- [ ] Derive the view model from reviewed facts so outer adapter payload edits cannot change approved customer copy.
-- [ ] Prove changed customer-visible copy is withheld until a newly reviewed and separately applied facts binding exists.
+- [x] Extend reviewed commerce facts to every customer-visible Shopify field: description, vendor, product type, and any rendered detail/tagline.
+- [x] Derive the release product and view model from reviewed facts so outer adapter payload edits cannot change approved customer copy.
+- [x] Prove changed customer-visible copy is withheld until a newly reviewed and separately applied facts binding exists.
+
+## Next option/variant presentation truth cycle
+
+- [ ] Replace flattened color/size lists with a sanitized release-bound variant presentation model that preserves valid combinations and per-variant availability.
+- [ ] Keep controls disabled and non-commerce until the existing seven cart-activation prerequisites pass.
+- [ ] Prove an outer adapter mapping or unavailable combination cannot become customer-selectable or imply cart authority.
 
 ## Blocked / approval required
 

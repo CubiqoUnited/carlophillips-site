@@ -173,6 +173,15 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The current Hoodie front candidate has no storefront binding and remains pending; the two unverified details remain quarantined. No live media or approval was invented.
 - `yarn verify` passed with zero-warning lint, 30 files/231 tests, zero production advisories across 193 packages, and a successful 13-route build. Desktop/mobile local fixture PDP and home regression passed with no console warning/error, overlay, checkout link, or horizontal overflow; purchasing remained disabled. Full verification and browser evidence are stored under `test_reports/cp-fitness-cycle-16/`.
 
+## Cycle 17 verification
+
+- The canonical Product Observation now requires plain description, vendor, product type, derived tagline, and ordered details alongside title, price, currency, availability, and variants. All are included in commerce-facts and full-envelope fingerprints.
+- Preview/production release products are constructed from the validated observation rather than by spreading the normalized Shopify adapter object. Only the current media array crosses that boundary, then immediately passes through the independent Media Registry filter.
+- Outer title/name/description/vendor/type/tagline/details/story/HTML edits cannot replace reviewed presentation. A real change inside a fresh observation produces `PRODUCT_COMMERCE_FACTS_STALE`, withholds the entire product payload, and requires a newly reviewed and separately applied binding.
+- Shopify `descriptionHtml`, raw product IDs, raw variant mappings, and arbitrary outer fields are absent from the release product. The plain description remains React-escaped presentation data.
+- View-model and PDP status copy derives from source, environment, and release reason. Preview is private review; production Released says product facts are released while purchasing remains separately disabled. A neutral unavailable story replaces both outer story text and the former false pending-approval fallback.
+- Focused verification passed with zero-warning lint and 10 files/124 tests. Full `yarn verify` passed with 30 files/246 tests, zero production advisories across 193 packages, and a successful 13-route build. Fresh desktop/mobile PDP and home regression found no console warning/error, overlay, checkout link, or horizontal overflow; purchasing remained disabled. Evidence is under `test_reports/cp-fitness-cycle-17/`.
+
 ## External blockers
 
 ### Vercel hosting disabled

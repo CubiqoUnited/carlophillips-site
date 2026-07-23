@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Extend canonical commerce facts to description, vendor, product type, and every other customer-visible Shopify field.
-2. Derive customer-visible copy from the reviewed envelope and withhold changed copy until a separately approved release binding exists.
+1. Derive a sanitized option/variant presentation model from reviewed variant facts, preserving valid combinations and availability.
+2. Keep selection non-commerce until the existing seven activation gates pass; never trust an outer adapter variant map.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep variant selection, cart, checkout, product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

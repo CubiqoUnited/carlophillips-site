@@ -9,8 +9,8 @@ import { getProductReleaseEvidence } from '@/lib/releases/product-release-regist
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Product Release Review | CARLOPHILLIPS',
-  description: 'A source-labeled CARLOPHILLIPS product review. Purchasing remains disabled until release approval.',
+  title: 'Product | CARLOPHILLIPS',
+  description: 'Source-labeled CARLOPHILLIPS product facts. Purchasing remains separately disabled until commerce gates are proven.',
   robots: { index: false, follow: true },
 };
 
