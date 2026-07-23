@@ -2,7 +2,7 @@
 
 CARLOPHILLIPS is a Next.js 15 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
-The repository is **not production-ready**. The editorial shell keeps products hidden by default. Product and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. A Shopify observation alone never authorizes visibility or commerce. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
+The repository is **not production-ready**. The editorial shell keeps products hidden by default. Product, catalog (`/shop` and `/collections`), and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. Catalog candidates are resolved individually and denied payloads are discarded. A Shopify observation alone never authorizes visibility or commerce. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
 
 ## Current product state
 
@@ -77,12 +77,12 @@ Storefront pages deny third-party framing with both `X-Frame-Options: DENY` and 
 ## Repository map
 
 ```text
-app/                 routes; product and bag/cart have dedicated server boundaries
-components/commerce/ reusable, non-buyable product and truthful bag presentation
+app/                 routes; product, catalog, and bag/cart have dedicated server boundaries
+components/commerce/ reusable, non-buyable product/catalog and truthful bag presentation
 contracts/           machine-readable truth and release schemas
 releases/            evidence-bound release records and media manifests
 lib/config/          release and Shopify configuration
-lib/commerce/        provider-neutral gateway, policy, and view models
+lib/commerce/        provider-neutral product/catalog gateways, policy, and view models
 lib/providers/       server-only provider adapters
 lib/data/            legacy data service with local-only fixture fallback
 lib/shopify/         Storefront queries, mutations, normalization, client

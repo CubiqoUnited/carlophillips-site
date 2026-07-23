@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 10
+# Current Status — Fitness Cycle 11
 
 Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -8,6 +8,7 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 - Fail-closed product flags and explicit local-only fixture mode.
 - Provider-neutral Commerce Gateway, server-only Shopify product adapter, reusable PDP, and explicit unavailable page.
 - A server-side release registry binds the Hoodie route to its Product Release Record and Media Registry. Preview requires complete Staged-or-later evidence; production requires complete Released evidence, and purchasing remains disabled.
+- `/shop` and `/collections` share a release-aware server catalog boundary. It resolves registry handles individually, discards denied payloads, reports candidate/visible/withheld counts, and supports future multi-product records without activating the dormant catalog fixtures.
 - Draft Hoodie Product Release Record and media manifest.
 - Dormant Shopify cart/checkout modules.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
@@ -30,7 +31,7 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 - Signature Hoodie evidence: product/design facts and one recorded front candidate exist; complete media, approvals, Shopify-backed PDP, cart, and operations proof do not.
 - Shopify integration: the product route calls the gateway/adapter and release registry, but local read-only configuration is incomplete, so current Shopify product data is not observed.
 - Release controls: Draft record exists with missing variant fingerprints and pending approvals. Staging is explicitly denied until Shopify/provider fingerprints, immutable commit/build evidence, and private staging evidence exist.
-- App capability access: a live authenticated-browser attempt reached Shopify email OTP before Admin; callable access/configuration/cost/Draft safety remain unverified.
+- App capability access: Product Owner reports 30 installed apps, but the latest managed-browser attempt reached Shopify login before Admin. The per-app access/authentication/fee-risk matrix remains entirely unverified and non-callable.
 
 ## Proposed
 

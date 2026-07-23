@@ -30,7 +30,7 @@ describe('capability registry policy', () => {
       status: 'human_required',
       adapter: 'shopify-storefront-cart',
       callableSurface: 'unverified',
-      reason: 'SHOPIFY_EMAIL_OTP_REQUIRED',
+      reason: 'SHOPIFY_AUTHENTICATED_SESSION_REQUIRED',
     });
   });
 
@@ -43,7 +43,7 @@ describe('capability registry policy', () => {
       expect(discoverCapability(registry, capability, operation)).toMatchObject({
         status: 'human_required',
         callableSurface: 'unverified',
-        reason: 'SHOPIFY_EMAIL_OTP_REQUIRED',
+        reason: 'SHOPIFY_AUTHENTICATED_SESSION_REQUIRED',
       });
     }
   });

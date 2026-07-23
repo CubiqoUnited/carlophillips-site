@@ -338,7 +338,7 @@ describe('truth contracts', () => {
       accessState: 'human_required',
       callableSurface: 'unverified',
       allowedOperations: [],
-      blocker: { code: 'SHOPIFY_EMAIL_OTP_REQUIRED' },
+      blocker: { code: 'SHOPIFY_AUTHENTICATED_SESSION_REQUIRED' },
     });
   });
 });

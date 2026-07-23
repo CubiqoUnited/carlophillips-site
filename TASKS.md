@@ -83,9 +83,15 @@
 
 ## Next collection release-binding cycle
 
-- [ ] Replace the `/shop` and `/collections` editorial-shell wrappers with a release-aware server catalog boundary.
-- [ ] Include only handle-matched products permitted by the same environment/release policy; never substitute fixtures outside Local.
-- [ ] Keep collection cards and navigation non-commerce until Shopify cart/checkout capability is directly proven.
+- [x] Replace the `/shop` and `/collections` editorial-shell wrappers with a release-aware server catalog boundary.
+- [x] Include only handle-matched products permitted by the same environment/release policy; never substitute fixtures outside Local.
+- [x] Keep collection cards and navigation non-commerce until Shopify cart/checkout capability is directly proven.
+
+## Next storefront composition cycle
+
+- [ ] Bind the home featured-product navigation to the release registry so its counts/links cannot diverge from `/shop`.
+- [ ] Keep home/about/lookbook editorial content separate from product truth and preserve the one-product Hoodie-first sequence.
+- [ ] Prove all catalog-to-PDP navigation paths stay source-labeled and non-commerce before live cart capability exists.
 
 ## Blocked / approval required
 

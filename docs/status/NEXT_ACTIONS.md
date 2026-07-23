@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Replace `/shop` and `/collections` editorial-shell wrappers with a release-aware server catalog boundary.
-2. Filter every observed product through the same environment and Product Release Record policy; keep fixtures Local-only and purchasing disabled.
+1. Bind the home featured-product link/count to the same release registry used by `/shop` and `/collections`.
+2. Keep every editorial-to-product path source-labeled and non-commerce until cart/checkout is directly proven.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

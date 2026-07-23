@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cp.capability-registry.v1",
   "observedAt": "2026-07-22",
-  "source": "Product Owner-supplied installed-app snapshot plus a 2026-07-22 live authenticated-browser login attempt; app inventory remains blocked at Shopify email OTP",
+  "source": "Product Owner-observed 30-app inventory plus 2026-07-22 browser attempts; the current managed browser is blocked at Shopify login and no app capability is verified",
   "canonicalOwners": {
     "releaseTruth": "Product Release Record",
     "mediaTruth": "Media Registry",
@@ -20,7 +20,7 @@
       "draftSafety": "read-only audit and no-order cart test required before activation",
       "alternatives": [],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at Shopify installed-app inventory, then inspect Carlophillips Headless/Storefront settings read-only before any cart test."
       }
@@ -36,7 +36,7 @@
       "draftSafety": "draft-only until release approvals",
       "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, and observe the Hoodie provider-to-Shopify mapping without ordering, sampling, or enabling fulfillment."
       }
@@ -52,7 +52,7 @@
       "draftSafety": "exact-product bake-off and human QA required",
       "alternatives": ["spin-studio", "zs-spin-view"],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect Spin Studio and ZS-Spin-View settings/billing read-only, and select neither until evidence and Product Owner approval."
       }
@@ -68,7 +68,7 @@
       "draftSafety": "derived provenance and human media approval required",
       "alternatives": ["modelize"],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect Modelize access/credits/settings read-only, and record inputs, outputs, provenance controls, and Draft-safe export path."
       }
@@ -84,7 +84,7 @@
       "draftSafety": "versioned Draft-safe flow only",
       "alternatives": [],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect Flow access/templates read-only, and record supported triggers/actions without enabling or editing a workflow."
       }
@@ -100,7 +100,7 @@
       "draftSafety": "read-only audit first; any later job must remain Draft and release-record bound",
       "alternatives": [],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect MyDesigns access/API/billing read-only, and record whether Draft-safe bulk jobs are actually callable."
       }
@@ -116,7 +116,7 @@
       "draftSafety": "research output is evidence input only and never automatic product or publish truth",
       "alternatives": [],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect CS Trending Products Finder access/export/billing read-only, and record source, date, confidence, and callable surface."
       }

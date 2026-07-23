@@ -7,7 +7,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 ## Verified facts
 
 - Recovered Product Owner intent confirms the Hoodie is the first complete POC for a reusable POD-to-publish system with four coordinated lanes and designer-led plus trend-led workflows; it is not a static-page endpoint.
-- The editorial UI remains fail-closed. The active product route now uses a dedicated server-rendered Commerce Gateway and reusable product component.
+- The editorial UI remains fail-closed. Product, `/shop`, `/collections`, and bag/cart routes now use dedicated server-rendered commerce boundaries.
 - The Hoodie is recorded as Shopify Draft and purchasing is disabled in the UI.
 - Shopify product reads are connected behind a server-only adapter with explicit source/error states; local configuration currently reports Shopify as not configured, so a live product observation is still blocked.
 - The versioned Hoodie release record binds the observed Shopify/Apliiq identities and media ledger while leaving variant fingerprints missing and every approval pending.
@@ -15,7 +15,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Local environment variable names are present; values were not printed. `.env.local` is ignored.
 - Production and preview HTTP endpoints were diagnosed as `402 DEPLOYMENT_DISABLED` on 2026-07-22.
 - Canonical `main` and `staging` were recorded at `d172cfb`; the Hoodie preview branch is at `425f50b`.
-- The current Product Owner-supplied Shopify installed-app snapshot is preserved in `docs/shopify-capability-access-audit.md`; installed status does not prove API, Admin/Flow, app-credential, browser, or human access.
+- The current Product Owner-observed 30-app Shopify inventory is preserved in a schema-validated evidence record and summarized in `docs/shopify-capability-access-audit.md`; installed status does not prove API, Admin/Flow, app-private API, browser, CLI, or human access.
 - The live Shopify read-only audit was attempted through the existing Google account. Shopify accepted the account path but stopped at a one-time email-code gate before Admin or installed-app inventory. The verification tab was preserved at Cycle 5 close but did not survive the later task-continuation boundary; a fresh Shopify login tab is open without a new code request.
 - The App Router now runs on Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`; async route params were migrated and the full local regression passed.
 
@@ -24,7 +24,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - A normal Corepack-provided `yarn` executable on this machine; verification used Yarn 1.22.22 bootstrapped through the bundled runtime, then proved a frozen install.
 - Live Shopify-backed product and variant rendering.
 - Browser add/update/remove cart flow and Shopify checkout redirect.
-- Any verified callable path for the current installed Shopify app inventory; the live audit is currently stopped before Admin at Shopify email OTP.
+- Any verified callable path for the current installed Shopify app inventory; the latest managed-browser attempt is stopped at Shopify login before Admin.
 - Production domain availability after hosting restoration.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
 - Any real product video, spin/360, 3D/AR, try-on, on-model, or lifestyle campaign asset.
@@ -113,6 +113,16 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - `yarn verify` passed with zero-warning lint, 21 files/150 tests, zero production advisories across 193 packages, and a successful 13-route build.
 - Local desktop/mobile PDP regression passed with explicit fixture/release labels, purchasing disabled, no console/page errors or error overlays, and no horizontal overflow. Evidence is stored under `test_reports/cp-fitness-cycle-10/`.
 
+## Cycle 11 verification
+
+- `/shop` and `/collections` no longer re-export the editorial home shell. Both use one reusable Server Component catalog boundary and derive candidates only from the Product Release Record registry.
+- Every catalog candidate is resolved through the same Commerce Gateway, Product Release Record, Media Registry, and environment policy as its PDP. Local fixtures are labeled/non-commerce; Preview requires Staged-or-later Shopify evidence; production requires Released evidence.
+- Catalog decisions expose truthful candidate, visible, and withheld counts. Denied/unavailable product payloads are discarded; tests prove a denied Draft title cannot appear in a mixed Preview decision.
+- The Product Owner-observed 30-app inventory now has a schema-validated per-app disposition/access/authentication/fee-risk/next-action record. All callable surfaces remain unverified. CodexAutomation5, Shopify CLI Connector App, and Carlophillips Headless grant no inferred authority.
+- The latest managed-browser audit reached Shopify login with Continue with Google and did not trigger OTP or reach Admin. The login tab is preserved as a handoff; safe local work continued.
+- `yarn verify` passed with zero-warning lint, 24 files/169 tests, zero production advisories across 193 packages, and a successful 13-route build.
+- Local desktop `/shop`, mobile `/collections`, catalog-to-PDP, and credentials-disabled Preview empty-state checks passed with no console/page errors, overlays, or horizontal overflow. Evidence is stored under `test_reports/cp-fitness-cycle-11/`.
+
 ## External blockers
 
 ### Vercel hosting disabled
@@ -129,7 +139,7 @@ Resume point: set `COMMERCE_DATA_MODE=shopify`, open the selected product route,
 
 ### Shopify app capability/access audit
 
-Observed blocker: the authorized browser audit reached Shopify's “Verify your email to continue” screen after selecting the existing Google account. Admin, installed-app names, settings, permissions, and billing screens were not reachable, so the Product Owner-supplied inventory remains unverified.
+Observed blocker: an earlier attempt reached Shopify email verification after account selection. The latest Cycle 11 managed-browser attempt reached Shopify login with **Continue with Google** and did not select an account or request an OTP. Admin, installed-app settings, permissions, and billing screens remain unobserved, so the Product Owner-reported inventory is not callable-capability evidence.
 
 Human action: in the current Shopify login tab, choose **Continue with Google**, select the existing account, then enter Shopify's one-time code if prompted. Do not send or record the code in project artifacts.
 

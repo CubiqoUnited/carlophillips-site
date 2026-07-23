@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { getProductReleaseEvidence } from '../lib/releases/product-release-registry.js';
+import {
+  getProductReleaseEvidence,
+  listProductReleaseHandles,
+} from '../lib/releases/product-release-registry.js';
 
 describe('product release registry', () => {
   it('returns release-bound evidence only for a registered product handle', () => {
@@ -23,5 +26,9 @@ describe('product release registry', () => {
     first.releaseRecord.state = 'released';
 
     expect(getProductReleaseEvidence('carlophillips-signature-hoodie').releaseRecord.state).toBe('draft');
+  });
+
+  it('enumerates only release-bound handles for reusable catalog resolution', () => {
+    expect(listProductReleaseHandles()).toEqual(['carlophillips-signature-hoodie']);
   });
 });

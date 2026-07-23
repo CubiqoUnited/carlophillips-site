@@ -17,7 +17,7 @@
         "test_reports/cp-fitness-cycle-5/shopify-readonly-audit.json"
       ],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, then observe and fingerprint the Hoodie provider-to-Shopify mapping without ordering or accepting charges."
       }
@@ -52,10 +52,14 @@
       "capability": "shopify-storefront-cart",
       "adapter": "shopify-authenticated-browser",
       "status": "human_required",
-      "attempts": 1,
-      "evidence": ["test_reports/cp-fitness-cycle-5/shopify-readonly-audit.json"],
+      "attempts": 2,
+      "evidence": [
+        "test_reports/cp-fitness-cycle-5/shopify-readonly-audit.json",
+        "evidence/shopify/po-observed-installed-apps-2026-07-22.json",
+        "test_reports/cp-fitness-cycle-11/verification.json"
+      ],
       "blocker": {
-        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at Shopify installed-app inventory, then inspect Storefront/cart and the named P0 apps read-only without approving charges or changing state."
       }

@@ -17,7 +17,7 @@ The architecture coordinates four lanes—Product/POD truth, Media truth, Commer
 
 ## Runtime today
 
-Home, collection, and about wrappers still re-export the client shell in `app/page.js`. Product and bag/cart routes are separate Server Component boundaries. The product route selects an explicit source through the Commerce Gateway; the bag route requires an operation-specific capability decision and renders local non-commerce or unavailable states until Shopify cart writes are actually verified.
+Home, about, and lookbook wrappers still use the client editorial shell in `app/page.js`. Product, `/shop`, `/collections`, and bag/cart routes are separate Server Component boundaries. The product route selects an explicit source through the Commerce Gateway. Both catalog routes enumerate only Product Release Record registry handles and resolve each independently through the same gateway/evidence policy before deriving visible/withheld counts. The bag route requires an operation-specific capability decision and renders local non-commerce or unavailable states until Shopify cart writes are actually verified.
 
 Products fail closed by default. Local fixture mode is separately gated and visibly labeled; preview/production reject it. Shopify failure returns an unavailable decision and page without fixture substitution. A successful Shopify observation must also resolve to matching Product Release Record and Media Registry evidence. Preview permits only an evidence-complete Staged, Approved, or Released record for private non-commerce review; production requires a complete Released record and still keeps purchasing disabled until the cart/checkout journey is proven. The local Shopify probe currently reports missing configuration, so this implementation proves the boundary and failure policy—not a live product observation.
 
@@ -27,7 +27,7 @@ Product Release Record transitions are also fail-closed. Draft may contain incom
 
 | Boundary | Current implementation | Evidence status | Required change |
 |---|---|---|---|
-| Route composition | Product and bag/cart routes have server boundaries; remaining wrappers use the client shell | Product plus local/preview bag policies browser-verified; collection decomposition absent | Move collection when its Shopify-backed flow is implemented |
+| Route composition | Product, shop/collections, and bag/cart routes have server boundaries; remaining editorial wrappers use the client shell | Per-item catalog filtering and local non-commerce UI are deterministic; browser proof recorded locally | Bind the home featured-product navigation to the same registry without turning it into a second catalog |
 | Product truth | Gateway accepts explicit local fixture or read-only Shopify adapter and resolves Shopify observations against the release registry | Failure and release-state policy proven; live Shopify config/product observation blocked | Configure authorized read-only environment and bind the observation/fingerprint to the Draft record |
 | Variant truth | Gateway/view model support normalized variants; controls stay disabled | Deterministic tests pass; live variant identity/fingerprint missing | Observe Shopify variants, fingerprint them, then add gated selection |
 | Media truth | Gateway/view model render image/video/external-video/model fallback types | Manifest binds one front asset and quarantines two details; live media not observed | Render current Shopify media and require manifest approval before release |
@@ -51,7 +51,7 @@ Product Release Record transitions are also fail-closed. Draft may contain incom
 
 - Server product adapter: implemented for no-store Shopify reads with explicit unavailable/error results.
 - Product release record: Draft record exists with product/provider/media evidence and missing fingerprints explicit.
-- Route-level product and truthful bag-state components: implemented; collection remains in the client shell.
+- Route-level product, release-aware catalog, and truthful bag-state components: implemented; home/about/lookbook remain editorial-shell surfaces.
 - Client islands for variant selection, cart interaction, and media controls.
 - Shopify-native cart only for checkout-capable state.
 - Provider-neutral cart envelope and fail-closed checkout-host policy before activating the bag.
