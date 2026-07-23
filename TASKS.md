@@ -97,7 +97,7 @@
 
 - [x] Inventory and remove dormant browser-side product/cart modules that bypass the active server Commerce Gateway.
 - [x] Retire public catalog-audit API paths and broad Storefront mutation exports.
-- [x] Define the exact Storefront cart capability contract and seven UI activation prerequisites without performing a Shopify write.
+- [x] Define the Storefront cart capability contract without performing a Shopify write; Cycle 18 separates reviewed variant truth from an eighth server-only mutation-resolution prerequisite.
 - [x] Keep bag/checkout unavailable until authorized capability, no-order cart evidence, Released product truth, variant mapping, and Product Owner approval exist.
 
 ## Next variant-observation readiness cycle
@@ -130,9 +130,16 @@
 
 ## Next option/variant presentation truth cycle
 
-- [ ] Replace flattened color/size lists with a sanitized release-bound variant presentation model that preserves valid combinations and per-variant availability.
-- [ ] Keep controls disabled and non-commerce until the existing seven cart-activation prerequisites pass.
-- [ ] Prove an outer adapter mapping or unavailable combination cannot become customer-selectable or imply cart authority.
+- [x] Replace flattened Shopify color/size lists with a sanitized release-bound variant presentation model that preserves exact canonical combinations, price, and availability.
+- [x] Keep all Shopify combination controls disabled and non-commerce; bind fingerprint/currency without exposing a raw reference.
+- [x] Prove duplicate/missing/extra dimensions, stale fingerprints/currency, outer raw maps, and opaque hashes cannot imply selection or cart mutation authority.
+- [x] Separate an eighth evidence-backed server-only variant resolver gate from reviewed variant presentation.
+
+## Next server-only variant-resolution contract cycle
+
+- [ ] Define a non-persisting server-only resolution decision that binds one reviewed opaque reference hash to the current/release variant fingerprint.
+- [ ] Require exact product handle, ready Storefront cart capability, resolver evidence, and cart activation before returning any mutation target inside the server boundary.
+- [ ] Prove raw Shopify references never enter client summaries, logs, durable reports, or selection controls and no mutation is performed.
 
 ## Blocked / approval required
 

@@ -1,6 +1,15 @@
 # Shopify Capability and Access Audit Backlog
 
-Status: Product Owner reports 30 installed apps. The current managed browser is blocked at Shopify login, and no programmatic or app-specific capability is proven. Updated 2026-07-22.
+Status: Product Owner reports 30 installed apps. The current managed browser is blocked at Shopify login, and no programmatic or app-specific capability is proven. Updated 2026-07-23.
+
+Product Owner reconfirmed the same 30-app CP inventory on 2026-07-23 and
+reported that Shopify is logged in in the Product Owner's browser. That is
+installed-app evidence only. It does not establish an authenticated agent
+session, OAuth/Admin scopes, Storefront token access, app-private API access,
+or permission to read or change Shopify. The existing machine-readable
+inventory remains the normalized canonical list; shortened names in the new
+report (CJdropshipping, Zendrop, Tidio, Order Printer Pro, and teelaunch) map to
+their already recorded installed-app display names.
 
 Cycle 4 added a validated executable registry at `config/capability-registry.json`. Registry `ready` means the exact requested operation is evidence-listed for a verified callable surface; an installed name or selected adapter is insufficient.
 
@@ -17,6 +26,69 @@ Exact human action: in the current Shopify login tab, choose **Continue with Goo
 Exact resume point: begin at Shopify installed-app inventory. Confirm the 30 Product Owner-reported names, then inspect Carlophillips Headless/Storefront-cart, Apliiq, Modelize, Spin Studio, ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder read-only. Record each actual API/Admin/Flow/app-API/browser/human/unavailable surface, scopes by name only, billing boundary, Draft safety, and app-specific resume point. Stop before every mutation or charge.
 
 The complete per-app Product Owner-observed matrix is machine-readable at `evidence/shopify/po-observed-installed-apps-2026-07-22.json` and validated by `contracts/shopify-app-inventory.schema.json`. Every entry records goal disposition, ownership/duplicate finding, access path to verify, agent authentication need, usage-fee risk, and safe next action. Every callable surface remains `none-auth-blocked`.
+
+## Minimum-access model
+
+CP does not require direct agent access to every embedded app. The least-access
+target is:
+
+1. one Product Owner-approved CP custom app/connector for the exact Shopify
+   Admin read operations that cannot be served by Storefront;
+2. one server-only Storefront channel/token path for product, media, current
+   variant facts, and later separately approved cart operations;
+3. Shopify CLI Connector only for approved development diagnostics and scope
+   inspection, never as production runtime authority;
+4. Apliiq read/mapping access for the Hoodie only when Shopify facts do not
+   prove the exact fulfillment mapping;
+5. only the selected media workers: Modelize if chosen for an approved modality
+   and exactly one of Spin Studio or ZS-Spin-View after evidence; and
+6. optional worker access (Flow, MyDesigns, CS Trending Products Finder) only
+   when a named PipelineRun job requires it and its source/cost/write boundary
+   is separately approved.
+
+Carlophillips Headless is a storefront/channel candidate, CodexAutomation5 is a
+custom connector candidate, Shopify CLI Connector is development-only, and the
+Shopify Claude Connector is research-only until its scopes are proven. They are
+overlapping access candidates, not four simultaneous owners. CP's Commerce
+Gateway, Product Release Record, Media Registry, and PipelineRun remain the
+canonical owners regardless of which connector is selected.
+
+Duplicate/overlap groups remain fail-closed:
+
+- Hoodie fulfillment: Apliiq is selected; Gelato, CustomCat, Spreadconnect,
+  Zendrop, teelaunch, CJdropshipping, Only Caps, and MyDesigns are alternatives
+  or workflow candidates, not co-owners.
+- Spin: select one of Spin Studio or ZS-Spin-View.
+- Support: select one primary inbox between Messaging and Tidio.
+- Media workflow: Modelize, MyDesigns, and a spin worker have distinct candidate
+  roles; none may replace Media Registry provenance/rights/approval.
+- Connectors: select the narrow CP Admin/Storefront path; reject duplicate write
+  authority across CodexAutomation5, Carlophillips Headless, Shopify CLI
+  Connector, and Shopify Claude Connector.
+
+Usage-fee exposure remains unverified unless explicitly reported. Tidio and
+Order Printer Pro carry reported usage-fee risk; Modelize and spin tools may
+use credits; POD/sourcing providers may create product, sample, fulfillment,
+shipping, or subscription charges; AfterShip, Loox, Marketplace Connect, and
+other operational apps may have plan/volume fees. No installed app, trial,
+credit, or plan is approved for use by this record.
+
+Exact human gates:
+
+- The Product Owner authenticates the chosen CP custom app/connector and
+  Storefront channel, then permits read-only scope-name inspection without
+  sharing credential values.
+- The Product Owner separately places any approved server credential in an
+  ignored local or Preview environment and records a durable evidence
+  reference; installation or browser login is insufficient.
+- Each selected vendor/app-private API requires its own approved
+  authentication, least permissions, and read-only probe.
+- Any credit, usage fee, subscription, sample, order, customer contact,
+  Shopify write, Flow activation, product sync, publish, or production action
+  requires a separate explicit approval at action time.
+- Resume the live audit at the installed-app list in the authenticated session
+  available to the Product Owner, but do not claim that session is controllable
+  by the agent until an approved browser/connector path is actually verified.
 
 ## Access classification
 
@@ -88,7 +160,7 @@ Historical Printify, Printful, and ShineOn are not in the current reported inven
 | Priority | Evidence to obtain | Safe current state | Human action if required | Resume point |
 |---|---|---|---|---|
 | P0 | Shopify Storefront product/variant/media read | Server adapter plus variant-identity, complete customer-copy/commerce-facts, full audit observation, and hashed per-media binding contracts exist; capability evidence/config remain unverified | Authorized owner configures least-privilege read-only values in an ignored local or Preview environment and records the durable capability evidence reference | Run the product-by-handle observation, review the exact sanitized full-envelope fingerprint/handle and current media binding hashes, then keep resulting release/media patches unapplied until separately authorized |
-| P0 | Shopify cart and checkout-host behavior | Local policy/tests fail closed; active bag is not wired | Authorized owner provides a safe Storefront cart test context and confirms accepted Shopify checkout hosts | Exercise create/add/update/remove without order submission, validate the returned checkout host, capture sanitized evidence |
+| P0 | Shopify cart, variant resolution, and checkout-host behavior | Local policy/tests fail closed; reviewed variant presentation is not mutation authority; active bag is not wired | Authorized owner provides a safe Storefront cart test context and confirms accepted Shopify checkout hosts | Prove an exact server-only resolver for the reviewed fingerprint, then exercise create/add/update/remove without order submission, validate the returned checkout host, and capture sanitized evidence |
 | P0 | Apliiq Hoodie product/variant mapping | Local record has partial product/design identity; no current variant mapping proof | Authorized owner provides approved read-only provider/API/browser access | Observe exact mappings, hash non-secret facts into the release record, stop before ordering |
 | P1 | Media candidate generation/export | Two Hoodie details quarantined; no verified spin/model/video | Product Owner approves specific tool access and any credit/billing boundary before use | Generate/export a candidate to quarantine, record provenance/rights, seek media approval before public use |
 | P1 | Shopify Admin/Flow Draft staging | No write authorization | Product Owner approves a bounded Draft-only test and least-privilege credentials | Create/update only the named Draft candidate, log reversible changes, do not publish |

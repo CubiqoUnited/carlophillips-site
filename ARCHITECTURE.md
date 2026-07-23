@@ -55,6 +55,19 @@ identifies reviewed Released facts while independently reporting that cart and
 checkout remain unproven. Marketing story stays unavailable unless a future
 reviewed source contract explicitly binds it.
 
+Variant presentation is a separate non-authoritative projection of an
+integrity-validated canonical observation. Raw Shopify option order is
+normalized upstream with the locale-independent observation sorter, and the
+presentation preserves that canonical order. Its contract binds the reviewed
+variant fingerprint and product currency, one canonical non-empty option-name schema, unique exact
+combinations, availability, and prices. It exposes opaque reference hashes only
+and sets both selection and cart authority false. Cart activation now has eight
+gates: an available reviewed combination and an evidence-backed server-only
+resolver are distinct, so a hash cannot be mistaken for a mutation target. The
+cart-write capability gate accepts only the exact evidence-backed
+`shopify-storefront-cart` capability and adapter on the `shopify_storefront`
+surface; a generic ready capability cannot activate it.
+
 Media has a separate release boundary. Each approved Media Registry asset may
 carry a `shopify-storefront-media` binding whose deterministic hash covers the
 sanitized current media identity, kind, canonical asset URL, and preview URL.
@@ -73,9 +86,9 @@ Product Release Record transitions are also fail-closed. Draft may contain incom
 |---|---|---|---|
 | Route composition | Home, product, shop/collections, and bag/cart have server truth boundaries; about/lookbook remain editorial-only | Home receives a minimized shared catalog summary; per-item catalog and PDP filtering remain canonical | Decompose only when a new user flow needs a distinct truth boundary |
 | Product truth | Gateway accepts explicit local fixture or capability-evidenced read-only Shopify adapter and resolves Shopify observations against the release registry | Canonical observation/review contracts and failure policy proven; live Shopify capability/config/product observation blocked | Verify read capability, create and approve an exact observation candidate, then separately authorize any release-record patch |
-| Variant and commerce-facts truth | Normalization preserves current variants and plain customer copy; observation fingerprints identity, all rendered commerce/copy facts, and the full audit envelope separately; release presentation is whitelist-derived | Runtime freshness, dynamic timestamp, environment, copy/price/availability tamper, stale identity, outer-payload injection, catalog isolation, and non-mutation tests pass; live evidence remains missing | Observe Shopify, review the exact complete envelope, then separately authorize binding the accepted patch to the Draft release |
+| Variant and commerce-facts truth | Normalization preserves current variants and plain customer copy; observation fingerprints identity, rendered facts, and the full envelope; a disabled combination model binds fingerprint/currency and exact option dimensions | Runtime freshness, copy/price/availability tamper, stale identity, duplicate/missing/extra dimensions, raw-map injection, catalog isolation, and non-mutation tests pass; live evidence remains missing | Observe Shopify, review the exact complete envelope, then separately authorize binding the accepted patch to the Draft release |
 | Media truth | Gateway filters Shopify media through hashed, approved registry bindings; PDP exposes partial-review state; production requires current modality/fallback coverage | ID/URL/type tamper, unapproved extra, duplicate binding, partial Preview, complete Released, and missing-production-binding tests pass; Hoodie assets remain unbound/unapproved | Obtain current Hoodie media, provenance/rights/quality approval, and hashed storefront bindings without inventing missing modalities |
-| Cart | Browser product/cart services and broad Storefront mutation client are removed; server policy evaluates seven activation prerequisites including an exact current/release variant-fingerprint match | Pure policy, schema, mismatch, route-boundary, local fixture denial, and sanitized-summary tests pass; no Shopify write or live API proof | Audit the authenticated Storefront cart surface, record no-order evidence and scoped approval, then add a narrow server adapter |
+| Cart | Browser product/cart services and broad Storefront mutation client are removed; server policy evaluates eight activation prerequisites, separating reviewed variant presentation from evidence-backed server-only mutation resolution | Pure policy, schema, mismatch, raw-map rejection, route-boundary, local fixture denial, and sanitized-summary tests pass; no Shopify write or live API proof | Audit the authenticated Storefront cart surface, prove no-order capability and an exact server-only variant resolver, then add a narrow approved adapter |
 | Checkout | Explicitly separate from cart eligibility and hard-false in the current activation contract | No active redirect or public mutation surface exists; no returned Shopify URL observed | Add a separate approved checkout contract only after live cart proof, exact host validation, and operational authorization |
 | POD mapping | Draft release record binds Apliiq product `5958463` provider-neutrally | Product/design facts partial; variant fingerprint/order proof missing | Observe exact variant mapping without ordering, then later prove authorized order handoff |
 | Catalog | Prior audit recorded 12 products with image-only media | Later reuse/scale input; individual release truth unproven | After the complete Hoodie journey, prove a different product through the same cores before catalog expansion |

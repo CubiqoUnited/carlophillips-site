@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 17
+# Current Status — Fitness Cycle 18
 
 Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -11,12 +11,14 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - `/shop` and `/collections` share a release-aware server catalog boundary. It resolves registry handles individually, discards denied payloads, reports candidate/visible/withheld counts, and supports future multi-product records without activating the dormant catalog fixtures.
 - Home consumes that same server catalog decision through a minimized schema-validated summary. Its counts and optional PDP link cannot diverge from `/shop`; denied decisions expose no product payload.
 - Draft Hoodie Product Release Record and media manifest.
-- Server-owned cart activation contract with seven release/capability/approval prerequisites and checkout hard-disabled.
+- Server-owned cart activation contract with eight release/variant-resolution/capability/approval prerequisites and checkout hard-disabled.
 - Pure Shopify response normalization plus one server-only, read-only product adapter; broad product/cart clients and mutation exports are removed.
 - Canonical Product Observation and review contracts hash raw variant references; separately bind variant identity, commerce facts, and the full review envelope; require evidence tied to a ready product-read capability; and return only a non-applying candidate release patch.
 - Preview/production visibility validates the fresh sanitized observation, then compares variant identity and commerce facts to reviewed release bindings. A new read timestamp does not cause false staleness; changed facts, malformed envelopes, and tampering are withheld per candidate.
 - Commerce facts now include all Shopify-derived customer copy. The release product is whitelist-derived from the validated observation, so outer title/description/vendor/type/tagline/details/story/HTML cannot override reviewed presentation.
 - View-model status language is environment/release-aware: Preview says private review; production Released says facts are released and isolates the still-disabled cart/checkout gate. Story remains neutrally unavailable without reviewed evidence.
+- Shopify variant presentation is a fingerprint/currency-bound, review-only exact-combination model. It rejects ambiguous option dimensions and raw adapter mappings; every combination control remains disabled.
+- Cart activation now has eight gates because reviewed variant truth and server-only mutation resolution are distinct. No current resolver exists, so opaque hashes cannot make cart eligible.
 - Shopify media is filtered through approved, evidence-backed, hashed Media Registry bindings before the view model. Preview exposes partial-media review truth; production requires current coverage for every non-waived modality and fallback.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
 - Executable capability discovery and dedicated source-labeled bag/cart Server Component routes.
@@ -38,7 +40,7 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - Signature Hoodie evidence: product/design facts and one recorded front candidate exist; complete media, approvals, Shopify-backed PDP, cart, and operations proof do not.
 - Shopify integration: the product route calls the gateway/adapter and release registry, but local read-only configuration is incomplete, so current Shopify product data is not observed.
 - Release controls: Draft record exists with missing Shopify variant, commerce-facts, observation-review, and provider bindings plus pending approvals. Staging is explicitly denied until those bindings, immutable commit/build evidence, and private staging evidence exist.
-- App capability access: Product Owner reports 30 installed apps, but the latest managed-browser attempt reached Shopify login before Admin. The per-app access/authentication/fee-risk matrix remains entirely unverified and non-callable.
+- App capability access: Product Owner reconfirmed 30 installed apps and reports a logged-in Product Owner browser. The agent's managed session and all API/app-private scopes remain unverified and non-callable; the minimum-access model avoids blanket app access.
 - Product observations: canonicalization/review behavior is locally proven, but no current live Shopify observation, capability evidence reference, or exact approval exists.
 - Media bindings: filtering and production-completeness policy are locally proven, but the Hoodie has no approved current Shopify media binding. Its front remains pending and two details remain quarantined.
 

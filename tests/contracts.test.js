@@ -5,6 +5,7 @@ import commerceProductSchema from '../contracts/commerce-product.schema.json';
 import commerceCartSchema from '../contracts/commerce-cart.schema.json';
 import cartActivationDecisionSchema from '../contracts/cart-activation-decision.schema.json';
 import productObservationSchema from '../contracts/product-observation.schema.json';
+import variantPresentationSchema from '../contracts/variant-presentation.schema.json';
 import productObservationReviewSchema from '../contracts/product-observation-review.schema.json';
 import pipelineRunSchema from '../contracts/pipeline-run.schema.json';
 import mediaManifestSchema from '../contracts/media-manifest.schema.json';
@@ -42,6 +43,7 @@ const validateCommerceProduct = ajv.compile(commerceProductSchema);
 const validateCommerceCart = ajv.compile(commerceCartSchema);
 const validateCartActivationDecision = ajv.compile(cartActivationDecisionSchema);
 const validateProductObservation = ajv.compile(productObservationSchema);
+const validateVariantPresentation = ajv.compile(variantPresentationSchema);
 const validateProductObservationReview = ajv.compile(productObservationReviewSchema);
 const validatePipelineRun = ajv.compile(pipelineRunSchema);
 const validateMediaManifest = ajv.compile(mediaManifestSchema);
@@ -134,7 +136,7 @@ describe('truth contracts', () => {
       checkoutAllowed: false,
       reason: 'PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED',
       checkoutReason: 'CHECKOUT_REQUIRES_SEPARATE_APPROVAL_AND_LIVE_PROOF',
-      prerequisites: Array.from({ length: 7 }, (_, index) => ({
+      prerequisites: Array.from({ length: 8 }, (_, index) => ({
         code: `PREREQUISITE_${index + 1}`,
         status: index === 0 ? 'human_required' : 'satisfied',
         resumePoint: index === 0 ? 'Obtain exact scoped approval.' : null,
@@ -152,7 +154,7 @@ describe('truth contracts', () => {
       checkoutAllowed: true,
       reason: 'INVALID_AUTHORITY_CLAIM',
       checkoutReason: 'CHECKOUT_REQUIRES_SEPARATE_APPROVAL_AND_LIVE_PROOF',
-      prerequisites: Array.from({ length: 7 }, (_, index) => ({
+      prerequisites: Array.from({ length: 8 }, (_, index) => ({
         code: `PREREQUISITE_${index + 1}`,
         status: 'blocked',
         resumePoint: 'Resolve the prerequisite.',
@@ -241,6 +243,31 @@ describe('truth contracts', () => {
         observationReviewEvidence: 'approval/product-observation-001',
       },
     })).toBe(true);
+  });
+
+  it('validates only a review-only, non-authoritative variant presentation', () => {
+    const presentation = {
+      schemaVersion: 'cp.variant-presentation.v1',
+      source: 'reviewed-product-observation',
+      variantFingerprint: `sha256:${'a'.repeat(64)}`,
+      currency: 'USD',
+      selectionAllowed: false,
+      cartAuthority: false,
+      optionNames: ['Color', 'Size'],
+      combinations: [{
+        referenceHash: `sha256:${'a'.repeat(64)}`,
+        title: 'Black / M',
+        selectedOptions: [
+          { name: 'Color', value: 'Black' },
+          { name: 'Size', value: 'M' },
+        ],
+        availableForSale: true,
+        price: { amount: '128.00', currency: 'USD' },
+      }],
+    };
+    expect(validateVariantPresentation(presentation)).toBe(true);
+    expect(validateVariantPresentation({ ...presentation, selectionAllowed: true })).toBe(false);
+    expect(validateVariantPresentation({ ...presentation, cartAuthority: true })).toBe(false);
   });
 
   it('requires media provenance and approval fields', () => {

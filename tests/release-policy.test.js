@@ -73,6 +73,12 @@ describe('release source policy', () => {
       details: ['Outer injected detail'],
       story: 'Outer injected story',
       descriptionHtml: '<script>outer injected HTML</script>',
+      shopifyVariants: { 'Black-M': 'opaque-outer-reference' },
+      variantPresentation: {
+        selectionAllowed: true,
+        cartAuthority: true,
+        combinations: [{ title: 'Injected selectable combination' }],
+      },
     });
 
     const decision = resolveProductSource({
@@ -93,6 +99,13 @@ describe('release source policy', () => {
     expect(JSON.stringify(decision.product)).not.toContain('Outer injected');
     expect(decision.product).not.toHaveProperty('descriptionHtml');
     expect(decision.product).not.toHaveProperty('story');
+    expect(decision.product).not.toHaveProperty('shopifyVariants');
+    expect(decision.product.variantPresentation).toMatchObject({
+      source: 'reviewed-product-observation',
+      selectionAllowed: false,
+      cartAuthority: false,
+    });
+    expect(JSON.stringify(decision.product)).not.toContain('Injected selectable combination');
   });
 
   it.each(['preview', 'production'])('denies an observed Shopify product without a release record in %s', environment => {

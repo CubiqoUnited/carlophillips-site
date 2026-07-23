@@ -182,6 +182,25 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - View-model and PDP status copy derives from source, environment, and release reason. Preview is private review; production Released says product facts are released while purchasing remains separately disabled. A neutral unavailable story replaces both outer story text and the former false pending-approval fallback.
 - Focused verification passed with zero-warning lint and 10 files/124 tests. Full `yarn verify` passed with 30 files/246 tests, zero production advisories across 193 packages, and a successful 13-route build. Fresh desktop/mobile PDP and home regression found no console warning/error, overlay, checkout link, or horizontal overflow; purchasing remained disabled. Evidence is under `test_reports/cp-fitness-cycle-17/`.
 
+## Cycle 18 verification
+
+- Shopify-backed PDP option review now uses exact sanitized variant combinations rather than independently flattened color and size lists. Each combination retains canonical selected dimensions, current availability, and reviewed price/currency.
+- `cp.variant-presentation.v1` binds the current/release variant fingerprint and product currency, requires one canonical non-empty unique option-name schema, and rejects duplicate signatures/references, missing or extra dimensions, non-canonical order, malformed price/currency, and authority flags.
+- The release whitelist constructs this presentation from the validated Product Observation. Injected outer `shopifyVariants` or `variantPresentation` objects are discarded.
+- Every combination is disabled review information. The view contains no add-to-cart or checkout action, and opaque reference hashes are not displayed.
+- Cart activation now separates the available reviewed-combination gate from an eighth evidence-backed server-only resolver gate. No resolver is currently wired, so a hash or raw outer mapping cannot become mutation authority.
+- Product Owner reconfirmed the existing 30-app Shopify inventory and reported a logged-in Product Owner browser. This remains reported-installed evidence only: the agent's Admin/Storefront/custom-app/CLI/app-private access is unverified. The durable audit now defines one narrow CP Admin/Storefront connector path plus only selected Apliiq/media/workflow access, records duplicate groups and usage-fee exposure, and preserves exact human authentication/approval gates.
+- Focused verification passed across 10 files/155 tests. Full `yarn verify`
+  passed with zero-warning lint, 31 files/276 tests, zero production
+  advisories across 193 packages, and a successful 13-route Next.js 15.5.21
+  build. Direct desktop PDP plus a temporary localhost-only 390×844 responsive
+  frame passed with meaningful fixture content, purchasing disabled, no
+  add/cart/checkout action, no error overlay, and no horizontal overflow.
+  Collection and home navigation also passed. The selected in-app browser had
+  no viewport override, so the temporary proxy stripped framing headers only
+  from copied local responses; it was stopped and is absent from the final
+  repository diff.
+
 ## External blockers
 
 ### Vercel hosting disabled

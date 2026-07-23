@@ -12,6 +12,7 @@ Shopify cart, checkout, payment, or order operations are available.
 | Product detail | `app/products/[handle]/page.js` → Commerce Gateway → release/media evidence | Source-labeled product review; never cart authority |
 | Shopify product transport | `lib/providers/shopify/storefront-product-adapter.js` | Server-only, one product-by-handle read |
 | Product observation | `lib/commerce/product-observation.js` plus `observation-visibility-policy.js` | Sanitized canonical candidate, non-applying review, runtime identity/facts freshness, and whitelist-derived customer copy |
+| Variant presentation | `lib/commerce/variant-presentation-policy.js` | Disabled exact combinations bound to reviewed fingerprint/currency; opaque hashes, no mutation authority |
 | Storefront media | `lib/commerce/media-visibility-policy.js` plus Media Registry | Per-asset hashed identity/type/URL binding; partial approved Preview, complete required production coverage |
 | Bag/cart presentation | `app/bag/page.js` and `/cart` alias | Activation decision only; no cart is fetched or created |
 | API health | `app/api/[[...path]]/route.js` | Generic service state; no catalog payload or credential diagnostics |
@@ -57,12 +58,14 @@ must be satisfied before a UI can be declared cart-eligible:
    match the reviewed values bound to the release record. The full historical
    observation fingerprint remains approval/audit evidence and is not compared
    to a newly timestamped runtime read.
-4. At least one observed Shopify variant is available and mapped.
+4. At least one canonical reviewed Shopify combination is available.
 5. `shopify-storefront-cart` has evidence-backed `cart-write` capability,
    including an authorized no-order test.
-6. Durable Product Owner approval is explicitly scoped to
+6. An evidence-backed server-only variant resolver is bound to the same current
+   and release variant fingerprint. Opaque hashes alone are not mutation targets.
+7. Durable Product Owner approval is explicitly scoped to
    `activate-customer-cart`.
-7. The server-only `SHOPIFY_CART_UI_ENABLED` gate is enabled in the approved
+8. The server-only `SHOPIFY_CART_UI_ENABLED` gate is enabled in the approved
    environment.
 
 Credentials or an installed app satisfy none of these gates by themselves.
@@ -81,3 +84,10 @@ The Hoodie Media Registry has no current Shopify storefront bindings. Its front
 candidate remains pending and the two unverified detail assets remain
 quarantined. They cannot enter a Shopify-backed PDP until exact-product,
 rights, quality, approval, and current hashed media bindings exist.
+
+The Product Owner reconfirmed the 30 installed Shopify apps on 2026-07-23 and
+reported a logged-in Product Owner browser. This changes neither runtime
+ownership nor callable access. CP's minimum access is one approved Admin/custom
+connector plus one Storefront channel, Apliiq for the Hoodie mapping when
+needed, and only selected media/workflow workers. Direct access to every
+embedded app is neither required nor assumed.

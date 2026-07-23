@@ -1,6 +1,26 @@
 import { describe, expect, it } from 'vitest';
 import { toProductViewModel } from '../lib/commerce/product-view-model.js';
 
+const variantPresentation = {
+  schemaVersion: 'cp.variant-presentation.v1',
+  source: 'reviewed-product-observation',
+  variantFingerprint: `sha256:${'a'.repeat(64)}`,
+  currency: 'USD',
+  selectionAllowed: false,
+  cartAuthority: false,
+  optionNames: ['Color', 'Size'],
+  combinations: [{
+    referenceHash: `sha256:${'a'.repeat(64)}`,
+    title: 'Black / M',
+    selectedOptions: [
+      { name: 'Color', value: 'Black' },
+      { name: 'Size', value: 'M' },
+    ],
+    availableForSale: true,
+    price: { amount: '128.00', currency: 'USD' },
+  }],
+};
+
 describe('product view model', () => {
   it('normalizes Shopify product and media fields without changing the source', () => {
     const model = toProductViewModel({
@@ -20,7 +40,7 @@ describe('product view model', () => {
         price: 128,
         currency: 'USD',
         availableForSale: true,
-        variants: { colors: ['Black'], sizes: ['M'] },
+        variantPresentation,
         media: [{ id: 'front', type: 'image', url: 'https://cdn.example/front.jpg', alt: 'Front' }],
         mediaReview: {
           status: 'incomplete',
@@ -34,8 +54,13 @@ describe('product view model', () => {
     expect(model).toMatchObject({
       source: 'shopify',
       title: 'Observed Hoodie',
-      colors: ['Black'],
-      sizes: ['M'],
+      colors: [],
+      sizes: [],
+      variantPresentation: {
+        selectionAllowed: false,
+        cartAuthority: false,
+        combinations: [{ title: 'Black / M', availableForSale: true }],
+      },
       commerceAllowed: false,
       description: 'Reviewed description',
       vendor: 'Reviewed vendor',
@@ -67,7 +92,7 @@ describe('product view model', () => {
         price: 128,
         currency: 'USD',
         availableForSale: true,
-        variants: { colors: ['Black'], sizes: ['M'] },
+        variantPresentation,
         media: [],
         story: 'Outer pending release story',
       },

@@ -427,6 +427,38 @@ describe('product observation truth contract', () => {
     })).toThrow('unique raw variant references');
   });
 
+  it.each([
+    ['duplicate Size/Color combination', value => {
+      value.observedVariants[1].selectedOptions = structuredClone(
+        value.observedVariants[0].selectedOptions
+      );
+    }],
+    ['missing option dimension', value => {
+      value.observedVariants[1].selectedOptions = [
+        value.observedVariants[1].selectedOptions.find(option => option.name === 'Color'),
+      ];
+    }],
+    ['extra option dimension', value => {
+      value.observedVariants[1].selectedOptions.push({ name: 'Material', value: 'Cotton' });
+    }],
+    ['duplicate option name', value => {
+      value.observedVariants[1].selectedOptions = [
+        { name: 'Color', value: 'Black' },
+        { name: 'color', value: 'Navy' },
+      ];
+    }],
+  ])('rejects %s before it can become a variant presentation', (_label, mutate) => {
+    const invalid = product();
+    mutate(invalid);
+    expect(() => createProductObservation({
+      source: 'shopify',
+      environment: 'preview',
+      observedAt,
+      product: invalid,
+      capabilityEvidence,
+    })).toThrow('Product observation facts invalid');
+  });
+
   it('blocks duplicate hashes and inconsistent price, currency, and availability facts', () => {
     const observation = createProductObservation({
       source: 'shopify',

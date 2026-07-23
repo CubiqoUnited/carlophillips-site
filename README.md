@@ -22,6 +22,12 @@ Release wording is decision-aware: private Preview review and Released
 production facts are never both labeled “approval pending.” Product story is
 neutral and unavailable until a separate reviewed story source exists.
 
+Shopify option review preserves each real combination, availability, and price
+from the fingerprinted observation. It never flattens Shopify colors and sizes
+into combinations that may not exist. Every control is disabled, reference
+hashes remain opaque, and cart eligibility has a separate server-only resolver
+gate before any raw Shopify reference could be used.
+
 Shopify media is filtered independently from product facts. Durable Media
 Registry assets store only a hash of the reviewed storefront identity, media
 type, canonical URL, and preview URL plus evidence—not raw Shopify media IDs or

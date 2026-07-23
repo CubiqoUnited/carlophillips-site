@@ -94,6 +94,43 @@ function Header() {
   );
 }
 
+function VariantPresentation({ presentation }) {
+  if (!presentation?.combinations?.length) return null;
+
+  return (
+    <div className="mt-10 border-t border-white/10 pt-7" data-variant-presentation="review-only">
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <p className="text-[10px] uppercase tracking-[0.24em] text-white/35">Observed variant combinations</p>
+        <p className="text-[9px] uppercase tracking-[0.2em] text-white/28">Selection disabled</p>
+      </div>
+      <div className="grid gap-2">
+        {presentation.combinations.map(combination => (
+          <button
+            key={combination.referenceHash}
+            type="button"
+            disabled
+            data-variant-available={combination.availableForSale}
+            className="grid min-h-16 grid-cols-[1fr_auto] items-center gap-5 border border-white/12 px-4 py-3 text-left text-white/52 disabled:cursor-not-allowed"
+          >
+            <span>
+              <span className="block text-xs text-white/72">{combination.title}</span>
+              <span className="mt-1 block text-[10px] uppercase tracking-[0.16em] text-white/34">
+                {combination.selectedOptions.map(option => `${option.name}: ${option.value}`).join(' · ')}
+              </span>
+            </span>
+            <span className="text-right text-[10px] uppercase tracking-[0.14em]">
+              {formatPrice(Number(combination.price.amount), combination.price.currency)}
+              <span className="mt-1 block text-white/30">
+                {combination.availableForSale ? 'Available in source' : 'Unavailable in source'}
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function CommerceProductUnavailable({ decision }) {
   return (
     <main id="main-content" className="min-h-screen bg-black text-white">
@@ -141,6 +178,8 @@ export function CommerceProductDetail({
             <h1 className="max-w-3xl text-4xl font-light leading-[0.98] tracking-[-0.045em] sm:text-5xl lg:text-6xl xl:text-7xl">{product.title}</h1>
             <p className="mt-7 text-2xl font-light text-white/72">{formatPrice(product.price, product.currency)}</p>
             <p className="mt-8 max-w-xl text-base leading-relaxed text-white/58 sm:text-lg">{product.description || 'Description unavailable from the selected source.'}</p>
+
+            <VariantPresentation presentation={product.variantPresentation} />
 
             {product.colors.length > 0 && (
               <div className="mt-10 border-t border-white/10 pt-7">

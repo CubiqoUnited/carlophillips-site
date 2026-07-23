@@ -6,6 +6,10 @@ import {
 
 const readyCapability = {
   status: 'ready',
+  capability: 'shopify-storefront-cart',
+  adapter: 'shopify-storefront-cart',
+  callableSurface: 'shopify_storefront',
+  evidenceRef: 'evidence/shopify-storefront-cart-no-order-001',
   blocker: null,
 };
 const blockedCapability = {
@@ -13,6 +17,13 @@ const blockedCapability = {
   blocker: {
     resumePoint: 'Resume at an authorized no-order Storefront cart test.',
   },
+};
+const readyVariantResolver = {
+  status: 'ready',
+  capability: 'shopify-storefront-variant-resolver',
+  adapter: 'server-only-shopify-variant-resolver',
+  variantFingerprint: `sha256:${'a'.repeat(64)}`,
+  evidence: 'evidence/server-variant-resolver-001',
 };
 const releasedRecord = {
   state: 'released',
@@ -22,13 +33,33 @@ const releasedRecord = {
     variantFingerprint: `sha256:${'a'.repeat(64)}`,
   },
 };
+const reviewedVariantPresentation = {
+  schemaVersion: 'cp.variant-presentation.v1',
+  source: 'reviewed-product-observation',
+  variantFingerprint: `sha256:${'a'.repeat(64)}`,
+  currency: 'USD',
+  selectionAllowed: false,
+  cartAuthority: false,
+  optionNames: ['Color', 'Size'],
+  combinations: [{
+    referenceHash: `sha256:${'a'.repeat(64)}`,
+    title: 'Black / M',
+    selectedOptions: [
+      { name: 'Color', value: 'Black' },
+      { name: 'Size', value: 'M' },
+    ],
+    availableForSale: true,
+    price: { amount: '128.00', currency: 'USD' },
+  }],
+};
 const productDecision = {
   source: 'shopify',
   visibilityAllowed: true,
   product: {
     handle: 'test-product',
+    currency: 'USD',
     availableForSale: true,
-    shopifyVariants: { 'Black-M': 'opaque-variant-reference' },
+    variantPresentation: reviewedVariantPresentation,
     variantFingerprint: `sha256:${'a'.repeat(64)}`,
   },
 };
@@ -84,12 +115,35 @@ describe('cart activation policy', () => {
     });
   });
 
-  it('requires a Released record and observed, sellable variant mapping', () => {
+  it.each([
+    ['wrong capability', { capability: 'shopify-storefront-product-read' }],
+    ['wrong adapter', { adapter: 'shopify-admin-cart' }],
+    ['wrong callable surface', { callableSurface: 'shopify_admin' }],
+    ['missing durable evidence', { evidenceRef: null }],
+  ])('rejects a generic ready decision with %s', (_label, override) => {
+    const decision = evaluateCartActivation({
+      environment: 'production',
+      productDecision,
+      releaseRecord: releasedRecord,
+      capabilityDecision: { ...readyCapability, ...override },
+      variantResolverDecision: readyVariantResolver,
+      activationApproval: approval,
+      activationRequested: true,
+    });
+
+    expect(decision).toMatchObject({
+      status: 'blocked',
+      cartAllowed: false,
+      reason: 'STOREFRONT_CART_WRITE_CAPABILITY_REQUIRED',
+    });
+  });
+
+  it('requires a Released record and an observed sellable variant presentation', () => {
     const decision = evaluateCartActivation({
       environment: 'preview',
       productDecision: {
         ...productDecision,
-        product: { handle: 'test-product', availableForSale: false, shopifyVariants: {} },
+        product: { handle: 'test-product', availableForSale: false, variantPresentation: null },
       },
       releaseRecord: {
         ...releasedRecord,
@@ -110,8 +164,56 @@ describe('cart activation policy', () => {
       .toEqual(expect.arrayContaining([
         'RELEASED_PRODUCT_REQUIRED',
         'OBSERVED_VARIANT_FINGERPRINT_REQUIRED',
-        'SELLABLE_VARIANT_MAPPING_REQUIRED',
+        'SELLABLE_REVIEWED_VARIANT_REQUIRED',
       ]));
+  });
+
+  it('does not accept an outer raw variant map without a reviewed presentation', () => {
+    const decision = evaluateCartActivation({
+      environment: 'production',
+      productDecision: {
+        ...productDecision,
+        product: {
+          handle: 'test-product',
+          availableForSale: true,
+          variantFingerprint: `sha256:${'a'.repeat(64)}`,
+          shopifyVariants: { 'Black-M': 'opaque-outer-reference' },
+        },
+      },
+      releaseRecord: releasedRecord,
+      capabilityDecision: readyCapability,
+      activationApproval: approval,
+      activationRequested: true,
+    });
+
+    expect(decision.cartAllowed).toBe(false);
+    expect(decision.prerequisites).toContainEqual({
+      code: 'SELLABLE_REVIEWED_VARIANT_REQUIRED',
+      status: 'blocked',
+      resumePoint: 'Verify at least one available canonical variant combination through an authorized read-only observation.',
+    });
+  });
+
+  it('does not treat opaque reviewed hashes as cart mutation authority', () => {
+    const decision = evaluateCartActivation({
+      environment: 'production',
+      productDecision,
+      releaseRecord: releasedRecord,
+      capabilityDecision: readyCapability,
+      activationApproval: approval,
+      activationRequested: true,
+    });
+
+    expect(decision).toMatchObject({
+      status: 'blocked',
+      cartAllowed: false,
+      reason: 'SERVER_VARIANT_RESOLVER_REQUIRED',
+    });
+    expect(decision.prerequisites).toContainEqual({
+      code: 'SERVER_VARIANT_RESOLVER_REQUIRED',
+      status: 'blocked',
+      resumePoint: 'Bind an evidence-backed server-only resolver to this exact reviewed variant fingerprint; never expose or infer raw Shopify references.',
+    });
   });
 
   it('rejects a current variant observation that no longer matches the release fingerprint', () => {
@@ -126,6 +228,7 @@ describe('cart activation policy', () => {
       },
       releaseRecord: releasedRecord,
       capabilityDecision: readyCapability,
+      variantResolverDecision: readyVariantResolver,
       activationApproval: approval,
       activationRequested: true,
     });
@@ -143,6 +246,7 @@ describe('cart activation policy', () => {
       productDecision,
       releaseRecord: releasedRecord,
       capabilityDecision: readyCapability,
+      variantResolverDecision: readyVariantResolver,
       activationApproval: approval,
       activationRequested: true,
     });

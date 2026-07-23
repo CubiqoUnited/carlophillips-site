@@ -4,6 +4,38 @@ import { describe, expect, it } from 'vitest';
 import { CommerceProductDetail, CommerceProductUnavailable } from '../components/commerce/product-detail.jsx';
 import { toProductViewModel } from '../lib/commerce/product-view-model.js';
 
+const variantPresentation = {
+  schemaVersion: 'cp.variant-presentation.v1',
+  source: 'reviewed-product-observation',
+  variantFingerprint: `sha256:${'a'.repeat(64)}`,
+  currency: 'USD',
+  selectionAllowed: false,
+  cartAuthority: false,
+  optionNames: ['Color', 'Size'],
+  combinations: [
+    {
+      referenceHash: `sha256:${'b'.repeat(64)}`,
+      title: 'Black / M',
+      selectedOptions: [
+        { name: 'Color', value: 'Black' },
+        { name: 'Size', value: 'M' },
+      ],
+      availableForSale: true,
+      price: { amount: '128.00', currency: 'USD' },
+    },
+    {
+      referenceHash: `sha256:${'c'.repeat(64)}`,
+      title: 'Black / L',
+      selectedOptions: [
+        { name: 'Color', value: 'Black' },
+        { name: 'Size', value: 'L' },
+      ],
+      availableForSale: false,
+      price: { amount: '128.00', currency: 'USD' },
+    },
+  ],
+};
+
 describe('commerce product presentation', () => {
   it('renders source truth and keeps purchasing disabled', () => {
     const product = toProductViewModel({
@@ -18,7 +50,7 @@ describe('commerce product presentation', () => {
         currency: 'USD',
         description: 'Observed description',
         story: 'Outer story cannot render',
-        variants: { colors: ['Black'], sizes: ['M'] },
+        variantPresentation,
         availableForSale: true,
         vendor: 'Observed vendor',
         productType: 'Hoodie',
@@ -53,6 +85,11 @@ describe('commerce product presentation', () => {
     expect(html).toContain('private release review');
     expect(html).toContain('Reviewed facts, private release review');
     expect(html).toContain('No reviewed product story is available');
+    expect(html).toContain('Observed variant combinations');
+    expect(html).toContain('Selection disabled');
+    expect(html).toContain('Color: Black · Size: M');
+    expect(html).toContain('Available in source');
+    expect(html).toContain('Unavailable in source');
     expect(html).toContain('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
     expect(html).toContain('Purchasing disabled');
     expect(html).toContain('Purchasing remains disabled');
@@ -63,6 +100,11 @@ describe('commerce product presentation', () => {
     expect(html).toContain('video, on-model');
     expect(html).toContain('disabled=""');
     expect(html).not.toContain('Outer story cannot render');
+    expect(html).not.toContain('Add to cart');
+    expect(html).not.toContain('Checkout');
+    const controls = html.match(/<button\b[^>]*>/g) || [];
+    expect(controls.length).toBe(3);
+    expect(controls.every(control => control.includes('disabled=""'))).toBe(true);
   });
 
   it('renders Released production facts without pending or unresolved release copy', () => {

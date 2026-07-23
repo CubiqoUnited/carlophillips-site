@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Derive a sanitized option/variant presentation model from reviewed variant facts, preserving valid combinations and availability.
-2. Keep selection non-commerce until the existing seven activation gates pass; never trust an outer adapter variant map.
+1. Define the evidence-only server variant-resolution decision required by the eighth cart gate without implementing a Storefront mutation.
+2. Keep raw Shopify references server-ephemeral and absent from client summaries, logs, reports, controls, and durable evidence.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep variant selection, cart, checkout, product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.
