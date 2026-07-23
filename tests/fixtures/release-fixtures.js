@@ -1,4 +1,5 @@
 import { createProductObservation } from '../../lib/commerce/product-observation.js';
+import { fingerprintStorefrontMedia } from '../../lib/commerce/media-visibility-policy.js';
 
 const observedAt = '2026-07-22T00:00:00Z';
 
@@ -12,11 +13,17 @@ const imageModalities = [
 ];
 
 function approvedAsset({ assetId, kind, fallbackAssetId = null }) {
+  const storefrontMedia = observedStorefrontMedia(assetId, kind);
   return {
     schemaVersion: 'cp.product-media-asset.v1',
     assetId,
     kind,
     source: { type: 'photography', reference: `evidence/${assetId}.json` },
+    storefrontBinding: {
+      adapter: 'shopify-storefront-media',
+      referenceHash: fingerprintStorefrontMedia(storefrontMedia),
+      evidence: `evidence/${assetId}-storefront-binding.json`,
+    },
     exactProductMatch: 'verified',
     rightsStatus: 'verified',
     approvalStatus: 'approved',
@@ -26,6 +33,16 @@ function approvedAsset({ assetId, kind, fallbackAssetId = null }) {
     },
     alt: `Exact product ${assetId}`,
     fallbackAssetId,
+  };
+}
+
+function observedStorefrontMedia(assetId, type) {
+  return {
+    id: `shopify-media:${assetId}`,
+    type,
+    url: `https://cdn.example/${assetId}`,
+    previewUrl: `https://cdn.example/${assetId}-preview`,
+    alt: `Observed ${assetId}`,
   };
 }
 
@@ -125,6 +142,17 @@ export function createObservedShopifyProduct(
     availableForSale: true,
     variantFingerprint: observation.variantFingerprint,
     observation,
+    media: [
+      'front',
+      'back-angle',
+      'embroidery-detail',
+      'material-detail',
+      'on-model',
+      'lifestyle',
+    ].map(modality => observedStorefrontMedia(`${modality}-image`, 'image')).concat([
+      observedStorefrontMedia('model-asset', 'model_3d'),
+      observedStorefrontMedia('film-asset', 'video'),
+    ]),
   };
 }
 
@@ -149,9 +177,13 @@ export function createCompleteMediaManifest() {
       {
         modality: 'spin-360',
         requirement: 'where-feasible',
-        status: 'approved',
-        assetIds: ['spin-asset'],
-        infeasibilityBlocker: null,
+        status: 'infeasible-approved',
+        assetIds: [],
+        infeasibilityBlocker: {
+          reason: 'No truthful spin renderer is active in the current storefront fixture.',
+          approvalStatus: 'approved',
+          owner: 'Product Owner',
+        },
       },
       {
         modality: 'model-3d-ar',
@@ -170,11 +202,6 @@ export function createCompleteMediaManifest() {
     ],
     assets: [
       ...imageAssets,
-      approvedAsset({
-        assetId: 'spin-asset',
-        kind: 'spin',
-        fallbackAssetId: 'front-image',
-      }),
       approvedAsset({
         assetId: 'model-asset',
         kind: 'model_3d',

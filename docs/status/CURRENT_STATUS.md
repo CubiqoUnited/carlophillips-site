@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 15
+# Current Status — Fitness Cycle 16
 
 Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -15,6 +15,7 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - Pure Shopify response normalization plus one server-only, read-only product adapter; broad product/cart clients and mutation exports are removed.
 - Canonical Product Observation and review contracts hash raw variant references; separately bind variant identity, commerce facts, and the full review envelope; require evidence tied to a ready product-read capability; and return only a non-applying candidate release patch.
 - Preview/production visibility validates the fresh sanitized observation, then compares variant identity and commerce facts to reviewed release bindings. A new read timestamp does not cause false staleness; changed facts, malformed envelopes, and tampering are withheld per candidate.
+- Shopify media is filtered through approved, evidence-backed, hashed Media Registry bindings before the view model. Preview exposes partial-media review truth; production requires current coverage for every non-waived modality and fallback.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
 - Executable capability discovery and dedicated source-labeled bag/cart Server Component routes.
 - A durable four-lane Hoodie simulation with exact blockers and every restricted approval still pending.
@@ -37,6 +38,7 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - Release controls: Draft record exists with missing Shopify variant, commerce-facts, observation-review, and provider bindings plus pending approvals. Staging is explicitly denied until those bindings, immutable commit/build evidence, and private staging evidence exist.
 - App capability access: Product Owner reports 30 installed apps, but the latest managed-browser attempt reached Shopify login before Admin. The per-app access/authentication/fee-risk matrix remains entirely unverified and non-callable.
 - Product observations: canonicalization/review behavior is locally proven, but no current live Shopify observation, capability evidence reference, or exact approval exists.
+- Media bindings: filtering and production-completeness policy are locally proven, but the Hoodie has no approved current Shopify media binding. Its front remains pending and two details remain quarantined.
 
 ## Proposed
 

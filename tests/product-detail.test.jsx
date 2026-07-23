@@ -25,7 +25,20 @@ describe('commerce product presentation', () => {
           availableForSale: true,
           vendor: 'Observed vendor',
           productType: 'Hoodie',
-          media: [],
+          media: [{
+            id: 'front-approved',
+            type: 'image',
+            url: 'https://cdn.example/front-approved.jpg',
+            previewUrl: 'https://cdn.example/front-approved.jpg',
+            alt: 'Approved front',
+            label: 'front',
+          }],
+          mediaReview: {
+            status: 'incomplete',
+            coveredModalities: ['front'],
+            missingModalities: ['video', 'on-model'],
+            missingFallbackCount: 0,
+          },
         }}
       />
     );
@@ -36,6 +49,9 @@ describe('commerce product presentation', () => {
     expect(html).toContain('Purchasing remains disabled');
     expect(html).toContain('PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED');
     expect(html).toContain('data-cart-activation="blocked"');
+    expect(html).toContain('data-media-review="incomplete"');
+    expect(html).toContain('Private media review incomplete');
+    expect(html).toContain('video, on-model');
     expect(html).toContain('disabled=""');
   });
 

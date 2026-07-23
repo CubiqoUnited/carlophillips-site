@@ -15,6 +15,12 @@ describe('product view model', () => {
         availableForSale: true,
         variants: { colors: ['Black'], sizes: ['M'] },
         media: [{ id: 'front', type: 'image', url: 'https://cdn.example/front.jpg', alt: 'Front' }],
+        mediaReview: {
+          status: 'incomplete',
+          coveredModalities: ['front'],
+          missingModalities: ['video'],
+          missingFallbackCount: 0,
+        },
       },
     });
 
@@ -24,6 +30,10 @@ describe('product view model', () => {
       colors: ['Black'],
       sizes: ['M'],
       commerceAllowed: false,
+      mediaReview: {
+        status: 'incomplete',
+        missingModalities: ['video'],
+      },
     });
     expect(model.media[0]).toMatchObject({ id: 'front', type: 'image', url: 'https://cdn.example/front.jpg' });
   });

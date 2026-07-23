@@ -3,7 +3,7 @@
   "$id": "https://carlophillips.com/contracts/media-asset.schema.json",
   "title": "ProductMediaAsset v1",
   "type": "object",
-  "required": ["schemaVersion", "assetId", "kind", "source", "exactProductMatch", "rightsStatus", "approvalStatus", "quality", "alt"],
+  "required": ["schemaVersion", "assetId", "kind", "source", "storefrontBinding", "exactProductMatch", "rightsStatus", "approvalStatus", "quality", "alt"],
   "properties": {
     "schemaVersion": { "const": "cp.product-media-asset.v1" },
     "assetId": { "type": "string", "minLength": 1 },
@@ -17,6 +17,21 @@
         "method": { "type": "string" }
       },
       "additionalProperties": false
+    },
+    "storefrontBinding": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["adapter", "referenceHash", "evidence"],
+          "properties": {
+            "adapter": { "const": "shopify-storefront-media" },
+            "referenceHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "evidence": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        { "type": "null" }
+      ]
     },
     "exactProductMatch": { "enum": ["verified", "partial", "unverified", "not-applicable"] },
     "rightsStatus": { "enum": ["verified", "pending", "unknown"] },

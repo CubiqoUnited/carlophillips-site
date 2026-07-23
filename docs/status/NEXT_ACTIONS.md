@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Bind rendered Shopify media identifiers/provenance to the approved release Media Registry and withhold unapproved or stale assets.
-2. Preserve per-candidate isolation and forbid fake spin/3D/video substitution when release-bound media is incomplete.
+1. Extend canonical commerce facts to description, vendor, product type, and every other customer-visible Shopify field.
+2. Derive customer-visible copy from the reviewed envelope and withhold changed copy until a separately approved release binding exists.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep variant selection, cart, checkout, product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

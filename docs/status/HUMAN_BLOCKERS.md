@@ -12,7 +12,7 @@ Resume point: deploy the approved branch to Preview only, configure scoped Previ
 
 Human action: Product Owner or designee approves product facts, price, media provenance/customer disclosure, fulfillment mapping, and any operational test.
 
-Resume point: update the versioned Product Release Record and execute only the specifically authorized boundary.
+Resume point: update the versioned Product Release Record and Media Registry, including hashed current storefront bindings for approved media, and execute only the specifically authorized boundary.
 
 Current staging decision: `releases/cp-signature-hoodie-2026-001/staging-readiness.json` denies staging until reviewed Shopify variant/commerce-facts/full-observation bindings, the Apliiq variant fingerprint, an immutable candidate commit, passing build evidence, and private staging evidence are bound. The release-specific withdrawal plan now exists; its verification remains intentionally null until an authorized live proof.
 

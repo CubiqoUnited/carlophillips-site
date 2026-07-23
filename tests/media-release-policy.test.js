@@ -80,6 +80,29 @@ describe('media release policy', () => {
     });
   });
 
+  it('requires unique evidence-backed Shopify storefront bindings for approved assets', () => {
+    const missing = createCompleteMediaManifest();
+    missing.assets.find(item => item.assetId === 'front-image').storefrontBinding = null;
+    expect(evaluateMediaRelease(missing).assetBlockers).toContainEqual({
+      assetId: 'front-image',
+      code: 'STOREFRONT_BINDING_MISSING',
+    });
+
+    const duplicate = createCompleteMediaManifest();
+    const front = duplicate.assets.find(item => item.assetId === 'front-image');
+    const back = duplicate.assets.find(item => item.assetId === 'back-angle-image');
+    back.storefrontBinding = structuredClone(front.storefrontBinding);
+    const blockers = evaluateMediaRelease(duplicate).assetBlockers;
+    expect(blockers).toContainEqual({
+      assetId: 'front-image',
+      code: 'DUPLICATE_STOREFRONT_BINDING',
+    });
+    expect(blockers).toContainEqual({
+      assetId: 'back-angle-image',
+      code: 'DUPLICATE_STOREFRONT_BINDING',
+    });
+  });
+
   it('requires release-ready accessible fallback media for motion and 3D assets', () => {
     const manifest = createCompleteMediaManifest();
     const film = manifest.assets.find(asset => asset.assetId === 'film-asset');

@@ -12,6 +12,7 @@ Shopify cart, checkout, payment, or order operations are available.
 | Product detail | `app/products/[handle]/page.js` → Commerce Gateway → release/media evidence | Source-labeled product review; never cart authority |
 | Shopify product transport | `lib/providers/shopify/storefront-product-adapter.js` | Server-only, one product-by-handle read |
 | Product observation | `lib/commerce/product-observation.js` plus `observation-visibility-policy.js` | Sanitized canonical candidate, non-applying review, and runtime identity/facts freshness decision |
+| Storefront media | `lib/commerce/media-visibility-policy.js` plus Media Registry | Per-asset hashed identity/type/URL binding; partial approved Preview, complete required production coverage |
 | Bag/cart presentation | `app/bag/page.js` and `/cart` alias | Activation decision only; no cart is fetched or created |
 | API health | `app/api/[[...path]]/route.js` | Generic service state; no catalog payload or credential diagnostics |
 
@@ -63,3 +64,8 @@ The Hoodie remains Draft, has no observed variant fingerprint, Shopify cart
 capability is unverified, no activation approval exists, and the server gate
 defaults off. Therefore product and bag surfaces remain non-commerce. No
 Shopify write was issued during this inventory.
+
+The Hoodie Media Registry has no current Shopify storefront bindings. Its front
+candidate remains pending and the two unverified detail assets remain
+quarantined. They cannot enter a Shopify-backed PDP until exact-product,
+rights, quality, approval, and current hashed media bindings exist.

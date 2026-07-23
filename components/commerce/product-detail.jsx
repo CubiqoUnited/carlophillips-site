@@ -45,25 +45,37 @@ function ProductMedia({ item, featured }) {
   );
 }
 
-function ProductGallery({ media }) {
+function ProductGallery({ media, mediaReview = null }) {
   if (media.length === 0) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center bg-[#171714] p-10 text-center text-sm text-white/45">
-        No approved product media was returned by the selected source.
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-[#171714] p-10 text-center text-sm text-white/45">
+        <p>No approved product media was returned by the selected source.</p>
+        {mediaReview && (
+          <p data-media-review={mediaReview.status} className="max-w-xl font-mono text-[11px] uppercase tracking-[0.14em] text-white/35">
+            Media review incomplete — missing: {mediaReview.missingModalities.join(', ') || 'approved fallback'}
+          </p>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="grid gap-px bg-white/10 lg:min-h-[calc(100vh-5rem)] lg:grid-cols-2">
-      {media.map((item, index) => (
-        <figure key={item.id} className={index === 0 ? 'bg-[#24231f] lg:col-span-2' : 'bg-[#171714]'}>
-          <ProductMedia item={item} featured={index === 0} />
-          <figcaption className="border-t border-white/10 bg-black px-5 py-4 text-[10px] uppercase tracking-[0.22em] text-white/42">
-            {item.label}
-          </figcaption>
-        </figure>
-      ))}
+    <div>
+      <div className="grid gap-px bg-white/10 lg:min-h-[calc(100vh-5rem)] lg:grid-cols-2">
+        {media.map((item, index) => (
+          <figure key={item.id} className={index === 0 ? 'bg-[#24231f] lg:col-span-2' : 'bg-[#171714]'}>
+            <ProductMedia item={item} featured={index === 0} />
+            <figcaption className="border-t border-white/10 bg-black px-5 py-4 text-[10px] uppercase tracking-[0.22em] text-white/42">
+              {item.label}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      {mediaReview?.status === 'incomplete' && (
+        <p data-media-review="incomplete" className="border-t border-white/10 bg-black px-5 py-4 font-mono text-[11px] uppercase tracking-[0.14em] text-white/38">
+          Private media review incomplete — missing: {mediaReview.missingModalities.join(', ') || 'approved fallback'}
+        </p>
+      )}
     </div>
   );
 }
@@ -121,7 +133,7 @@ export function CommerceProductDetail({
       <Header />
       <section className="grid min-h-screen border-b border-white/10 pt-16 lg:grid-cols-[1.04fr_0.96fr] lg:pt-20">
         <div className="border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10">
-          <ProductGallery media={product.media} />
+          <ProductGallery media={product.media} mediaReview={product.mediaReview} />
         </div>
         <div className="flex items-center px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
           <div className="w-full max-w-3xl">

@@ -164,6 +164,15 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The Hoodie Draft now explicitly records missing commerce-facts and full-observation review bindings. Staging has seven exact blockers and remains denied.
 - `yarn verify` passed with zero-warning lint, 29 files/216 tests, zero production advisories across 193 packages, and a successful 13-route build. Evidence is stored under `test_reports/cp-fitness-cycle-15/`. No route presentation changed, so new browser capture was not required.
 
+## Cycle 16 verification
+
+- Media Registry assets now carry an explicit nullable Shopify storefront binding. A current approved binding hashes media identity, type, canonical URL, and preview URL plus durable evidence; raw Shopify media IDs/URLs are not persisted in the manifest.
+- The server strips unapproved, unprovenance-bound, rights/quality-incomplete, duplicate, wrong-kind, stale-URL, and unregistered media individually before the product view model. Registry alt text and modality labels replace unreviewed Shopify presentation metadata.
+- Preview may keep an otherwise eligible product visible with only its matched approved subset. The PDP exposes an explicit incomplete media-review state and remains non-commerce.
+- Production denies the entire product if the current matched set does not cover every required non-waived modality or an approved motion/3D fallback. An unapproved extra is discarded without failing an otherwise complete approved set.
+- The current Hoodie front candidate has no storefront binding and remains pending; the two unverified details remain quarantined. No live media or approval was invented.
+- `yarn verify` passed with zero-warning lint, 30 files/231 tests, zero production advisories across 193 packages, and a successful 13-route build. Desktop/mobile local fixture PDP and home regression passed with no console warning/error, overlay, checkout link, or horizontal overflow; purchasing remained disabled. Full verification and browser evidence are stored under `test_reports/cp-fitness-cycle-16/`.
+
 ## External blockers
 
 ### Vercel hosting disabled

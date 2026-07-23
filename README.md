@@ -14,6 +14,13 @@ binds source, environment, timestamp, and capability evidence. Exact
 fingerprint/handle approval can produce only a candidate release patch. No
 observation-review function applies that patch.
 
+Shopify media is filtered independently from product facts. Durable Media
+Registry assets store only a hash of the reviewed storefront identity, media
+type, canonical URL, and preview URL plus evidence—not raw Shopify media IDs or
+URLs. Preview can show a labeled partial approved set. Production denies the
+product unless every non-waived required modality and accessible fallback has
+a current approved match; unrelated or unapproved extras are discarded.
+
 ## Current product state
 
 - One real Apliiq/Shopify Signature Hoodie POC is documented as Draft with purchasing disabled.

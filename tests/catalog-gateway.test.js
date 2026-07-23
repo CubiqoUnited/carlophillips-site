@@ -300,7 +300,7 @@ describe('catalog gateway', () => {
     expect(JSON.stringify(decision)).not.toContain('tampered-product secret payload');
   });
 
-  it('isolates malformed adapter data that cannot be normalized', async () => {
+  it('withholds malformed media without denying an otherwise valid product candidate', async () => {
     const decision = await getCatalogDecision({
       environment: 'preview',
       mode: 'shopify',
@@ -320,9 +320,9 @@ describe('catalog gateway', () => {
     expect(decision).toMatchObject({
       status: 'available',
       candidateCount: 2,
-      visibleCount: 1,
-      excludedCount: 1,
-      excludedReasons: ['CATALOG_PRODUCT_NORMALIZATION_FAILED'],
+      visibleCount: 2,
+      excludedCount: 0,
+      excludedReasons: [],
     });
     expect(JSON.stringify(decision)).not.toContain('Malformed denied candidate');
   });

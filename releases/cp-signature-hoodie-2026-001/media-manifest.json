@@ -21,6 +21,7 @@
         "type": "pod-original",
         "reference": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/02-exported-assets.json"
       },
+      "storefrontBinding": null,
       "exactProductMatch": "verified",
       "rightsStatus": "pending",
       "approvalStatus": "pending",
@@ -39,6 +40,7 @@
         "type": "unknown",
         "reference": "fixtures/unverified-media/carlophillips-signature-hoodie-hood-cord-detail.jpg"
       },
+      "storefrontBinding": null,
       "exactProductMatch": "unverified",
       "rightsStatus": "unknown",
       "approvalStatus": "quarantined",
@@ -57,6 +59,7 @@
         "type": "unknown",
         "reference": "fixtures/unverified-media/carlophillips-signature-hoodie-pocket-cuff-detail.jpg"
       },
+      "storefrontBinding": null,
       "exactProductMatch": "unverified",
       "rightsStatus": "unknown",
       "approvalStatus": "quarantined",

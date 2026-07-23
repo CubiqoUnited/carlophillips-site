@@ -117,9 +117,16 @@
 
 ## Next media-to-storefront truth cycle
 
-- [ ] Bind rendered Shopify media to the release Media Registry rather than relying only on matching release IDs.
-- [ ] Withhold unapproved, unprovenance-bound, wrong-product, and stale media per product without weakening catalog isolation.
-- [ ] Prove the PDP cannot render Shopify media absent from the approved manifest and cannot substitute fake spin/3D/video claims.
+- [x] Bind rendered Shopify media to the release Media Registry rather than relying only on matching release IDs.
+- [x] Withhold unapproved, unprovenance-bound, wrong-product, duplicate, and stale media per asset without weakening catalog isolation.
+- [x] Require complete current modality/fallback coverage for production while Preview remains explicitly partial, review-only, and non-commerce.
+- [x] Prove raw IDs/unapproved URLs do not enter the view model and no fake spin/3D/video substitution occurs.
+
+## Next customer-visible product-facts cycle
+
+- [ ] Extend reviewed commerce facts to every customer-visible Shopify field: description, vendor, product type, and any rendered detail/tagline.
+- [ ] Derive the view model from reviewed facts so outer adapter payload edits cannot change approved customer copy.
+- [ ] Prove changed customer-visible copy is withheld until a newly reviewed and separately applied facts binding exists.
 
 ## Blocked / approval required
 
