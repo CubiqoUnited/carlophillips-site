@@ -186,6 +186,7 @@ describe('truth contracts', () => {
         price: { amount: '128.00', currency: 'USD' },
       }],
       variantFingerprint: `sha256:${'a'.repeat(64)}`,
+      commerceFactsFingerprint: `sha256:${'d'.repeat(64)}`,
       observationFingerprint: `sha256:${'b'.repeat(64)}`,
       review: {
         status: 'pending',
@@ -225,8 +226,11 @@ describe('truth contracts', () => {
         observedAt: observation.observedAt,
         variantFingerprint: observation.variantFingerprint,
         variantFingerprintStatus: 'observed',
+        commerceFactsFingerprint: observation.commerceFactsFingerprint,
+        commerceFactsFingerprintStatus: 'reviewed',
         observationFingerprint: observation.observationFingerprint,
-        evidence: 'approval/product-observation-001',
+        observationFingerprintStatus: 'reviewed',
+        observationReviewEvidence: 'approval/product-observation-001',
       },
     })).toBe(true);
   });
@@ -255,6 +259,11 @@ describe('truth contracts', () => {
         observedAt: '2026-07-22T22:00:00Z',
         variantFingerprint: `sha256:${'a'.repeat(64)}`,
         variantFingerprintStatus: 'observed',
+        commerceFactsFingerprint: `sha256:${'b'.repeat(64)}`,
+        commerceFactsFingerprintStatus: 'reviewed',
+        observationFingerprint: `sha256:${'c'.repeat(64)}`,
+        observationFingerprintStatus: 'reviewed',
+        observationReviewEvidence: 'approval/product-observation-001',
       },
       fulfillmentMappings: [],
       mediaManifest: 'fixtures/test-media-manifest.json',
@@ -341,6 +350,16 @@ describe('truth contracts', () => {
     expect(validateProductRelease(invalidApprovedRecord)).toBe(false);
   });
 
+  it('rejects contradictory Draft fingerprint status/value pairs', () => {
+    const record = createCompleteReleaseRecord('draft');
+    record.shopify.commerceFactsFingerprintStatus = 'missing';
+    expect(validateProductRelease(record)).toBe(false);
+
+    const observationMismatch = createCompleteReleaseRecord('draft');
+    observationMismatch.shopify.observationFingerprintStatus = 'missing';
+    expect(validateProductRelease(observationMismatch)).toBe(false);
+  });
+
   it.each([
     ['missing fulfillment mapping', record => { record.fulfillmentMappings = []; }],
     ['pending product approval', record => { record.approvals.product.status = 'pending'; }],
@@ -349,6 +368,13 @@ describe('truth contracts', () => {
     ['missing candidate commit', record => { record.candidate.gitCommit = null; }],
     ['missing build evidence', record => { record.candidate.buildEvidence = null; }],
     ['missing staging evidence', record => { record.candidate.stagingEvidence = null; }],
+    ['missing commerce-facts review', record => {
+      record.shopify.commerceFactsFingerprint = null;
+      record.shopify.commerceFactsFingerprintStatus = 'missing';
+    }],
+    ['missing observation review evidence', record => {
+      record.shopify.observationReviewEvidence = null;
+    }],
     ['missing rollback plan', record => { record.rollback.planEvidence = null; }],
     ['restore strategy without previous release', record => {
       record.rollback.strategy = 'restore-previous-release';

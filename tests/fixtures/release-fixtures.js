@@ -1,4 +1,6 @@
-const fingerprint = `sha256:${'a'.repeat(64)}`;
+import { createProductObservation } from '../../lib/commerce/product-observation.js';
+
+const observedAt = '2026-07-22T00:00:00Z';
 
 const imageModalities = [
   'front',
@@ -27,23 +29,63 @@ function approvedAsset({ assetId, kind, fallbackAssetId = null }) {
   };
 }
 
-export function createCompleteReleaseRecord(state = 'draft') {
+function observedProductInput(handle) {
+  return {
+    handle,
+    name: 'Observed product',
+    price: 128,
+    compareAtPrice: 128,
+    currency: 'USD',
+    availableForSale: true,
+    observedVariants: [{
+      id: 'sanitized-test-variant',
+      title: 'Default Title',
+      selectedOptions: [{ name: 'Title', value: 'Default Title' }],
+      availableForSale: true,
+      price: { amount: '128.00', currencyCode: 'USD' },
+    }],
+  };
+}
+
+function createObservedEnvelope(handle, environment) {
+  return createProductObservation({
+    source: 'shopify',
+    environment,
+    observedAt,
+    product: observedProductInput(handle),
+    capabilityEvidence: 'evidence/shopify-storefront-read.json',
+  });
+}
+
+export function createCompleteReleaseRecord(
+  state = 'draft',
+  {
+    handle = 'test-product',
+    environment = state === 'released' ? 'production' : 'preview',
+  } = {}
+) {
+  const observation = createObservedEnvelope(handle, environment);
   return {
     schemaVersion: 'cp.product-release.v1',
     releaseId: 'cp-test-release-2026-001',
     state,
     shopify: {
       productReference: 'sanitized-product',
-      handle: 'test-product',
+      handle,
       statusObserved: state === 'released' ? 'ACTIVE' : 'DRAFT',
-      observedAt: '2026-07-22T00:00:00Z',
-      variantFingerprint: fingerprint,
+      observedAt,
+      variantFingerprint: observation.variantFingerprint,
       variantFingerprintStatus: 'observed',
+      commerceFactsFingerprint: observation.commerceFactsFingerprint,
+      commerceFactsFingerprintStatus: 'reviewed',
+      observationFingerprint: observation.observationFingerprint,
+      observationFingerprintStatus: 'reviewed',
+      observationReviewEvidence: 'evidence/product-observation-review.json',
     },
     fulfillmentMappings: [{
       adapter: 'test-provider',
       providerProductId: 'sanitized-provider-product',
-      variantFingerprint: fingerprint,
+      variantFingerprint: observation.variantFingerprint,
       variantFingerprintStatus: 'observed',
     }],
     mediaManifest: 'fixtures/complete-media-manifest.json',
@@ -65,6 +107,24 @@ export function createCompleteReleaseRecord(state = 'draft') {
         : null,
       previousReleaseId: null,
     },
+  };
+}
+
+export function createObservedShopifyProduct(
+  handle = 'test-product',
+  environment = 'preview'
+) {
+  const observation = createObservedEnvelope(handle, environment);
+  return {
+    id: handle,
+    handle,
+    name: 'Observed product',
+    price: 128,
+    compareAtPrice: 128,
+    currency: 'USD',
+    availableForSale: true,
+    variantFingerprint: observation.variantFingerprint,
+    observation,
   };
 }
 

@@ -13,6 +13,7 @@
     "product",
     "variants",
     "variantFingerprint",
+    "commerceFactsFingerprint",
     "observationFingerprint",
     "review"
   ],
@@ -73,6 +74,7 @@
       }
     },
     "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "commerceFactsFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
     "observationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
     "review": {
       "type": "object",

@@ -274,6 +274,7 @@ describe('product observation truth contract', () => {
     });
 
     expect(second.variantFingerprint).toBe(first.variantFingerprint);
+    expect(second.commerceFactsFingerprint).not.toBe(first.commerceFactsFingerprint);
     expect(second.observationFingerprint).not.toBe(first.observationFingerprint);
   });
 
@@ -419,8 +420,11 @@ describe('product observation truth contract', () => {
         handle: 'test-product',
         observedAt,
         variantFingerprintStatus: 'observed',
+        commerceFactsFingerprint: observation.commerceFactsFingerprint,
+        commerceFactsFingerprintStatus: 'reviewed',
         observationFingerprint: observation.observationFingerprint,
-        evidence: approvalFor(observation).evidence,
+        observationFingerprintStatus: 'reviewed',
+        observationReviewEvidence: approvalFor(observation).evidence,
       },
     });
     expect(decision.candidateReleasePatch.variantFingerprint).toBe(
@@ -430,7 +434,7 @@ describe('product observation truth contract', () => {
     expect(releaseRecord).toEqual(before);
   });
 
-  it('attaches only sanitized observation metadata to the server product', () => {
+  it('attaches the complete sanitized observation for runtime integrity checks', () => {
     const observedProduct = product();
     const observation = createProductObservation({
       source: 'shopify',
@@ -442,15 +446,10 @@ describe('product observation truth contract', () => {
     const attached = attachObservationToProduct(observedProduct, observation);
 
     expect(attached.variantFingerprint).toBe(observation.variantFingerprint);
-    expect(attached.observation).toEqual({
-      schemaVersion: 'cp.product-observation.v1',
-      source: 'shopify',
-      authority: 'candidate',
-      observedAt,
-      observationFingerprint: observation.observationFingerprint,
-      reviewStatus: 'pending',
-    });
-    expect(attached.observation).not.toHaveProperty('variants');
-    expect(attached.observation).not.toHaveProperty('capabilityEvidence');
+    expect(attached.observation).toEqual(observation);
+    expect(JSON.stringify(attached.observation)).not.toContain('gid://');
+    expect(attached.observation.variants.every(variant => (
+      /^sha256:[a-f0-9]{64}$/.test(variant.referenceHash)
+    ))).toBe(true);
   });
 });

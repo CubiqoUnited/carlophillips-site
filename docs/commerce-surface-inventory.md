@@ -11,7 +11,7 @@ Shopify cart, checkout, payment, or order operations are available.
 | Shop/collections | `components/commerce/catalog-boundary.jsx` → server catalog decision | Individually release-filtered product observations |
 | Product detail | `app/products/[handle]/page.js` → Commerce Gateway → release/media evidence | Source-labeled product review; never cart authority |
 | Shopify product transport | `lib/providers/shopify/storefront-product-adapter.js` | Server-only, one product-by-handle read |
-| Product observation | `lib/commerce/product-observation.js` | Sanitized canonical candidate and non-applying review decision |
+| Product observation | `lib/commerce/product-observation.js` plus `observation-visibility-policy.js` | Sanitized canonical candidate, non-applying review, and runtime identity/facts freshness decision |
 | Bag/cart presentation | `app/bag/page.js` and `/cart` alias | Activation decision only; no cart is fetched or created |
 | API health | `app/api/[[...path]]/route.js` | Generic service state; no catalog payload or credential diagnostics |
 
@@ -40,8 +40,10 @@ must be satisfied before a UI can be declared cart-eligible:
 
 1. The product came from a visible Shopify Commerce Gateway decision.
 2. The matching Product Release Record is `released`.
-3. Its current Shopify observation fingerprint exactly matches the fingerprint
-   bound to the release record.
+3. Its current Shopify variant-identity and commerce-facts fingerprints exactly
+   match the reviewed values bound to the release record. The full historical
+   observation fingerprint remains approval/audit evidence and is not compared
+   to a newly timestamped runtime read.
 4. At least one observed Shopify variant is available and mapped.
 5. `shopify-storefront-cart` has evidence-backed `cart-write` capability,
    including an authorized no-order test.

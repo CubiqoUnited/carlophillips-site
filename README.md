@@ -6,10 +6,13 @@ The repository is **not production-ready**. The editorial shell keeps products h
 
 Read-only Shopify results become `cp.product-observation.v1` candidates only
 when they carry the exact evidence reference of a verified product-read
-capability. Raw Shopify IDs are hashed, variant identity and the full
-review-relevant envelope receive separate deterministic fingerprints, and an
-exact fingerprint/handle approval can produce only a candidate release patch.
-No observation-review function applies that patch.
+capability. Raw Shopify IDs are hashed. Three deterministic fingerprints keep
+different semantics explicit: variant identity covers hashed references,
+titles, and options; commerce facts cover canonical product, variant, price,
+currency, and availability facts; the immutable audit fingerprint additionally
+binds source, environment, timestamp, and capability evidence. Exact
+fingerprint/handle approval can produce only a candidate release patch. No
+observation-review function applies that patch.
 
 ## Current product state
 

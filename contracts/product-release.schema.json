@@ -10,7 +10,19 @@
     "state": { "enum": ["draft", "staged", "approved", "released", "withdrawn"] },
     "shopify": {
       "type": "object",
-      "required": ["productReference", "handle", "statusObserved", "observedAt", "variantFingerprint", "variantFingerprintStatus"],
+      "required": [
+        "productReference",
+        "handle",
+        "statusObserved",
+        "observedAt",
+        "variantFingerprint",
+        "variantFingerprintStatus",
+        "commerceFactsFingerprint",
+        "commerceFactsFingerprintStatus",
+        "observationFingerprint",
+        "observationFingerprintStatus",
+        "observationReviewEvidence"
+      ],
       "properties": {
         "productReference": { "type": "string", "minLength": 1 },
         "handle": { "type": "string", "minLength": 1 },
@@ -22,8 +34,71 @@
             { "type": "null" }
           ]
         },
-        "variantFingerprintStatus": { "enum": ["observed", "missing"] }
+        "variantFingerprintStatus": { "enum": ["observed", "missing"] },
+        "commerceFactsFingerprint": {
+          "oneOf": [
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            { "type": "null" }
+          ]
+        },
+        "commerceFactsFingerprintStatus": { "enum": ["reviewed", "missing"] },
+        "observationFingerprint": {
+          "oneOf": [
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            { "type": "null" }
+          ]
+        },
+        "observationFingerprintStatus": { "enum": ["reviewed", "missing"] },
+        "observationReviewEvidence": { "type": ["string", "null"] }
       },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "variantFingerprintStatus": { "const": "observed" } },
+            "required": ["variantFingerprintStatus"]
+          },
+          "then": {
+            "properties": {
+              "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+            }
+          },
+          "else": {
+            "properties": { "variantFingerprint": { "type": "null" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "commerceFactsFingerprintStatus": { "const": "reviewed" } },
+            "required": ["commerceFactsFingerprintStatus"]
+          },
+          "then": {
+            "properties": {
+              "commerceFactsFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+            }
+          },
+          "else": {
+            "properties": { "commerceFactsFingerprint": { "type": "null" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "observationFingerprintStatus": { "const": "reviewed" } },
+            "required": ["observationFingerprintStatus"]
+          },
+          "then": {
+            "properties": {
+              "observationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+              "observationReviewEvidence": { "type": "string", "minLength": 1 }
+            }
+          },
+          "else": {
+            "properties": {
+              "observationFingerprint": { "type": "null" },
+              "observationReviewEvidence": { "type": "null" }
+            }
+          }
+        }
+      ],
       "additionalProperties": false
     },
     "fulfillmentMappings": {
@@ -96,7 +171,12 @@
             "type": "object",
             "properties": {
               "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-              "variantFingerprintStatus": { "const": "observed" }
+              "variantFingerprintStatus": { "const": "observed" },
+              "commerceFactsFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+              "commerceFactsFingerprintStatus": { "const": "reviewed" },
+              "observationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+              "observationFingerprintStatus": { "const": "reviewed" },
+              "observationReviewEvidence": { "type": "string", "minLength": 1 }
             }
           },
           "fulfillmentMappings": {

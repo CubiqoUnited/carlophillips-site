@@ -14,7 +14,7 @@ Human action: Product Owner or designee approves product facts, price, media pro
 
 Resume point: update the versioned Product Release Record and execute only the specifically authorized boundary.
 
-Current staging decision: `releases/cp-signature-hoodie-2026-001/staging-readiness.json` denies staging until Shopify and Apliiq variant fingerprints, an immutable candidate commit, passing build evidence, and private staging evidence are bound. The release-specific withdrawal plan now exists; its verification remains intentionally null until an authorized live proof.
+Current staging decision: `releases/cp-signature-hoodie-2026-001/staging-readiness.json` denies staging until reviewed Shopify variant/commerce-facts/full-observation bindings, the Apliiq variant fingerprint, an immutable candidate commit, passing build evidence, and private staging evidence are bound. The release-specific withdrawal plan now exists; its verification remains intentionally null until an authorized live proof.
 
 ## Read-only Shopify product observation
 
@@ -22,7 +22,7 @@ Observed blocker: the local audit reports the Shopify Storefront environment is 
 
 Human action: an authorized owner supplies valid read-only Storefront domain/token values in the intended local or Preview environment.
 
-Resume point: mark the Storefront product-read capability ready only with its durable evidence reference, use `COMMERCE_DATA_MODE=shopify`, generate the sanitized canonical observation, and review the exact observation fingerprint/handle. The review yields only a candidate patch; apply it to the Draft release record only through a separately authorized step while purchasing remains disabled.
+Resume point: mark the Storefront product-read capability ready only with its durable evidence reference, use `COMMERCE_DATA_MODE=shopify`, generate the sanitized canonical observation, and review the exact full observation fingerprint/handle. The review yields only a candidate patch binding variant identity, commerce facts, full audit fingerprint, and review evidence; apply it to the Draft release record only through a separately authorized step while purchasing remains disabled.
 
 ## Shopify/app capability access
 

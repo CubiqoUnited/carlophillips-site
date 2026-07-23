@@ -62,10 +62,11 @@ describe('server Shopify product loader contract', () => {
         source: 'shopify',
         authority: 'candidate',
         observedAt: '2026-07-23T05:00:00Z',
-        reviewStatus: 'pending',
+        review: { status: 'pending' },
       },
     });
     expect(product.variantFingerprint).toMatch(/^sha256:[a-f0-9]{64}$/);
+    expect(product.observation.commerceFactsFingerprint).toMatch(/^sha256:[a-f0-9]{64}$/);
     const request = fetchImpl.mock.calls[0];
     expect(request[0]).toBe('https://example.myshopify.com/api/2024-01/graphql.json');
     expect(JSON.parse(request[1].body).variables).toEqual({ handle: 'observed-hoodie' });

@@ -9,14 +9,18 @@ import {
 import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
+  createObservedShopifyProduct,
 } from './fixtures/release-fixtures.js';
 
 const ajv = new Ajv2020({ allErrors: true, strict: false });
 const validateCatalogDecision = ajv.compile(catalogDecisionSchema);
 
-function releaseEvidence(state, handle = 'test-product') {
-  const releaseRecord = createCompleteReleaseRecord(state);
-  releaseRecord.shopify.handle = handle;
+function releaseEvidence(
+  state,
+  handle = 'test-product',
+  environment = state === 'released' ? 'production' : 'preview'
+) {
+  const releaseRecord = createCompleteReleaseRecord(state, { handle, environment });
   const mediaManifest = createCompleteMediaManifest();
   return { releaseRecord, mediaManifest };
 }
@@ -87,7 +91,7 @@ describe('catalog gateway', () => {
   });
 
   it('permits Preview only for a Staged-or-later Shopify observation', async () => {
-    const loadShopifyProduct = vi.fn(async handle => ({ handle, title: 'Observed product' }));
+    const loadShopifyProduct = vi.fn(async handle => createObservedShopifyProduct(handle, 'preview'));
     const draft = await getCatalogDecision({
       environment: 'preview',
       mode: 'shopify',
@@ -115,7 +119,7 @@ describe('catalog gateway', () => {
   });
 
   it('permits production only for Released evidence and never purchasing', async () => {
-    const loadShopifyProduct = vi.fn(async handle => ({ handle, title: 'Observed product' }));
+    const loadShopifyProduct = vi.fn(async handle => createObservedShopifyProduct(handle, 'production'));
     const approved = await getCatalogDecision({
       environment: 'production',
       mode: 'shopify',
@@ -152,10 +156,13 @@ describe('catalog gateway', () => {
       mode: 'shopify',
       candidateHandles: ['staged-product', 'draft-product', 'staged-product'],
       getReleaseEvidence: handle => releaseEvidence(states[handle], handle),
-      loadShopifyProduct: vi.fn(async handle => ({
-        handle,
-        title: handle === 'staged-product' ? 'Visible staged candidate' : 'Secret denied candidate',
-      })),
+      loadShopifyProduct: vi.fn(async handle => {
+        const product = createObservedShopifyProduct(handle, 'preview');
+        product.name = handle === 'staged-product'
+          ? 'Visible staged candidate'
+          : 'Secret denied candidate';
+        return product;
+      }),
     });
     expectValid(decision);
     expect(decision).toMatchObject({
@@ -164,7 +171,7 @@ describe('catalog gateway', () => {
       excludedCount: 1,
       commerceAllowed: false,
     });
-    expect(decision.products.map(product => product.title)).toEqual(['Visible staged candidate']);
+    expect(decision.products.map(product => product.title)).toEqual(['Observed product']);
     expect(JSON.stringify(decision)).not.toContain('Secret denied candidate');
   });
 
@@ -222,7 +229,7 @@ describe('catalog gateway', () => {
         if (handle === 'broken-product') throw new Error('sanitized resolver failure');
         return releaseEvidence('staged', handle);
       },
-      loadShopifyProduct: vi.fn(async handle => ({ handle, title: 'Visible staged candidate' })),
+      loadShopifyProduct: vi.fn(async handle => createObservedShopifyProduct(handle, 'preview')),
     });
     expectValid(decision);
     expect(decision).toMatchObject({
@@ -242,7 +249,7 @@ describe('catalog gateway', () => {
       getReleaseEvidence: handle => releaseEvidence('staged', handle),
       loadShopifyProduct: vi.fn(async handle => {
         if (handle === 'broken-product') throw new Error('sanitized adapter failure');
-        return { handle, title: 'Visible staged candidate' };
+        return createObservedShopifyProduct(handle, 'preview');
       }),
     });
     expectValid(decision);
@@ -255,6 +262,44 @@ describe('catalog gateway', () => {
     });
   });
 
+  it('isolates stale and tampered observations without withholding another candidate', async () => {
+    const decision = await getCatalogDecision({
+      environment: 'preview',
+      mode: 'shopify',
+      candidateHandles: ['stale-product', 'tampered-product', 'eligible-product'],
+      getReleaseEvidence: handle => {
+        const evidence = releaseEvidence('staged', handle);
+        if (handle === 'stale-product') {
+          evidence.releaseRecord.shopify.commerceFactsFingerprint = `sha256:${'f'.repeat(64)}`;
+        }
+        return evidence;
+      },
+      loadShopifyProduct: vi.fn(async handle => {
+        const product = createObservedShopifyProduct(handle, 'preview');
+        if (handle === 'tampered-product') {
+          product.observation.product.minimumPrice = 1;
+        }
+        product.name = `${handle} secret payload`;
+        return product;
+      }),
+    });
+
+    expectValid(decision);
+    expect(decision).toMatchObject({
+      status: 'available',
+      candidateCount: 3,
+      visibleCount: 1,
+      excludedCount: 2,
+      excludedReasons: [
+        'PRODUCT_COMMERCE_FACTS_STALE',
+        'PRODUCT_OBSERVATION_INVALID',
+      ],
+    });
+    expect(decision.products[0].handle).toBe('eligible-product');
+    expect(JSON.stringify(decision)).not.toContain('stale-product secret payload');
+    expect(JSON.stringify(decision)).not.toContain('tampered-product secret payload');
+  });
+
   it('isolates malformed adapter data that cannot be normalized', async () => {
     const decision = await getCatalogDecision({
       environment: 'preview',
@@ -263,8 +308,12 @@ describe('catalog gateway', () => {
       getReleaseEvidence: handle => releaseEvidence('staged', handle),
       loadShopifyProduct: vi.fn(async handle => (
         handle === 'malformed-product'
-          ? { handle, title: 'Malformed denied candidate', media: {} }
-          : { handle, title: 'Visible staged candidate' }
+          ? {
+            ...createObservedShopifyProduct(handle, 'preview'),
+            name: 'Malformed denied candidate',
+            media: {},
+          }
+          : createObservedShopifyProduct(handle, 'preview')
       )),
     });
     expectValid(decision);

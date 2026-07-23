@@ -9,6 +9,7 @@
 - The Signature Hoodie is the first end-to-end POC for a reusable POD-to-publish system, not the final product scope or a static-page objective.
 - A versioned Product Release Record binds product/POD truth, media truth, Shopify truth, approvals, candidate build evidence, and rollback for each candidate.
 - Product Release Records advance only through Draft → Staged → Approved → Released. Staging requires immutable build/staging and rollback-plan evidence; approval additionally requires complete truth and approvals; release additionally requires an ACTIVE Shopify observation and verified rollback path.
+- Product observations keep variant identity, canonical commerce facts, and the immutable full review envelope as separate fingerprints. Preview/production compare current identity and facts to reviewed release bindings; the full fingerprint remains exact approval/audit evidence because legitimate fresh reads have new timestamps.
 - Designer-led and trend-led inputs use the same ProductCreationJob and PipelineRun truth core. Inputs are candidate evidence only; trend signals are research-only and cannot become product/media/commerce truth or publication authority.
 - Every ProductCreationJob binds a validated ProductBrief. The job records on-demand/scheduled cadence and deterministic duplicate suppression; the brief owns attributed source provenance/freshness, binding brand constraints, and inspiration-only reference rules. A schedule is not authority to invoke external research or any restricted action.
 

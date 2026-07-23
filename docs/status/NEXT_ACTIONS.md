@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Require Preview/production product visibility to match the current observation variant fingerprint to the release-bound fingerprint.
-2. Deny stale/malformed observation payloads per candidate; keep fixture/simulated observations non-authoritative.
+1. Bind rendered Shopify media identifiers/provenance to the approved release Media Registry and withhold unapproved or stale assets.
+2. Preserve per-candidate isolation and forbid fake spin/3D/video substitution when release-bound media is incomplete.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep variant selection, cart, checkout, product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

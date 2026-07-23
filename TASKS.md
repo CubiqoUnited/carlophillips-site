@@ -110,10 +110,16 @@
 
 ## Next observation-to-visibility cycle
 
-- [ ] Require Preview/production Shopify visibility decisions to match the current Product Observation variant fingerprint to the release-bound fingerprint.
-- [ ] Deny and discard stale/missing/malformed observation payloads without affecting other catalog candidates.
-- [ ] Preserve local fixture review as non-authoritative and non-commerce.
-- [ ] Prove price/availability changes remain visible only through a newly reviewed full observation even when variant identity is unchanged.
+- [x] Require Preview/production Shopify visibility decisions to match current variant-identity and commerce-facts fingerprints to reviewed release bindings.
+- [x] Deny and discard stale/missing/malformed observation payloads without affecting other catalog candidates.
+- [x] Preserve local fixture review as non-authoritative and non-commerce.
+- [x] Prove repeated unchanged dynamic reads remain eligible while price/availability/title changes require a newly reviewed and separately applied binding.
+
+## Next media-to-storefront truth cycle
+
+- [ ] Bind rendered Shopify media to the release Media Registry rather than relying only on matching release IDs.
+- [ ] Withhold unapproved, unprovenance-bound, wrong-product, and stale media per product without weakening catalog isolation.
+- [ ] Prove the PDP cannot render Shopify media absent from the approved manifest and cannot substitute fake spin/3D/video claims.
 
 ## Blocked / approval required
 

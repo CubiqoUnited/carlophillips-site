@@ -148,11 +148,21 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - `cp.product-observation.v1` sanitizes raw Shopify variant references into hashes, canonicalizes variants/options with locale-independent ordering, and fingerprints stable variant identity separately from the complete review envelope.
 - The variant fingerprint intentionally covers hashed reference, title, and options. Price/availability changes keep identity stable but change the full observation fingerprint, which binds schema/source/authority/environment/timestamp/capability evidence/product/variant facts.
 - Observation creation rejects missing/duplicate raw variant references, empty variants, malformed price/currency, inconsistent price ranges/currencies, and availability-summary mismatches. Durable observations contain no raw Shopify IDs.
-- Review recomputes both fingerprints, rejects noncanonical/tampered/duplicate/malformed facts, and requires capability evidence exactly matching a ready `shopify-storefront-product-read` decision.
-- Product Owner/designee approval must bind the exact observation fingerprint and expected handle. An accepted review returns only a schema-validated candidate release patch containing both fingerprints/evidence; no apply operation exists and tests prove Draft records remain unchanged.
+- Review recomputes the Cycle 14 variant and full-envelope fingerprints, rejects noncanonical/tampered/duplicate/malformed facts, and requires capability evidence exactly matching a ready `shopify-storefront-product-read` decision.
+- Product Owner/designee approval must bind the exact observation fingerprint and expected handle. An accepted review returns only a schema-validated candidate release patch; no apply operation exists and tests prove Draft records remain unchanged.
 - Fixture and simulation observations remain local, non-authoritative, unapprovable as Shopify truth, and incapable of producing a candidate patch.
-- The server product loader attaches only sanitized pending-observation metadata. The active adapter refuses even a Shopify read while capability evidence is unavailable; no live Shopify access occurred.
+- The server product loader initially attached sanitized pending-observation metadata. Cycle 15 retains the complete sanitized envelope server-side so runtime policy can recompute integrity without exposing raw Shopify references.
 - `yarn verify` passed with zero-warning lint, 28 files/204 tests, zero production advisories across 193 packages, and a successful 13-route build. No UI changed, so existing Cycle 13 browser evidence remains applicable. Evidence is stored under `test_reports/cp-fitness-cycle-14/`.
+
+## Cycle 15 verification
+
+- Product Observation now has three explicit fingerprints: stable variant identity, canonical commerce facts, and the immutable complete review/audit envelope.
+- The full observation fingerprint continues to bind timestamp, environment, capability evidence, product, and variants for exact approval. Runtime does not compare a fresh read against that historical instance fingerprint.
+- Preview and production validate the complete fresh envelope, then compare its variant identity and commerce-facts fingerprints to reviewed Product Release Record bindings. Unchanged reads remain eligible across new timestamps and the correct runtime environment.
+- Changed title, price, currency, availability, or variant facts are withheld. Variant identity mismatch has a distinct reason; malformed/tampered observations return no payload.
+- Catalog resolution isolates stale and malformed candidates while preserving truthful counts and any other eligible product.
+- The Hoodie Draft now explicitly records missing commerce-facts and full-observation review bindings. Staging has seven exact blockers and remains denied.
+- `yarn verify` passed with zero-warning lint, 29 files/216 tests, zero production advisories across 193 packages, and a successful 13-route build. Evidence is stored under `test_reports/cp-fitness-cycle-15/`. No route presentation changed, so new browser capture was not required.
 
 ## External blockers
 
@@ -166,7 +176,7 @@ Resume point: deploy the approved fitness branch as a Vercel preview, configure 
 
 Human action: an authorized owner supplies valid read-only Storefront domain/token values to the intended local or Preview environment without sharing them in reports.
 
-Resume point: mark `shopify-storefront-product-read` ready only with its durable evidence reference, set `COMMERCE_DATA_MODE=shopify`, generate the sanitized product observation, and review approval against its exact fingerprint/handle. Keep the candidate patch unapplied until a separate authorization, and keep purchasing disabled.
+Resume point: mark `shopify-storefront-product-read` ready only with its durable evidence reference, set `COMMERCE_DATA_MODE=shopify`, generate the sanitized product observation, and review approval against its exact full fingerprint/handle. The accepted patch binds variant identity, commerce facts, full audit fingerprint, and review evidence. Keep it unapplied until separate authorization, and keep purchasing disabled.
 
 ### Shopify app capability/access audit
 

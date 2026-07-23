@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 14
+# Current Status — Fitness Cycle 15
 
 Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -13,7 +13,8 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - Draft Hoodie Product Release Record and media manifest.
 - Server-owned cart activation contract with seven release/capability/approval prerequisites and checkout hard-disabled.
 - Pure Shopify response normalization plus one server-only, read-only product adapter; broad product/cart clients and mutation exports are removed.
-- Canonical Product Observation and review contracts hash raw variant references, bind the full review envelope, require evidence tied to a ready product-read capability, and return only a non-applying candidate release patch.
+- Canonical Product Observation and review contracts hash raw variant references; separately bind variant identity, commerce facts, and the full review envelope; require evidence tied to a ready product-read capability; and return only a non-applying candidate release patch.
+- Preview/production visibility validates the fresh sanitized observation, then compares variant identity and commerce facts to reviewed release bindings. A new read timestamp does not cause false staleness; changed facts, malformed envelopes, and tampering are withheld per candidate.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
 - Executable capability discovery and dedicated source-labeled bag/cart Server Component routes.
 - A durable four-lane Hoodie simulation with exact blockers and every restricted approval still pending.
@@ -27,13 +28,13 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - The scheduled trend simulation is explicitly stale, fixture-sourced, research-only, human-pending, and unable to trigger external research; four safe PipelineRun items remain actionable around that blocker.
 - A strict release-transition decision contract and non-mutating policy for Draft → Staged → Approved → Released plus rework/withdrawal paths.
 - A nine-modality Media Registry gate that requires approved bound assets with verified exact-product match, rights, quality evidence, correct modality type, and accessible fallbacks.
-- A Hoodie-specific withdrawal plan and machine-readable staging-readiness denial with five exact blocker/resume records.
+- A Hoodie-specific withdrawal plan and machine-readable staging-readiness denial with seven exact blocker/resume records.
 
 ## Partial
 
 - Signature Hoodie evidence: product/design facts and one recorded front candidate exist; complete media, approvals, Shopify-backed PDP, cart, and operations proof do not.
 - Shopify integration: the product route calls the gateway/adapter and release registry, but local read-only configuration is incomplete, so current Shopify product data is not observed.
-- Release controls: Draft record exists with missing variant fingerprints and pending approvals. Staging is explicitly denied until Shopify/provider fingerprints, immutable commit/build evidence, and private staging evidence exist.
+- Release controls: Draft record exists with missing Shopify variant, commerce-facts, observation-review, and provider bindings plus pending approvals. Staging is explicitly denied until those bindings, immutable commit/build evidence, and private staging evidence exist.
 - App capability access: Product Owner reports 30 installed apps, but the latest managed-browser attempt reached Shopify login before Admin. The per-app access/authentication/fee-risk matrix remains entirely unverified and non-callable.
 - Product observations: canonicalization/review behavior is locally proven, but no current live Shopify observation, capability evidence reference, or exact approval exists.
 

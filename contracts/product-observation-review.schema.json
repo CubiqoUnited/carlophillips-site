@@ -38,14 +38,27 @@
       "oneOf": [
         {
           "type": "object",
-          "required": ["handle", "observedAt", "variantFingerprint", "variantFingerprintStatus", "observationFingerprint", "evidence"],
+          "required": [
+            "handle",
+            "observedAt",
+            "variantFingerprint",
+            "variantFingerprintStatus",
+            "commerceFactsFingerprint",
+            "commerceFactsFingerprintStatus",
+            "observationFingerprint",
+            "observationFingerprintStatus",
+            "observationReviewEvidence"
+          ],
           "properties": {
             "handle": { "type": "string", "minLength": 1 },
             "observedAt": { "type": "string", "format": "date-time" },
             "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
             "variantFingerprintStatus": { "const": "observed" },
+            "commerceFactsFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "commerceFactsFingerprintStatus": { "const": "reviewed" },
             "observationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-            "evidence": { "type": "string", "minLength": 1 }
+            "observationFingerprintStatus": { "const": "reviewed" },
+            "observationReviewEvidence": { "type": "string", "minLength": 1 }
           },
           "additionalProperties": false
         },

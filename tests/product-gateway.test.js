@@ -3,6 +3,7 @@ import { getProductDecision, resolveCommerceDataMode } from '../lib/commerce/pro
 import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
+  createObservedShopifyProduct,
 } from './fixtures/release-fixtures.js';
 
 const fixtureProduct = { handle: 'fixture-product', title: 'Fixture product' };
@@ -40,7 +41,9 @@ describe('product gateway', () => {
   });
 
   it('returns source-labeled Shopify data through the injected adapter', async () => {
-    const loadShopifyProduct = vi.fn().mockResolvedValue({ handle: 'test-product', name: 'Observed product' });
+    const loadShopifyProduct = vi.fn().mockResolvedValue(
+      createObservedShopifyProduct('test-product', 'preview')
+    );
     const decision = await getProductDecision({
       environment: 'preview',
       mode: 'shopify',

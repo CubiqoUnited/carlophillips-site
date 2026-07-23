@@ -11,6 +11,16 @@
       "resumePoint": "Update the Draft Product Release Record with the sanitized Shopify variant fingerprint, then re-evaluate staging."
     },
     {
+      "code": "SHOPIFY_COMMERCE_FACTS_REVIEW_MISSING",
+      "humanAction": "The Product Owner or named designee reviews the canonical product, price, availability, and variant facts.",
+      "resumePoint": "Apply the accepted commerce-facts fingerprint to the Draft Product Release Record under separate authorization, then re-evaluate staging."
+    },
+    {
+      "code": "SHOPIFY_PRODUCT_OBSERVATION_REVIEW_MISSING",
+      "humanAction": "The Product Owner or named designee reviews the exact sanitized Shopify observation envelope.",
+      "resumePoint": "Apply the accepted candidate observation fingerprint and durable review evidence to the Draft Product Release Record under separate authorization, then re-evaluate staging."
+    },
+    {
       "code": "FULFILLMENT_VARIANT_FINGERPRINT_MISSING",
       "humanAction": "An authorized provider observer verifies every fulfillment variant mapping.",
       "resumePoint": "Record sanitized provider variant fingerprints for every mapping, then re-evaluate staging."

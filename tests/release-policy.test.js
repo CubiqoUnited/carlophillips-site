@@ -3,6 +3,7 @@ import { resolveProductSource } from '../lib/commerce/release-policy.js';
 import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
+  createObservedShopifyProduct,
 } from './fixtures/release-fixtures.js';
 
 const fixtureProduct = { id: 'fixture-1', title: 'Layout Fixture' };
@@ -46,7 +47,7 @@ describe('release source policy', () => {
     const releaseRecord = createCompleteReleaseRecord('staged');
     const decision = resolveProductSource({
       environment: 'preview',
-      shopifyProduct: { id: 'shopify-1', handle: 'test-product', title: 'Observed product' },
+      shopifyProduct: createObservedShopifyProduct('test-product', 'preview'),
       releaseRecord,
       mediaManifest: createCompleteMediaManifest(),
       fixtureProduct,
@@ -89,10 +90,30 @@ describe('release source policy', () => {
     }).reason).toBe('PRODUCT_RELEASE_NOT_RELEASED');
   });
 
+  it('denies Preview when reviewed observation bindings are missing', () => {
+    const releaseRecord = createCompleteReleaseRecord('staged');
+    releaseRecord.shopify.commerceFactsFingerprint = null;
+    releaseRecord.shopify.commerceFactsFingerprintStatus = 'missing';
+    releaseRecord.shopify.observationFingerprint = null;
+    releaseRecord.shopify.observationFingerprintStatus = 'missing';
+    releaseRecord.shopify.observationReviewEvidence = null;
+
+    expect(resolveProductSource({
+      environment: 'preview',
+      shopifyProduct: createObservedShopifyProduct('test-product', 'preview'),
+      releaseRecord,
+      mediaManifest: createCompleteMediaManifest(),
+    })).toMatchObject({
+      status: 'denied',
+      reason: 'PRODUCT_OBSERVATION_REVIEW_REQUIRED',
+      product: null,
+    });
+  });
+
   it('allows truthful production visibility only for a complete Released record while commerce stays disabled', () => {
     const decision = resolveProductSource({
       environment: 'production',
-      shopifyProduct: { handle: 'test-product', title: 'Released product' },
+      shopifyProduct: createObservedShopifyProduct('test-product', 'production'),
       releaseRecord: createCompleteReleaseRecord('released'),
       mediaManifest: createCompleteMediaManifest(),
     });
@@ -110,7 +131,7 @@ describe('release source policy', () => {
     manifest.requirements.find(item => item.modality === 'video').status = 'missing';
     expect(resolveProductSource({
       environment: 'production',
-      shopifyProduct: { handle: 'test-product' },
+      shopifyProduct: createObservedShopifyProduct('test-product', 'production'),
       releaseRecord: createCompleteReleaseRecord('released'),
       mediaManifest: manifest,
     }).reason).toBe('PRODUCT_RELEASE_EVIDENCE_INCOMPLETE');

@@ -1,6 +1,6 @@
 # CARLOPHILLIPS Product Requirements
 
-Status: working product definition, not a production-readiness claim. Updated 2026-07-22.
+Status: working product definition, not a production-readiness claim. Updated 2026-07-23.
 
 ## Objective
 
@@ -39,8 +39,9 @@ No fallback mock product or local-only cart may masquerade as a successful bound
 - A preview is not approval to publish, sell, deploy to production, or change Shopify state.
 - A Shopify observation is necessary but never sufficient for visibility: Preview additionally requires matching, evidence-complete Staged-or-later release data; production requires matching, evidence-complete Released data. Neither decision enables purchasing until the cart/checkout journey is separately proven.
 - A Shopify product observation must carry durable evidence tied to the exact ready Storefront product-read capability. Its complete review envelope—source, authority, environment, timestamp, capability evidence, product facts, and sanitized variants—is fingerprinted. Acceptance requires approval bound to that exact fingerprint and handle and produces only a candidate patch; applying any patch to a Product Release Record is a separate authorized step.
-- Variant fingerprints cover stable variant identity (hashed reference, title, options). Price and availability changes intentionally leave that identity fingerprint stable but change the full observation fingerprint.
-- Customer cart UI requires a visible Shopify Gateway decision, matching Released record, an exact match between the current observation fingerprint and the release-bound variant fingerprint, a sellable mapped variant, evidence-backed Storefront `cart-write` capability, explicit Product Owner activation approval, and the server-only environment gate. Credentials, flags, or installed apps cannot satisfy the other prerequisites.
+- Variant fingerprints cover stable variant identity (hashed reference, title, options). Commerce-facts fingerprints cover canonical product and variant facts, including price, currency, and availability, while excluding per-read timestamp/environment/capability metadata. The immutable full observation fingerprint binds all review/audit fields. Runtime freshness compares variant identity and commerce facts to the reviewed release bindings; it does not require a fresh read to reuse the approved observation timestamp.
+- Preview and production withhold missing, malformed, tampered, stale-variant, or stale-commerce-facts observations per product without leaking their payloads or withholding an otherwise eligible catalog candidate.
+- Customer cart UI requires a visible Shopify Gateway decision, matching Released record, an exact match between the current and release-bound variant fingerprints, a sellable mapped variant, evidence-backed Storefront `cart-write` capability, explicit Product Owner activation approval, and the server-only environment gate. Credentials, flags, or installed apps cannot satisfy the other prerequisites.
 - Checkout, payment, and order authority remain separate from cart eligibility. A cart-eligible decision must still return checkout disabled until a separate approved live proof exists.
 - Release records move sequentially through Draft, Staged, Approved, and Released. No state may be skipped. Staged requires immutable candidate/build/private-staging and rollback-plan evidence; Approved requires complete product/media/fulfillment truth and approvals; Released requires a current Active Shopify observation and verified rollback evidence.
 - Production requires Product Owner approval plus direct evidence for domain, product/variant truth, checkout, payment, POD mapping, fulfillment, tracking, support, and returns.
@@ -61,6 +62,7 @@ The sequence is resolved by Product Owner intent:
 - Browser and public API surfaces cannot call low-level Shopify product/cart transports outside the server Commerce Gateway and cart-activation contract.
 - Fixture/simulation observations, blocked reviews, accepted review outputs, and candidate patches cannot mutate a Product Release Record without a separate explicit apply operation and authorization.
 - `/shop` and `/collections` count and render only individually release-eligible records; denied or unavailable candidates contribute only to withheld counts/reason codes and never leak product payloads.
+- Repeated unchanged Shopify reads remain eligible despite new observation timestamps or a correct environment change; changed title, price, currency, availability, or variant facts require a newly reviewed and separately applied release binding.
 - Home featured-product navigation and counts are derived from that same catalog decision. When no product is eligible, home exposes only candidate/withheld counts and a catalog-state link—never a product payload or PDP link.
 - The first accepted Hoodie release proves all four lanes through a versioned Product Release Record; the next product can reuse the same provider, media, commerce, and approval contracts.
 - Required rich media is real, provenance-bound, rights-checked, and approved; missing assets block release rather than trigger simulated frontend effects.
