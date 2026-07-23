@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/product-release.schema.json",
+  "title": "ProductReleaseRecord v1",
+  "type": "object",
+  "required": ["schemaVersion", "releaseId", "state", "shopify", "fulfillmentMappings", "mediaManifest", "approvals", "candidate", "rollback"],
+  "properties": {
+    "schemaVersion": { "const": "cp.product-release.v1" },
+    "releaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
+    "state": { "enum": ["draft", "staged", "approved", "released", "withdrawn"] },
+    "shopify": {
+      "type": "object",
+      "required": ["productReference", "handle", "statusObserved", "observedAt", "variantFingerprint"],
+      "properties": {
+        "productReference": { "type": "string", "minLength": 1 },
+        "handle": { "type": "string", "minLength": 1 },
+        "statusObserved": { "enum": ["DRAFT", "ACTIVE", "ARCHIVED", "UNKNOWN"] },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "fulfillmentMappings": { "type": "array" },
+    "mediaManifest": { "type": "string", "minLength": 1 },
+    "approvals": {
+      "type": "object",
+      "required": ["product", "media", "fulfillment"],
+      "properties": {
+        "product": { "$ref": "#/$defs/approval" },
+        "media": { "$ref": "#/$defs/approval" },
+        "fulfillment": { "$ref": "#/$defs/approval" }
+      },
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "required": ["gitCommit", "buildEvidence", "stagingEvidence"],
+      "properties": {
+        "gitCommit": { "type": ["string", "null"] },
+        "buildEvidence": { "type": ["string", "null"] },
+        "stagingEvidence": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "rollback": {
+      "type": "object",
+      "required": ["previousReleaseId"],
+      "properties": { "previousReleaseId": { "type": ["string", "null"] } },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "approval": {
+      "type": "object",
+      "required": ["status", "owner"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "rejected"] },
+        "owner": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/media-asset.schema.json",
+  "title": "ProductMediaAsset v1",
+  "type": "object",
+  "required": ["schemaVersion", "assetId", "kind", "source", "exactProductMatch", "rightsStatus", "approvalStatus", "alt"],
+  "properties": {
+    "schemaVersion": { "const": "cp.product-media-asset.v1" },
+    "assetId": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["image", "video", "external_video", "model_3d", "spin"] },
+    "source": {
+      "type": "object",
+      "required": ["type", "reference"],
+      "properties": {
+        "type": { "enum": ["pod-original", "shopify", "photography", "derived", "generated", "unknown"] },
+        "reference": { "type": "string", "minLength": 1 },
+        "method": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "exactProductMatch": { "enum": ["verified", "partial", "unverified", "not-applicable"] },
+    "rightsStatus": { "enum": ["verified", "pending", "unknown"] },
+    "approvalStatus": { "enum": ["pending", "approved", "rejected", "quarantined"] },
+    "alt": { "type": "string", "minLength": 1 },
+    "fallbackAssetId": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

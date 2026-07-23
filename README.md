@@ -1,189 +1,79 @@
-# CARLOPHILLIPS - Premium Headless Ecommerce
+# CARLOPHILLIPS
 
-A luxury headless ecommerce storefront built with Next.js and Shopify, featuring a multi-brand architecture and premium UI.
+CARLOPHILLIPS is a Next.js 14 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
-## 🌟 Features
+The repository is **not production-ready**. The active UI is currently an editorial shell with products hidden by default. A gated static Signature Hoodie page exists for staging review, while the Shopify commerce modules are not yet wired into the active routes. See `STATUS.md` for verified facts and blockers.
 
-- **Headless Architecture**: Next.js 14 frontend connected to Shopify Storefront API
-- **Multi-Brand Support**: Three distinct brand identities (CARLOPHILLIPS, love,Carlo, HouseofCarlo)
-- **Premium UI**: Cinematic design inspired by Vollebak, with animated hero sections
-- **Shopify Integration**: Full cart and checkout functionality via Shopify
-- **Print-on-Demand**: Connected to Printify for zero-inventory fulfillment
-- **Mobile Optimized**: Responsive design with touch-friendly interactions
+## Current product state
 
-## 🏗️ Tech Stack
+- One real Apliiq/Shopify Signature Hoodie POC is documented as Draft with purchasing disabled.
+- A prior Shopify audit recorded 12 products with image-only media, but the broader catalog is not active in the current UI.
+- The Product Owner must choose the immediate lane: one-product Hoodie proof or restoration of the 12-product catalog. `PRD.md` presents the tradeoff without making the decision.
+- Vercel production and preview were last observed returning HTTP 402 `DEPLOYMENT_DISABLED`; local work continues while hosting access is restored.
 
-- **Frontend**: Next.js 14 (App Router), React, Tailwind CSS
-- **Backend**: Shopify Storefront GraphQL API
-- **State Management**: Zustand (cart state)
-- **Animation**: Framer Motion
-- **Deployment**: Node.js standalone
+## Stack
 
-## 🚀 Quick Start
+- Next.js 14.2.3 App Router and React 18
+- Tailwind CSS 3 and Framer Motion
+- Shopify Storefront GraphQL modules for product/media/cart operations
+- Yarn Classic 1.22.22
+- ESLint and Vitest
 
-### Prerequisites
-- Node.js 18+
-- Shopify store with Storefront API credentials
+## Setup
 
-### Installation
+Prerequisites: Node.js 18 or newer and Yarn 1.22.22. With a Corepack-enabled Node distribution, run `corepack enable` once.
 
 ```bash
-# Install dependencies
-yarn install
-
-# Create a local environment file, then add your Shopify credentials
-# NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-# NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=your-token
-
-# Run development server
+yarn --version
+yarn install --frozen-lockfile
+cp .env.example .env.local
 yarn dev
 ```
 
-Visit `http://localhost:3000`
+Open `http://localhost:3000`. Defaults are fail-closed: no product is visible and no purchase flow is active.
 
-## 📦 Environment Variables
+For a local-only review of the static Hoodie fixture, set both flags in `.env.local` and restart the server:
 
-### Required
-- `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` - Your Shopify store domain
-- `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` - Shopify Storefront API token
-- `NEXT_PUBLIC_BASE_URL` - Your site URL
-
-### Optional
-- `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Google Analytics ID
-- `NEXT_PUBLIC_META_PIXEL_ID` - Facebook Pixel ID
-- `NEXT_PUBLIC_TIKTOK_PIXEL_ID` - TikTok Pixel ID
-
-## 🏪 Shopify Setup
-
-1. **Enable Storefront API:**
-   - Go to Shopify Admin > Settings > Apps and sales channels
-   - Create a custom app
-   - Enable Storefront API with required scopes
-   - Copy the Storefront access token
-
-2. **Configure Printify:**
-   - Install Printify app from Shopify App Store
-   - Connect your print providers (Printful, Apliiq, etc.)
-   - Publish products to your store
-   - Enable auto-order approval
-
-3. **Enable Payments:**
-   - Go to Settings > Payments
-   - Set up Shopify Payments or third-party processor
-   - Enable test mode for testing
-
-## 🌐 Deployment
-
-### Staging: staging.carlophillips.com
 ```bash
-# Build with staging environment variables
+NEXT_PUBLIC_SHOW_PRODUCTS=true
+NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true
+```
+
+This exposes a labeled, disabled review page. It does not fetch the Hoodie from Shopify and does not authorize publication or checkout.
+
+## Quality gates
+
+```bash
+yarn lint
+yarn test
 yarn build
-yarn start
 ```
 
-### Production: www.carlophillips.com
-```bash
-# Build with production environment variables
-yarn build
-yarn start
+Run all gates with `yarn check`. A clean dependency proof uses `yarn install --frozen-lockfile`; do not add npm or pnpm lockfiles.
+
+## Environment variables
+
+Copy `.env.example` and supply values only in ignored local files or the appropriate Vercel environment. Do not commit real values.
+
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_BASE_URL` | Environment-specific storefront URL |
+| `NEXT_PUBLIC_SHOW_PRODUCTS` | Top-level product visibility gate |
+| `NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS` | Secondary static draft-review gate |
+| `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` | Shopify Storefront domain |
+| `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` | Public Storefront API token; never put the actual value in reports |
+| `CORS_ORIGINS` | Allowed API origin for the environment |
+
+## Repository map
+
+```text
+app/                 route wrappers and current client shell
+lib/config/          release and Shopify configuration
+lib/data/            static fixture, mock data, and dormant data service
+lib/shopify/         Storefront queries, mutations, normalization, client
+lib/store/           dormant local/Shopify cart module
+tests/               automated fitness and commerce-contract tests
+test_reports/        historical and generated verification evidence
 ```
 
-## 📁 Project Structure
-
-```
-/app
-├── app/
-│   ├── api/           # API routes (health check)
-│   ├── globals.css    # Global styles
-│   ├── layout.js      # Root layout
-│   └── page.js        # Main storefront UI
-├── lib/
-│   ├── brands/        # Multi-brand configuration
-│   ├── content/       # Site content and copy
-│   ├── shopify/       # Shopify API client
-│   └── store/         # State management (cart)
-├── public/            # Static assets
-└── next.config.js     # Next.js configuration
-```
-
-## 🎨 Brand Architecture
-
-Three distinct brands share a unified cart:
-
-1. **CARLOPHILLIPS** - Main luxury line (navy, grey, white, burgundy)
-2. **love,Carlo** - Colorful lifestyle line (orange, red, blue)
-3. **HouseofCarlo** - Home & living line (cream, charcoal, tan)
-
-Switch brands via the top navigation or by accessing brand-specific domains.
-
-## 🛒 Commerce Flow
-
-1. User browses products (fetched from Shopify)
-2. User adds items to cart (Zustand state + Shopify Cart API)
-3. User clicks checkout → Redirect to Shopify Checkout
-4. Shopify processes payment
-5. Order sent to Printify for fulfillment
-6. Customer receives tracking from Shopify
-
-## 🔧 Development
-
-### Key Commands
-```bash
-yarn dev          # Start development server
-yarn build        # Build for production
-yarn start        # Start production server
-yarn lint         # Run ESLint
-```
-
-### Testing Cart Flow
-```bash
-# Generate a test checkout URL
-node scripts/test-cart.js
-```
-
-## 📝 Content Management
-
-All site content is managed in `/lib/content/site-content.js`:
-- Hero sections
-- Product copy
-- Footer content
-- Navigation items
-
-Update content here without touching component code.
-
-## 🔐 Security Notes
-
-- Storefront API token is public-safe (read-only access)
-- Never expose Admin API credentials in frontend code
-- Environment variables are properly scoped
-- CORS configured for your domains only
-
-## 🐛 Troubleshooting
-
-### Cart not working?
-- Verify Shopify credentials in `.env`
-- Check browser console for API errors
-- Ensure products have valid variants
-
-### Products not loading?
-- Confirm products are published to "Headless" sales channel in Shopify
-- Check Shopify API token permissions
-
-### Checkout redirects failing?
-- Verify `NEXT_PUBLIC_BASE_URL` matches your domain
-- Check Shopify Payments is enabled
-
-## 📧 Support
-
-For issues or questions:
-- Check `/memory/PRD.md` for product requirements
-- Review Shopify Admin > Apps > Printify for order status
-- Test cart flow with checkout URL generator script
-
-## 📄 License
-
-Private & Confidential - CARLOPHILLIPS Brand
-
----
-
-Built with 🖤 for luxury ecommerce
+Start with `AGENTS.md`, `PRD.md`, `ARCHITECTURE.md`, `STATUS.md`, and `TASKS.md` before making delivery changes.

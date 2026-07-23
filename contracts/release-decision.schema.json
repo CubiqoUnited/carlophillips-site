@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/release-decision.schema.json",
+  "title": "ReleaseDecision v1",
+  "type": "object",
+  "required": ["schemaVersion", "environment", "status", "source", "visibilityAllowed", "commerceAllowed", "reason", "product"],
+  "properties": {
+    "schemaVersion": { "const": "cp.release-decision.v1" },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "status": { "enum": ["available", "unavailable", "denied"] },
+    "source": { "enum": ["shopify", "fixture", "unavailable"] },
+    "visibilityAllowed": { "type": "boolean" },
+    "commerceAllowed": { "type": "boolean" },
+    "reason": { "type": "string", "minLength": 1 },
+    "product": { "type": ["object", "null"] }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "source": { "const": "fixture" } }, "required": ["source"] },
+      "then": {
+        "properties": {
+          "environment": { "const": "local" },
+          "commerceAllowed": { "const": false }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "const": "unavailable" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "source": { "const": "unavailable" },
+          "visibilityAllowed": { "const": false },
+          "commerceAllowed": { "const": false },
+          "product": { "type": "null" }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "cp.evidence-envelope.v1",
+  "cycle": "cp-fitness-cycle-1",
+  "observedAt": "2026-07-22T22:21:15-04:00",
+  "branch": "codex/cp-fitness-baseline",
+  "baseCommit": "425f50babb18668fa7a12e7bf4ea9d4d99c1b84b",
+  "packageManager": "yarn@1.22.22",
+  "commands": [
+    {
+      "command": "yarn install --frozen-lockfile",
+      "status": "passed",
+      "notes": "Fresh node_modules tree and isolated Yarn cache; one unmet optional TypeScript peer warning from the Next ESLint dependency chain."
+    },
+    {
+      "command": "yarn lint",
+      "status": "passed",
+      "notes": "ESLint completed with zero warnings."
+    },
+    {
+      "command": "yarn test",
+      "status": "passed",
+      "testFiles": 5,
+      "tests": 21
+    },
+    {
+      "command": "yarn build",
+      "status": "passed",
+      "routesGenerated": 12,
+      "notes": "Existing edge-runtime/static-generation warning remains."
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "browser": {
+    "story": "A local reviewer opens the gated non-commerce Signature Hoodie fixture and sees truthful source labeling with purchasing disabled.",
+    "desktop": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "meaningfulContent": true,
+      "errorOverlayCount": 0,
+      "consoleErrors": [],
+      "productImageCount": 1,
+      "disabledButtonCount": 10,
+      "quarantinedDetailPathCount": 0,
+      "screenshot": "local-hoodie-desktop.png"
+    },
+    "mobile": {
+      "viewport": "390x844",
+      "status": 200,
+      "errorOverlayCount": 0,
+      "consoleErrors": [],
+      "horizontalOverflow": false,
+      "screenshot": "local-hoodie-mobile.png"
+    },
+    "sourceLabelObserved": "LOCAL FIXTURE REVIEW — NOT SHOPIFY LIVE DATA",
+    "purchasingStateObserved": "Purchasing is paused"
+  },
+  "contractCoverage": [
+    "valid Shopify source record",
+    "invalid source-less product",
+    "fixture rejected in preview and production",
+    "media provenance required",
+    "pending release record validates without approval claim",
+    "Shopify failure returns unavailable in preview and production",
+    "legacy product service fails closed without Shopify outside local",
+    "Shopify product/media/variant/cart normalization"
+  ],
+  "knownWarnings": [
+    "The local host has no directly installed Yarn/Corepack binary; Yarn 1.22.22 was bootstrapped through the bundled runtime for verification.",
+    "Next.js reports that an edge-runtime page disables static generation.",
+    "Browserslist data emitted an outdated-data warning on one build pass."
+  ],
+  "externalBlockers": [
+    "Vercel production and preview were last observed returning HTTP 402 DEPLOYMENT_DISABLED.",
+    "Product Owner has not selected Signature Hoodie POC versus broader catalog restoration."
+  ]
+}

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
 import { canRenderDraftProductPreviews, canRenderProducts } from '@/lib/config/product-visibility';
-import { signatureHoodiePreview } from '@/lib/data/signature-hoodie-preview';
+import { signatureHoodiePreview } from '@/fixtures/signature-hoodie-preview';
 
 const brands = ['CARLOPHILLIPS', 'loveCarlo', 'HouseOfCarlo'];
 
