@@ -1,6 +1,6 @@
 # CARLOPHILLIPS
 
-CARLOPHILLIPS is a Next.js 14 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
+CARLOPHILLIPS is a Next.js 15 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
 The repository is **not production-ready**. The editorial shell keeps products hidden by default. Product and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, while Preview/production return honest unavailable states when Shopify capability is unverified. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
 
@@ -13,7 +13,7 @@ The repository is **not production-ready**. The editorial shell keeps products h
 
 ## Stack
 
-- Next.js 14.2.3 App Router and React 18 (**end-of-life; supported-version security migration required before production**)
+- Next.js 15.5.21 Maintenance LTS App Router and React/React DOM 19.2.8
 - Tailwind CSS 3 and Framer Motion
 - Shopify Storefront GraphQL modules for product/media/cart operations
 - Yarn Classic 1.22.22
@@ -21,7 +21,7 @@ The repository is **not production-ready**. The editorial shell keeps products h
 
 ## Setup
 
-Prerequisites: Node.js 18 or newer and Yarn 1.22.22. With a Corepack-enabled Node distribution, run `corepack enable` once.
+Prerequisites: Node.js 18.18 or newer and Yarn 1.22.22. With a Corepack-enabled Node distribution, run `corepack enable` once.
 
 ```bash
 yarn --version
@@ -47,10 +47,11 @@ This exposes a labeled, disabled review page. It does not fetch the Hoodie from 
 ```bash
 yarn lint
 yarn test
+yarn audit:prod
 yarn build
 ```
 
-Run all gates with `yarn check`. A clean dependency proof uses `yarn install --frozen-lockfile`; do not add npm or pnpm lockfiles.
+Run all gates with `yarn verify`; it includes the production-dependency audit. Do not name this script `check`: Yarn Classic reserves `yarn check` for its own dependency-tree command. A clean dependency proof uses `yarn install --frozen-lockfile`; do not add npm or pnpm lockfiles.
 
 ## Environment variables
 

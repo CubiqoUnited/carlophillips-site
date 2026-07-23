@@ -13,6 +13,7 @@ export const metadata = {
 };
 
 export default async function ProductPage({ params }) {
+  const { handle } = await params;
   const environment = getCommerceEnvironment();
 
   if (!canRenderProducts()) {
@@ -31,7 +32,7 @@ export default async function ProductPage({ params }) {
   const decision = await getProductDecision({
     environment,
     mode,
-    handle: params.handle,
+    handle,
     fixtureProduct,
     loadShopifyProduct,
   });

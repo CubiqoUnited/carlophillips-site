@@ -180,9 +180,10 @@ describe('truth contracts', () => {
     expect(validateCapabilityRegistry(capabilityRegistry)).toBe(true);
     const cartCapability = capabilityRegistry.capabilities.find(item => item.capability === 'shopify-storefront-cart');
     expect(cartCapability).toMatchObject({
-      accessState: 'unverified',
+      accessState: 'human_required',
       callableSurface: 'unverified',
       allowedOperations: [],
+      blocker: { code: 'SHOPIFY_EMAIL_OTP_REQUIRED' },
     });
   });
 });

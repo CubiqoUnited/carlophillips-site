@@ -16,17 +16,18 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Production and preview HTTP endpoints were diagnosed as `402 DEPLOYMENT_DISABLED` on 2026-07-22.
 - Canonical `main` and `staging` were recorded at `d172cfb`; the Hoodie preview branch is at `425f50b`.
 - The current Product Owner-supplied Shopify installed-app snapshot is preserved in `docs/shopify-capability-access-audit.md`; installed status does not prove API, Admin/Flow, app-credential, browser, or human access.
+- The live Shopify read-only audit was attempted through the existing Google account. Shopify accepted the account path but stopped at a one-time email-code gate before the Admin or installed-app inventory became visible; the verification tab is preserved.
+- The App Router now runs on Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`; async route params were migrated and the full local regression passed.
 
 ## Not yet proven
 
 - A normal Corepack-provided `yarn` executable on this machine; verification used Yarn 1.22.22 bootstrapped through the bundled runtime, then proved a frozen install.
 - Live Shopify-backed product and variant rendering.
 - Browser add/update/remove cart flow and Shopify checkout redirect.
-- Any verified callable path for the current installed Shopify app inventory.
+- Any verified callable path for the current installed Shopify app inventory; the live audit is currently stopped before Admin at Shopify email OTP.
 - Production domain availability after hosting restoration.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
 - Any real product video, spin/360, 3D/AR, try-on, on-model, or lifestyle campaign asset.
-- A supported Next.js release. The current `14.2.3` App Router stack is end-of-life and below the official July 2026 supported security lines (`15.5.21` Maintenance LTS or `16.2.11` Active LTS); production remains blocked pending a tested migration.
 
 ## Cycle 1 verification
 
@@ -62,6 +63,14 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Unit/contract/component tests cover registry invariants, exact-operation denial, local/preview/production bag decisions, fixture rejection, and checkout denial.
 - Desktop/mobile local and desktop Preview browser checks passed with no console errors, overlays, checkout links, or mobile overflow.
 
+## Cycle 5 verification
+
+- The existing Google account was present in the in-app browser and selected without exposing its address. Shopify then required a six-digit email code before Admin; no code, session data, app settings, or secret was read.
+- The capability registry now records the authenticated-browser OTP gate and exact per-capability resume points for Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder. None is marked callable.
+- Next.js was migrated from unsupported `14.2.3` to `15.5.21` Maintenance LTS; React and React DOM are pinned to `19.2.8`, the lint peer is satisfied by TypeScript `5.9.3`, and the dependency graph remains Yarn-only with no npm/pnpm lockfile.
+- The first production-dependency audit found 38 advisories (1 critical, 15 high, 21 moderate, 1 low). Unused direct Axios/UUID dependencies were removed and stale lodash/PostCSS/sharp resolutions were upgraded; the final production-dependency audit reports zero advisories. PostCSS and sharp are temporary security overrides beyond Next 15.5.21's declared ranges and passed clean install/build regression.
+- Frozen clean install, zero-warning lint, 85 tests, production-dependency audit (zero advisories), and production build passed. `yarn verify` composes all four gates; `yarn check` is intentionally not used because Yarn Classic reserves that command. Tooling-policy tests pin the verified framework/runtime, Yarn-only lock strategy, and temporary security resolutions. Exact 1440×1000 and 390×844 browser checks showed the source-labeled Hoodie with purchasing disabled; the mobile document had no horizontal overflow and both viewports had no console/page errors. The local bag remained fixture-labeled with checkout disabled and no checkout link.
+
 ## External blockers
 
 ### Vercel hosting disabled
@@ -78,9 +87,11 @@ Resume point: set `COMMERCE_DATA_MODE=shopify`, open the selected product route,
 
 ### Shopify app capability/access audit
 
-Authorized path: the Product Owner has directed the next cycle to use the existing authenticated Shopify browser session for a read-only audit. Paid, credit-consuming, write, sample, publish, order, fulfillment, messaging, and production actions remain unauthorized.
+Observed blocker: the authorized browser audit reached Shopify's “Verify your email to continue” screen after selecting the existing Google account. Admin, installed-app names, settings, permissions, and billing screens were not reachable, so the Product Owner-supplied inventory remains unverified.
 
-Resume point: inspect P0 Shopify Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder surfaces; record access class/settings/permission or billing evidence without secrets or changes, then update registry entries. Do not infer access from installation.
+Human action: enter the one-time code in the preserved Shopify verification tab and click Verify. Do not send or record the code in project artifacts.
+
+Resume point: begin at Shopify installed-app inventory, then inspect P0 Shopify Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder surfaces; record access class/settings/permission or billing evidence without secrets or changes. Do not infer access from installation.
 
 ### Production and commerce operations
 

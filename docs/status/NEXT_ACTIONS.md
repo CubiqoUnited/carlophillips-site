@@ -1,15 +1,14 @@
 # Next Actions
 
-## Finish Cycle 4 evidence
+## Complete the interrupted live audit
 
-1. Prove zero-warning lint, all tests, and production build.
-2. Capture local desktop/mobile and Preview unavailable bag evidence.
-3. Validate operation-specific capability discovery, source labels, checkout denial, secrets, and architecture claims.
+1. Product Owner enters the one-time code in the preserved Shopify verification tab and clicks Verify.
+2. Resume at installed-app inventory and classify the named P0 surfaces without changing Shopify state or accepting charges.
+3. Record sanitized app/settings/permission or billing evidence and update the registry from actual callable surfaces.
 
-## Next safe cycle
+## Continue safe local fitness work
 
-1. Use the existing authenticated Shopify browser session for the authorized read-only P0 app/access audit.
-2. Record actual callable surfaces and sanitized settings/permission or billing evidence; do not change state or accept charges.
-3. Fingerprint current Hoodie Shopify/Apliiq facts only if safely observable without writes.
+1. Review and tighten permissive response/security headers without weakening the required fail-closed commerce behavior.
+2. Add machine-checkable supported-version and dependency/security evidence.
+3. Define designer-led and trend-led job/brief contracts with hard cost/publish gates.
 4. Keep product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.
-5. Then migrate the end-of-life Next.js stack to a supported security line with full local regression evidence.

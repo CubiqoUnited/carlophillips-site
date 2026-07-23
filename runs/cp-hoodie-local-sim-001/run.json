@@ -11,12 +11,15 @@
       "capability": "hoodie-fulfillment",
       "adapter": "apliiq",
       "status": "human_required",
-      "attempts": 1,
-      "evidence": ["releases/cp-signature-hoodie-2026-001/release.json"],
+      "attempts": 2,
+      "evidence": [
+        "releases/cp-signature-hoodie-2026-001/release.json",
+        "test_reports/cp-fitness-cycle-5/shopify-readonly-audit.json"
+      ],
       "blocker": {
-        "code": "APLIIQ_READ_ACCESS_REQUIRED",
-        "humanAction": "Authorize a least-privilege read-only Apliiq API or authenticated-browser observation path.",
-        "resumePoint": "Observe and fingerprint the Hoodie provider-to-Shopify variant mapping without ordering or accepting charges."
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, then observe and fingerprint the Hoodie provider-to-Shopify mapping without ordering or accepting charges."
       }
     },
     {
@@ -41,6 +44,30 @@
       "status": "succeeded",
       "attempts": 1,
       "evidence": ["test_reports/cp-fitness-cycle-3/verification.json"],
+      "blocker": null
+    },
+    {
+      "workItemId": "shopify-live-readonly-audit",
+      "lane": "commerce-frontend",
+      "capability": "shopify-storefront-cart",
+      "adapter": "shopify-authenticated-browser",
+      "status": "human_required",
+      "attempts": 1,
+      "evidence": ["test_reports/cp-fitness-cycle-5/shopify-readonly-audit.json"],
+      "blocker": {
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at Shopify installed-app inventory, then inspect Storefront/cart and the named P0 apps read-only without approving charges or changing state."
+      }
+    },
+    {
+      "workItemId": "framework-security-migration",
+      "lane": "commerce-frontend",
+      "capability": "supported-nextjs-runtime",
+      "adapter": "nextjs-15-maintenance-lts",
+      "status": "succeeded",
+      "attempts": 1,
+      "evidence": ["test_reports/cp-fitness-cycle-5/verification.json"],
       "blocker": null
     },
     {
@@ -85,6 +112,22 @@
       "workItemId": "run-audit",
       "status": "succeeded",
       "recordedAt": "2026-07-22T22:48:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-shopify-otp-required",
+      "idempotencyKey": "cp-hoodie-local-sim-001:shopify-live-readonly-audit:attempt-1",
+      "workItemId": "shopify-live-readonly-audit",
+      "status": "human_required",
+      "recordedAt": "2026-07-23T03:01:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-framework-security-migrated",
+      "idempotencyKey": "cp-hoodie-local-sim-001:framework-security-migration:attempt-1",
+      "workItemId": "framework-security-migration",
+      "status": "succeeded",
+      "recordedAt": "2026-07-23T03:12:00Z",
       "actor": "CP Fitness Delivery Agent"
     }
   ],

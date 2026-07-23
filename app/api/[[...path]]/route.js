@@ -164,7 +164,7 @@ export async function OPTIONS() {
 
 // Main request handler
 export async function GET(request, { params }) {
-  const path = params?.path || [];
+  const { path = [] } = await params;
   const pathString = path.join('/');
   
   try {
@@ -221,7 +221,7 @@ export async function GET(request, { params }) {
 }
 
 export async function POST(request, { params }) {
-  const path = params?.path || [];
+  const { path = [] } = await params;
   const pathString = path.join('/');
   
   try {
@@ -246,7 +246,7 @@ export async function POST(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-  const path = params?.path || [];
+  const { path = [] } = await params;
   const pathString = path.join('/');
   
   try {

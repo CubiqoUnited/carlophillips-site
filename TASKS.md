@@ -43,15 +43,24 @@
 
 ## Next bounded cycle: authenticated read-only Shopify audit
 
-- [ ] Use the already authenticated Shopify browser session; do not assume access is blocked before attempting it.
+- [x] Attempt the existing Google/Shopify browser path before declaring a blocker; preserve the Shopify email-OTP verification tab.
 - [ ] Classify P0 Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder by actual callable surface.
-- [ ] Capture sanitized names/settings/permission or billing evidence without revealing secrets, accepting charges, or changing state.
-- [ ] Update the capability registry and exact PipelineRun blockers/resume points from observed evidence.
+- [x] Capture a sanitized live authentication-gate record without revealing the account address/code, accepting charges, or changing Shopify state.
+- [x] Update the capability registry and exact PipelineRun blockers/resume points to the observed email-OTP boundary.
 - [ ] If safely observable, capture current Hoodie Shopify product/variant/media facts and fingerprint without writes.
 
-## Subsequent local security cycle
+## Completed: supported framework migration
 
-- [ ] Migrate from end-of-life Next.js `14.2.3` to a supported security line and run full regression evidence before any deployment.
+- [x] Migrate from end-of-life Next.js `14.2.3` to supported `15.5.21` Maintenance LTS with React/React DOM `19.2.8`.
+- [x] Convert dynamic route params to the Next.js 15 async API.
+- [x] Prove a clean frozen Yarn install, zero-warning lint, tests, build, and desktop/mobile browser regression.
+
+## Next unblocked local cycle
+
+- [ ] Tighten permissive response/security headers without breaking required storefront embedding or local development.
+- [x] Run a production-dependency audit, remove unused vulnerable direct dependencies, and resolve the current advisory set to zero.
+- [x] Make the supported-version/dependency audit policy machine-checkable in the normal quality gate.
+- [ ] Retire temporary transitive overrides when Next declares patched ranges.
 - [ ] Define reusable designer-led and trend-led job/brief contracts; keep external runs and paid sources approval-gated.
 
 ## Blocked / approval required

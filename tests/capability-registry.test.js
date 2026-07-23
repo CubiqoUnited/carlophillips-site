@@ -30,8 +30,22 @@ describe('capability registry policy', () => {
       status: 'human_required',
       adapter: 'shopify-storefront-cart',
       callableSurface: 'unverified',
-      reason: 'SHOPIFY_CART_CAPABILITY_UNVERIFIED',
+      reason: 'SHOPIFY_EMAIL_OTP_REQUIRED',
     });
+  });
+
+  it('keeps OTP-gated app workers registered but non-callable', () => {
+    const registry = getCapabilityRegistry();
+    for (const [capability, operation] of [
+      ['pod-bulk-workflow', 'create-draft-job'],
+      ['trend-research-input', 'read-trends'],
+    ]) {
+      expect(discoverCapability(registry, capability, operation)).toMatchObject({
+        status: 'human_required',
+        callableSurface: 'unverified',
+        reason: 'SHOPIFY_EMAIL_OTP_REQUIRED',
+      });
+    }
   });
 
   it('requires the exact operation even on a verified capability', () => {

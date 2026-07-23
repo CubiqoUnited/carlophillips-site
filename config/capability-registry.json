@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cp.capability-registry.v1",
   "observedAt": "2026-07-22",
-  "source": "Product Owner-supplied installed-app snapshot; operational access unverified",
+  "source": "Product Owner-supplied installed-app snapshot plus a 2026-07-22 live authenticated-browser login attempt; app inventory remains blocked at Shopify email OTP",
   "canonicalOwners": {
     "releaseTruth": "Product Release Record",
     "mediaTruth": "Media Registry",
@@ -12,7 +12,7 @@
     {
       "capability": "shopify-storefront-cart",
       "selectedAdapter": "shopify-storefront-cart",
-      "accessState": "unverified",
+      "accessState": "human_required",
       "callableSurface": "unverified",
       "allowedOperations": [],
       "requiresApproval": [],
@@ -20,31 +20,31 @@
       "draftSafety": "read-only audit and no-order cart test required before activation",
       "alternatives": [],
       "blocker": {
-        "code": "SHOPIFY_CART_CAPABILITY_UNVERIFIED",
-        "humanAction": "Use the existing authenticated Shopify session for a read-only Storefront/cart access audit without revealing credentials.",
-        "resumePoint": "Record the callable surface and, only if authorized, prove create/add/update/remove and checkout-host retrieval without submitting an order."
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at Shopify installed-app inventory, then inspect Carlophillips Headless/Storefront settings read-only before any cart test."
       }
     },
     {
       "capability": "hoodie-fulfillment",
       "selectedAdapter": "apliiq",
       "accessState": "human_required",
-      "callableSurface": "human_only",
+      "callableSurface": "unverified",
       "allowedOperations": [],
       "requiresApproval": ["sample", "spend"],
       "costGate": "sample/order/fulfillment approval required",
       "draftSafety": "draft-only until release approvals",
       "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"],
       "blocker": {
-        "code": "APLIIQ_READ_ACCESS_REQUIRED",
-        "humanAction": "Verify the existing authenticated Apliiq/Shopify app surface or authorize a least-privilege read-only path.",
-        "resumePoint": "Observe and fingerprint the Hoodie provider-to-Shopify mapping without ordering, sampling, or enabling fulfillment."
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, and observe the Hoodie provider-to-Shopify mapping without ordering, sampling, or enabling fulfillment."
       }
     },
     {
       "capability": "spin-360",
       "selectedAdapter": null,
-      "accessState": "unverified",
+      "accessState": "human_required",
       "callableSurface": "unverified",
       "allowedOperations": [],
       "requiresApproval": ["credits", "spend"],
@@ -52,15 +52,15 @@
       "draftSafety": "exact-product bake-off and human QA required",
       "alternatives": ["spin-studio", "zs-spin-view"],
       "blocker": {
-        "code": "SPIN_CAPABILITY_AUDIT_REQUIRED",
-        "humanAction": "Read the installed Spin Studio and ZS-Spin-View settings, access, and billing surfaces without accepting a plan or using credits.",
-        "resumePoint": "Classify both candidates and select one reversible exact-Hoodie bake-off only after Product Owner approval."
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect Spin Studio and ZS-Spin-View settings/billing read-only, and select neither until evidence and Product Owner approval."
       }
     },
     {
       "capability": "model-lifestyle-media",
       "selectedAdapter": null,
-      "accessState": "unverified",
+      "accessState": "human_required",
       "callableSurface": "unverified",
       "allowedOperations": [],
       "requiresApproval": ["credits", "spend"],
@@ -68,15 +68,15 @@
       "draftSafety": "derived provenance and human media approval required",
       "alternatives": ["modelize"],
       "blocker": {
-        "code": "MODELIZE_CAPABILITY_AUDIT_REQUIRED",
-        "humanAction": "Read the installed Modelize access, credit, and settings surfaces without generating or purchasing anything.",
-        "resumePoint": "Record callable inputs/outputs, provenance controls, credit boundary, and Draft-safe export path."
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect Modelize access/credits/settings read-only, and record inputs, outputs, provenance controls, and Draft-safe export path."
       }
     },
     {
       "capability": "shopify-local-automation",
       "selectedAdapter": "flow",
-      "accessState": "unverified",
+      "accessState": "human_required",
       "callableSurface": "unverified",
       "allowedOperations": [],
       "requiresApproval": ["publish"],
@@ -84,9 +84,41 @@
       "draftSafety": "versioned Draft-safe flow only",
       "alternatives": [],
       "blocker": {
-        "code": "FLOW_CAPABILITY_AUDIT_REQUIRED",
-        "humanAction": "Read existing Flow access, templates, and plan boundaries without enabling or editing a workflow.",
-        "resumePoint": "Record supported triggers/actions and design a disabled Draft-safe contract for Product Owner review."
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect Flow access/templates read-only, and record supported triggers/actions without enabling or editing a workflow."
+      }
+    },
+    {
+      "capability": "pod-bulk-workflow",
+      "selectedAdapter": "mydesigns",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend", "publish"],
+      "costGate": "credits, plan changes, generation, and publication require approval",
+      "draftSafety": "read-only audit first; any later job must remain Draft and release-record bound",
+      "alternatives": [],
+      "blocker": {
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect MyDesigns access/API/billing read-only, and record whether Draft-safe bulk jobs are actually callable."
+      }
+    },
+    {
+      "capability": "trend-research-input",
+      "selectedAdapter": "cs-trending-products-finder",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
+      "costGate": "plan, credits, and paid data require approval",
+      "draftSafety": "research output is evidence input only and never automatic product or publish truth",
+      "alternatives": [],
+      "blocker": {
+        "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+        "humanAction": "Enter the Shopify one-time email code in the preserved verification tab and click Verify; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect CS Trending Products Finder access/export/billing read-only, and record source, date, confidence, and callable surface."
       }
     },
     {

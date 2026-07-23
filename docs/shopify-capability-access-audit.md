@@ -1,8 +1,18 @@
 # Shopify Capability and Access Audit Backlog
 
-Status: candidate inventory only; no programmatic access is proven. Updated 2026-07-22.
+Status: live browser access attempted; Shopify Admin/app inventory is blocked at email OTP and no programmatic access is proven. Updated 2026-07-22.
 
-Cycle 4 adds a validated executable registry at `config/capability-registry.json`. Registry `ready` means the exact requested operation is evidence-listed for a verified callable surface; an installed name or selected adapter is insufficient. The Product Owner has authorized the immediately following cycle to attempt the existing authenticated Shopify browser session for read-only inspection only.
+Cycle 4 added a validated executable registry at `config/capability-registry.json`. Registry `ready` means the exact requested operation is evidence-listed for a verified callable surface; an installed name or selected adapter is insufficient.
+
+## Live read-only attempt
+
+On 2026-07-22, the in-app browser had no open tab to claim, so Shopify Admin was opened in the same browser profile. Shopify presented its login screen. The existing Google account was available and selected without exposing its address. Shopify then stopped at “Verify your email to continue” and requested a six-digit email code.
+
+No Admin page, installed-app list, app settings, permission details, billing screen, product, order, customer, credential, or secret was opened. No code was read, entered, or recorded. No resend, charge, write, generation, publish, order, fulfillment, or message action was taken.
+
+Exact human action: enter the one-time code in the preserved Shopify verification tab and click **Verify**. Do not share or record the code.
+
+Exact resume point: begin at Shopify installed-app inventory. Confirm the reported names, then inspect Carlophillips Headless/Storefront-cart, Apliiq, Modelize, Spin Studio, ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder read-only. Record each actual API/Admin/Flow/app-API/browser/human/unavailable surface, scopes by name only, billing boundary, Draft safety, and app-specific resume point. Stop before every mutation or charge.
 
 ## Access classification
 
@@ -21,12 +31,12 @@ For each candidate, record authentication class (never values), least permission
 
 | Capability | Candidate apps currently reported installed | Current access finding | Audit action |
 |---|---|---|---|
-| Product media / spin | Spin Studio; Modelize; ZS-Spin-View | Unverified; no API, credentials, browser authorization, credits, or output provenance observed | Determine real asset inputs/outputs, exportability, API/browser surface, costs, rights, and Draft safety |
-| POD / sourcing | Apliiq; Gelato; CustomCat; CJdropshipping; Spreadconnect; Zendrop; MyDesigns; teelaunch; Only Caps | Apliiq identifiers exist in local evidence, but live mapping/access is not proven; all others unverified | Read-only capability review per provider, select non-duplicate owners by product class, and bind exact SKU/variant mappings |
-| Automation / connectors | CodexAutomation5; Flow; Shopify Claude Connector; Shopify CLI Connector; Carlophillips Headless | Installed status reported; permissions and callable surfaces unverified | Identify Admin/Flow/API/app-credential surfaces and conduct least-privilege read-only tests |
+| Product media / spin | Spin Studio; Modelize; ZS-Spin-View | Shopify browser path reached email OTP; app presence, API, credits, settings, and output provenance remain unobserved | Complete OTP, then determine real inputs/outputs, exportability, API/browser surface, costs, rights, and Draft safety |
+| POD / sourcing | Apliiq; Gelato; CustomCat; CJdropshipping; Spreadconnect; Zendrop; MyDesigns; teelaunch; Only Caps | Apliiq identifiers exist in local evidence; Shopify browser path reached email OTP before live app/mapping observation | Complete OTP, then review read-only per provider, retain one owner per product class, and bind exact SKU/variant mappings |
+| Automation / connectors | CodexAutomation5; Flow; Shopify Claude Connector; Shopify CLI Connector; Carlophillips Headless | Shopify browser path reached email OTP; reported installation, permissions, and callable surfaces remain unverified | Complete OTP, identify Admin/Flow/API/app-credential surfaces, and conduct least-privilege read-only tests |
 | Core commerce / operations | Fraud Control; Forms; Bundles; Search & Discovery; Translate & Adapt; Marketplace Connect | Unverified | Map source of truth and required operational role; reject unnecessary duplicate ownership |
 | Customer / fulfillment operations | Messaging; Tidio; AfterShip Tracking; AfterShip Returns; Order Printer Pro; Loox Reviews | Unverified | Map tracking, support, returns, document, and review evidence paths; keep customer contact and order tests approval-gated |
-| Research | CS - Trending Products Finder | Unverified | Determine data export/API/browser access, cost, provenance, freshness, and suitability for trend-led briefs |
+| Research | CS - Trending Products Finder | Shopify browser path reached email OTP; reported installation and access remain unverified | Complete OTP, then determine export/API/browser access, cost, provenance, freshness, and suitability for trend-led briefs |
 
 Historical contradiction: Printify, Printful, and ShineOn appeared in an older conversation but are absent from the current Product Owner-supplied installed list. They remain **unavailable/unverified** until a current read-only observation proves otherwise.
 
