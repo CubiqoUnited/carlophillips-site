@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": "cp-fitness-cycle-4",
+  "date": "2026-07-22",
+  "branch": "codex/cp-fitness-baseline",
+  "baseCommit": "0731472",
+  "qualityGates": {
+    "lint": { "status": "passed", "warnings": 0 },
+    "tests": { "status": "passed", "files": 16, "tests": 81 },
+    "build": { "status": "passed", "generatedRoutes": 12, "bagFirstLoadJsKb": 94 }
+  },
+  "capabilityPolicy": {
+    "registrySchemaValid": true,
+    "exactOperationRequired": true,
+    "selectedAdapterDoesNotProveAccess": true,
+    "shopifyCartWriteStatus": "human_required",
+    "shopifyCartCallableSurface": "unverified",
+    "localOrchestrationSimulationStatus": "ready"
+  },
+  "browser": {
+    "localDesktop": {
+      "status": "passed",
+      "bagStatus": "local_preview",
+      "source": "fixture",
+      "nonCommerceLabelVisible": true,
+      "checkoutLinks": 0,
+      "consoleErrors": 0,
+      "errorOverlays": 0,
+      "artifact": "bag-local-desktop.png",
+      "sha256": "a1e92ed77a2a18558f2b8bf7bda1a0a334957fbd4b0e66351a69ae293b4ef1de"
+    },
+    "localMobile": {
+      "status": "passed",
+      "bagStatus": "local_preview",
+      "horizontalOverflow": false,
+      "consoleErrors": 0,
+      "artifact": "bag-local-mobile.png",
+      "sha256": "489e58e0349df5ff1102203dfa471e70c49942236617ca165cfcefc26972a02e"
+    },
+    "previewDesktop": {
+      "status": "passed",
+      "bagStatus": "unavailable",
+      "source": "unavailable",
+      "localFallbackAbsent": true,
+      "falseEmptyCartClaimAbsent": true,
+      "checkoutLinks": 0,
+      "consoleErrors": 0,
+      "errorOverlays": 0,
+      "artifact": "bag-preview-desktop.png",
+      "sha256": "64f51a49b79bb068c37ef616bb14c3b6b978699010e8987ab402c47579390cfb"
+    }
+  },
+  "frameworkSupport": {
+    "installedNextVersion": "14.2.3",
+    "status": "end_of_life_migration_required",
+    "officialSupportedSecurityLinesObserved": ["15.5.21", "16.2.11"],
+    "productionGate": "blocked_until_supported_version_regression_passes"
+  },
+  "externalMutations": {
+    "shopify": false,
+    "provider": false,
+    "vercel": false,
+    "purchaseOrCreditUse": false,
+    "deployment": false,
+    "merge": false,
+    "push": false
+  }
+}

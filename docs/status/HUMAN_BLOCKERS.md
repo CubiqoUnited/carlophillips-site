@@ -24,11 +24,19 @@ Resume point: use `COMMERCE_DATA_MODE=shopify`, capture the source-labeled produ
 
 ## Shopify/app capability access
 
-Observed blocker: installed-app names are reported, but API/Admin/Flow/app-credential/browser access, scopes, billing/credits, Draft safety, and export consequences are not live-verified.
+Observed gap: installed-app names are reported, but API/Admin/Flow/app-credential/browser access, scopes, billing/credits, Draft safety, and export consequences are not live-verified.
 
-Human action: authorize the selected least-privilege read-only access path and separately approve any paid, credit-consuming, write, sample, or publish boundary.
+Authorized action: use the existing authenticated Shopify browser session in the next cycle for read-only inspection. No paid, credit-consuming, write, sample, publish, order, fulfillment, messaging, or production boundary is authorized.
 
-Resume point: execute the matching P0 row in `/docs/shopify-capability-access-audit.md`, record sanitized findings, and resume the blocked `PipelineRun` work item without stopping other safe work.
+Resume point: attempt each P0 surface, record sanitized findings or an exact access blocker, update the capability registry, and resume only proven read-only `PipelineRun` work without stopping other safe work.
+
+## Supported framework migration
+
+Observed blocker to production: Next.js `14.2.3` is end-of-life and below current supported security release lines.
+
+Safe action: after the immediately scheduled Shopify read-only audit, migrate locally to a supported release line and run clean install, lint, tests, build, and browser regression.
+
+Resume point: update the Yarn lockfile on this branch, repair compatibility issues without weakening truth gates, and keep deployment/production blocked until the migration evidence passes.
 
 ## Restricted actions
 

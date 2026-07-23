@@ -26,6 +26,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Production domain availability after hosting restoration.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
 - Any real product video, spin/360, 3D/AR, try-on, on-model, or lifestyle campaign asset.
+- A supported Next.js release. The current `14.2.3` App Router stack is end-of-life and below the official July 2026 supported security lines (`15.5.21` Maintenance LTS or `16.2.11` Active LTS); production remains blocked pending a tested migration.
 
 ## Cycle 1 verification
 
@@ -54,6 +55,13 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The durable Hoodie local simulation completed the safe commerce/orchestration items and remains blocked only on authorized Apliiq observation and media inputs/approval; spend, credits, sample, publish, and production approvals all remain pending.
 - The media manifest now enumerates every required Hoodie modality. The single front asset remains a pending candidate; back/angle, embroidery/material detail, on-model, lifestyle, spin, exact-product 3D/AR, and video remain unresolved. Release policy accepts a where-feasible omission only through an explicit Product Owner-approved infeasibility record.
 
+## Cycle 4 verification
+
+- The capability registry now validates evidence state, callable surface, exact allowed operations, restricted approvals, and blocker/resume records. A selected adapter or installed app does not make an operation callable.
+- `/bag` and `/cart` are dedicated Server Component boundaries rather than monolithic-shell wrappers. Local mode is visibly fixture/non-commerce; Preview renders unavailable with no fake empty Shopify cart or checkout link.
+- Unit/contract/component tests cover registry invariants, exact-operation denial, local/preview/production bag decisions, fixture rejection, and checkout denial.
+- Desktop/mobile local and desktop Preview browser checks passed with no console errors, overlays, checkout links, or mobile overflow.
+
 ## External blockers
 
 ### Vercel hosting disabled
@@ -70,9 +78,9 @@ Resume point: set `COMMERCE_DATA_MODE=shopify`, open the selected product route,
 
 ### Shopify app capability/access audit
 
-Human action: authorize the specific least-privilege read-only API, Admin/Flow, app-credential, or authenticated-browser path for each selected capability; separately approve any paid credit or write test.
+Authorized path: the Product Owner has directed the next cycle to use the existing authenticated Shopify browser session for a read-only audit. Paid, credit-consuming, write, sample, publish, order, fulfillment, messaging, and production actions remain unauthorized.
 
-Resume point: execute the matching row in `docs/shopify-capability-access-audit.md`, record authentication class/permissions/cost boundary/test result without secrets, and bind proven outputs to the Product Release Record. Do not infer access from installation.
+Resume point: inspect P0 Shopify Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder surfaces; record access class/settings/permission or billing evidence without secrets or changes, then update registry entries. Do not infer access from installation.
 
 ### Production and commerce operations
 

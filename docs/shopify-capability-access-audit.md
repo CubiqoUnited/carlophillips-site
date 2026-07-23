@@ -2,6 +2,8 @@
 
 Status: candidate inventory only; no programmatic access is proven. Updated 2026-07-22.
 
+Cycle 4 adds a validated executable registry at `config/capability-registry.json`. Registry `ready` means the exact requested operation is evidence-listed for a verified callable surface; an installed name or selected adapter is insufficient. The Product Owner has authorized the immediately following cycle to attempt the existing authenticated Shopify browser session for read-only inspection only.
+
 ## Access classification
 
 Every required capability must be verified as exactly one primary path:

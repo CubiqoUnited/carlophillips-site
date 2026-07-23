@@ -34,15 +34,27 @@
 - [x] Run production build and desktop/mobile browser verification; save Cycle 3 evidence.
 - [x] Keep all purchase, Shopify write, and production actions blocked.
 
-## Next bounded cycle
+## Completed: executable capability and bag policy
 
-- [ ] With authorized read-only values, capture a current Shopify product/variant/media observation and fingerprint.
-- [ ] Classify the selected P0 Shopify/Apliiq capabilities by API, Admin/Flow, app credential, approved browser, human-only, or unavailable path.
-- [ ] Replace the visible bag shell with an explicit unavailable/local-preview state before wiring a Shopify-only active cart.
+- [x] Validate capability registry evidence, callable surface, exact operations, restrictions, and blockers.
+- [x] Replace the visible bag/cart wrappers with dedicated local-preview and unavailable Server Component states.
+- [x] Prove Preview/production fixture denial and keep checkout unavailable without verified Shopify cart access.
+- [x] Verify local desktop/mobile and Preview desktop browser states with no console errors or checkout links.
+
+## Next bounded cycle: authenticated read-only Shopify audit
+
+- [ ] Use the already authenticated Shopify browser session; do not assume access is blocked before attempting it.
+- [ ] Classify P0 Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder by actual callable surface.
+- [ ] Capture sanitized names/settings/permission or billing evidence without revealing secrets, accepting charges, or changing state.
+- [ ] Update the capability registry and exact PipelineRun blockers/resume points from observed evidence.
+- [ ] If safely observable, capture current Hoodie Shopify product/variant/media facts and fingerprint without writes.
+
+## Subsequent local security cycle
+
+- [ ] Migrate from end-of-life Next.js `14.2.3` to a supported security line and run full regression evidence before any deployment.
 - [ ] Define reusable designer-led and trend-led job/brief contracts; keep external runs and paid sources approval-gated.
 
 ## Blocked / approval required
 
 - [ ] Restore Vercel deployment access, then resume at preview deployment verification.
-- [ ] Authorize specific least-privilege access paths for selected Shopify/app capability audits; installed status alone is insufficient.
 - [ ] Approve any Shopify write, product activation, test order, `main` merge, or production promotion separately.

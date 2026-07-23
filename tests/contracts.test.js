@@ -5,12 +5,14 @@ import commerceProductSchema from '../contracts/commerce-product.schema.json';
 import commerceCartSchema from '../contracts/commerce-cart.schema.json';
 import pipelineRunSchema from '../contracts/pipeline-run.schema.json';
 import mediaManifestSchema from '../contracts/media-manifest.schema.json';
+import capabilityRegistrySchema from '../contracts/capability-registry.schema.json';
 import mediaAssetSchema from '../contracts/media-asset.schema.json';
 import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
+import capabilityRegistry from '../config/capability-registry.json';
 
 const ajv = new Ajv2020({ allErrors: true });
 addFormats(ajv);
@@ -20,6 +22,7 @@ const validateCommerceProduct = ajv.compile(commerceProductSchema);
 const validateCommerceCart = ajv.compile(commerceCartSchema);
 const validatePipelineRun = ajv.compile(pipelineRunSchema);
 const validateMediaManifest = ajv.compile(mediaManifestSchema);
+const validateCapabilityRegistry = ajv.compile(capabilityRegistrySchema);
 const validateMediaAsset = ajv.getSchema(mediaAssetSchema.$id);
 const validateProductRelease = ajv.compile(productReleaseSchema);
 const validateReleaseDecision = ajv.compile(releaseDecisionSchema);
@@ -171,5 +174,15 @@ describe('truth contracts', () => {
     expect(hoodiePipelineRun.state).toBe('blocked');
     expect(new Set(hoodiePipelineRun.workItems.map(item => item.lane)).size).toBe(4);
     expect(Object.values(hoodiePipelineRun.approvals).every(approval => approval.status === 'pending')).toBe(true);
+  });
+
+  it('validates the evidence-labeled capability registry without inventing callable access', () => {
+    expect(validateCapabilityRegistry(capabilityRegistry)).toBe(true);
+    const cartCapability = capabilityRegistry.capabilities.find(item => item.capability === 'shopify-storefront-cart');
+    expect(cartCapability).toMatchObject({
+      accessState: 'unverified',
+      callableSurface: 'unverified',
+      allowedOperations: [],
+    });
   });
 });

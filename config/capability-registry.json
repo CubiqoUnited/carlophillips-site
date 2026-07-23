@@ -10,52 +10,112 @@
   },
   "capabilities": [
     {
+      "capability": "shopify-storefront-cart",
+      "selectedAdapter": "shopify-storefront-cart",
+      "accessState": "unverified",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": [],
+      "costGate": "checkout and order submission remain separately approval-gated",
+      "draftSafety": "read-only audit and no-order cart test required before activation",
+      "alternatives": [],
+      "blocker": {
+        "code": "SHOPIFY_CART_CAPABILITY_UNVERIFIED",
+        "humanAction": "Use the existing authenticated Shopify session for a read-only Storefront/cart access audit without revealing credentials.",
+        "resumePoint": "Record the callable surface and, only if authorized, prove create/add/update/remove and checkout-host retrieval without submitting an order."
+      }
+    },
+    {
       "capability": "hoodie-fulfillment",
       "selectedAdapter": "apliiq",
-      "access": "human_required",
+      "accessState": "human_required",
+      "callableSurface": "human_only",
+      "allowedOperations": [],
+      "requiresApproval": ["sample", "spend"],
       "costGate": "sample/order/fulfillment approval required",
       "draftSafety": "draft-only until release approvals",
-      "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"]
+      "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"],
+      "blocker": {
+        "code": "APLIIQ_READ_ACCESS_REQUIRED",
+        "humanAction": "Verify the existing authenticated Apliiq/Shopify app surface or authorize a least-privilege read-only path.",
+        "resumePoint": "Observe and fingerprint the Hoodie provider-to-Shopify mapping without ordering, sampling, or enabling fulfillment."
+      }
     },
     {
       "capability": "spin-360",
       "selectedAdapter": null,
-      "access": "unavailable",
+      "accessState": "unverified",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
       "costGate": "plan/credit approval required",
       "draftSafety": "exact-product bake-off and human QA required",
-      "alternatives": ["spin-studio", "zs-spin-view"]
+      "alternatives": ["spin-studio", "zs-spin-view"],
+      "blocker": {
+        "code": "SPIN_CAPABILITY_AUDIT_REQUIRED",
+        "humanAction": "Read the installed Spin Studio and ZS-Spin-View settings, access, and billing surfaces without accepting a plan or using credits.",
+        "resumePoint": "Classify both candidates and select one reversible exact-Hoodie bake-off only after Product Owner approval."
+      }
     },
     {
       "capability": "model-lifestyle-media",
       "selectedAdapter": null,
-      "access": "human_required",
+      "accessState": "unverified",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
       "costGate": "credit/subscription approval required",
       "draftSafety": "derived provenance and human media approval required",
-      "alternatives": ["modelize"]
+      "alternatives": ["modelize"],
+      "blocker": {
+        "code": "MODELIZE_CAPABILITY_AUDIT_REQUIRED",
+        "humanAction": "Read the installed Modelize access, credit, and settings surfaces without generating or purchasing anything.",
+        "resumePoint": "Record callable inputs/outputs, provenance controls, credit boundary, and Draft-safe export path."
+      }
     },
     {
       "capability": "shopify-local-automation",
       "selectedAdapter": "flow",
-      "access": "human_required",
+      "accessState": "unverified",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["publish"],
       "costGate": "plan and activation approval required",
       "draftSafety": "versioned Draft-safe flow only",
-      "alternatives": []
+      "alternatives": [],
+      "blocker": {
+        "code": "FLOW_CAPABILITY_AUDIT_REQUIRED",
+        "humanAction": "Read existing Flow access, templates, and plan boundaries without enabling or editing a workflow.",
+        "resumePoint": "Record supported triggers/actions and design a disabled Draft-safe contract for Product Owner review."
+      }
     },
     {
       "capability": "cross-lane-orchestration",
       "selectedAdapter": "cp-pipeline-run",
-      "access": "local",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "allowedOperations": ["simulate-run", "record-evidence", "isolate-blocker"],
+      "requiresApproval": ["spend", "credits", "sample", "publish", "production"],
       "costGate": "no external action",
       "draftSafety": "hard spend/publish/production gates",
-      "alternatives": ["codexautomation5"]
+      "alternatives": ["codexautomation5"],
+      "blocker": null
     },
     {
       "capability": "support-inbox",
       "selectedAdapter": null,
-      "access": "unavailable",
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["spend"],
       "costGate": "privacy/subscription approval required",
       "draftSafety": "one owner after escalation and transcript audit",
-      "alternatives": ["tidio", "messaging"]
+      "alternatives": ["tidio", "messaging"],
+      "blocker": {
+        "code": "SUPPORT_OWNER_UNSELECTED",
+        "humanAction": "Approve a privacy, escalation, retention, and cost audit before selecting one support inbox.",
+        "resumePoint": "Classify Tidio and Messaging, select one owner, and keep the alternative inactive."
+      }
     }
   ]
 }

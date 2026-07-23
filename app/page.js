@@ -67,7 +67,6 @@ function AppShell() {
         )
       )}
       {route === 'about' && <AboutPage />}
-      {route === 'bag' && <BagPage onBack={() => setBagOpen(true)} />}
 
       <Footer />
     </main>
@@ -78,7 +77,6 @@ function getRoute(pathname) {
   if (pathname.startsWith('/products/') || pathname.startsWith('/carlo/')) return 'product';
   if (pathname.startsWith('/shop') || pathname.startsWith('/collections')) return 'collection';
   if (pathname.startsWith('/about') || pathname.startsWith('/lookbook')) return 'about';
-  if (pathname.startsWith('/cart') || pathname.startsWith('/bag')) return 'bag';
   return 'home';
 }
 
@@ -522,27 +520,6 @@ function AboutPage() {
             </article>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
-
-function BagPage({ onBack }) {
-  return (
-    <section className="flex min-h-screen items-center px-5 pt-28 sm:px-8 lg:px-12">
-      <div className="mx-auto w-full max-w-3xl border border-white/10 bg-[#050505] p-8 sm:p-12">
-        <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">Bag</p>
-        <h1 className="text-5xl font-light tracking-[-0.055em] sm:text-7xl">Your bag is empty.</h1>
-        <p className="mt-8 max-w-lg text-base leading-relaxed text-white/52">
-          Releases are not open yet. The bag will activate when the first approved drop enters the store.
-        </p>
-        <button
-          type="button"
-          onClick={onBack}
-          className="mt-10 inline-flex items-center gap-3 border border-white/20 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/70 transition hover:border-white hover:text-white"
-        >
-          View bag panel
-        </button>
       </div>
     </section>
   );

@@ -1,6 +1,11 @@
+import BagPage from '../bag/page';
+
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
-  title: 'Bag | CARLOPHILLIPS',
-  description: 'Your CARLOPHILLIPS bag will activate when the first approved drop enters release.',
+  title: 'Cart | CARLOPHILLIPS',
+  description: 'A source-labeled CARLOPHILLIPS cart state. Checkout remains fail-closed until commerce evidence passes.',
+  robots: { index: false, follow: true },
 };
 
-export { default } from '../page';
+export default BagPage;

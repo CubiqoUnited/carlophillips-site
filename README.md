@@ -2,7 +2,7 @@
 
 CARLOPHILLIPS is a Next.js 14 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
-The repository is **not production-ready**. The editorial shell keeps products hidden by default. The product route now uses a server-only, source-labeled commerce gateway: explicit local fixture mode supports layout review, while Shopify mode returns an honest unavailable state when configuration or product access is missing. Cart and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
+The repository is **not production-ready**. The editorial shell keeps products hidden by default. Product and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, while Preview/production return honest unavailable states when Shopify capability is unverified. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
 
 ## Current product state
 
@@ -13,7 +13,7 @@ The repository is **not production-ready**. The editorial shell keeps products h
 
 ## Stack
 
-- Next.js 14.2.3 App Router and React 18
+- Next.js 14.2.3 App Router and React 18 (**end-of-life; supported-version security migration required before production**)
 - Tailwind CSS 3 and Framer Motion
 - Shopify Storefront GraphQL modules for product/media/cart operations
 - Yarn Classic 1.22.22
@@ -72,8 +72,8 @@ Copy `.env.example` and supply values only in ignored local files or the appropr
 ## Repository map
 
 ```text
-app/                 routes; product route has a dedicated server boundary
-components/commerce/ reusable, non-buyable product presentation
+app/                 routes; product and bag/cart have dedicated server boundaries
+components/commerce/ reusable, non-buyable product and truthful bag presentation
 contracts/           machine-readable truth and release schemas
 releases/            evidence-bound release records and media manifests
 lib/config/          release and Shopify configuration
