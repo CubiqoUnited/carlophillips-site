@@ -2,7 +2,7 @@
 
 CARLOPHILLIPS is a Next.js 15 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
-The repository is **not production-ready**. The editorial shell keeps products hidden by default. Home, product, catalog (`/shop` and `/collections`), and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. Home receives a minimized summary from the same catalog decision, so its featured link and counts cannot bypass catalog policy. A Shopify observation alone never authorizes visibility or commerce. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
+The repository is **not production-ready**. The product-led storefront keeps products hidden by default. Its home composition restores the restrained, full-height visual direction of the production-aligned `9e1f5c3` implementation without restoring that version's mock catalog, invented product media, or browser cart mutations. Home, product, catalog (`/shop` and `/collections`), and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. Home receives a minimized summary from the same catalog decision, so its featured link and counts cannot bypass catalog policy. A Shopify observation alone never authorizes visibility or commerce. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
 
 Read-only Shopify results become `cp.product-observation.v1` candidates only
 when they carry the exact evidence reference of a verified product-read
@@ -98,6 +98,14 @@ yarn build
 
 Run all gates with `yarn verify`; it includes the production-dependency audit. Do not name this script `check`: Yarn Classic reserves `yarn check` for its own dependency-tree command. A clean dependency proof uses `yarn install --frozen-lockfile`; do not add npm or pnpm lockfiles.
 
+## Branch and deployment model
+
+- `main` is the only permanent branch and the only production-intent source.
+- Feature and correction work uses temporary `codex/*` branches and pull requests.
+- A Vercel Preview deployment from the temporary PR branch is the staging environment.
+- Production follows approved changes on `main` only. No permanent `staging` branch is part of the target model.
+- Merge, branch deletion, Vercel production changes, and production deployment require explicit Product Owner approval.
+
 ## Environment variables
 
 Copy `.env.example` and supply values only in ignored local files or the appropriate Vercel environment. Do not commit real values.
@@ -122,7 +130,7 @@ Storefront pages deny third-party framing with both `X-Frame-Options: DENY` and 
 
 ```text
 app/                 routes; home, product, catalog, and bag/cart have dedicated server boundaries
-components/editorial/ client editorial shell receiving minimized server truth
+components/storefront/ VOLLBAK-aligned home receiving minimized server truth
 components/commerce/ reusable, non-buyable product/catalog and truthful bag presentation
 contracts/           machine-readable truth, observation, review, and release schemas
 releases/            evidence-bound release records and media manifests

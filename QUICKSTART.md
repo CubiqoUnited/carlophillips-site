@@ -12,7 +12,7 @@ Visit `http://localhost:3000`.
 
 ## Expected default behavior
 
-- Home/about editorial routes render.
+- The product-led home route renders the production-aligned visual composition.
 - Shop and collection routes explain that the first drop is not released.
 - Product routes show an explicit unavailable state while visibility is closed.
 - Bag/cart routes show an explicit local non-commerce or unavailable state.

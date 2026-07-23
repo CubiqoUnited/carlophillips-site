@@ -3,14 +3,12 @@ import { describe, expect, it } from 'vitest';
 
 const runtimeSources = [
   'app/page.js',
-  'app/about/page.js',
-  'app/lookbook/page.js',
   'app/shop/page.js',
   'app/collections/page.js',
   'app/products/[handle]/page.js',
   'app/bag/page.js',
   'app/cart/page.js',
-  'components/editorial/app-shell.jsx',
+  'components/storefront/home-storefront.jsx',
   'components/commerce/catalog-boundary.jsx',
   'components/commerce/product-detail.jsx',
   'components/commerce/bag-state.jsx',

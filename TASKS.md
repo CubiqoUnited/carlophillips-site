@@ -1,5 +1,16 @@
 # Delivery Tasks
 
+## Current bounded correction: production visual direction
+
+- [x] Recoverably isolate the uncommitted Cycle 20 fulfillment-contract draft without mixing or committing it.
+- [x] Identify `9e1f5c3` as the VOLLBAK-aligned production source and `5077e3f` as the editorial detour.
+- [x] Remove the editorial shell, `/about`, `/lookbook`, editorial-only copy abstraction, and stale sitemap entry.
+- [x] Restore the production-aligned full-height storefront composition while retaining the server catalog/release boundary.
+- [x] Keep the archived brand board explicitly separate from product/media proof and keep purchasing disabled.
+- [x] Record the one-`main` Git model: temporary PR branches create Vercel Preview staging; Production follows approved `main`.
+- [ ] Product Owner: review the candidate commit and explicitly authorize any push, Preview deployment, PR, merge, remote-branch cleanup, or Vercel production change.
+- [ ] Cycle 20 owner/resume: Product Owner decides whether the isolated stash should be resumed in a later, separately scoped fulfillment-contract task.
+
 ## In progress: fitness baseline
 
 - [x] Create `codex/cp-fitness-baseline` from the Hoodie staging-preview commit.
@@ -90,7 +101,7 @@
 ## Next storefront composition cycle
 
 - [x] Bind the home featured-product navigation to the release registry so its counts/links cannot diverge from `/shop`.
-- [x] Keep home/about/lookbook editorial content separate from product truth and preserve the one-product Hoodie-first sequence.
+- [x] Remove the non-PRD home/about/lookbook editorial detour and preserve the one-product Hoodie-first sequence.
 - [x] Prove all home-to-catalog/PDP navigation paths stay source-labeled and non-commerce before live cart capability exists.
 
 ## Next active-commerce readiness cycle

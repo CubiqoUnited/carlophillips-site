@@ -1,13 +1,20 @@
 # Current Status
 
 Updated: 2026-07-23
-Branch: `codex/cp-fitness-baseline` from `425f50b`  
+Branch: `codex/restore-production-visual-direction` from fitness commit `85b62e1`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Verified facts
 
+- The last production-aligned, explicitly VOLLBAK-style source is commit `9e1f5c3`. Commit `5077e3f` replaced its full-height product-led home with the editorial shell later carried by remote `main` at `d172cfb`.
+- The current bounded correction restores the `9e1f5c3` visual language—quiet fixed navigation, full-height split hero, restrained type, and product release staging—while retaining the active server release/catalog boundaries. It does not restore the historical mock catalog, invented product media fallbacks, or browser cart.
+- Editorial-only `/about` and `/lookbook` routes, the shared editorial shell, and the inactive editorial content abstraction are removed. `/shop`, `/collections`, `/products/[handle]`, `/bag`, `/cart`, and API boundaries remain.
+- The archived drop board is labeled as a visual-system reference and explicitly not product or media proof. It does not make a product visible or purchasable.
+- The target Git model has one permanent branch, `main`; staging is a Vercel Preview generated from a temporary PR branch. No remote branch, deployment, or Vercel setting was changed in this correction.
+- Read-only Vercel history shows the inspected production deployment sourced from `main` at `d172cfb`; the inspected `staging` and feature deployments are Preview targets. All inspected deployment URLs returned the known `402 DEPLOYMENT_DISABLED`, so local browser evidence is the current demonstrable visual proof.
+- Paused Cycle 20 fulfillment-contract work is recoverably isolated in stash `stash@{0}` / `ab3f004119ac28547d0ecddb50634a9e9d7806e4` and is not part of this branch diff.
 - Recovered Product Owner intent confirms the Hoodie is the first complete POC for a reusable POD-to-publish system with four coordinated lanes and designer-led plus trend-led workflows; it is not a static-page endpoint.
-- The editorial UI remains fail-closed. Home, product, `/shop`, `/collections`, and bag/cart routes now use dedicated server-rendered truth boundaries.
+- The storefront UI remains fail-closed. Home, product, `/shop`, `/collections`, and bag/cart routes use dedicated server-rendered truth boundaries.
 - The Hoodie is recorded as Shopify Draft and purchasing is disabled in the UI.
 - Shopify product reads sit behind a server-only adapter that now refuses network access until the exact product-read capability is ready with a durable evidence reference. Configuration, capability evidence, and a live observation are all still blocked/unverified.
 - The versioned Hoodie release record binds the observed Shopify/Apliiq identities and media ledger while leaving variant fingerprints missing and every approval pending.
@@ -123,14 +130,14 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - `yarn verify` passed with zero-warning lint, 24 files/169 tests, zero production advisories across 193 packages, and a successful 13-route build.
 - Local desktop `/shop`, mobile `/collections`, catalog-to-PDP, and credentials-disabled Preview empty-state checks passed with no console/page errors, overlays, or horizontal overflow. Evidence is stored under `test_reports/cp-fitness-cycle-11/`.
 
-## Cycle 12 verification
+## Cycle 12 verification (historical; presentation superseded by the current correction)
 
-- Home no longer imports visibility flags or the Hoodie fixture in client code. Its server route consumes the exact shared catalog decision and passes only a schema-validated non-commerce summary into the editorial shell.
+- At Cycle 12, home stopped importing visibility flags or the Hoodie fixture in client code. Its server route consumed the exact shared catalog decision and passed only a schema-validated non-commerce summary into the then-active editorial shell.
 - The home release section derives candidate/visible/withheld counts and its optional PDP review link from that summary. A denied or empty decision emits no product payload, title, or `/products/` link.
-- About and lookbook remain editorial-only and do not import the catalog server, Shopify adapter, fixture, or release flags.
-- The obsolete client-owned collection/PDP implementations were removed from the editorial shell; `/shop`, `/collections`, and `/products/[handle]` remain the only owners of those flows.
+- At that point, About and Lookbook were editorial-only. Both routes and their shared shell are removed by the current correction.
+- The obsolete client-owned collection/PDP implementations were removed at Cycle 12; `/shop`, `/collections`, and `/products/[handle]` remain the only owners of those flows.
 - `yarn verify` passed with zero-warning lint, 27 files/179 tests, zero production advisories across 193 packages, and a successful 13-route build.
-- Local desktop/mobile home, home-to-PDP/catalog, editorial-only about, and credentials-disabled Preview checks passed with no console/page errors, overlays, or horizontal overflow. Evidence is stored under `test_reports/cp-fitness-cycle-12/`.
+- The then-active desktop/mobile home, home-to-PDP/catalog, About, and credentials-disabled Preview checks passed. That evidence remains historical under `test_reports/cp-fitness-cycle-12/` and is not current visual proof.
 
 ## Cycle 13 verification
 
