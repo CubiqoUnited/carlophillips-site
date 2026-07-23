@@ -7,8 +7,8 @@ The repository is **not production-ready**. The editorial shell keeps products h
 ## Current product state
 
 - One real Apliiq/Shopify Signature Hoodie POC is documented as Draft with purchasing disabled.
-- A prior Shopify audit recorded 12 products with image-only media, but the broader catalog is not active in the current UI.
-- The Product Owner must choose the immediate lane: one-product Hoodie proof or restoration of the 12-product catalog. `PRD.md` presents the tradeoff without making the decision.
+- A prior Shopify audit recorded 12 products with image-only media, but the broader catalog is later reuse/scale input and is not active or release-proven in the current UI.
+- The resolved sequence is Signature Hoodie through the complete reusable system first, then a meaningfully different product, then approved catalog expansion.
 - Vercel production and preview were last observed returning HTTP 402 `DEPLOYMENT_DISABLED`; local work continues while hosting access is restored.
 
 ## Stack

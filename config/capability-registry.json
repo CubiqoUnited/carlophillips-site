@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "cp.capability-registry.v1",
+  "observedAt": "2026-07-22",
+  "source": "Product Owner-supplied installed-app snapshot; operational access unverified",
+  "canonicalOwners": {
+    "releaseTruth": "Product Release Record",
+    "mediaTruth": "Media Registry",
+    "commerceTruth": "Shopify through Commerce Gateway",
+    "orchestrationTruth": "PipelineRun"
+  },
+  "capabilities": [
+    {
+      "capability": "hoodie-fulfillment",
+      "selectedAdapter": "apliiq",
+      "access": "human_required",
+      "costGate": "sample/order/fulfillment approval required",
+      "draftSafety": "draft-only until release approvals",
+      "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"]
+    },
+    {
+      "capability": "spin-360",
+      "selectedAdapter": null,
+      "access": "unavailable",
+      "costGate": "plan/credit approval required",
+      "draftSafety": "exact-product bake-off and human QA required",
+      "alternatives": ["spin-studio", "zs-spin-view"]
+    },
+    {
+      "capability": "model-lifestyle-media",
+      "selectedAdapter": null,
+      "access": "human_required",
+      "costGate": "credit/subscription approval required",
+      "draftSafety": "derived provenance and human media approval required",
+      "alternatives": ["modelize"]
+    },
+    {
+      "capability": "shopify-local-automation",
+      "selectedAdapter": "flow",
+      "access": "human_required",
+      "costGate": "plan and activation approval required",
+      "draftSafety": "versioned Draft-safe flow only",
+      "alternatives": []
+    },
+    {
+      "capability": "cross-lane-orchestration",
+      "selectedAdapter": "cp-pipeline-run",
+      "access": "local",
+      "costGate": "no external action",
+      "draftSafety": "hard spend/publish/production gates",
+      "alternatives": ["codexautomation5"]
+    },
+    {
+      "capability": "support-inbox",
+      "selectedAdapter": null,
+      "access": "unavailable",
+      "costGate": "privacy/subscription approval required",
+      "draftSafety": "one owner after escalation and transcript audit",
+      "alternatives": ["tidio", "messaging"]
+    }
+  ]
+}

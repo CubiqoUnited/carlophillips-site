@@ -1,6 +1,17 @@
 {
   "schemaVersion": "cp.product-media-manifest.v1",
   "releaseId": "cp-signature-hoodie-2026-001",
+  "requirements": [
+    { "modality": "front", "requirement": "required", "status": "candidate", "assetIds": ["apliiq-5958463-black-front-original"], "infeasibilityBlocker": null },
+    { "modality": "back-angle", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "embroidery-detail", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "material-detail", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "on-model", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "lifestyle", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "spin-360", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "model-3d-ar", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "video", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null }
+  ],
   "assets": [
     {
       "schemaVersion": "cp.product-media-asset.v1",

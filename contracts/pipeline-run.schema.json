@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/pipeline-run.schema.json",
+  "title": "PipelineRun v1",
+  "type": "object",
+  "required": ["schemaVersion", "runId", "releaseId", "mode", "state", "workItems", "events", "approvals"],
+  "properties": {
+    "schemaVersion": { "const": "cp.pipeline-run.v1" },
+    "runId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
+    "releaseId": { "type": "string", "minLength": 1 },
+    "mode": { "enum": ["designer-led", "trend-led"] },
+    "state": { "enum": ["pending", "in_progress", "in_progress_with_blockers", "blocked", "complete", "cancelled"] },
+    "workItems": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["workItemId", "lane", "capability", "adapter", "status", "attempts", "evidence", "blocker"],
+        "properties": {
+          "workItemId": { "type": "string", "minLength": 1 },
+          "lane": { "enum": ["product-pod", "media", "commerce-frontend", "orchestration"] },
+          "capability": { "type": "string", "minLength": 1 },
+          "adapter": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["pending", "in_progress", "succeeded", "human_required", "unavailable", "failed"] },
+          "attempts": { "type": "integer", "minimum": 0 },
+          "evidence": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "blocker": {
+            "type": ["object", "null"],
+            "properties": {
+              "code": { "type": "string", "minLength": 1 },
+              "humanAction": { "type": "string", "minLength": 1 },
+              "resumePoint": { "type": "string", "minLength": 1 }
+            },
+            "required": ["code", "humanAction", "resumePoint"],
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["eventId", "idempotencyKey", "workItemId", "status", "recordedAt", "actor"],
+        "properties": {
+          "eventId": { "type": "string", "minLength": 1 },
+          "idempotencyKey": { "type": "string", "minLength": 1 },
+          "workItemId": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["pending", "in_progress", "succeeded", "human_required", "unavailable", "failed"] },
+          "recordedAt": { "type": "string", "format": "date-time" },
+          "actor": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "required": ["spend", "credits", "sample", "publish", "production"],
+      "properties": {
+        "spend": { "$ref": "#/$defs/approval" },
+        "credits": { "$ref": "#/$defs/approval" },
+        "sample": { "$ref": "#/$defs/approval" },
+        "publish": { "$ref": "#/$defs/approval" },
+        "production": { "$ref": "#/$defs/approval" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "approval": {
+      "type": "object",
+      "required": ["status", "owner"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "denied"] },
+        "owner": { "const": "Product Owner" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

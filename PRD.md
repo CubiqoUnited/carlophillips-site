@@ -4,7 +4,16 @@ Status: working product definition, not a production-readiness claim. Updated 20
 
 ## Objective
 
-CARLOPHILLIPS is the first proof of concept for a reusable premium POD commerce system. The experience layer is Next.js; Shopify remains commerce truth; approved POD providers supply manufacturable products and fulfillment mappings. The target is one repeatable, observable product path before catalog-scale automation.
+CARLOPHILLIPS is the first proof of concept for a reusable premium POD-to-publish system. The experience layer is Next.js; Shopify remains commerce truth; approved POD providers supply manufacturable products and fulfillment mappings. The Signature Hoodie is the first complete acceptance journey through that system, not permission to reduce the product to one static PDP. Reusable interfaces and evidence records must support later products and brands without rebuilding the pipeline.
+
+## Coordinated delivery lanes
+
+1. **Product/POD truth:** supplier selection, real blank/SKU, decoration feasibility, variants, price, and fulfillment mapping.
+2. **Media truth:** an asset matrix and approved product, model, lifestyle, detail, spin/3D where feasible, and video assets. High-definition rich presentation is required for every production candidate; unsupported effects must not be faked.
+3. **Commerce/frontend:** an original, Vollebak-confidence Next.js experience backed by Shopify catalog, cart, and checkout truth with responsive and accessible states.
+4. **Agentic orchestration:** research, design brief, provider routing, media jobs, Shopify Draft staging, validation, human approval, publish handoff, logs, retries, and exact blocker/resume records.
+
+The system has two creation modes: designer-led inputs (brand rules, ideas, mockups, references, categories, price position, cadence) and trend/current-affairs-led inputs (fashion signals, news, seasons, culture, and other time-sensitive signals). Both produce approval-ready staged candidates, never autonomous publication.
 
 ## Required customer path
 
@@ -20,7 +29,7 @@ No fallback mock product or local-only cart may masquerade as a successful bound
 
 - Original CARLOPHILLIPS identity with fullscreen, editorial, product-first presentation.
 - Responsive desktop and mobile behavior, keyboard access, useful alt text, and explicit loading/error/unreleased states.
-- Shopify-native image, video, external-video, and 3D records may be rendered when real approved assets exist.
+- Shopify-native image, video, external-video, and 3D records are rendered when real approved assets exist; each production candidate must satisfy its approved media matrix before release.
 - Spin/360, AR, try-on, on-model, campaign, and product-film claims stay absent until their source assets and rights are verified.
 
 ## Release gates
@@ -30,22 +39,22 @@ No fallback mock product or local-only cart may masquerade as a successful bound
 - A preview is not approval to publish, sell, deploy to production, or change Shopify state.
 - Production requires Product Owner approval plus direct evidence for domain, product/variant truth, checkout, payment, POD mapping, fulfillment, tracking, support, and returns.
 
-## Product-scope decision required
+## Delivery sequence
 
-The Product Owner must choose the immediate delivery lane; this repository does not choose it automatically.
+The sequence is resolved by Product Owner intent:
 
-| Lane | Evidence available | Primary benefit | Primary risk / cost |
-|---|---|---|---|
-| Signature Hoodie POC | Real Apliiq design facts, Shopify draft identity, local gated review page, partial truthful media | Proves one end-to-end release path with bounded scope | Does not restore the broader storefront; media and operational proof remain incomplete |
-| Broader 12-product catalog | Prior Shopify audit recorded 12 products and image-only media; dormant product/cart modules exist | Restores breadth sooner | Multiplies media, variant, POD-mapping, and release-QA work before one path is proven |
-
-Decision requested: prioritize **one-product proof** or **12-product catalog restoration**. Until decided, safe shared infrastructure and evidence work may continue, but catalog publication and product activation remain blocked.
+1. Move the Signature Hoodie through the complete reusable system: Product/POD truth, required rich media, Shopify-backed private commerce, resumable orchestration, approvals, gated checkout evidence, fulfillment, tracking, support, returns, reviews, and release evidence.
+2. Prove reuse with a meaningfully different product using the same contracts, components, provider adapters, media registry, Commerce Gateway, and PipelineRun core.
+3. Expand to the broader catalog and future brands only through approved release records. The prior 12-product observation is later reuse/scale input, not a competing current lane and not evidence those products are release-ready.
 
 ## Acceptance criteria
 
 - Governance, status, tasks, architecture, setup, and environment documentation agree with runtime behavior.
 - Yarn install is reproducible; lint, automated tests, and production build pass.
 - The selected product lane uses Shopify-backed product/variant/cart data without silent commerce fallbacks.
+- The first accepted Hoodie release proves all four lanes through a versioned Product Release Record; the next product can reuse the same provider, media, commerce, and approval contracts.
+- Required rich media is real, provenance-bound, rights-checked, and approved; missing assets block release rather than trigger simulated frontend effects.
+- Shopify/app capabilities have an evidence-backed access classification; an installed app alone is not treated as controllable.
 - Local desktop/mobile browser evidence exists with no relevant console errors.
 - Preview and production are separately configured and tested.
 - External human actions and exact code resume points are recorded.

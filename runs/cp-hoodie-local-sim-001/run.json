@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "cp.pipeline-run.v1",
+  "runId": "cp-hoodie-local-sim-001",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "mode": "designer-led",
+  "state": "blocked",
+  "workItems": [
+    {
+      "workItemId": "pod-map",
+      "lane": "product-pod",
+      "capability": "hoodie-fulfillment",
+      "adapter": "apliiq",
+      "status": "human_required",
+      "attempts": 1,
+      "evidence": ["releases/cp-signature-hoodie-2026-001/release.json"],
+      "blocker": {
+        "code": "APLIIQ_READ_ACCESS_REQUIRED",
+        "humanAction": "Authorize a least-privilege read-only Apliiq API or authenticated-browser observation path.",
+        "resumePoint": "Observe and fingerprint the Hoodie provider-to-Shopify variant mapping without ordering or accepting charges."
+      }
+    },
+    {
+      "workItemId": "media-plan",
+      "lane": "media",
+      "capability": "hoodie-media-matrix",
+      "adapter": "cp-media-registry",
+      "status": "human_required",
+      "attempts": 1,
+      "evidence": ["releases/cp-signature-hoodie-2026-001/media-manifest.json"],
+      "blocker": {
+        "code": "MEDIA_ASSETS_AND_APPROVAL_REQUIRED",
+        "humanAction": "Approve the exact source/tool/access and any credit boundary for missing required Hoodie media.",
+        "resumePoint": "Create or ingest candidates into quarantine, record provenance/rights/QA, and request media approval before public rendering."
+      }
+    },
+    {
+      "workItemId": "commerce-check",
+      "lane": "commerce-frontend",
+      "capability": "local-contract-and-browser-verification",
+      "adapter": "shopify-commerce-gateway",
+      "status": "succeeded",
+      "attempts": 1,
+      "evidence": ["test_reports/cp-fitness-cycle-3/verification.json"],
+      "blocker": null
+    },
+    {
+      "workItemId": "run-audit",
+      "lane": "orchestration",
+      "capability": "idempotent-event-log-and-human-gates",
+      "adapter": "cp-pipeline-run",
+      "status": "succeeded",
+      "attempts": 1,
+      "evidence": ["tests/pipeline-run.test.js"],
+      "blocker": null
+    }
+  ],
+  "events": [
+    {
+      "eventId": "evt-pod-blocked",
+      "idempotencyKey": "cp-hoodie-local-sim-001:pod-map:attempt-1",
+      "workItemId": "pod-map",
+      "status": "human_required",
+      "recordedAt": "2026-07-22T22:45:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-media-blocked",
+      "idempotencyKey": "cp-hoodie-local-sim-001:media-plan:attempt-1",
+      "workItemId": "media-plan",
+      "status": "human_required",
+      "recordedAt": "2026-07-22T22:46:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-commerce-local-verified",
+      "idempotencyKey": "cp-hoodie-local-sim-001:commerce-check:attempt-1",
+      "workItemId": "commerce-check",
+      "status": "succeeded",
+      "recordedAt": "2026-07-22T22:47:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-orchestration-local-verified",
+      "idempotencyKey": "cp-hoodie-local-sim-001:run-audit:attempt-1",
+      "workItemId": "run-audit",
+      "status": "succeeded",
+      "recordedAt": "2026-07-22T22:48:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    }
+  ],
+  "approvals": {
+    "spend": { "status": "pending", "owner": "Product Owner" },
+    "credits": { "status": "pending", "owner": "Product Owner" },
+    "sample": { "status": "pending", "owner": "Product Owner" },
+    "publish": { "status": "pending", "owner": "Product Owner" },
+    "production": { "status": "pending", "owner": "Product Owner" }
+  }
+}

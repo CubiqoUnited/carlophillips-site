@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/media-manifest.schema.json",
+  "title": "ProductMediaManifest v1",
+  "type": "object",
+  "required": ["schemaVersion", "releaseId", "requirements", "assets"],
+  "properties": {
+    "schemaVersion": { "const": "cp.product-media-manifest.v1" },
+    "releaseId": { "type": "string", "minLength": 1 },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["modality", "requirement", "status", "assetIds", "infeasibilityBlocker"],
+        "properties": {
+          "modality": { "enum": ["front", "back-angle", "embroidery-detail", "material-detail", "on-model", "lifestyle", "spin-360", "model-3d-ar", "video"] },
+          "requirement": { "enum": ["required", "where-feasible"] },
+          "status": { "enum": ["missing", "candidate", "approved", "infeasible-pending", "infeasible-approved"] },
+          "assetIds": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "infeasibilityBlocker": {
+            "type": ["object", "null"],
+            "properties": {
+              "reason": { "type": "string", "minLength": 1 },
+              "approvalStatus": { "enum": ["pending", "approved", "rejected"] },
+              "owner": { "type": "string", "minLength": 1 }
+            },
+            "required": ["reason", "approvalStatus", "owner"],
+            "additionalProperties": false
+          }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "status": { "enum": ["infeasible-pending", "infeasible-approved"] } }, "required": ["status"] },
+            "then": {
+              "properties": {
+                "requirement": { "const": "where-feasible" },
+                "infeasibilityBlocker": { "type": "object" }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "status": { "const": "infeasible-approved" } }, "required": ["status"] },
+            "then": {
+              "properties": {
+                "infeasibilityBlocker": {
+                  "type": "object",
+                  "properties": { "approvalStatus": { "const": "approved" } }
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    "assets": { "type": "array", "items": { "$ref": "media-asset.schema.json" } }
+  },
+  "additionalProperties": false
+}

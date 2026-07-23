@@ -2,17 +2,25 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import { describe, expect, it } from 'vitest';
 import commerceProductSchema from '../contracts/commerce-product.schema.json';
+import commerceCartSchema from '../contracts/commerce-cart.schema.json';
+import pipelineRunSchema from '../contracts/pipeline-run.schema.json';
+import mediaManifestSchema from '../contracts/media-manifest.schema.json';
 import mediaAssetSchema from '../contracts/media-asset.schema.json';
 import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
+import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
 
 const ajv = new Ajv2020({ allErrors: true });
 addFormats(ajv);
+ajv.addSchema(mediaAssetSchema);
 
 const validateCommerceProduct = ajv.compile(commerceProductSchema);
-const validateMediaAsset = ajv.compile(mediaAssetSchema);
+const validateCommerceCart = ajv.compile(commerceCartSchema);
+const validatePipelineRun = ajv.compile(pipelineRunSchema);
+const validateMediaManifest = ajv.compile(mediaManifestSchema);
+const validateMediaAsset = ajv.getSchema(mediaAssetSchema.$id);
 const validateProductRelease = ajv.compile(productReleaseSchema);
 const validateReleaseDecision = ajv.compile(releaseDecisionSchema);
 
@@ -54,6 +62,37 @@ describe('truth contracts', () => {
       commerceMode: 'non-commerce',
       product,
     })).toBe(false);
+  });
+
+  it.each(['preview', 'production'])('rejects fixture cart data in %s', environment => {
+    expect(validateCommerceCart({
+      schemaVersion: 'cp.commerce-cart-envelope.v1',
+      source: 'fixture',
+      environment,
+      status: 'ready',
+      reason: null,
+      cart: {
+        schemaVersion: 'cp.commerce-cart.v1',
+        source: 'fixture',
+        id: null,
+        items: [],
+        total: 0,
+        subtotal: 0,
+        totalQuantity: 0,
+        checkoutUrl: '',
+      },
+    })).toBe(false);
+  });
+
+  it('accepts an explicit unavailable production cart decision', () => {
+    expect(validateCommerceCart({
+      schemaVersion: 'cp.commerce-cart-envelope.v1',
+      source: 'unavailable',
+      environment: 'production',
+      status: 'unavailable',
+      reason: 'SHOPIFY_CART_UNAVAILABLE',
+      cart: null,
+    })).toBe(true);
   });
 
   it('requires media provenance and approval fields', () => {
@@ -114,6 +153,7 @@ describe('truth contracts', () => {
   });
 
   it('validates every Hoodie media asset and keeps uncertain assets quarantined', () => {
+    expect(validateMediaManifest(hoodieMediaManifest)).toBe(true);
     expect(hoodieMediaManifest.assets.every(asset => validateMediaAsset(asset))).toBe(true);
     const quarantined = hoodieMediaManifest.assets.filter(asset => asset.approvalStatus === 'quarantined');
     expect(quarantined).toHaveLength(2);
@@ -124,5 +164,12 @@ describe('truth contracts', () => {
     const invalidApprovedRecord = structuredClone(hoodieRelease);
     invalidApprovedRecord.state = 'approved';
     expect(validateProductRelease(invalidApprovedRecord)).toBe(false);
+  });
+
+  it('validates a blocked four-lane Hoodie simulation without granting restricted approvals', () => {
+    expect(validatePipelineRun(hoodiePipelineRun)).toBe(true);
+    expect(hoodiePipelineRun.state).toBe('blocked');
+    expect(new Set(hoodiePipelineRun.workItems.map(item => item.lane)).size).toBe(4);
+    expect(Object.values(hoodiePipelineRun.approvals).every(approval => approval.status === 'pending')).toBe(true);
   });
 });

@@ -6,6 +6,8 @@
 - `main` is the production-intent branch. Feature work uses temporary branches and pull requests.
 - Current product requirements live in `PRD.md`; architecture lives in `ARCHITECTURE.md`; execution state lives in `STATUS.md` and `TASKS.md`.
 - Shopify is the intended source of truth for products, variants, prices, availability, cart, and checkout. Static or mock data must be visibly identified and must never be presented as proof of live commerce.
+- The Signature Hoodie is the first end-to-end POC for a reusable POD-to-publish system, not the final product scope or a static-page objective.
+- A versioned Product Release Record binds product/POD truth, media truth, Shopify truth, approvals, candidate build evidence, and rollback for each candidate.
 
 ## Safety
 

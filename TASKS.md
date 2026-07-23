@@ -21,15 +21,28 @@
 - [x] Replace the product wrapper with a reusable, server-rendered, non-buyable PDP.
 - [x] Verify local fixture and Shopify-failure states in desktop/mobile browsers.
 
+## In progress: fail-closed cart and intent reconciliation
+
+- [x] Add provider-neutral cart contracts and remove non-local local-cart fallback.
+- [x] Add exact HTTPS checkout-host allow-listing and denial tests without creating an order.
+- [x] Cover deterministic cart transitions and expired Shopify-cart replacement without printing identifiers.
+- [x] Reconcile PRD, architecture, status, and tasks with the recovered original Product Owner intent.
+- [x] Preserve the current installed-app snapshot as a capability/access audit backlog without claiming control.
+- [x] Add a four-lane PipelineRun schema/state machine with idempotency, blocker isolation, exact resume points, and hard restricted-action gates.
+- [x] Save a durable Hoodie local simulation that continues safe work around human blockers.
+- [x] Add a machine-validated rich-media requirement matrix and approved-infeasibility release policy; keep the incomplete Hoodie blocked.
+- [x] Run production build and desktop/mobile browser verification; save Cycle 3 evidence.
+- [x] Keep all purchase, Shopify write, and production actions blocked.
+
 ## Next bounded cycle
 
 - [ ] With authorized read-only values, capture a current Shopify product/variant/media observation and fingerprint.
-- [ ] Add provider-neutral cart contracts and remove non-local local-cart fallback.
-- [ ] Add checkout-host allow-listing and release denial tests without creating an order.
-- [ ] Keep all purchase, Shopify write, and production actions blocked.
+- [ ] Classify the selected P0 Shopify/Apliiq capabilities by API, Admin/Flow, app credential, approved browser, human-only, or unavailable path.
+- [ ] Replace the visible bag shell with an explicit unavailable/local-preview state before wiring a Shopify-only active cart.
+- [ ] Define reusable designer-led and trend-led job/brief contracts; keep external runs and paid sources approval-gated.
 
 ## Blocked / approval required
 
 - [ ] Restore Vercel deployment access, then resume at preview deployment verification.
-- [ ] Choose Signature Hoodie POC versus broader 12-product catalog.
+- [ ] Authorize specific least-privilege access paths for selected Shopify/app capability audits; installed status alone is insufficient.
 - [ ] Approve any Shopify write, product activation, test order, `main` merge, or production promotion separately.

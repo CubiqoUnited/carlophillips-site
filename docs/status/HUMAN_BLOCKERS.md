@@ -8,12 +8,6 @@ Human action: an authorized Vercel owner restores access for `carlophillips-site
 
 Resume point: deploy the approved branch to Preview only, configure scoped Preview values, and run HTTP plus desktop/mobile browser/console/network verification. Do not promote production.
 
-## Product scope
-
-Human action: Product Owner chooses Signature Hoodie proof first or broader 12-product catalog restoration using `/PRD.md`.
-
-Resume point: apply the shared contracts to the chosen lane without publishing products.
-
 ## Product/media/fulfillment claims
 
 Human action: Product Owner or designee approves product facts, price, media provenance/customer disclosure, fulfillment mapping, and any operational test.
@@ -27,6 +21,14 @@ Observed blocker: the local audit reports the Shopify Storefront environment is 
 Human action: an authorized owner supplies valid read-only Storefront domain/token values in the intended local or Preview environment.
 
 Resume point: use `COMMERCE_DATA_MODE=shopify`, capture the source-labeled product/variant/price/media response, and update the Draft release record fingerprints while purchasing remains disabled.
+
+## Shopify/app capability access
+
+Observed blocker: installed-app names are reported, but API/Admin/Flow/app-credential/browser access, scopes, billing/credits, Draft safety, and export consequences are not live-verified.
+
+Human action: authorize the selected least-privilege read-only access path and separately approve any paid, credit-consuming, write, sample, or publish boundary.
+
+Resume point: execute the matching P0 row in `/docs/shopify-capability-access-audit.md`, record sanitized findings, and resume the blocked `PipelineRun` work item without stopping other safe work.
 
 ## Restricted actions
 
