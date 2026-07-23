@@ -62,7 +62,13 @@
 - [x] Run a production-dependency audit, remove unused vulnerable direct dependencies, and resolve the current advisory set to zero.
 - [x] Make the supported-version/dependency audit policy machine-checkable in the normal quality gate.
 - [ ] Retire temporary transitive overrides when Next declares patched ranges.
-- [ ] Define reusable designer-led and trend-led job/brief contracts; keep external runs and paid sources approval-gated.
+- [x] Define reusable designer-led and trend-led ProductCreationJob contracts; keep external runs, paid sources, Shopify writes, and publication approval-gated.
+- [x] Save paired local simulations proving both modes converge on the same release/media/commerce/PipelineRun truth core while safe work continues around a human gate.
+
+## Next unblocked truth-contract cycle
+
+- [ ] Strengthen Product Release Record transitions so `approved`/`released` cannot coexist with pending product/media/fulfillment approvals, missing fulfillment fingerprints, missing candidate evidence, or an incomplete media matrix.
+- [ ] Add explicit staged-to-approved/released transition tests and rollback prerequisites without mutating Shopify or deploying.
 
 ## Blocked / approval required
 

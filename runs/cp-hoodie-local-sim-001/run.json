@@ -150,9 +150,11 @@
     }
   ],
   "approvals": {
+    "externalExecution": { "status": "pending", "owner": "Product Owner" },
     "spend": { "status": "pending", "owner": "Product Owner" },
     "credits": { "status": "pending", "owner": "Product Owner" },
     "sample": { "status": "pending", "owner": "Product Owner" },
+    "shopifyWrite": { "status": "pending", "owner": "Product Owner" },
     "publish": { "status": "pending", "owner": "Product Owner" },
     "production": { "status": "pending", "owner": "Product Owner" }
   }

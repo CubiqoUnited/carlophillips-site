@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "cp.product-creation-job.v1",
+  "jobId": "cp-hoodie-designer-contract-sim-002",
+  "environment": "local",
+  "simulation": true,
+  "entryMode": "designer-led",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "candidateDisposition": "draft-only",
+  "inputEvidence": [
+    {
+      "evidenceId": "authoritative-designer-brief",
+      "kind": "designer-brief",
+      "sourceType": "first-party",
+      "sourceRef": "PRD.md",
+      "observedAt": "2026-07-22T00:00:00Z",
+      "authority": "candidate-input",
+      "confidence": "high"
+    }
+  ],
+  "contractBindings": {
+    "productReleaseRecord": "releases/cp-signature-hoodie-2026-001/release.json",
+    "mediaRegistry": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
+    "commerceGateway": "lib/commerce/product-gateway.js",
+    "pipelineRunContract": "contracts/pipeline-run.schema.json",
+    "pipelineRunId": "cp-hoodie-designer-contract-sim-002"
+  },
+  "truthPolicy": {
+    "maySetProductTruth": false,
+    "mayApproveMedia": false,
+    "mayAuthorizeCommerce": false,
+    "mayPublish": false
+  },
+  "approvals": {
+    "externalExecution": { "status": "pending", "owner": "Product Owner" },
+    "spend": { "status": "pending", "owner": "Product Owner" },
+    "credits": { "status": "pending", "owner": "Product Owner" },
+    "sample": { "status": "pending", "owner": "Product Owner" },
+    "shopifyWrite": { "status": "pending", "owner": "Product Owner" },
+    "publish": { "status": "pending", "owner": "Product Owner" },
+    "production": { "status": "pending", "owner": "Product Owner" }
+  }
+}

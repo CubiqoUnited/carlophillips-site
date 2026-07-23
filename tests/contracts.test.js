@@ -6,6 +6,7 @@ import commerceCartSchema from '../contracts/commerce-cart.schema.json';
 import pipelineRunSchema from '../contracts/pipeline-run.schema.json';
 import mediaManifestSchema from '../contracts/media-manifest.schema.json';
 import capabilityRegistrySchema from '../contracts/capability-registry.schema.json';
+import productCreationJobSchema from '../contracts/product-creation-job.schema.json';
 import mediaAssetSchema from '../contracts/media-asset.schema.json';
 import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
@@ -13,6 +14,10 @@ import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
 import capabilityRegistry from '../config/capability-registry.json';
+import designerCreationJob from '../runs/cp-hoodie-designer-contract-sim-002/job.json';
+import trendCreationJob from '../runs/cp-hoodie-trend-contract-sim-003/job.json';
+import designerCreationRun from '../runs/cp-hoodie-designer-contract-sim-002/run.json';
+import trendCreationRun from '../runs/cp-hoodie-trend-contract-sim-003/run.json';
 
 const ajv = new Ajv2020({ allErrors: true });
 addFormats(ajv);
@@ -23,6 +28,7 @@ const validateCommerceCart = ajv.compile(commerceCartSchema);
 const validatePipelineRun = ajv.compile(pipelineRunSchema);
 const validateMediaManifest = ajv.compile(mediaManifestSchema);
 const validateCapabilityRegistry = ajv.compile(capabilityRegistrySchema);
+const validateProductCreationJob = ajv.compile(productCreationJobSchema);
 const validateMediaAsset = ajv.getSchema(mediaAssetSchema.$id);
 const validateProductRelease = ajv.compile(productReleaseSchema);
 const validateReleaseDecision = ajv.compile(releaseDecisionSchema);
@@ -174,6 +180,41 @@ describe('truth contracts', () => {
     expect(hoodiePipelineRun.state).toBe('blocked');
     expect(new Set(hoodiePipelineRun.workItems.map(item => item.lane)).size).toBe(4);
     expect(Object.values(hoodiePipelineRun.approvals).every(approval => approval.status === 'pending')).toBe(true);
+  });
+
+  it('validates both local creation-mode simulations as draft-only and non-authoritative', () => {
+    expect(validateProductCreationJob(designerCreationJob)).toBe(true);
+    expect(validateProductCreationJob(trendCreationJob)).toBe(true);
+    expect(designerCreationJob.contractBindings).toMatchObject({
+      productReleaseRecord: trendCreationJob.contractBindings.productReleaseRecord,
+      mediaRegistry: trendCreationJob.contractBindings.mediaRegistry,
+      commerceGateway: trendCreationJob.contractBindings.commerceGateway,
+      pipelineRunContract: trendCreationJob.contractBindings.pipelineRunContract,
+    });
+    expect(designerCreationJob.contractBindings.pipelineRunId)
+      .not.toBe(trendCreationJob.contractBindings.pipelineRunId);
+    expect(Object.values(designerCreationJob.truthPolicy).every(value => value === false)).toBe(true);
+    expect(Object.values(trendCreationJob.approvals).every(approval => approval.status === 'pending')).toBe(true);
+    expect(validatePipelineRun(designerCreationRun)).toBe(true);
+    expect(validatePipelineRun(trendCreationRun)).toBe(true);
+    expect(designerCreationRun.state).toBe('in_progress_with_blockers');
+    expect(trendCreationRun.state).toBe('in_progress_with_blockers');
+  });
+
+  it.each(['preview', 'production'])('rejects fixture creation evidence in %s', environment => {
+    expect(validateProductCreationJob({
+      ...structuredClone(trendCreationJob),
+      environment,
+      simulation: false,
+    })).toBe(false);
+  });
+
+  it('rejects trend evidence that claims candidate-input authority', () => {
+    const invalid = structuredClone(trendCreationJob);
+    invalid.inputEvidence[0].sourceType = 'research';
+    invalid.inputEvidence[0].authority = 'candidate-input';
+    invalid.inputEvidence[0].confidence = 'medium';
+    expect(validateProductCreationJob(invalid)).toBe(false);
   });
 
   it('validates the evidence-labeled capability registry without inventing callable access', () => {

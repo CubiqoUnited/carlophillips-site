@@ -56,11 +56,13 @@
     },
     "approvals": {
       "type": "object",
-      "required": ["spend", "credits", "sample", "publish", "production"],
+      "required": ["externalExecution", "spend", "credits", "sample", "shopifyWrite", "publish", "production"],
       "properties": {
+        "externalExecution": { "$ref": "#/$defs/approval" },
         "spend": { "$ref": "#/$defs/approval" },
         "credits": { "$ref": "#/$defs/approval" },
         "sample": { "$ref": "#/$defs/approval" },
+        "shopifyWrite": { "$ref": "#/$defs/approval" },
         "publish": { "$ref": "#/$defs/approval" },
         "production": { "$ref": "#/$defs/approval" }
       },

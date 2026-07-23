@@ -34,7 +34,7 @@ Products fail closed by default. Local fixture mode is separately gated and visi
 | POD mapping | Draft release record binds Apliiq product `5958463` provider-neutrally | Product/design facts partial; variant fingerprint/order proof missing | Observe exact variant mapping without ordering, then later prove authorized order handoff |
 | Catalog | Prior audit recorded 12 products with image-only media | Later reuse/scale input; individual release truth unproven | After the complete Hoodie journey, prove a different product through the same cores before catalog expansion |
 | Hosting | Vercel project linked but public responses are HTTP 402 | External blocker | Restore deployment access, then redeploy approved preview and resume browser proof |
-| Agentic orchestration | Durable PipelineRun and executable capability registry exist locally | Idempotency, blocker isolation, restricted gates, and local capability discovery tested; external app access unverified | Run the authorized read-only app audit and bind evidence-backed callable surfaces to registry entries |
+| Agentic orchestration | Durable PipelineRun, ProductCreationJob, and executable capability registry exist locally | Designer-led and trend-led local simulations converge on the same truth contracts; idempotency, blocker isolation, external execution/Shopify write/spend/publish gates, and local capability discovery are tested; external app access remains unverified | Run the authorized read-only app audit and bind evidence-backed callable surfaces to registry entries |
 
 ## Environment model
 
@@ -55,3 +55,4 @@ Products fail closed by default. Local fixture mode is separately gated and visi
 - Media renderers for actual Shopify `IMAGE`, `VIDEO`, `EXTERNAL_VIDEO`, and `MODEL_3D` records, with accessible fallbacks.
 - Provider/media capability adapters classified by supported API/webhook, Shopify Admin/Flow, app credentials, approved browser workflow, human-only, or unavailable.
 - Agentic workflow state for both designer-led and trend-led creation, always ending at explicit human approval gates for spend, Shopify writes, publish, and production.
+- ProductCreationJob inputs are candidate evidence only. Trend signals are always `research-only`; neither creation mode can set product truth, approve media, authorize commerce, or publish. Both modes bind the same Product Release Record, Media Registry, Commerce Gateway, and PipelineRun contract.

@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 6
+# Current Status — Fitness Cycle 7
 
 Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -12,10 +12,12 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
 - Executable capability discovery and dedicated source-labeled bag/cart Server Component routes.
 - A durable four-lane Hoodie simulation with exact blockers and every restricted approval still pending.
+- A ProductCreationJob contract plus paired designer-led/trend-led local simulations that bind the same Product Release Record, Media Registry, Commerce Gateway, and PipelineRun schema.
 - Yarn lockfile, ESLint, Vitest, and production build commands.
 - Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`, plus async route-param compatibility.
 - Fail-closed page framing/security headers and exact-origin API CORS policy.
-- JSON Schemas for Commerce Product, Commerce Cart, Product Media Asset, Release Decision, Product Release Record, and PipelineRun.
+- JSON Schemas for Commerce Product, Commerce Cart, Product Media Asset, Release Decision, Product Release Record, Product Creation Job, and PipelineRun.
+- Hard Product Owner gates for external execution, spend, credits, samples, Shopify writes, publish, and production. Creation inputs remain candidate-only; fixture/trend evidence cannot become production truth.
 
 ## Partial
 

@@ -87,6 +87,8 @@ lib/providers/       server-only provider adapters
 lib/data/            legacy data service with local-only fixture fallback
 lib/shopify/         Storefront queries, mutations, normalization, client
 lib/store/           dormant local/Shopify cart module
+lib/orchestration/   creation jobs, PipelineRun state, capability policy
+runs/                durable local simulations and blocker/resume evidence
 tests/               automated fitness and commerce-contract tests
 test_reports/        historical and generated verification evidence
 ```

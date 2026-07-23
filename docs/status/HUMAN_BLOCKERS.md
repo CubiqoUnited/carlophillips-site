@@ -34,4 +34,4 @@ Resume point: start at installed-app inventory, then attempt each named P0 surfa
 
 ## Restricted actions
 
-Shopify writes, product activation, provider contact, paid services/trials, orders/samples, PR merge, DNS/cutover, and production promotion remain separately approval-gated.
+External product/media/research tool execution, Shopify writes, product activation, provider contact, paid services/trials, credits, orders/samples, PR merge, DNS/cutover, and production promotion remain separately approval-gated. Resume only at the exact approved adapter/action in candidate-only mode with evidence capture; one denied or human-required item must not stop other safe work.

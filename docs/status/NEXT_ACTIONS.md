@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Define designer-led and trend-led job/brief contracts with hard cost/publish gates.
-2. Add a local PipelineRun simulation proving both entry modes converge on the same release/media/commerce contracts.
+1. Strengthen Product Release Record approved/released invariants across product, media, fulfillment, candidate evidence, and rollback.
+2. Add fail-closed staged-to-approved/released transition tests without Shopify writes or deployment.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

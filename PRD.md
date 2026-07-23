@@ -13,7 +13,7 @@ CARLOPHILLIPS is the first proof of concept for a reusable premium POD-to-publis
 3. **Commerce/frontend:** an original, Vollebak-confidence Next.js experience backed by Shopify catalog, cart, and checkout truth with responsive and accessible states.
 4. **Agentic orchestration:** research, design brief, provider routing, media jobs, Shopify Draft staging, validation, human approval, publish handoff, logs, retries, and exact blocker/resume records.
 
-The system has two creation modes: designer-led inputs (brand rules, ideas, mockups, references, categories, price position, cadence) and trend/current-affairs-led inputs (fashion signals, news, seasons, culture, and other time-sensitive signals). Both produce approval-ready staged candidates, never autonomous publication.
+The system has two creation modes: designer-led inputs (brand rules, ideas, mockups, references, categories, price position, cadence) and trend/current-affairs-led inputs (fashion signals, news, seasons, culture, and other time-sensitive signals). Both produce Draft-only candidates through the same truth and approval contracts, never autonomous publication. Inputs do not become product facts: trend signals remain research-only, and neither mode can approve media, authorize commerce, execute an external/paid tool, write Shopify, or publish without the corresponding evidence and Product Owner gate.
 
 ## Required customer path
 

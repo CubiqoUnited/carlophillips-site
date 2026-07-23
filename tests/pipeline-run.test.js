@@ -92,7 +92,15 @@ describe('PipelineRun', () => {
     expect(resumed.workItems[0].evidence).toHaveLength(1);
   });
 
-  it.each(['spend', 'credits', 'sample', 'publish', 'production'])('denies %s without Product Owner approval', action => {
+  it.each([
+    'externalExecution',
+    'spend',
+    'credits',
+    'sample',
+    'shopifyWrite',
+    'publish',
+    'production',
+  ])('denies %s without Product Owner approval', action => {
     const decision = authorizeRestrictedAction(createRun(), action);
     expect(decision).toMatchObject({
       allowed: false,
