@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Inventory dormant browser-side product/cart modules and identify every path that bypasses the active server Commerce Gateway.
-2. Define cart UI activation prerequisites and capability contracts without issuing a Shopify write.
+1. Define a sanitized Shopify Product Observation contract and deterministic variant fingerprint without claiming a live observation.
+2. Bind only reviewed read-only evidence to the Draft Product Release Record; keep fixture/simulated observations non-authoritative.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
-4. Keep product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.
+4. Keep variant selection, cart, checkout, product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

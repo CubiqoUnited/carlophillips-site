@@ -1,7 +1,7 @@
 import { CommerceBagState } from '@/components/commerce/bag-state';
 import { resolveBagDecision } from '@/lib/commerce/bag-decision';
+import { getServerCartActivationDecision } from '@/lib/commerce/cart-activation-server';
 import { getCommerceEnvironment } from '@/lib/config/product-visibility';
-import { discoverCapability, getCapabilityRegistry } from '@/lib/orchestration/capability-registry';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,9 +13,8 @@ export const metadata = {
 
 export default function BagPage() {
   const environment = getCommerceEnvironment();
-  const registry = getCapabilityRegistry();
-  const cartCapability = discoverCapability(registry, 'shopify-storefront-cart', 'cart-write');
-  const decision = resolveBagDecision({ environment, capabilityDecision: cartCapability });
+  const { decision: activationDecision } = getServerCartActivationDecision({ environment });
+  const decision = resolveBagDecision({ environment, activationDecision });
 
   return <CommerceBagState decision={decision} />;
 }

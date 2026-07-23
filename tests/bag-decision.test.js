@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { resolveBagDecision } from '../lib/commerce/bag-decision';
 
-const unavailableCapability = {
-  status: 'human_required',
+const unavailableActivation = {
+  cartAllowed: false,
   reason: 'SHOPIFY_CART_CAPABILITY_UNVERIFIED',
 };
 
-const readyCapability = {
-  status: 'ready',
+const readyActivation = {
+  cartAllowed: true,
   reason: null,
 };
 
@@ -15,7 +15,7 @@ describe('bag decisions', () => {
   it('uses a visibly non-commerce local preview when cart access is unverified', () => {
     expect(resolveBagDecision({
       environment: 'local',
-      capabilityDecision: unavailableCapability,
+      activationDecision: unavailableActivation,
     })).toMatchObject({
       status: 'local_preview',
       source: 'fixture',
@@ -28,7 +28,7 @@ describe('bag decisions', () => {
   it.each(['preview', 'production'])('fails closed in %s when cart access is unverified', environment => {
     expect(resolveBagDecision({
       environment,
-      capabilityDecision: unavailableCapability,
+      activationDecision: unavailableActivation,
     })).toMatchObject({
       status: 'unavailable',
       source: 'unavailable',
@@ -40,7 +40,7 @@ describe('bag decisions', () => {
   it.each(['preview', 'production'])('rejects fixture carts in %s', environment => {
     expect(resolveBagDecision({
       environment,
-      capabilityDecision: readyCapability,
+      activationDecision: readyActivation,
       cart: { source: 'fixture', items: [] },
     })).toMatchObject({
       status: 'unavailable',
@@ -51,7 +51,7 @@ describe('bag decisions', () => {
   it('does not infer checkout approval from a Shopify cart', () => {
     expect(resolveBagDecision({
       environment: 'preview',
-      capabilityDecision: readyCapability,
+      activationDecision: readyActivation,
       cart: { source: 'shopify', items: [{ key: 'opaque-line' }] },
     })).toMatchObject({
       status: 'ready',

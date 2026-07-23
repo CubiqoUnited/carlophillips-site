@@ -3,6 +3,7 @@ import addFormats from 'ajv-formats';
 import { describe, expect, it } from 'vitest';
 import commerceProductSchema from '../contracts/commerce-product.schema.json';
 import commerceCartSchema from '../contracts/commerce-cart.schema.json';
+import cartActivationDecisionSchema from '../contracts/cart-activation-decision.schema.json';
 import pipelineRunSchema from '../contracts/pipeline-run.schema.json';
 import mediaManifestSchema from '../contracts/media-manifest.schema.json';
 import capabilityRegistrySchema from '../contracts/capability-registry.schema.json';
@@ -37,6 +38,7 @@ ajv.addSchema(productBriefSchema);
 
 const validateCommerceProduct = ajv.compile(commerceProductSchema);
 const validateCommerceCart = ajv.compile(commerceCartSchema);
+const validateCartActivationDecision = ajv.compile(cartActivationDecisionSchema);
 const validatePipelineRun = ajv.compile(pipelineRunSchema);
 const validateMediaManifest = ajv.compile(mediaManifestSchema);
 const validateCapabilityRegistry = ajv.compile(capabilityRegistrySchema);
@@ -116,6 +118,44 @@ describe('truth contracts', () => {
       reason: 'SHOPIFY_CART_UNAVAILABLE',
       cart: null,
     })).toBe(true);
+  });
+
+  it('validates a blocked cart activation without implying checkout authority', () => {
+    expect(validateCartActivationDecision({
+      schemaVersion: 'cp.cart-activation-decision.v1',
+      environment: 'production',
+      status: 'blocked',
+      productHandle: 'test-product',
+      cartAllowed: false,
+      checkoutAllowed: false,
+      reason: 'PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED',
+      checkoutReason: 'CHECKOUT_REQUIRES_SEPARATE_APPROVAL_AND_LIVE_PROOF',
+      prerequisites: Array.from({ length: 7 }, (_, index) => ({
+        code: `PREREQUISITE_${index + 1}`,
+        status: index === 0 ? 'human_required' : 'satisfied',
+        resumePoint: index === 0 ? 'Obtain exact scoped approval.' : null,
+      })),
+    })).toBe(true);
+  });
+
+  it('rejects a blocked cart activation that claims cart or checkout authority', () => {
+    const decision = {
+      schemaVersion: 'cp.cart-activation-decision.v1',
+      environment: 'production',
+      status: 'blocked',
+      productHandle: null,
+      cartAllowed: true,
+      checkoutAllowed: true,
+      reason: 'INVALID_AUTHORITY_CLAIM',
+      checkoutReason: 'CHECKOUT_REQUIRES_SEPARATE_APPROVAL_AND_LIVE_PROOF',
+      prerequisites: Array.from({ length: 7 }, (_, index) => ({
+        code: `PREREQUISITE_${index + 1}`,
+        status: 'blocked',
+        resumePoint: 'Resolve the prerequisite.',
+      })),
+    };
+
+    expect(validateCartActivationDecision(decision)).toBe(false);
   });
 
   it('requires media provenance and approval fields', () => {

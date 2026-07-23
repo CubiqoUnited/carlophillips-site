@@ -140,6 +140,24 @@ describe('API CORS policy', () => {
     expect(response.headers.get('vary')).toBe('Origin');
   });
 
+  it('keeps retired Shopify audit and all write API paths unavailable', async () => {
+    for (const [handler, method, path] of [
+      [GET, 'GET', 'shopify/media-audit'],
+      [GET, 'GET', 'shopify/premium-readiness'],
+      [POST, 'POST', 'cart'],
+      [DELETE, 'DELETE', 'cart'],
+    ]) {
+      const response = await handler(
+        new Request(`http://localhost:3000/api/${path}`, { method }),
+        { params: Promise.resolve({ path: path.split('/') }) }
+      );
+      expect(response.status).toBe(404);
+      await expect(response.json()).resolves.toMatchObject({
+        code: 'API_ROUTE_UNAVAILABLE',
+      });
+    }
+  });
+
   it('allows a live-style same-origin request using its Host header', async () => {
     process.env.CORS_ORIGINS = 'https://preview.example.com';
     const response = await GET(

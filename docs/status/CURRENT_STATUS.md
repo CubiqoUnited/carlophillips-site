@@ -1,6 +1,6 @@
-# Current Status — Fitness Cycle 12
+# Current Status — Fitness Cycle 13
 
-Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md`.
+Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md`.
 
 ## Exists
 
@@ -11,7 +11,8 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 - `/shop` and `/collections` share a release-aware server catalog boundary. It resolves registry handles individually, discards denied payloads, reports candidate/visible/withheld counts, and supports future multi-product records without activating the dormant catalog fixtures.
 - Home consumes that same server catalog decision through a minimized schema-validated summary. Its counts and optional PDP link cannot diverge from `/shop`; denied decisions expose no product payload.
 - Draft Hoodie Product Release Record and media manifest.
-- Dormant Shopify cart/checkout modules.
+- Server-owned cart activation contract with seven release/capability/approval prerequisites and checkout hard-disabled.
+- Pure Shopify response normalization plus one server-only, read-only product adapter; broad product/cart clients and mutation exports are removed.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
 - Executable capability discovery and dedicated source-labeled bag/cart Server Component routes.
 - A durable four-lane Hoodie simulation with exact blockers and every restricted approval still pending.
@@ -37,6 +38,7 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 ## Proposed
 
 - Active Shopify cart operations and fulfillment adapter implementation beyond the recorded mapping.
+- A narrow Storefront cart adapter after evidence-backed capability and activation approval.
 - Staged/approved/released workflow transitions after evidence and Product Owner approval.
 
 ## Missing

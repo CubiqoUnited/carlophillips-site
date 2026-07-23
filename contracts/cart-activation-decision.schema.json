@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/cart-activation-decision.schema.json",
+  "title": "CartActivationDecision v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "environment",
+    "status",
+    "productHandle",
+    "cartAllowed",
+    "checkoutAllowed",
+    "reason",
+    "checkoutReason",
+    "prerequisites"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.cart-activation-decision.v1" },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "status": { "enum": ["disabled", "blocked", "eligible"] },
+    "productHandle": { "type": ["string", "null"] },
+    "cartAllowed": { "type": "boolean" },
+    "checkoutAllowed": { "const": false },
+    "reason": { "type": "string", "minLength": 1 },
+    "checkoutReason": { "const": "CHECKOUT_REQUIRES_SEPARATE_APPROVAL_AND_LIVE_PROOF" },
+    "prerequisites": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["code", "status", "resumePoint"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["satisfied", "blocked", "human_required"] },
+          "resumePoint": { "type": ["string", "null"] }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "status": { "const": "satisfied" } }, "required": ["status"] },
+            "then": { "properties": { "resumePoint": { "type": "null" } } },
+            "else": { "properties": { "resumePoint": { "type": "string", "minLength": 1 } } }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "eligible" } }, "required": ["status"] },
+      "then": { "properties": { "cartAllowed": { "const": true } } }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["disabled", "blocked"] } }, "required": ["status"] },
+      "then": { "properties": { "cartAllowed": { "const": false } } }
+    }
+  ],
+  "additionalProperties": false
+}

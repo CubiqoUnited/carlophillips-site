@@ -38,6 +38,8 @@ No fallback mock product or local-only cart may masquerade as a successful bound
 - Draft review requires both `NEXT_PUBLIC_SHOW_PRODUCTS=true` and `NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true`.
 - A preview is not approval to publish, sell, deploy to production, or change Shopify state.
 - A Shopify observation is necessary but never sufficient for visibility: Preview additionally requires matching, evidence-complete Staged-or-later release data; production requires matching, evidence-complete Released data. Neither decision enables purchasing until the cart/checkout journey is separately proven.
+- Customer cart UI requires a visible Shopify Gateway decision, matching Released record, an exact match between the current observation fingerprint and the release-bound variant fingerprint, a sellable mapped variant, evidence-backed Storefront `cart-write` capability, explicit Product Owner activation approval, and the server-only environment gate. Credentials, flags, or installed apps cannot satisfy the other prerequisites.
+- Checkout, payment, and order authority remain separate from cart eligibility. A cart-eligible decision must still return checkout disabled until a separate approved live proof exists.
 - Release records move sequentially through Draft, Staged, Approved, and Released. No state may be skipped. Staged requires immutable candidate/build/private-staging and rollback-plan evidence; Approved requires complete product/media/fulfillment truth and approvals; Released requires a current Active Shopify observation and verified rollback evidence.
 - Production requires Product Owner approval plus direct evidence for domain, product/variant truth, checkout, payment, POD mapping, fulfillment, tracking, support, and returns.
 
@@ -54,6 +56,7 @@ The sequence is resolved by Product Owner intent:
 - Governance, status, tasks, architecture, setup, and environment documentation agree with runtime behavior.
 - Yarn install is reproducible; lint, automated tests, and production build pass.
 - The selected product lane uses Shopify-backed product/variant/cart data without silent commerce fallbacks.
+- Browser and public API surfaces cannot call low-level Shopify product/cart transports outside the server Commerce Gateway and cart-activation contract.
 - `/shop` and `/collections` count and render only individually release-eligible records; denied or unavailable candidates contribute only to withheld counts/reason codes and never leak product payloads.
 - Home featured-product navigation and counts are derived from that same catalog decision. When no product is eligible, home exposes only candidate/withheld counts and a catalog-state link—never a product payload or PDP link.
 - The first accepted Hoodie release proves all four lanes through a versioned Product Release Record; the next product can reuse the same provider, media, commerce, and approval contracts.

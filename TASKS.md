@@ -95,9 +95,17 @@
 
 ## Next active-commerce readiness cycle
 
-- [ ] Inventory and quarantine dormant browser-side product/cart modules that bypass the active server Commerce Gateway.
-- [ ] Define the exact Storefront cart capability contract and UI activation prerequisites without performing a Shopify write.
-- [ ] Keep bag/checkout unavailable until authorized read-only capability and no-order cart evidence exist.
+- [x] Inventory and remove dormant browser-side product/cart modules that bypass the active server Commerce Gateway.
+- [x] Retire public catalog-audit API paths and broad Storefront mutation exports.
+- [x] Define the exact Storefront cart capability contract and seven UI activation prerequisites without performing a Shopify write.
+- [x] Keep bag/checkout unavailable until authorized capability, no-order cart evidence, Released product truth, variant mapping, and Product Owner approval exist.
+
+## Next variant-observation readiness cycle
+
+- [ ] Define a sanitized, provider-neutral Shopify Product Observation contract for product/variant/price/availability facts.
+- [ ] Add deterministic canonical variant fingerprint generation and mismatch tests without claiming a live observation.
+- [ ] Bind observation candidates to the Product Release Record only through an explicit evidence-review step; do not mutate the Draft record from fixture or simulated input.
+- [ ] Keep variant controls and cart disabled while live read-only Shopify evidence remains unavailable.
 
 ## Blocked / approval required
 

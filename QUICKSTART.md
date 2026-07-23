@@ -15,7 +15,7 @@ Visit `http://localhost:3000`.
 - Home/about editorial routes render.
 - Shop and collection routes explain that the first drop is not released.
 - Product routes show an explicit unavailable state while visibility is closed.
-- Bag/cart routes show an empty, non-checkout shell.
+- Bag/cart routes show an explicit local non-commerce or unavailable state.
 
 ## Optional static Hoodie review
 
@@ -31,6 +31,10 @@ NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true
 The page remains disabled for purchasing. Its static price, sizes, and media are review content, not proof of current Shopify data.
 
 To exercise the read-only Shopify boundary, use `COMMERCE_DATA_MODE=shopify`. If server-only Shopify configuration or product access is absent, the route intentionally shows “cannot be shown truthfully” and never substitutes the fixture.
+
+`SHOPIFY_CART_UI_ENABLED` must remain `false`. Turning it on does not bypass the
+release, variant, capability, or Product Owner activation requirements, and
+this repository currently contains no active cart mutation or checkout route.
 
 ## Verify before handing off
 

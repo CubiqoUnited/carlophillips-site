@@ -1,4 +1,5 @@
 import { CommerceProductDetail, CommerceProductUnavailable } from '@/components/commerce/product-detail';
+import { getServerCartActivationDecision } from '@/lib/commerce/cart-activation-server';
 import { closedReleaseDecision, getProductDecision, resolveCommerceDataMode } from '@/lib/commerce/product-gateway';
 import { toProductViewModel } from '@/lib/commerce/product-view-model';
 import { canRenderDraftProductPreviews, canRenderProducts, getCommerceEnvironment } from '@/lib/config/product-visibility';
@@ -30,12 +31,13 @@ export default async function ProductPage({ params }) {
     const fixtureModule = await import('@/fixtures/signature-hoodie-preview');
     fixtureProduct = fixtureModule.signatureHoodiePreview;
   }
+  const releaseEvidence = getProductReleaseEvidence(handle);
   const decision = await getProductDecision({
     environment,
     mode,
     handle,
     fixtureProduct,
-    ...getProductReleaseEvidence(handle),
+    ...releaseEvidence,
     loadShopifyProduct,
   });
 
@@ -44,5 +46,17 @@ export default async function ProductPage({ params }) {
     return <CommerceProductUnavailable decision={decision} />;
   }
 
-  return <CommerceProductDetail product={product} releaseReason={decision.reason} />;
+  const { summary: cartActivation } = getServerCartActivationDecision({
+    environment,
+    productDecision: decision,
+    releaseRecord: releaseEvidence?.releaseRecord || null,
+  });
+
+  return (
+    <CommerceProductDetail
+      product={product}
+      releaseReason={decision.reason}
+      cartActivation={cartActivation}
+    />
+  );
 }

@@ -39,7 +39,13 @@ describe('server Shopify product loader contract', () => {
 
     const product = await loadProduct('observed-hoodie');
 
-    expect(product).toMatchObject({ id: 'observed-hoodie', name: 'Observed Hoodie', price: 128, currency: 'USD' });
+    expect(product).toMatchObject({
+      id: 'observed-hoodie',
+      handle: 'observed-hoodie',
+      name: 'Observed Hoodie',
+      price: 128,
+      currency: 'USD',
+    });
     const request = fetchImpl.mock.calls[0];
     expect(request[0]).toBe('https://example.myshopify.com/api/2024-01/graphql.json');
     expect(JSON.parse(request[1].body).variables).toEqual({ handle: 'observed-hoodie' });

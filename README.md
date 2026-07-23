@@ -15,7 +15,7 @@ The repository is **not production-ready**. The editorial shell keeps products h
 
 - Next.js 15.5.21 Maintenance LTS App Router and React/React DOM 19.2.8
 - Tailwind CSS 3 and Framer Motion
-- Shopify Storefront GraphQL modules for product/media/cart operations
+- Server-only Shopify Storefront GraphQL adapter for product/media reads
 - Yarn Classic 1.22.22
 - ESLint and Vitest
 
@@ -66,8 +66,7 @@ Copy `.env.example` and supply values only in ignored local files or the appropr
 | `NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS` | Secondary static draft-review gate |
 | `SHOPIFY_STORE_DOMAIN` | Preferred server-only Shopify Storefront domain |
 | `SHOPIFY_STOREFRONT_TOKEN` | Preferred server-only Storefront API token |
-| `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` | Shopify Storefront domain |
-| `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` | Public Storefront API token; never put the actual value in reports |
+| `SHOPIFY_CART_UI_ENABLED` | Server-only customer-cart UI gate; defaults false and grants no authority by itself |
 | `CORS_ORIGINS` | Exact comma-separated HTTP(S) origins allowed to call `/api` cross-origin; wildcards and paths are rejected |
 
 ## Response security
@@ -82,12 +81,10 @@ components/editorial/ client editorial shell receiving minimized server truth
 components/commerce/ reusable, non-buyable product/catalog and truthful bag presentation
 contracts/           machine-readable truth and release schemas
 releases/            evidence-bound release records and media manifests
-lib/config/          release and Shopify configuration
-lib/commerce/        provider-neutral product/catalog gateways, policy, and view models
+lib/config/          environment/release visibility policy
+lib/commerce/        provider-neutral product/catalog/cart-activation gateways, policy, and view models
 lib/providers/       server-only provider adapters
-lib/data/            legacy data service with local-only fixture fallback
-lib/shopify/         Storefront queries, mutations, normalization, client
-lib/store/           dormant local/Shopify cart module
+lib/shopify/         pure response normalization and read-only Storefront queries
 lib/orchestration/   creation jobs, PipelineRun state, capability policy
 lib/releases/        non-mutating release-transition policy and exact blockers
 runs/                durable local simulations and blocker/resume evidence

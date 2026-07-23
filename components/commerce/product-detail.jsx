@@ -103,7 +103,11 @@ export function CommerceProductUnavailable({ decision }) {
   );
 }
 
-export function CommerceProductDetail({ product, releaseReason = 'RELEASE_DECISION_UNAVAILABLE' }) {
+export function CommerceProductDetail({
+  product,
+  releaseReason = 'RELEASE_DECISION_UNAVAILABLE',
+  cartActivation = null,
+}) {
   const facts = [
     ['Data source', product.sourceLabel],
     ['Release decision', releaseReason],
@@ -142,10 +146,18 @@ export function CommerceProductDetail({ product, releaseReason = 'RELEASE_DECISI
               </div>
             )}
 
-            <button type="button" disabled className="mt-8 flex h-14 w-full items-center justify-center border border-white/18 text-[10px] uppercase tracking-[0.24em] text-white/44">
+            <button
+              type="button"
+              disabled
+              data-cart-activation={cartActivation?.status || 'unavailable'}
+              className="mt-8 flex h-14 w-full items-center justify-center border border-white/18 text-[10px] uppercase tracking-[0.24em] text-white/44"
+            >
               Purchasing disabled
             </button>
-            <p className="mt-4 text-xs leading-relaxed text-white/35">Purchasing remains disabled. Source availability does not equal release approval.</p>
+            <p className="mt-4 text-xs leading-relaxed text-white/35">
+              Purchasing remains disabled. Source availability does not equal release approval.
+              {cartActivation?.reason ? ` Cart gate: ${cartActivation.reason}.` : ''}
+            </p>
           </div>
         </div>
       </section>

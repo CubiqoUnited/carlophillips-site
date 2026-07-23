@@ -1,6 +1,6 @@
 # Current Status
 
-Updated: 2026-07-22  
+Updated: 2026-07-23
 Branch: `codex/cp-fitness-baseline` from `425f50b`  
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
@@ -131,6 +131,17 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The obsolete client-owned collection/PDP implementations were removed from the editorial shell; `/shop`, `/collections`, and `/products/[handle]` remain the only owners of those flows.
 - `yarn verify` passed with zero-warning lint, 27 files/179 tests, zero production advisories across 193 packages, and a successful 13-route build.
 - Local desktop/mobile home, home-to-PDP/catalog, editorial-only about, and credentials-disabled Preview checks passed with no console/page errors, overlays, or horizontal overflow. Evidence is stored under `test_reports/cp-fitness-cycle-12/`.
+
+## Cycle 13 verification
+
+- Dormant `lib/data/products.js` and `lib/store/cart.js` paths were removed. They could return product data or perform browser cart mutations without the active Product Release Record and Commerce Gateway.
+- The broad Storefront client/mutation exports were removed. Pure normalization remains transport-free; the active Shopify product adapter is server-only, read-only, and uses only server environment names.
+- Public Shopify media-audit/readiness endpoints were retired because they exposed unfiltered catalog observations. Unknown commerce/API write routes now return `404 API_ROUTE_UNAVAILABLE`; health returns no Shopify configuration diagnostics.
+- `cp.cart-activation-decision.v1` now requires a visible Shopify decision, matching Released record, an exact current/release variant-fingerprint match, sellable mapped variant, verified `cart-write` capability, scoped Product Owner approval, and a server-only activation gate. Local fixtures and stale variant observations are never eligible, and checkout is always separately disabled.
+- PDP and bag routes consume the server activation decision. The current Hoodie remains Draft and every activation path remains non-commerce; no Shopify read/write, cart, checkout, payment, or order was attempted.
+- Shopify normalization now preserves the product handle required for release-record matching.
+- `yarn verify` passed with zero-warning lint, 27 files/184 tests, zero production advisories across 193 packages, and a successful 13-route build.
+- Local desktop PDP and mobile bag checks passed with explicit disabled states, no checkout links, console/page errors, overlays, or horizontal overflow. The retired media-audit API returned the expected 404. Evidence is stored under `test_reports/cp-fitness-cycle-13/`.
 
 ## External blockers
 

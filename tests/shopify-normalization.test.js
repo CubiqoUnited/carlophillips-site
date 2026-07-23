@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeCart, normalizeProduct } from '../lib/shopify/client.js';
+import { normalizeCart, normalizeProduct } from '../lib/shopify/normalize.js';
 
 describe('Shopify normalization', () => {
   it('preserves product, variant, and real rich-media truth', () => {
@@ -52,6 +52,7 @@ describe('Shopify normalization', () => {
     });
 
     expect(product.id).toBe('signature-hoodie');
+    expect(product.handle).toBe('signature-hoodie');
     expect(product.price).toBe(128);
     expect(product.currency).toBe('USD');
     expect(product.media.map(item => item.type)).toEqual(['image', 'video']);
