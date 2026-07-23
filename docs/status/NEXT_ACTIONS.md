@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Define a sanitized Shopify Product Observation contract and deterministic variant fingerprint without claiming a live observation.
-2. Bind only reviewed read-only evidence to the Draft Product Release Record; keep fixture/simulated observations non-authoritative.
+1. Require Preview/production product visibility to match the current observation variant fingerprint to the release-bound fingerprint.
+2. Deny stale/malformed observation payloads per candidate; keep fixture/simulated observations non-authoritative.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep variant selection, cart, checkout, product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

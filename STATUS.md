@@ -9,7 +9,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Recovered Product Owner intent confirms the Hoodie is the first complete POC for a reusable POD-to-publish system with four coordinated lanes and designer-led plus trend-led workflows; it is not a static-page endpoint.
 - The editorial UI remains fail-closed. Home, product, `/shop`, `/collections`, and bag/cart routes now use dedicated server-rendered truth boundaries.
 - The Hoodie is recorded as Shopify Draft and purchasing is disabled in the UI.
-- Shopify product reads are connected behind a server-only adapter with explicit source/error states; local configuration currently reports Shopify as not configured, so a live product observation is still blocked.
+- Shopify product reads sit behind a server-only adapter that now refuses network access until the exact product-read capability is ready with a durable evidence reference. Configuration, capability evidence, and a live observation are all still blocked/unverified.
 - The versioned Hoodie release record binds the observed Shopify/Apliiq identities and media ledger while leaving variant fingerprints missing and every approval pending.
 - Yarn 1.22.22 and `yarn.lock` are the declared package strategy; baseline work adds real lint and test commands.
 - Local environment variable names are present; values were not printed. `.env.local` is ignored.
@@ -143,6 +143,17 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - `yarn verify` passed with zero-warning lint, 27 files/184 tests, zero production advisories across 193 packages, and a successful 13-route build.
 - Local desktop PDP and mobile bag checks passed with explicit disabled states, no checkout links, console/page errors, overlays, or horizontal overflow. The retired media-audit API returned the expected 404. Evidence is stored under `test_reports/cp-fitness-cycle-13/`.
 
+## Cycle 14 verification
+
+- `cp.product-observation.v1` sanitizes raw Shopify variant references into hashes, canonicalizes variants/options with locale-independent ordering, and fingerprints stable variant identity separately from the complete review envelope.
+- The variant fingerprint intentionally covers hashed reference, title, and options. Price/availability changes keep identity stable but change the full observation fingerprint, which binds schema/source/authority/environment/timestamp/capability evidence/product/variant facts.
+- Observation creation rejects missing/duplicate raw variant references, empty variants, malformed price/currency, inconsistent price ranges/currencies, and availability-summary mismatches. Durable observations contain no raw Shopify IDs.
+- Review recomputes both fingerprints, rejects noncanonical/tampered/duplicate/malformed facts, and requires capability evidence exactly matching a ready `shopify-storefront-product-read` decision.
+- Product Owner/designee approval must bind the exact observation fingerprint and expected handle. An accepted review returns only a schema-validated candidate release patch containing both fingerprints/evidence; no apply operation exists and tests prove Draft records remain unchanged.
+- Fixture and simulation observations remain local, non-authoritative, unapprovable as Shopify truth, and incapable of producing a candidate patch.
+- The server product loader attaches only sanitized pending-observation metadata. The active adapter refuses even a Shopify read while capability evidence is unavailable; no live Shopify access occurred.
+- `yarn verify` passed with zero-warning lint, 28 files/204 tests, zero production advisories across 193 packages, and a successful 13-route build. No UI changed, so existing Cycle 13 browser evidence remains applicable. Evidence is stored under `test_reports/cp-fitness-cycle-14/`.
+
 ## External blockers
 
 ### Vercel hosting disabled
@@ -155,7 +166,7 @@ Resume point: deploy the approved fitness branch as a Vercel preview, configure 
 
 Human action: an authorized owner supplies valid read-only Storefront domain/token values to the intended local or Preview environment without sharing them in reports.
 
-Resume point: set `COMMERCE_DATA_MODE=shopify`, open the selected product route, capture the source-labeled Shopify title/variants/price/media observation, and update the Draft release record fingerprint. Keep purchasing disabled.
+Resume point: mark `shopify-storefront-product-read` ready only with its durable evidence reference, set `COMMERCE_DATA_MODE=shopify`, generate the sanitized product observation, and review approval against its exact fingerprint/handle. Keep the candidate patch unapplied until a separate authorization, and keep purchasing disabled.
 
 ### Shopify app capability/access audit
 

@@ -11,6 +11,7 @@ Shopify cart, checkout, payment, or order operations are available.
 | Shop/collections | `components/commerce/catalog-boundary.jsx` → server catalog decision | Individually release-filtered product observations |
 | Product detail | `app/products/[handle]/page.js` → Commerce Gateway → release/media evidence | Source-labeled product review; never cart authority |
 | Shopify product transport | `lib/providers/shopify/storefront-product-adapter.js` | Server-only, one product-by-handle read |
+| Product observation | `lib/commerce/product-observation.js` | Sanitized canonical candidate and non-applying review decision |
 | Bag/cart presentation | `app/bag/page.js` and `/cart` alias | Activation decision only; no cart is fetched or created |
 | API health | `app/api/[[...path]]/route.js` | Generic service state; no catalog payload or credential diagnostics |
 

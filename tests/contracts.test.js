@@ -4,6 +4,8 @@ import { describe, expect, it } from 'vitest';
 import commerceProductSchema from '../contracts/commerce-product.schema.json';
 import commerceCartSchema from '../contracts/commerce-cart.schema.json';
 import cartActivationDecisionSchema from '../contracts/cart-activation-decision.schema.json';
+import productObservationSchema from '../contracts/product-observation.schema.json';
+import productObservationReviewSchema from '../contracts/product-observation-review.schema.json';
 import pipelineRunSchema from '../contracts/pipeline-run.schema.json';
 import mediaManifestSchema from '../contracts/media-manifest.schema.json';
 import capabilityRegistrySchema from '../contracts/capability-registry.schema.json';
@@ -39,6 +41,8 @@ ajv.addSchema(productBriefSchema);
 const validateCommerceProduct = ajv.compile(commerceProductSchema);
 const validateCommerceCart = ajv.compile(commerceCartSchema);
 const validateCartActivationDecision = ajv.compile(cartActivationDecisionSchema);
+const validateProductObservation = ajv.compile(productObservationSchema);
+const validateProductObservationReview = ajv.compile(productObservationReviewSchema);
 const validatePipelineRun = ajv.compile(pipelineRunSchema);
 const validateMediaManifest = ajv.compile(mediaManifestSchema);
 const validateCapabilityRegistry = ajv.compile(capabilityRegistrySchema);
@@ -156,6 +160,75 @@ describe('truth contracts', () => {
     };
 
     expect(validateCartActivationDecision(decision)).toBe(false);
+  });
+
+  it('validates non-authoritative local observation and blocked review contracts', () => {
+    const observation = {
+      schemaVersion: 'cp.product-observation.v1',
+      source: 'simulation',
+      authority: 'non_authoritative',
+      environment: 'local',
+      observedAt: '2026-07-23T05:00:00Z',
+      capabilityEvidence: null,
+      product: {
+        handle: 'test-product',
+        title: 'Test Product',
+        currency: 'USD',
+        minimumPrice: 128,
+        maximumPrice: 128,
+        availableForSale: false,
+      },
+      variants: [{
+        referenceHash: `sha256:${'c'.repeat(64)}`,
+        title: 'Default',
+        selectedOptions: [{ name: 'Title', value: 'Default Title' }],
+        availableForSale: false,
+        price: { amount: '128.00', currency: 'USD' },
+      }],
+      variantFingerprint: `sha256:${'a'.repeat(64)}`,
+      observationFingerprint: `sha256:${'b'.repeat(64)}`,
+      review: {
+        status: 'pending',
+        owner: 'Product Owner/designee',
+        evidence: null,
+      },
+    };
+    expect(validateProductObservation(observation)).toBe(true);
+    expect(validateProductObservation({ ...observation, environment: 'preview' })).toBe(false);
+    expect(validateProductObservation({
+      ...observation,
+      source: 'shopify',
+      authority: 'candidate',
+      environment: 'preview',
+      capabilityEvidence: null,
+    })).toBe(false);
+    expect(validateProductObservationReview({
+      schemaVersion: 'cp.product-observation-review.v1',
+      status: 'blocked',
+      authoritative: false,
+      observationFingerprint: observation.observationFingerprint,
+      blockers: [{
+        code: 'AUTHORITATIVE_SHOPIFY_OBSERVATION_REQUIRED',
+        humanAction: 'Use direct Shopify evidence.',
+        resumePoint: 'Resume at an authorized read-only observation.',
+      }],
+      candidateReleasePatch: null,
+    })).toBe(true);
+    expect(validateProductObservationReview({
+      schemaVersion: 'cp.product-observation-review.v1',
+      status: 'accepted',
+      authoritative: true,
+      observationFingerprint: observation.observationFingerprint,
+      blockers: [],
+      candidateReleasePatch: {
+        handle: 'test-product',
+        observedAt: observation.observedAt,
+        variantFingerprint: observation.variantFingerprint,
+        variantFingerprintStatus: 'observed',
+        observationFingerprint: observation.observationFingerprint,
+        evidence: 'approval/product-observation-001',
+      },
+    })).toBe(true);
   });
 
   it('requires media provenance and approval fields', () => {

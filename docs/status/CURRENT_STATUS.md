@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 13
+# Current Status — Fitness Cycle 14
 
 Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -13,6 +13,7 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - Draft Hoodie Product Release Record and media manifest.
 - Server-owned cart activation contract with seven release/capability/approval prerequisites and checkout hard-disabled.
 - Pure Shopify response normalization plus one server-only, read-only product adapter; broad product/cart clients and mutation exports are removed.
+- Canonical Product Observation and review contracts hash raw variant references, bind the full review envelope, require evidence tied to a ready product-read capability, and return only a non-applying candidate release patch.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
 - Executable capability discovery and dedicated source-labeled bag/cart Server Component routes.
 - A durable four-lane Hoodie simulation with exact blockers and every restricted approval still pending.
@@ -34,6 +35,7 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - Shopify integration: the product route calls the gateway/adapter and release registry, but local read-only configuration is incomplete, so current Shopify product data is not observed.
 - Release controls: Draft record exists with missing variant fingerprints and pending approvals. Staging is explicitly denied until Shopify/provider fingerprints, immutable commit/build evidence, and private staging evidence exist.
 - App capability access: Product Owner reports 30 installed apps, but the latest managed-browser attempt reached Shopify login before Admin. The per-app access/authentication/fee-risk matrix remains entirely unverified and non-callable.
+- Product observations: canonicalization/review behavior is locally proven, but no current live Shopify observation, capability evidence reference, or exact approval exists.
 
 ## Proposed
 

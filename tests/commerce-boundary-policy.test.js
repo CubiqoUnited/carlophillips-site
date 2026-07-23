@@ -45,6 +45,8 @@ describe('active commerce boundary policy', () => {
 
     expect(adapter).toContain("import 'server-only'");
     expect(combined).toContain('SHOPIFY_STOREFRONT_TOKEN');
+    expect(adapter).toContain('SHOPIFY_PRODUCT_READ_CAPABILITY_UNVERIFIED');
+    expect(adapter).toContain('capabilityDecision.evidenceRef');
     expect(combined).not.toContain('NEXT_PUBLIC_SHOPIFY_');
     expect(combined).not.toMatch(/mutation\s+/);
     expect(combined).not.toMatch(/createCart|cartLinesAdd|cartLinesUpdate|cartLinesRemove/);

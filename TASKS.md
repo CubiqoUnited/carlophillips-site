@@ -102,10 +102,18 @@
 
 ## Next variant-observation readiness cycle
 
-- [ ] Define a sanitized, provider-neutral Shopify Product Observation contract for product/variant/price/availability facts.
-- [ ] Add deterministic canonical variant fingerprint generation and mismatch tests without claiming a live observation.
-- [ ] Bind observation candidates to the Product Release Record only through an explicit evidence-review step; do not mutate the Draft record from fixture or simulated input.
-- [ ] Keep variant controls and cart disabled while live read-only Shopify evidence remains unavailable.
+- [x] Define a sanitized, provider-neutral Shopify Product Observation contract for product/variant/price/availability facts.
+- [x] Add deterministic locale-independent variant and full-envelope fingerprint generation plus tamper/mismatch tests without claiming a live observation.
+- [x] Require ready product-read capability evidence and approval bound to the exact observation fingerprint and handle.
+- [x] Produce only a candidate release patch and prove fixture, simulation, review, and patch outputs do not mutate the Draft record.
+- [x] Keep variant controls and cart disabled while live read-only Shopify evidence remains unavailable.
+
+## Next observation-to-visibility cycle
+
+- [ ] Require Preview/production Shopify visibility decisions to match the current Product Observation variant fingerprint to the release-bound fingerprint.
+- [ ] Deny and discard stale/missing/malformed observation payloads without affecting other catalog candidates.
+- [ ] Preserve local fixture review as non-authoritative and non-commerce.
+- [ ] Prove price/availability changes remain visible only through a newly reviewed full observation even when variant identity is unchanged.
 
 ## Blocked / approval required
 

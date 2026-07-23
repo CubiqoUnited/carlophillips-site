@@ -4,6 +4,13 @@ CARLOPHILLIPS is a Next.js 15 presentation layer intended to use Shopify as the 
 
 The repository is **not production-ready**. The editorial shell keeps products hidden by default. Home, product, catalog (`/shop` and `/collections`), and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. Home receives a minimized summary from the same catalog decision, so its featured link and counts cannot bypass catalog policy. A Shopify observation alone never authorizes visibility or commerce. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
 
+Read-only Shopify results become `cp.product-observation.v1` candidates only
+when they carry the exact evidence reference of a verified product-read
+capability. Raw Shopify IDs are hashed, variant identity and the full
+review-relevant envelope receive separate deterministic fingerprints, and an
+exact fingerprint/handle approval can produce only a candidate release patch.
+No observation-review function applies that patch.
+
 ## Current product state
 
 - One real Apliiq/Shopify Signature Hoodie POC is documented as Draft with purchasing disabled.
@@ -79,7 +86,7 @@ Storefront pages deny third-party framing with both `X-Frame-Options: DENY` and 
 app/                 routes; home, product, catalog, and bag/cart have dedicated server boundaries
 components/editorial/ client editorial shell receiving minimized server truth
 components/commerce/ reusable, non-buyable product/catalog and truthful bag presentation
-contracts/           machine-readable truth and release schemas
+contracts/           machine-readable truth, observation, review, and release schemas
 releases/            evidence-bound release records and media manifests
 lib/config/          environment/release visibility policy
 lib/commerce/        provider-neutral product/catalog/cart-activation gateways, policy, and view models

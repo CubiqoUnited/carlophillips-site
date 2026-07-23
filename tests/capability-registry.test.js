@@ -34,6 +34,21 @@ describe('capability registry policy', () => {
     });
   });
 
+  it('registers Storefront product reads without claiming current callable evidence', () => {
+    const decision = discoverCapability(
+      getCapabilityRegistry(),
+      'shopify-storefront-product-read',
+      'product-read'
+    );
+    expect(decision).toMatchObject({
+      status: 'human_required',
+      adapter: 'shopify-storefront-product',
+      callableSurface: 'unverified',
+      evidenceRef: null,
+      reason: 'SHOPIFY_STOREFRONT_READ_CONFIGURATION_REQUIRED',
+    });
+  });
+
   it('keeps OTP-gated app workers registered but non-callable', () => {
     const registry = getCapabilityRegistry();
     for (const [capability, operation] of [
@@ -71,7 +86,26 @@ describe('capability registry policy', () => {
     const registry = getCapabilityRegistry();
     registry.capabilities.push(structuredClone(registry.capabilities[0]));
     expect(validateCapabilityRegistry(registry)).toContain(
-      'duplicate capability shopify-storefront-cart'
+      'duplicate capability shopify-storefront-product-read'
+    );
+  });
+
+  it('requires durable evidence before external access can be marked verified', () => {
+    const registry = getCapabilityRegistry();
+    const productRead = registry.capabilities.find(
+      item => item.capability === 'shopify-storefront-product-read'
+    );
+    productRead.accessState = 'read_only_verified';
+    productRead.callableSurface = 'shopify_storefront';
+    productRead.allowedOperations = ['product-read'];
+    productRead.blocker = null;
+
+    expect(validateCapabilityRegistry(registry)).toContain(
+      'shopify-storefront-product-read has verified external access without evidenceRef'
+    );
+    productRead.evidenceRef = 'evidence/shopify-storefront-read-001';
+    expect(validateCapabilityRegistry(registry)).not.toContain(
+      'shopify-storefront-product-read has verified external access without evidenceRef'
     );
   });
 });
