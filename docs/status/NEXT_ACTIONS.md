@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Bind the home featured-product link/count to the same release registry used by `/shop` and `/collections`.
-2. Keep every editorial-to-product path source-labeled and non-commerce until cart/checkout is directly proven.
+1. Inventory dormant browser-side product/cart modules and identify every path that bypasses the active server Commerce Gateway.
+2. Define cart UI activation prerequisites and capability contracts without issuing a Shopify write.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

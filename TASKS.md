@@ -89,9 +89,15 @@
 
 ## Next storefront composition cycle
 
-- [ ] Bind the home featured-product navigation to the release registry so its counts/links cannot diverge from `/shop`.
-- [ ] Keep home/about/lookbook editorial content separate from product truth and preserve the one-product Hoodie-first sequence.
-- [ ] Prove all catalog-to-PDP navigation paths stay source-labeled and non-commerce before live cart capability exists.
+- [x] Bind the home featured-product navigation to the release registry so its counts/links cannot diverge from `/shop`.
+- [x] Keep home/about/lookbook editorial content separate from product truth and preserve the one-product Hoodie-first sequence.
+- [x] Prove all home-to-catalog/PDP navigation paths stay source-labeled and non-commerce before live cart capability exists.
+
+## Next active-commerce readiness cycle
+
+- [ ] Inventory and quarantine dormant browser-side product/cart modules that bypass the active server Commerce Gateway.
+- [ ] Define the exact Storefront cart capability contract and UI activation prerequisites without performing a Shopify write.
+- [ ] Keep bag/checkout unavailable until authorized read-only capability and no-order cart evidence exist.
 
 ## Blocked / approval required
 

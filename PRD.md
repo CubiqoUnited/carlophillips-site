@@ -55,6 +55,7 @@ The sequence is resolved by Product Owner intent:
 - Yarn install is reproducible; lint, automated tests, and production build pass.
 - The selected product lane uses Shopify-backed product/variant/cart data without silent commerce fallbacks.
 - `/shop` and `/collections` count and render only individually release-eligible records; denied or unavailable candidates contribute only to withheld counts/reason codes and never leak product payloads.
+- Home featured-product navigation and counts are derived from that same catalog decision. When no product is eligible, home exposes only candidate/withheld counts and a catalog-state link—never a product payload or PDP link.
 - The first accepted Hoodie release proves all four lanes through a versioned Product Release Record; the next product can reuse the same provider, media, commerce, and approval contracts.
 - Required rich media is real, provenance-bound, rights-checked, and approved; missing assets block release rather than trigger simulated frontend effects.
 - Shopify/app capabilities have an evidence-backed access classification; an installed app alone is not treated as controllable.

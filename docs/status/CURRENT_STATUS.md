@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 11
+# Current Status — Fitness Cycle 12
 
 Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -9,6 +9,7 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 - Provider-neutral Commerce Gateway, server-only Shopify product adapter, reusable PDP, and explicit unavailable page.
 - A server-side release registry binds the Hoodie route to its Product Release Record and Media Registry. Preview requires complete Staged-or-later evidence; production requires complete Released evidence, and purchasing remains disabled.
 - `/shop` and `/collections` share a release-aware server catalog boundary. It resolves registry handles individually, discards denied payloads, reports candidate/visible/withheld counts, and supports future multi-product records without activating the dormant catalog fixtures.
+- Home consumes that same server catalog decision through a minimized schema-validated summary. Its counts and optional PDP link cannot diverge from `/shop`; denied decisions expose no product payload.
 - Draft Hoodie Product Release Record and media manifest.
 - Dormant Shopify cart/checkout modules.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
