@@ -1,34 +1,85 @@
 {
-  "schemaVersion": "cp.product-creation-job.v1",
+  "schemaVersion": "cp.product-creation-job.v2",
   "jobId": "cp-hoodie-designer-contract-sim-002",
   "environment": "local",
   "simulation": true,
-  "entryMode": "designer-led",
-  "releaseId": "cp-signature-hoodie-2026-001",
-  "candidateDisposition": "draft-only",
-  "inputEvidence": [
-    {
-      "evidenceId": "authoritative-designer-brief",
-      "kind": "designer-brief",
-      "sourceType": "first-party",
+  "trigger": {
+    "type": "on-demand",
+    "requestedAt": "2026-07-22T00:00:00Z",
+    "cadence": "on-demand",
+    "schedule": null
+  },
+  "brief": {
+    "schemaVersion": "cp.product-brief.v1",
+    "briefId": "cp-hoodie-designer-brief-sim-002",
+    "releaseId": "cp-signature-hoodie-2026-001",
+    "entryMode": "designer-led",
+    "status": "candidate-only",
+    "inputEvidence": [
+      {
+        "evidenceId": "authoritative-designer-brief",
+        "kind": "designer-brief",
+        "sourceType": "first-party",
+        "sourceRef": "PRD.md",
+        "publishedAt": "2026-07-22T00:00:00Z",
+        "observedAt": "2026-07-22T00:00:00Z",
+        "provenance": {
+          "publisher": "CARLOPHILLIPS Product Owner",
+          "retrievedAt": "2026-07-22T00:00:00Z",
+          "evidenceRef": "PRD.md"
+        },
+        "freshness": {
+          "evaluatedAt": "2026-07-22T00:00:00Z",
+          "maxAgeHours": null,
+          "status": "not-time-sensitive"
+        },
+        "authority": "candidate-input",
+        "confidence": "high"
+      }
+    ],
+    "brandConstraints": {
       "sourceRef": "PRD.md",
-      "observedAt": "2026-07-22T00:00:00Z",
-      "authority": "candidate-input",
-      "confidence": "high"
+      "status": "binding",
+      "rules": [
+        "Use original CARLOPHILLIPS identity and approved brand rules.",
+        "Keep the Signature Hoodie as the first reusable end-to-end proof."
+      ],
+      "prohibitedClaims": [
+        "Do not copy third-party brand expression.",
+        "Do not claim unverified product or media facts."
+      ]
+    },
+    "referenceUsePolicy": {
+      "mode": "inspiration-only",
+      "mayCopy": false,
+      "mayAssertRights": false,
+      "mayAssertProductTruth": false,
+      "mayAssertMediaTruth": false
+    },
+    "researchPolicy": {
+      "sourceAttributionRequired": true,
+      "freshnessRequired": true,
+      "humanReviewStatus": "pending",
+      "mayTriggerExternalResearch": false
+    },
+    "truthPolicy": {
+      "maySetProductTruth": false,
+      "mayApproveMedia": false,
+      "mayAuthorizeCommerce": false,
+      "mayPublish": false
     }
-  ],
+  },
+  "idempotency": {
+    "key": "cp:hoodie:designer:contract-sim-002",
+    "inputFingerprint": "sha256:57cff2065c66c90d8d590ec74c21e122417b238069c4eb12335bd37ffe0510ad",
+    "duplicatePolicy": "suppress"
+  },
   "contractBindings": {
     "productReleaseRecord": "releases/cp-signature-hoodie-2026-001/release.json",
     "mediaRegistry": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
     "commerceGateway": "lib/commerce/product-gateway.js",
     "pipelineRunContract": "contracts/pipeline-run.schema.json",
     "pipelineRunId": "cp-hoodie-designer-contract-sim-002"
-  },
-  "truthPolicy": {
-    "maySetProductTruth": false,
-    "mayApproveMedia": false,
-    "mayAuthorizeCommerce": false,
-    "mayPublish": false
   },
   "approvals": {
     "externalExecution": { "status": "pending", "owner": "Product Owner" },

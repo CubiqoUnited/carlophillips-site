@@ -73,8 +73,13 @@
 
 ## Next corrective creation-contract cycle
 
-- [ ] Add explicit ProductCreationJob trigger/cadence, freshness, brand constraints, reference-use rules, and job idempotency/duplicate-suppression fields.
-- [ ] Prove scheduled and on-demand sanitized jobs cannot imply publication or product/media truth, and keep external research inaccessible without blocking safe work.
+- [x] Separate reusable ProductBrief v1 truth inputs from ProductCreationJob v2 execution metadata; add trigger/cadence, provenance/freshness, brand constraints, reference-use rules, and job idempotency/duplicate-suppression fields.
+- [x] Prove scheduled and on-demand sanitized jobs cannot imply publication or product/media truth, and keep external research inaccessible without blocking safe work.
+
+## Next storefront release-binding cycle
+
+- [ ] Bind product visibility decisions to the Product Release Record: local fixture stays labeled/non-commerce, Preview permits private staged review, and production denies every product not `released`.
+- [ ] Prove a Shopify observation alone cannot make an unapproved product customer-visible or checkout-capable in production.
 
 ## Blocked / approval required
 

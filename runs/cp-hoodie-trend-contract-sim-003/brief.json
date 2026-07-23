@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "cp.product-brief.v1",
+  "briefId": "cp-hoodie-trend-brief-sim-003",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "entryMode": "trend-led",
+  "status": "candidate-only",
+  "inputEvidence": [
+    {
+      "evidenceId": "contract-trend-signal",
+      "kind": "trend-signal",
+      "sourceType": "fixture",
+      "sourceRef": "local-contract-fixture:non-authoritative",
+      "publishedAt": "2026-07-20T00:00:00Z",
+      "observedAt": "2026-07-20T00:00:00Z",
+      "provenance": {
+        "publisher": "Local sanitized contract fixture",
+        "retrievedAt": "2026-07-22T00:00:00Z",
+        "evidenceRef": "local-contract-fixture:non-authoritative"
+      },
+      "freshness": {
+        "evaluatedAt": "2026-07-22T00:00:00Z",
+        "maxAgeHours": 24,
+        "status": "stale"
+      },
+      "authority": "research-only",
+      "confidence": "unassessed"
+    }
+  ],
+  "brandConstraints": {
+    "sourceRef": "PRD.md",
+    "status": "binding",
+    "rules": [
+      "Use original CARLOPHILLIPS identity and approved brand rules.",
+      "Keep the Signature Hoodie as the first reusable end-to-end proof."
+    ],
+    "prohibitedClaims": [
+      "Do not copy third-party brand expression.",
+      "Do not claim unverified product or media facts."
+    ]
+  },
+  "referenceUsePolicy": {
+    "mode": "inspiration-only",
+    "mayCopy": false,
+    "mayAssertRights": false,
+    "mayAssertProductTruth": false,
+    "mayAssertMediaTruth": false
+  },
+  "researchPolicy": {
+    "sourceAttributionRequired": true,
+    "freshnessRequired": true,
+    "humanReviewStatus": "pending",
+    "mayTriggerExternalResearch": false
+  },
+  "truthPolicy": {
+    "maySetProductTruth": false,
+    "mayApproveMedia": false,
+    "mayAuthorizeCommerce": false,
+    "mayPublish": false
+  }
+}

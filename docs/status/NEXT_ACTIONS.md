@@ -8,7 +8,7 @@
 
 ## Continue safe local fitness work
 
-1. Refine ProductCreationJob with trigger/cadence, source freshness, brand/reference-use constraints, and duplicate suppression.
-2. Prove scheduled and on-demand jobs remain candidate-only and cannot elevate research into product/media/publication truth.
+1. Bind Commerce Gateway visibility to Product Release Record state for Local, Preview, and production.
+2. Prove Shopify observation without a Released record stays invisible and non-commerce in production.
 3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
 4. Keep product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.

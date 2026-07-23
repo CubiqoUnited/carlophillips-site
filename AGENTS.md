@@ -10,6 +10,7 @@
 - A versioned Product Release Record binds product/POD truth, media truth, Shopify truth, approvals, candidate build evidence, and rollback for each candidate.
 - Product Release Records advance only through Draft → Staged → Approved → Released. Staging requires immutable build/staging and rollback-plan evidence; approval additionally requires complete truth and approvals; release additionally requires an ACTIVE Shopify observation and verified rollback path.
 - Designer-led and trend-led inputs use the same ProductCreationJob and PipelineRun truth core. Inputs are candidate evidence only; trend signals are research-only and cannot become product/media/commerce truth or publication authority.
+- Every ProductCreationJob binds a validated ProductBrief. The job records on-demand/scheduled cadence and deterministic duplicate suppression; the brief owns attributed source provenance/freshness, binding brand constraints, and inspiration-only reference rules. A schedule is not authority to invoke external research or any restricted action.
 
 ## Safety
 

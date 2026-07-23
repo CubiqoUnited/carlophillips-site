@@ -7,6 +7,7 @@ import pipelineRunSchema from '../contracts/pipeline-run.schema.json';
 import mediaManifestSchema from '../contracts/media-manifest.schema.json';
 import capabilityRegistrySchema from '../contracts/capability-registry.schema.json';
 import productCreationJobSchema from '../contracts/product-creation-job.schema.json';
+import productBriefSchema from '../contracts/product-brief.schema.json';
 import mediaAssetSchema from '../contracts/media-asset.schema.json';
 import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
@@ -17,6 +18,8 @@ import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
 import capabilityRegistry from '../config/capability-registry.json';
 import designerCreationJob from '../runs/cp-hoodie-designer-contract-sim-002/job.json';
 import trendCreationJob from '../runs/cp-hoodie-trend-contract-sim-003/job.json';
+import designerProductBrief from '../runs/cp-hoodie-designer-contract-sim-002/brief.json';
+import trendProductBrief from '../runs/cp-hoodie-trend-contract-sim-003/brief.json';
 import designerCreationRun from '../runs/cp-hoodie-designer-contract-sim-002/run.json';
 import trendCreationRun from '../runs/cp-hoodie-trend-contract-sim-003/run.json';
 import hoodieStagingReadiness from '../releases/cp-signature-hoodie-2026-001/staging-readiness.json';
@@ -30,6 +33,7 @@ const ajv = new Ajv2020({ allErrors: true });
 addFormats(ajv);
 ajv.addSchema(mediaAssetSchema);
 ajv.addSchema(productReleaseSchema);
+ajv.addSchema(productBriefSchema);
 
 const validateCommerceProduct = ajv.compile(commerceProductSchema);
 const validateCommerceCart = ajv.compile(commerceCartSchema);
@@ -37,6 +41,7 @@ const validatePipelineRun = ajv.compile(pipelineRunSchema);
 const validateMediaManifest = ajv.compile(mediaManifestSchema);
 const validateCapabilityRegistry = ajv.compile(capabilityRegistrySchema);
 const validateProductCreationJob = ajv.compile(productCreationJobSchema);
+const validateProductBrief = ajv.getSchema(productBriefSchema.$id);
 const validateMediaAsset = ajv.getSchema(mediaAssetSchema.$id);
 const validateProductRelease = ajv.getSchema(productReleaseSchema.$id);
 const validateReleaseDecision = ajv.compile(releaseDecisionSchema);
@@ -262,8 +267,12 @@ describe('truth contracts', () => {
   });
 
   it('validates both local creation-mode simulations as draft-only and non-authoritative', () => {
+    expect(validateProductBrief(designerProductBrief)).toBe(true);
+    expect(validateProductBrief(trendProductBrief)).toBe(true);
     expect(validateProductCreationJob(designerCreationJob)).toBe(true);
     expect(validateProductCreationJob(trendCreationJob)).toBe(true);
+    expect(designerCreationJob.brief).toEqual(designerProductBrief);
+    expect(trendCreationJob.brief).toEqual(trendProductBrief);
     expect(designerCreationJob.contractBindings).toMatchObject({
       productReleaseRecord: trendCreationJob.contractBindings.productReleaseRecord,
       mediaRegistry: trendCreationJob.contractBindings.mediaRegistry,
@@ -272,8 +281,14 @@ describe('truth contracts', () => {
     });
     expect(designerCreationJob.contractBindings.pipelineRunId)
       .not.toBe(trendCreationJob.contractBindings.pipelineRunId);
-    expect(Object.values(designerCreationJob.truthPolicy).every(value => value === false)).toBe(true);
+    expect(Object.values(designerCreationJob.brief.truthPolicy).every(value => value === false)).toBe(true);
     expect(Object.values(trendCreationJob.approvals).every(approval => approval.status === 'pending')).toBe(true);
+    expect(designerCreationJob.trigger.type).toBe('on-demand');
+    expect(trendCreationJob.trigger.type).toBe('scheduled');
+    expect(trendCreationJob.brief.inputEvidence[0].freshness.status).toBe('stale');
+    expect(designerCreationJob.brief.referenceUsePolicy.mayCopy).toBe(false);
+    expect(trendCreationJob.brief.researchPolicy.mayTriggerExternalResearch).toBe(false);
+    expect(designerCreationJob.idempotency.duplicatePolicy).toBe('suppress');
     expect(validatePipelineRun(designerCreationRun)).toBe(true);
     expect(validatePipelineRun(trendCreationRun)).toBe(true);
     expect(designerCreationRun.state).toBe('in_progress_with_blockers');
@@ -290,9 +305,9 @@ describe('truth contracts', () => {
 
   it('rejects trend evidence that claims candidate-input authority', () => {
     const invalid = structuredClone(trendCreationJob);
-    invalid.inputEvidence[0].sourceType = 'research';
-    invalid.inputEvidence[0].authority = 'candidate-input';
-    invalid.inputEvidence[0].confidence = 'medium';
+    invalid.brief.inputEvidence[0].sourceType = 'research';
+    invalid.brief.inputEvidence[0].authority = 'candidate-input';
+    invalid.brief.inputEvidence[0].confidence = 'medium';
     expect(validateProductCreationJob(invalid)).toBe(false);
   });
 

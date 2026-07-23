@@ -1,33 +1,84 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://carlophillips.com/contracts/product-creation-job.schema.json",
-  "title": "ProductCreationJob v1",
+  "title": "ProductCreationJob v2",
   "type": "object",
   "required": [
     "schemaVersion",
     "jobId",
     "environment",
     "simulation",
-    "entryMode",
-    "releaseId",
-    "candidateDisposition",
-    "inputEvidence",
+    "trigger",
+    "brief",
+    "idempotency",
     "contractBindings",
-    "truthPolicy",
     "approvals"
   ],
   "properties": {
-    "schemaVersion": { "const": "cp.product-creation-job.v1" },
+    "schemaVersion": { "const": "cp.product-creation-job.v2" },
     "jobId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
     "environment": { "enum": ["local", "preview", "production"] },
     "simulation": { "type": "boolean" },
-    "entryMode": { "enum": ["designer-led", "trend-led"] },
-    "releaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
-    "candidateDisposition": { "const": "draft-only" },
-    "inputEvidence": {
-      "type": "array",
-      "minItems": 1,
-      "items": { "$ref": "#/$defs/inputEvidence" }
+    "trigger": {
+      "type": "object",
+      "required": ["type", "requestedAt", "cadence", "schedule"],
+      "properties": {
+        "type": { "enum": ["on-demand", "scheduled"] },
+        "requestedAt": { "type": "string", "format": "date-time" },
+        "cadence": { "enum": ["on-demand", "daily", "weekly", "monthly", "custom"] },
+        "schedule": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": ["expression", "timezone"],
+              "properties": {
+                "expression": { "type": "string", "minLength": 1 },
+                "timezone": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            },
+            { "type": "null" }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "on-demand" } },
+            "required": ["type"]
+          },
+          "then": {
+            "properties": {
+              "cadence": { "const": "on-demand" },
+              "schedule": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "scheduled" } },
+            "required": ["type"]
+          },
+          "then": {
+            "properties": {
+              "cadence": { "enum": ["daily", "weekly", "monthly", "custom"] },
+              "schedule": { "type": "object" }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "brief": { "$ref": "product-brief.schema.json" },
+    "idempotency": {
+      "type": "object",
+      "required": ["key", "inputFingerprint", "duplicatePolicy"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^cp:[a-z0-9:-]+$" },
+        "inputFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "duplicatePolicy": { "const": "suppress" }
+      },
+      "additionalProperties": false
     },
     "contractBindings": {
       "type": "object",
@@ -38,17 +89,6 @@
         "commerceGateway": { "const": "lib/commerce/product-gateway.js" },
         "pipelineRunContract": { "const": "contracts/pipeline-run.schema.json" },
         "pipelineRunId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" }
-      },
-      "additionalProperties": false
-    },
-    "truthPolicy": {
-      "type": "object",
-      "required": ["maySetProductTruth", "mayApproveMedia", "mayAuthorizeCommerce", "mayPublish"],
-      "properties": {
-        "maySetProductTruth": { "const": false },
-        "mayApproveMedia": { "const": false },
-        "mayAuthorizeCommerce": { "const": false },
-        "mayPublish": { "const": false }
       },
       "additionalProperties": false
     },
@@ -70,54 +110,23 @@
   "allOf": [
     {
       "if": {
-        "properties": { "entryMode": { "const": "designer-led" } },
-        "required": ["entryMode"]
-      },
-      "then": {
-        "properties": {
-          "inputEvidence": {
-            "type": "array",
-            "contains": {
-              "type": "object",
-              "properties": { "kind": { "const": "designer-brief" } },
-              "required": ["kind"]
-            }
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": { "entryMode": { "const": "trend-led" } },
-        "required": ["entryMode"]
-      },
-      "then": {
-        "properties": {
-          "inputEvidence": {
-            "type": "array",
-            "contains": {
-              "type": "object",
-              "properties": { "kind": { "const": "trend-signal" } },
-              "required": ["kind"]
-            }
-          }
-        }
-      }
-    },
-    {
-      "if": {
         "properties": { "environment": { "enum": ["preview", "production"] } },
         "required": ["environment"]
       },
       "then": {
         "properties": {
-          "inputEvidence": {
-            "not": {
-              "type": "array",
-              "contains": {
-                "type": "object",
-                "properties": { "sourceType": { "const": "fixture" } },
-                "required": ["sourceType"]
+          "brief": {
+            "type": "object",
+            "properties": {
+              "inputEvidence": {
+                "not": {
+                  "type": "array",
+                  "contains": {
+                    "type": "object",
+                    "properties": { "sourceType": { "const": "fixture" } },
+                    "required": ["sourceType"]
+                  }
+                }
               }
             }
           }
@@ -126,43 +135,6 @@
     }
   ],
   "$defs": {
-    "inputEvidence": {
-      "type": "object",
-      "required": ["evidenceId", "kind", "sourceType", "sourceRef", "observedAt", "authority", "confidence"],
-      "properties": {
-        "evidenceId": { "type": "string", "minLength": 1 },
-        "kind": { "enum": ["brand-rule", "designer-brief", "reference", "trend-signal"] },
-        "sourceType": { "enum": ["first-party", "research", "fixture"] },
-        "sourceRef": { "type": "string", "minLength": 1 },
-        "observedAt": { "type": "string", "format": "date-time" },
-        "authority": { "enum": ["candidate-input", "research-only"] },
-        "confidence": { "enum": ["unassessed", "low", "medium", "high"] }
-      },
-      "allOf": [
-        {
-          "if": {
-            "properties": { "kind": { "const": "trend-signal" } },
-            "required": ["kind"]
-          },
-          "then": {
-            "properties": { "authority": { "const": "research-only" } }
-          }
-        },
-        {
-          "if": {
-            "properties": { "sourceType": { "const": "fixture" } },
-            "required": ["sourceType"]
-          },
-          "then": {
-            "properties": {
-              "authority": { "const": "research-only" },
-              "confidence": { "const": "unassessed" }
-            }
-          }
-        }
-      ],
-      "additionalProperties": false
-    },
     "approval": {
       "type": "object",
       "required": ["status", "owner"],
