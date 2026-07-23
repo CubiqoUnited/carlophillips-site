@@ -37,6 +37,7 @@ No fallback mock product or local-only cart may masquerade as a successful bound
 - Products are hidden by default.
 - Draft review requires both `NEXT_PUBLIC_SHOW_PRODUCTS=true` and `NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true`.
 - A preview is not approval to publish, sell, deploy to production, or change Shopify state.
+- Release records move sequentially through Draft, Staged, Approved, and Released. No state may be skipped. Staged requires immutable candidate/build/private-staging and rollback-plan evidence; Approved requires complete product/media/fulfillment truth and approvals; Released requires a current Active Shopify observation and verified rollback evidence.
 - Production requires Product Owner approval plus direct evidence for domain, product/variant truth, checkout, payment, POD mapping, fulfillment, tracking, support, and returns.
 
 ## Delivery sequence

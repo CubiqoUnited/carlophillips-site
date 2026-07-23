@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 8,
+  "observedAt": "2026-07-22",
+  "objective": "Make Product Release Record transitions and rich-media approval fail closed.",
+  "releaseTransitions": {
+    "permittedSequence": [
+      "draft-to-staged",
+      "staged-to-approved",
+      "approved-to-released",
+      "released-to-withdrawn"
+    ],
+    "stateSkippingRejected": true,
+    "inputRecordMutation": false,
+    "externalMutation": false,
+    "stagedRequires": [
+      "shopify-variant-fingerprint",
+      "fulfillment-variant-fingerprint",
+      "immutable-candidate-commit",
+      "build-evidence",
+      "private-staging-evidence",
+      "rollback-plan"
+    ],
+    "approvedAdditionallyRequires": [
+      "product-approval",
+      "media-approval",
+      "fulfillment-approval",
+      "complete-release-bound-media-matrix"
+    ],
+    "releasedAdditionallyRequires": [
+      "shopify-active-observation",
+      "rollback-verification"
+    ]
+  },
+  "mediaTruth": {
+    "requiredModalities": 9,
+    "missingModalityRejected": true,
+    "duplicateModalityRejected": true,
+    "boundAssetRequirements": [
+      "known-source",
+      "exact-product-match-verified",
+      "rights-verified",
+      "approval-approved",
+      "quality-evidence-verified",
+      "modality-kind-match",
+      "accessible-fallback-for-motion-spin-3d"
+    ],
+    "approvedInfeasibilityLimitedToWhereFeasible": true
+  },
+  "hoodie": {
+    "state": "draft",
+    "stateAdvanced": false,
+    "rollbackPlanBound": true,
+    "rollbackVerified": false,
+    "stagingAllowed": false,
+    "stagingBlockers": [
+      "SHOPIFY_VARIANT_FINGERPRINT_MISSING",
+      "FULFILLMENT_VARIANT_FINGERPRINT_MISSING",
+      "CANDIDATE_COMMIT_MISSING",
+      "BUILD_EVIDENCE_MISSING",
+      "STAGING_EVIDENCE_MISSING"
+    ]
+  },
+  "commands": {
+    "focusedReleaseTests": {
+      "status": "passed",
+      "files": 3,
+      "tests": 52
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 20,
+      "tests": 136,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    }
+  },
+  "knownWarnings": [
+    "Temporary PostCSS and sharp security resolutions remain outside Next.js 15.5.21 declared ranges.",
+    "Yarn/Corepack emits the existing url.parse deprecation warning.",
+    "The Open Graph edge route prevents static generation for that route."
+  ],
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false,
+    "categories": {
+      "governance": 5,
+      "packageReproducibility": 5,
+      "qualityAndSecurity": 5,
+      "gitStrategy": 4,
+      "environmentSeparation": 5,
+      "secretHandling": 5,
+      "architectureImplementation": 5,
+      "hoodieSequenceTruth": 5,
+      "localBrowserEvidence": 4,
+      "liveOperations": 1
+    }
+  },
+  "browser": {
+    "requiredForThisContractOnlyCycle": false,
+    "uiChanged": false
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyWrite": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

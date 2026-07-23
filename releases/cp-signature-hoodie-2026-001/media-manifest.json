@@ -24,6 +24,10 @@
       "exactProductMatch": "verified",
       "rightsStatus": "pending",
       "approvalStatus": "pending",
+      "quality": {
+        "status": "pending",
+        "evidence": null
+      },
       "alt": "Apliiq black IND4000 Hoodie candidate with CP front chest mark",
       "fallbackAssetId": null
     },
@@ -38,6 +42,10 @@
       "exactProductMatch": "unverified",
       "rightsStatus": "unknown",
       "approvalStatus": "quarantined",
+      "quality": {
+        "status": "pending",
+        "evidence": null
+      },
       "alt": "Unverified hoodie hood and cord concept detail",
       "fallbackAssetId": null
     },
@@ -52,6 +60,10 @@
       "exactProductMatch": "unverified",
       "rightsStatus": "unknown",
       "approvalStatus": "quarantined",
+      "quality": {
+        "status": "pending",
+        "evidence": null
+      },
       "alt": "Unverified hoodie pocket and cuff concept detail",
       "fallbackAssetId": null
     }

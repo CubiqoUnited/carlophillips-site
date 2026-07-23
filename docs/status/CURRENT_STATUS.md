@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 7
+# Current Status — Fitness Cycle 8
 
 Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -18,12 +18,15 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 - Fail-closed page framing/security headers and exact-origin API CORS policy.
 - JSON Schemas for Commerce Product, Commerce Cart, Product Media Asset, Release Decision, Product Release Record, Product Creation Job, and PipelineRun.
 - Hard Product Owner gates for external execution, spend, credits, samples, Shopify writes, publish, and production. Creation inputs remain candidate-only; fixture/trend evidence cannot become production truth.
+- A strict release-transition decision contract and non-mutating policy for Draft → Staged → Approved → Released plus rework/withdrawal paths.
+- A nine-modality Media Registry gate that requires approved bound assets with verified exact-product match, rights, quality evidence, correct modality type, and accessible fallbacks.
+- A Hoodie-specific withdrawal plan and machine-readable staging-readiness denial with five exact blocker/resume records.
 
 ## Partial
 
 - Signature Hoodie evidence: product/design facts and one recorded front candidate exist; complete media, approvals, Shopify-backed PDP, cart, and operations proof do not.
 - Shopify integration: the product route calls the gateway/adapter, but local read-only configuration is incomplete, so current Shopify product data is not observed.
-- Release controls: Draft record exists with missing variant fingerprints and pending approvals.
+- Release controls: Draft record exists with missing variant fingerprints and pending approvals. Staging is explicitly denied until Shopify/provider fingerprints, immutable commit/build evidence, and private staging evidence exist.
 - App capability access: a live authenticated-browser attempt reached Shopify email OTP before Admin; callable access/configuration/cost/Draft safety remain unverified.
 
 ## Proposed

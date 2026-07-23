@@ -14,6 +14,8 @@ Human action: Product Owner or designee approves product facts, price, media pro
 
 Resume point: update the versioned Product Release Record and execute only the specifically authorized boundary.
 
+Current staging decision: `releases/cp-signature-hoodie-2026-001/staging-readiness.json` denies staging until Shopify and Apliiq variant fingerprints, an immutable candidate commit, passing build evidence, and private staging evidence are bound. The release-specific withdrawal plan now exists; its verification remains intentionally null until an authorized live proof.
+
 ## Read-only Shopify product observation
 
 Observed blocker: the local audit reports the Shopify Storefront environment is incomplete, and Shopify mode returns `SHOPIFY_REQUEST_FAILED` without fixture substitution.

@@ -21,6 +21,8 @@ Home, collection, and about wrappers still re-export the client shell in `app/pa
 
 Products fail closed by default. Local fixture mode is separately gated and visibly labeled; preview/production reject it. Shopify failure returns an unavailable decision and page without fixture substitution. The local Shopify probe currently reports missing configuration, so this implementation proves the boundary and failure policy—not a live product observation.
 
+Product Release Record transitions are also fail-closed. Draft may contain incomplete evidence. Staged requires observed Shopify/provider variant fingerprints, an immutable candidate commit, passing build evidence, private staging evidence, and a release-specific rollback plan. Approved additionally requires product/media/fulfillment approvals and a complete nine-modality Media Registry whose bound assets have verified provenance, exact-product match, rights, quality, approval, and accessible fallbacks. Released additionally requires a dated Shopify `ACTIVE` observation and verified rollback evidence. The transition evaluator changes only a candidate record; it never performs Shopify, deployment, or publication actions.
+
 ## Implementation gap map
 
 | Boundary | Current implementation | Evidence status | Required change |
@@ -35,6 +37,7 @@ Products fail closed by default. Local fixture mode is separately gated and visi
 | Catalog | Prior audit recorded 12 products with image-only media | Later reuse/scale input; individual release truth unproven | After the complete Hoodie journey, prove a different product through the same cores before catalog expansion |
 | Hosting | Vercel project linked but public responses are HTTP 402 | External blocker | Restore deployment access, then redeploy approved preview and resume browser proof |
 | Agentic orchestration | Durable PipelineRun, ProductCreationJob, and executable capability registry exist locally | Designer-led and trend-led local simulations converge on the same truth contracts; idempotency, blocker isolation, external execution/Shopify write/spend/publish gates, and local capability discovery are tested; external app access remains unverified | Run the authorized read-only app audit and bind evidence-backed callable surfaces to registry entries |
+| Release state | Draft Hoodie record, strict transition schema/policy, and release-specific withdrawal plan exist | Current Hoodie staging readiness is denied by five exact evidence blockers; no state or external system was changed | Resolve Shopify/provider fingerprints, immutable candidate/build evidence, and private staging evidence before staging |
 
 ## Environment model
 

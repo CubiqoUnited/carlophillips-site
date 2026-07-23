@@ -67,8 +67,14 @@
 
 ## Next unblocked truth-contract cycle
 
-- [ ] Strengthen Product Release Record transitions so `approved`/`released` cannot coexist with pending product/media/fulfillment approvals, missing fulfillment fingerprints, missing candidate evidence, or an incomplete media matrix.
-- [ ] Add explicit staged-to-approved/released transition tests and rollback prerequisites without mutating Shopify or deploying.
+- [x] Strengthen Product Release Record transitions so `approved`/`released` cannot coexist with pending product/media/fulfillment approvals, missing fulfillment fingerprints, missing candidate evidence, or an incomplete media matrix.
+- [x] Add explicit Draft/Staged/Approved/Released/Withdrawn transition tests and rollback prerequisites without mutating Shopify or deploying.
+- [x] Bind a release-specific withdrawal plan to the Hoodie Draft while keeping rollback verification null and staging denied.
+
+## Next corrective creation-contract cycle
+
+- [ ] Add explicit ProductCreationJob trigger/cadence, freshness, brand constraints, reference-use rules, and job idempotency/duplicate-suppression fields.
+- [ ] Prove scheduled and on-demand sanitized jobs cannot imply publication or product/media truth, and keep external research inaccessible without blocking safe work.
 
 ## Blocked / approval required
 

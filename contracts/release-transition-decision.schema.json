@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/release-transition-decision.schema.json",
+  "title": "ReleaseTransitionDecision v1",
+  "type": "object",
+  "required": ["schemaVersion", "releaseId", "fromState", "targetState", "allowed", "blockers", "candidate"],
+  "properties": {
+    "schemaVersion": { "const": "cp.release-transition-decision.v1" },
+    "releaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
+    "fromState": { "enum": ["draft", "staged", "approved", "released", "withdrawn"] },
+    "targetState": { "enum": ["draft", "staged", "approved", "released", "withdrawn"] },
+    "allowed": { "type": "boolean" },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "humanAction", "resumePoint"],
+        "properties": {
+          "code": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+          "humanAction": { "type": "string", "minLength": 1 },
+          "resumePoint": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "candidate": {
+      "oneOf": [
+        { "$ref": "product-release.schema.json" },
+        { "type": "null" }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "allowed": { "const": true } },
+        "required": ["allowed"]
+      },
+      "then": {
+        "properties": {
+          "blockers": { "type": "array", "maxItems": 0 },
+          "candidate": { "$ref": "product-release.schema.json" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "allowed": { "const": false } },
+        "required": ["allowed"]
+      },
+      "then": {
+        "properties": {
+          "blockers": { "type": "array", "minItems": 1 },
+          "candidate": { "type": "null" }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

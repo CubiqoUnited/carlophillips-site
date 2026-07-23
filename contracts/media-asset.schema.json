@@ -3,7 +3,7 @@
   "$id": "https://carlophillips.com/contracts/media-asset.schema.json",
   "title": "ProductMediaAsset v1",
   "type": "object",
-  "required": ["schemaVersion", "assetId", "kind", "source", "exactProductMatch", "rightsStatus", "approvalStatus", "alt"],
+  "required": ["schemaVersion", "assetId", "kind", "source", "exactProductMatch", "rightsStatus", "approvalStatus", "quality", "alt"],
   "properties": {
     "schemaVersion": { "const": "cp.product-media-asset.v1" },
     "assetId": { "type": "string", "minLength": 1 },
@@ -21,6 +21,26 @@
     "exactProductMatch": { "enum": ["verified", "partial", "unverified", "not-applicable"] },
     "rightsStatus": { "enum": ["verified", "pending", "unknown"] },
     "approvalStatus": { "enum": ["pending", "approved", "rejected", "quarantined"] },
+    "quality": {
+      "type": "object",
+      "required": ["status", "evidence"],
+      "properties": {
+        "status": { "enum": ["pending", "verified", "failed"] },
+        "evidence": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "const": "verified" } },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": { "evidence": { "type": "string", "minLength": 1 } }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
     "alt": { "type": "string", "minLength": 1 },
     "fallbackAssetId": { "type": ["string", "null"] }
   },

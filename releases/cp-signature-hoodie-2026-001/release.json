@@ -29,5 +29,10 @@
     "buildEvidence": null,
     "stagingEvidence": null
   },
-  "rollback": { "previousReleaseId": null }
+  "rollback": {
+    "strategy": "withdraw-release",
+    "planEvidence": "releases/cp-signature-hoodie-2026-001/rollback-plan.md",
+    "verificationEvidence": null,
+    "previousReleaseId": null
+  }
 }

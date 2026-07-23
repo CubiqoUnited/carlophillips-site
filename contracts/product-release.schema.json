@@ -53,15 +53,41 @@
     },
     "rollback": {
       "type": "object",
-      "required": ["previousReleaseId"],
-      "properties": { "previousReleaseId": { "type": ["string", "null"] } },
+      "required": ["strategy", "planEvidence", "verificationEvidence", "previousReleaseId"],
+      "properties": {
+        "strategy": {
+          "oneOf": [
+            { "enum": ["withdraw-release", "restore-previous-release"] },
+            { "type": "null" }
+          ]
+        },
+        "planEvidence": { "type": ["string", "null"] },
+        "verificationEvidence": { "type": ["string", "null"] },
+        "previousReleaseId": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "strategy": { "const": "restore-previous-release" } },
+            "required": ["strategy"]
+          },
+          "then": {
+            "properties": {
+              "previousReleaseId": {
+                "type": "string",
+                "pattern": "^cp-[a-z0-9-]+$"
+              }
+            }
+          }
+        }
+      ],
       "additionalProperties": false
     }
   },
   "allOf": [
     {
       "if": {
-        "properties": { "state": { "enum": ["approved", "released"] } },
+        "properties": { "state": { "enum": ["staged", "approved", "released"] } },
         "required": ["state"]
       },
       "then": {
@@ -71,6 +97,84 @@
             "properties": {
               "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
               "variantFingerprintStatus": { "const": "observed" }
+            }
+          },
+          "fulfillmentMappings": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "allOf": [
+                { "$ref": "#/$defs/fulfillmentMapping" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+                    "variantFingerprintStatus": { "const": "observed" }
+                  }
+                }
+              ]
+            }
+          },
+          "candidate": {
+            "type": "object",
+            "properties": {
+              "gitCommit": { "type": "string", "pattern": "^[a-f0-9]{7,40}$" },
+              "buildEvidence": { "type": "string", "minLength": 1 },
+              "stagingEvidence": { "type": "string", "minLength": 1 }
+            }
+          },
+          "rollback": {
+            "type": "object",
+            "properties": {
+              "strategy": { "enum": ["withdraw-release", "restore-previous-release"] },
+              "planEvidence": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "state": { "enum": ["approved", "released"] } },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": {
+          "approvals": {
+            "type": "object",
+            "properties": {
+              "product": {
+                "type": "object",
+                "properties": { "status": { "const": "approved" } }
+              },
+              "media": {
+                "type": "object",
+                "properties": { "status": { "const": "approved" } }
+              },
+              "fulfillment": {
+                "type": "object",
+                "properties": { "status": { "const": "approved" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "state": { "const": "released" } },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": {
+          "shopify": {
+            "type": "object",
+            "properties": { "statusObserved": { "const": "ACTIVE" } }
+          },
+          "rollback": {
+            "type": "object",
+            "properties": {
+              "verificationEvidence": { "type": "string", "minLength": 1 }
             }
           }
         }

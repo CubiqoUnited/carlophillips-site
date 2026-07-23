@@ -87,6 +87,14 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - PipelineRun now gates external execution and Shopify writes in addition to spend, credits, samples, publish, and production. A human-required external-source item yields `in_progress_with_blockers` while four safe work items remain pending.
 - Full verification results and machine-readable artifacts are stored under `test_reports/cp-fitness-cycle-7/`.
 
+## Cycle 8 verification
+
+- Product Release Record schema and policy now enforce sequential Draft → Staged → Approved → Released transitions. No evaluator path performs a Shopify write, deployment, publication, or production action.
+- Staged requires observed Shopify/provider fingerprints, immutable commit/build/staging evidence, and a rollback plan. Approved additionally requires all product/media/fulfillment approvals plus a complete release-bound media matrix. Released additionally requires Shopify `ACTIVE` and verified rollback observations.
+- The Media Registry requires exactly one entry for each of nine modalities. Approved bound assets must have verified exact-product match, rights, quality evidence, approval, correct modality kind, and release-ready fallbacks for video/spin/3D.
+- The Hoodie Draft now binds a release-specific withdrawal plan, but rollback verification remains null. Its machine-readable staging decision remains denied on five exact evidence blockers; the record was not advanced.
+- Full verification and evidence are stored under `test_reports/cp-fitness-cycle-8/`.
+
 ## External blockers
 
 ### Vercel hosting disabled

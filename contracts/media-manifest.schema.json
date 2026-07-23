@@ -9,7 +9,8 @@
     "releaseId": { "type": "string", "minLength": 1 },
     "requirements": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 9,
+      "maxItems": 9,
       "items": {
         "type": "object",
         "required": ["modality", "requirement", "status", "assetIds", "infeasibilityBlocker"],
@@ -17,7 +18,11 @@
           "modality": { "enum": ["front", "back-angle", "embroidery-detail", "material-detail", "on-model", "lifestyle", "spin-360", "model-3d-ar", "video"] },
           "requirement": { "enum": ["required", "where-feasible"] },
           "status": { "enum": ["missing", "candidate", "approved", "infeasible-pending", "infeasible-approved"] },
-          "assetIds": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "assetIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
           "infeasibilityBlocker": {
             "type": ["object", "null"],
             "properties": {
@@ -49,10 +54,39 @@
                 }
               }
             }
+          },
+          {
+            "if": {
+              "properties": {
+                "modality": {
+                  "enum": ["front", "back-angle", "embroidery-detail", "material-detail", "on-model", "lifestyle", "video"]
+                }
+              },
+              "required": ["modality"]
+            },
+            "then": { "properties": { "requirement": { "const": "required" } } }
+          },
+          {
+            "if": {
+              "properties": { "modality": { "enum": ["spin-360", "model-3d-ar"] } },
+              "required": ["modality"]
+            },
+            "then": { "properties": { "requirement": { "const": "where-feasible" } } }
           }
         ],
         "additionalProperties": false
-      }
+      },
+      "allOf": [
+        { "contains": { "type": "object", "properties": { "modality": { "const": "front" } }, "required": ["modality"] } },
+        { "contains": { "type": "object", "properties": { "modality": { "const": "back-angle" } }, "required": ["modality"] } },
+        { "contains": { "type": "object", "properties": { "modality": { "const": "embroidery-detail" } }, "required": ["modality"] } },
+        { "contains": { "type": "object", "properties": { "modality": { "const": "material-detail" } }, "required": ["modality"] } },
+        { "contains": { "type": "object", "properties": { "modality": { "const": "on-model" } }, "required": ["modality"] } },
+        { "contains": { "type": "object", "properties": { "modality": { "const": "lifestyle" } }, "required": ["modality"] } },
+        { "contains": { "type": "object", "properties": { "modality": { "const": "spin-360" } }, "required": ["modality"] } },
+        { "contains": { "type": "object", "properties": { "modality": { "const": "model-3d-ar" } }, "required": ["modality"] } },
+        { "contains": { "type": "object", "properties": { "modality": { "const": "video" } }, "required": ["modality"] } }
+      ]
     },
     "assets": { "type": "array", "items": { "$ref": "media-asset.schema.json" } }
   },

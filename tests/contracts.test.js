@@ -10,6 +10,7 @@ import productCreationJobSchema from '../contracts/product-creation-job.schema.j
 import mediaAssetSchema from '../contracts/media-asset.schema.json';
 import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
+import releaseTransitionDecisionSchema from '../contracts/release-transition-decision.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
@@ -18,10 +19,17 @@ import designerCreationJob from '../runs/cp-hoodie-designer-contract-sim-002/job
 import trendCreationJob from '../runs/cp-hoodie-trend-contract-sim-003/job.json';
 import designerCreationRun from '../runs/cp-hoodie-designer-contract-sim-002/run.json';
 import trendCreationRun from '../runs/cp-hoodie-trend-contract-sim-003/run.json';
+import hoodieStagingReadiness from '../releases/cp-signature-hoodie-2026-001/staging-readiness.json';
+import { evaluateProductReleaseTransition } from '../lib/releases/product-release-transition';
+import {
+  createCompleteMediaManifest,
+  createCompleteReleaseRecord,
+} from './fixtures/release-fixtures';
 
 const ajv = new Ajv2020({ allErrors: true });
 addFormats(ajv);
 ajv.addSchema(mediaAssetSchema);
+ajv.addSchema(productReleaseSchema);
 
 const validateCommerceProduct = ajv.compile(commerceProductSchema);
 const validateCommerceCart = ajv.compile(commerceCartSchema);
@@ -30,8 +38,9 @@ const validateMediaManifest = ajv.compile(mediaManifestSchema);
 const validateCapabilityRegistry = ajv.compile(capabilityRegistrySchema);
 const validateProductCreationJob = ajv.compile(productCreationJobSchema);
 const validateMediaAsset = ajv.getSchema(mediaAssetSchema.$id);
-const validateProductRelease = ajv.compile(productReleaseSchema);
+const validateProductRelease = ajv.getSchema(productReleaseSchema.$id);
 const validateReleaseDecision = ajv.compile(releaseDecisionSchema);
+const validateReleaseTransitionDecision = ajv.compile(releaseTransitionDecisionSchema);
 
 const product = {
   id: 'gid://shopify/Product/1',
@@ -137,7 +146,12 @@ describe('truth contracts', () => {
         fulfillment: { status: 'pending', owner: 'Product Owner/designee' },
       },
       candidate: { gitCommit: null, buildEvidence: null, stagingEvidence: null },
-      rollback: { previousReleaseId: null },
+      rollback: {
+        strategy: null,
+        planEvidence: null,
+        verificationEvidence: null,
+        previousReleaseId: null,
+      },
     })).toBe(true);
   });
 
@@ -169,10 +183,75 @@ describe('truth contracts', () => {
     expect(quarantined.every(asset => asset.exactProductMatch === 'unverified')).toBe(true);
   });
 
+  it('rejects a media manifest that downgrades required video to where-feasible', () => {
+    const manifest = createCompleteMediaManifest();
+    const video = manifest.requirements.find(item => item.modality === 'video');
+    video.requirement = 'where-feasible';
+    video.status = 'infeasible-approved';
+    video.assetIds = [];
+    video.infeasibilityBlocker = {
+      reason: 'Required product film cannot be silently waived.',
+      approvalStatus: 'approved',
+      owner: 'Product Owner',
+    };
+    expect(validateMediaManifest(manifest)).toBe(false);
+  });
+
   it('rejects an approved release with a missing variant fingerprint', () => {
     const invalidApprovedRecord = structuredClone(hoodieRelease);
     invalidApprovedRecord.state = 'approved';
     expect(validateProductRelease(invalidApprovedRecord)).toBe(false);
+  });
+
+  it.each([
+    ['missing fulfillment mapping', record => { record.fulfillmentMappings = []; }],
+    ['pending product approval', record => { record.approvals.product.status = 'pending'; }],
+    ['pending media approval', record => { record.approvals.media.status = 'pending'; }],
+    ['pending fulfillment approval', record => { record.approvals.fulfillment.status = 'pending'; }],
+    ['missing candidate commit', record => { record.candidate.gitCommit = null; }],
+    ['missing build evidence', record => { record.candidate.buildEvidence = null; }],
+    ['missing staging evidence', record => { record.candidate.stagingEvidence = null; }],
+    ['missing rollback plan', record => { record.rollback.planEvidence = null; }],
+    ['restore strategy without previous release', record => {
+      record.rollback.strategy = 'restore-previous-release';
+      record.rollback.previousReleaseId = null;
+    }],
+  ])('rejects an Approved record with %s', (_label, mutate) => {
+    const record = createCompleteReleaseRecord('approved');
+    mutate(record);
+    expect(validateProductRelease(record)).toBe(false);
+  });
+
+  it('rejects a Released record without ACTIVE and verified rollback observations', () => {
+    const record = createCompleteReleaseRecord('released');
+    record.shopify.statusObserved = 'DRAFT';
+    record.rollback.verificationEvidence = null;
+    expect(validateProductRelease(record)).toBe(false);
+  });
+
+  it('validates a denied transition decision for the incomplete Hoodie Draft', () => {
+    const decision = evaluateProductReleaseTransition({
+      record: hoodieRelease,
+      manifest: hoodieMediaManifest,
+      targetState: 'staged',
+    });
+    expect(validateReleaseTransitionDecision(decision)).toBe(true);
+    expect(decision).toEqual(hoodieStagingReadiness);
+    expect(decision.allowed).toBe(false);
+    expect(decision.candidate).toBeNull();
+    expect(decision.blockers.every(item => item.humanAction && item.resumePoint)).toBe(true);
+  });
+
+  it('validates an allowed Staged → Approved decision only when its candidate satisfies the release schema', () => {
+    const decision = evaluateProductReleaseTransition({
+      record: createCompleteReleaseRecord('staged'),
+      manifest: createCompleteMediaManifest(),
+      targetState: 'approved',
+    });
+    expect(decision.allowed).toBe(true);
+    expect(validateProductRelease(decision.candidate)).toBe(true);
+    expect(validateMediaManifest(createCompleteMediaManifest())).toBe(true);
+    expect(validateReleaseTransitionDecision(decision)).toBe(true);
   });
 
   it('validates a blocked four-lane Hoodie simulation without granting restricted approvals', () => {
