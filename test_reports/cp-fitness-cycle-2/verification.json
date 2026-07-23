@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "cp.evidence-envelope.v1",
+  "cycle": "cp-fitness-cycle-2",
+  "observedAt": "2026-07-22T22:34:43-04:00",
+  "branch": "codex/cp-fitness-baseline",
+  "baseCommit": "0e0476e6ef437b401f1c3ee02c459c1df435eaa0",
+  "packageManager": "yarn@1.22.22",
+  "commands": [
+    { "command": "yarn install --frozen-lockfile", "status": "passed", "freshDependencyTree": true },
+    { "command": "yarn lint", "status": "passed", "warnings": 0 },
+    { "command": "yarn test", "status": "passed", "testFiles": 9, "tests": 37 },
+    { "command": "yarn build", "status": "passed", "routesGenerated": 12, "productFirstLoadJs": "94 kB" },
+    { "command": "git diff --check", "status": "passed" }
+  ],
+  "browser": {
+    "fixtureDesktop": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "sourceLabelVisible": true,
+      "purchasingDisabled": true,
+      "imageCount": 1,
+      "disabledButtonCount": 10,
+      "errorOverlayCount": 0,
+      "consoleErrors": [],
+      "screenshot": "fixture-pdp-desktop.png"
+    },
+    "fixtureMobile": {
+      "viewport": "390x844",
+      "status": 200,
+      "horizontalOverflow": false,
+      "errorOverlayCount": 0,
+      "consoleErrors": [],
+      "screenshot": "fixture-pdp-mobile.png"
+    },
+    "previewFixtureDenial": {
+      "status": 200,
+      "fixtureRendered": false,
+      "unavailableState": true,
+      "reason": "FIXTURE_SOURCE_FORBIDDEN",
+      "errorOverlayCount": 0,
+      "consoleErrors": [],
+      "screenshot": "preview-fixture-denied.png"
+    },
+    "shopifyBoundary": {
+      "status": 200,
+      "fixtureRendered": false,
+      "unavailableState": true,
+      "reason": "SHOPIFY_REQUEST_FAILED",
+      "readOnlyAudit": { "status": "degraded", "shopify": "Not configured" },
+      "errorOverlayCount": 0,
+      "consoleErrors": [],
+      "screenshot": "shopify-boundary-desktop.png"
+    }
+  },
+  "releaseEvidence": {
+    "releaseId": "cp-signature-hoodie-2026-001",
+    "state": "draft",
+    "shopifyVariantFingerprint": "missing",
+    "fulfillmentVariantFingerprint": "missing",
+    "approvals": "all pending",
+    "approvedMediaAssets": 0,
+    "pendingMediaAssets": 1,
+    "quarantinedMediaAssets": 2
+  },
+  "review": {
+    "architectureHandoff": "CP-ARCH-2026-07-22-01",
+    "reactBestPractices": "Server Components, named exports, semantic controls, stable media keys, alt text, and no hook/effect state were confirmed. No additional refactor was required."
+  },
+  "externalBlockers": [
+    "Read-only Shopify Storefront environment configuration is incomplete.",
+    "Vercel production and preview were last observed returning HTTP 402 DEPLOYMENT_DISABLED.",
+    "Product Owner has not selected Signature Hoodie POC versus broader catalog restoration."
+  ]
+}

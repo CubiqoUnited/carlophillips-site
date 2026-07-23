@@ -10,17 +10,26 @@
     "state": { "enum": ["draft", "staged", "approved", "released", "withdrawn"] },
     "shopify": {
       "type": "object",
-      "required": ["productReference", "handle", "statusObserved", "observedAt", "variantFingerprint"],
+      "required": ["productReference", "handle", "statusObserved", "observedAt", "variantFingerprint", "variantFingerprintStatus"],
       "properties": {
         "productReference": { "type": "string", "minLength": 1 },
         "handle": { "type": "string", "minLength": 1 },
         "statusObserved": { "enum": ["DRAFT", "ACTIVE", "ARCHIVED", "UNKNOWN"] },
         "observedAt": { "type": "string", "format": "date-time" },
-        "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        "variantFingerprint": {
+          "oneOf": [
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            { "type": "null" }
+          ]
+        },
+        "variantFingerprintStatus": { "enum": ["observed", "missing"] }
       },
       "additionalProperties": false
     },
-    "fulfillmentMappings": { "type": "array" },
+    "fulfillmentMappings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fulfillmentMapping" }
+    },
     "mediaManifest": { "type": "string", "minLength": 1 },
     "approvals": {
       "type": "object",
@@ -49,7 +58,42 @@
       "additionalProperties": false
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "state": { "enum": ["approved", "released"] } },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": {
+          "shopify": {
+            "type": "object",
+            "properties": {
+              "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+              "variantFingerprintStatus": { "const": "observed" }
+            }
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
+    "fulfillmentMapping": {
+      "type": "object",
+      "required": ["adapter", "providerProductId", "variantFingerprint", "variantFingerprintStatus"],
+      "properties": {
+        "adapter": { "type": "string", "minLength": 1 },
+        "providerProductId": { "type": "string", "minLength": 1 },
+        "variantFingerprint": {
+          "oneOf": [
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            { "type": "null" }
+          ]
+        },
+        "variantFingerprintStatus": { "enum": ["observed", "missing"] }
+      },
+      "additionalProperties": false
+    },
     "approval": {
       "type": "object",
       "required": ["status", "owner"],

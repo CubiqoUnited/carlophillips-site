@@ -20,6 +20,14 @@ Human action: Product Owner or designee approves product facts, price, media pro
 
 Resume point: update the versioned Product Release Record and execute only the specifically authorized boundary.
 
+## Read-only Shopify product observation
+
+Observed blocker: the local audit reports the Shopify Storefront environment is incomplete, and Shopify mode returns `SHOPIFY_REQUEST_FAILED` without fixture substitution.
+
+Human action: an authorized owner supplies valid read-only Storefront domain/token values in the intended local or Preview environment.
+
+Resume point: use `COMMERCE_DATA_MODE=shopify`, capture the source-labeled product/variant/price/media response, and update the Draft release record fingerprints while purchasing remains disabled.
+
 ## Restricted actions
 
 Shopify writes, product activation, provider contact, paid services/trials, orders/samples, PR merge, DNS/cutover, and production promotion remain separately approval-gated.

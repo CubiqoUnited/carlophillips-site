@@ -1,18 +1,16 @@
 # Next Actions
 
-## Finish Cycle 1
+## Finish Cycle 2 evidence
 
-1. Regenerate and prove the Yarn lock through a frozen clean install.
-2. Pass zero-warning lint, contract/unit tests, and production build.
-3. Verify default and local-fixture UI at desktop/mobile widths with console evidence.
-4. Capture machine-readable command and browser evidence under `test_reports/cp-fitness-cycle-1/`.
-5. Review the diff for stale claims, fixture leakage, secret leakage, and architecture contradictions.
+1. Prove a frozen install, zero-warning lint, all tests, and production build.
+2. Capture Cycle 2 command/browser evidence and recheck fixture denial.
+3. Review source labels, release record gaps, secrets, and architecture claims.
 
-## Cycle 2 candidate after review
+## Next safe cycle
 
-1. Put the existing read-only Shopify client behind a server-only Commerce Gateway.
-2. Add explicit unavailable/error results and sanitized adapter fixtures.
-3. Build a Draft Hoodie Product Release Record only from observed evidence.
-4. Render one reusable Shopify-backed PDP while keeping commerce disabled.
+1. Obtain authorized read-only Shopify configuration and capture the product/variant/media observation.
+2. Fingerprint the observed Shopify and Apliiq variant mappings in the Draft release record.
+3. Add provider-neutral cart contracts, non-local fallback denial, and checkout-host validation tests.
+4. Keep product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.
 
-Product scope remains with the Product Owner; Cycle 2 must not publish, buy, deploy, merge, or mutate Shopify.
+Product scope remains with the Product Owner.

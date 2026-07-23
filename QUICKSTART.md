@@ -14,19 +14,23 @@ Visit `http://localhost:3000`.
 
 - Home/about editorial routes render.
 - Shop and collection routes explain that the first drop is not released.
-- Product routes show an unreleased state.
+- Product routes show an explicit unavailable state while visibility is closed.
 - Bag/cart routes show an empty, non-checkout shell.
 
 ## Optional static Hoodie review
 
-To review the existing static POC locally, set both values in `.env.local`, restart `yarn dev`, and open `/products/carlophillips-signature-hoodie`:
+To review the local POC fixture, set these values in `.env.local`, restart `yarn dev`, and open `/products/carlophillips-signature-hoodie`:
 
 ```bash
+COMMERCE_DATA_MODE=fixture
+NEXT_PUBLIC_COMMERCE_ENVIRONMENT=local
 NEXT_PUBLIC_SHOW_PRODUCTS=true
 NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true
 ```
 
 The page remains disabled for purchasing. Its static price, sizes, and media are review content, not proof of current Shopify data.
+
+To exercise the read-only Shopify boundary, use `COMMERCE_DATA_MODE=shopify`. If server-only Shopify configuration or product access is absent, the route intentionally shows “cannot be shown truthfully” and never substitutes the fixture.
 
 ## Verify before handing off
 

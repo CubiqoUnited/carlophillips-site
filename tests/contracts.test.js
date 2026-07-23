@@ -5,6 +5,8 @@ import commerceProductSchema from '../contracts/commerce-product.schema.json';
 import mediaAssetSchema from '../contracts/media-asset.schema.json';
 import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
+import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
+import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 
 const ajv = new Ajv2020({ allErrors: true });
 addFormats(ajv);
@@ -77,6 +79,7 @@ describe('truth contracts', () => {
         statusObserved: 'DRAFT',
         observedAt: '2026-07-22T22:00:00Z',
         variantFingerprint: `sha256:${'a'.repeat(64)}`,
+        variantFingerprintStatus: 'observed',
       },
       fulfillmentMappings: [],
       mediaManifest: 'fixtures/test-media-manifest.json',
@@ -101,5 +104,25 @@ describe('truth contracts', () => {
       reason: 'SHOPIFY_REQUEST_FAILED',
       product: null,
     })).toBe(true);
+  });
+
+  it('validates the evidence-bound Draft Hoodie record', () => {
+    expect(validateProductRelease(hoodieRelease)).toBe(true);
+    expect(hoodieRelease.state).toBe('draft');
+    expect(hoodieRelease.shopify.variantFingerprintStatus).toBe('missing');
+    expect(Object.values(hoodieRelease.approvals).every(approval => approval.status === 'pending')).toBe(true);
+  });
+
+  it('validates every Hoodie media asset and keeps uncertain assets quarantined', () => {
+    expect(hoodieMediaManifest.assets.every(asset => validateMediaAsset(asset))).toBe(true);
+    const quarantined = hoodieMediaManifest.assets.filter(asset => asset.approvalStatus === 'quarantined');
+    expect(quarantined).toHaveLength(2);
+    expect(quarantined.every(asset => asset.exactProductMatch === 'unverified')).toBe(true);
+  });
+
+  it('rejects an approved release with a missing variant fingerprint', () => {
+    const invalidApprovedRecord = structuredClone(hoodieRelease);
+    invalidApprovedRecord.state = 'approved';
+    expect(validateProductRelease(invalidApprovedRecord)).toBe(false);
   });
 });

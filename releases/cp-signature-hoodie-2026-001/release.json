@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "cp.product-release.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "state": "draft",
+  "shopify": {
+    "productReference": "9432704909549",
+    "handle": "carlophillips-signature-hoodie",
+    "statusObserved": "DRAFT",
+    "observedAt": "2026-07-12T01:40:00-04:00",
+    "variantFingerprint": null,
+    "variantFingerprintStatus": "missing"
+  },
+  "fulfillmentMappings": [
+    {
+      "adapter": "apliiq",
+      "providerProductId": "5958463",
+      "variantFingerprint": null,
+      "variantFingerprintStatus": "missing"
+    }
+  ],
+  "mediaManifest": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
+  "approvals": {
+    "product": { "status": "pending", "owner": "Product Owner" },
+    "media": { "status": "pending", "owner": "Product Owner/designee" },
+    "fulfillment": { "status": "pending", "owner": "Product Owner/designee" }
+  },
+  "candidate": {
+    "gitCommit": null,
+    "buildEvidence": null,
+    "stagingEvidence": null
+  },
+  "rollback": { "previousReleaseId": null }
+}

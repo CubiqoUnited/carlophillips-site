@@ -2,7 +2,7 @@
 
 CARLOPHILLIPS is a Next.js 14 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
-The repository is **not production-ready**. The active UI is currently an editorial shell with products hidden by default. A gated static Signature Hoodie page exists for staging review, while the Shopify commerce modules are not yet wired into the active routes. See `STATUS.md` for verified facts and blockers.
+The repository is **not production-ready**. The editorial shell keeps products hidden by default. The product route now uses a server-only, source-labeled commerce gateway: explicit local fixture mode supports layout review, while Shopify mode returns an honest unavailable state when configuration or product access is missing. Cart and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
 
 ## Current product state
 
@@ -32,9 +32,10 @@ yarn dev
 
 Open `http://localhost:3000`. Defaults are fail-closed: no product is visible and no purchase flow is active.
 
-For a local-only review of the static Hoodie fixture, set both flags in `.env.local` and restart the server:
+For a local-only review of the Hoodie fixture, select fixture mode, set both flags in `.env.local`, and restart the server:
 
 ```bash
+COMMERCE_DATA_MODE=fixture
 NEXT_PUBLIC_SHOW_PRODUCTS=true
 NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true
 ```
@@ -58,8 +59,12 @@ Copy `.env.example` and supply values only in ignored local files or the appropr
 | Variable | Purpose |
 |---|---|
 | `NEXT_PUBLIC_BASE_URL` | Environment-specific storefront URL |
+| `NEXT_PUBLIC_COMMERCE_ENVIRONMENT` | Policy boundary: `local`, `preview`, or `production` |
+| `COMMERCE_DATA_MODE` | Server-only data source: `fixture` or `shopify` |
 | `NEXT_PUBLIC_SHOW_PRODUCTS` | Top-level product visibility gate |
 | `NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS` | Secondary static draft-review gate |
+| `SHOPIFY_STORE_DOMAIN` | Preferred server-only Shopify Storefront domain |
+| `SHOPIFY_STOREFRONT_TOKEN` | Preferred server-only Storefront API token |
 | `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` | Shopify Storefront domain |
 | `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` | Public Storefront API token; never put the actual value in reports |
 | `CORS_ORIGINS` | Allowed API origin for the environment |
@@ -67,9 +72,14 @@ Copy `.env.example` and supply values only in ignored local files or the appropr
 ## Repository map
 
 ```text
-app/                 route wrappers and current client shell
+app/                 routes; product route has a dedicated server boundary
+components/commerce/ reusable, non-buyable product presentation
+contracts/           machine-readable truth and release schemas
+releases/            evidence-bound release records and media manifests
 lib/config/          release and Shopify configuration
-lib/data/            static fixture, mock data, and dormant data service
+lib/commerce/        provider-neutral gateway, policy, and view models
+lib/providers/       server-only provider adapters
+lib/data/            legacy data service with local-only fixture fallback
 lib/shopify/         Storefront queries, mutations, normalization, client
 lib/store/           dormant local/Shopify cart module
 tests/               automated fitness and commerce-contract tests

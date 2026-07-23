@@ -1,0 +1,36 @@
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { describe, expect, it } from 'vitest';
+import { CommerceProductDetail, CommerceProductUnavailable } from '../components/commerce/product-detail.jsx';
+
+describe('commerce product presentation', () => {
+  it('renders source truth and keeps purchasing disabled', () => {
+    const html = renderToStaticMarkup(<CommerceProductDetail product={{
+      source: 'shopify',
+      sourceLabel: 'Shopify Storefront observation — release approval pending',
+      title: 'Observed Hoodie',
+      price: 128,
+      currency: 'USD',
+      description: 'Observed description',
+      story: 'Pending release evidence.',
+      colors: ['Black'],
+      sizes: ['M'],
+      availableForSale: true,
+      vendor: 'Observed vendor',
+      productType: 'Hoodie',
+      media: [],
+    }} />);
+
+    expect(html).toContain('Shopify Storefront observation');
+    expect(html).toContain('Release approval pending');
+    expect(html).toContain('Purchasing remains disabled');
+    expect(html).toContain('disabled=""');
+  });
+
+  it('renders an honest unavailable state without product content', () => {
+    const html = renderToStaticMarkup(<CommerceProductUnavailable decision={{ reason: 'SHOPIFY_REQUEST_FAILED' }} />);
+    expect(html).toContain('This product cannot be shown truthfully');
+    expect(html).toContain('Static product data has not been substituted');
+    expect(html).toContain('SHOPIFY_REQUEST_FAILED');
+  });
+});
