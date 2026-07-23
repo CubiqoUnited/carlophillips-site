@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { getProductDecision, resolveCommerceDataMode } from '../lib/commerce/product-gateway.js';
+import {
+  createCompleteMediaManifest,
+  createCompleteReleaseRecord,
+} from './fixtures/release-fixtures.js';
 
 const fixtureProduct = { handle: 'fixture-product', title: 'Fixture product' };
 
@@ -36,16 +40,36 @@ describe('product gateway', () => {
   });
 
   it('returns source-labeled Shopify data through the injected adapter', async () => {
-    const loadShopifyProduct = vi.fn().mockResolvedValue({ handle: 'observed-product', name: 'Observed product' });
+    const loadShopifyProduct = vi.fn().mockResolvedValue({ handle: 'test-product', name: 'Observed product' });
     const decision = await getProductDecision({
       environment: 'preview',
       mode: 'shopify',
-      handle: 'observed-product',
+      handle: 'test-product',
+      releaseRecord: createCompleteReleaseRecord('staged'),
+      mediaManifest: createCompleteMediaManifest(),
       loadShopifyProduct,
     });
-    expect(loadShopifyProduct).toHaveBeenCalledWith('observed-product');
+    expect(loadShopifyProduct).toHaveBeenCalledWith('test-product');
     expect(decision).toMatchObject({ source: 'shopify', visibilityAllowed: true, commerceAllowed: false });
     expect(decision.product.source).toBe('shopify');
+  });
+
+  it('denies a successful Shopify production observation backed only by a Draft record', async () => {
+    const decision = await getProductDecision({
+      environment: 'production',
+      mode: 'shopify',
+      handle: 'test-product',
+      releaseRecord: createCompleteReleaseRecord('draft'),
+      mediaManifest: createCompleteMediaManifest(),
+      loadShopifyProduct: vi.fn().mockResolvedValue({ handle: 'test-product' }),
+    });
+    expect(decision).toMatchObject({
+      status: 'denied',
+      visibilityAllowed: false,
+      commerceAllowed: false,
+      reason: 'PRODUCT_RELEASE_NOT_RELEASED',
+      product: null,
+    });
   });
 
   it('does not substitute a fixture when Shopify throws', async () => {

@@ -173,6 +173,26 @@ describe('truth contracts', () => {
     })).toBe(true);
   });
 
+  it('requires denied release decisions to remain invisible and non-commerce', () => {
+    const denied = {
+      schemaVersion: 'cp.release-decision.v1',
+      environment: 'production',
+      status: 'denied',
+      source: 'shopify',
+      visibilityAllowed: false,
+      commerceAllowed: false,
+      reason: 'PRODUCT_RELEASE_NOT_RELEASED',
+      product: null,
+    };
+
+    expect(validateReleaseDecision(denied)).toBe(true);
+    expect(validateReleaseDecision({
+      ...denied,
+      visibilityAllowed: true,
+      product: { handle: 'signature-hoodie' },
+    })).toBe(false);
+  });
+
   it('validates the evidence-bound Draft Hoodie record', () => {
     expect(validateProductRelease(hoodieRelease)).toBe(true);
     expect(hoodieRelease.state).toBe('draft');

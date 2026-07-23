@@ -103,10 +103,10 @@ export function CommerceProductUnavailable({ decision }) {
   );
 }
 
-export function CommerceProductDetail({ product }) {
+export function CommerceProductDetail({ product, releaseReason = 'RELEASE_DECISION_UNAVAILABLE' }) {
   const facts = [
     ['Data source', product.sourceLabel],
-    ['Release state', 'Approval pending — purchasing disabled'],
+    ['Release decision', releaseReason],
     ['Availability observed', product.availableForSale ? 'Available in source' : 'Unavailable or not observed'],
     ['Vendor observed', product.vendor],
     ['Product type', product.productType],
@@ -143,7 +143,7 @@ export function CommerceProductDetail({ product }) {
             )}
 
             <button type="button" disabled className="mt-8 flex h-14 w-full items-center justify-center border border-white/18 text-[10px] uppercase tracking-[0.24em] text-white/44">
-              Release approval pending
+              Purchasing disabled
             </button>
             <p className="mt-4 text-xs leading-relaxed text-white/35">Purchasing remains disabled. Source availability does not equal release approval.</p>
           </div>

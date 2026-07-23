@@ -104,6 +104,15 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Both modes still converge on the same Product Release Record, Media Registry, Commerce Gateway, PipelineRun schema, blocker isolation, and Product Owner approval core.
 - Full verification and evidence are stored under `test_reports/cp-fitness-cycle-9/`.
 
+## Cycle 10 verification
+
+- The product route now resolves every Shopify observation against handle-matched Product Release Record and Media Registry evidence from a server-side release registry.
+- Preview permits only evidence-complete Staged, Approved, or Released candidates for private non-commerce review. Production denies any state other than complete Released, and even a complete Released observation remains non-commerce until cart/checkout is directly proven.
+- Missing, mismatched, withdrawn, or incomplete release evidence returns a denied decision with no product payload. Local fixture review remains explicitly labeled and non-commerce.
+- Contract, policy, gateway, registry, transition, and component tests prove that a successful Shopify read cannot independently authorize customer visibility or purchasing.
+- `yarn verify` passed with zero-warning lint, 21 files/150 tests, zero production advisories across 193 packages, and a successful 13-route build.
+- Local desktop/mobile PDP regression passed with explicit fixture/release labels, purchasing disabled, no console/page errors or error overlays, and no horizontal overflow. Evidence is stored under `test_reports/cp-fitness-cycle-10/`.
+
 ## External blockers
 
 ### Vercel hosting disabled

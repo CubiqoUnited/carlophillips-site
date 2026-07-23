@@ -3,6 +3,7 @@ import { closedReleaseDecision, getProductDecision, resolveCommerceDataMode } fr
 import { toProductViewModel } from '@/lib/commerce/product-view-model';
 import { canRenderDraftProductPreviews, canRenderProducts, getCommerceEnvironment } from '@/lib/config/product-visibility';
 import { loadShopifyProduct } from '@/lib/providers/shopify/storefront-product-adapter';
+import { getProductReleaseEvidence } from '@/lib/releases/product-release-registry';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,6 +35,7 @@ export default async function ProductPage({ params }) {
     mode,
     handle,
     fixtureProduct,
+    ...getProductReleaseEvidence(handle),
     loadShopifyProduct,
   });
 
@@ -42,5 +44,5 @@ export default async function ProductPage({ params }) {
     return <CommerceProductUnavailable decision={decision} />;
   }
 
-  return <CommerceProductDetail product={product} />;
+  return <CommerceProductDetail product={product} releaseReason={decision.reason} />;
 }

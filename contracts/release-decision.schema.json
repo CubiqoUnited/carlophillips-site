@@ -34,6 +34,16 @@
           "product": { "type": "null" }
         }
       }
+    },
+    {
+      "if": { "properties": { "status": { "const": "denied" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "visibilityAllowed": { "const": false },
+          "commerceAllowed": { "const": false },
+          "product": { "type": "null" }
+        }
+      }
     }
   ],
   "additionalProperties": false

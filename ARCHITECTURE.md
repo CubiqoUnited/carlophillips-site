@@ -19,7 +19,7 @@ The architecture coordinates four lanes—Product/POD truth, Media truth, Commer
 
 Home, collection, and about wrappers still re-export the client shell in `app/page.js`. Product and bag/cart routes are separate Server Component boundaries. The product route selects an explicit source through the Commerce Gateway; the bag route requires an operation-specific capability decision and renders local non-commerce or unavailable states until Shopify cart writes are actually verified.
 
-Products fail closed by default. Local fixture mode is separately gated and visibly labeled; preview/production reject it. Shopify failure returns an unavailable decision and page without fixture substitution. The local Shopify probe currently reports missing configuration, so this implementation proves the boundary and failure policy—not a live product observation.
+Products fail closed by default. Local fixture mode is separately gated and visibly labeled; preview/production reject it. Shopify failure returns an unavailable decision and page without fixture substitution. A successful Shopify observation must also resolve to matching Product Release Record and Media Registry evidence. Preview permits only an evidence-complete Staged, Approved, or Released record for private non-commerce review; production requires a complete Released record and still keeps purchasing disabled until the cart/checkout journey is proven. The local Shopify probe currently reports missing configuration, so this implementation proves the boundary and failure policy—not a live product observation.
 
 Product Release Record transitions are also fail-closed. Draft may contain incomplete evidence. Staged requires observed Shopify/provider variant fingerprints, an immutable candidate commit, passing build evidence, private staging evidence, and a release-specific rollback plan. Approved additionally requires product/media/fulfillment approvals and a complete nine-modality Media Registry whose bound assets have verified provenance, exact-product match, rights, quality, approval, and accessible fallbacks. Released additionally requires a dated Shopify `ACTIVE` observation and verified rollback evidence. The transition evaluator changes only a candidate record; it never performs Shopify, deployment, or publication actions.
 
@@ -28,7 +28,7 @@ Product Release Record transitions are also fail-closed. Draft may contain incom
 | Boundary | Current implementation | Evidence status | Required change |
 |---|---|---|---|
 | Route composition | Product and bag/cart routes have server boundaries; remaining wrappers use the client shell | Product plus local/preview bag policies browser-verified; collection decomposition absent | Move collection when its Shopify-backed flow is implemented |
-| Product truth | Gateway accepts explicit local fixture or read-only Shopify adapter | Failure policy proven; live Shopify config/product observation blocked | Configure authorized read-only environment and bind the observation to the release record |
+| Product truth | Gateway accepts explicit local fixture or read-only Shopify adapter and resolves Shopify observations against the release registry | Failure and release-state policy proven; live Shopify config/product observation blocked | Configure authorized read-only environment and bind the observation/fingerprint to the Draft record |
 | Variant truth | Gateway/view model support normalized variants; controls stay disabled | Deterministic tests pass; live variant identity/fingerprint missing | Observe Shopify variants, fingerprint them, then add gated selection |
 | Media truth | Gateway/view model render image/video/external-video/model fallback types | Manifest binds one front asset and quarantines two details; live media not observed | Render current Shopify media and require manifest approval before release |
 | Cart | Dormant browser adapter has explicit sources; visible bag consumes an operation-specific capability decision | Local non-commerce and preview unavailable UI plus lifecycle/fallback tests pass; no live API proof | Audit the authenticated Shopify cart surface, then wire only the operations proven callable |
@@ -37,15 +37,15 @@ Product Release Record transitions are also fail-closed. Draft may contain incom
 | Catalog | Prior audit recorded 12 products with image-only media | Later reuse/scale input; individual release truth unproven | After the complete Hoodie journey, prove a different product through the same cores before catalog expansion |
 | Hosting | Vercel project linked but public responses are HTTP 402 | External blocker | Restore deployment access, then redeploy approved preview and resume browser proof |
 | Agentic orchestration | Durable ProductBrief, ProductCreationJob v2, PipelineRun, and executable capability registry exist locally | On-demand designer and scheduled trend simulations converge on the same truth contracts; provenance/freshness, binding brand/reference rules, deterministic duplicate suppression, blocker isolation, and restricted gates are tested; external app access remains unverified | Run the authorized read-only app audit and bind evidence-backed callable surfaces to registry entries |
-| Release state | Draft Hoodie record, strict transition schema/policy, and release-specific withdrawal plan exist | Current Hoodie staging readiness is denied by five exact evidence blockers; no state or external system was changed | Resolve Shopify/provider fingerprints, immutable candidate/build evidence, and private staging evidence before staging |
+| Release state | Draft Hoodie record, strict transition schema/policy, route-level release registry, and release-specific withdrawal plan exist | Current Hoodie staging readiness is denied by five exact evidence blockers; the route denies Draft Shopify observations outside Local | Resolve Shopify/provider fingerprints, immutable candidate/build evidence, and private staging evidence before staging |
 
 ## Environment model
 
 | Environment | Purpose | Data/release policy |
 |---|---|---|
 | Local | Implementation and evidence | Defaults fail closed; fixture permitted only when visibly labeled and gated |
-| Vercel Preview | Private staging/review | Branch deployment, environment-specific values, no production promotion |
-| Production | Customer commerce | Approved `main` only; no draft previews; all operational gates directly proven |
+| Vercel Preview | Private staging/review | Branch deployment, environment-specific values, no fixtures, Staged-or-later evidence required, no production promotion |
+| Production | Customer commerce | Approved `main` only; no fixtures or unreleased products; complete Released evidence required and all operational gates directly proven |
 
 ## Target decomposition
 

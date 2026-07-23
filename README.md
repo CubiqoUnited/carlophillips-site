@@ -2,7 +2,7 @@
 
 CARLOPHILLIPS is a Next.js 15 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
-The repository is **not production-ready**. The editorial shell keeps products hidden by default. Product and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, while Preview/production return honest unavailable states when Shopify capability is unverified. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
+The repository is **not production-ready**. The editorial shell keeps products hidden by default. Product and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. A Shopify observation alone never authorizes visibility or commerce. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
 
 ## Current product state
 

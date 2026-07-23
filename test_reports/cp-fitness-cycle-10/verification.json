@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 10,
+  "observedAt": "2026-07-22",
+  "objective": "Bind storefront product visibility to environment-specific Product Release Record and Media Registry evidence.",
+  "releasePolicy": {
+    "shopifyObservationAloneAuthorizesVisibility": false,
+    "missingReleaseRecordDenied": true,
+    "mismatchedReleaseEvidenceDenied": true,
+    "withdrawnReleaseDenied": true,
+    "incompleteEvidenceDenied": true,
+    "previewMinimumState": "staged",
+    "previewCommerceAllowed": false,
+    "productionRequiredState": "released",
+    "productionCommerceAllowed": false,
+    "localFixtureCommerceAllowed": false,
+    "deniedProductPayload": null
+  },
+  "registry": {
+    "serverSide": true,
+    "registeredProducts": 1,
+    "unknownHandleReturnsNull": true,
+    "consumerMutationIsolatedByClone": true,
+    "hoodieState": "draft",
+    "hoodieStateAdvanced": false
+  },
+  "commands": {
+    "focusedReleaseTests": {
+      "status": "passed",
+      "files": 6,
+      "tests": 64
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 21,
+      "tests": 150,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "tool": "Playwright fallback because agent-browser CLI is unavailable",
+    "desktop": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "sourceLabeled": true,
+      "releaseReasonVisible": true,
+      "purchasingDisabled": true,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "storefront-release-desktop.png"
+    },
+    "mobile": {
+      "viewport": "390x844",
+      "status": 200,
+      "sourceLabeled": true,
+      "releaseReasonVisible": true,
+      "purchasingDisabled": true,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "storefront-release-mobile.png"
+    },
+    "home": {
+      "status": 200,
+      "hasContent": true,
+      "errorOverlay": false,
+      "hoodieLinkVisibleAtRoot": false,
+      "interpretation": "The editorial shell exposes the gated link only on its product-preview path; this is not counted as PDP navigation evidence."
+    }
+  },
+  "knownWarnings": [
+    "Temporary PostCSS and sharp security resolutions remain outside Next.js 15.5.21 declared ranges.",
+    "Yarn/Corepack emits the existing url.parse deprecation warning.",
+    "The Open Graph edge route prevents static generation for that route.",
+    "Browserslist data is stale.",
+    "Next.js development warned about 127.0.0.1 asset origin; the tested app origin and responses remained local."
+  ],
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false,
+    "categories": {
+      "governance": 5,
+      "packageReproducibility": 5,
+      "qualityAndSecurity": 5,
+      "gitStrategy": 4,
+      "environmentSeparation": 5,
+      "secretHandling": 5,
+      "architectureImplementation": 5,
+      "hoodieSequenceTruth": 5,
+      "localBrowserEvidence": 4,
+      "liveOperations": 1
+    }
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

@@ -5,7 +5,7 @@ import { CommerceProductDetail, CommerceProductUnavailable } from '../components
 
 describe('commerce product presentation', () => {
   it('renders source truth and keeps purchasing disabled', () => {
-    const html = renderToStaticMarkup(<CommerceProductDetail product={{
+    const html = renderToStaticMarkup(<CommerceProductDetail releaseReason="PRIVATE_RELEASE_REVIEW_NON_COMMERCE" product={{
       source: 'shopify',
       sourceLabel: 'Shopify Storefront observation — release approval pending',
       title: 'Observed Hoodie',
@@ -22,7 +22,8 @@ describe('commerce product presentation', () => {
     }} />);
 
     expect(html).toContain('Shopify Storefront observation');
-    expect(html).toContain('Release approval pending');
+    expect(html).toContain('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
+    expect(html).toContain('Purchasing disabled');
     expect(html).toContain('Purchasing remains disabled');
     expect(html).toContain('disabled=""');
   });

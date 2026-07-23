@@ -78,8 +78,14 @@
 
 ## Next storefront release-binding cycle
 
-- [ ] Bind product visibility decisions to the Product Release Record: local fixture stays labeled/non-commerce, Preview permits private staged review, and production denies every product not `released`.
-- [ ] Prove a Shopify observation alone cannot make an unapproved product customer-visible or checkout-capable in production.
+- [x] Bind product visibility decisions to the Product Release Record: local fixture stays labeled/non-commerce, Preview permits private staged review, and production denies every product not `released`.
+- [x] Prove a Shopify observation alone cannot make an unapproved product customer-visible or checkout-capable in production.
+
+## Next collection release-binding cycle
+
+- [ ] Replace the `/shop` and `/collections` editorial-shell wrappers with a release-aware server catalog boundary.
+- [ ] Include only handle-matched products permitted by the same environment/release policy; never substitute fixtures outside Local.
+- [ ] Keep collection cards and navigation non-commerce until Shopify cart/checkout capability is directly proven.
 
 ## Blocked / approval required
 

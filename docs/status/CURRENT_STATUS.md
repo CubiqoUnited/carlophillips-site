@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 9
+# Current Status — Fitness Cycle 10
 
 Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -7,6 +7,7 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 - Next.js editorial shell and route surfaces.
 - Fail-closed product flags and explicit local-only fixture mode.
 - Provider-neutral Commerce Gateway, server-only Shopify product adapter, reusable PDP, and explicit unavailable page.
+- A server-side release registry binds the Hoodie route to its Product Release Record and Media Registry. Preview requires complete Staged-or-later evidence; production requires complete Released evidence, and purchasing remains disabled.
 - Draft Hoodie Product Release Record and media manifest.
 - Dormant Shopify cart/checkout modules.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
@@ -27,7 +28,7 @@ Updated: 2026-07-22. The detailed repository status is maintained in `/STATUS.md
 ## Partial
 
 - Signature Hoodie evidence: product/design facts and one recorded front candidate exist; complete media, approvals, Shopify-backed PDP, cart, and operations proof do not.
-- Shopify integration: the product route calls the gateway/adapter, but local read-only configuration is incomplete, so current Shopify product data is not observed.
+- Shopify integration: the product route calls the gateway/adapter and release registry, but local read-only configuration is incomplete, so current Shopify product data is not observed.
 - Release controls: Draft record exists with missing variant fingerprints and pending approvals. Staging is explicitly denied until Shopify/provider fingerprints, immutable commit/build evidence, and private staging evidence exist.
 - App capability access: a live authenticated-browser attempt reached Shopify email OTP before Admin; callable access/configuration/cost/Draft safety remain unverified.
 
