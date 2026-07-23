@@ -63,7 +63,9 @@ describe('Shopify normalization', () => {
       details: ['Heavyweight hoodie', 'Embroidered chest mark'],
     });
     expect(product.media.map(item => item.type)).toEqual(['image', 'video']);
-    expect(product.shopifyVariants['Black-M']).toBe('gid://shopify/ProductVariant/1');
+    expect(product).not.toHaveProperty('shopifyVariants');
+    expect(product).not.toHaveProperty('firstVariantId');
+    expect(product.observedVariants[0].id).toBe('gid://shopify/ProductVariant/1');
     expect(product.availableForSale).toBe(true);
   });
 

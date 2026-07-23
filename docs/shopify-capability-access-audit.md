@@ -13,6 +13,14 @@ their already recorded installed-app display names.
 
 Cycle 4 added a validated executable registry at `config/capability-registry.json`. Registry `ready` means the exact requested operation is evidence-listed for a verified callable surface; an installed name or selected adapter is insufficient.
 
+Cycle 19 adds one CP-owned local capability:
+`shopify-storefront-variant-resolver` / `resolve-reviewed-variant`. Its `local`
+surface proves only the deterministic implementation. A successful runtime
+decision reports `server_only`, re-derives current read facts, exposes no raw
+reference, and authorizes no mutation. It is not a third-party app capability,
+not Storefront write access, and not wired into cart activation; the server
+activation boundary continues to pass a null resolver decision.
+
 ## Live read-only attempt
 
 On 2026-07-22, the in-app browser had no open tab to claim, so Shopify Admin was opened in the same browser profile. Shopify presented its login screen. The existing Google account was available and selected without exposing its address. Shopify then stopped at “Verify your email to continue” and requested a six-digit email code.

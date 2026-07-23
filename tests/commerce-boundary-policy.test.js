@@ -34,6 +34,8 @@ describe('active commerce boundary policy', () => {
     for (const path of runtimeSources) {
       const source = readFileSync(path, 'utf8');
       expect(source, path).not.toMatch(/lib\/(?:data\/products|store\/cart|shopify\/(?:client|index|mutations))/);
+      expect(source, path).not.toMatch(/variant-resolution-(?:policy|server)/);
+      expect(source, path).not.toMatch(/observedVariants|shopifyVariants|rawShopifyProduct/);
       expect(source, path).not.toContain('NEXT_PUBLIC_SHOPIFY_');
     }
   });
@@ -50,6 +52,25 @@ describe('active commerce boundary policy', () => {
     expect(combined).not.toContain('NEXT_PUBLIC_SHOPIFY_');
     expect(combined).not.toMatch(/mutation\s+/);
     expect(combined).not.toMatch(/createCart|cartLinesAdd|cartLinesUpdate|cartLinesRemove/);
+  });
+
+  it('keeps raw Shopify variant resolution behind a server-only production entry', () => {
+    const serverEntry = readFileSync(
+      'lib/commerce/variant-resolution-server.js',
+      'utf8'
+    );
+    const purePolicy = readFileSync(
+      'lib/commerce/variant-resolution-policy.js',
+      'utf8'
+    );
+
+    expect(serverEntry).toContain("import 'server-only'");
+    expect(serverEntry).toContain('getServerVariantResolutionReadiness');
+    expect(serverEntry).toContain('evaluateVariantResolutionReadiness');
+    expect(serverEntry).not.toContain('console.');
+    expect(purePolicy).not.toContain('console.');
+    expect(readFileSync('lib/commerce/cart-activation-server.js', 'utf8'))
+      .toContain('variantResolverDecision: null');
   });
 
   it('keeps public API routes from exposing catalog audit or mutation surfaces', () => {

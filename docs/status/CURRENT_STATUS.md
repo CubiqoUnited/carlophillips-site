@@ -1,4 +1,4 @@
-# Current Status — Fitness Cycle 18
+# Current Status — Fitness Cycle 19
 
 Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md`.
 
@@ -18,7 +18,7 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - Commerce facts now include all Shopify-derived customer copy. The release product is whitelist-derived from the validated observation, so outer title/description/vendor/type/tagline/details/story/HTML cannot override reviewed presentation.
 - View-model status language is environment/release-aware: Preview says private review; production Released says facts are released and isolates the still-disabled cart/checkout gate. Story remains neutrally unavailable without reviewed evidence.
 - Shopify variant presentation is a fingerprint/currency-bound, review-only exact-combination model. It rejects ambiguous option dimensions and raw adapter mappings; every combination control remains disabled.
-- Cart activation now has eight gates because reviewed variant truth and server-only mutation resolution are distinct. No current resolver exists, so opaque hashes cannot make cart eligible.
+- Cart activation now has eight gates because reviewed variant truth and server-only mutation resolution are distinct. A schema-validated readiness evaluator re-derives fresh facts and proves one-to-one hash coverage without returning raw IDs or authority. Its locally verified implementation and `server_only` runtime decision are distinct; cart orchestration remains intentionally unwired and supplies null.
 - Shopify media is filtered through approved, evidence-backed, hashed Media Registry bindings before the view model. Preview exposes partial-media review truth; production requires current coverage for every non-waived modality and fallback.
 - Provider-neutral Commerce Cart and PipelineRun contracts with local policy/state-machine implementations.
 - Executable capability discovery and dedicated source-labeled bag/cart Server Component routes.
@@ -47,7 +47,7 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 ## Proposed
 
 - Active Shopify cart operations and fulfillment adapter implementation beyond the recorded mapping.
-- A narrow Storefront cart adapter after evidence-backed capability and activation approval.
+- A narrow selected-variant Storefront cart adapter only after evidence-backed capability, fresh server orchestration, and activation approval.
 - Staged/approved/released workflow transitions after evidence and Product Owner approval.
 
 ## Missing

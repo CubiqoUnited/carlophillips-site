@@ -137,9 +137,15 @@
 
 ## Next server-only variant-resolution contract cycle
 
-- [ ] Define a non-persisting server-only resolution decision that binds one reviewed opaque reference hash to the current/release variant fingerprint.
-- [ ] Require exact product handle, ready Storefront cart capability, resolver evidence, and cart activation before returning any mutation target inside the server boundary.
-- [ ] Prove raw Shopify references never enter client summaries, logs, durable reports, or selection controls and no mutation is performed.
+- [x] Define a non-persisting server-only readiness decision that re-derives current facts and proves every reviewed opaque hash has exactly one current match.
+- [x] Require exact environment/handle/fingerprint, evidence-bound Storefront product-read capability, and the locally verified CP resolver implementation.
+- [x] Prove raw Shopify references never enter decisions, client summaries, routes, views, logs, durable evidence, or controls and no mutation is performed.
+
+## Next selected-variant server adapter cycle
+
+- [ ] Keep the current runtime unwired until Storefront cart capability, exact Product Owner activation approval, and the server gate are real.
+- [ ] After those gates, define a per-request selected-variant server adapter that resolves one reviewed hash without returning the raw reference to the client.
+- [ ] Keep checkout, payment, order, and publication authority separate even after cart eligibility.
 
 ## Blocked / approval required
 

@@ -8,7 +8,13 @@
 
 ## Continue safe local fitness work
 
-1. Define the evidence-only server variant-resolution decision required by the eighth cart gate without implementing a Storefront mutation.
-2. Keep raw Shopify references server-ephemeral and absent from client summaries, logs, reports, controls, and durable evidence.
-3. Retire temporary dependency overrides when the supported Next.js line declares patched ranges.
-4. Keep variant selection, cart, checkout, product approval, purchasing, orders, Shopify writes, deployment, and merge out of scope.
+1. Keep variant-resolution readiness unwired until a fresh Storefront load,
+   exact cart capability, Product Owner activation approval, and the server
+   gate are all real.
+2. Define the next safe product/POD truth contract for an Apliiq Hoodie mapping
+   observation without accessing the provider, ordering, sampling, or claiming
+   current mapping evidence.
+3. Retire temporary dependency overrides when the supported Next.js line
+   declares patched ranges.
+4. Keep variant selection, cart, checkout, product approval, purchasing,
+   orders, Shopify writes, deployment, and merge out of scope.

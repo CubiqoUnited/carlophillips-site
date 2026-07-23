@@ -6,6 +6,7 @@ import commerceCartSchema from '../contracts/commerce-cart.schema.json';
 import cartActivationDecisionSchema from '../contracts/cart-activation-decision.schema.json';
 import productObservationSchema from '../contracts/product-observation.schema.json';
 import variantPresentationSchema from '../contracts/variant-presentation.schema.json';
+import variantResolutionDecisionSchema from '../contracts/variant-resolution-decision.schema.json';
 import productObservationReviewSchema from '../contracts/product-observation-review.schema.json';
 import pipelineRunSchema from '../contracts/pipeline-run.schema.json';
 import mediaManifestSchema from '../contracts/media-manifest.schema.json';
@@ -44,6 +45,7 @@ const validateCommerceCart = ajv.compile(commerceCartSchema);
 const validateCartActivationDecision = ajv.compile(cartActivationDecisionSchema);
 const validateProductObservation = ajv.compile(productObservationSchema);
 const validateVariantPresentation = ajv.compile(variantPresentationSchema);
+const validateVariantResolutionDecision = ajv.compile(variantResolutionDecisionSchema);
 const validateProductObservationReview = ajv.compile(productObservationReviewSchema);
 const validatePipelineRun = ajv.compile(pipelineRunSchema);
 const validateMediaManifest = ajv.compile(mediaManifestSchema);
@@ -268,6 +270,40 @@ describe('truth contracts', () => {
     expect(validateVariantPresentation(presentation)).toBe(true);
     expect(validateVariantPresentation({ ...presentation, selectionAllowed: true })).toBe(false);
     expect(validateVariantPresentation({ ...presentation, cartAuthority: true })).toBe(false);
+  });
+
+  it('validates only sanitized, non-mutating variant-resolution readiness', () => {
+    const decision = {
+      schemaVersion: 'cp.variant-resolution-decision.v1',
+      environment: 'preview',
+      status: 'ready',
+      capability: 'shopify-storefront-variant-resolver',
+      adapter: 'server-only-shopify-variant-resolver',
+      callableSurface: 'server_only',
+      productHandle: 'test-product',
+      variantFingerprint: `sha256:${'a'.repeat(64)}`,
+      evidenceRef: 'tests/variant-resolution-policy.test.js',
+      productReadEvidenceRef: 'evidence/shopify-storefront-read-001',
+      mappedVariantCount: 2,
+      mappingComplete: true,
+      rawReferenceExposed: false,
+      cartMutationAuthorized: false,
+      checkoutAuthorized: false,
+      blockers: [],
+    };
+    expect(validateVariantResolutionDecision(decision)).toBe(true);
+    expect(validateVariantResolutionDecision({
+      ...decision,
+      rawVariantId: 'gid://shopify/ProductVariant/1',
+    })).toBe(false);
+    expect(validateVariantResolutionDecision({
+      ...decision,
+      callableSurface: 'local',
+    })).toBe(false);
+    expect(validateVariantResolutionDecision({
+      ...decision,
+      cartMutationAuthorized: true,
+    })).toBe(false);
   });
 
   it('requires media provenance and approval fields', () => {

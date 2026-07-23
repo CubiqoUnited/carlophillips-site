@@ -201,6 +201,37 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
   from copied local responses; it was stopped and is absent from the final
   repository diff.
 
+## Cycle 19 verification
+
+- `cp.variant-resolution-decision.v1` defines sanitized readiness evidence for
+  the eighth cart gate. The evaluator requires exact environment, handle,
+  current/release fingerprint, an evidence-bound Storefront product-read
+  decision, and the locally verified CP resolver implementation.
+- The resolver re-creates the canonical Product Observation from fresh
+  server-ephemeral raw variants and proves every reviewed opaque hash has one
+  current match. Changed identity, changed facts, duplicates, missing variants,
+  evidence mismatch, wrong surface, wrong handle, and wrong environment fail
+  closed.
+- Registry `local` means the deterministic implementation is locally proven;
+  decision `server_only` means runtime containment. The upstream server-only
+  Storefront loader necessarily sees raw references first. The new wrapper is
+  only the sole production entry for readiness computation.
+- The readiness decision returns no raw ID or selected mutation target and
+  explicitly denies cart mutation and checkout. The obsolete flattened
+  `shopifyVariants` and first-variant shortcuts were removed from product
+  normalization.
+- A real production readiness decision passes cart gate 6 only when every
+  exact schema field is intact. Public routes, views, activation summaries,
+  and durable decision evidence contain no raw reference.
+- Cart activation remains intentionally unwired with
+  `variantResolverDecision: null`; no Shopify read/write, selection, cart,
+  checkout, order, or other external action was performed.
+- Focused verification passed across 6 files/98 tests with zero-warning lint.
+  Full `yarn verify` passed with zero-warning lint, 32 files/308 tests, zero
+  production advisories across 193 packages, and a successful 13-route
+  Next.js 15.5.21 build. No customer-visible route changed, so Cycle 18 remains
+  the current browser-regression evidence.
+
 ## External blockers
 
 ### Vercel hosting disabled

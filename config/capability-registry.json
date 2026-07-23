@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cp.capability-registry.v1",
-  "observedAt": "2026-07-22",
-  "source": "Product Owner-observed 30-app inventory plus 2026-07-22 browser attempts; the current managed browser is blocked at Shopify login and no app capability is verified",
+  "observedAt": "2026-07-23",
+  "source": "Product Owner-observed 30-app inventory plus Shopify browser attempts and Cycle 19 local resolver verification; the current managed browser is blocked at Shopify login and no external app capability is verified",
   "canonicalOwners": {
     "releaseTruth": "Product Release Record",
     "mediaTruth": "Media Registry",
@@ -40,6 +40,19 @@
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at Shopify installed-app inventory, then inspect Carlophillips Headless/Storefront settings read-only before any cart test."
       }
+    },
+    {
+      "capability": "shopify-storefront-variant-resolver",
+      "selectedAdapter": "server-only-shopify-variant-resolver",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "evidenceRef": "tests/variant-resolution-policy.test.js",
+      "allowedOperations": ["resolve-reviewed-variant"],
+      "requiresApproval": [],
+      "costGate": "local readiness computation only; no Shopify write, cart, checkout, order, or raw-reference disclosure",
+      "draftSafety": "re-derives current read-only facts and emits only a sanitized readiness decision",
+      "alternatives": [],
+      "blocker": null
     },
     {
       "capability": "hoodie-fulfillment",

@@ -62,7 +62,10 @@ must be satisfied before a UI can be declared cart-eligible:
 5. `shopify-storefront-cart` has evidence-backed `cart-write` capability,
    including an authorized no-order test.
 6. An evidence-backed server-only variant resolver is bound to the same current
-   and release variant fingerprint. Opaque hashes alone are not mutation targets.
+   and release variant fingerprint. The locally verified implementation emits a
+   `server_only` readiness decision only after re-deriving current facts and
+   proving one-to-one coverage; raw IDs, selected targets, and mutation authority
+   are absent.
 7. Durable Product Owner approval is explicitly scoped to
    `activate-customer-cart`.
 8. The server-only `SHOPIFY_CART_UI_ENABLED` gate is enabled in the approved

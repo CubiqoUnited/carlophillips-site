@@ -19,11 +19,22 @@ const blockedCapability = {
   },
 };
 const readyVariantResolver = {
+  schemaVersion: 'cp.variant-resolution-decision.v1',
+  environment: 'production',
   status: 'ready',
   capability: 'shopify-storefront-variant-resolver',
   adapter: 'server-only-shopify-variant-resolver',
+  callableSurface: 'server_only',
+  productHandle: 'test-product',
   variantFingerprint: `sha256:${'a'.repeat(64)}`,
-  evidence: 'evidence/server-variant-resolver-001',
+  evidenceRef: 'tests/variant-resolution-policy.test.js',
+  productReadEvidenceRef: 'evidence/shopify-storefront-read-001',
+  mappedVariantCount: 1,
+  mappingComplete: true,
+  rawReferenceExposed: false,
+  cartMutationAuthorized: false,
+  checkoutAuthorized: false,
+  blockers: [],
 };
 const releasedRecord = {
   state: 'released',
@@ -213,6 +224,39 @@ describe('cart activation policy', () => {
       code: 'SERVER_VARIANT_RESOLVER_REQUIRED',
       status: 'blocked',
       resumePoint: 'Bind an evidence-backed server-only resolver to this exact reviewed variant fingerprint; never expose or infer raw Shopify references.',
+    });
+  });
+
+  it.each([
+    ['wrong schema', { schemaVersion: 'cp.variant-resolution-decision.v0' }],
+    ['wrong resolver surface', { callableSurface: 'shopify_storefront' }],
+    ['missing resolver evidence', { evidenceRef: null }],
+    ['missing product-read evidence', { productReadEvidenceRef: null }],
+    ['incomplete mapping', { mappingComplete: false }],
+    ['zero mapped variants', { mappedVariantCount: 0 }],
+    ['raw reference exposure', { rawReferenceExposed: true }],
+    ['cart authority', { cartMutationAuthorized: true }],
+    ['checkout authority', { checkoutAuthorized: true }],
+    ['reported blocker', { blockers: [{
+      code: 'UNRESOLVED',
+      humanAction: 'Resolve it.',
+      resumePoint: 'Resume after resolution.',
+    }] }],
+  ])('does not accept resolver readiness with %s', (_label, override) => {
+    const decision = evaluateCartActivation({
+      environment: 'production',
+      productDecision,
+      releaseRecord: releasedRecord,
+      capabilityDecision: readyCapability,
+      variantResolverDecision: { ...readyVariantResolver, ...override },
+      activationApproval: approval,
+      activationRequested: true,
+    });
+
+    expect(decision).toMatchObject({
+      status: 'blocked',
+      cartAllowed: false,
+      reason: 'SERVER_VARIANT_RESOLVER_REQUIRED',
     });
   });
 

@@ -49,6 +49,25 @@ describe('capability registry policy', () => {
     });
   });
 
+  it('registers only local evidence-only variant resolution, not Storefront mutation', () => {
+    const decision = discoverCapability(
+      getCapabilityRegistry(),
+      'shopify-storefront-variant-resolver',
+      'resolve-reviewed-variant'
+    );
+    expect(decision).toMatchObject({
+      status: 'ready',
+      adapter: 'server-only-shopify-variant-resolver',
+      callableSurface: 'local',
+      evidenceRef: 'tests/variant-resolution-policy.test.js',
+    });
+    expect(discoverCapability(
+      getCapabilityRegistry(),
+      'shopify-storefront-variant-resolver',
+      'cart-write'
+    ).status).toBe('human_required');
+  });
+
   it('keeps OTP-gated app workers registered but non-callable', () => {
     const registry = getCapabilityRegistry();
     for (const [capability, operation] of [

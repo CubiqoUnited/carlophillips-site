@@ -28,6 +28,20 @@ into combinations that may not exist. Every control is disabled, reference
 hashes remain opaque, and cart eligibility has a separate server-only resolver
 gate before any raw Shopify reference could be used.
 
+The resolver readiness contract does not select or return a Shopify variant.
+Its server-only entry consumes raw references ephemerally, re-derives the
+current observation, proves every reviewed hash has exactly one current match,
+and returns only sanitized counts, fingerprints, and evidence. The registry's
+`local` surface describes implementation verification; the runtime decision's
+`server_only` surface describes containment. Both cart mutation and checkout
+remain explicitly unauthorized.
+
+This readiness computation is not active commerce integration. The Storefront
+loader already receives raw IDs server-side to create hashed observations; the
+new wrapper is only the sole production entry for readiness evaluation.
+`cart-activation-server.js` still supplies a null resolver decision, so no live
+resolver or selected-variant path is wired.
+
 Shopify media is filtered independently from product facts. Durable Media
 Registry assets store only a hash of the reviewed storefront identity, media
 type, canonical URL, and preview URL plus evidence—not raw Shopify media IDs or
