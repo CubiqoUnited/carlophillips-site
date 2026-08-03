@@ -1,7 +1,7 @@
 # Current Status
 
-Updated: 2026-07-23
-Branch: `codex/restore-production-visual-direction` from fitness commit `85b62e1`
+Updated: 2026-08-03
+Branch: canonical `main` at merge commit `85b6f8f`; cutover evidence is being recorded on temporary branch `codex/cp-production-cutover-evidence`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Verified facts
@@ -10,8 +10,8 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The current bounded correction restores the `9e1f5c3` visual language—quiet fixed navigation, full-height split hero, restrained type, and product release staging—while retaining the active server release/catalog boundaries. It does not restore the historical mock catalog, invented product media fallbacks, or browser cart.
 - Editorial-only `/about` and `/lookbook` routes, the shared editorial shell, and the inactive editorial content abstraction are removed. `/shop`, `/collections`, `/products/[handle]`, `/bag`, `/cart`, and API boundaries remain.
 - The archived drop board is labeled as a visual-system reference and explicitly not product or media proof. It does not make a product visible or purchasable.
-- The target Git model has one permanent branch, `main`; staging is a Vercel Preview generated from a temporary PR branch. No remote branch, deployment, or Vercel setting was changed in this correction.
-- Read-only Vercel history shows the inspected production deployment sourced from `main` at `d172cfb`; the inspected `staging` and feature deployments are Preview targets. All inspected deployment URLs returned the known `402 DEPLOYMENT_DISABLED`, so local browser evidence is the current demonstrable visual proof.
+- The Git model has one permanent branch, `main`; staging is a Vercel Preview generated from a temporary PR branch. Canonical PR #3 merged the production-aligned correction to `main` as `85b6f8f`.
+- Vercel project `carlophillips-site` on the working personal team now builds canonical `main`. Production deployment `dpl_66ydzPzwP2hBoFuTsyy5AKWMKKx1` is READY; `www.carlophillips.com` returns HTTP 200 and the apex performs one canonical 308 redirect to `www`.
 - Paused Cycle 20 fulfillment-contract work is recoverably isolated in stash `stash@{0}` / `ab3f004119ac28547d0ecddb50634a9e9d7806e4` and is not part of this branch diff.
 - Recovered Product Owner intent confirms the Hoodie is the first complete POC for a reusable POD-to-publish system with four coordinated lanes and designer-led plus trend-led workflows; it is not a static-page endpoint.
 - The storefront UI remains fail-closed. Home, product, `/shop`, `/collections`, and bag/cart routes use dedicated server-rendered truth boundaries.
@@ -23,7 +23,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Production and preview HTTP endpoints were diagnosed as `402 DEPLOYMENT_DISABLED` on 2026-07-22.
 - Canonical `main` and `staging` were recorded at `d172cfb`; the Hoodie preview branch is at `425f50b`.
 - The current Product Owner-observed 30-app Shopify inventory is preserved in a schema-validated evidence record and summarized in `docs/shopify-capability-access-audit.md`; installed status does not prove API, Admin/Flow, app-private API, browser, CLI, or human access.
-- The live Shopify read-only audit was attempted through the existing Google account. Shopify accepted the account path but stopped at a one-time email-code gate before Admin or installed-app inventory. The verification tab was preserved at Cycle 5 close but did not survive the later task-continuation boundary; a fresh Shopify login tab is open without a new code request.
+- The current live Shopify read-only audit reached the email-verification screen through the existing Google account. The one-time code was retrieved without recording it in project artifacts and entered, but automated submission did not advance the page. The tab remains preserved for the Product Owner to complete the visible Verify action or request a fresh code if expired.
 - The App Router now runs on Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`; async route params were migrated and the full local regression passed.
 
 ## Not yet proven
@@ -32,7 +32,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Live Shopify-backed product and variant rendering.
 - Browser add/update/remove cart flow and Shopify checkout redirect.
 - Any verified callable path for the current installed Shopify app inventory; the latest managed-browser attempt is stopped at Shopify login before Admin.
-- Production domain availability after hosting restoration.
+- Live Shopify-backed commerce on the production domain; the visual site is reachable but product purchasing remains deliberately fail-closed.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
 - Any real product video, spin/360, 3D/AR, try-on, on-model, or lifestyle campaign asset.
 
@@ -239,13 +239,16 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
   Next.js 15.5.21 build. No customer-visible route changed, so Cycle 18 remains
   the current browser-regression evidence.
 
+## Production cutover verification — 2026-08-03
+
+- Canonical PR #3 merged the production-aligned storefront and PostCSS security patch to `main` as `85b6f8f`.
+- A production deployment built from that exact merge commit and reached READY on the working Vercel team.
+- The stale `www.carlophillips.com` binding was removed from the disabled legacy project, then both apex and `www` were bound to the new production deployment. The temporary redirect loop was eliminated.
+- HTTP checks passed for `/`, `/shop`, `/products/signature-hoodie`, and `/bag`; apex redirects once to `www`.
+- Direct desktop and mobile browser checks passed. At 390×844 the document width equals the viewport width and no product image is broken. Screenshots and the concise record are under `test_reports/cp-production-cutover-2026-08-03/`.
+- This proves hosting and the approved visual direction, not live Shopify commerce. Product, cart, checkout, payment, and fulfillment remain fail-closed pending authenticated Shopify evidence and credentials.
+
 ## External blockers
-
-### Vercel hosting disabled
-
-Human action: the Product Owner or authorized Vercel account owner must restore deployment access for project `carlophillips-site` (or explicitly approve another hosting path).
-
-Resume point: deploy the approved fitness branch as a Vercel preview, configure preview-only environment values, then run desktop/mobile browser, console, network, and HTTP evidence against that preview. Do not promote production.
 
 ### Read-only Shopify configuration
 
@@ -255,14 +258,14 @@ Resume point: mark `shopify-storefront-product-read` ready only with its durable
 
 ### Shopify app capability/access audit
 
-Observed blocker: an earlier attempt reached Shopify email verification after account selection. The latest Cycle 11 managed-browser attempt reached Shopify login with **Continue with Google** and did not select an account or request an OTP. Admin, installed-app settings, permissions, and billing screens remain unobserved, so the Product Owner-reported inventory is not callable-capability evidence.
+Observed blocker: the current authenticated-browser attempt reached Shopify email verification, entered the one-time code without persisting it, and could not submit the final Verify action through supported background automation. Admin, installed-app settings, permissions, and billing screens remain unobserved, so the Product Owner-reported inventory is not callable-capability evidence.
 
-Human action: in the current Shopify login tab, choose **Continue with Google**, select the existing account, then enter Shopify's one-time code if prompted. Do not send or record the code in project artifacts.
+Human action: open the preserved Shopify verification tab and click **Verify**. If Shopify reports that the code expired, request a new code and complete it directly in that tab. Do not send or record the code in project artifacts.
 
 Resume point: begin at Shopify installed-app inventory, then inspect P0 Shopify Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder surfaces; record access class/settings/permission or billing evidence without secrets or changes. Do not infer access from installation.
 
 ### Production and commerce operations
 
-Human action: separately approve any Shopify catalog mutation, checkout/order test with operational impact, main-branch merge, or production promotion.
+Human action: separately approve any future Shopify catalog mutation or checkout/order test with operational impact. Future merges and production promotions must continue through reviewed temporary-branch evidence.
 
 Resume point: execute only the specifically approved action, capture evidence without secrets/customer data, then update this status.

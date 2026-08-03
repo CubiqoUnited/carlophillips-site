@@ -29,13 +29,12 @@ checkout, or publish authority was restored.
   approved product/media proof.
 - Shopify product/cart/checkout, fulfillment, and release gates remain
   unproven and disabled.
-- Vercel deployment access remains disabled with HTTP 402.
+- The production visual site is live, but Shopify product/cart/checkout credentials and the authenticated app-capability audit remain incomplete. Purchasing therefore remains disabled by design.
 
 ## Demo target
 
-- Candidate branch: `codex/restore-production-visual-direction`
-- Candidate commit: the commit containing this note; use `git show HEAD`
-- Preview/staging URL: not created in this task. Current Vercel access returns
-  HTTP 402, and deployment was not authorized.
-- Production: unchanged. It must continue to follow `main` only after explicit
-  Product Owner approval.
+- Canonical PR: `https://github.com/CubiqoUnited/carlophillips-site/pull/3`
+- Canonical `main` merge: `85b6f8f`
+- Preview/staging: `https://carlophillips-preview.vercel.app`
+- Production: `https://www.carlophillips.com` (HTTP 200); `https://carlophillips.com` redirects once to `www`.
+- Production continues to follow canonical `main`; future staging remains temporary-branch Vercel Preview only.
