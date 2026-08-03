@@ -11,7 +11,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Editorial-only `/about` and `/lookbook` routes, the shared editorial shell, and the inactive editorial content abstraction are removed. `/shop`, `/collections`, `/products/[handle]`, `/bag`, `/cart`, and API boundaries remain.
 - The archived drop board is labeled as a visual-system reference and explicitly not product or media proof. It does not make a product visible or purchasable.
 - The Git model has one permanent branch, `main`; staging is a Vercel Preview generated from a temporary PR branch. Canonical PR #3 merged the production-aligned correction to `main` as `85b6f8f`.
-- Vercel project `carlophillips-site` on the working personal team now builds canonical `main`. Production deployment `dpl_66ydzPzwP2hBoFuTsyy5AKWMKKx1` is READY; `www.carlophillips.com` returns HTTP 200 and the apex performs one canonical 308 redirect to `www`.
+- Vercel project `carlophillips-site` on the working personal team now builds canonical `main`. The initial cutover deployment `dpl_66ydzPzwP2hBoFuTsyy5AKWMKKx1` reached READY and later `main` evidence commits were redeployed; `www.carlophillips.com` returns HTTP 200 and the apex performs one canonical 308 redirect to `www`.
 - Paused Cycle 20 fulfillment-contract work is recoverably isolated in stash `stash@{0}` / `ab3f004119ac28547d0ecddb50634a9e9d7806e4` and is not part of this branch diff.
 - Recovered Product Owner intent confirms the Hoodie is the first complete POC for a reusable POD-to-publish system with four coordinated lanes and designer-led plus trend-led workflows; it is not a static-page endpoint.
 - The storefront UI remains fail-closed. Home, product, `/shop`, `/collections`, and bag/cart routes use dedicated server-rendered truth boundaries.
@@ -247,6 +247,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - HTTP checks passed for `/`, `/shop`, `/products/signature-hoodie`, and `/bag`; apex redirects once to `www`.
 - Direct desktop and mobile browser checks passed. At 390×844 the document width equals the viewport width and no product image is broken. Screenshots and the concise record are under `test_reports/cp-production-cutover-2026-08-03/`.
 - This proves hosting and the approved visual direction, not live Shopify commerce. Product, cart, checkout, payment, and fulfillment remain fail-closed pending authenticated Shopify evidence and credentials.
+- The misleading permanent `carlophillips-preview.vercel.app` project alias and obsolete legacy `staging.carlophillips.com` binding were removed. Staging evidence uses immutable temporary-branch Preview deployment URLs only.
 
 ## External blockers
 
