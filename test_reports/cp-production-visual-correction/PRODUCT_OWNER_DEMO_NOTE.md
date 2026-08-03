@@ -35,6 +35,6 @@ checkout, or publish authority was restored.
 
 - Canonical PR: `https://github.com/CubiqoUnited/carlophillips-site/pull/3`
 - Canonical `main` merge: `85b6f8f`
-- Preview/staging: `https://carlophillips-preview.vercel.app`
+- Historical PR Preview/staging: `https://carlophillips-preview-oxwxl5u9g-adityas-projects-261b17a9.vercel.app`
 - Production: `https://www.carlophillips.com` (HTTP 200); `https://carlophillips.com` redirects once to `www`.
-- Production continues to follow canonical `main`; future staging remains temporary-branch Vercel Preview only.
+- Production continues to follow canonical `main`; future staging remains immutable temporary-branch Vercel Preview only. The misleading permanent `carlophillips-preview.vercel.app` alias was removed.

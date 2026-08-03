@@ -16,6 +16,7 @@
 - Direct mobile runtime measurement: `innerWidth=390`, `scrollWidth=390`, no horizontal overflow, zero broken images, title `CARLOPHILLIPS | Gesture of Luxury`.
 - The visual result preserves the approved dark, restrained, VOLLBAK-confidence direction.
 - Final `yarn verify` passed: zero-warning lint, 32 test files / 309 tests, zero production vulnerabilities across 193 packages, and a successful Next.js 15.5.21 production build.
+- Environment cleanup removed the obsolete legacy staging-domain binding and the misleading permanent preview alias. The temporary-branch Preview evidence remains available through its immutable deployment URL.
 
 ## Commerce boundary
 
