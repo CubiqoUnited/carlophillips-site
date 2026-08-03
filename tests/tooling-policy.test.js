@@ -18,7 +18,7 @@ describe('tooling and supported-runtime policy', () => {
   it('records temporary patched transitive security resolutions', () => {
     expect(packageDocument.resolutions).toMatchObject({
       lodash: '4.18.1',
-      postcss: '8.5.22',
+      postcss: '8.5.25',
       sharp: '0.35.3',
     });
     expect(packageDocument.dependencies.axios).toBeUndefined();
