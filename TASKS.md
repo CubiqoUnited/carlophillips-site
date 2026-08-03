@@ -8,7 +8,7 @@
 - [x] Restore the production-aligned full-height storefront composition while retaining the server catalog/release boundary.
 - [x] Keep the archived brand board explicitly separate from product/media proof and keep purchasing disabled.
 - [x] Record the one-`main` Git model: temporary PR branches create Vercel Preview staging; Production follows approved `main`.
-- [ ] Product Owner: review the candidate commit and explicitly authorize any push, Preview deployment, PR, merge, remote-branch cleanup, or Vercel production change.
+- [x] Product Owner granted full project authority; push the temporary branch, create PR #3, merge the approved correction to canonical `main`, deploy that exact merge, and restore the production domain.
 - [ ] Cycle 20 owner/resume: Product Owner decides whether the isolated stash should be resumed in a later, separately scoped fulfillment-contract task.
 
 ## In progress: fitness baseline
@@ -160,5 +160,7 @@
 
 ## Blocked / approval required
 
-- [ ] Restore Vercel deployment access, then resume at preview deployment verification.
-- [ ] Approve any Shopify write, product activation, test order, `main` merge, or production promotion separately.
+- [x] Restore Vercel deployment access and verify Preview plus production desktop/mobile routes.
+- [ ] Complete the preserved Shopify email-verification step, then perform a read-only Admin/Storefront capability audit without accepting charges.
+- [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
+- [ ] Keep Shopify writes, product activation, test orders, paid app actions, and fulfillment activation separately evidenced and fail-closed until tested.
