@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 15,
+  "observedAt": "2026-07-23",
+  "objective": "Bind Preview and production visibility to reviewed variant identity and canonical commerce facts while preserving immutable full-envelope approval evidence.",
+  "fingerprints": {
+    "variantIdentity": {
+      "runtimeCompared": true,
+      "binds": [
+        "hashed variant reference",
+        "variant title",
+        "canonical selected options"
+      ]
+    },
+    "commerceFacts": {
+      "runtimeCompared": true,
+      "binds": [
+        "product handle",
+        "product title",
+        "currency",
+        "minimum and maximum price",
+        "product availability",
+        "canonical variant identity",
+        "variant price",
+        "variant currency",
+        "variant availability"
+      ],
+      "excludes": [
+        "observedAt",
+        "environment",
+        "capabilityEvidence"
+      ]
+    },
+    "fullObservation": {
+      "runtimeCompared": false,
+      "approvalAndAuditBound": true,
+      "bindsTimestamp": true,
+      "bindsEnvironment": true,
+      "bindsCapabilityEvidence": true
+    }
+  },
+  "visibilityPolicy": {
+    "freshEnvelopeIntegrityRecomputed": true,
+    "newTimestampWithUnchangedFactsEligible": true,
+    "correctEnvironmentChangeWithUnchangedFactsEligible": true,
+    "changedPriceDenied": true,
+    "changedAvailabilityDenied": true,
+    "changedTitleDenied": true,
+    "changedVariantIdentityDeniedWithSpecificReason": true,
+    "tamperedObservationDenied": true,
+    "missingObservationDenied": true,
+    "deniedProductPayloadReturned": false,
+    "catalogCandidateIsolation": true,
+    "localFixtureAuthorityChanged": false,
+    "releasePatchApplied": false
+  },
+  "commands": {
+    "focusedTests": {
+      "status": "passed",
+      "files": 7,
+      "tests": 98
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 29,
+      "tests": 216,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "performed": false,
+    "reason": "No route presentation or client interaction changed; Cycle 13 remains the applicable PDP/bag browser evidence."
+  },
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false,
+    "categories": {
+      "governance": 5,
+      "packageReproducibility": 5,
+      "qualityAndSecurity": 5,
+      "gitStrategy": 4,
+      "environmentSeparation": 5,
+      "secretHandling": 5,
+      "architectureImplementation": 5,
+      "hoodieSequenceTruth": 5,
+      "localBrowserEvidence": 4,
+      "liveOperations": 1
+    }
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "releasePatchApplied": false,
+    "cartMutation": false,
+    "checkout": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

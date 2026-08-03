@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 13,
+  "observedAt": "2026-07-23",
+  "objective": "Remove dormant browser and public API commerce bypasses, then define server-owned customer-cart activation prerequisites without issuing a Shopify write.",
+  "surfaceInventory": {
+    "legacyProductServiceRemoved": true,
+    "browserCartStoreRemoved": true,
+    "broadShopifyClientRemoved": true,
+    "storefrontMutationExportsRemoved": true,
+    "publicCatalogAuditRoutesRemoved": true,
+    "pureNormalizationTransportFree": true,
+    "activeShopifyProductAdapterServerOnly": true,
+    "activeShopifyProductAdapterReadOnly": true,
+    "publicShopifyEnvironmentNamesRemoved": true,
+    "normalizedProductHandlePreserved": true
+  },
+  "cartActivation": {
+    "schema": "cp.cart-activation-decision.v1",
+    "serverOwned": true,
+    "prerequisiteCount": 7,
+    "requiresShopifyGatewayProduct": true,
+    "requiresReleasedRecord": true,
+    "requiresExactCurrentReleaseVariantFingerprintMatch": true,
+    "requiresSellableVariantMapping": true,
+    "requiresVerifiedCartWriteCapability": true,
+    "requiresScopedProductOwnerApproval": true,
+    "requiresServerEnvironmentGate": true,
+    "localFixtureEligible": false,
+    "checkoutAllowed": false,
+    "clientSummaryContainsProductOrVariantPayload": false,
+    "shopifyWriteAttempted": false
+  },
+  "commands": {
+    "focusedTests": {
+      "status": "passed",
+      "files": 8,
+      "tests": 69
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 27,
+      "tests": 184,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "tool": "Playwright fallback because agent-browser CLI is unavailable",
+    "localPdpDesktop": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "contentPresent": true,
+      "cartActivationStatus": "disabled",
+      "cartReason": "LOCAL_OR_FIXTURE_CART_UI_DISABLED",
+      "purchasingDisabled": true,
+      "checkoutLinkCount": 0,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "pdp-desktop.png"
+    },
+    "localBagMobile": {
+      "viewport": "390x844",
+      "status": 200,
+      "contentPresent": true,
+      "bagStatus": "local_preview",
+      "checkoutDisabled": true,
+      "checkoutLinkCount": 0,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "bag-mobile.png"
+    },
+    "retiredCatalogAuditApi": {
+      "path": "/api/shopify/media-audit",
+      "status": 404,
+      "code": "API_ROUTE_UNAVAILABLE"
+    }
+  },
+  "knownWarnings": [
+    "Temporary PostCSS and sharp security resolutions remain outside Next.js 15.5.21 declared ranges.",
+    "Yarn/Corepack emits the existing url.parse deprecation warning.",
+    "The Open Graph edge route prevents static generation for that route.",
+    "Browserslist data is stale.",
+    "A normal shell-provided yarn executable remains absent; verification used the already-proven bundled Yarn 1.22.22 runtime."
+  ],
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false,
+    "categories": {
+      "governance": 5,
+      "packageReproducibility": 5,
+      "qualityAndSecurity": 5,
+      "gitStrategy": 4,
+      "environmentSeparation": 5,
+      "secretHandling": 5,
+      "architectureImplementation": 5,
+      "hoodieSequenceTruth": 5,
+      "localBrowserEvidence": 4,
+      "liveOperations": 1
+    }
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "cartMutation": false,
+    "checkout": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

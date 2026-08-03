@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 17,
+  "observedAt": "2026-07-23",
+  "objective": "Bind customer-visible Shopify copy to reviewed commerce facts and derive truthful release-aware presentation status.",
+  "customerCopyBoundary": {
+    "fingerprintBinds": [
+      "title",
+      "plain description",
+      "vendor",
+      "product type",
+      "tagline",
+      "ordered details",
+      "price and currency",
+      "availability",
+      "sanitized variants"
+    ],
+    "releaseProductWhitelistDerived": true,
+    "outerCopyAccepted": false,
+    "outerStoryAccepted": false,
+    "descriptionHtmlAccepted": false,
+    "rawProductIdAccepted": false,
+    "rawVariantMapAccepted": false
+  },
+  "presentationPolicy": {
+    "localState": "observation or fixture review",
+    "previewState": "private release review",
+    "productionState": "reviewed released product facts",
+    "commerceGateSeparateFromRelease": true,
+    "unreviewedMarketingStoryRendered": false,
+    "neutralStoryFallback": true
+  },
+  "commands": {
+    "focusedTests": {
+      "status": "passed",
+      "files": 10,
+      "tests": 124
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 30,
+      "tests": 246,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "status": "passed",
+    "agentBrowserExecutable": "unavailable",
+    "fallback": "in-app browser",
+    "desktopEvidence": "test_reports/cp-fitness-cycle-17/desktop-pdp.png",
+    "desktopViewport": "1440x1000",
+    "mobileEvidence": "test_reports/cp-fitness-cycle-17/mobile-pdp.png",
+    "mobileViewport": "390x844",
+    "pdpHttpStatus": 200,
+    "homeHttpStatus": 200,
+    "consoleWarningsOrErrors": 0,
+    "errorOverlay": false,
+    "horizontalOverflow": false,
+    "checkoutLinks": 0,
+    "purchasingDisabled": true,
+    "releasedProductionCopyCoverage": "deterministic view-model and Server Component tests"
+  },
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "releasePatchApplied": false,
+    "cartMutation": false,
+    "checkout": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

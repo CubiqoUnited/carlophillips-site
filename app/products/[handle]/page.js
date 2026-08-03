@@ -1,1 +1,62 @@
-export { default } from '../../page';
+import { CommerceProductDetail, CommerceProductUnavailable } from '@/components/commerce/product-detail';
+import { getServerCartActivationDecision } from '@/lib/commerce/cart-activation-server';
+import { closedReleaseDecision, getProductDecision, resolveCommerceDataMode } from '@/lib/commerce/product-gateway';
+import { toProductViewModel } from '@/lib/commerce/product-view-model';
+import { canRenderDraftProductPreviews, canRenderProducts, getCommerceEnvironment } from '@/lib/config/product-visibility';
+import { loadShopifyProduct } from '@/lib/providers/shopify/storefront-product-adapter';
+import { getProductReleaseEvidence } from '@/lib/releases/product-release-registry';
+
+export const dynamic = 'force-dynamic';
+
+export const metadata = {
+  title: 'Product | CARLOPHILLIPS',
+  description: 'Source-labeled CARLOPHILLIPS product facts. Purchasing remains separately disabled until commerce gates are proven.',
+  robots: { index: false, follow: true },
+};
+
+export default async function ProductPage({ params }) {
+  const { handle } = await params;
+  const environment = getCommerceEnvironment();
+
+  if (!canRenderProducts()) {
+    return <CommerceProductUnavailable decision={closedReleaseDecision(environment)} />;
+  }
+
+  const mode = resolveCommerceDataMode({
+    configuredMode: process.env.COMMERCE_DATA_MODE,
+    environment,
+  });
+  let fixtureProduct = null;
+  if (mode === 'fixture' && canRenderDraftProductPreviews()) {
+    const fixtureModule = await import('@/fixtures/signature-hoodie-preview');
+    fixtureProduct = fixtureModule.signatureHoodiePreview;
+  }
+  const releaseEvidence = getProductReleaseEvidence(handle);
+  const decision = await getProductDecision({
+    environment,
+    mode,
+    handle,
+    fixtureProduct,
+    ...releaseEvidence,
+    loadShopifyProduct,
+  });
+
+  const product = toProductViewModel(decision);
+  if (!product || !decision.visibilityAllowed) {
+    return <CommerceProductUnavailable decision={decision} />;
+  }
+
+  const { summary: cartActivation } = getServerCartActivationDecision({
+    environment,
+    productDecision: decision,
+    releaseRecord: releaseEvidence?.releaseRecord || null,
+  });
+
+  return (
+    <CommerceProductDetail
+      product={product}
+      releaseReason={decision.reason}
+      cartActivation={cartActivation}
+    />
+  );
+}

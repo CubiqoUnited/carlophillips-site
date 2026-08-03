@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/product-observation.schema.json",
+  "title": "ProductObservation v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "source",
+    "authority",
+    "environment",
+    "observedAt",
+    "capabilityEvidence",
+    "product",
+    "variants",
+    "variantFingerprint",
+    "commerceFactsFingerprint",
+    "observationFingerprint",
+    "review"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.product-observation.v1" },
+    "source": { "enum": ["shopify", "fixture", "simulation"] },
+    "authority": { "enum": ["candidate", "non_authoritative"] },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "capabilityEvidence": { "type": ["string", "null"] },
+    "product": {
+      "type": "object",
+      "required": [
+        "handle",
+        "title",
+        "description",
+        "vendor",
+        "productType",
+        "tagline",
+        "details",
+        "currency",
+        "minimumPrice",
+        "maximumPrice",
+        "availableForSale"
+      ],
+      "properties": {
+        "handle": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "vendor": { "type": "string" },
+        "productType": { "type": "string" },
+        "tagline": { "type": "string" },
+        "details": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "minimumPrice": { "type": "number", "minimum": 0 },
+        "maximumPrice": { "type": "number", "minimum": 0 },
+        "availableForSale": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "variants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["referenceHash", "title", "selectedOptions", "availableForSale", "price"],
+        "properties": {
+          "referenceHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "title": { "type": "string", "minLength": 1 },
+          "selectedOptions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["name", "value"],
+              "properties": {
+                "name": { "type": "string", "minLength": 1 },
+                "value": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            }
+          },
+          "availableForSale": { "type": "boolean" },
+          "price": {
+            "type": "object",
+            "required": ["amount", "currency"],
+            "properties": {
+              "amount": { "type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?$" },
+              "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "commerceFactsFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "observationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "review": {
+      "type": "object",
+      "required": ["status", "owner", "evidence"],
+      "properties": {
+        "status": { "const": "pending" },
+        "owner": { "const": "Product Owner/designee" },
+        "evidence": { "type": "null" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "source": { "const": "shopify" } }, "required": ["source"] },
+      "then": {
+        "properties": {
+          "authority": { "const": "candidate" },
+          "capabilityEvidence": { "type": "string", "minLength": 1 }
+        }
+      },
+      "else": {
+        "properties": {
+          "authority": { "const": "non_authoritative" },
+          "environment": { "const": "local" },
+          "capabilityEvidence": { "type": "null" }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

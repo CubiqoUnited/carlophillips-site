@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 9,
+  "observedAt": "2026-07-22",
+  "objective": "Make designer-led and trend-led ProductCreationJob inputs fully attributable, freshness-aware, constrained, and duplicate-safe.",
+  "jobs": {
+    "productBriefSchemaValidated": true,
+    "productCreationJobVersion": "v2",
+    "durableBriefsExactlyEmbeddedByJobs": true,
+    "designer": {
+      "mode": "designer-led",
+      "trigger": "on-demand",
+      "cadence": "on-demand",
+      "sourceType": "first-party",
+      "freshness": "not-time-sensitive",
+      "candidateDisposition": "draft-only"
+    },
+    "trend": {
+      "mode": "trend-led",
+      "trigger": "scheduled",
+      "cadence": "daily",
+      "scheduleTimezoneRecorded": true,
+      "sourceType": "fixture",
+      "authority": "research-only",
+      "freshness": "stale",
+      "externalResearchAllowed": false,
+      "candidateDisposition": "draft-only"
+    },
+    "shared": {
+      "publisherAndRetrievalProvenanceRequired": true,
+      "publishedObservedEvaluatedTimesRequired": true,
+      "bindingBrandConstraintsRequired": true,
+      "referenceMode": "inspiration-only",
+      "copyingAllowed": false,
+      "rightsInferenceAllowed": false,
+      "productTruthInferenceAllowed": false,
+      "mediaTruthInferenceAllowed": false,
+      "sourceAttributionRequired": true,
+      "humanReviewStatus": "pending",
+      "duplicatePolicy": "suppress",
+      "sameCanonicalTruthCore": true,
+      "allRestrictedApprovalsPending": true
+    }
+  },
+  "duplicateSuppression": {
+    "deterministicNormalizedFingerprint": true,
+    "sameIdempotencyKeySuppressed": true,
+    "equivalentInputDifferentJobIdSuppressed": true,
+    "acceptedRegistryMutatedByDuplicate": false
+  },
+  "pipeline": {
+    "state": "in_progress_with_blockers",
+    "humanRequiredItems": 1,
+    "safePendingItems": 4,
+    "globalBlocked": false,
+    "externalExecutionPerformed": false
+  },
+  "commands": {
+    "focusedJobTests": {
+      "status": "passed",
+      "files": 3,
+      "tests": 53
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 20,
+      "tests": 140,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    }
+  },
+  "knownWarnings": [
+    "Temporary PostCSS and sharp security resolutions remain outside Next.js 15.5.21 declared ranges.",
+    "Yarn/Corepack emits the existing url.parse deprecation warning.",
+    "The Open Graph edge route prevents static generation for that route."
+  ],
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false
+  },
+  "browser": {
+    "requiredForThisContractOnlyCycle": false,
+    "uiChanged": false
+  },
+  "productionActions": {
+    "externalResearch": false,
+    "deploy": false,
+    "shopifyWrite": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/product-observation-review.schema.json",
+  "title": "ProductObservationReview v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "status",
+    "authoritative",
+    "observationFingerprint",
+    "blockers",
+    "candidateReleasePatch"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.product-observation-review.v1" },
+    "status": { "enum": ["blocked", "accepted"] },
+    "authoritative": { "type": "boolean" },
+    "observationFingerprint": {
+      "oneOf": [
+        { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "humanAction", "resumePoint"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "humanAction": { "type": "string", "minLength": 1 },
+          "resumePoint": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "candidateReleasePatch": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "handle",
+            "observedAt",
+            "variantFingerprint",
+            "variantFingerprintStatus",
+            "commerceFactsFingerprint",
+            "commerceFactsFingerprintStatus",
+            "observationFingerprint",
+            "observationFingerprintStatus",
+            "observationReviewEvidence"
+          ],
+          "properties": {
+            "handle": { "type": "string", "minLength": 1 },
+            "observedAt": { "type": "string", "format": "date-time" },
+            "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "variantFingerprintStatus": { "const": "observed" },
+            "commerceFactsFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "commerceFactsFingerprintStatus": { "const": "reviewed" },
+            "observationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "observationFingerprintStatus": { "const": "reviewed" },
+            "observationReviewEvidence": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        { "type": "null" }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "accepted" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "authoritative": { "const": true },
+          "blockers": { "type": "array", "maxItems": 0 },
+          "candidateReleasePatch": { "type": "object" }
+        }
+      },
+      "else": {
+        "properties": {
+          "authoritative": { "const": false },
+          "blockers": { "type": "array", "minItems": 1 },
+          "candidateReleasePatch": { "type": "null" }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

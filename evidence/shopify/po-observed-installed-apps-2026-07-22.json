@@ -1,0 +1,347 @@
+{
+  "schemaVersion": "cp.shopify-app-inventory.v1",
+  "observedAt": "2026-07-22",
+  "observation": {
+    "source": "product-owner-observed",
+    "installedStatus": "reported-installed",
+    "capabilityStatus": "unverified",
+    "browserAudit": "login-required",
+    "blocker": {
+      "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+      "humanAction": "In the preserved Shopify login tab, choose Continue with Google, select the authorized account, and complete Shopify verification if prompted. Do not share or record authentication data.",
+      "resumePoint": "Resume at Shopify installed-app inventory, compare all 30 reported names, then inspect permissions and settings read-only without changing configuration or accepting fees."
+    }
+  },
+  "apps": [
+    {
+      "name": "Spin Studio - 360 Product Spin",
+      "category": "media",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Candidate spin worker; select at most one spin owner after exact-product evidence.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus any separately issued app API credential and documented read scopes.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect settings, export, provenance, billing, and Draft safety read-only; do not generate or spend credits."
+    },
+    {
+      "name": "Modelize",
+      "category": "media",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Candidate media worker; Media Registry remains canonical truth owner.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus app-specific API credentials if the app exposes them.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect input, output, rights, provenance, credit, and export controls read-only."
+    },
+    {
+      "name": "Apliiq - Print On Demand",
+      "category": "pod-sourcing",
+      "goalDisposition": "required-poc",
+      "ownershipFinding": "Selected Signature Hoodie fulfillment candidate; exact variant mapping remains unverified.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus approved read-only Apliiq API or browser access.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Observe Hoodie product and variant mapping only; stop before sample, order, fulfillment, or charge."
+    },
+    {
+      "name": "ZS-Spin-View",
+      "category": "media",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Alternate spin worker; must not coexist as a second customer spin owner.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus app-specific read credentials if available.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect settings, rendering inputs, exportability, provenance, and billing read-only."
+    },
+    {
+      "name": "Fraud Control",
+      "category": "commerce-operations",
+      "goalDisposition": "optional-later",
+      "ownershipFinding": "Operational risk candidate; not part of the current Draft Hoodie build lane.",
+      "accessPathToVerify": "shopify-native-admin-or-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin; any Admin API access requires separately approved least-privilege scopes.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Identify native policy and event surfaces read-only; do not change fraud rules."
+    },
+    {
+      "name": "CodexAutomation5",
+      "category": "automation-connectors",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Custom connector candidate only; installation proves neither Admin API scopes nor write authority.",
+      "accessPathToVerify": "custom-connector-scopes",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus read-only inspection of granted OAuth/Admin scopes and callback configuration; no credential values.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect app details and granted scope names read-only, then run only a separately approved non-mutating capability probe."
+    },
+    {
+      "name": "Messaging",
+      "category": "customer-operations",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Support inbox candidate; select one owner with Tidio after privacy and escalation review.",
+      "accessPathToVerify": "unknown-browser-or-private-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin and any app-specific inbox API or dashboard authorization.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect access, retention, escalation, export, and billing read-only; do not contact customers."
+    },
+    {
+      "name": "Gelato: Print on Demand",
+      "category": "pod-sourcing",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Provider alternate; not a co-owner of Hoodie fulfillment.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus separately approved provider API credentials if available.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect category fit and mapping surface read-only; keep inactive for the Hoodie."
+    },
+    {
+      "name": "CustomCat: Print on Demand",
+      "category": "pod-sourcing",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Provider alternate; one provider per approved product or category.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus separately approved provider API credentials if available.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect category fit and auto-order defaults read-only; do not enable fulfillment."
+    },
+    {
+      "name": "CJdropshipping: Much Faster",
+      "category": "pod-sourcing",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Sourcing alternate with no current Hoodie role.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus separately approved provider account/API access.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Record available surfaces and cost gates read-only; leave unselected."
+    },
+    {
+      "name": "Spreadconnect",
+      "category": "pod-sourcing",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Provider alternate with no current Hoodie ownership.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus separately approved provider API credentials if available.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect category fit and mapping surface read-only; do not create or sync products."
+    },
+    {
+      "name": "Zendrop - Dropshipping & POD",
+      "category": "pod-sourcing",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Sourcing alternate; must not duplicate another provider owner.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus separately approved provider account/API access.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect plan, mapping, and order automation defaults read-only; leave inactive."
+    },
+    {
+      "name": "Tidio - Live Chat & Chatbots",
+      "category": "customer-operations",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Support inbox candidate; select one owner with Messaging.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus app dashboard/API authorization.",
+      "usageFeeRisk": "reported-usage-fees",
+      "safeNextAction": "Inspect permissions, retention, escalation, AI controls, and usage fees read-only; do not message."
+    },
+    {
+      "name": "Marketplace Connect",
+      "category": "commerce-operations",
+      "goalDisposition": "optional-later",
+      "ownershipFinding": "Channel candidate; no Draft product syndication authority.",
+      "accessPathToVerify": "shopify-native-admin-or-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus channel-specific authorization if configured.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Inspect connected channels and fee boundaries read-only; do not sync listings."
+    },
+    {
+      "name": "Search & Discovery",
+      "category": "commerce-operations",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Shopify-native merchandising candidate; Shopify product truth remains authoritative.",
+      "accessPathToVerify": "shopify-native-admin-or-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin; Admin API scopes only for a separately approved read probe.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Inspect configuration and storefront exposure read-only; do not alter rules."
+    },
+    {
+      "name": "Translate & Adapt",
+      "category": "commerce-operations",
+      "goalDisposition": "optional-later",
+      "ownershipFinding": "Shopify-native localization candidate requiring human language and legal QA.",
+      "accessPathToVerify": "shopify-native-admin-or-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin; translation API scopes only if separately approved.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Inspect locale and publication behavior read-only; do not generate or publish translations."
+    },
+    {
+      "name": "AfterShip Tracking",
+      "category": "customer-operations",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Tracking worker candidate; Shopify and POD events remain canonical facts.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus AfterShip app API/webhook credentials if approved.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect event, webhook, retention, and subscription surfaces read-only."
+    },
+    {
+      "name": "AfterShip Returns",
+      "category": "customer-operations",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Returns worker candidate; no automatic refund authority.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus AfterShip app API/webhook credentials if approved.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect policy, event, refund, and subscription surfaces read-only; do not create returns."
+    },
+    {
+      "name": "Order Printer Pro",
+      "category": "customer-operations",
+      "goalDisposition": "optional-later",
+      "ownershipFinding": "Order-document utility candidate; only Shopify order truth may populate documents.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus app template/dashboard access.",
+      "usageFeeRisk": "reported-usage-fees",
+      "safeNextAction": "Inspect templates, permissions, and usage fees read-only; do not generate customer documents."
+    },
+    {
+      "name": "Only Caps",
+      "category": "pod-sourcing",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Specialist cap candidate for a later approved product, not Hoodie fulfillment.",
+      "accessPathToVerify": "unknown-browser-or-private-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus any specialist provider account/API authorization.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect category, variant, decoration, and cost surfaces read-only."
+    },
+    {
+      "name": "Forms",
+      "category": "commerce-operations",
+      "goalDisposition": "optional-later",
+      "ownershipFinding": "Shopify-native lead/data collection candidate subject to consent and privacy review.",
+      "accessPathToVerify": "shopify-native-admin-or-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin; data/API access only with approved privacy scope.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Inspect form destinations and consent controls read-only; do not collect or export personal data."
+    },
+    {
+      "name": "Flow",
+      "category": "automation-connectors",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Shopify-native automation worker; CP PipelineRun remains orchestration owner.",
+      "accessPathToVerify": "shopify-native-admin-flow-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin; Flow UI access and any Admin API scopes require separate least-privilege authorization.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Inspect existing workflows, triggers, actions, and enabled state read-only; do not edit or activate."
+    },
+    {
+      "name": "CS - Trending Products Finder",
+      "category": "research",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Research input candidate only; never product, media, or publication truth.",
+      "accessPathToVerify": "unknown-browser-or-private-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus app-specific data/API authorization if offered.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect source, date, export, confidence, and billing surfaces read-only; do not run paid research."
+    },
+    {
+      "name": "MyDesigns: Print on Demand",
+      "category": "pod-sourcing",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Draft job worker candidate; CP release and pipeline records remain canonical owners.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus app API/bulk-job credentials if separately approved.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect API, bulk job, credit, and Draft controls read-only; do not generate or publish."
+    },
+    {
+      "name": "Shopify Claude Connector App",
+      "category": "automation-connectors",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Connector candidate with no proven production role or write authority.",
+      "accessPathToVerify": "custom-connector-scopes",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus read-only inspection of granted scopes and connector configuration.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Record scope names, callable operations, and side-effect boundaries read-only; leave unselected."
+    },
+    {
+      "name": "Carlophillips Headless",
+      "category": "automation-connectors",
+      "goalDisposition": "required-poc",
+      "ownershipFinding": "Headless storefront/channel candidate; installation does not prove Storefront or Admin API authorization.",
+      "accessPathToVerify": "headless-storefront-channel-scopes",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus read-only channel settings and separately configured Storefront token scopes; never expose token values.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Inspect channel status and granted scope names read-only, then run only the existing server-side product probe."
+    },
+    {
+      "name": "Shopify CLI Connector App",
+      "category": "automation-connectors",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Development connector only; installation does not grant this agent CLI, OAuth, Admin API, or runtime authority.",
+      "accessPathToVerify": "development-cli-oauth-scopes",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "A separately authenticated Shopify CLI session and explicit store/app authorization; Admin API scopes remain distinct.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Inspect app purpose and scope names read-only; do not log in CLI, deploy, or mutate the store."
+    },
+    {
+      "name": "teelaunch: Print on Demand",
+      "category": "pod-sourcing",
+      "goalDisposition": "duplicate-candidate",
+      "ownershipFinding": "Provider alternate with no current Hoodie ownership.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus separately approved provider API credentials if available.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect category fit and mapping surface read-only; do not create or sync products."
+    },
+    {
+      "name": "Loox Reviews",
+      "category": "customer-operations",
+      "goalDisposition": "candidate",
+      "ownershipFinding": "Review worker candidate; fabricated, undisclosed, or auto-published reviews are forbidden.",
+      "accessPathToVerify": "third-party-private-api-webhook-or-browser",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin plus app API/widget/dashboard authorization if separately approved.",
+      "usageFeeRisk": "cost-or-credit-unverified",
+      "safeNextAction": "Inspect moderation, import, display, privacy, and subscription surfaces read-only."
+    },
+    {
+      "name": "Bundles",
+      "category": "commerce-operations",
+      "goalDisposition": "optional-later",
+      "ownershipFinding": "Shopify-native bundle candidate; not required for the Hoodie POC.",
+      "accessPathToVerify": "shopify-native-admin-or-api",
+      "verifiedCallableSurface": "none-auth-blocked",
+      "agentAuthenticationNeeded": "Authenticated Shopify Admin; Admin API scopes only for a separately approved read probe.",
+      "usageFeeRisk": "shopify-plan-boundary-unverified",
+      "safeNextAction": "Inspect bundle status and product implications read-only; do not create or publish bundles."
+    }
+  ]
+}

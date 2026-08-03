@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "cp.product-media-manifest.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "requirements": [
+    { "modality": "front", "requirement": "required", "status": "candidate", "assetIds": ["apliiq-5958463-black-front-original"], "infeasibilityBlocker": null },
+    { "modality": "back-angle", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "embroidery-detail", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "material-detail", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "on-model", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "lifestyle", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "spin-360", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "model-3d-ar", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "video", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null }
+  ],
+  "assets": [
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "apliiq-5958463-black-front-original",
+      "kind": "image",
+      "source": {
+        "type": "pod-original",
+        "reference": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/02-exported-assets.json"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "verified",
+      "rightsStatus": "pending",
+      "approvalStatus": "pending",
+      "quality": {
+        "status": "pending",
+        "evidence": null
+      },
+      "alt": "Apliiq black IND4000 Hoodie candidate with CP front chest mark",
+      "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "unverified-hood-cord-detail",
+      "kind": "image",
+      "source": {
+        "type": "unknown",
+        "reference": "fixtures/unverified-media/carlophillips-signature-hoodie-hood-cord-detail.jpg"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "unknown",
+      "approvalStatus": "quarantined",
+      "quality": {
+        "status": "pending",
+        "evidence": null
+      },
+      "alt": "Unverified hoodie hood and cord concept detail",
+      "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "unverified-pocket-cuff-detail",
+      "kind": "image",
+      "source": {
+        "type": "unknown",
+        "reference": "fixtures/unverified-media/carlophillips-signature-hoodie-pocket-cuff-detail.jpg"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "unknown",
+      "approvalStatus": "quarantined",
+      "quality": {
+        "status": "pending",
+        "evidence": null
+      },
+      "alt": "Unverified hoodie pocket and cuff concept detail",
+      "fallbackAssetId": null
+    }
+  ]
+}

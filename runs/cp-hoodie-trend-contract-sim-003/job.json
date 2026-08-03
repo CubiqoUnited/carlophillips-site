@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "cp.product-creation-job.v2",
+  "jobId": "cp-hoodie-trend-contract-sim-003",
+  "environment": "local",
+  "simulation": true,
+  "trigger": {
+    "type": "scheduled",
+    "requestedAt": "2026-07-22T00:00:00Z",
+    "cadence": "daily",
+    "schedule": {
+      "expression": "0 9 * * *",
+      "timezone": "America/New_York"
+    }
+  },
+  "brief": {
+    "schemaVersion": "cp.product-brief.v1",
+    "briefId": "cp-hoodie-trend-brief-sim-003",
+    "releaseId": "cp-signature-hoodie-2026-001",
+    "entryMode": "trend-led",
+    "status": "candidate-only",
+    "inputEvidence": [
+      {
+        "evidenceId": "contract-trend-signal",
+        "kind": "trend-signal",
+        "sourceType": "fixture",
+        "sourceRef": "local-contract-fixture:non-authoritative",
+        "publishedAt": "2026-07-20T00:00:00Z",
+        "observedAt": "2026-07-20T00:00:00Z",
+        "provenance": {
+          "publisher": "Local sanitized contract fixture",
+          "retrievedAt": "2026-07-22T00:00:00Z",
+          "evidenceRef": "local-contract-fixture:non-authoritative"
+        },
+        "freshness": {
+          "evaluatedAt": "2026-07-22T00:00:00Z",
+          "maxAgeHours": 24,
+          "status": "stale"
+        },
+        "authority": "research-only",
+        "confidence": "unassessed"
+      }
+    ],
+    "brandConstraints": {
+      "sourceRef": "PRD.md",
+      "status": "binding",
+      "rules": [
+        "Use original CARLOPHILLIPS identity and approved brand rules.",
+        "Keep the Signature Hoodie as the first reusable end-to-end proof."
+      ],
+      "prohibitedClaims": [
+        "Do not copy third-party brand expression.",
+        "Do not claim unverified product or media facts."
+      ]
+    },
+    "referenceUsePolicy": {
+      "mode": "inspiration-only",
+      "mayCopy": false,
+      "mayAssertRights": false,
+      "mayAssertProductTruth": false,
+      "mayAssertMediaTruth": false
+    },
+    "researchPolicy": {
+      "sourceAttributionRequired": true,
+      "freshnessRequired": true,
+      "humanReviewStatus": "pending",
+      "mayTriggerExternalResearch": false
+    },
+    "truthPolicy": {
+      "maySetProductTruth": false,
+      "mayApproveMedia": false,
+      "mayAuthorizeCommerce": false,
+      "mayPublish": false
+    }
+  },
+  "idempotency": {
+    "key": "cp:hoodie:trend:contract-sim-003",
+    "inputFingerprint": "sha256:ebc838721106c37af0cc83552fbae0829a0c9f3b9a2a0d5f9493f549921a2dbb",
+    "duplicatePolicy": "suppress"
+  },
+  "contractBindings": {
+    "productReleaseRecord": "releases/cp-signature-hoodie-2026-001/release.json",
+    "mediaRegistry": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
+    "commerceGateway": "lib/commerce/product-gateway.js",
+    "pipelineRunContract": "contracts/pipeline-run.schema.json",
+    "pipelineRunId": "cp-hoodie-trend-contract-sim-003"
+  },
+  "approvals": {
+    "externalExecution": { "status": "pending", "owner": "Product Owner" },
+    "spend": { "status": "pending", "owner": "Product Owner" },
+    "credits": { "status": "pending", "owner": "Product Owner" },
+    "sample": { "status": "pending", "owner": "Product Owner" },
+    "shopifyWrite": { "status": "pending", "owner": "Product Owner" },
+    "publish": { "status": "pending", "owner": "Product Owner" },
+    "production": { "status": "pending", "owner": "Product Owner" }
+  }
+}

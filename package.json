@@ -7,7 +7,12 @@
         "dev:no-reload": "next dev --hostname 0.0.0.0 --port 3000",
         "dev:webpack": "next dev --hostname 0.0.0.0 --port 3000",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "lint": "eslint . --max-warnings=0",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "audit:prod": "yarn audit --groups dependencies --level moderate",
+        "verify": "yarn lint && yarn test && yarn audit:prod && yarn build"
     },
     "dependencies": {
         "@hookform/resolvers": "^5.1.1",
@@ -39,7 +44,6 @@
         "@radix-ui/react-toggle-group": "^1.1.10",
         "@radix-ui/react-tooltip": "^1.2.7",
         "@tanstack/react-table": "^8.21.3",
-        "axios": "^1.10.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",
@@ -48,26 +52,37 @@
         "framer-motion": "^12.38.0",
         "input-otp": "^1.4.2",
         "lucide-react": "^0.516.0",
-        "next": "14.2.3",
+        "next": "15.5.21",
         "next-themes": "^0.4.6",
-        "react": "^18",
+        "react": "19.2.8",
         "react-day-picker": "^9.7.0",
-        "react-dom": "^18",
+        "react-dom": "19.2.8",
         "react-hook-form": "^7.58.1",
         "react-resizable-panels": "^3.0.3",
         "recharts": "^2.15.3",
+        "server-only": "^0.0.1",
         "sonner": "^2.0.5",
         "tailwind-merge": "^3.3.1",
         "tailwindcss-animate": "^1.0.7",
-        "uuid": "^9.0.1",
         "vaul": "^1.1.2",
         "zod": "^3.25.67"
     },
     "devDependencies": {
+        "ajv": "^8.17.1",
+        "ajv-formats": "^3.0.1",
         "autoprefixer": "^10.4.19",
+        "eslint": "8.57.1",
+        "eslint-config-next": "15.5.21",
         "globals": "^16.2.0",
-        "postcss": "^8",
-        "tailwindcss": "^3.4.1"
+        "postcss": "8.5.25",
+        "tailwindcss": "^3.4.1",
+        "typescript": "5.9.3",
+        "vitest": "^2.1.9"
+    },
+    "resolutions": {
+        "lodash": "4.18.1",
+        "postcss": "8.5.25",
+        "sharp": "0.35.3"
     },
     "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

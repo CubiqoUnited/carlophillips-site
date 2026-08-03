@@ -1,5 +1,7 @@
 # CARLOPHILLIPS vs Vollebak Architecture
 
+> Historical audit note: this document records a prior Shopify/media observation and proposed capability. It is not proof that the active UI uses Shopify or that the current environment contains 12 reachable products. See `/ARCHITECTURE.md` and `/STATUS.md` for the 2026-07-22 runtime assessment. Vollebak remains a benchmark pattern, not source material to copy.
+
 ## What Vollebak Appears To Have
 
 ```mermaid
@@ -117,4 +119,3 @@ Fulfillment: Unfulfilled
 Items: 1
 Delivery method: International
 ```
-

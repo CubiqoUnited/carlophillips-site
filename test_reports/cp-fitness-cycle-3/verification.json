@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": "cp-fitness-cycle-3",
+  "date": "2026-07-22",
+  "branch": "codex/cp-fitness-baseline",
+  "baseCommit": "95bece0",
+  "architectureHandoff": {
+    "id": "CP-ARCH-2026-07-22-01",
+    "sha256": "101fb502a553e44fb6ecfbe8060474b2f0b30f439a698d7cc1773842bea1406b",
+    "verified": true
+  },
+  "qualityGates": {
+    "lint": { "status": "passed", "warnings": 0 },
+    "tests": { "status": "passed", "files": 13, "tests": 67 },
+    "build": { "status": "passed", "generatedRoutes": 12 }
+  },
+  "browser": {
+    "bagDesktop": {
+      "status": "passed",
+      "meaningfulContent": true,
+      "checkoutLinkPresent": false,
+      "consoleErrors": 0,
+      "errorOverlays": 0,
+      "artifact": "bag-desktop.png",
+      "sha256": "afd74a34d6cbb0d135e45ff06f2d8e728b4bfc3f249005594a44a6b7dbaab22b"
+    },
+    "bagMobile": {
+      "status": "passed",
+      "horizontalOverflow": false,
+      "consoleErrors": 0,
+      "artifact": "bag-mobile.png",
+      "sha256": "206b59c8c586f3cae82f4324ea604c0c480412080c2e892629de079d3f3c235e"
+    },
+    "hoodieDesktop": {
+      "status": "passed",
+      "fixtureLabelVisible": true,
+      "purchasingDisabled": true,
+      "consoleErrors": 0,
+      "errorOverlays": 0,
+      "artifact": "hoodie-desktop.png",
+      "sha256": "c11d4da5405c0129f4493c3fbd49eac3e2cf76135288950b679074bf1d852264"
+    },
+    "hoodieMobile": {
+      "status": "passed",
+      "fixtureLabelVisible": true,
+      "purchasingDisabled": true,
+      "horizontalOverflow": false,
+      "consoleErrors": 0,
+      "artifact": "hoodie-mobile.png",
+      "sha256": "f661d9234c52f79b4391e3415d7a30c74b1e63e0ec4a1b7d59864e6226225393"
+    }
+  },
+  "policyEvidence": {
+    "previewFixtureCartDenied": true,
+    "productionFixtureCartDenied": true,
+    "storedFixtureDeniedWithShopifyConfigured": true,
+    "checkoutRequiresExactHttpsHost": true,
+    "duplicatePipelineEventsSuppressed": true,
+    "safeWorkContinuesAroundBlockers": true,
+    "globalBlockedOnlyWhenNoSafeWorkRemains": true,
+    "restrictedActionsPending": ["spend", "credits", "sample", "publish", "production"],
+    "hoodieMediaReleaseReady": false
+  },
+  "externalMutations": {
+    "shopify": false,
+    "provider": false,
+    "vercel": false,
+    "purchaseOrCreditUse": false,
+    "deployment": false,
+    "merge": false,
+    "push": false
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "cp.pipeline-run.v1",
+  "runId": "cp-hoodie-local-sim-001",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "mode": "designer-led",
+  "state": "blocked",
+  "workItems": [
+    {
+      "workItemId": "pod-map",
+      "lane": "product-pod",
+      "capability": "hoodie-fulfillment",
+      "adapter": "apliiq",
+      "status": "human_required",
+      "attempts": 2,
+      "evidence": [
+        "releases/cp-signature-hoodie-2026-001/release.json",
+        "test_reports/cp-fitness-cycle-5/shopify-readonly-audit.json"
+      ],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, then observe and fingerprint the Hoodie provider-to-Shopify mapping without ordering or accepting charges."
+      }
+    },
+    {
+      "workItemId": "media-plan",
+      "lane": "media",
+      "capability": "hoodie-media-matrix",
+      "adapter": "cp-media-registry",
+      "status": "human_required",
+      "attempts": 1,
+      "evidence": ["releases/cp-signature-hoodie-2026-001/media-manifest.json"],
+      "blocker": {
+        "code": "MEDIA_ASSETS_AND_APPROVAL_REQUIRED",
+        "humanAction": "Approve the exact source/tool/access and any credit boundary for missing required Hoodie media.",
+        "resumePoint": "Create or ingest candidates into quarantine, record provenance/rights/QA, and request media approval before public rendering."
+      }
+    },
+    {
+      "workItemId": "commerce-check",
+      "lane": "commerce-frontend",
+      "capability": "local-contract-and-browser-verification",
+      "adapter": "shopify-commerce-gateway",
+      "status": "succeeded",
+      "attempts": 1,
+      "evidence": ["test_reports/cp-fitness-cycle-3/verification.json"],
+      "blocker": null
+    },
+    {
+      "workItemId": "shopify-live-readonly-audit",
+      "lane": "commerce-frontend",
+      "capability": "shopify-storefront-cart",
+      "adapter": "shopify-authenticated-browser",
+      "status": "human_required",
+      "attempts": 2,
+      "evidence": [
+        "test_reports/cp-fitness-cycle-5/shopify-readonly-audit.json",
+        "evidence/shopify/po-observed-installed-apps-2026-07-22.json",
+        "test_reports/cp-fitness-cycle-11/verification.json"
+      ],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at Shopify installed-app inventory, then inspect Storefront/cart and the named P0 apps read-only without approving charges or changing state."
+      }
+    },
+    {
+      "workItemId": "framework-security-migration",
+      "lane": "commerce-frontend",
+      "capability": "supported-nextjs-runtime",
+      "adapter": "nextjs-15-maintenance-lts",
+      "status": "succeeded",
+      "attempts": 1,
+      "evidence": ["test_reports/cp-fitness-cycle-5/verification.json"],
+      "blocker": null
+    },
+    {
+      "workItemId": "response-security-hardening",
+      "lane": "commerce-frontend",
+      "capability": "fail-closed-response-policy",
+      "adapter": "nextjs-security-headers-and-cors",
+      "status": "succeeded",
+      "attempts": 1,
+      "evidence": ["test_reports/cp-fitness-cycle-6/verification.json"],
+      "blocker": null
+    },
+    {
+      "workItemId": "run-audit",
+      "lane": "orchestration",
+      "capability": "idempotent-event-log-and-human-gates",
+      "adapter": "cp-pipeline-run",
+      "status": "succeeded",
+      "attempts": 1,
+      "evidence": ["tests/pipeline-run.test.js"],
+      "blocker": null
+    }
+  ],
+  "events": [
+    {
+      "eventId": "evt-pod-blocked",
+      "idempotencyKey": "cp-hoodie-local-sim-001:pod-map:attempt-1",
+      "workItemId": "pod-map",
+      "status": "human_required",
+      "recordedAt": "2026-07-22T22:45:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-media-blocked",
+      "idempotencyKey": "cp-hoodie-local-sim-001:media-plan:attempt-1",
+      "workItemId": "media-plan",
+      "status": "human_required",
+      "recordedAt": "2026-07-22T22:46:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-commerce-local-verified",
+      "idempotencyKey": "cp-hoodie-local-sim-001:commerce-check:attempt-1",
+      "workItemId": "commerce-check",
+      "status": "succeeded",
+      "recordedAt": "2026-07-22T22:47:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-orchestration-local-verified",
+      "idempotencyKey": "cp-hoodie-local-sim-001:run-audit:attempt-1",
+      "workItemId": "run-audit",
+      "status": "succeeded",
+      "recordedAt": "2026-07-22T22:48:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-shopify-otp-required",
+      "idempotencyKey": "cp-hoodie-local-sim-001:shopify-live-readonly-audit:attempt-1",
+      "workItemId": "shopify-live-readonly-audit",
+      "status": "human_required",
+      "recordedAt": "2026-07-23T03:01:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-framework-security-migrated",
+      "idempotencyKey": "cp-hoodie-local-sim-001:framework-security-migration:attempt-1",
+      "workItemId": "framework-security-migration",
+      "status": "succeeded",
+      "recordedAt": "2026-07-23T03:12:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    },
+    {
+      "eventId": "evt-response-security-hardened",
+      "idempotencyKey": "cp-hoodie-local-sim-001:response-security-hardening:attempt-1",
+      "workItemId": "response-security-hardening",
+      "status": "succeeded",
+      "recordedAt": "2026-07-23T03:34:00Z",
+      "actor": "CP Fitness Delivery Agent"
+    }
+  ],
+  "approvals": {
+    "externalExecution": { "status": "pending", "owner": "Product Owner" },
+    "spend": { "status": "pending", "owner": "Product Owner" },
+    "credits": { "status": "pending", "owner": "Product Owner" },
+    "sample": { "status": "pending", "owner": "Product Owner" },
+    "shopifyWrite": { "status": "pending", "owner": "Product Owner" },
+    "publish": { "status": "pending", "owner": "Product Owner" },
+    "production": { "status": "pending", "owner": "Product Owner" }
+  }
+}

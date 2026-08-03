@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "cp.capability-registry.v1",
+  "observedAt": "2026-07-23",
+  "source": "Product Owner-observed 30-app inventory plus Shopify browser attempts and Cycle 19 local resolver verification; the current managed browser is blocked at Shopify login and no external app capability is verified",
+  "canonicalOwners": {
+    "releaseTruth": "Product Release Record",
+    "mediaTruth": "Media Registry",
+    "commerceTruth": "Shopify through Commerce Gateway",
+    "orchestrationTruth": "PipelineRun"
+  },
+  "capabilities": [
+    {
+      "capability": "shopify-storefront-product-read",
+      "selectedAdapter": "shopify-storefront-product",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": [],
+      "costGate": "read-only Storefront observation; no write, cart, checkout, or order authority",
+      "draftSafety": "observation remains candidate evidence until fingerprint review and explicit acceptance",
+      "alternatives": [],
+      "blocker": {
+        "code": "SHOPIFY_STOREFRONT_READ_CONFIGURATION_REQUIRED",
+        "humanAction": "An authorized owner configures least-privilege server-only Storefront read access without sharing values in reports.",
+        "resumePoint": "Run the product-by-handle observation, bind sanitized capability evidence, and submit the exact observation fingerprint for review without changing Shopify."
+      }
+    },
+    {
+      "capability": "shopify-storefront-cart",
+      "selectedAdapter": "shopify-storefront-cart",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": [],
+      "costGate": "checkout and order submission remain separately approval-gated",
+      "draftSafety": "read-only audit and no-order cart test required before activation",
+      "alternatives": [],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at Shopify installed-app inventory, then inspect Carlophillips Headless/Storefront settings read-only before any cart test."
+      }
+    },
+    {
+      "capability": "shopify-storefront-variant-resolver",
+      "selectedAdapter": "server-only-shopify-variant-resolver",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "evidenceRef": "tests/variant-resolution-policy.test.js",
+      "allowedOperations": ["resolve-reviewed-variant"],
+      "requiresApproval": [],
+      "costGate": "local readiness computation only; no Shopify write, cart, checkout, order, or raw-reference disclosure",
+      "draftSafety": "re-derives current read-only facts and emits only a sanitized readiness decision",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
+      "capability": "hoodie-fulfillment",
+      "selectedAdapter": "apliiq",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["sample", "spend"],
+      "costGate": "sample/order/fulfillment approval required",
+      "draftSafety": "draft-only until release approvals",
+      "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, and observe the Hoodie provider-to-Shopify mapping without ordering, sampling, or enabling fulfillment."
+      }
+    },
+    {
+      "capability": "spin-360",
+      "selectedAdapter": null,
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
+      "costGate": "plan/credit approval required",
+      "draftSafety": "exact-product bake-off and human QA required",
+      "alternatives": ["spin-studio", "zs-spin-view"],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect Spin Studio and ZS-Spin-View settings/billing read-only, and select neither until evidence and Product Owner approval."
+      }
+    },
+    {
+      "capability": "model-lifestyle-media",
+      "selectedAdapter": null,
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
+      "costGate": "credit/subscription approval required",
+      "draftSafety": "derived provenance and human media approval required",
+      "alternatives": ["modelize"],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect Modelize access/credits/settings read-only, and record inputs, outputs, provenance controls, and Draft-safe export path."
+      }
+    },
+    {
+      "capability": "shopify-local-automation",
+      "selectedAdapter": "flow",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["publish"],
+      "costGate": "plan and activation approval required",
+      "draftSafety": "versioned Draft-safe flow only",
+      "alternatives": [],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect Flow access/templates read-only, and record supported triggers/actions without enabling or editing a workflow."
+      }
+    },
+    {
+      "capability": "pod-bulk-workflow",
+      "selectedAdapter": "mydesigns",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend", "publish"],
+      "costGate": "credits, plan changes, generation, and publication require approval",
+      "draftSafety": "read-only audit first; any later job must remain Draft and release-record bound",
+      "alternatives": [],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect MyDesigns access/API/billing read-only, and record whether Draft-safe bulk jobs are actually callable."
+      }
+    },
+    {
+      "capability": "trend-research-input",
+      "selectedAdapter": "cs-trending-products-finder",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
+      "costGate": "plan, credits, and paid data require approval",
+      "draftSafety": "research output is evidence input only and never automatic product or publish truth",
+      "alternatives": [],
+      "blocker": {
+        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
+        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
+        "resumePoint": "Resume at installed-app inventory, inspect CS Trending Products Finder access/export/billing read-only, and record source, date, confidence, and callable surface."
+      }
+    },
+    {
+      "capability": "cross-lane-orchestration",
+      "selectedAdapter": "cp-pipeline-run",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "allowedOperations": ["simulate-run", "record-evidence", "isolate-blocker"],
+      "requiresApproval": ["spend", "credits", "sample", "publish", "production"],
+      "costGate": "no external action",
+      "draftSafety": "hard spend/publish/production gates",
+      "alternatives": ["codexautomation5"],
+      "blocker": null
+    },
+    {
+      "capability": "support-inbox",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["spend"],
+      "costGate": "privacy/subscription approval required",
+      "draftSafety": "one owner after escalation and transcript audit",
+      "alternatives": ["tidio", "messaging"],
+      "blocker": {
+        "code": "SUPPORT_OWNER_UNSELECTED",
+        "humanAction": "Approve a privacy, escalation, retention, and cost audit before selecting one support inbox.",
+        "resumePoint": "Classify Tidio and Messaging, select one owner, and keep the alternative inactive."
+      }
+    }
+  ]
+}

@@ -1,189 +1,148 @@
-# CARLOPHILLIPS - Premium Headless Ecommerce
+# CARLOPHILLIPS
 
-A luxury headless ecommerce storefront built with Next.js and Shopify, featuring a multi-brand architecture and premium UI.
+CARLOPHILLIPS is a Next.js 15 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
-## 🌟 Features
+The repository is **not production-ready**. The product-led storefront keeps products hidden by default. Its home composition restores the restrained, full-height visual direction of the production-aligned `9e1f5c3` implementation without restoring that version's mock catalog, invented product media, or browser cart mutations. Home, product, catalog (`/shop` and `/collections`), and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. Home receives a minimized summary from the same catalog decision, so its featured link and counts cannot bypass catalog policy. A Shopify observation alone never authorizes visibility or commerce. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
 
-- **Headless Architecture**: Next.js 14 frontend connected to Shopify Storefront API
-- **Multi-Brand Support**: Three distinct brand identities (CARLOPHILLIPS, love,Carlo, HouseofCarlo)
-- **Premium UI**: Cinematic design inspired by Vollebak, with animated hero sections
-- **Shopify Integration**: Full cart and checkout functionality via Shopify
-- **Print-on-Demand**: Connected to Printify for zero-inventory fulfillment
-- **Mobile Optimized**: Responsive design with touch-friendly interactions
+Read-only Shopify results become `cp.product-observation.v1` candidates only
+when they carry the exact evidence reference of a verified product-read
+capability. Raw Shopify IDs are hashed. Three deterministic fingerprints keep
+different semantics explicit: variant identity covers hashed references,
+titles, and options; commerce facts cover canonical product, variant, price,
+currency, and availability facts; the immutable audit fingerprint additionally
+binds source, environment, timestamp, and capability evidence. Exact
+fingerprint/handle approval can produce only a candidate release patch. No
+observation-review function applies that patch.
 
-## 🏗️ Tech Stack
+The same reviewed commerce-facts fingerprint covers customer-visible title,
+plain description, vendor, product type, tagline, and ordered details. The
+release boundary rebuilds the product from those canonical observation facts;
+it does not spread arbitrary adapter copy or render Shopify `descriptionHtml`.
+Release wording is decision-aware: private Preview review and Released
+production facts are never both labeled “approval pending.” Product story is
+neutral and unavailable until a separate reviewed story source exists.
 
-- **Frontend**: Next.js 14 (App Router), React, Tailwind CSS
-- **Backend**: Shopify Storefront GraphQL API
-- **State Management**: Zustand (cart state)
-- **Animation**: Framer Motion
-- **Deployment**: Node.js standalone
+Shopify option review preserves each real combination, availability, and price
+from the fingerprinted observation. It never flattens Shopify colors and sizes
+into combinations that may not exist. Every control is disabled, reference
+hashes remain opaque, and cart eligibility has a separate server-only resolver
+gate before any raw Shopify reference could be used.
 
-## 🚀 Quick Start
+The resolver readiness contract does not select or return a Shopify variant.
+Its server-only entry consumes raw references ephemerally, re-derives the
+current observation, proves every reviewed hash has exactly one current match,
+and returns only sanitized counts, fingerprints, and evidence. The registry's
+`local` surface describes implementation verification; the runtime decision's
+`server_only` surface describes containment. Both cart mutation and checkout
+remain explicitly unauthorized.
 
-### Prerequisites
-- Node.js 18+
-- Shopify store with Storefront API credentials
+This readiness computation is not active commerce integration. The Storefront
+loader already receives raw IDs server-side to create hashed observations; the
+new wrapper is only the sole production entry for readiness evaluation.
+`cart-activation-server.js` still supplies a null resolver decision, so no live
+resolver or selected-variant path is wired.
 
-### Installation
+Shopify media is filtered independently from product facts. Durable Media
+Registry assets store only a hash of the reviewed storefront identity, media
+type, canonical URL, and preview URL plus evidence—not raw Shopify media IDs or
+URLs. Preview can show a labeled partial approved set. Production denies the
+product unless every non-waived required modality and accessible fallback has
+a current approved match; unrelated or unapproved extras are discarded.
+
+## Current product state
+
+- One real Apliiq/Shopify Signature Hoodie POC is documented as Draft with purchasing disabled.
+- A prior Shopify audit recorded 12 products with image-only media, but the broader catalog is later reuse/scale input and is not active or release-proven in the current UI.
+- The resolved sequence is Signature Hoodie through the complete reusable system first, then a meaningfully different product, then approved catalog expansion.
+- Vercel production and preview were last observed returning HTTP 402 `DEPLOYMENT_DISABLED`; local work continues while hosting access is restored.
+
+## Stack
+
+- Next.js 15.5.21 Maintenance LTS App Router and React/React DOM 19.2.8
+- Tailwind CSS 3 and Framer Motion
+- Server-only Shopify Storefront GraphQL adapter for product/media reads
+- Yarn Classic 1.22.22
+- ESLint and Vitest
+
+## Setup
+
+Prerequisites: Node.js 18.18 or newer and Yarn 1.22.22. With a Corepack-enabled Node distribution, run `corepack enable` once.
 
 ```bash
-# Install dependencies
-yarn install
-
-# Create a local environment file, then add your Shopify credentials
-# NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-# NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=your-token
-
-# Run development server
+yarn --version
+yarn install --frozen-lockfile
+cp .env.example .env.local
 yarn dev
 ```
 
-Visit `http://localhost:3000`
+Open `http://localhost:3000`. Defaults are fail-closed: no product is visible and no purchase flow is active.
 
-## 📦 Environment Variables
+For a local-only review of the Hoodie fixture, select fixture mode, set both flags in `.env.local`, and restart the server:
 
-### Required
-- `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` - Your Shopify store domain
-- `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` - Shopify Storefront API token
-- `NEXT_PUBLIC_BASE_URL` - Your site URL
-
-### Optional
-- `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Google Analytics ID
-- `NEXT_PUBLIC_META_PIXEL_ID` - Facebook Pixel ID
-- `NEXT_PUBLIC_TIKTOK_PIXEL_ID` - TikTok Pixel ID
-
-## 🏪 Shopify Setup
-
-1. **Enable Storefront API:**
-   - Go to Shopify Admin > Settings > Apps and sales channels
-   - Create a custom app
-   - Enable Storefront API with required scopes
-   - Copy the Storefront access token
-
-2. **Configure Printify:**
-   - Install Printify app from Shopify App Store
-   - Connect your print providers (Printful, Apliiq, etc.)
-   - Publish products to your store
-   - Enable auto-order approval
-
-3. **Enable Payments:**
-   - Go to Settings > Payments
-   - Set up Shopify Payments or third-party processor
-   - Enable test mode for testing
-
-## 🌐 Deployment
-
-### Staging: staging.carlophillips.com
 ```bash
-# Build with staging environment variables
+COMMERCE_DATA_MODE=fixture
+NEXT_PUBLIC_SHOW_PRODUCTS=true
+NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true
+```
+
+This exposes a labeled, disabled review page. It does not fetch the Hoodie from Shopify and does not authorize publication or checkout.
+
+## Quality gates
+
+```bash
+yarn lint
+yarn test
+yarn audit:prod
 yarn build
-yarn start
 ```
 
-### Production: www.carlophillips.com
-```bash
-# Build with production environment variables
-yarn build
-yarn start
+Run all gates with `yarn verify`; it includes the production-dependency audit. Do not name this script `check`: Yarn Classic reserves `yarn check` for its own dependency-tree command. A clean dependency proof uses `yarn install --frozen-lockfile`; do not add npm or pnpm lockfiles.
+
+## Branch and deployment model
+
+- `main` is the only permanent branch and the only production-intent source.
+- Feature and correction work uses temporary `codex/*` branches and pull requests.
+- A Vercel Preview deployment from the temporary PR branch is the staging environment.
+- Production follows approved changes on `main` only. No permanent `staging` branch is part of the target model.
+- Merge, branch deletion, Vercel production changes, and production deployment require explicit Product Owner approval.
+
+## Environment variables
+
+Copy `.env.example` and supply values only in ignored local files or the appropriate Vercel environment. Do not commit real values.
+
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_BASE_URL` | Environment-specific storefront URL |
+| `NEXT_PUBLIC_COMMERCE_ENVIRONMENT` | Policy boundary: `local`, `preview`, or `production` |
+| `COMMERCE_DATA_MODE` | Server-only data source: `fixture` or `shopify` |
+| `NEXT_PUBLIC_SHOW_PRODUCTS` | Top-level product visibility gate |
+| `NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS` | Secondary static draft-review gate |
+| `SHOPIFY_STORE_DOMAIN` | Preferred server-only Shopify Storefront domain |
+| `SHOPIFY_STOREFRONT_TOKEN` | Preferred server-only Storefront API token |
+| `SHOPIFY_CART_UI_ENABLED` | Server-only customer-cart UI gate; defaults false and grants no authority by itself |
+| `CORS_ORIGINS` | Exact comma-separated HTTP(S) origins allowed to call `/api` cross-origin; wildcards and paths are rejected |
+
+## Response security
+
+Storefront pages deny third-party framing with both `X-Frame-Options: DENY` and CSP `frame-ancestors 'none'`. Global CORS headers are intentionally absent. API requests without an `Origin` header and same-origin requests remain available; a cross-origin request must exactly match `CORS_ORIGINS` or it receives `403 CORS_ORIGIN_DENIED` before route work. Production adds HSTS only when the deployment environment is explicitly production.
+
+## Repository map
+
+```text
+app/                 routes; home, product, catalog, and bag/cart have dedicated server boundaries
+components/storefront/ VOLLBAK-aligned home receiving minimized server truth
+components/commerce/ reusable, non-buyable product/catalog and truthful bag presentation
+contracts/           machine-readable truth, observation, review, and release schemas
+releases/            evidence-bound release records and media manifests
+lib/config/          environment/release visibility policy
+lib/commerce/        provider-neutral product/catalog/cart-activation gateways, policy, and view models
+lib/providers/       server-only provider adapters
+lib/shopify/         pure response normalization and read-only Storefront queries
+lib/orchestration/   creation jobs, PipelineRun state, capability policy
+lib/releases/        non-mutating release-transition policy and exact blockers
+runs/                durable local simulations and blocker/resume evidence
+tests/               automated fitness and commerce-contract tests
+test_reports/        historical and generated verification evidence
 ```
 
-## 📁 Project Structure
-
-```
-/app
-├── app/
-│   ├── api/           # API routes (health check)
-│   ├── globals.css    # Global styles
-│   ├── layout.js      # Root layout
-│   └── page.js        # Main storefront UI
-├── lib/
-│   ├── brands/        # Multi-brand configuration
-│   ├── content/       # Site content and copy
-│   ├── shopify/       # Shopify API client
-│   └── store/         # State management (cart)
-├── public/            # Static assets
-└── next.config.js     # Next.js configuration
-```
-
-## 🎨 Brand Architecture
-
-Three distinct brands share a unified cart:
-
-1. **CARLOPHILLIPS** - Main luxury line (navy, grey, white, burgundy)
-2. **love,Carlo** - Colorful lifestyle line (orange, red, blue)
-3. **HouseofCarlo** - Home & living line (cream, charcoal, tan)
-
-Switch brands via the top navigation or by accessing brand-specific domains.
-
-## 🛒 Commerce Flow
-
-1. User browses products (fetched from Shopify)
-2. User adds items to cart (Zustand state + Shopify Cart API)
-3. User clicks checkout → Redirect to Shopify Checkout
-4. Shopify processes payment
-5. Order sent to Printify for fulfillment
-6. Customer receives tracking from Shopify
-
-## 🔧 Development
-
-### Key Commands
-```bash
-yarn dev          # Start development server
-yarn build        # Build for production
-yarn start        # Start production server
-yarn lint         # Run ESLint
-```
-
-### Testing Cart Flow
-```bash
-# Generate a test checkout URL
-node scripts/test-cart.js
-```
-
-## 📝 Content Management
-
-All site content is managed in `/lib/content/site-content.js`:
-- Hero sections
-- Product copy
-- Footer content
-- Navigation items
-
-Update content here without touching component code.
-
-## 🔐 Security Notes
-
-- Storefront API token is public-safe (read-only access)
-- Never expose Admin API credentials in frontend code
-- Environment variables are properly scoped
-- CORS configured for your domains only
-
-## 🐛 Troubleshooting
-
-### Cart not working?
-- Verify Shopify credentials in `.env`
-- Check browser console for API errors
-- Ensure products have valid variants
-
-### Products not loading?
-- Confirm products are published to "Headless" sales channel in Shopify
-- Check Shopify API token permissions
-
-### Checkout redirects failing?
-- Verify `NEXT_PUBLIC_BASE_URL` matches your domain
-- Check Shopify Payments is enabled
-
-## 📧 Support
-
-For issues or questions:
-- Check `/memory/PRD.md` for product requirements
-- Review Shopify Admin > Apps > Printify for order status
-- Test cart flow with checkout URL generator script
-
-## 📄 License
-
-Private & Confidential - CARLOPHILLIPS Brand
-
----
-
-Built with 🖤 for luxury ecommerce
+Start with `AGENTS.md`, `PRD.md`, `ARCHITECTURE.md`, `STATUS.md`, and `TASKS.md` before making delivery changes.

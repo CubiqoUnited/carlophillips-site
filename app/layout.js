@@ -4,16 +4,16 @@ import './globals.css';
 const siteConfig = {
   name: 'CARLOPHILLIPS',
   tagline: 'Gesture of Luxury',
-  description: 'A premium editorial brand system preparing its first approved release.',
-  url: process.env.NEXT_PUBLIC_BASE_URL || 'https://carlophillips.com',
+  description: 'A product-led CARLOPHILLIPS storefront with release-gated Shopify commerce truth.',
+  url: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.carlophillips.com',
   locale: 'en_US',
   type: 'website',
   twitterHandle: '@carlophillips',
   keywords: [
     'premium essentials',
-    'editorial fashion',
-    'brand system',
-    'future-ready apparel',
+    'premium apparel',
+    'product design',
+    'signature hoodie',
     'premium release',
     'minimal design',
   ],
@@ -41,7 +41,7 @@ export const metadata = {
     type: siteConfig.type,
     images: [
       {
-        url: '/og-image.jpg', // Replace with your OG image
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: `${siteConfig.name} - ${siteConfig.tagline}`,
@@ -56,7 +56,7 @@ export const metadata = {
     description: siteConfig.description,
     site: siteConfig.twitterHandle,
     creator: siteConfig.twitterHandle,
-    images: ['/og-image.jpg'], // Replace with your Twitter image
+    images: ['/opengraph-image'],
   },
   
   // Robots
@@ -72,21 +72,10 @@ export const metadata = {
     },
   },
   
-  // Verification (add your verification codes)
-  verification: {
-    // google: 'your-google-verification-code',
-    // yandex: 'your-yandex-verification-code',
-  },
-  
   // Icons
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
     ],
   },
   
@@ -120,13 +109,13 @@ export const viewport = {
 };
 
 // JSON-LD Structured Data
-const jsonLd = {
+const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: siteConfig.name,
   description: siteConfig.description,
   url: siteConfig.url,
-  logo: `${siteConfig.url}/logo.png`,
+  logo: `${siteConfig.url}/icon.svg`,
   sameAs: [
     'https://instagram.com/carlophillips',
     'https://tiktok.com/@carlophillips',
@@ -137,6 +126,15 @@ const jsonLd = {
     contactType: 'customer service',
     availableLanguage: ['English'],
   },
+};
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteConfig.name,
+  url: siteConfig.url,
+  description: siteConfig.description,
+  inLanguage: 'en-US',
 };
 
 export default function RootLayout({ children }) {
@@ -155,7 +153,7 @@ export default function RootLayout({ children }) {
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationJsonLd, websiteJsonLd]) }}
         />
       </head>
       <body className="min-h-screen bg-black text-white antialiased">

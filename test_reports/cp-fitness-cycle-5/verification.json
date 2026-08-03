@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 5,
+  "observedAt": "2026-07-22",
+  "framework": {
+    "next": "15.5.21",
+    "supportLine": "Maintenance LTS",
+    "react": "19.2.8",
+    "reactDom": "19.2.8",
+    "typescriptLintPeer": "5.9.3"
+  },
+  "commands": {
+    "cleanFrozenInstall": {
+      "status": "passed",
+      "workspace": "temporary dependency tree",
+      "command": "yarn install --frozen-lockfile --non-interactive"
+    },
+    "lint": {
+      "status": "passed",
+      "warnings": 0
+    },
+    "tests": {
+      "status": "passed",
+      "files": 17,
+      "tests": 85
+    },
+    "build": {
+      "status": "passed",
+      "routes": 13,
+      "dynamicRoutes": 5
+    },
+    "productionDependencyAudit": {
+      "status": "passed",
+      "advisories": 0,
+      "auditedPackages": 193,
+      "temporaryOverrides": [
+        "postcss@8.5.22",
+        "sharp@0.35.3"
+      ],
+      "normalQualityGate": "yarn verify"
+    }
+  },
+  "browser": {
+    "desktop": {
+      "viewport": "1440x1000",
+      "sourceLabels": 2,
+      "purchaseButtonDisabled": true,
+      "consoleOrPageErrors": 0
+    },
+    "mobile": {
+      "viewport": "390x844",
+      "sourceLabels": 2,
+      "purchaseButtonDisabled": true,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "consoleOrPageErrors": 0
+    },
+    "bag": {
+      "environment": "local",
+      "source": "fixture",
+      "checkout": "disabled",
+      "checkoutLinks": 0,
+      "consoleOrPageErrors": 0
+    }
+  },
+  "shopifyAudit": {
+    "status": "human_required",
+    "blockerCode": "SHOPIFY_EMAIL_OTP_REQUIRED",
+    "tabPreserved": true,
+    "adminObserved": false,
+    "appInventoryObserved": false
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyWrite": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/shopify-app-inventory.schema.json",
+  "title": "Shopify App Inventory Evidence v1",
+  "type": "object",
+  "required": ["schemaVersion", "observedAt", "observation", "apps"],
+  "properties": {
+    "schemaVersion": { "const": "cp.shopify-app-inventory.v1" },
+    "observedAt": { "type": "string", "format": "date" },
+    "observation": {
+      "type": "object",
+      "required": ["source", "installedStatus", "capabilityStatus", "browserAudit", "blocker"],
+      "properties": {
+        "source": { "const": "product-owner-observed" },
+        "installedStatus": { "const": "reported-installed" },
+        "capabilityStatus": { "const": "unverified" },
+        "browserAudit": { "const": "login-required" },
+        "blocker": {
+          "type": "object",
+          "required": ["code", "humanAction", "resumePoint"],
+          "properties": {
+            "code": { "const": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED" },
+            "humanAction": { "type": "string", "minLength": 1 },
+            "resumePoint": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "apps": {
+      "type": "array",
+      "minItems": 30,
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "required": ["name", "category", "goalDisposition", "ownershipFinding", "accessPathToVerify", "verifiedCallableSurface", "agentAuthenticationNeeded", "usageFeeRisk", "safeNextAction"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "category": {
+            "enum": ["media", "pod-sourcing", "automation-connectors", "commerce-operations", "customer-operations", "research"]
+          },
+          "goalDisposition": {
+            "enum": ["required-poc", "candidate", "duplicate-candidate", "optional-later"]
+          },
+          "ownershipFinding": { "type": "string", "minLength": 1 },
+          "accessPathToVerify": {
+            "enum": [
+              "shopify-native-admin-flow-api",
+              "shopify-native-admin-or-api",
+              "third-party-private-api-webhook-or-browser",
+              "custom-connector-scopes",
+              "headless-storefront-channel-scopes",
+              "development-cli-oauth-scopes",
+              "unknown-browser-or-private-api"
+            ]
+          },
+          "verifiedCallableSurface": { "const": "none-auth-blocked" },
+          "agentAuthenticationNeeded": { "type": "string", "minLength": 1 },
+          "usageFeeRisk": {
+            "enum": ["reported-usage-fees", "cost-or-credit-unverified", "shopify-plan-boundary-unverified"]
+          },
+          "safeNextAction": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
