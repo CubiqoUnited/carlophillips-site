@@ -55,10 +55,23 @@
 ## Next bounded cycle: authenticated read-only Shopify audit
 
 - [x] Attempt the existing Google/Shopify browser path before declaring a blocker; preserve the Shopify email-OTP verification tab.
-- [ ] Classify P0 Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder by actual callable surface.
+- [x] Classify P0 Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder by actual callable surface.
 - [x] Capture a sanitized live authentication-gate record without revealing the account address/code, accepting charges, or changing Shopify state.
 - [x] Update the capability registry and exact PipelineRun blockers/resume points to the observed email-OTP boundary.
-- [ ] If safely observable, capture current Hoodie Shopify product/variant/media facts and fingerprint without writes.
+- [x] Capture the safely observable current Hoodie Draft product/media facts without writes; exact variant fingerprint remains pending the supported Storefront read path.
+
+## Current bounded POC path: Shopify to VOLLBAK-aligned storefront
+
+- [x] Select the minimum stack: Apliiq, Modelize, one spin candidate, native Shopify Headless, Flow, and the existing CP Next.js storefront.
+- [x] Record the 33-app live inventory, duplicate groups, callable surfaces, permissions/billing boundaries, screenshots, and exact blockers.
+- [ ] Product Owner signs in to the existing Apliiq account; then observe the Hoodie product/design/variant mapping read-only.
+- [ ] Configure the native Headless Storefront read credential through ignored local/Vercel secret storage and produce a sanitized current Shopify observation.
+- [ ] Review/export existing Modelize candidates and approve only truthful exact-product media; approve a plan separately before any new generation.
+- [ ] Prove Spin Studio export/headless integration before enabling it; keep ZS-Spin-View inactive unless that proof fails.
+- [ ] Review the inactive CP Flow, then obtain separate approval before activation or any Shopify write.
+- [ ] Bind product, fulfillment, and approved media evidence; deploy a temporary-branch Vercel Preview only after its explicit approval.
+- [ ] Run desktop/mobile/console/cart/checkout/rollback verification without submitting an order.
+- [ ] Merge to `main`, publish, and activate production only after separate Product Owner approval.
 
 ## Completed: supported framework migration
 
@@ -161,6 +174,7 @@
 ## Blocked / approval required
 
 - [x] Restore Vercel deployment access and verify Preview plus production desktop/mobile routes.
-- [ ] Complete the preserved Shopify email-verification step, then perform a read-only Admin/Storefront capability audit without accepting charges.
+- [x] Complete Shopify authentication and the read-only Admin/app capability audit without accepting charges.
+- [ ] Complete the separate Apliiq sign-in handoff, then inspect the exact Hoodie mapping read-only.
 - [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
 - [ ] Keep Shopify writes, product activation, test orders, paid app actions, and fulfillment activation separately evidenced and fail-closed until tested.

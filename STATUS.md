@@ -1,7 +1,7 @@
 # Current Status
 
-Updated: 2026-08-03
-Branch: canonical `main` at merge commit `85b6f8f`; cutover evidence is being recorded on temporary branch `codex/cp-production-cutover-evidence`
+Updated: 2026-08-04
+Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Verified facts
@@ -22,8 +22,8 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Local environment variable names are present; values were not printed. `.env.local` is ignored.
 - Production and preview HTTP endpoints were diagnosed as `402 DEPLOYMENT_DISABLED` on 2026-07-22.
 - Canonical `main` and `staging` were recorded at `d172cfb`; the Hoodie preview branch is at `425f50b`.
-- The current Product Owner-observed 30-app Shopify inventory is preserved in a schema-validated evidence record and summarized in `docs/shopify-capability-access-audit.md`; installed status does not prove API, Admin/Flow, app-private API, browser, CLI, or human access.
-- The current live Shopify read-only audit reached the email-verification screen through the existing Google account. The one-time code was retrieved without recording it in project artifacts and entered, but automated submission did not advance the page. The tab remains preserved for the Product Owner to complete the visible Verify action or request a fresh code if expired.
+- The historical Product Owner-observed 30-app Shopify inventory is preserved in a schema-validated evidence record. The authenticated 2026-08-04 read-only audit supersedes it with 33 installed apps and direct browser-surface findings; installation still does not prove an API or authorize writes.
+- Shopify Admin authentication is no longer blocked. The current human boundary is the separate Apliiq provider sign-in required to inspect the exact Hoodie mapping.
 - The App Router now runs on Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`; async route params were migrated and the full local regression passed.
 
 ## Not yet proven
@@ -31,7 +31,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - A normal Corepack-provided `yarn` executable on this machine; verification used Yarn 1.22.22 bootstrapped through the bundled runtime, then proved a frozen install.
 - Live Shopify-backed product and variant rendering.
 - Browser add/update/remove cart flow and Shopify checkout redirect.
-- Any verified callable path for the current installed Shopify app inventory; the latest managed-browser attempt is stopped at Shopify login before Admin.
+- Any verified app-private API path for the current installed Shopify app inventory; Shopify Admin browser access is proven, while Apliiq remains at provider sign-in and Storefront secrets remain unconfigured.
 - Live Shopify-backed commerce on the production domain; the visual site is reachable but product purchasing remains deliberately fail-closed.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
 - Any real product video, spin/360, 3D/AR, try-on, on-model, or lifestyle campaign asset.
@@ -251,6 +251,15 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## External blockers
 
+### Authenticated Shopify POC audit — 2026-08-04
+
+- The in-app Shopify Admin session is authenticated. A read-only audit observed 33 installed apps, the Draft `CARLOPHILLIPS Signature Hoodie`, the active native Headless storefront connection, app permission surfaces, selected dashboards, and current billing boundaries without exposing secrets or changing Shopify.
+- The minimum POC stack is Apliiq for Hoodie POD, Modelize for reviewed still imagery, one provisional spin worker (Spin Studio), native Shopify Headless for Next.js commerce truth, Flow for an approval gate, and the CP Next.js storefront for presentation.
+- Apliiq opens to provider sign-in; Modelize has used 3/3 free images but contains three completed Hoodie outputs; Spin Studio is disabled and has no Hoodie spin; ZS-Spin-View/MyDesigns request new theme permissions; the CP Flow exists but is inactive.
+- Native Shopify Headless, not the broken `Carlophillips Headless` custom app or embedded Codex/CLI/Claude connector shells, is the supported storefront path.
+- Shopify Basic is $39/month. The upcoming bill was $0 at observation time. Modelize generation and several usage-fee apps remain cost-gated.
+- Full evidence, screenshots, app dispositions, blockers, and the exact POC sequence are in `test_reports/cp-shopify-audit-2026-08-04/audit-report.md`.
+
 ### Read-only Shopify configuration
 
 Human action: an authorized owner supplies valid read-only Storefront domain/token values to the intended local or Preview environment without sharing them in reports.
@@ -259,11 +268,11 @@ Resume point: mark `shopify-storefront-product-read` ready only with its durable
 
 ### Shopify app capability/access audit
 
-Observed blocker: the current authenticated-browser attempt reached Shopify email verification, entered the one-time code without persisting it, and could not submit the final Verify action through supported background automation. Admin, installed-app settings, permissions, and billing screens remain unobserved, so the Product Owner-reported inventory is not callable-capability evidence.
+Observed blocker: Shopify Admin is now authenticated and audited. Apliiq's separate provider session stops at sign-in; no provider product/variant mapping was observed. Modelize requires a plan for new generations. Spin Studio's theme embed is disabled and a headless/export path is unproven.
 
-Human action: open the preserved Shopify verification tab and click **Verify**. If Shopify reports that the code expired, request a new code and complete it directly in that tab. Do not send or record the code in project artifacts.
+Human action: sign in to the existing Apliiq account without accepting charges or changing configuration, then signal `Apliiq open`. Approve any Modelize spend, Flow activation, spin configuration, Storefront secret configuration, Shopify write, Preview deployment, merge, or production action separately.
 
-Resume point: begin at Shopify installed-app inventory, then inspect P0 Shopify Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder surfaces; record access class/settings/permission or billing evidence without secrets or changes. Do not infer access from installation.
+Resume point: observe the exact Hoodie mapping in Apliiq read-only; configure the native Headless Storefront read path through secret storage; then bind reviewed Shopify/POD/media evidence before generating a Vercel Preview.
 
 ### Production and commerce operations
 
