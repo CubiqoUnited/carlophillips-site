@@ -23,14 +23,18 @@ function environmentCopy(decision) {
   }
   if (decision.environment === 'preview') {
     return {
-      eyebrow: 'Private release review',
-      body: 'Only Shopify-observed products with complete Staged-or-later release evidence can appear in this private Preview catalog.',
+      eyebrow: decision.commerceAllowed ? 'Private live-commerce staging' : 'Private release review',
+      body: decision.commerceAllowed
+        ? 'The approved Hoodie is connected to current Shopify facts and checkout for private staging verification.'
+        : 'Only Shopify-observed products with complete Staged-or-later release evidence can appear in this private Preview catalog.',
     };
   }
   if (decision.environment === 'production') {
     return {
-      eyebrow: 'Released catalog',
-      body: 'Only Shopify-observed products with complete Released evidence can appear. Purchasing remains disabled until cart and checkout are proven.',
+      eyebrow: decision.commerceAllowed ? 'Live Shopify catalog' : 'Released catalog',
+      body: decision.commerceAllowed
+        ? 'Current Shopify product facts, availability, pricing, and secure checkout are active for the approved product below.'
+        : 'Only Shopify-observed products with complete Released evidence can appear. Purchasing remains disabled until cart and checkout are proven.',
     };
   }
   return {
@@ -70,7 +74,7 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
           <div>
             <p className="text-[10px] uppercase tracking-[0.3em] text-white/40">{copy.eyebrow}</p>
             <h1 className="mt-7 max-w-5xl text-6xl font-light leading-[0.9] tracking-[-0.06em] sm:text-8xl lg:text-9xl">
-              {available ? countLabel(decision.visibleCount, 'release candidate') : 'No release-eligible products.'}
+              {available ? countLabel(decision.visibleCount, decision.commerceAllowed ? 'live product' : 'release candidate') : 'No release-eligible products.'}
             </h1>
             <p className="mt-8 max-w-3xl text-base leading-relaxed text-white/52 sm:text-lg">{copy.body}</p>
           </div>
@@ -79,7 +83,7 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
               ['Candidate records', decision.candidateCount],
               ['Visible here', decision.visibleCount],
               ['Withheld', decision.excludedCount],
-              ['Purchasing', 'Disabled'],
+              ['Purchasing', decision.commerceAllowed ? 'Shopify checkout' : 'Disabled'],
             ].map(([label, value]) => (
               <div key={label} className="bg-black p-5 sm:p-7">
                 <dt className="text-[9px] uppercase tracking-[0.22em] text-white/30">{label}</dt>
@@ -109,12 +113,12 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
                 <div className="flex flex-1 flex-col border-t border-white/10 p-6 sm:p-8">
                   <p className="text-[9px] uppercase tracking-[0.24em] text-white/35">{product.sourceLabel}</p>
                   <h2 className="mt-5 text-3xl font-light tracking-[-0.035em]">{product.title}</h2>
-                  <p className="mt-4 text-sm text-white/48">{formatPrice(product)} · purchasing disabled</p>
+                  <p className="mt-4 text-sm text-white/48">{formatPrice(product)} · {product.commerceAllowed ? 'Shopify checkout available' : 'purchasing disabled'}</p>
                   <Link
                     href={`/products/${product.handle}`}
                     className="mt-auto inline-flex min-h-12 items-center justify-center border border-white/20 px-5 pt-8 text-[10px] uppercase tracking-[0.24em] text-white/70"
                   >
-                    Review product
+                    {product.commerceAllowed ? 'Shop product' : 'Review product'}
                   </Link>
                 </div>
               </article>

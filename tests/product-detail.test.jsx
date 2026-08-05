@@ -143,6 +143,32 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('Outer pending approval story');
   });
 
+  it('renders an active Shopify checkout form only for an eligible launch', () => {
+    const product = toProductViewModel({
+      source: 'shopify',
+      environment: 'production',
+      commerceAllowed: true,
+      reason: 'SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED',
+      product: {
+        id: 'hoodie', handle: 'approved-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
+        description: 'Current Shopify description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
+        variantPresentation, media: [],
+      },
+    });
+    const html = renderToStaticMarkup(<CommerceProductDetail
+      releaseReason="SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED"
+      cartActivation={{ status: 'eligible', cartAllowed: true, reason: 'CUSTOMER_CART_ELIGIBLE' }}
+      product={product}
+    />);
+    expect(html).toContain('Buy with Shopify');
+    expect(html).toContain('action="/api/checkout"');
+    expect(html).toContain('Shopify Storefront — live product');
+    expect(html).not.toContain('Purchasing disabled');
+    expect(html).not.toContain('release state unavailable');
+    expect(html).not.toContain('Cart gate: CUSTOMER_CART_ELIGIBLE');
+    expect(html).not.toContain('gid://');
+  });
+
   it('renders an honest unavailable state without product content', () => {
     const html = renderToStaticMarkup(<CommerceProductUnavailable decision={{ reason: 'SHOPIFY_REQUEST_FAILED' }} />);
     expect(html).toContain('This product cannot be shown truthfully');

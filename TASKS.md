@@ -1,5 +1,18 @@
 # Delivery Tasks
 
+## Current bounded launch: one Signature Hoodie
+
+- [x] Activate only the Signature Hoodie in Shopify and publish it to Carlophillips Headless.
+- [x] Verify nine current Storefront variants, availability, prices, truthful media, and stable identity/facts fingerprints without exposing raw identifiers.
+- [x] Add an exact-handle/fingerprint production launch policy and server-only Shopify cart creation.
+- [x] Keep raw variant references off public routes, views, summaries, and evidence.
+- [x] Prove a real no-order cart returns a trusted Shopify checkout redirect without payment or order submission.
+- [x] Make home, shop, collections, and PDP truthfully reflect live Shopify commerce.
+- [x] Pass full lint, 316 tests, dependency audit, build, HTTP routes, desktop/mobile screenshots, and console validation.
+- [ ] Product Owner reactivates the suspended Vercel account/payment method and says `Vercel reactivated`.
+- [ ] Resume at Vercel environment configuration, Preview deployment/verification, then production deployment under the existing launch authorization.
+- [ ] Verify the live domain and Shopify checkout page after deployment; stop before payment/order.
+
 ## Current bounded correction: production visual direction
 
 - [x] Recoverably isolate the uncommitted Cycle 20 fulfillment-contract draft without mixing or committing it.

@@ -79,7 +79,7 @@ function MenuOverlay({ onClose }) {
 function Hero({ summary }) {
   const heroMedia = summary.primaryProduct?.heroMedia || null;
   const catalogLabel = summary.visibleCount > 0
-    ? `Review ${summary.visibleCount} ${summary.visibleCount === 1 ? 'product' : 'products'}`
+    ? `${summary.commerceAllowed ? 'Shop' : 'Review'} ${summary.visibleCount} ${summary.visibleCount === 1 ? 'product' : 'products'}`
     : 'View release state';
 
   return (
@@ -93,7 +93,9 @@ function Hero({ summary }) {
             Gesture of<br />Luxury
           </h1>
           <p className="mt-8 max-w-xl text-sm leading-relaxed text-white/56 sm:text-base">
-            Product-led presentation with Shopify-backed release truth. Nothing shown here grants purchase, publication, or fulfillment authority.
+            {summary.commerceAllowed
+              ? 'Premium product presentation backed by current Shopify product facts, secure checkout, and POD fulfillment workflow.'
+              : 'Nothing shown here grants purchase, publication, or fulfillment authority.'}
           </p>
           <Link
             href="/shop"
@@ -140,7 +142,7 @@ export function HomeReleaseStage({ summary }) {
         <div className="flex flex-col justify-between bg-[#030303] p-7 sm:p-10 lg:p-14">
           <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.28em] text-white/38">
             <span>Current release</span>
-            <span>{summary.visibleCount > 0 ? 'Review visible' : 'Withheld'}</span>
+            <span>{summary.visibleCount > 0 ? (summary.commerceAllowed ? 'Live' : 'Review visible') : 'Withheld'}</span>
           </div>
           <div className="py-20">
             <p className="text-[10px] uppercase tracking-[0.3em] text-white/42">
@@ -154,7 +156,7 @@ export function HomeReleaseStage({ summary }) {
           <div className="flex flex-wrap gap-6">
             {product && (
               <Link href={product.href} className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/78">
-                Review product <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
+                {product.commerceAllowed ? 'Shop product' : 'Review product'} <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
               </Link>
             )}
             <Link href="/collections" className="text-[10px] uppercase tracking-[0.28em] text-white/46">

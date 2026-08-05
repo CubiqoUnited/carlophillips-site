@@ -1,9 +1,8 @@
 import { CommerceCatalogBoundary } from '@/components/commerce/catalog-boundary';
 
 export const metadata = {
-  title: 'First Drop in Preparation | CARLOPHILLIPS',
-  description: 'The first CARLOPHILLIPS release will appear after media, pricing, and fulfillment approval.',
-  robots: { index: false, follow: true },
+  title: 'Shop | CARLOPHILLIPS',
+  description: 'Shop the live CARLOPHILLIPS collection through secure Shopify checkout.',
 };
 
 export const dynamic = 'force-dynamic';

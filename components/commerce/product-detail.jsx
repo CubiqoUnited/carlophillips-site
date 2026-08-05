@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import ShopifyCheckoutForm from './shopify-checkout-form';
 
 function formatPrice(value, currency) {
   if (!Number.isFinite(value) || value <= 0) return 'Price unavailable';
@@ -179,7 +180,11 @@ export function CommerceProductDetail({
             <p className="mt-7 text-2xl font-light text-white/72">{formatPrice(product.price, product.currency)}</p>
             <p className="mt-8 max-w-xl text-base leading-relaxed text-white/58 sm:text-lg">{product.description || 'Description unavailable from the selected source.'}</p>
 
-            <VariantPresentation presentation={product.variantPresentation} />
+            {cartActivation?.cartAllowed ? (
+              <ShopifyCheckoutForm handle={product.handle} presentation={product.variantPresentation} />
+            ) : (
+              <VariantPresentation presentation={product.variantPresentation} />
+            )}
 
             {product.colors.length > 0 && (
               <div className="mt-10 border-t border-white/10 pt-7">
@@ -197,17 +202,19 @@ export function CommerceProductDetail({
               </div>
             )}
 
-            <button
-              type="button"
-              disabled
-              data-cart-activation={cartActivation?.status || 'unavailable'}
-              className="mt-8 flex h-14 w-full items-center justify-center border border-white/18 text-[10px] uppercase tracking-[0.24em] text-white/44"
-            >
-              Purchasing disabled
-            </button>
+            {!cartActivation?.cartAllowed && (
+              <button
+                type="button"
+                disabled
+                data-cart-activation={cartActivation?.status || 'unavailable'}
+                className="mt-8 flex h-14 w-full items-center justify-center border border-white/18 text-[10px] uppercase tracking-[0.24em] text-white/44"
+              >
+                Purchasing disabled
+              </button>
+            )}
             <p className="mt-4 text-xs leading-relaxed text-white/35">
               {product.commerceExplanation}
-              {cartActivation?.reason ? ` Cart gate: ${cartActivation.reason}.` : ''}
+              {!cartActivation?.cartAllowed && cartActivation?.reason ? ` Cart gate: ${cartActivation.reason}.` : ''}
             </p>
           </div>
         </div>

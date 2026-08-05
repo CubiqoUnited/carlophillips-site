@@ -20,32 +20,33 @@ describe('capability registry policy', () => {
     });
   });
 
-  it('does not treat a selected Shopify adapter as verified cart access', () => {
+  it('discovers the live no-order-verified Shopify cart surface', () => {
     const decision = discoverCapability(
       getCapabilityRegistry(),
       'shopify-storefront-cart',
       'cart-write'
     );
     expect(decision).toMatchObject({
-      status: 'human_required',
+      status: 'ready',
       adapter: 'shopify-storefront-cart',
-      callableSurface: 'unverified',
-      reason: 'SHOPIFY_AUTHENTICATED_SESSION_REQUIRED',
+      callableSurface: 'shopify_storefront',
+      evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
+      reason: null,
     });
   });
 
-  it('registers Storefront product reads without claiming current callable evidence', () => {
+  it('registers the current evidence-backed Storefront product read', () => {
     const decision = discoverCapability(
       getCapabilityRegistry(),
       'shopify-storefront-product-read',
       'product-read'
     );
     expect(decision).toMatchObject({
-      status: 'human_required',
+      status: 'ready',
       adapter: 'shopify-storefront-product',
-      callableSurface: 'unverified',
-      evidenceRef: null,
-      reason: 'SHOPIFY_STOREFRONT_READ_CONFIGURATION_REQUIRED',
+      callableSurface: 'shopify_storefront',
+      evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json',
+      reason: null,
     });
   });
 
@@ -118,6 +119,7 @@ describe('capability registry policy', () => {
     productRead.callableSurface = 'shopify_storefront';
     productRead.allowedOperations = ['product-read'];
     productRead.blocker = null;
+    productRead.evidenceRef = null;
 
     expect(validateCapabilityRegistry(registry)).toContain(
       'shopify-storefront-product-read has verified external access without evidenceRef'

@@ -11,7 +11,7 @@
     "candidateCount": { "type": "integer", "minimum": 0 },
     "visibleCount": { "type": "integer", "minimum": 0 },
     "excludedCount": { "type": "integer", "minimum": 0 },
-    "commerceAllowed": { "const": false },
+    "commerceAllowed": { "type": "boolean" },
     "message": { "type": "string", "minLength": 1 },
     "primaryProduct": {
       "oneOf": [
@@ -23,7 +23,7 @@
             "title": { "type": "string", "minLength": 1 },
             "href": { "type": "string", "pattern": "^/products/[a-z0-9]+(?:-[a-z0-9]+)*$" },
             "sourceLabel": { "type": "string", "minLength": 1 },
-            "commerceAllowed": { "const": false },
+            "commerceAllowed": { "type": "boolean" },
             "heroMedia": {
               "oneOf": [
                 { "type": "null" },

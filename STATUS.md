@@ -4,6 +4,18 @@ Updated: 2026-08-04
 Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Signature Hoodie commerce activation — 2026-08-04
+
+- Product Owner authorized production commerce for exactly one product: `carlophillips-signature-hoodie`.
+- Shopify Admin now records the Hoodie as Active and published to Online Store plus Carlophillips Headless. No other product or channel was changed.
+- A fresh server-only Storefront observation returned nine variants, all available, USD 128–134, and two current Shopify product images. Current identity and commerce-facts fingerprints match the bounded launch approval.
+- Shopify Admin showed Apliiq Dropship Fulfillment as the fulfillment location for the inspected Hoodie variant and all nine variants carry current Apliiq-associated SKU facts. This is Shopify-side association evidence, not a provider-side mapping audit or fulfillment-order proof.
+- The CP storefront now shows the real Shopify Hoodie on home, `/shop`, `/collections`, and the PDP. The PDP offers an opaque-hash size selector and server-only Shopify `cartCreate`; raw Shopify references never enter the browser response.
+- One no-order live cart proof returned HTTP 303 to the trusted Shopify checkout host. No customer data, payment, order, sample, or fulfillment request was submitted.
+- Desktop 1440×1000 and mobile 390×844 checks show live-product wording and the Shopify checkout action with zero console errors. `yarn verify` passes 33 files / 316 tests, zero production vulnerabilities, and the 12-route Next.js build.
+- Vercel remains the only launch blocker. Every attempt to add the required Preview/Production environment variables failed because the owning account is suspended and requires a valid payment method. No Preview or production deployment was created.
+- Exact evidence: `test_reports/cp-hoodie-production-activation-2026-08-04/report.md`.
+
 ## Verified facts
 
 - The last production-aligned, explicitly VOLLBAK-style source is commit `9e1f5c3`. Commit `5077e3f` replaced its full-height product-led home with the editorial shell later carried by remote `main` at `d172cfb`.
@@ -15,7 +27,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Paused Cycle 20 fulfillment-contract work is recoverably isolated in stash `stash@{0}` / `ab3f004119ac28547d0ecddb50634a9e9d7806e4` and is not part of this branch diff.
 - Recovered Product Owner intent confirms the Hoodie is the first complete POC for a reusable POD-to-publish system with four coordinated lanes and designer-led plus trend-led workflows; it is not a static-page endpoint.
 - The storefront UI remains fail-closed. Home, product, `/shop`, `/collections`, and bag/cart routes use dedicated server-rendered truth boundaries.
-- The Hoodie is recorded as Shopify Draft and purchasing is disabled in the UI.
+- Historical release records still describe the pre-activation Draft path; the bounded launch approval and current live observation supersede that status for this one Hoodie only.
 - Shopify product reads sit behind a server-only adapter that now refuses network access until the exact product-read capability is ready with a durable evidence reference. Configuration, capability evidence, and a live observation are all still blocked/unverified.
 - The versioned Hoodie release record binds the observed Shopify/Apliiq identities and media ledger while leaving variant fingerprints missing and every approval pending.
 - Yarn 1.22.22 and `yarn.lock` are the declared package strategy; baseline work adds real lint and test commands.
@@ -30,10 +42,9 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 ## Not yet proven
 
 - A normal Corepack-provided `yarn` executable on this machine; verification used Yarn 1.22.22 bootstrapped through the bundled runtime, then proved a frozen install.
-- Live Shopify-backed product and variant rendering.
-- Browser add/update/remove cart flow and Shopify checkout redirect.
+- A completed paid checkout/order and post-order lifecycle; only the safe no-order cart/redirect boundary is proven.
 - Any verified app-private API path for the current installed Shopify app inventory; Shopify Admin browser access is proven, while Apliiq remains at provider sign-in and Storefront secrets remain unconfigured.
-- Live Shopify-backed commerce on the production domain; the visual site is reachable but product purchasing remains deliberately fail-closed.
+- Live deployment of the new Shopify-backed commerce build on the production domain; Vercel billing suspension prevents configuration and deployment.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
 - Any real product video, spin/360, 3D/AR, try-on, on-model, or lifestyle campaign asset.
 - An authenticated Apliiq observation proving the exact Hoodie design/product/variant mapping. The retained provider tab is at the separate Apliiq sign-in screen.
