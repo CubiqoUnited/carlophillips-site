@@ -65,10 +65,11 @@
 - [x] Select the minimum stack: Apliiq, Modelize, one spin candidate, native Shopify Headless, Flow, and the existing CP Next.js storefront.
 - [x] Record the 33-app live inventory, duplicate groups, callable surfaces, permissions/billing boundaries, screenshots, and exact blockers.
 - [ ] Product Owner signs in to the existing Apliiq account; then observe the Hoodie product/design/variant mapping read-only.
-- [ ] Configure the native Headless Storefront read credential through ignored local/Vercel secret storage and produce a sanitized current Shopify observation.
+- [x] Prove the existing native Headless public credential and required product/checkouts scopes with a secret-free live HTTP 200 query.
+- [ ] Produce a sanitized Storefront Hoodie observation after an explicit controlled publication/channel decision; the current Draft is correctly withheld and must not be made Active implicitly.
 - [x] Export the existing completed Modelize job read-only; retain two usable generated candidates for labeled local review and quarantine the artifacted third image.
 - [ ] Product Owner approves exact Modelize media for the release and separately approves a plan/credit spend before any additional on-model generation; the free allowance is exhausted.
-- [ ] Prove Spin Studio export/headless integration before enabling it; keep ZS-Spin-View inactive unless that proof fails.
+- [ ] Obtain a real Hoodie angle set and prove Spin Studio export/headless integration before enabling its theme embed; the documented default theme installation does not integrate with the CP Next.js storefront. Keep ZS-Spin-View inactive unless that proof fails.
 - [ ] Review the inactive CP Flow, then obtain separate approval before activation or any Shopify write.
 - [ ] Bind product, fulfillment, and approved media evidence; deploy a temporary-branch Vercel Preview only after its explicit approval.
 - [ ] Run desktop/mobile/console/cart/checkout/rollback verification without submitting an order.

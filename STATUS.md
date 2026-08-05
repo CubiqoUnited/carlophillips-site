@@ -268,6 +268,10 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The minimum POC stack is Apliiq for Hoodie POD, Modelize for reviewed still imagery, one provisional spin worker (Spin Studio), native Shopify Headless for Next.js commerce truth, Flow for an approval gate, and the CP Next.js storefront for presentation.
 - Apliiq opens to provider sign-in; Modelize has used 3/3 free images but contains three completed Hoodie outputs; Spin Studio is disabled and has no Hoodie spin; ZS-Spin-View/MyDesigns request new theme permissions; the CP Flow exists but is inactive.
 - Native Shopify Headless, not the broken `Carlophillips Headless` custom app or embedded Codex/CLI/Claude connector shells, is the supported storefront path.
+- Follow-through proved exactly where the Modelize allowance went: one Auto Mode job (`#137843f7`) generated three Signature Hoodie images from one reference at 2026-07-11 16:16; all three remain unpublished.
+- Spin Studio is inactive because its required Online Store theme app embed is off. Its documented default installation targets a Shopify theme and replaces a product-gallery image; no export, API, or CP Next.js integration was exposed, so enabling the embed would not activate 360 media on the headless storefront.
+- Shopify Agentic is a future sales channel, not an agent-control surface. Shopify reports Agentic Storefronts unavailable, ChatGPT/Copilot/other channels inactive, and zero products in Shopify Catalog.
+- The existing native Headless storefront has a usable public Storefront credential and checked product-listing/checkouts scopes. A secret-free live query returned HTTP 200 with no GraphQL errors and correctly withheld the Signature Hoodie because it is Draft. No credential was persisted, rotated, or recorded.
 - Shopify Basic is $39/month. The upcoming bill was $0 at observation time. Modelize generation and several usage-fee apps remain cost-gated.
 - Full evidence, screenshots, app dispositions, blockers, and the exact POC sequence are in `test_reports/cp-shopify-audit-2026-08-04/audit-report.md`.
 
@@ -279,11 +283,11 @@ Resume point: mark `shopify-storefront-product-read` ready only with its durable
 
 ### Shopify app capability/access audit
 
-Observed blocker: Shopify Admin is now authenticated and audited. Apliiq's separate provider session stops at sign-in; no provider product/variant mapping was observed. Modelize requires a plan for new generations. Spin Studio's theme embed is disabled and a headless/export path is unproven.
+Observed blocker: Shopify Admin is now authenticated and audited. Apliiq accepted a password-reset request, but both owner-supplied candidate passwords were rejected; no provider product/variant mapping was observed. Modelize requires a plan for new generations. Spin Studio's theme embed is disabled and a headless/export path is unproven.
 
-Human action: sign in to the existing Apliiq account without accepting charges or changing configuration, then signal `Apliiq open`. Approve any Modelize spend, Flow activation, spin configuration, Storefront secret configuration, Shopify write, Preview deployment, merge, or production action separately.
+Human action: complete the newest Apliiq password-reset email link, confirm the new password on Apliiq, and sign in without accepting charges or changing configuration; then signal `Apliiq open`. Approve any Modelize spend, Flow activation, spin configuration, Shopify write/publication, Preview deployment, merge, or production action separately.
 
-Resume point: observe the exact Hoodie mapping in Apliiq read-only; configure the native Headless Storefront read path through secret storage; then bind reviewed Shopify/POD/media evidence before generating a Vercel Preview.
+Resume point: observe the exact Hoodie mapping in Apliiq read-only. The native Headless credential is callable, but the Draft Hoodie is intentionally unavailable to Storefront API; obtain an explicit controlled publication/channel decision before any Shopify write, then bind reviewed Shopify/POD/media evidence before generating a Vercel Preview.
 
 ### Production and commerce operations
 
