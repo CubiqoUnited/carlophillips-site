@@ -17,6 +17,11 @@ const availableSummary = {
     href: '/products/carlophillips-signature-hoodie',
     sourceLabel: 'Local fixture review — not Shopify live data',
     commerceAllowed: false,
+    heroMedia: {
+      url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+      alt: 'Signature Hoodie front candidate',
+      label: 'Modelize product portrait · generated candidate · approval pending',
+    },
   },
 };
 
@@ -60,12 +65,21 @@ describe('home release composition', () => {
       primaryProduct: null,
     }} />);
     expect(available).toContain('Review 1 product');
+    expect(available).toContain('/products/signature-hoodie/candidates/modelize/editorial-02.jpg');
+    expect(available).toContain('Modelize product portrait · generated candidate · approval pending');
     expect(unavailable).toContain('View release state');
     expect(unavailable).not.toContain('/products/');
+    expect(unavailable).not.toContain('editorial-02.jpg');
   });
 
-  it('keeps the archived board explicitly separate from product and media truth', () => {
-    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={availableSummary} />);
+  it('keeps the archived board separate when no release-eligible hero media exists', () => {
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={{
+      ...availableSummary,
+      status: 'denied',
+      visibleCount: 0,
+      excludedCount: 1,
+      primaryProduct: null,
+    }} />);
     expect(html).toContain('Visual-system reference · not product or media proof');
     expect(html).toContain('Nothing shown here grants purchase, publication, or fulfillment authority.');
     expect(html).not.toContain('Add to bag');

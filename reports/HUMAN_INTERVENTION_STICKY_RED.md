@@ -1,7 +1,7 @@
 # 🔴 HUMAN INTERVENTION REQUIRED — APLIIQ SIGN-IN
 
 Updated: 2026-08-04
-Status: Shopify Admin is authenticated and the read-only app audit is complete. The Signature Hoodie remains Draft and commerce remains deliberately disabled. The selected Apliiq provider session is not authenticated.
+Status: Shopify Admin is authenticated and the read-only app audit is complete. The Signature Hoodie remains Draft and commerce remains deliberately disabled. The selected Apliiq provider session is not authenticated. The existing Modelize job was recovered: two candidates are usable for local review, one is quarantined, and its free allowance is exhausted (3/3).
 
 ## Exact action
 
@@ -18,3 +18,11 @@ Expected cost: none for sign-in. Credentials remain human-only. Do not accept a 
 Inspect the exact current Apliiq Signature Hoodie product/design/variant mapping read-only. Record only sanitized hashes/evidence references; stop before samples, orders, fulfillment, charges, product sync, or Shopify writes. The Shopify-side Draft and app installation do not prove provider mapping.
 
 Separate later approvals: Modelize plan/credits for any new generation; Flow activation; Spin Studio configuration; Storefront secret configuration; Shopify write/publication; Vercel Preview; merge; and production activation.
+
+## Next media approval after Apliiq sign-in
+
+1. Review the two saved Modelize candidates shown in the CP local evidence.
+2. Tell Codex which, if either, may be treated as release-candidate media. They remain generated/approval-pending until then.
+3. If more Modelize work is required (especially a real model-wearing output), approve the exact displayed plan/credit cost before Codex accepts it. Current authorization does not include a charge.
+
+The quarantined third image has a visible white layout artifact and must not be approved or published without replacement.

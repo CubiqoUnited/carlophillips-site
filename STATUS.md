@@ -25,6 +25,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The historical Product Owner-observed 30-app Shopify inventory is preserved in a schema-validated evidence record. The authenticated 2026-08-04 read-only audit supersedes it with 33 installed apps and direct browser-surface findings; installation still does not prove an API or authorize writes.
 - Shopify Admin authentication is no longer blocked. The current human boundary is the separate Apliiq provider sign-in required to inspect the exact Hoodie mapping.
 - The App Router now runs on Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`; async route params were migrated and the full local regression passed.
+- The authenticated Modelize app contains one completed three-image Signature Hoodie job (`#137843f7`, observed 2026-08-04). Two usable generated candidates are now stored locally and rendered only in the explicitly labeled local non-commerce fixture; the third is quarantined for a visible layout artifact. This is real generated candidate evidence, not approved or released product media.
 
 ## Not yet proven
 
@@ -35,6 +36,16 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Live Shopify-backed commerce on the production domain; the visual site is reachable but product purchasing remains deliberately fail-closed.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
 - Any real product video, spin/360, 3D/AR, try-on, on-model, or lifestyle campaign asset.
+- An authenticated Apliiq observation proving the exact Hoodie design/product/variant mapping. The retained provider tab is at the separate Apliiq sign-in screen.
+- Any approved Modelize plan or credits for additional on-model generation. The observed free allowance is exhausted (3/3); no plan or charge was accepted.
+
+## Hoodie end-to-end POC checkpoint — 2026-08-04
+
+- The local VOLLBAK-aligned home hero now uses release-policy-derived product media when the local Hoodie fixture is visible. A denied product cannot contribute hero copy or media.
+- The local PDP renders two usable Modelize candidates and the recorded Apliiq front candidate with explicit approval-pending labels. The flawed Modelize detail image remains in the evidence registry as quarantined and is not rendered.
+- Desktop and direct 390×844 browser checks passed for home and PDP: all images loaded, no horizontal overflow, no console warnings/errors, and every variant/purchase control remained disabled.
+- `yarn verify` passed: zero-warning lint, 32 files/309 tests, zero production vulnerabilities across 193 packages, and a successful 11-route Next.js build.
+- This checkpoint is not end-to-end completion. Apliiq mapping, live Shopify Storefront truth, additional truthful on-model/video/spin/3D assets, Preview release evidence, cart/checkout, publication, and production remain separate unproven gates.
 
 ## Cycle 1 verification
 

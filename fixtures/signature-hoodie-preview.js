@@ -27,6 +27,22 @@ export const signatureHoodiePreview = {
   ],
   media: [
     {
+      id: 'modelize-signature-hoodie-front-candidate',
+      type: 'image',
+      url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+      previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+      alt: 'Modelize-generated front view candidate of the black CARLOPHILLIPS Signature Hoodie',
+      label: 'Modelize product portrait · generated candidate · approval pending',
+    },
+    {
+      id: 'modelize-signature-hoodie-editorial-candidate',
+      type: 'image',
+      url: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
+      previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
+      alt: 'Modelize-generated editorial candidate showing the black CARLOPHILLIPS Signature Hoodie on a chair',
+      label: 'Modelize editorial still · generated candidate · approval pending',
+    },
+    {
       src: 'https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399_800x800.jpg?v=1783799637',
       alt: 'Apliiq-hosted black Signature Hoodie front candidate',
       label: 'Recorded Apliiq front candidate — approval pending',

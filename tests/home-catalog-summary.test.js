@@ -23,6 +23,12 @@ function decision(overrides = {}) {
       title: 'CARLOPHILLIPS Signature Hoodie',
       sourceLabel: 'Local fixture review — not Shopify live data',
       commerceAllowed: false,
+      media: [{
+        type: 'image',
+        url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+        alt: 'Signature Hoodie front candidate',
+        label: 'Modelize product portrait · generated candidate · approval pending',
+      }],
     }],
     ...overrides,
   };
@@ -47,11 +53,15 @@ describe('home catalog summary', () => {
         title: 'CARLOPHILLIPS Signature Hoodie',
         href: '/products/carlophillips-signature-hoodie',
         commerceAllowed: false,
+        heroMedia: {
+          url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+        },
       },
     });
     expect(summary.message).toContain('local non-commerce fixture');
     expect(Object.keys(summary.primaryProduct).sort()).toEqual([
       'commerceAllowed',
+      'heroMedia',
       'href',
       'sourceLabel',
       'title',
@@ -95,6 +105,7 @@ describe('home catalog summary', () => {
     expectValid(zero);
     expectValid(mixed);
     expect(zero.primaryProduct).toBeNull();
+    expect(JSON.stringify(zero)).not.toContain('editorial-02.jpg');
     expect(mixed.message).toContain('1 private Staged-or-later release candidate');
   });
 });

@@ -66,12 +66,23 @@
 - [x] Record the 33-app live inventory, duplicate groups, callable surfaces, permissions/billing boundaries, screenshots, and exact blockers.
 - [ ] Product Owner signs in to the existing Apliiq account; then observe the Hoodie product/design/variant mapping read-only.
 - [ ] Configure the native Headless Storefront read credential through ignored local/Vercel secret storage and produce a sanitized current Shopify observation.
-- [ ] Review/export existing Modelize candidates and approve only truthful exact-product media; approve a plan separately before any new generation.
+- [x] Export the existing completed Modelize job read-only; retain two usable generated candidates for labeled local review and quarantine the artifacted third image.
+- [ ] Product Owner approves exact Modelize media for the release and separately approves a plan/credit spend before any additional on-model generation; the free allowance is exhausted.
 - [ ] Prove Spin Studio export/headless integration before enabling it; keep ZS-Spin-View inactive unless that proof fails.
 - [ ] Review the inactive CP Flow, then obtain separate approval before activation or any Shopify write.
 - [ ] Bind product, fulfillment, and approved media evidence; deploy a temporary-branch Vercel Preview only after its explicit approval.
 - [ ] Run desktop/mobile/console/cart/checkout/rollback verification without submitting an order.
 - [ ] Merge to `main`, publish, and activate production only after separate Product Owner approval.
+
+## Current Hoodie media proof — local only
+
+- [x] Render the usable Modelize product portrait and editorial-chair candidate through the existing local fixture/release boundary.
+- [x] Keep the flawed Modelize detail output quarantined and absent from the storefront.
+- [x] Prove desktop and direct 390×844 home/PDP rendering, loaded images, no horizontal overflow, no console warnings/errors, and no enabled purchase controls.
+- [ ] Generate or obtain truthful exact-product on-model media after explicit credit/plan approval.
+- [ ] Export one genuine spin/360 set from the selected installed app; do not substitute animation or repeated stills.
+- [ ] Obtain real video and exact-product 3D/AR only if supported; otherwise record a Product Owner-approved infeasibility decision instead of fabricating them.
+- [ ] Bind approved media plus live Shopify and Apliiq observations to the release record before any Vercel Preview.
 
 ## Completed: supported framework migration
 

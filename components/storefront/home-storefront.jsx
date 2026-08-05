@@ -77,6 +77,7 @@ function MenuOverlay({ onClose }) {
 }
 
 function Hero({ summary }) {
+  const heroMedia = summary.primaryProduct?.heroMedia || null;
   const catalogLabel = summary.visibleCount > 0
     ? `Review ${summary.visibleCount} ${summary.visibleCount === 1 ? 'product' : 'products'}`
     : 'View release state';
@@ -103,18 +104,26 @@ function Hero({ summary }) {
           </Link>
         </div>
 
-        <figure className="relative min-h-[52vh] overflow-hidden lg:min-h-[78vh]">
-          <Image
-            src="/brand-boards/carlophillips-drop-board.png"
-            alt="Archived CARLOPHILLIPS visual-system reference board"
-            fill
-            priority
-            sizes="(min-width: 1024px) 58vw, 100vw"
-            className="object-contain object-center opacity-75"
-          />
+        <figure className="relative min-h-[52vh] overflow-hidden bg-[#0a0a0a] lg:min-h-[78vh]">
+          {heroMedia ? (
+            <img
+              src={heroMedia.url}
+              alt={heroMedia.alt}
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+          ) : (
+            <Image
+              src="/brand-boards/carlophillips-drop-board.png"
+              alt="Archived CARLOPHILLIPS visual-system reference board"
+              fill
+              priority
+              sizes="(min-width: 1024px) 58vw, 100vw"
+              className="object-contain object-center opacity-75"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/25" aria-hidden="true" />
           <figcaption className="absolute bottom-4 right-4 bg-black/82 px-3 py-2 text-[8px] uppercase tracking-[0.24em] text-white/58">
-            Visual-system reference · not product or media proof
+            {heroMedia ? heroMedia.label : 'Visual-system reference · not product or media proof'}
           </figcaption>
         </figure>
       </div>

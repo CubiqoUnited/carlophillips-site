@@ -393,12 +393,16 @@ describe('truth contracts', () => {
     expect(Object.values(hoodieRelease.approvals).every(approval => approval.status === 'pending')).toBe(true);
   });
 
-  it('validates every Hoodie media asset and keeps uncertain assets quarantined', () => {
+  it('validates every Hoodie media asset and keeps uncertain or artifacted assets quarantined', () => {
     expect(validateMediaManifest(hoodieMediaManifest)).toBe(true);
     expect(hoodieMediaManifest.assets.every(asset => validateMediaAsset(asset))).toBe(true);
     const quarantined = hoodieMediaManifest.assets.filter(asset => asset.approvalStatus === 'quarantined');
-    expect(quarantined).toHaveLength(2);
+    expect(quarantined).toHaveLength(3);
     expect(quarantined.every(asset => asset.exactProductMatch === 'unverified')).toBe(true);
+    expect(quarantined).toContainEqual(expect.objectContaining({
+      assetId: 'modelize-137843f7-embroidery-detail-quarantined',
+      quality: expect.objectContaining({ status: 'failed' }),
+    }));
   });
 
   it('rejects a media manifest that downgrades required video to where-feasible', () => {
