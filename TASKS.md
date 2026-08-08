@@ -8,7 +8,7 @@
 - [x] Add a Signature-Hoodie-only Preview editorial study with explicit AI-assisted disclosure and no product-truth claims.
 - [x] Prove by component tests that the study cannot render in production, on other products, or include the quarantined asset.
 - [x] Pass full lint, 320 tests, zero-vulnerability production audit, and optimized build.
-- [ ] Capture direct desktop/mobile Preview evidence with all images loaded and no browser errors or overflow.
+- [x] Capture direct desktop/mobile Preview evidence with all images loaded and no browser errors or overflow.
 - [ ] Product Owner reviews the updated Preview; production remains unchanged pending a separate decision.
 - [ ] Obtain 16–24 genuine angle images or a real GLB before using Spin Studio; its free one-product tier does not create missing source truth.
 - [ ] Decide separately whether to install MODA after reviewing its requested Shopify permissions; do not buy Modelize credits or a plan without exact approval.

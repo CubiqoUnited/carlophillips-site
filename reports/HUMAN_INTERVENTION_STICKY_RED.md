@@ -1,11 +1,11 @@
 # 🔴 HUMAN INTERVENTION REQUIRED — REVIEW THE UPDATED HOODIE SHOWCASE
 
 Updated: 2026-08-08
-Status: The existing premium Shopify-backed Preview is being extended with a disclosed, AI-assisted Signature Hoodie editorial study. Two usable Modelize outputs are now published to the Shopify product; the artifacted third output remains unpublished. Production and its domains remain unchanged.
+Status: The updated premium Shopify-backed Preview is READY at `https://carlophillips-site-a3odjms8n-adityas-projects-261b17a9.vercel.app`. Two usable Modelize outputs are published to the Shopify product and rendered as a disclosed Preview-only editorial study; the artifacted third output remains unpublished. Production and its domains remain unchanged.
 
 ## Exact action
 
-After Codex supplies the updated Preview URL, open the Hoodie PDP and review the product-truth gallery, the two full-height digital editorial panels, disclosure wording, mobile scroll, size/price presentation, and Shopify checkout handoff. Then say **Showcase Preview approved** or list visual corrections. Do not approve production until the distinction between Shopify product views and AI-assisted visualisations is acceptable.
+Open `https://carlophillips-site-a3odjms8n-adityas-projects-261b17a9.vercel.app/products/carlophillips-signature-hoodie` and review the product-truth gallery, the two full-height digital editorial panels, disclosure wording, mobile scroll, size/price presentation, and Shopify checkout handoff. Then say **Showcase Preview approved** or list visual corrections. Do not approve production until the distinction between Shopify product views and AI-assisted visualisations is acceptable.
 
 The Preview uses the active Hobby scope without accepting a paid plan. Modelize has used its 3/3 free allowance; its observed paid entry point is $19/month, and no purchase is approved. Spin Studio can cover one product for $0 but requires 16–24 genuine angle photos or a GLB. MODA advertises free initial image/product credits but requests Shopify product and Admin Files permissions; its install did not complete and no permission was granted. Production promotion would alter the public site and remains a separate decision.
 

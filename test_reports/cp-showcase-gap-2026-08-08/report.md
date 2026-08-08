@@ -29,7 +29,14 @@ The site had the correct sparse, full-height premium layout and live Shopify com
 
 - Focused component suite: 6/6 passed.
 - Full `yarn verify`: passed — zero-warning lint, 33 files / 320 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
-- Direct Preview desktop/mobile visual comparison: pending.
+- Vercel deployment: `dpl_EW1QFnaYqcqSwx8Euwcir6Diy9t8`, target `preview`, READY.
+- Preview URL: `https://carlophillips-site-a3odjms8n-adityas-projects-261b17a9.vercel.app`.
+- Direct Hoodie checks at 1280×720 and 390×844: HTTP 200; exact viewport width; no horizontal overflow; both editorial images decoded at 928×1152 after normal lazy-load scrolling; disclosure and both `AI-assisted preview` labels present; zero console/page errors; quarantined asset absent.
+- Visual comparison: the earlier Preview evidence under `test_reports/cp-premium-hobby-preview-2026-08-08/` ends after the restrained product facts and two-image Shopify gallery. The new full-page and per-panel captures in this folder add the missing cinematic scroll while preserving that product-truth section.
+- Production boundary: Vercel inspection reports target `preview`; `https://www.carlophillips.com/` continues returning from its existing production route and was not repointed.
+- Git boundary: commit `c27f89d` was pushed to the authorized fork. The canonical organization remote rejected the current GitHub identity with HTTP 403; no canonical branch changed.
+
+Durable visual evidence includes `shopify-four-media.png`, full-page deployed PDP captures, and individual desktop/mobile captures for both editorial studies. The authenticated Shopify product tab was preserved after capture.
 
 ## Truthful limitations and next choices
 
