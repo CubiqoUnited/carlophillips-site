@@ -88,10 +88,18 @@ function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
 
 const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
   {
-    src: '/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png',
-    alt: 'AI-assisted on-model visualisation of the CARLOPHILLIPS Signature Hoodie in a dark studio',
-    label: 'On-body study',
+    src: '/products/signature-hoodie/candidates/moda/model-front-full.jpg',
+    alt: 'MODA-assisted full-length front visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
+    label: 'On-body / front',
     position: 'object-center',
+    disclosure: 'MODA AI preview',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/moda/model-three-quarter.jpg',
+    alt: 'MODA-assisted three-quarter visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
+    label: 'On-body / three-quarter',
+    position: 'object-center',
+    disclosure: 'MODA AI preview',
   },
   {
     src: '/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png',
@@ -108,16 +116,32 @@ const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
     unoptimized: true,
   },
   {
-    src: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
-    alt: 'AI-assisted editorial visualisation of the CARLOPHILLIPS Signature Hoodie presented on a chair',
-    label: 'Editorial still',
+    src: '/products/signature-hoodie/candidates/moda/model-seated.jpg',
+    alt: 'MODA-assisted seated visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
+    label: 'On-body / seated',
     position: 'object-center',
+    disclosure: 'MODA AI preview',
   },
   {
-    src: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
-    alt: 'AI-assisted flat-lay visualisation of the CARLOPHILLIPS Signature Hoodie',
-    label: 'Product-alone study',
+    src: '/products/signature-hoodie/candidates/moda/model-side-profile.jpg',
+    alt: 'MODA-assisted side-profile visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
+    label: 'On-body / profile',
     position: 'object-center',
+    disclosure: 'MODA AI preview',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg',
+    alt: 'MODA-assisted digital back-view hypothesis of the CARLOPHILLIPS Signature Hoodie on a male model',
+    label: 'Digital back-view study',
+    position: 'object-center',
+    disclosure: 'Unverified back visualisation',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/moda/product-flat-lay.jpg',
+    alt: 'MODA-assisted flat-lay visualisation of the CARLOPHILLIPS Signature Hoodie',
+    label: 'Product-alone / flat lay',
+    position: 'object-center',
+    disclosure: 'MODA AI preview',
   },
 ];
 
@@ -133,7 +157,7 @@ function EditorialStudy({ environment, handle }) {
             A study in weight, form and restraint.
           </h2>
           <p className="mt-10 max-w-2xl text-sm leading-relaxed text-white/48 sm:text-base">
-            AI-assisted on-body, material and product visualisations created from the Signature Hoodie reference images. Confirm garment construction, fit and fabric against the Shopify product views above.
+            Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the Shopify product views above; the back view is a visualisation, not a photographed garment.
           </p>
         </div>
       </div>
@@ -157,7 +181,7 @@ function EditorialStudy({ environment, handle }) {
             {study.gifHref ? (
               <a href={study.gifHref} className="text-right text-white/55 underline decoration-white/25 underline-offset-4">GIF format</a>
             ) : (
-              <span className="text-right text-white/45">AI-assisted preview</span>
+              <span className="text-right text-white/45">{study.disclosure || 'AI-assisted preview'}</span>
             )}
           </figcaption>
         </figure>

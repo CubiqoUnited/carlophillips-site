@@ -9,11 +9,14 @@
 - [x] Add both candidates to the disclosed Hoodie Preview study and keep them absent from production.
 - [x] Install MODA and confirm its Shopify-embedded screen opens with 2 credits.
 - [x] Create a quarantined AI back-reference hypothesis because no verified back photograph exists; never promote it as product truth.
-- [ ] Product Owner loads the prepared front/back files through MODA's local file picker, then Codex reviews the job before any free-credit generation; do not publish automatically.
+- [x] Product Owner loaded the prepared MODA front/back files; Codex configured one ten-shot job priced at one displayed credit and generated it without Shopify export.
+- [x] Download and visually review all ten MODA originals; select six Preview candidates and reject Shot 10 for a false generated neck-label mark.
+- [x] Add the six selected MODA candidates to the Hoodie-only Preview study with an explicit unverified-back disclosure and production exclusion.
 - [x] Install Instant 3D and inspect its entry screen.
 - [ ] Restore access to the Instant 3D vendor dashboard; its `3dcloud.com.tr` iframe currently refuses the Shopify connection.
 - [x] Add a disclosed still-derived animated WebP/GIF Preview study without calling it product video, 360, or 3D.
-- [ ] Obtain a genuine 16–24-angle Hoodie set or an inspected GLB before configuring Spin Studio.
+- [ ] Run one explicitly digital POD 360 experiment from approved product imagery using a compatible free AI-spin path; never describe it as photographed physical-product evidence.
+- [ ] Replace broken Instant 3D with a compatible free photo-to-GLB experiment and inspect geometry/textures before headless integration.
 - [ ] Obtain exact physical-product macro and on-model photography before treating fabric, fit, or construction as factual release media.
 - [ ] Add an interactive headless 3D viewer only after an approved GLB/GLTF/USDZ is available and verified.
 - [x] Pass full lint, 320 tests, zero-vulnerability production audit, and optimized build after the expansion.
