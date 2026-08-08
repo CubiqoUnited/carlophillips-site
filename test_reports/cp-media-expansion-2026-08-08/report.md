@@ -44,12 +44,12 @@ The two new assets render only when `environment === 'preview'` and the exact ha
 
 - Focused product-detail suite: 6/6 passed.
 - Full `yarn verify`: passed — zero-warning lint, 33 files / 320 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
-- Vercel Preview `dpl_GQYEQ89bJLpiYYkauWuQFvuRtno9`: target `preview`, READY at `https://carlophillips-site-da9l7ctw6-adityas-projects-261b17a9.vercel.app`.
-- Direct 1280×720 and 390×844 Hoodie checks: HTTP 200; exact viewport widths; no horizontal overflow; all four study images decoded at source resolution; all four disclosure labels present; zero console/page errors; quarantined asset absent.
+- Vercel Preview `dpl_5oTCaMM9JutdmSnFtUCJhJacMeGP`: READY at `https://carlophillips-site-pgt28xwy7-adityas-projects-261b17a9.vercel.app`.
+- Direct 1280×720 and 390×844 Hoodie checks: the motion panel is present; animated WebP decodes at 540×675; disclosure and GIF link are visible; no horizontal overflow or framework error overlay.
 - The browser proof deliberately records `videoCount: 0` and `modelViewerCount: 0`. The Preview does not imply that missing video or 3D work is complete.
-- Durable captures: `expanded-pdp-desktop-full.png`, `expanded-pdp-mobile-full.png`, `on-model-desktop.png`, `on-model-mobile.png`, `macro-desktop.png`, and `macro-mobile.png`.
+- New durable captures: `motion-preview-desktop.png` and `motion-preview-mobile.png`. Earlier expanded-page/on-model/macro captures remain in the same evidence directory.
 - Vercel inspection confirms target `preview`; `https://www.carlophillips.com/` continues to return HTTP 200 from the unchanged production route.
 
 ## Honest conclusion
 
-The expanded Preview can now demonstrate product-alone, on-body, and macro storytelling, but it cannot truthfully claim complete competitive media coverage. Real video, GIF, 360, interactive 3D, physical fabric macro, and physical on-model imagery remain separate deliverables with named workers and exact source gates.
+The expanded Preview can now demonstrate product-alone, on-body, macro, and explicitly still-derived motion storytelling, but it cannot truthfully claim complete competitive media coverage. Real product video, 360, interactive 3D, physical fabric macro, and physical on-model imagery remain separate deliverables with named workers and exact source gates.
