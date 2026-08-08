@@ -34,7 +34,7 @@ const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
 
 function Navigation({ onMenu }) {
   return (
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-black/78 backdrop-blur-md">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-md">
         <div className="mx-auto grid h-16 max-w-[1800px] grid-cols-3 items-center px-5 sm:px-8 lg:h-20 lg:px-12">
           <button
             type="button"
@@ -188,7 +188,7 @@ function CategoryRail({ summary }) {
     : null;
 
   return (
-    <nav className="sticky top-16 z-30 overflow-hidden border-b border-white/10 bg-black/92 backdrop-blur-md lg:top-20" aria-label="Product categories">
+    <nav className="sticky top-16 z-30 overflow-hidden border-b border-white/10 bg-black/95 backdrop-blur-md lg:top-20" aria-label="Product categories">
       <div className="scrollbar-hide mx-auto flex h-14 w-full max-w-[1800px] items-center gap-8 overflow-x-auto px-5 sm:px-8 lg:h-16 lg:px-12">
         {activeProduct ? (
           <Link
