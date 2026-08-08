@@ -100,6 +100,14 @@ const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
     position: 'object-center',
   },
   {
+    src: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.webp',
+    gifHref: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif',
+    alt: 'Animated still-derived motion study cycling through the CARLOPHILLIPS Signature Hoodie visualisations',
+    label: 'Still-derived motion loop',
+    position: 'object-center',
+    unoptimized: true,
+  },
+  {
     src: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
     alt: 'AI-assisted editorial visualisation of the CARLOPHILLIPS Signature Hoodie presented on a chair',
     label: 'Editorial still',
@@ -130,18 +138,27 @@ function EditorialStudy({ environment, handle }) {
         </div>
       </div>
       {SIGNATURE_HOODIE_EDITORIAL_STUDY.map((study, index) => (
-        <figure key={study.src} className="storefront-panel relative min-h-[78vh] overflow-hidden border-b border-white/10 bg-[#111] lg:min-h-screen">
+        <figure
+          key={study.src}
+          data-motion-study={study.gifHref ? 'still-derived' : undefined}
+          className="storefront-panel relative min-h-[78vh] overflow-hidden border-b border-white/10 bg-[#111] lg:min-h-screen"
+        >
           <Image
             src={study.src}
             alt={study.alt}
             fill
             sizes="100vw"
+            unoptimized={study.unoptimized}
             className={`object-cover ${study.position}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10" />
           <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 px-5 py-7 text-[10px] uppercase tracking-[0.22em] text-white/70 sm:px-8 lg:px-12 lg:py-10">
             <span>Signature Hoodie / {study.label} {String(index + 1).padStart(2, '0')}</span>
-            <span className="text-right text-white/45">AI-assisted preview</span>
+            {study.gifHref ? (
+              <a href={study.gifHref} className="text-right text-white/55 underline decoration-white/25 underline-offset-4">GIF format</a>
+            ) : (
+              <span className="text-right text-white/45">AI-assisted preview</span>
+            )}
           </figcaption>
         </figure>
       ))}

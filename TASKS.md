@@ -7,8 +7,12 @@
 - [x] Create and visually review a Preview-only on-body candidate from the Hoodie reference.
 - [x] Repair the quarantined macro artifact into a new Preview-only material/embroidery candidate without overwriting the source.
 - [x] Add both candidates to the disclosed Hoodie Preview study and keep them absent from production.
-- [ ] Product Owner manually completes the MODA installation handoff, then Codex uses only the free allowance to create a draft ten-angle set and short video; do not publish automatically.
-- [ ] Product Owner manually completes the Instant 3D installation handoff, then Codex uses only the free one-model allowance to create/export a draft; do not enable the widget or publish automatically.
+- [x] Install MODA and confirm its Shopify-embedded screen opens with 2 credits.
+- [x] Create a quarantined AI back-reference hypothesis because no verified back photograph exists; never promote it as product truth.
+- [ ] Product Owner loads the prepared front/back files through MODA's local file picker, then Codex reviews the job before any free-credit generation; do not publish automatically.
+- [x] Install Instant 3D and inspect its entry screen.
+- [ ] Restore access to the Instant 3D vendor dashboard; its `3dcloud.com.tr` iframe currently refuses the Shopify connection.
+- [x] Add a disclosed still-derived animated WebP/GIF Preview study without calling it product video, 360, or 3D.
 - [ ] Obtain a genuine 16–24-angle Hoodie set or an inspected GLB before configuring Spin Studio.
 - [ ] Obtain exact physical-product macro and on-model photography before treating fabric, fit, or construction as factual release media.
 - [ ] Add an interactive headless 3D viewer only after an approved GLB/GLTF/USDZ is available and verified.

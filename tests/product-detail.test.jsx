@@ -211,6 +211,10 @@ describe('commerce product presentation', () => {
     expect(previewHtml).toContain('AI-assisted on-body, material and product visualisations');
     expect(previewHtml).toContain('on-model-front-study.png');
     expect(previewHtml).toContain('material-embroidery-study.png');
+    expect(previewHtml).toContain('data-motion-study="still-derived"');
+    expect(previewHtml).toContain('still-derived-motion-study.webp');
+    expect(previewHtml).toContain('still-derived-motion-study.gif');
+    expect(previewHtml).toContain('GIF format');
     expect(previewHtml).toContain('editorial-01.jpg');
     expect(previewHtml).toContain('editorial-02.jpg');
     expect(previewHtml).not.toContain('embroidery-detail-quarantined');
@@ -219,6 +223,8 @@ describe('commerce product presentation', () => {
     expect(productionHtml).not.toContain('editorial-02.jpg');
     expect(productionHtml).not.toContain('on-model-front-study.png');
     expect(productionHtml).not.toContain('material-embroidery-study.png');
+    expect(productionHtml).not.toContain('still-derived-motion-study.webp');
+    expect(productionHtml).not.toContain('still-derived-motion-study.gif');
   });
 
   it('does not attach the Hoodie editorial study to other Preview products', () => {

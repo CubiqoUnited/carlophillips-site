@@ -1,28 +1,33 @@
-# 🔴 HUMAN INTERVENTION REQUIRED — COMPLETE THE MEDIA-APP INSTALL HANDOFFS
+# 🔴 HUMAN INTERVENTION REQUIRED — LOAD THE TWO MODA SOURCE FILES
 
 Updated: 2026-08-08
-Status: The expanded still-image Preview is READY at `https://carlophillips-site-da9l7ctw6-adityas-projects-261b17a9.vercel.app`, with disclosed product-alone, on-body, and macro studies. Shopify is authenticated, but the official App Store Install buttons for MODA and Instant 3D do not advance in background automation. Neither app is installed and no new permissions, charges, 3D model, or video were created. Production is unchanged.
+
+Status: MODA AI and Instant 3D are installed in Shopify. MODA opens correctly and shows 2 credits, but Codex's in-app-browser control cannot operate the local file picker. Instant 3D is installed, but its embedded vendor dashboard at `3dcloud.com.tr` refuses the Shopify iframe connection. No credit, subscription, generation, publication, or production deployment has been started.
 
 ## Exact action
 
-In Shopify Admin, manually open `https://apps.shopify.com/moda-ai`, select the CARLOPHILLIPS store if prompted, click **Install**, and confirm the displayed product/Shopify Admin access without buying credits. Then open `https://apps.shopify.com/instant-3d`, click **Install**, and choose only its free one-model tier; do not start a trial, subscription, or credit pack. Tell Codex **MODA and Instant 3D installed**. Codex will resume at draft generation, export, inspection, and Preview-only integration—not publication.
+Use the already-open **Shopify → Apps → MODA AI** tab.
 
-Separately, provide either 16–24 genuine Hoodie angle images or an inspected GLB and say **Spin source ready**. For factual material/fit claims, provide exact physical-product macro and on-model photographs; AI candidates cannot replace that proof.
+1. Under **Front Photo**, click **Upload Front** and choose:
+   `/Users/edv/Documents/cp/public/products/signature-hoodie/candidates/modelize/editorial-02.jpg`
+2. Under **Back Photo**, click **Upload Back** and choose:
+   `/Users/edv/Documents/cp/public/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png`
+3. Do **not** click Generate, buy credits, publish, or change the Shopify product.
+4. Tell Codex: **MODA files loaded**.
 
-MODA advertises 20 free images and two free styled products, then pay-as-you-go usage beginning at $1.25 per ten-photo product; do not buy any credits. Instant 3D advertises one free model and six one-time generation credits; optional credit packs begin at $4.99 and paid plans begin at $29.99/month; do not start or accept them. Both apps can edit product data, so all outputs must remain Draft and be reviewed before any Shopify publication. Spin Studio's one-product plan is free but still requires genuine source angles or a GLB.
+The back image is an explicitly quarantined AI hypothesis created because no verified back photograph exists. It is suitable only for a draft workflow experiment and cannot prove the manufactured product's back construction, fabric, or fit.
 
 ## Cost and risk
 
-The destination is an active Hobby scope, so this step does not accept a paid plan. Hobby usage limits and one concurrent build apply. The Storefront token must be stored as a sensitive Vercel variable and never printed or exposed to client code. Codex has not sent the token or created this Preview.
+Loading the two files should not consume MODA's displayed 2 credits. Generation may consume credits, so Codex will inspect the prepared job before invoking it. All generated results must remain candidate-only until reviewed. Do not accept a paid plan, trial, or credit purchase.
 
 ## Exact resume point
 
-Tell Codex **MODA and Instant 3D installed** after both apps appear in Shopify Settings → Apps and sales channels. Resume at their free draft-generation screens. Do not publish generated media, activate a theme/widget, buy credits, or change the production website.
+After **MODA files loaded**, Codex resumes at preset/shot review, performs one bounded free-credit generation only within the already approved draft showcase experiment, inspects every output, and integrates only explicitly labeled Preview candidates. It will not publish to Shopify or production.
 
-## Optional original-account route
+## Remaining truth gates
 
-The former Cubiqo Pro route still requires the Product Owner to resolve its Vercel payment-method/billing suspension. That paid-account fix is no longer required for the safe Hobby Preview path.
-
-## Secondary non-launch blocker
-
-The separate Apliiq provider website is still signed out. Shopify currently proves that all nine Hoodie variants are associated with the Apliiq Dropship Fulfillment location, but provider-side design/mapping details remain unverified. Resume provider inspection only after the owner completes the newest Apliiq password-reset link and says **Apliiq open**. Do not accept a plan or place a sample/order.
+- Instant 3D needs a working vendor dashboard or a vendor fix; installation alone did not create a model.
+- Spin Studio still needs 16–24 genuine Hoodie angle photographs or an inspected GLB. A still-derived animation is not a real 360 spin.
+- Physical fabric and fit claims still need an exact Hoodie sample macro and physical on-model photography. AI candidates cannot replace this proof.
+- The separate Apliiq provider website remains unverified; no sample/order or paid action is authorized.
