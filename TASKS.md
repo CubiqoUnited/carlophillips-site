@@ -1,17 +1,18 @@
 # Delivery Tasks
 
-## Current bounded launch: runway landing
+## Current bounded launch: two-stage runway landing
 
 - [x] Save the approved reusable showcase and POD pipeline locally as `podpipe`.
 - [x] Inspect current Vollebak and Zara landing composition without copying their assets or text.
-- [x] Replace the landing hero with a three-frame Signature Hoodie runway sequence gated by the catalog/commerce decision.
+- [x] Preserve the Product Owner-supplied wide coastal runway frame as the opening CARLOPHILLIPS campaign.
+- [x] Move the existing three-frame Signature Hoodie runway sequence to the next full-screen panel on scroll.
 - [x] Replace internal/process-heavy landing copy with direct premium product language.
-- [x] Add a sticky category rail with Hoodies active and Shirts, Outerwear, Bottoms, and Accessories disabled.
-- [x] Add deterministic tests proving denied products cannot emit the runway media or an active category.
-- [x] Pass focused tests, full lint, 322 tests, zero-vulnerability production audit, and optimized build after correcting stale site metadata.
-- [x] Capture direct 1440×1000 and 390×844 hero/category evidence with zero broken images, runtime error text, or horizontal overflow.
-- [x] Deploy and verify the exact candidate as READY Vercel Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` at desktop and 390×844, including the Hoodie checkout boundary.
-- [ ] Merge only the verified candidate through canonical `main`, deploy Vercel Production, and verify the live domain and Hoodie flow.
+- [x] Keep the sticky category rail after the Hoodie panel with Hoodies active and Shirts, Outerwear, Bottoms, and Accessories disabled.
+- [x] Add deterministic tests proving campaign → Hoodie → categories ordering and that denied products cannot emit Hoodie runway media or an active category.
+- [x] Pass focused tests, full lint, 323 tests, zero-vulnerability production audit, and optimized build.
+- [x] Capture direct 1440×1000 and 390×844 campaign, Hoodie, and category evidence with zero broken images, runtime error text, console errors, or horizontal overflow.
+- [ ] Commit and push the corrected candidate; deploy and verify a new Vercel Preview at desktop and 390×844.
+- [ ] Product Owner reviews the corrected Preview and separately authorizes any merge to canonical `main` or Production deployment.
 
 ## Current bounded delivery: complete Hoodie media ladder
 

@@ -50,3 +50,7 @@ Fresh background captures of Vollebak and Zara were reviewed for composition onl
 Initial Previews exposed and closed the stale browser title and transparent-navigation contrast defects. Final Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` is READY at `https://carlophillips-site-p92xlobf4-adityas-projects-261b17a9.vercel.app` with target `preview`.
 
 Direct desktop/mobile Preview checks confirm the Signature Series title, three runway frames, active Hoodies and four disabled categories, opaque `rgba(0, 0, 0, 0.8)` header and `rgba(0, 0, 0, 0.95)` category rail over the light product section, zero broken images/overflow/runtime error text, and active Shopify checkout on the Hoodie PDP. Production has not yet changed. Next: merge the verified candidate through canonical `main`, deploy Production, and repeat the live-domain checks.
+
+## Superseded candidate notice
+
+Product Owner subsequently corrected the hierarchy: a wide CARLOPHILLIPS campaign runway must open the site, with this Signature Hoodie runway appearing on the next scroll. Therefore the Preview above is historical evidence only and must not be merged or promoted. The corrected candidate and evidence are recorded in `test_reports/cp-runway-hierarchy-correction-2026-08-08/`.

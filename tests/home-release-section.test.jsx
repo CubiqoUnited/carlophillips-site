@@ -65,12 +65,30 @@ describe('home release composition', () => {
       primaryProduct: null,
     }} />);
     expect(available).toContain('Preview the collection');
+    expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
+    expect(available).toContain('At the<br/>edge of life.');
+    expect(available).toContain('Enter the collection');
     expect(available).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
     expect(available).toContain('Private product preview');
     expect(available).not.toContain('Modelize product portrait · generated candidate · approval pending');
     expect(unavailable).toContain('Explore the collection');
+    expect(unavailable).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(unavailable).not.toContain('/products/');
     expect(unavailable).not.toContain('editorial-02.jpg');
+  });
+
+  it('places the brand campaign before the gated Hoodie runway and category rail', () => {
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={availableSummary} />);
+    const campaignIndex = html.indexOf('aria-label="CARLOPHILLIPS runway campaign"');
+    const productIndex = html.indexOf('aria-label="Signature Hoodie runway"');
+    const categoriesIndex = html.indexOf('aria-label="Product categories"');
+
+    expect(campaignIndex).toBeGreaterThan(-1);
+    expect(productIndex).toBeGreaterThan(campaignIndex);
+    expect(categoriesIndex).toBeGreaterThan(productIndex);
+    expect(html).toContain('href="#signature-runway"');
+    expect(html).not.toContain('No restocks');
+    expect(html).not.toContain('Join the list');
   });
 
   it('keeps the archived board separate when no release-eligible hero media exists', () => {
@@ -120,6 +138,7 @@ describe('home release composition', () => {
       primaryProduct: null,
     }} />);
     expect(html).not.toContain('/products/signature-hoodie/candidates/moda/');
+    expect(html).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(html).not.toContain('Signature Series / Runway 001');
     expect(html).not.toContain('aria-current="page"');
     expect(html).toContain('aria-disabled="true"');

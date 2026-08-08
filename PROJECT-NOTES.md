@@ -35,3 +35,7 @@ The visual treatment is restrained and premium: oversized runway/product media, 
 For every subsequent product, repeat the same process: select the POD garment and customization; bind Shopify facts; collect front/back references; generate the media set; curate inaccurate outputs; create 360 and 3D candidates; assemble the Preview; verify desktop/mobile, pricing, options, and checkout; then publish the approved package.
 
 The Signature Hoodie currently has Shopify product views, six curated MODA stills, a flat lay, embroidery/material studies, and still-derived motion. The remaining media additions are a short video, digital 360, and interactive 3D model.
+
+#### Storefront landing order
+
+The home page opens with a full-screen CARLOPHILLIPS campaign runway image and sparse brand statement. That brand campaign is followed, on scroll, by the existing full-screen Signature Hoodie runway sequence. The sticky category rail follows the Hoodie panel, with Hoodies active and future categories visibly disabled. Campaign art establishes the world of the brand; it is not product, material, fit, or fulfillment evidence.

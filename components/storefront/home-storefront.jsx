@@ -32,6 +32,11 @@ const signatureRunwayFrames = [
 
 const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
 
+const campaignHero = {
+  src: '/campaigns/lofoten-runway-hero.jpg',
+  alt: 'CARLOPHILLIPS runway campaign staged against a dramatic coastal mountain landscape',
+};
+
 function Navigation({ onMenu }) {
   return (
       <header className="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-md">
@@ -84,7 +89,48 @@ function MenuOverlay({ onClose }) {
   );
 }
 
-function Hero({ summary }) {
+function CampaignHero() {
+  return (
+    <section
+      className="storefront-panel relative min-h-screen min-h-[100svh] overflow-hidden border-b border-white/10 bg-black"
+      aria-label="CARLOPHILLIPS runway campaign"
+    >
+      <Image
+        src={campaignHero.src}
+        alt={campaignHero.alt}
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-[68%_center] sm:object-center"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.74)_0%,rgba(0,0,0,0.08)_54%,rgba(0,0,0,0.2)_100%)]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/68 via-transparent to-black/28" aria-hidden="true" />
+
+      <div className="relative z-10 mx-auto flex min-h-screen min-h-[100svh] max-w-[1800px] flex-col justify-end px-5 pb-10 pt-28 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
+        <div className="max-w-4xl">
+          <p className="mb-5 text-[9px] uppercase tracking-[0.34em] text-white/68">
+            CARLOPHILLIPS / Signature Series
+          </p>
+          <h1 className="max-w-5xl text-[16vw] font-light leading-[0.82] tracking-[-0.065em] sm:text-[11vw] lg:text-[7.4vw]">
+            At the<br />edge of life.
+          </h1>
+          <p className="mt-7 text-[9px] uppercase tracking-[0.3em] text-white/62">
+            Edition 001
+          </p>
+        </div>
+        <a
+          href="#signature-runway"
+          className="mt-10 flex items-center justify-between border-t border-white/25 pt-4 text-[8px] uppercase tracking-[0.28em] text-white/58 transition hover:text-white"
+        >
+          <span>Enter the collection</span>
+          <span aria-hidden="true">Scroll</span>
+        </a>
+      </div>
+    </section>
+  );
+}
+
+function ProductRunwayHero({ summary }) {
   const heroMedia = summary.primaryProduct?.heroMedia || null;
   const signatureVisible = summary.visibleCount > 0
     && summary.primaryProduct?.href === '/products/carlophillips-signature-hoodie';
@@ -95,7 +141,11 @@ function Hero({ summary }) {
     : 'Explore the collection';
 
   return (
-    <section className="storefront-panel relative min-h-screen overflow-hidden border-b border-white/10 bg-black">
+    <section
+      id="signature-runway"
+      className="storefront-panel relative min-h-screen min-h-[100svh] scroll-mt-16 overflow-hidden border-b border-white/10 bg-black lg:scroll-mt-20"
+      aria-label="Signature Hoodie runway"
+    >
       <figure className="absolute inset-0 overflow-hidden bg-[#050505]">
         {runwayReady ? (
           <>
@@ -103,7 +153,6 @@ function Hero({ summary }) {
               src={signatureRunwayFrames[0].src}
               alt=""
               fill
-              priority
               sizes="100vw"
               className="scale-110 object-cover object-center opacity-25 blur-2xl"
               aria-hidden="true"
@@ -114,7 +163,6 @@ function Hero({ summary }) {
                 src={frame.src}
                 alt={frame.alt}
                 fill
-                priority={index === 0}
                 sizes="100vw"
                 className={`runway-frame ${index === 0 ? 'runway-frame-primary' : ''} object-contain object-center`}
                 style={{ animationDelay: `${index * -10}s` }}
@@ -126,7 +174,6 @@ function Hero({ summary }) {
               src={heroMedia.url}
               alt={heroMedia.alt}
               fill
-              priority
               sizes="(min-width: 1024px) 58vw, 100vw"
               className="object-cover object-center"
             />
@@ -135,7 +182,6 @@ function Hero({ summary }) {
               src="/brand-boards/carlophillips-drop-board.png"
               alt="Archived CARLOPHILLIPS visual-system reference board"
               fill
-              priority
               sizes="(min-width: 1024px) 58vw, 100vw"
               className="object-contain object-center opacity-75"
             />
@@ -149,14 +195,14 @@ function Hero({ summary }) {
         )}
       </figure>
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-[1800px] flex-col justify-end px-5 pb-10 pt-28 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
+      <div className="relative z-10 mx-auto flex min-h-screen min-h-[100svh] max-w-[1800px] flex-col justify-end px-5 pb-10 pt-28 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
         <div className="max-w-4xl">
           <p className="mb-5 text-[9px] uppercase tracking-[0.34em] text-white/58">
             {runwayReady ? 'Signature Series / Runway 001' : 'CARLOPHILLIPS / 001'}
           </p>
-          <h1 className="text-[16vw] font-light uppercase leading-[0.82] tracking-[-0.065em] sm:text-[11vw] lg:text-[7.4vw]">
+          <h2 className="text-[16vw] font-light uppercase leading-[0.82] tracking-[-0.065em] sm:text-[11vw] lg:text-[7.4vw]">
             {runwayReady ? <>Signature<br />Hoodie</> : <>Form.<br />Function.</>}
-          </h1>
+          </h2>
           <p className="mt-7 max-w-md text-sm leading-relaxed text-white/66 sm:text-base">
             {runwayReady
               ? 'Heavyweight black fleece. Quiet signature detail. Built for every day.'
@@ -309,7 +355,8 @@ export default function HomeStorefront({ catalogSummary }) {
     <main id="main-content" className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
       <Navigation onMenu={() => setMenuOpen(true)} />
       {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
-      <Hero summary={summary} />
+      <CampaignHero />
+      <ProductRunwayHero summary={summary} />
       <CategoryRail summary={summary} />
       <HomeReleaseStage summary={summary} />
       <Footer />

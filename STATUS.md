@@ -4,15 +4,14 @@ Updated: 2026-08-08
 Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
-## Runway landing launch candidate — 2026-08-08
+## Two-stage runway landing correction — 2026-08-08
 
-- The landing page now opens with a full-viewport three-frame Signature Hoodie runway sequence, direct product language, and a product CTA. The sequence is available only when the catalog boundary exposes the exact Hoodie; production additionally requires active commerce eligibility.
-- Scrolling reveals a sticky product-category rail. Hoodies is the only active destination; Shirts, Outerwear, Bottoms, and Accessories are intentionally disabled and visually recessed until real products are available.
-- Vollebak and Zara were inspected only for composition patterns: full-bleed campaign media, sparse navigation, restrained copy, and scroll-led presentation. No reference brand asset or text is used by CARLOPHILLIPS.
-- The reusable showcase plan and customer-copy ruling are saved locally as `podpipe` in `PROJECT-NOTES.md`. Internal provenance remains recorded, while customer copy avoids process, provider-verification, and AI-texture language.
-- Direct 1440×1000 and 390×844 local checks decode all three runway frames, show Hoodies active plus four disabled categories, have zero broken images, no runtime error text, and no horizontal overflow after the mobile title/grid correction.
-- Full `yarn verify` passes after the final metadata correction: zero-warning lint, 33 files / 322 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
-- Initial Previews exposed and closed two final defects: the stale browser title “Gesture of Luxury” and transparent header/category backgrounds over the light product section. Final Vercel Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` is READY at `https://carlophillips-site-p92xlobf4-adityas-projects-261b17a9.vercel.app` with target `preview`. Direct desktop/mobile checks confirm the `CARLOPHILLIPS | Signature Series` title, three decoded runway frames, active Hoodies and four disabled categories, opaque navigation contrast, zero broken images/overflow/runtime error text, and an active Shopify checkout action on the Hoodie PDP. Production has not yet been changed.
+- Product Owner supplied and selected a new visual hierarchy: a wide CARLOPHILLIPS coastal runway campaign is the first full-screen landing view; the existing three-frame Signature Hoodie runway is the next full-screen panel on scroll; the sticky category rail follows it.
+- The exact supplied 1672×941 campaign frame is stored at `public/campaigns/lofoten-runway-hero.jpg` with SHA-256 `9a0d10f2835ac0019cf8793ede450256b9226c896dd648f046b7b01360d67090`. Live HTML supplies the responsive brand headline and scroll cue. The campaign is brand media and is not treated as product, material, fit, or fulfillment evidence.
+- The Hoodie runway remains gated by the catalog/commerce decision. A denied product cannot emit the Hoodie MODA sequence or an active Hoodies category; the independent campaign landing remains available.
+- Direct 1440×1000 and 390×844 local checks prove campaign → product → categories ordering, decoded imagery, Hoodies active plus four disabled categories, zero broken images, no runtime error text, no console errors, and no horizontal overflow.
+- Full `yarn verify` passes: zero-warning lint, 33 files / 323 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` is historical evidence for the superseded one-stage hierarchy and must not be merged or promoted. Production has not changed. A corrected Preview is the next required gate.
 
 ## Signature Hoodie media expansion — 2026-08-08
 
