@@ -91,6 +91,7 @@ const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
     src: '/products/signature-hoodie/candidates/moda/model-front-full.jpg',
     alt: 'MODA-assisted full-length front visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
     label: 'On-body / front',
+    fit: 'object-contain',
     position: 'object-center',
     disclosure: 'MODA AI preview',
   },
@@ -98,6 +99,7 @@ const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
     src: '/products/signature-hoodie/candidates/moda/model-three-quarter.jpg',
     alt: 'MODA-assisted three-quarter visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
     label: 'On-body / three-quarter',
+    fit: 'object-contain',
     position: 'object-center',
     disclosure: 'MODA AI preview',
   },
@@ -119,6 +121,7 @@ const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
     src: '/products/signature-hoodie/candidates/moda/model-seated.jpg',
     alt: 'MODA-assisted seated visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
     label: 'On-body / seated',
+    fit: 'object-contain',
     position: 'object-center',
     disclosure: 'MODA AI preview',
   },
@@ -126,6 +129,7 @@ const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
     src: '/products/signature-hoodie/candidates/moda/model-side-profile.jpg',
     alt: 'MODA-assisted side-profile visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
     label: 'On-body / profile',
+    fit: 'object-contain',
     position: 'object-center',
     disclosure: 'MODA AI preview',
   },
@@ -133,6 +137,7 @@ const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
     src: '/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg',
     alt: 'MODA-assisted digital back-view hypothesis of the CARLOPHILLIPS Signature Hoodie on a male model',
     label: 'Digital back-view study',
+    fit: 'object-contain',
     position: 'object-center',
     disclosure: 'Unverified back visualisation',
   },
@@ -140,6 +145,7 @@ const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
     src: '/products/signature-hoodie/candidates/moda/product-flat-lay.jpg',
     alt: 'MODA-assisted flat-lay visualisation of the CARLOPHILLIPS Signature Hoodie',
     label: 'Product-alone / flat lay',
+    fit: 'object-contain',
     position: 'object-center',
     disclosure: 'MODA AI preview',
   },
@@ -173,7 +179,7 @@ function EditorialStudy({ environment, handle }) {
             fill
             sizes="100vw"
             unoptimized={study.unoptimized}
-            className={`object-cover ${study.position}`}
+            className={`${study.fit || 'object-cover'} ${study.position}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10" />
           <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 px-5 py-7 text-[10px] uppercase tracking-[0.22em] text-white/70 sm:px-8 lg:px-12 lg:py-10">

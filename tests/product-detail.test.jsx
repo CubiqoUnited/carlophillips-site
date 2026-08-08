@@ -216,6 +216,7 @@ describe('commerce product presentation', () => {
     expect(previewHtml).toContain('model-back-digital-study.jpg');
     expect(previewHtml).toContain('product-flat-lay.jpg');
     expect(previewHtml).toContain('Unverified back visualisation');
+    expect(previewHtml).toContain('object-contain object-center');
     expect(previewHtml).toContain('material-embroidery-study.png');
     expect(previewHtml).toContain('data-motion-study="still-derived"');
     expect(previewHtml).toContain('still-derived-motion-study.webp');
