@@ -1,5 +1,18 @@
 # Delivery Tasks
 
+## Current bounded launch: runway landing
+
+- [x] Save the approved reusable showcase and POD pipeline locally as `podpipe`.
+- [x] Inspect current Vollebak and Zara landing composition without copying their assets or text.
+- [x] Replace the landing hero with a three-frame Signature Hoodie runway sequence gated by the catalog/commerce decision.
+- [x] Replace internal/process-heavy landing copy with direct premium product language.
+- [x] Add a sticky category rail with Hoodies active and Shirts, Outerwear, Bottoms, and Accessories disabled.
+- [x] Add deterministic tests proving denied products cannot emit the runway media or an active category.
+- [x] Pass focused tests, full lint, 321 tests, zero-vulnerability production audit, and optimized build.
+- [x] Capture direct 1440×1000 and 390×844 hero/category evidence with zero broken images, runtime error text, or horizontal overflow.
+- [ ] Deploy and verify the exact candidate as a Vercel Preview.
+- [ ] Merge only the verified candidate through canonical `main`, deploy Vercel Production, and verify the live domain and Hoodie flow.
+
 ## Current bounded delivery: complete Hoodie media ladder
 
 - [x] Inventory all existing image, GIF, video, and 3D assets; confirm no existing motion or 3D file is available.

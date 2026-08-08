@@ -61,6 +61,12 @@
     scroll-snap-stop: normal;
   }
 
+  .runway-frame {
+    opacity: 0;
+    animation: runway-frame 15s infinite both;
+    transform: scale(1.01);
+  }
+
   /* Hide scrollbar for product carousels */
   .scrollbar-hide {
     -ms-overflow-style: none;
@@ -86,6 +92,35 @@
     -webkit-box-orient: vertical;
   }
 
+}
+
+@keyframes runway-frame {
+  0%, 30% {
+    opacity: 1;
+    transform: scale(1.01);
+  }
+
+  33%, 96% {
+    opacity: 0;
+    transform: scale(1.035);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1.01);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .runway-frame {
+    animation: none;
+    opacity: 0;
+    transform: none;
+  }
+
+  .runway-frame-primary {
+    opacity: 1;
+  }
 }
 
 @layer utilities {

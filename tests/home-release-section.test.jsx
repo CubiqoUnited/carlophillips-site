@@ -65,8 +65,9 @@ describe('home release composition', () => {
       primaryProduct: null,
     }} />);
     expect(available).toContain('Preview the collection');
-    expect(available).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmodelize%2Feditorial-02.jpg');
-    expect(available).toContain('Modelize product portrait · generated candidate · approval pending');
+    expect(available).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
+    expect(available).toContain('Private product preview');
+    expect(available).not.toContain('Modelize product portrait · generated candidate · approval pending');
     expect(unavailable).toContain('Explore the collection');
     expect(unavailable).not.toContain('/products/');
     expect(unavailable).not.toContain('editorial-02.jpg');
@@ -93,11 +94,34 @@ describe('home release composition', () => {
       commerceAllowed: true,
       primaryProduct: { ...availableSummary.primaryProduct, commerceAllowed: true },
     }} />);
-    expect(html).toContain('Discover the Signature Hoodie');
+    expect(html).toContain('View the Signature Hoodie');
     expect(html).toContain('Signature Series');
     expect(html).toContain('Available now / Black / XS–5XL');
+    expect(html).toContain('Signature Series / Runway 001');
+    expect(html).toContain('Heavyweight black fleece. Quiet signature detail. Built for every day.');
+    expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
+    expect(html).toContain('aria-current="page"');
+    expect(html).toContain('>Hoodies</a>');
+    expect(html).toContain('aria-disabled="true"');
+    expect(html).toContain('>Shirts</span>');
+    expect(html).toContain('>Bottoms</span>');
     expect(html).not.toContain('release gate');
     expect(html).not.toContain('Candidates</span>');
     expect(html).not.toContain('Withheld</span>');
+  });
+
+  it('keeps runway product media and active categories behind product visibility eligibility', () => {
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={{
+      ...availableSummary,
+      status: 'denied',
+      visibleCount: 0,
+      excludedCount: 1,
+      commerceAllowed: false,
+      primaryProduct: null,
+    }} />);
+    expect(html).not.toContain('/products/signature-hoodie/candidates/moda/');
+    expect(html).not.toContain('Signature Series / Runway 001');
+    expect(html).not.toContain('aria-current="page"');
+    expect(html).toContain('aria-disabled="true"');
   });
 });

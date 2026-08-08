@@ -4,6 +4,16 @@ Updated: 2026-08-08
 Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Runway landing launch candidate — 2026-08-08
+
+- The landing page now opens with a full-viewport three-frame Signature Hoodie runway sequence, direct product language, and a product CTA. The sequence is available only when the catalog boundary exposes the exact Hoodie; production additionally requires active commerce eligibility.
+- Scrolling reveals a sticky product-category rail. Hoodies is the only active destination; Shirts, Outerwear, Bottoms, and Accessories are intentionally disabled and visually recessed until real products are available.
+- Vollebak and Zara were inspected only for composition patterns: full-bleed campaign media, sparse navigation, restrained copy, and scroll-led presentation. No reference brand asset or text is used by CARLOPHILLIPS.
+- The reusable showcase plan and customer-copy ruling are saved locally as `podpipe` in `PROJECT-NOTES.md`. Internal provenance remains recorded, while customer copy avoids process, provider-verification, and AI-texture language.
+- Direct 1440×1000 and 390×844 local checks decode all three runway frames, show Hoodies active plus four disabled categories, have zero broken images, no runtime error text, and no horizontal overflow after the mobile title/grid correction.
+- Full `yarn verify` passes: zero-warning lint, 33 files / 321 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Vercel Preview and production deployment evidence are still pending for this exact candidate; production has not yet been changed.
+
 ## Signature Hoodie media expansion — 2026-08-08
 
 - The competitive target now has an explicit eight-part media ladder: factual product stills, product-alone editorial stills, macro material/embroidery detail, on-body imagery, short video, GIF/motion, 360 spin, and interactive 3D/AR.
