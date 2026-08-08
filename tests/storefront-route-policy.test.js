@@ -42,4 +42,11 @@ describe('storefront route policy', () => {
     expect(robots).not.toContain('/about');
     expect(robots).not.toContain('/lookbook');
   });
+
+  it('keeps site metadata aligned with the active Signature Series', () => {
+    const source = readFileSync('app/layout.js', 'utf8');
+    expect(source).toContain("tagline: 'Signature Series'");
+    expect(source).toContain('The CARLOPHILLIPS Signature Hoodie.');
+    expect(source).not.toContain('Gesture of Luxury');
+  });
 });

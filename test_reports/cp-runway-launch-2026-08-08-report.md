@@ -29,7 +29,7 @@ Fresh background captures of Vollebak and Zara were reviewed for composition onl
 ## Verification
 
 - Focused home/route suites: 10/10 passed.
-- Full `yarn verify`: passed — zero-warning lint, 33 files / 321 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Full `yarn verify`: passed — zero-warning lint, 33 files / 322 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
 - Desktop 1440×1000: three runway frames, Signature Hoodie headline/CTA, decoded imagery, active Hoodies category, four disabled categories, no horizontal overflow, and no runtime error text.
 - Mobile 390×844: three runway frames, complete model composition, active/disabled category states, zero broken images, document width equal to viewport width, and no runtime error text.
 - The first mobile pass exposed a 12-pixel overflow from the long product title. Responsive min-width, title sizing, and category clipping were corrected before the final captures.
@@ -43,4 +43,4 @@ Fresh background captures of Vollebak and Zara were reviewed for composition onl
 
 ## Launch state
 
-The exact candidate has not yet changed production. Next: commit and push the temporary branch, verify its immutable Vercel Preview directly, then merge through canonical `main` and deploy Production under the Product Owner's current launch instruction.
+Initial Vercel Preview `dpl_9cPGT244bKxjdovsaMEcQdJXz493` proved the runway layout but exposed the stale browser title “Gesture of Luxury.” The metadata correction is tested locally. The exact corrected candidate has not yet changed production. Next: commit and push the correction, verify its immutable Preview directly, then merge through canonical `main` and deploy Production under the Product Owner's current launch instruction.

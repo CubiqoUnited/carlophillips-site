@@ -3,8 +3,8 @@ import './globals.css';
 // SEO and Metadata Configuration
 const siteConfig = {
   name: 'CARLOPHILLIPS',
-  tagline: 'Gesture of Luxury',
-  description: 'CARLOPHILLIPS premium essentials. Discover the Signature Hoodie and complete your purchase through secure Shopify checkout.',
+  tagline: 'Signature Series',
+  description: 'The CARLOPHILLIPS Signature Hoodie. Heavyweight black fleece, quiet detail, and secure Shopify checkout.',
   url: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.carlophillips.com',
   locale: 'en_US',
   type: 'website',
