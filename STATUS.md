@@ -4,12 +4,21 @@ Updated: 2026-08-08
 Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Signature Hoodie premium-showcase bridge — 2026-08-08
+
+- The high-end composition was already present, but the live PDP had only two plain Shopify product views. Modelize candidates existed outside the release-bound Shopify gallery, and no truthful editorial-study layer connected them to the Preview. Real spin/video/3D inputs were absent.
+- The Product Owner authorized use of the existing embedded-app outputs. Modelize job `#137843f7` now reports two selected outputs published to the Hoodie on 2026-08-08 at 02:40 PM; Shopify Admin visually confirms four media items. The visibly artifacted close-up remains unpublished and quarantined.
+- The temporary branch adds a Signature-Hoodie-only, Preview-only digital editorial study: two full-height Modelize panels, sparse high-fashion typography, and an explicit AI-assisted disclosure. These images do not enter the release-bound product-truth gallery and cannot render in production through this path.
+- Spin Studio is installed and its free tier can cover one product, but it requires 16–24 genuine angle images or a GLB model. Neither exists, so no fake 360/3D was generated. Modelize has exhausted its 3/3 free allowance; the observed paid entry point is $19/month and remains unapproved.
+- MODA is a candidate zero-subscription complement for multi-angle model images and short video (official listing advertises 20 free images and two free styled products), but its authenticated Shopify install control did not advance. It is not installed and no permissions were granted.
+- Tests prove the editorial study is limited to the exact Hoodie handle in Preview, absent from production/other products, and excludes the quarantined asset. Full verification passes: zero-warning lint, 33 files / 320 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build. Deployed desktop/mobile evidence remains required before this bounded change is complete.
+
 ## Premium Hobby Preview candidate — 2026-08-08
 
 - Product Owner approved a non-production Preview in Aditya's active Vercel Hobby project, with the existing Shopify Storefront domain/token stored for Preview only. Production and its domains are explicitly excluded.
 - The Shopify-backed home, collection, and Hoodie PDP now use a restrained high-end fashion presentation: full-height visual storytelling, sparse navigation, direct product/price language, ordered size presentation, and quiet scroll sections inspired by the approved Vollebak/Zara references without copying them.
 - Live customer pages suppress internal release-policy jargon. They show only reviewed Shopify title, description, price, availability, two current product images, and the existing server-only Shopify checkout boundary.
-- No unverified spin, 3D, video, on-model, or lifestyle media is rendered or claimed. The truthful premium-media limitation remains visible in this status rather than in customer copy.
+- No unverified spin, 3D, or video is rendered or claimed. A later bounded Preview candidate adds two explicitly disclosed AI-assisted Modelize visualisations outside the factual product gallery; that work is tracked in the premium-showcase bridge above.
 - Local desktop and direct 390×844 browser checks passed with no horizontal overflow, no console/page errors, and no internal release-jargon matches. `yarn verify` passes 33 files / 318 tests, zero production vulnerabilities, and the 12-route optimized build.
 - The final candidate is deployed READY as Vercel Preview `dpl_45XNRKWTpGbB1LaXreWH14sSkYMQ`: `https://carlophillips-site-2xbt13766-adityas-projects-261b17a9.vercel.app`. Preview-only Shopify variables are stored as sensitive values and are absent from Git.
 - Post-deployment QA passed on home, shop, collections, and PDP: HTTP 200; exact 1280×720 and 390×844 widths; no overflow; all images loaded; zero console warnings/errors; no runtime overlay or internal release jargon. The nine Shopify size/price choices and checkout action are present.
@@ -49,7 +58,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The historical Product Owner-observed 30-app Shopify inventory is preserved in a schema-validated evidence record. The authenticated 2026-08-04 read-only audit supersedes it with 33 installed apps and direct browser-surface findings; installation still does not prove an API or authorize writes.
 - Shopify Admin authentication is no longer blocked. The current human boundary is the separate Apliiq provider sign-in required to inspect the exact Hoodie mapping.
 - The App Router now runs on Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`; async route params were migrated and the full local regression passed.
-- The authenticated Modelize app contains one completed three-image Signature Hoodie job (`#137843f7`, observed 2026-08-04). Two usable generated candidates are now stored locally and rendered only in the explicitly labeled local non-commerce fixture; the third is quarantined for a visible layout artifact. This is real generated candidate evidence, not approved or released product media.
+- The authenticated Modelize app contains one completed three-image Signature Hoodie job (`#137843f7`, observed 2026-08-04). Two usable outputs are stored locally and were selectively published to the Shopify Hoodie on 2026-08-08 under the Product Owner's app-use authorization; the third remains quarantined for a visible layout artifact. They remain AI-assisted visualisations, not physical-product proof.
 
 ## Not yet proven
 
@@ -58,7 +67,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Any verified app-private API path for the current installed Shopify app inventory; Shopify Admin browser access is proven, while Apliiq remains at provider sign-in and Storefront secrets remain unconfigured.
 - Live deployment of the new Shopify-backed commerce build on the production domain; Vercel billing suspension prevents configuration and deployment.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
-- Any real product video, spin/360, 3D/AR, try-on, on-model, or lifestyle campaign asset.
+- Any real product video, spin/360, 3D/AR, or physical on-model/lifestyle campaign asset. The two published Modelize outputs are explicitly AI-assisted visualisations.
 - An authenticated Apliiq observation proving the exact Hoodie design/product/variant mapping. The retained provider tab is at the separate Apliiq sign-in screen.
 - Any approved Modelize plan or credits for additional on-model generation. The observed free allowance is exhausted (3/3); no plan or charge was accepted.
 

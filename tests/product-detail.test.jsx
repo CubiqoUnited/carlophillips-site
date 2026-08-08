@@ -179,4 +179,56 @@ describe('commerce product presentation', () => {
     expect(html).toContain('data-unavailable-reason="SHOPIFY_REQUEST_FAILED"');
     expect(html).not.toContain('Reason:');
   });
+
+  it('renders the disclosed Signature Hoodie editorial study only in Preview', () => {
+    const product = toProductViewModel({
+      source: 'shopify',
+      environment: 'preview',
+      commerceAllowed: false,
+      reason: 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE',
+      product: {
+        id: 'hoodie',
+        handle: 'carlophillips-signature-hoodie',
+        title: 'Signature Hoodie',
+        price: 128,
+        currency: 'USD',
+        description: 'Observed description',
+        availableForSale: true,
+        vendor: 'Apliiq',
+        productType: 'Hoodie',
+        media: [],
+      },
+    });
+    const previewHtml = renderToStaticMarkup(
+      <CommerceProductDetail environment="preview" product={product} />
+    );
+    const productionHtml = renderToStaticMarkup(
+      <CommerceProductDetail environment="production" product={product} />
+    );
+
+    expect(previewHtml).toContain('data-editorial-study="ai-assisted-preview"');
+    expect(previewHtml).toContain('Digital editorial study / 01');
+    expect(previewHtml).toContain('AI-assisted visualisations');
+    expect(previewHtml).toContain('editorial-01.jpg');
+    expect(previewHtml).toContain('editorial-02.jpg');
+    expect(previewHtml).not.toContain('embroidery-detail-quarantined');
+    expect(productionHtml).not.toContain('data-editorial-study');
+    expect(productionHtml).not.toContain('editorial-01.jpg');
+    expect(productionHtml).not.toContain('editorial-02.jpg');
+  });
+
+  it('does not attach the Hoodie editorial study to other Preview products', () => {
+    const html = renderToStaticMarkup(
+      <CommerceProductDetail
+        environment="preview"
+        product={{
+          handle: 'another-product', title: 'Another Product', price: 100, currency: 'USD', description: '',
+          sourceLabel: 'Shopify Storefront observation', commerceAllowed: false, availableForSale: false,
+          vendor: '', productType: '', media: [], mediaReview: null, colors: [], sizes: [], truthHeading: '', story: '',
+        }}
+      />
+    );
+
+    expect(html).not.toContain('data-editorial-study');
+  });
 });

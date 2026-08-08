@@ -50,6 +50,7 @@ export default async function ProductPage({ params }) {
       product={product}
       releaseReason={decision.reason}
       cartActivation={cartActivation}
+      environment={environment}
     />
   );
 }

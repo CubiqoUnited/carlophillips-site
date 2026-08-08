@@ -86,6 +86,55 @@ function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
   );
 }
 
+const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
+  {
+    src: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
+    alt: 'AI-assisted editorial visualisation of the CARLOPHILLIPS Signature Hoodie presented on a chair',
+    position: 'object-center',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+    alt: 'AI-assisted flat-lay visualisation of the CARLOPHILLIPS Signature Hoodie',
+    position: 'object-center',
+  },
+];
+
+function EditorialStudy({ environment, handle }) {
+  if (environment !== 'preview' || handle !== 'carlophillips-signature-hoodie') return null;
+
+  return (
+    <section data-editorial-study="ai-assisted-preview" aria-labelledby="editorial-study-title">
+      <div className="storefront-panel flex min-h-[72vh] items-end border-b border-white/10 px-5 py-16 sm:px-8 lg:min-h-screen lg:px-12 lg:py-24">
+        <div className="mx-auto w-full max-w-[1700px]">
+          <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/38">Digital editorial study / 01</p>
+          <h2 id="editorial-study-title" className="max-w-6xl text-5xl font-light leading-[0.9] tracking-[-0.06em] sm:text-7xl lg:text-8xl xl:text-9xl">
+            A study in weight, form and restraint.
+          </h2>
+          <p className="mt-10 max-w-2xl text-sm leading-relaxed text-white/48 sm:text-base">
+            AI-assisted visualisations created from the Signature Hoodie product image. Confirm garment details against the Shopify product views above.
+          </p>
+        </div>
+      </div>
+      {SIGNATURE_HOODIE_EDITORIAL_STUDY.map((study, index) => (
+        <figure key={study.src} className="storefront-panel relative min-h-[78vh] overflow-hidden border-b border-white/10 bg-[#111] lg:min-h-screen">
+          <Image
+            src={study.src}
+            alt={study.alt}
+            fill
+            sizes="100vw"
+            className={`object-cover ${study.position}`}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10" />
+          <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 px-5 py-7 text-[10px] uppercase tracking-[0.22em] text-white/70 sm:px-8 lg:px-12 lg:py-10">
+            <span>Signature Hoodie / visual study {String(index + 1).padStart(2, '0')}</span>
+            <span className="text-right text-white/45">AI-assisted preview</span>
+          </figcaption>
+        </figure>
+      ))}
+    </section>
+  );
+}
+
 function Header() {
   return (
     <header className="fixed left-0 right-0 top-0 z-40 border-b border-white/10 bg-black/85 backdrop-blur-xl">
@@ -161,6 +210,7 @@ export function CommerceProductDetail({
   product,
   releaseReason = 'RELEASE_DECISION_UNAVAILABLE',
   cartActivation = null,
+  environment = null,
 }) {
   const liveProduct = Boolean(cartActivation?.cartAllowed && product.commerceAllowed);
   const liveSizes = product.variantPresentation?.combinations
@@ -253,6 +303,8 @@ export function CommerceProductDetail({
           </div>
         </div>
       </section>
+
+      <EditorialStudy environment={environment} handle={product.handle} />
     </main>
   );
 }

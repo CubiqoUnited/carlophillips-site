@@ -1,13 +1,13 @@
-# 🔴 HUMAN INTERVENTION REQUIRED — REVIEW HOBBY PREVIEW BEFORE PRODUCTION
+# 🔴 HUMAN INTERVENTION REQUIRED — REVIEW THE UPDATED HOODIE SHOWCASE
 
 Updated: 2026-08-08
-Status: The Product Owner approved and Codex created a non-production Preview in Aditya's active Vercel Hobby project. The premium Shopify-backed candidate is READY at `https://carlophillips-site-2xbt13766-adityas-projects-261b17a9.vercel.app` and passes local plus deployed desktop/mobile verification. Production and its domains remain unchanged.
+Status: The existing premium Shopify-backed Preview is being extended with a disclosed, AI-assisted Signature Hoodie editorial study. Two usable Modelize outputs are now published to the Shopify product; the artifacted third output remains unpublished. Production and its domains remain unchanged.
 
 ## Exact action
 
-Open `https://carlophillips-site-2xbt13766-adityas-projects-261b17a9.vercel.app` and review its home, collection, Hoodie PDP, size/price presentation, and Shopify checkout handoff. Then explicitly approve or reject production promotion. Do not approve production until the Preview meets the intended high-end visual standard and the remaining media limitations are acceptable.
+After Codex supplies the updated Preview URL, open the Hoodie PDP and review the product-truth gallery, the two full-height digital editorial panels, disclosure wording, mobile scroll, size/price presentation, and Shopify checkout handoff. Then say **Showcase Preview approved** or list visual corrections. Do not approve production until the distinction between Shopify product views and AI-assisted visualisations is acceptable.
 
-The Preview uses the active Hobby scope without accepting a paid plan. Production promotion would alter the public site and is intentionally held for a separate Product Owner decision. The current product has only two verified Shopify images; richer model, video, 3D, and spin media must remain absent until real exact-product assets are approved.
+The Preview uses the active Hobby scope without accepting a paid plan. Modelize has used its 3/3 free allowance; its observed paid entry point is $19/month, and no purchase is approved. Spin Studio can cover one product for $0 but requires 16–24 genuine angle photos or a GLB. MODA advertises free initial image/product credits but requests Shopify product and Admin Files permissions; its install did not complete and no permission was granted. Production promotion would alter the public site and remains a separate decision.
 
 ## Cost and risk
 
@@ -15,7 +15,7 @@ The destination is an active Hobby scope, so this step does not accept a paid pl
 
 ## Exact resume point
 
-Complete the visual review and tell Codex either **Preview approved for production planning** or list the required visual corrections. Production remains a separate explicit action.
+Complete the visual review and tell Codex either **Showcase Preview approved** or list the required visual corrections. Production remains a separate explicit action. To pursue real spin/3D, provide a genuine angle set or GLB and say **Spin source ready**. To retry MODA installation, open its Shopify listing manually, review the product/Admin Files permissions, click Install, and say **MODA installed**; this may expose store product/files data to that app even though its advertised first credits are free.
 
 ## Optional original-account route
 

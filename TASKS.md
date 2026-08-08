@@ -1,5 +1,18 @@
 # Delivery Tasks
 
+## Current bounded delivery: Signature Hoodie premium showcase
+
+- [x] Diagnose the gap between the premium layout and the limited two-image product presentation.
+- [x] Inspect Modelize, Spin Studio, MyDesigns, and a zero-subscription video/model candidate without accepting charges or broad permissions.
+- [x] Publish only the two usable outputs from existing Modelize job `#137843f7`; leave the artifacted close-up unpublished.
+- [x] Add a Signature-Hoodie-only Preview editorial study with explicit AI-assisted disclosure and no product-truth claims.
+- [x] Prove by component tests that the study cannot render in production, on other products, or include the quarantined asset.
+- [x] Pass full lint, 320 tests, zero-vulnerability production audit, and optimized build.
+- [ ] Capture direct desktop/mobile Preview evidence with all images loaded and no browser errors or overflow.
+- [ ] Product Owner reviews the updated Preview; production remains unchanged pending a separate decision.
+- [ ] Obtain 16–24 genuine angle images or a real GLB before using Spin Studio; its free one-product tier does not create missing source truth.
+- [ ] Decide separately whether to install MODA after reviewing its requested Shopify permissions; do not buy Modelize credits or a plan without exact approval.
+
 ## Current bounded delivery: premium Hobby Preview
 
 - [x] Apply the approved Vollebak/Zara reference direction without copying brand assets or inventing media.
