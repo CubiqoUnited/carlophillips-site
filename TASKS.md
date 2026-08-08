@@ -10,7 +10,7 @@
 - [x] Add deterministic tests proving denied products cannot emit the runway media or an active category.
 - [x] Pass focused tests, full lint, 322 tests, zero-vulnerability production audit, and optimized build after correcting stale site metadata.
 - [x] Capture direct 1440×1000 and 390×844 hero/category evidence with zero broken images, runtime error text, or horizontal overflow.
-- [ ] Deploy and verify the exact candidate as a Vercel Preview.
+- [x] Deploy and verify the exact candidate as READY Vercel Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` at desktop and 390×844, including the Hoodie checkout boundary.
 - [ ] Merge only the verified candidate through canonical `main`, deploy Vercel Production, and verify the live domain and Hoodie flow.
 
 ## Current bounded delivery: complete Hoodie media ladder

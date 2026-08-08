@@ -12,7 +12,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The reusable showcase plan and customer-copy ruling are saved locally as `podpipe` in `PROJECT-NOTES.md`. Internal provenance remains recorded, while customer copy avoids process, provider-verification, and AI-texture language.
 - Direct 1440×1000 and 390×844 local checks decode all three runway frames, show Hoodies active plus four disabled categories, have zero broken images, no runtime error text, and no horizontal overflow after the mobile title/grid correction.
 - Full `yarn verify` passes after the final metadata correction: zero-warning lint, 33 files / 322 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
-- Initial Vercel Preview `dpl_9cPGT244bKxjdovsaMEcQdJXz493` proved the runway layout but exposed the stale browser title “Gesture of Luxury.” The title is now `CARLOPHILLIPS | Signature Series`; a corrected immutable Preview and production evidence are pending. Production has not yet been changed.
+- Initial Previews exposed and closed two final defects: the stale browser title “Gesture of Luxury” and transparent header/category backgrounds over the light product section. Final Vercel Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` is READY at `https://carlophillips-site-p92xlobf4-adityas-projects-261b17a9.vercel.app` with target `preview`. Direct desktop/mobile checks confirm the `CARLOPHILLIPS | Signature Series` title, three decoded runway frames, active Hoodies and four disabled categories, opaque navigation contrast, zero broken images/overflow/runtime error text, and an active Shopify checkout action on the Hoodie PDP. Production has not yet been changed.
 
 ## Signature Hoodie media expansion — 2026-08-08
 

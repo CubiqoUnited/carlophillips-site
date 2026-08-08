@@ -40,7 +40,13 @@ Fresh background captures of Vollebak and Zara were reviewed for composition onl
 - `test_reports/cp-media-expansion-2026-08-08/runway-home-local-categories.png`
 - `test_reports/cp-media-expansion-2026-08-08/runway-home-local-mobile.png`
 - `test_reports/cp-media-expansion-2026-08-08/runway-home-local-mobile-categories.png`
+- `test_reports/cp-media-expansion-2026-08-08/runway-home-preview-desktop.png`
+- `test_reports/cp-media-expansion-2026-08-08/runway-home-preview-categories.png`
+- `test_reports/cp-media-expansion-2026-08-08/runway-home-preview-mobile.png`
+- `test_reports/cp-media-expansion-2026-08-08/runway-home-preview-mobile-categories.png`
 
 ## Launch state
 
-Initial Vercel Preview `dpl_9cPGT244bKxjdovsaMEcQdJXz493` proved the runway layout but exposed the stale browser title “Gesture of Luxury.” The metadata correction is tested locally. The exact corrected candidate has not yet changed production. Next: commit and push the correction, verify its immutable Preview directly, then merge through canonical `main` and deploy Production under the Product Owner's current launch instruction.
+Initial Previews exposed and closed the stale browser title and transparent-navigation contrast defects. Final Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` is READY at `https://carlophillips-site-p92xlobf4-adityas-projects-261b17a9.vercel.app` with target `preview`.
+
+Direct desktop/mobile Preview checks confirm the Signature Series title, three runway frames, active Hoodies and four disabled categories, opaque `rgba(0, 0, 0, 0.8)` header and `rgba(0, 0, 0, 0.95)` category rail over the light product section, zero broken images/overflow/runtime error text, and active Shopify checkout on the Hoodie PDP. Production has not yet changed. Next: merge the verified candidate through canonical `main`, deploy Production, and repeat the live-domain checks.
