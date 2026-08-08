@@ -11,7 +11,10 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Live customer pages suppress internal release-policy jargon. They show only reviewed Shopify title, description, price, availability, two current product images, and the existing server-only Shopify checkout boundary.
 - No unverified spin, 3D, video, on-model, or lifestyle media is rendered or claimed. The truthful premium-media limitation remains visible in this status rather than in customer copy.
 - Local desktop and direct 390×844 browser checks passed with no horizontal overflow, no console/page errors, and no internal release-jargon matches. `yarn verify` passes 33 files / 318 tests, zero production vulnerabilities, and the 12-route optimized build.
-- Candidate evidence is stored under `test_reports/cp-premium-hobby-preview-2026-08-08/`. Preview URL and deployed checks will be added after the approved deployment; `www.carlophillips.com` remains untouched.
+- The final candidate is deployed READY as Vercel Preview `dpl_45XNRKWTpGbB1LaXreWH14sSkYMQ`: `https://carlophillips-site-2xbt13766-adityas-projects-261b17a9.vercel.app`. Preview-only Shopify variables are stored as sensitive values and are absent from Git.
+- Post-deployment QA passed on home, shop, collections, and PDP: HTTP 200; exact 1280×720 and 390×844 widths; no overflow; all images loaded; zero console warnings/errors; no runtime overlay or internal release jargon. The nine Shopify size/price choices and checkout action are present.
+- Vercel inspection proves `www.carlophillips.com` still targets the separate existing production deployment `dpl_D1qQH41QHZ2fgJnhFzYjkfvJU7Yp`. No production alias or deployment was changed.
+- Complete local and deployed evidence is stored under `test_reports/cp-premium-hobby-preview-2026-08-08/`.
 
 ## Signature Hoodie commerce activation — 2026-08-04
 

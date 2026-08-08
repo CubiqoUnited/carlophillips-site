@@ -1,11 +1,11 @@
 # 🔴 HUMAN INTERVENTION REQUIRED — REVIEW HOBBY PREVIEW BEFORE PRODUCTION
 
 Updated: 2026-08-08
-Status: The Product Owner approved creating a non-production Preview in Aditya's active Vercel Hobby project and storing the existing Shopify Storefront domain/token there for Preview only. The premium Shopify-backed candidate passes local automated and desktop/mobile browser verification. Preview deployment is in progress; production and its domains remain unchanged.
+Status: The Product Owner approved and Codex created a non-production Preview in Aditya's active Vercel Hobby project. The premium Shopify-backed candidate is READY at `https://carlophillips-site-2xbt13766-adityas-projects-261b17a9.vercel.app` and passes local plus deployed desktop/mobile verification. Production and its domains remain unchanged.
 
 ## Exact action
 
-After Codex reports the Preview URL, review its home, collection, Hoodie PDP, size/price presentation, and Shopify checkout handoff. Then explicitly approve or reject production promotion. Do not approve production until the Preview meets the intended high-end visual standard and the remaining media limitations are acceptable.
+Open `https://carlophillips-site-2xbt13766-adityas-projects-261b17a9.vercel.app` and review its home, collection, Hoodie PDP, size/price presentation, and Shopify checkout handoff. Then explicitly approve or reject production promotion. Do not approve production until the Preview meets the intended high-end visual standard and the remaining media limitations are acceptable.
 
 The Preview uses the active Hobby scope without accepting a paid plan. Production promotion would alter the public site and is intentionally held for a separate Product Owner decision. The current product has only two verified Shopify images; richer model, video, 3D, and spin media must remain absent until real exact-product assets are approved.
 
@@ -15,7 +15,7 @@ The destination is an active Hobby scope, so this step does not accept a paid pl
 
 ## Exact resume point
 
-Open the Preview URL reported in `test_reports/cp-premium-hobby-preview-2026-08-08/report.md`, complete the visual review, and tell Codex either **Preview approved for production planning** or list the required visual corrections. Production remains a separate explicit action.
+Complete the visual review and tell Codex either **Preview approved for production planning** or list the required visual corrections. Production remains a separate explicit action.
 
 ## Optional original-account route
 

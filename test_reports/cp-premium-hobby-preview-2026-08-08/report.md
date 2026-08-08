@@ -50,9 +50,30 @@ Routes checked against the live Shopify Storefront read boundary: `/`, `/shop`, 
 
 The three direct 1280×720 captures were taken from a freshly restarted development server after the production build, specifically to rule out stale development-cache overlays and to inspect the visible first viewport at native browser size.
 
-## Deployment status
+## Deployed Preview result
 
-Product Owner approval for a non-production Preview in `adityas-projects-261b17a9/carlophillips-site` is recorded. Preview deployment and post-deployment browser evidence remain the next step. Vercel Production and `www.carlophillips.com` are outside this candidate deployment and must remain unchanged.
+Preview: `https://carlophillips-site-2xbt13766-adityas-projects-261b17a9.vercel.app`
+
+- Vercel deployment: `dpl_45XNRKWTpGbB1LaXreWH14sSkYMQ`.
+- Vercel target: `preview`; state: `READY`.
+- Shopify Storefront domain/token are stored as sensitive Vercel variables for Preview only. Values are not present in this report or the repository.
+- `/`, `/shop`, `/collections`, and `/products/carlophillips-signature-hoodie` each returned HTTP 200.
+- Direct browser verification covered `/`, `/shop`, and the PDP at 1280×720 and 390×844. All six page checks had exact viewport/scroll widths, all images loaded, no runtime overlay, no browser console warning/error, and no internal release jargon.
+- A first true-device capture exposed a 23-pixel home overflow from the long mobile product title. The mobile type size was corrected, full verification was rerun, and this final Preview was redeployed and rechecked at `390 === 390` CSS pixels.
+- The PDP exposes the nine ordered Shopify sizes and USD 128–134 pricing, with the customer checkout action enabled. No new cart, payment, order, or fulfillment event was created during this final visual pass.
+- `www.carlophillips.com` remains HTTP 200 on the separate production deployment `dpl_D1qQH41QHZ2fgJnhFzYjkfvJU7Yp`, created five days earlier. No production alias or deployment changed.
+
+Additional deployed evidence:
+
+- `preview-home-direct-1280x720.jpg`
+- `preview-shop-direct-1280x720.jpg`
+- `preview-pdp-direct-1280x720.jpg`
+- `preview-home-mobile-390x844.png`
+- `preview-shop-mobile-390x844.png`
+- `preview-pdp-mobile-390x844.png`
+- `preview-home-mobile-release-390x844.png`
+- `preview-pdp-mobile-checkout-390x844.png`
+- `preview-pdp-mobile-purchase-390x844.png`
 
 ## Known limitations
 
