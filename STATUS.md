@@ -1,8 +1,17 @@
 # Current Status
 
-Updated: 2026-08-04
+Updated: 2026-08-08
 Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Premium Hobby Preview candidate — 2026-08-08
+
+- Product Owner approved a non-production Preview in Aditya's active Vercel Hobby project, with the existing Shopify Storefront domain/token stored for Preview only. Production and its domains are explicitly excluded.
+- The Shopify-backed home, collection, and Hoodie PDP now use a restrained high-end fashion presentation: full-height visual storytelling, sparse navigation, direct product/price language, ordered size presentation, and quiet scroll sections inspired by the approved Vollebak/Zara references without copying them.
+- Live customer pages suppress internal release-policy jargon. They show only reviewed Shopify title, description, price, availability, two current product images, and the existing server-only Shopify checkout boundary.
+- No unverified spin, 3D, video, on-model, or lifestyle media is rendered or claimed. The truthful premium-media limitation remains visible in this status rather than in customer copy.
+- Local desktop and direct 390×844 browser checks passed with no horizontal overflow, no console/page errors, and no internal release-jargon matches. `yarn verify` passes 33 files / 318 tests, zero production vulnerabilities, and the 12-route optimized build.
+- Candidate evidence is stored under `test_reports/cp-premium-hobby-preview-2026-08-08/`. Preview URL and deployed checks will be added after the approved deployment; `www.carlophillips.com` remains untouched.
 
 ## Signature Hoodie commerce activation — 2026-08-04
 

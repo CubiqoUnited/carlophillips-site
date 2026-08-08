@@ -34,7 +34,7 @@ describe('home release composition', () => {
     expect(html).toContain('Withheld</span><strong');
     expect(html).toContain('CARLOPHILLIPS Signature Hoodie');
     expect(html).toContain('href="/products/carlophillips-signature-hoodie"');
-    expect(html).toContain('Review product');
+    expect(html).toContain('View product');
     expect(html).not.toContain('Add to bag');
   });
 
@@ -48,7 +48,7 @@ describe('home release composition', () => {
       primaryProduct: null,
     };
     const html = renderToStaticMarkup(<HomeReleaseStage summary={summary} />);
-    expect(html).toContain('The product remains behind its release gate.');
+    expect(html).toContain('The next piece is taking shape.');
     expect(html).toContain('Visible</span><strong');
     expect(html).not.toContain('/products/');
     expect(html).not.toContain('Signature Hoodie');
@@ -64,10 +64,10 @@ describe('home release composition', () => {
       excludedCount: 1,
       primaryProduct: null,
     }} />);
-    expect(available).toContain('Review 1 product');
-    expect(available).toContain('/products/signature-hoodie/candidates/modelize/editorial-02.jpg');
+    expect(available).toContain('Preview the collection');
+    expect(available).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmodelize%2Feditorial-02.jpg');
     expect(available).toContain('Modelize product portrait · generated candidate · approval pending');
-    expect(unavailable).toContain('View release state');
+    expect(unavailable).toContain('Explore the collection');
     expect(unavailable).not.toContain('/products/');
     expect(unavailable).not.toContain('editorial-02.jpg');
   });
@@ -80,9 +80,24 @@ describe('home release composition', () => {
       excludedCount: 1,
       primaryProduct: null,
     }} />);
-    expect(html).toContain('Visual-system reference · not product or media proof');
-    expect(html).toContain('Nothing shown here grants purchase, publication, or fulfillment authority.');
+    expect(html).toContain('Collection preview');
+    expect(html).toContain('A considered study in form, material and everyday utility.');
     expect(html).not.toContain('Add to bag');
     expect(html).not.toContain('Shop Now');
+  });
+
+  it('renders live product copy without internal release jargon', () => {
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={{
+      ...availableSummary,
+      environment: 'preview',
+      commerceAllowed: true,
+      primaryProduct: { ...availableSummary.primaryProduct, commerceAllowed: true },
+    }} />);
+    expect(html).toContain('Discover the Signature Hoodie');
+    expect(html).toContain('Signature Series');
+    expect(html).toContain('Available now / Black / XS–5XL');
+    expect(html).not.toContain('release gate');
+    expect(html).not.toContain('Candidates</span>');
+    expect(html).not.toContain('Withheld</span>');
   });
 });

@@ -1,13 +1,13 @@
-# 🔴 HUMAN INTERVENTION REQUIRED — AUTHORIZE HOBBY PREVIEW CREDENTIAL BOUNDARY
+# 🔴 HUMAN INTERVENTION REQUIRED — REVIEW HOBBY PREVIEW BEFORE PRODUCTION
 
 Updated: 2026-08-08
-Status: The Cubiqo Pro scope remains suspended, but Aditya's separate Vercel Hobby scope is active. Its existing `carlophillips-site` project builds Next.js successfully and currently serves the CarloPhillips domains from commit `81dbb60`. It has no configured environment variables, so the current public site truthfully withholds the Hoodie. The current candidate is commit `a0e804d` (Hoodie checkout plus the latest dependency security patch), and its Vercel dry run and full local verification pass.
+Status: The Product Owner approved creating a non-production Preview in Aditya's active Vercel Hobby project and storing the existing Shopify Storefront domain/token there for Preview only. The premium Shopify-backed candidate passes local automated and desktop/mobile browser verification. Preview deployment is in progress; production and its domains remain unchanged.
 
 ## Exact action
 
-Tell Codex exactly: **I approve creating a non-production Preview deployment in `adityas-projects-261b17a9/carlophillips-site` and storing the existing Shopify Storefront domain/token there for Preview only. Do not change production domains.**
+After Codex reports the Preview URL, review its home, collection, Hoodie PDP, size/price presentation, and Shopify checkout handoff. Then explicitly approve or reject production promotion. Do not approve production until the Preview meets the intended high-end visual standard and the remaining media limitations are acceptable.
 
-This approval authorizes only the temporary Preview environment and its required Shopify Storefront read/cart credential. It does not authorize a production deployment, domain reassignment, Shopify catalog mutation, order, payment, or paid Vercel upgrade.
+The Preview uses the active Hobby scope without accepting a paid plan. Production promotion would alter the public site and is intentionally held for a separate Product Owner decision. The current product has only two verified Shopify images; richer model, video, 3D, and spin media must remain absent until real exact-product assets are approved.
 
 ## Cost and risk
 
@@ -15,7 +15,7 @@ The destination is an active Hobby scope, so this step does not accept a paid pl
 
 ## Exact resume point
 
-From `/Users/edv/Documents/cp` at commit `a0e804d`, create a Preview deployment in Aditya's Hobby project with Preview-only commerce variables. Verify `/`, `/shop`, `/collections`, the Hoodie PDP, and a no-order Shopify checkout redirect at desktop/mobile widths. Keep `www.carlophillips.com` unchanged. Production remains a separate explicit Product Owner action after Preview acceptance.
+Open the Preview URL reported in `test_reports/cp-premium-hobby-preview-2026-08-08/report.md`, complete the visual review, and tell Codex either **Preview approved for production planning** or list the required visual corrections. Production remains a separate explicit action.
 
 ## Optional original-account route
 

@@ -6,8 +6,17 @@ function money(amount, currency) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency, maximumFractionDigits: 0 }).format(Number(amount));
 }
 
+const SIZE_ORDER = new Map(['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '4XL', '5XL'].map((size, index) => [size, index]));
+
+function sizeFor(item) {
+  return item.selectedOptions.find(option => option.name.toLowerCase() === 'size')?.value || item.title;
+}
+
 export default function ShopifyCheckoutForm({ handle, presentation }) {
-  const available = presentation.combinations.filter(item => item.availableForSale);
+  const available = presentation.combinations
+    .filter(item => item.availableForSale)
+    .slice()
+    .sort((left, right) => (SIZE_ORDER.get(sizeFor(left).toUpperCase()) ?? 999) - (SIZE_ORDER.get(sizeFor(right).toUpperCase()) ?? 999));
   const [referenceHash, setReferenceHash] = useState(available[0]?.referenceHash || '');
   const selected = available.find(item => item.referenceHash === referenceHash);
   if (!available.length) return null;
@@ -19,7 +28,7 @@ export default function ShopifyCheckoutForm({ handle, presentation }) {
       <select id="hoodie-variant" name="referenceHash" value={referenceHash} onChange={event => setReferenceHash(event.target.value)} className="h-14 w-full border border-white/20 bg-black px-4 text-sm text-white">
         {available.map(item => (
           <option key={item.referenceHash} value={item.referenceHash}>
-            {item.selectedOptions.map(option => option.value.toUpperCase()).join(' / ')} — {money(item.price.amount, item.price.currency)}
+            {sizeFor(item).toUpperCase()} — {money(item.price.amount, item.price.currency)}
           </option>
         ))}
       </select>

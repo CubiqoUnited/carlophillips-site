@@ -1,5 +1,17 @@
 # Delivery Tasks
 
+## Current bounded delivery: premium Hobby Preview
+
+- [x] Apply the approved Vollebak/Zara reference direction without copying brand assets or inventing media.
+- [x] Remove internal release jargon from live customer-facing home, collection, and PDP states.
+- [x] Preserve Shopify as product/price/availability/checkout truth and keep raw identifiers server-only.
+- [x] Verify desktop/mobile layouts, live product facts, ordered sizes, zero console errors, and no horizontal overflow.
+- [x] Pass full lint, 318 tests, zero-vulnerability production audit, and optimized build.
+- [ ] Commit and push the tested candidate to the temporary branch.
+- [ ] Store the existing Shopify Storefront domain/token as sensitive Preview-only variables in Aditya's Hobby project.
+- [ ] Create and verify a non-production Vercel Preview; do not alter production or domains.
+- [ ] Product Owner reviews the Preview and separately approves or rejects production promotion.
+
 ## Current bounded launch: one Signature Hoodie
 
 - [x] Activate only the Signature Hoodie in Shopify and publish it to Carlophillips Headless.

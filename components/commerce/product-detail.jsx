@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import ShopifyCheckoutForm from './shopify-checkout-form';
 
@@ -10,6 +11,10 @@ function formatPrice(value, currency) {
     currency,
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+function titleCase(value = '') {
+  return value ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() : '';
 }
 
 function ProductMedia({ item, featured }) {
@@ -38,15 +43,15 @@ function ProductMedia({ item, featured }) {
   }
 
   return item.url ? (
-    <div className={frameClass}>
-      <img src={item.url} alt={item.alt} className="h-full w-full object-contain object-center p-8 sm:p-12" />
+    <div className={`${frameClass} relative`}>
+      <Image src={item.url} alt={item.alt} fill sizes="(min-width: 1024px) 52vw, 100vw" className="object-contain object-center p-8 sm:p-12" />
     </div>
   ) : (
     <div className={`${frameClass} flex items-center justify-center p-8 text-sm text-white/45`}>Media unavailable</div>
   );
 }
 
-function ProductGallery({ media, mediaReview = null }) {
+function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
   if (media.length === 0) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-[#171714] p-10 text-center text-sm text-white/45">
@@ -67,7 +72,7 @@ function ProductGallery({ media, mediaReview = null }) {
           <figure key={item.id} className={index === 0 ? 'bg-[#24231f] lg:col-span-2' : 'bg-[#171714]'}>
             <ProductMedia item={item} featured={index === 0} />
             <figcaption className="border-t border-white/10 bg-black px-5 py-4 text-[10px] uppercase tracking-[0.22em] text-white/42">
-              {item.label}
+              {customerFacing ? `View ${String(index + 1).padStart(2, '0')}` : item.label}
             </figcaption>
           </figure>
         ))}
@@ -138,13 +143,12 @@ export function CommerceProductUnavailable({ decision }) {
       <Header />
       <section className="flex min-h-screen items-center px-5 pt-28 sm:px-8 lg:px-12">
         <div className="mx-auto w-full max-w-[1500px]">
-          <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">Commerce source unavailable</p>
-          <h1 className="max-w-5xl text-6xl font-light leading-[0.9] tracking-[-0.065em] sm:text-8xl">This product cannot be shown truthfully.</h1>
+          <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/40">CARLOPHILLIPS</p>
+          <h1 className="max-w-5xl text-6xl font-light leading-[0.9] tracking-[-0.065em] sm:text-8xl">This piece is currently unavailable.</h1>
           <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/56">
-            No approved product source is available for this environment. Static product data has not been substituted.
+            Return to the collection to see what is available now.
           </p>
-          <p className="mt-6 font-mono text-xs text-white/35">Reason: {decision.reason}</p>
-          <Link href="/shop" className="mt-10 inline-flex border border-white/20 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/70">
+          <Link href="/shop" data-unavailable-reason={decision.reason} className="mt-10 inline-flex border border-white/20 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/70">
             Return to collection
           </Link>
         </div>
@@ -158,6 +162,14 @@ export function CommerceProductDetail({
   releaseReason = 'RELEASE_DECISION_UNAVAILABLE',
   cartActivation = null,
 }) {
+  const liveProduct = Boolean(cartActivation?.cartAllowed && product.commerceAllowed);
+  const liveSizes = product.variantPresentation?.combinations
+    ?.map(item => item.selectedOptions.find(option => option.name.toLowerCase() === 'size')?.value)
+    .filter(Boolean)
+    .sort((left, right) => {
+      const order = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '4XL', '5XL'];
+      return order.indexOf(left.toUpperCase()) - order.indexOf(right.toUpperCase());
+    }) || [];
   const facts = [
     ['Data source', product.sourceLabel],
     ['Release decision', releaseReason],
@@ -169,16 +181,16 @@ export function CommerceProductDetail({
   return (
     <main id="main-content" className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
       <Header />
-      <section className="grid min-h-screen border-b border-white/10 pt-16 lg:grid-cols-[1.04fr_0.96fr] lg:pt-20">
+      <section className="grid min-h-screen border-b border-white/10 pt-16 lg:grid-cols-[1.08fr_0.92fr] lg:pt-20">
         <div className="border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10">
-          <ProductGallery media={product.media} mediaReview={product.mediaReview} />
+          <ProductGallery media={product.media} mediaReview={product.mediaReview} customerFacing={liveProduct} />
         </div>
-        <div className="flex items-center px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
-          <div className="w-full max-w-3xl">
-            <p className="mb-7 text-[10px] uppercase tracking-[0.28em] text-white/45">{product.sourceLabel}</p>
+        <div className="flex items-start px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
+          <div className="w-full max-w-3xl lg:sticky lg:top-32">
+            <p className="mb-7 text-[10px] uppercase tracking-[0.28em] text-white/45">{liveProduct ? 'Signature Series / 001' : product.sourceLabel}</p>
             <h1 className="max-w-3xl text-4xl font-light leading-[0.98] tracking-[-0.045em] sm:text-5xl lg:text-6xl xl:text-7xl">{product.title}</h1>
             <p className="mt-7 text-2xl font-light text-white/72">{formatPrice(product.price, product.currency)}</p>
-            <p className="mt-8 max-w-xl text-base leading-relaxed text-white/58 sm:text-lg">{product.description || 'Description unavailable from the selected source.'}</p>
+            <p className="mt-8 max-w-xl text-base leading-relaxed text-white/58 sm:text-lg">{product.description || 'Product details are currently unavailable.'}</p>
 
             {cartActivation?.cartAllowed ? (
               <ShopifyCheckoutForm handle={product.handle} presentation={product.variantPresentation} />
@@ -212,24 +224,26 @@ export function CommerceProductDetail({
                 Purchasing disabled
               </button>
             )}
-            <p className="mt-4 text-xs leading-relaxed text-white/35">
-              {product.commerceExplanation}
-              {!cartActivation?.cartAllowed && cartActivation?.reason ? ` Cart gate: ${cartActivation.reason}.` : ''}
-            </p>
+            {!liveProduct && <p className="mt-4 text-xs leading-relaxed text-white/35">{product.commerceExplanation}</p>}
           </div>
         </div>
       </section>
 
-      <section className="border-b border-white/10 px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <section className="storefront-panel border-b border-white/10 px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
         <div className="mx-auto grid max-w-[1700px] gap-14 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/38">Truth record</p>
-            <h2 className="max-w-3xl text-5xl font-light leading-[0.95] tracking-[-0.055em] sm:text-7xl">{product.truthHeading}</h2>
+            <p className="mb-8 text-[10px] uppercase tracking-[0.3em] text-white/38">{liveProduct ? 'The piece' : 'Product information'}</p>
+            <h2 className="max-w-3xl text-5xl font-light leading-[0.95] tracking-[-0.055em] sm:text-7xl">{liveProduct ? 'Made to be lived in.' : product.truthHeading}</h2>
           </div>
           <div className="space-y-12">
-            <p className="max-w-3xl text-xl font-light leading-relaxed text-white/58">{product.story}</p>
+            <p className="max-w-3xl text-xl font-light leading-relaxed text-white/58">{liveProduct ? product.description : product.story}</p>
             <div className="grid gap-px bg-white/10 sm:grid-cols-2">
-              {facts.map(([label, value]) => (
+              {(liveProduct ? [
+                ['Colour', titleCase(product.variantPresentation?.combinations?.[0]?.selectedOptions?.find(option => option.name.toLowerCase() === 'color')?.value || 'Black')],
+                ['Sizes', liveSizes.join(' / ') || 'See selector'],
+                ['Availability', product.availableForSale ? 'Available' : 'Unavailable'],
+                ['Checkout', 'Securely through Shopify'],
+              ] : facts).map(([label, value]) => (
                 <div key={label} className="min-h-32 bg-[#050505] p-6">
                   <p className="mb-6 text-[10px] uppercase tracking-[0.24em] text-white/35">{label}</p>
                   <p className="text-base font-light text-white/78">{value}</p>

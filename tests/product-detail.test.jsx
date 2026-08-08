@@ -93,7 +93,7 @@ describe('commerce product presentation', () => {
     expect(html).toContain('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
     expect(html).toContain('Purchasing disabled');
     expect(html).toContain('Purchasing remains disabled');
-    expect(html).toContain('PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED');
+    expect(html).not.toContain('PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED');
     expect(html).toContain('data-cart-activation="blocked"');
     expect(html).toContain('data-media-review="incomplete"');
     expect(html).toContain('Private media review incomplete');
@@ -162,7 +162,10 @@ describe('commerce product presentation', () => {
     />);
     expect(html).toContain('Buy with Shopify');
     expect(html).toContain('action="/api/checkout"');
-    expect(html).toContain('Shopify Storefront — live product');
+    expect(html).toContain('Signature Series / 001');
+    expect(html).toContain('Made to be lived in.');
+    expect(html).toContain('Securely through Shopify');
+    expect(html).not.toContain('Shopify Storefront — live product');
     expect(html).not.toContain('Purchasing disabled');
     expect(html).not.toContain('release state unavailable');
     expect(html).not.toContain('Cart gate: CUSTOMER_CART_ELIGIBLE');
@@ -171,8 +174,9 @@ describe('commerce product presentation', () => {
 
   it('renders an honest unavailable state without product content', () => {
     const html = renderToStaticMarkup(<CommerceProductUnavailable decision={{ reason: 'SHOPIFY_REQUEST_FAILED' }} />);
-    expect(html).toContain('This product cannot be shown truthfully');
-    expect(html).toContain('Static product data has not been substituted');
-    expect(html).toContain('SHOPIFY_REQUEST_FAILED');
+    expect(html).toContain('This piece is currently unavailable');
+    expect(html).toContain('Return to the collection');
+    expect(html).toContain('data-unavailable-reason="SHOPIFY_REQUEST_FAILED"');
+    expect(html).not.toContain('Reason:');
   });
 });
