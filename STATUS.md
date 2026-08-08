@@ -4,6 +4,17 @@ Updated: 2026-08-08
 Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Signature Hoodie media expansion — 2026-08-08
+
+- The competitive target now has an explicit eight-part media ladder: factual product stills, product-alone editorial stills, macro material/embroidery detail, on-body imagery, short video, GIF/motion, 360 spin, and interactive 3D/AR.
+- Current truthful coverage is partial. Shopify has two original product stills plus two published Modelize AI visualisations. No existing GIF, video, GLB/GLTF/USDZ, genuine spin set, physical on-model shoot, or verified physical fabric macro exists in the repository.
+- Two new AI-assisted Preview candidates were produced from the exact Hoodie references: a full-body model study and a repaired embroidery/material macro. Both are isolated under `public/products/signature-hoodie/candidates/ai-assisted/`, explicitly disclosed in the Preview, and excluded from production by the existing environment/handle gate. They do not prove physical fit, fabric, or construction.
+- MODA is the selected candidate owner for on-model multi-angle stills and short video. Its official listing advertises 20 free images, two free styled products, ten angles from one input, and video for one credit without a subscription. Its authenticated Shopify Install control did not advance; no app or permission was added.
+- Existing Spin Studio remains the selected 360 owner. It requires 16–24 genuine angle images or a GLB. Reusing AI-generated angles as physical-product proof is prohibited.
+- Instant 3D is the selected one-product 3D experiment candidate. Its official listing advertises a free one-model tier plus six one-time generation credits, but its authenticated Install control also did not advance. No 3D app, model, widget, or product media was added.
+- The storefront already renders approved image and video media, but a `model_3d` item intentionally remains a static-fallback state. An interactive viewer will be added only after a real generated/uploaded model is exported, inspected, release-bound, and proven in the headless Preview.
+- Full verification passes after the expansion: zero-warning lint, 33 files / 320 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build. A new deployed Preview and desktop/mobile visual evidence remain pending.
+
 ## Signature Hoodie premium-showcase bridge — 2026-08-08
 
 - The high-end composition was already present, but the live PDP had only two plain Shopify product views. Modelize candidates existed outside the release-bound Shopify gallery, and no truthful editorial-study layer connected them to the Preview. Real spin/video/3D inputs were absent.

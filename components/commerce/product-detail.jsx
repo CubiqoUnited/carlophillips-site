@@ -88,13 +88,27 @@ function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
 
 const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
   {
+    src: '/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png',
+    alt: 'AI-assisted on-model visualisation of the CARLOPHILLIPS Signature Hoodie in a dark studio',
+    label: 'On-body study',
+    position: 'object-center',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png',
+    alt: 'AI-assisted macro visualisation of the CARLOPHILLIPS CP embroidery and black knit surface',
+    label: 'Material / embroidery study',
+    position: 'object-center',
+  },
+  {
     src: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
     alt: 'AI-assisted editorial visualisation of the CARLOPHILLIPS Signature Hoodie presented on a chair',
+    label: 'Editorial still',
     position: 'object-center',
   },
   {
     src: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
     alt: 'AI-assisted flat-lay visualisation of the CARLOPHILLIPS Signature Hoodie',
+    label: 'Product-alone study',
     position: 'object-center',
   },
 ];
@@ -111,7 +125,7 @@ function EditorialStudy({ environment, handle }) {
             A study in weight, form and restraint.
           </h2>
           <p className="mt-10 max-w-2xl text-sm leading-relaxed text-white/48 sm:text-base">
-            AI-assisted visualisations created from the Signature Hoodie product image. Confirm garment details against the Shopify product views above.
+            AI-assisted on-body, material and product visualisations created from the Signature Hoodie reference images. Confirm garment construction, fit and fabric against the Shopify product views above.
           </p>
         </div>
       </div>
@@ -126,7 +140,7 @@ function EditorialStudy({ environment, handle }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10" />
           <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 px-5 py-7 text-[10px] uppercase tracking-[0.22em] text-white/70 sm:px-8 lg:px-12 lg:py-10">
-            <span>Signature Hoodie / visual study {String(index + 1).padStart(2, '0')}</span>
+            <span>Signature Hoodie / {study.label} {String(index + 1).padStart(2, '0')}</span>
             <span className="text-right text-white/45">AI-assisted preview</span>
           </figcaption>
         </figure>

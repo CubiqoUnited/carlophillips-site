@@ -1,13 +1,15 @@
-# 🔴 HUMAN INTERVENTION REQUIRED — REVIEW THE UPDATED HOODIE SHOWCASE
+# 🔴 HUMAN INTERVENTION REQUIRED — COMPLETE THE MEDIA-APP INSTALL HANDOFFS
 
 Updated: 2026-08-08
-Status: The updated premium Shopify-backed Preview is READY at `https://carlophillips-site-a3odjms8n-adityas-projects-261b17a9.vercel.app`. Two usable Modelize outputs are published to the Shopify product and rendered as a disclosed Preview-only editorial study; the artifacted third output remains unpublished. Production and its domains remain unchanged.
+Status: Shopify is authenticated, but the official App Store Install buttons for MODA and Instant 3D do not advance in background automation. Neither app is installed and no new permissions, charges, 3D model, or video were created. The current Preview remains available and production is unchanged.
 
 ## Exact action
 
-Open `https://carlophillips-site-a3odjms8n-adityas-projects-261b17a9.vercel.app/products/carlophillips-signature-hoodie` and review the product-truth gallery, the two full-height digital editorial panels, disclosure wording, mobile scroll, size/price presentation, and Shopify checkout handoff. Then say **Showcase Preview approved** or list visual corrections. Do not approve production until the distinction between Shopify product views and AI-assisted visualisations is acceptable.
+In Shopify Admin, manually open `https://apps.shopify.com/moda-ai`, select the CARLOPHILLIPS store if prompted, click **Install**, and confirm the displayed product/Shopify Admin access without buying credits. Then open `https://apps.shopify.com/instant-3d`, click **Install**, and choose only its free one-model tier; do not start a trial, subscription, or credit pack. Tell Codex **MODA and Instant 3D installed**. Codex will resume at draft generation, export, inspection, and Preview-only integration—not publication.
 
-The Preview uses the active Hobby scope without accepting a paid plan. Modelize has used its 3/3 free allowance; its observed paid entry point is $19/month, and no purchase is approved. Spin Studio can cover one product for $0 but requires 16–24 genuine angle photos or a GLB. MODA advertises free initial image/product credits but requests Shopify product and Admin Files permissions; its install did not complete and no permission was granted. Production promotion would alter the public site and remains a separate decision.
+Separately, provide either 16–24 genuine Hoodie angle images or an inspected GLB and say **Spin source ready**. For factual material/fit claims, provide exact physical-product macro and on-model photographs; AI candidates cannot replace that proof.
+
+MODA advertises 20 free images and two free styled products, then pay-as-you-go usage beginning at $1.25 per ten-photo product; do not buy any credits. Instant 3D advertises one free model and six one-time generation credits; optional credit packs begin at $4.99 and paid plans begin at $29.99/month; do not start or accept them. Both apps can edit product data, so all outputs must remain Draft and be reviewed before any Shopify publication. Spin Studio's one-product plan is free but still requires genuine source angles or a GLB.
 
 ## Cost and risk
 
@@ -15,7 +17,7 @@ The destination is an active Hobby scope, so this step does not accept a paid pl
 
 ## Exact resume point
 
-Complete the visual review and tell Codex either **Showcase Preview approved** or list the required visual corrections. Production remains a separate explicit action. To pursue real spin/3D, provide a genuine angle set or GLB and say **Spin source ready**. To retry MODA installation, open its Shopify listing manually, review the product/Admin Files permissions, click Install, and say **MODA installed**; this may expose store product/files data to that app even though its advertised first credits are free.
+Tell Codex **MODA and Instant 3D installed** after both apps appear in Shopify Settings → Apps and sales channels. Resume at their free draft-generation screens. Do not publish generated media, activate a theme/widget, buy credits, or change the production website.
 
 ## Optional original-account route
 

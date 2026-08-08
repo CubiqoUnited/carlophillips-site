@@ -1,5 +1,20 @@
 # Delivery Tasks
 
+## Current bounded delivery: complete Hoodie media ladder
+
+- [x] Inventory all existing image, GIF, video, and 3D assets; confirm no existing motion or 3D file is available.
+- [x] Assign one candidate owner per modality: MODA for multi-angle/on-model/video, Spin Studio for 360, and Instant 3D for the one-product 3D experiment.
+- [x] Create and visually review a Preview-only on-body candidate from the Hoodie reference.
+- [x] Repair the quarantined macro artifact into a new Preview-only material/embroidery candidate without overwriting the source.
+- [x] Add both candidates to the disclosed Hoodie Preview study and keep them absent from production.
+- [ ] Product Owner manually completes the MODA installation handoff, then Codex uses only the free allowance to create a draft ten-angle set and short video; do not publish automatically.
+- [ ] Product Owner manually completes the Instant 3D installation handoff, then Codex uses only the free one-model allowance to create/export a draft; do not enable the widget or publish automatically.
+- [ ] Obtain a genuine 16–24-angle Hoodie set or an inspected GLB before configuring Spin Studio.
+- [ ] Obtain exact physical-product macro and on-model photography before treating fabric, fit, or construction as factual release media.
+- [ ] Add an interactive headless 3D viewer only after an approved GLB/GLTF/USDZ is available and verified.
+- [x] Pass full lint, 320 tests, zero-vulnerability production audit, and optimized build after the expansion.
+- [ ] Deploy a new Vercel Preview and capture desktop/mobile comparison evidence for the expanded still sequence.
+
 ## Current bounded delivery: Signature Hoodie premium showcase
 
 - [x] Diagnose the gap between the premium layout and the limited two-image product presentation.
