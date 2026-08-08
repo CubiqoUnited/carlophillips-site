@@ -49,4 +49,18 @@ The wide coastal runway campaign must be the landing view. The existing Signatur
 
 ## Deployment state
 
-The earlier one-stage Preview is superseded. Production has not changed. The corrected candidate must be committed, pushed, deployed to a new Vercel Preview, and verified before Product Owner review. No merge or Production deployment belongs to this correction gate.
+The earlier one-stage Preview is superseded. Corrected commit `ae57e29` was pushed to the temporary branch and deployed as Vercel Preview `dpl_42uuiSoQqUyNnhJBbf35smBsud2n`:
+
+`https://carlophillips-site-3qgjsckgg-adityas-projects-261b17a9.vercel.app`
+
+Vercel reports `READY` and target Preview. Direct desktop and mobile checks reproduce the local campaign → Hoodie → categories order with decoded media, zero overflow, no broken images, and no runtime or console errors. The Hoodie PDP displays its current title, USD 128 price, XS–5XL range, and enabled `Buy with Shopify — $128` boundary. No checkout click, payment, or order was performed.
+
+### Preview visual evidence
+
+- `test_reports/cp-media-expansion-2026-08-08/runway-hierarchy-preview-desktop.png`
+- `test_reports/cp-media-expansion-2026-08-08/runway-hierarchy-preview-product-scroll.png`
+- `test_reports/cp-media-expansion-2026-08-08/runway-hierarchy-preview-mobile.png`
+- `test_reports/cp-media-expansion-2026-08-08/runway-hierarchy-preview-mobile-product-scroll.png`
+- `test_reports/cp-media-expansion-2026-08-08/runway-hierarchy-preview-mobile-categories.png`
+
+Production has not changed. Product Owner review of this exact Preview is required before any merge or Production deployment.

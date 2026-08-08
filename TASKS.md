@@ -11,7 +11,7 @@
 - [x] Add deterministic tests proving campaign → Hoodie → categories ordering and that denied products cannot emit Hoodie runway media or an active category.
 - [x] Pass focused tests, full lint, 323 tests, zero-vulnerability production audit, and optimized build.
 - [x] Capture direct 1440×1000 and 390×844 campaign, Hoodie, and category evidence with zero broken images, runtime error text, console errors, or horizontal overflow.
-- [ ] Commit and push the corrected candidate; deploy and verify a new Vercel Preview at desktop and 390×844.
+- [x] Commit and push corrected candidate `ae57e29`; deploy and verify READY Vercel Preview `dpl_42uuiSoQqUyNnhJBbf35smBsud2n` at desktop and 390×844.
 - [ ] Product Owner reviews the corrected Preview and separately authorizes any merge to canonical `main` or Production deployment.
 
 ## Current bounded delivery: complete Hoodie media ladder

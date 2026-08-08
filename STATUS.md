@@ -11,7 +11,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The Hoodie runway remains gated by the catalog/commerce decision. A denied product cannot emit the Hoodie MODA sequence or an active Hoodies category; the independent campaign landing remains available.
 - Direct 1440×1000 and 390×844 local checks prove campaign → product → categories ordering, decoded imagery, Hoodies active plus four disabled categories, zero broken images, no runtime error text, no console errors, and no horizontal overflow.
 - Full `yarn verify` passes: zero-warning lint, 33 files / 323 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
-- Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` is historical evidence for the superseded one-stage hierarchy and must not be merged or promoted. Production has not changed. A corrected Preview is the next required gate.
+- Preview `dpl_3ULFvNePT3iS25Dzh6aRwKZBE8z5` is historical evidence for the superseded one-stage hierarchy and must not be merged or promoted. Corrected Preview `dpl_42uuiSoQqUyNnhJBbf35smBsud2n` is READY at `https://carlophillips-site-3qgjsckgg-adityas-projects-261b17a9.vercel.app`. Direct desktop/mobile checks prove the required hierarchy, decoded media, category states, zero overflow/broken images/runtime or console errors, and the unchanged active Shopify purchase boundary on the Hoodie PDP. Production has not changed.
 
 ## Signature Hoodie media expansion — 2026-08-08
 
