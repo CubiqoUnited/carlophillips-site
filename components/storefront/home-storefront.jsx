@@ -141,7 +141,7 @@ export function HomeReleaseStage({ summary }) {
             <span>Edition 001</span>
           </div>
           <div className="grid gap-12 py-20 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
-            <h2 className="max-w-5xl text-6xl font-light leading-[0.88] tracking-[-0.065em] sm:text-8xl lg:text-[8.5rem]">
+            <h2 className="max-w-5xl text-5xl font-light leading-[0.88] tracking-[-0.065em] sm:text-8xl lg:text-[8.5rem]">
               {product.title}
             </h2>
             <div className="max-w-xl lg:pb-2">
