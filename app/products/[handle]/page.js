@@ -1,6 +1,6 @@
 import { CommerceProductDetail, CommerceProductUnavailable } from '@/components/commerce/product-detail';
-import { getServerCartActivationDecision } from '@/lib/commerce/cart-activation-server';
-import { closedReleaseDecision, getProductDecision, resolveCommerceDataMode } from '@/lib/commerce/product-gateway';
+import { closedReleaseDecision, resolveCommerceDataMode } from '@/lib/commerce/product-gateway';
+import { getProductPageDecision } from '@/lib/commerce/product-page-server';
 import { toProductViewModel } from '@/lib/commerce/product-view-model';
 import { canRenderDraftProductPreviews, canRenderProducts, getCommerceEnvironment } from '@/lib/config/product-visibility';
 import { loadShopifyProduct } from '@/lib/providers/shopify/storefront-product-adapter';
@@ -9,9 +9,8 @@ import { getProductReleaseEvidence } from '@/lib/releases/product-release-regist
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Product | CARLOPHILLIPS',
-  description: 'Source-labeled CARLOPHILLIPS product facts. Purchasing remains separately disabled until commerce gates are proven.',
-  robots: { index: false, follow: true },
+  title: 'Signature Hoodie | CARLOPHILLIPS',
+  description: 'Shop the CARLOPHILLIPS Signature Hoodie through secure Shopify checkout.',
 };
 
 export default async function ProductPage({ params }) {
@@ -32,7 +31,7 @@ export default async function ProductPage({ params }) {
     fixtureProduct = fixtureModule.signatureHoodiePreview;
   }
   const releaseEvidence = getProductReleaseEvidence(handle);
-  const decision = await getProductDecision({
+  const { decision, cartActivation } = await getProductPageDecision({
     environment,
     mode,
     handle,
@@ -46,17 +45,12 @@ export default async function ProductPage({ params }) {
     return <CommerceProductUnavailable decision={decision} />;
   }
 
-  const { summary: cartActivation } = getServerCartActivationDecision({
-    environment,
-    productDecision: decision,
-    releaseRecord: releaseEvidence?.releaseRecord || null,
-  });
-
   return (
     <CommerceProductDetail
       product={product}
       releaseReason={decision.reason}
       cartActivation={cartActivation}
+      environment={environment}
     />
   );
 }

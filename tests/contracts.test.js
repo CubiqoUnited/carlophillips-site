@@ -393,12 +393,16 @@ describe('truth contracts', () => {
     expect(Object.values(hoodieRelease.approvals).every(approval => approval.status === 'pending')).toBe(true);
   });
 
-  it('validates every Hoodie media asset and keeps uncertain assets quarantined', () => {
+  it('validates every Hoodie media asset and keeps uncertain or artifacted assets quarantined', () => {
     expect(validateMediaManifest(hoodieMediaManifest)).toBe(true);
     expect(hoodieMediaManifest.assets.every(asset => validateMediaAsset(asset))).toBe(true);
     const quarantined = hoodieMediaManifest.assets.filter(asset => asset.approvalStatus === 'quarantined');
-    expect(quarantined).toHaveLength(2);
+    expect(quarantined).toHaveLength(3);
     expect(quarantined.every(asset => asset.exactProductMatch === 'unverified')).toBe(true);
+    expect(quarantined).toContainEqual(expect.objectContaining({
+      assetId: 'modelize-137843f7-embroidery-detail-quarantined',
+      quality: expect.objectContaining({ status: 'failed' }),
+    }));
   });
 
   it('rejects a media manifest that downgrades required video to where-feasible', () => {
@@ -541,14 +545,15 @@ describe('truth contracts', () => {
     expect(validateProductCreationJob(invalid)).toBe(false);
   });
 
-  it('validates the evidence-labeled capability registry without inventing callable access', () => {
+  it('validates the evidence-labeled capability registry with the proven cart surface', () => {
     expect(validateCapabilityRegistry(capabilityRegistry)).toBe(true);
     const cartCapability = capabilityRegistry.capabilities.find(item => item.capability === 'shopify-storefront-cart');
     expect(cartCapability).toMatchObject({
-      accessState: 'human_required',
-      callableSurface: 'unverified',
-      allowedOperations: [],
-      blocker: { code: 'SHOPIFY_AUTHENTICATED_SESSION_REQUIRED' },
+      accessState: 'write_test_verified',
+      callableSurface: 'shopify_storefront',
+      allowedOperations: ['cart-write'],
+      evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
+      blocker: null,
     });
   });
 });

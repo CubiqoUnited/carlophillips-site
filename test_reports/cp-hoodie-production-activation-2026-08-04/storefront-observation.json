@@ -1,0 +1,291 @@
+{
+  "observedAt": "2026-08-05T03:59:59.132Z",
+  "source": "shopify-storefront",
+  "authority": "candidate",
+  "environment": "production",
+  "product": {
+    "referenceHash": "34022bd4421f4ec71ee5c5890c55d6f90d1eb61024046eb7c784b9c20826571f",
+    "title": "CARLOPHILLIPS Signature Hoodie",
+    "handle": "carlophillips-signature-hoodie",
+    "description": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+    "vendor": "Apliiq",
+    "productType": "hoodie",
+    "tags": [],
+    "availableForSale": true,
+    "options": [
+      {
+        "name": "Color",
+        "values": [
+          "black"
+        ]
+      },
+      {
+        "name": "Size",
+        "values": [
+          "xs",
+          "s",
+          "m",
+          "l",
+          "xl",
+          "xxl",
+          "xxxl",
+          "4xl",
+          "5xl"
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "referenceHash": "632965eb7a867160a9f08e83ab809e9c8011aae6a840982e9a5bff5c51fbfead",
+        "skuHash": "7b2554ac83f771615ece05d92c71c02e0f49d4391173a3fd65d0702e4f70155e",
+        "title": "black / xs",
+        "availableForSale": true,
+        "price": {
+          "amount": "128.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "xs"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      },
+      {
+        "referenceHash": "bca824ce1a2583241b1785b1b655d7dd161c0dc18cdb56f05c528b2d2905e581",
+        "skuHash": "63d9e3b9961df51e25666c1464a4f1cbe6d1efa96c0e69379594d3746f7fe0f9",
+        "title": "black / s",
+        "availableForSale": true,
+        "price": {
+          "amount": "128.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "s"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      },
+      {
+        "referenceHash": "a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3",
+        "skuHash": "5e3c798d8d9234f7ab870ffaf1974f48beae1029509ae8119806fe724dcf1b1d",
+        "title": "black / m",
+        "availableForSale": true,
+        "price": {
+          "amount": "128.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "m"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      },
+      {
+        "referenceHash": "0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d",
+        "skuHash": "33d37851a0e3a9cda37018974d72c847be64827c96dad2379de33b4a5fb37ccf",
+        "title": "black / l",
+        "availableForSale": true,
+        "price": {
+          "amount": "128.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "l"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      },
+      {
+        "referenceHash": "3f7b2ca8632c2a1304545b487da027b2450c7ff73dfc1cd6d041b12aac540685",
+        "skuHash": "4263aa35c0c153feea854d95b022976c2946f88cd6eb1280233aab07e5e13d87",
+        "title": "black / xl",
+        "availableForSale": true,
+        "price": {
+          "amount": "128.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "xl"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      },
+      {
+        "referenceHash": "796e45aebd264bf23757d35eb97f9abd9d4a46358fd3fac4361caa790761d5b0",
+        "skuHash": "b54657812cc1320fe00d7cff8fff00f1f34701012b0ebbf6f998d4d9ca4f48fb",
+        "title": "black / xxl",
+        "availableForSale": true,
+        "price": {
+          "amount": "130.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "xxl"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      },
+      {
+        "referenceHash": "29275d3e9eff2c61cc1780c4d0f143979928877970349d9ee965a9d32e73d40f",
+        "skuHash": "ecea759b310357971c9ce1f281b802847528d3cafdc479e3a52d77f4c4047990",
+        "title": "black / xxxl",
+        "availableForSale": true,
+        "price": {
+          "amount": "132.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "xxxl"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      },
+      {
+        "referenceHash": "ebf91d85d308bc1dcb68371d7a443f9e36bba31404caa54fc69efb6d852fcd9b",
+        "skuHash": "255f58d92c2e15d48e88e3f4ceb79bccae8269c60f5e6bc3869d8f22fa22ec04",
+        "title": "black / 4xl",
+        "availableForSale": true,
+        "price": {
+          "amount": "133.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "4xl"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      },
+      {
+        "referenceHash": "55a5912ee42cda18ea4192d25691570c50ddafa3fe46e9a28b74871929717ce0",
+        "skuHash": "e5342968bd71a8d715908180cec074f733e2aa6d4756d16ee4a6c301ab6616b4",
+        "title": "black / 5xl",
+        "availableForSale": true,
+        "price": {
+          "amount": "134.0",
+          "currencyCode": "USD"
+        },
+        "selectedOptions": [
+          {
+            "name": "Color",
+            "value": "black"
+          },
+          {
+            "name": "Size",
+            "value": "5xl"
+          }
+        ],
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie"
+        }
+      }
+    ],
+    "media": [
+      {
+        "referenceHash": "a3667ded365974e9186fbf1fd1882e1f4528158d0a4544f97fed064024e6d15c",
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/5958463_6399.jpg?v=1783799637",
+          "altText": "independent heavyweight pullover hoodie",
+          "width": 944,
+          "height": 1440
+        },
+        "sources": [],
+        "previewImage": null
+      },
+      {
+        "referenceHash": "d7359fa681ae949a8c549dce773fe6d7c0d5934b65fda4be85aca7f6387e4326",
+        "image": {
+          "url": "https://cdn.shopify.com/s/files/1/0804/5399/2685/files/522db4d0-43bc-4cfe-bb75-a719b26b2371.jpg?v=1783801211",
+          "altText": null,
+          "width": 928,
+          "height": 1152
+        },
+        "sources": [],
+        "previewImage": null
+      }
+    ]
+  },
+  "summary": {
+    "http": 200,
+    "variantCount": 9,
+    "availableVariantCount": 9,
+    "currencies": [
+      "USD"
+    ],
+    "minPrice": 128,
+    "maxPrice": 134,
+    "mediaCount": 2
+  }
+}

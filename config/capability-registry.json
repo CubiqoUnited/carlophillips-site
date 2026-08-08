@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cp.capability-registry.v1",
-  "observedAt": "2026-07-23",
-  "source": "Product Owner-observed 30-app inventory plus Shopify browser attempts and Cycle 19 local resolver verification; the current managed browser is blocked at Shopify login and no external app capability is verified",
+  "observedAt": "2026-08-04",
+  "source": "Live authenticated Shopify Admin and Storefront capability verification plus Cycle 19 local resolver verification; secrets and raw Shopify references are excluded from durable evidence",
   "canonicalOwners": {
     "releaseTruth": "Product Release Record",
     "mediaTruth": "Media Registry",
@@ -12,34 +12,28 @@
     {
       "capability": "shopify-storefront-product-read",
       "selectedAdapter": "shopify-storefront-product",
-      "accessState": "human_required",
-      "callableSurface": "unverified",
-      "allowedOperations": [],
+      "accessState": "read_only_verified",
+      "callableSurface": "shopify_storefront",
+      "evidenceRef": "test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json",
+      "allowedOperations": ["product-read"],
       "requiresApproval": [],
       "costGate": "read-only Storefront observation; no write, cart, checkout, or order authority",
       "draftSafety": "observation remains candidate evidence until fingerprint review and explicit acceptance",
       "alternatives": [],
-      "blocker": {
-        "code": "SHOPIFY_STOREFRONT_READ_CONFIGURATION_REQUIRED",
-        "humanAction": "An authorized owner configures least-privilege server-only Storefront read access without sharing values in reports.",
-        "resumePoint": "Run the product-by-handle observation, bind sanitized capability evidence, and submit the exact observation fingerprint for review without changing Shopify."
-      }
+      "blocker": null
     },
     {
       "capability": "shopify-storefront-cart",
       "selectedAdapter": "shopify-storefront-cart",
-      "accessState": "human_required",
-      "callableSurface": "unverified",
-      "allowedOperations": [],
+      "accessState": "write_test_verified",
+      "callableSurface": "shopify_storefront",
+      "evidenceRef": "test_reports/cp-hoodie-production-activation-2026-08-04/report.md",
+      "allowedOperations": ["cart-write"],
       "requiresApproval": [],
       "costGate": "checkout and order submission remain separately approval-gated",
       "draftSafety": "read-only audit and no-order cart test required before activation",
       "alternatives": [],
-      "blocker": {
-        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
-        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
-        "resumePoint": "Resume at Shopify installed-app inventory, then inspect Carlophillips Headless/Storefront settings read-only before any cart test."
-      }
+      "blocker": null
     },
     {
       "capability": "shopify-storefront-variant-resolver",

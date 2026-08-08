@@ -109,6 +109,23 @@ describe('product view model', () => {
     expect(JSON.stringify(model)).not.toContain('Outer pending release story');
   });
 
+  it('labels the approved single-product launch as live commerce', () => {
+    const model = toProductViewModel({
+      source: 'shopify',
+      environment: 'production',
+      commerceAllowed: true,
+      reason: 'SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED',
+      product: { id: 'hoodie', title: 'Live Hoodie', price: 128, currency: 'USD', availableForSale: true, variantPresentation, media: [] },
+    });
+    expect(model).toMatchObject({
+      sourceLabel: 'Shopify Storefront — live product',
+      truthHeading: 'Current Shopify product facts.',
+      commerceExplanation: 'Variant selection and secure Shopify checkout are active for this product.',
+    });
+    expect(JSON.stringify(model)).not.toContain('disabled');
+    expect(JSON.stringify(model)).not.toContain('unavailable');
+  });
+
   it('returns null for an unavailable decision', () => {
     expect(toProductViewModel({ product: null })).toBeNull();
   });

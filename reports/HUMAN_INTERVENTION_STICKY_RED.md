@@ -1,21 +1,30 @@
-# 🔴 HUMAN INTERVENTION REQUIRED — SHOPIFY VERIFY
+# HUMAN INTERVENTION REQUIRED — REVIEW CORRECTED PREVIEW
 
-Updated: 2026-08-03
-Status: Vercel production is restored and `www.carlophillips.com` is live. Shopify commerce remains deliberately disabled pending this authentication handoff and subsequent read-only evidence.
+Updated: 2026-08-08
 
 ## Exact action
 
-1. Open the preserved Shopify verification tab in the Codex in-app browser.
-2. Click **Verify** once.
-3. If Shopify reports that the code expired, request a fresh code and enter it directly in Shopify. Do not paste or save the code in project files or chat.
-4. When Shopify Admin is visible, tell Codex: **Shopify Admin open**.
+Open this exact non-production Preview manually:
 
-## Cost and risk
+`https://carlophillips-site-3qgjsckgg-adityas-projects-261b17a9.vercel.app`
 
-Expected cost: none. Do not accept a plan, approve an app charge, publish a product, place an order, change an app setting, or activate fulfillment during this handoff.
+Confirm that the coastal CARLOPHILLIPS runway is the landing view, the Signature Hoodie runway is the next view on scroll, and the category rail follows it. Then reply in the active Codex task with either:
 
-## Exact resume point
+`Corrected Preview approved for main and Production.`
 
-Perform a read-only audit of Shopify Storefront/cart, Apliiq, Modelize, one spin candidate, MyDesigns, Flow, and CS Trending Products Finder. Record actual callable surfaces, permissions, and billing gates without revealing credentials. Then configure only the minimum Storefront values through ignored local/Vercel secret storage and prove live product, cart, checkout, and rollback behavior before enabling commerce.
+or list the exact change requested. Do not approve or use the earlier one-stage Preview.
 
-The Product Owner-observed installed-app list is evidence of installation only; it is not proof that Codex has Admin API access or any third-party app's private API.
+## Why the prior request was withdrawn
+
+Corrected Preview `dpl_42uuiSoQqUyNnhJBbf35smBsud2n` is READY and passed direct desktop/mobile campaign, Hoodie, categories, PDP, console, broken-image, and overflow checks. The previously verified Preview predates the hierarchy correction and is superseded.
+
+## Risk and cost
+
+- No purchase, billing change, paid plan, order, or provider action is involved.
+- Production remains unchanged.
+- The corrected candidate is deployed to a temporary Vercel Preview only.
+- Reviewing it has no charge and changes no Shopify or Production state.
+
+## Resume point
+
+After the Product Owner reply, either make the requested bounded correction or—only on the exact approval phrase—merge through canonical `main`, deploy Production from approved `main`, verify `www.carlophillips.com`, and record rollback evidence.

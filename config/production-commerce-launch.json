@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "cp.single-product-commerce-launch.v1",
+  "status": "approved",
+  "environment": "production",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "handle": "carlophillips-signature-hoodie",
+  "variantFingerprint": "sha256:f7e89925f1119c324cc159444a2c90d645e910555d471bfe77fba2440e348db1",
+  "commerceFactsFingerprint": "sha256:a0cd52e3c0e7e6d116d739ee5e83725a47e72c6de63698e9590ebdfea30e2d92",
+  "scope": "single-product-shopify-checkout",
+  "mediaPolicy": "truthful-current-shopify-media-only",
+  "approvalOwner": "Product Owner",
+  "approvalEvidence": "Codex task CP-HOODIE-PROD-ACTIVATION-2026-08-04: then do it with that one hoodie",
+  "observedAt": "2026-08-05T03:59:59.132Z",
+  "evidenceRef": "test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json"
+}

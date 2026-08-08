@@ -28,6 +28,12 @@ const nextConfig = {
   poweredByHeader: false,
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.shopify.com',
+      },
+    ],
   },
   webpack(config, { dev }) {
     if (dev) {

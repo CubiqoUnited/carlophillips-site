@@ -17,6 +17,11 @@ const availableSummary = {
     href: '/products/carlophillips-signature-hoodie',
     sourceLabel: 'Local fixture review — not Shopify live data',
     commerceAllowed: false,
+    heroMedia: {
+      url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+      alt: 'Signature Hoodie front candidate',
+      label: 'Modelize product portrait · generated candidate · approval pending',
+    },
   },
 };
 
@@ -29,7 +34,7 @@ describe('home release composition', () => {
     expect(html).toContain('Withheld</span><strong');
     expect(html).toContain('CARLOPHILLIPS Signature Hoodie');
     expect(html).toContain('href="/products/carlophillips-signature-hoodie"');
-    expect(html).toContain('Review product');
+    expect(html).toContain('View product');
     expect(html).not.toContain('Add to bag');
   });
 
@@ -43,7 +48,7 @@ describe('home release composition', () => {
       primaryProduct: null,
     };
     const html = renderToStaticMarkup(<HomeReleaseStage summary={summary} />);
-    expect(html).toContain('The product remains behind its release gate.');
+    expect(html).toContain('The next piece is taking shape.');
     expect(html).toContain('Visible</span><strong');
     expect(html).not.toContain('/products/');
     expect(html).not.toContain('Signature Hoodie');
@@ -59,16 +64,83 @@ describe('home release composition', () => {
       excludedCount: 1,
       primaryProduct: null,
     }} />);
-    expect(available).toContain('Review 1 product');
-    expect(unavailable).toContain('View release state');
+    expect(available).toContain('Preview the collection');
+    expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
+    expect(available).toContain('At the<br/>edge of life.');
+    expect(available).toContain('Enter the collection');
+    expect(available).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
+    expect(available).toContain('Private product preview');
+    expect(available).not.toContain('Modelize product portrait · generated candidate · approval pending');
+    expect(unavailable).toContain('Explore the collection');
+    expect(unavailable).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(unavailable).not.toContain('/products/');
+    expect(unavailable).not.toContain('editorial-02.jpg');
   });
 
-  it('keeps the archived board explicitly separate from product and media truth', () => {
+  it('places the brand campaign before the gated Hoodie runway and category rail', () => {
     const html = renderToStaticMarkup(<HomeStorefront catalogSummary={availableSummary} />);
-    expect(html).toContain('Visual-system reference · not product or media proof');
-    expect(html).toContain('Nothing shown here grants purchase, publication, or fulfillment authority.');
+    const campaignIndex = html.indexOf('aria-label="CARLOPHILLIPS runway campaign"');
+    const productIndex = html.indexOf('aria-label="Signature Hoodie runway"');
+    const categoriesIndex = html.indexOf('aria-label="Product categories"');
+
+    expect(campaignIndex).toBeGreaterThan(-1);
+    expect(productIndex).toBeGreaterThan(campaignIndex);
+    expect(categoriesIndex).toBeGreaterThan(productIndex);
+    expect(html).toContain('href="#signature-runway"');
+    expect(html).not.toContain('No restocks');
+    expect(html).not.toContain('Join the list');
+  });
+
+  it('keeps the archived board separate when no release-eligible hero media exists', () => {
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={{
+      ...availableSummary,
+      status: 'denied',
+      visibleCount: 0,
+      excludedCount: 1,
+      primaryProduct: null,
+    }} />);
+    expect(html).toContain('Collection preview');
+    expect(html).toContain('A considered study in form, material and everyday utility.');
     expect(html).not.toContain('Add to bag');
     expect(html).not.toContain('Shop Now');
+  });
+
+  it('renders live product copy without internal release jargon', () => {
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={{
+      ...availableSummary,
+      environment: 'preview',
+      commerceAllowed: true,
+      primaryProduct: { ...availableSummary.primaryProduct, commerceAllowed: true },
+    }} />);
+    expect(html).toContain('View the Signature Hoodie');
+    expect(html).toContain('Signature Series');
+    expect(html).toContain('Available now / Black / XS–5XL');
+    expect(html).toContain('Signature Series / Runway 001');
+    expect(html).toContain('Heavyweight black fleece. Quiet signature detail. Built for every day.');
+    expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
+    expect(html).toContain('aria-current="page"');
+    expect(html).toContain('>Hoodies</a>');
+    expect(html).toContain('aria-disabled="true"');
+    expect(html).toContain('>Shirts</span>');
+    expect(html).toContain('>Bottoms</span>');
+    expect(html).not.toContain('release gate');
+    expect(html).not.toContain('Candidates</span>');
+    expect(html).not.toContain('Withheld</span>');
+  });
+
+  it('keeps runway product media and active categories behind product visibility eligibility', () => {
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={{
+      ...availableSummary,
+      status: 'denied',
+      visibleCount: 0,
+      excludedCount: 1,
+      commerceAllowed: false,
+      primaryProduct: null,
+    }} />);
+    expect(html).not.toContain('/products/signature-hoodie/candidates/moda/');
+    expect(html).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
+    expect(html).not.toContain('Signature Series / Runway 001');
+    expect(html).not.toContain('aria-current="page"');
+    expect(html).toContain('aria-disabled="true"');
   });
 });

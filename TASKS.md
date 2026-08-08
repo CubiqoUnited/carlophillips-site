@@ -1,5 +1,79 @@
 # Delivery Tasks
 
+## Current bounded launch: two-stage runway landing
+
+- [x] Save the approved reusable showcase and POD pipeline locally as `podpipe`.
+- [x] Inspect current Vollebak and Zara landing composition without copying their assets or text.
+- [x] Preserve the Product Owner-supplied wide coastal runway frame as the opening CARLOPHILLIPS campaign.
+- [x] Move the existing three-frame Signature Hoodie runway sequence to the next full-screen panel on scroll.
+- [x] Replace internal/process-heavy landing copy with direct premium product language.
+- [x] Keep the sticky category rail after the Hoodie panel with Hoodies active and Shirts, Outerwear, Bottoms, and Accessories disabled.
+- [x] Add deterministic tests proving campaign → Hoodie → categories ordering and that denied products cannot emit Hoodie runway media or an active category.
+- [x] Pass focused tests, full lint, 323 tests, zero-vulnerability production audit, and optimized build.
+- [x] Capture direct 1440×1000 and 390×844 campaign, Hoodie, and category evidence with zero broken images, runtime error text, console errors, or horizontal overflow.
+- [x] Commit and push corrected candidate `ae57e29`; deploy and verify READY Vercel Preview `dpl_42uuiSoQqUyNnhJBbf35smBsud2n` at desktop and 390×844.
+- [ ] Product Owner reviews the corrected Preview and separately authorizes any merge to canonical `main` or Production deployment.
+
+## Current bounded delivery: complete Hoodie media ladder
+
+- [x] Inventory all existing image, GIF, video, and 3D assets; confirm no existing motion or 3D file is available.
+- [x] Assign one candidate owner per modality: MODA for multi-angle/on-model/video, Spin Studio for 360, and Instant 3D for the one-product 3D experiment.
+- [x] Create and visually review a Preview-only on-body candidate from the Hoodie reference.
+- [x] Repair the quarantined macro artifact into a new Preview-only material/embroidery candidate without overwriting the source.
+- [x] Add both candidates to the disclosed Hoodie Preview study and keep them absent from production.
+- [x] Install MODA and confirm its Shopify-embedded screen opens with 2 credits.
+- [x] Create a quarantined AI back-reference hypothesis because no verified back photograph exists; never promote it as product truth.
+- [x] Product Owner loaded the prepared MODA front/back files; Codex configured one ten-shot job priced at one displayed credit and generated it without Shopify export.
+- [x] Download and visually review all ten MODA originals; select six Preview candidates and reject Shot 10 for a false generated neck-label mark.
+- [x] Add the six selected MODA candidates to the Hoodie-only Preview study with an explicit unverified-back disclosure and production exclusion.
+- [x] Install Instant 3D and inspect its entry screen.
+- [ ] Restore access to the Instant 3D vendor dashboard; its `3dcloud.com.tr` iframe currently refuses the Shopify connection.
+- [x] Add a disclosed still-derived animated WebP/GIF Preview study without calling it product video, 360, or 3D.
+- [ ] Run one explicitly digital POD 360 experiment from approved product imagery using a compatible free AI-spin path; never describe it as photographed physical-product evidence.
+- [ ] Replace broken Instant 3D with a compatible free photo-to-GLB experiment and inspect geometry/textures before headless integration.
+- [ ] Obtain exact physical-product macro and on-model photography before treating fabric, fit, or construction as factual release media.
+- [ ] Add an interactive headless 3D viewer only after an approved GLB/GLTF/USDZ is available and verified.
+- [x] Pass full lint, 320 tests, zero-vulnerability production audit, and optimized build after the expansion.
+- [x] Deploy a new Vercel Preview and capture direct 1280×720 and 390×844 evidence for the expanded still/motion sequence.
+
+## Current bounded delivery: Signature Hoodie premium showcase
+
+- [x] Diagnose the gap between the premium layout and the limited two-image product presentation.
+- [x] Inspect Modelize, Spin Studio, MyDesigns, and a zero-subscription video/model candidate without accepting charges or broad permissions.
+- [x] Publish only the two usable outputs from existing Modelize job `#137843f7`; leave the artifacted close-up unpublished.
+- [x] Add a Signature-Hoodie-only Preview editorial study with explicit AI-assisted disclosure and no product-truth claims.
+- [x] Prove by component tests that the study cannot render in production, on other products, or include the quarantined asset.
+- [x] Pass full lint, 320 tests, zero-vulnerability production audit, and optimized build.
+- [x] Capture direct desktop/mobile Preview evidence with all images loaded and no browser errors or overflow.
+- [ ] Product Owner reviews the updated Preview; production remains unchanged pending a separate decision.
+- [ ] Obtain 16–24 genuine angle images or a real GLB before using Spin Studio; its free one-product tier does not create missing source truth.
+- [x] Install MODA after reviewing the Shopify permission screen; run only the bounded free candidate job recorded above and accept no paid plan or credits.
+
+## Current bounded delivery: premium Hobby Preview
+
+- [x] Apply the approved Vollebak/Zara reference direction without copying brand assets or inventing media.
+- [x] Remove internal release jargon from live customer-facing home, collection, and PDP states.
+- [x] Preserve Shopify as product/price/availability/checkout truth and keep raw identifiers server-only.
+- [x] Verify desktop/mobile layouts, live product facts, ordered sizes, zero console errors, and no horizontal overflow.
+- [x] Pass full lint, 318 tests, zero-vulnerability production audit, and optimized build.
+- [x] Commit and push the tested candidate to the temporary branch.
+- [x] Store the existing Shopify Storefront domain/token as sensitive Preview-only variables in Aditya's Hobby project.
+- [x] Create and verify a non-production Vercel Preview; do not alter production or domains.
+- [ ] Product Owner reviews the Preview and separately approves or rejects production promotion.
+
+## Current bounded launch: one Signature Hoodie
+
+- [x] Activate only the Signature Hoodie in Shopify and publish it to Carlophillips Headless.
+- [x] Verify nine current Storefront variants, availability, prices, truthful media, and stable identity/facts fingerprints without exposing raw identifiers.
+- [x] Add an exact-handle/fingerprint production launch policy and server-only Shopify cart creation.
+- [x] Keep raw variant references off public routes, views, summaries, and evidence.
+- [x] Prove a real no-order cart returns a trusted Shopify checkout redirect without payment or order submission.
+- [x] Make home, shop, collections, and PDP truthfully reflect live Shopify commerce.
+- [x] Pass full lint, 316 tests, dependency audit, build, HTTP routes, desktop/mobile screenshots, and console validation.
+- [ ] Product Owner reactivates the suspended Vercel account/payment method and says `Vercel reactivated`.
+- [ ] Resume at Vercel environment configuration, Preview deployment/verification, then production deployment under the existing launch authorization.
+- [ ] Verify the live domain and Shopify checkout page after deployment; stop before payment/order.
+
 ## Current bounded correction: production visual direction
 
 - [x] Recoverably isolate the uncommitted Cycle 20 fulfillment-contract draft without mixing or committing it.
@@ -55,10 +129,35 @@
 ## Next bounded cycle: authenticated read-only Shopify audit
 
 - [x] Attempt the existing Google/Shopify browser path before declaring a blocker; preserve the Shopify email-OTP verification tab.
-- [ ] Classify P0 Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder by actual callable surface.
+- [x] Classify P0 Storefront/cart, Apliiq, Modelize, Spin Studio/ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder by actual callable surface.
 - [x] Capture a sanitized live authentication-gate record without revealing the account address/code, accepting charges, or changing Shopify state.
 - [x] Update the capability registry and exact PipelineRun blockers/resume points to the observed email-OTP boundary.
-- [ ] If safely observable, capture current Hoodie Shopify product/variant/media facts and fingerprint without writes.
+- [x] Capture the safely observable current Hoodie Draft product/media facts without writes; exact variant fingerprint remains pending the supported Storefront read path.
+
+## Current bounded POC path: Shopify to VOLLBAK-aligned storefront
+
+- [x] Select the minimum stack: Apliiq, Modelize, one spin candidate, native Shopify Headless, Flow, and the existing CP Next.js storefront.
+- [x] Record the 33-app live inventory, duplicate groups, callable surfaces, permissions/billing boundaries, screenshots, and exact blockers.
+- [ ] Product Owner signs in to the existing Apliiq account; then observe the Hoodie product/design/variant mapping read-only.
+- [x] Prove the existing native Headless public credential and required product/checkouts scopes with a secret-free live HTTP 200 query.
+- [ ] Produce a sanitized Storefront Hoodie observation after an explicit controlled publication/channel decision; the current Draft is correctly withheld and must not be made Active implicitly.
+- [x] Export the existing completed Modelize job read-only; retain two usable generated candidates for labeled local review and quarantine the artifacted third image.
+- [ ] Product Owner approves exact Modelize media for the release and separately approves a plan/credit spend before any additional on-model generation; the free allowance is exhausted.
+- [ ] Obtain a real Hoodie angle set and prove Spin Studio export/headless integration before enabling its theme embed; the documented default theme installation does not integrate with the CP Next.js storefront. Keep ZS-Spin-View inactive unless that proof fails.
+- [ ] Review the inactive CP Flow, then obtain separate approval before activation or any Shopify write.
+- [ ] Bind product, fulfillment, and approved media evidence; deploy a temporary-branch Vercel Preview only after its explicit approval.
+- [ ] Run desktop/mobile/console/cart/checkout/rollback verification without submitting an order.
+- [ ] Merge to `main`, publish, and activate production only after separate Product Owner approval.
+
+## Current Hoodie media proof — local only
+
+- [x] Render the usable Modelize product portrait and editorial-chair candidate through the existing local fixture/release boundary.
+- [x] Keep the flawed Modelize detail output quarantined and absent from the storefront.
+- [x] Prove desktop and direct 390×844 home/PDP rendering, loaded images, no horizontal overflow, no console warnings/errors, and no enabled purchase controls.
+- [ ] Generate or obtain truthful exact-product on-model media after explicit credit/plan approval.
+- [ ] Export one genuine spin/360 set from the selected installed app; do not substitute animation or repeated stills.
+- [ ] Obtain real video and exact-product 3D/AR only if supported; otherwise record a Product Owner-approved infeasibility decision instead of fabricating them.
+- [ ] Bind approved media plus live Shopify and Apliiq observations to the release record before any Vercel Preview.
 
 ## Completed: supported framework migration
 
@@ -161,6 +260,7 @@
 ## Blocked / approval required
 
 - [x] Restore Vercel deployment access and verify Preview plus production desktop/mobile routes.
-- [ ] Complete the preserved Shopify email-verification step, then perform a read-only Admin/Storefront capability audit without accepting charges.
+- [x] Complete Shopify authentication and the read-only Admin/app capability audit without accepting charges.
+- [ ] Complete the separate Apliiq sign-in handoff, then inspect the exact Hoodie mapping read-only.
 - [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
 - [ ] Keep Shopify writes, product activation, test orders, paid app actions, and fulfillment activation separately evidenced and fail-closed until tested.

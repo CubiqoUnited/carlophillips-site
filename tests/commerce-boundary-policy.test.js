@@ -68,7 +68,21 @@ describe('active commerce boundary policy', () => {
     expect(serverEntry).not.toContain('console.');
     expect(purePolicy).not.toContain('console.');
     expect(readFileSync('lib/commerce/cart-activation-server.js', 'utf8'))
-      .toContain('variantResolverDecision: null');
+      .toContain('variantResolverDecision = null');
+  });
+
+  it('contains the approved cart mutation and raw references inside a server-only boundary', () => {
+    const serverEntry = readFileSync('lib/commerce/shopify-checkout-server.js', 'utf8');
+    const route = readFileSync('app/api/checkout/route.js', 'utf8');
+    const form = readFileSync('components/commerce/shopify-checkout-form.jsx', 'utf8');
+
+    expect(serverEntry).toContain("import 'server-only'");
+    expect(serverEntry).toContain('cartCreate');
+    expect(serverEntry).not.toContain('console.');
+    expect(route).not.toContain('SHOPIFY_STOREFRONT_TOKEN');
+    expect(route).not.toContain('merchandiseId');
+    expect(form).not.toContain('gid://');
+    expect(form).not.toContain('variantId');
   });
 
   it('keeps public API routes from exposing catalog audit or mutation surfaces', () => {

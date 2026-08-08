@@ -28,7 +28,10 @@ describe('storefront route policy', () => {
     expect(source).not.toContain('loadShopifyProduct');
     expect(source).not.toContain('SHOPIFY_');
     expect(source).not.toContain('Add to bag');
-    expect(source).toContain('not product or media proof');
+    expect(source).toContain('/campaigns/lofoten-runway-hero.jpg');
+    expect(source).toContain('At the<br />edge of life.');
+    expect(source).toContain('Collection preview');
+    expect(source).toContain('/brand-boards/carlophillips-drop-board.png');
   });
 
   it('publishes only active product and commerce routes in the sitemap', () => {
@@ -40,5 +43,12 @@ describe('storefront route policy', () => {
     expect(source).not.toContain('/lookbook');
     expect(robots).not.toContain('/about');
     expect(robots).not.toContain('/lookbook');
+  });
+
+  it('keeps site metadata aligned with the active Signature Series', () => {
+    const source = readFileSync('app/layout.js', 'utf8');
+    expect(source).toContain("tagline: 'Signature Series'");
+    expect(source).toContain('The CARLOPHILLIPS Signature Hoodie.');
+    expect(source).not.toContain('Gesture of Luxury');
   });
 });

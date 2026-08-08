@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 function countLabel(count, singular, plural = `${singular}s`) {
@@ -23,14 +24,18 @@ function environmentCopy(decision) {
   }
   if (decision.environment === 'preview') {
     return {
-      eyebrow: 'Private release review',
-      body: 'Only Shopify-observed products with complete Staged-or-later release evidence can appear in this private Preview catalog.',
+      eyebrow: decision.commerceAllowed ? 'Private live-commerce staging' : 'Private release review',
+      body: decision.commerceAllowed
+        ? 'The approved Hoodie is connected to current Shopify facts and checkout for private staging verification.'
+        : 'Only Shopify-observed products with complete Staged-or-later release evidence can appear in this private Preview catalog.',
     };
   }
   if (decision.environment === 'production') {
     return {
-      eyebrow: 'Released catalog',
-      body: 'Only Shopify-observed products with complete Released evidence can appear. Purchasing remains disabled until cart and checkout are proven.',
+      eyebrow: decision.commerceAllowed ? 'Live Shopify catalog' : 'Released catalog',
+      body: decision.commerceAllowed
+        ? 'Current Shopify product facts, availability, pricing, and secure checkout are active for the approved product below.'
+        : 'Only Shopify-observed products with complete Released evidence can appear. Purchasing remains disabled until cart and checkout are proven.',
     };
   }
   return {
@@ -56,6 +61,7 @@ function CatalogHeader({ pageLabel }) {
 export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
   const copy = environmentCopy(decision);
   const available = decision.status === 'available';
+  const liveCollection = available && decision.commerceAllowed;
 
   return (
     <main
@@ -65,56 +71,60 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
       className="min-h-screen bg-[#020202] text-white"
     >
       <CatalogHeader pageLabel={pageLabel} />
-      <section className="border-b border-white/10 px-5 py-16 sm:px-8 lg:px-12 lg:py-24">
+      <section className="storefront-panel border-b border-white/10 px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
         <div className="mx-auto grid max-w-[1700px] gap-12 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-white/40">{copy.eyebrow}</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-white/40">{liveCollection ? 'Signature Series / 001' : copy.eyebrow}</p>
             <h1 className="mt-7 max-w-5xl text-6xl font-light leading-[0.9] tracking-[-0.06em] sm:text-8xl lg:text-9xl">
-              {available ? countLabel(decision.visibleCount, 'release candidate') : 'No release-eligible products.'}
+              {liveCollection ? 'The Collection' : available ? countLabel(decision.visibleCount, 'preview piece') : 'Coming soon.'}
             </h1>
-            <p className="mt-8 max-w-3xl text-base leading-relaxed text-white/52 sm:text-lg">{copy.body}</p>
+            <p className="mt-8 max-w-3xl text-base leading-relaxed text-white/52 sm:text-lg">
+              {liveCollection ? 'One essential. Considered in every detail and available through secure Shopify checkout.' : copy.body}
+            </p>
           </div>
-          <dl className="grid grid-cols-2 gap-px bg-white/10 text-sm">
+          {!liveCollection && <dl className="grid grid-cols-2 gap-px bg-white/10 text-sm">
             {[
               ['Candidate records', decision.candidateCount],
               ['Visible here', decision.visibleCount],
               ['Withheld', decision.excludedCount],
-              ['Purchasing', 'Disabled'],
+              ['Purchasing', decision.commerceAllowed ? 'Shopify checkout' : 'Disabled'],
             ].map(([label, value]) => (
               <div key={label} className="bg-black p-5 sm:p-7">
                 <dt className="text-[9px] uppercase tracking-[0.22em] text-white/30">{label}</dt>
                 <dd className="mt-3 text-white/70">{value}</dd>
               </div>
             ))}
-          </dl>
+          </dl>}
         </div>
       </section>
 
       {available ? (
-        <section aria-label="Release-eligible products" className="px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
-          <div className="mx-auto grid max-w-[1700px] gap-px bg-white/10 md:grid-cols-2 xl:grid-cols-3">
+        <section aria-label="Available products" className="storefront-panel px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
+          <div className={`mx-auto grid max-w-[1700px] gap-px bg-white/10 ${liveCollection && decision.products.length === 1 ? 'lg:grid-cols-[1.35fr_0.65fr]' : 'md:grid-cols-2 xl:grid-cols-3'}`}>
             {decision.products.map(product => (
-              <article key={product.handle} className="flex min-h-[580px] flex-col bg-black">
-                <div className="flex aspect-[4/5] items-center justify-center bg-[#171714]">
+              <article key={product.handle} className={`bg-black ${liveCollection && decision.products.length === 1 ? 'contents' : 'flex min-h-[580px] flex-col'}`}>
+                <div className="relative flex min-h-[62vh] items-center justify-center bg-[#171714] lg:min-h-[78vh]">
                   {product.media[0]?.url ? (
-                    <img
+                    <Image
                       src={product.media[0].url}
                       alt={product.media[0].alt}
-                      className="h-full w-full object-contain p-8 sm:p-12"
+                      fill
+                      sizes={liveCollection ? '(min-width: 1024px) 68vw, 100vw' : '(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw'}
+                      className="object-contain p-8 sm:p-12"
                     />
                   ) : (
                     <span className="px-8 text-center text-sm text-white/40">Approved catalog media unavailable</span>
                   )}
                 </div>
-                <div className="flex flex-1 flex-col border-t border-white/10 p-6 sm:p-8">
-                  <p className="text-[9px] uppercase tracking-[0.24em] text-white/35">{product.sourceLabel}</p>
-                  <h2 className="mt-5 text-3xl font-light tracking-[-0.035em]">{product.title}</h2>
-                  <p className="mt-4 text-sm text-white/48">{formatPrice(product)} · purchasing disabled</p>
+                <div className="flex flex-1 flex-col justify-center border-t border-white/10 p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-12">
+                  <p className="text-[9px] uppercase tracking-[0.24em] text-white/35">{liveCollection ? 'Edition 001' : product.sourceLabel}</p>
+                  <h2 className="mt-5 text-3xl font-light tracking-[-0.035em] sm:text-5xl">{product.title}</h2>
+                  <p className="mt-5 text-base text-white/58">{formatPrice(product)}</p>
                   <Link
                     href={`/products/${product.handle}`}
-                    className="mt-auto inline-flex min-h-12 items-center justify-center border border-white/20 px-5 pt-8 text-[10px] uppercase tracking-[0.24em] text-white/70"
+                    className="mt-10 inline-flex min-h-14 items-center justify-center border border-white/25 px-5 text-[10px] uppercase tracking-[0.24em] text-white/82 transition hover:bg-white hover:text-black lg:mt-14"
                   >
-                    Review product
+                    {product.commerceAllowed ? 'View product' : 'Preview product'}
                   </Link>
                 </div>
               </article>
@@ -124,11 +134,10 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
       ) : (
         <section className="px-5 py-20 sm:px-8 lg:px-12">
           <div className="mx-auto max-w-[1700px] border border-white/10 p-8 sm:p-12">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-white/35">Catalog withheld</p>
+            <p className="text-[10px] uppercase tracking-[0.28em] text-white/35">CARLOPHILLIPS</p>
             <p className="mt-6 max-w-3xl text-xl font-light leading-relaxed text-white/62">
-              No product passed the source, environment, and release-evidence policy. No denied or unavailable product data has been substituted.
+              The next release is being prepared. Return soon.
             </p>
-            <p className="mt-6 font-mono text-xs text-white/30">Reason: {decision.reason}</p>
           </div>
         </section>
       )}

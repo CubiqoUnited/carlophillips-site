@@ -93,7 +93,7 @@ describe('commerce product presentation', () => {
     expect(html).toContain('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
     expect(html).toContain('Purchasing disabled');
     expect(html).toContain('Purchasing remains disabled');
-    expect(html).toContain('PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED');
+    expect(html).not.toContain('PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED');
     expect(html).toContain('data-cart-activation="blocked"');
     expect(html).toContain('data-media-review="incomplete"');
     expect(html).toContain('Private media review incomplete');
@@ -143,10 +143,106 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('Outer pending approval story');
   });
 
+  it('renders an active Shopify checkout form only for an eligible launch', () => {
+    const product = toProductViewModel({
+      source: 'shopify',
+      environment: 'production',
+      commerceAllowed: true,
+      reason: 'SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED',
+      product: {
+        id: 'hoodie', handle: 'approved-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
+        description: 'Current Shopify description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
+        variantPresentation, media: [],
+      },
+    });
+    const html = renderToStaticMarkup(<CommerceProductDetail
+      releaseReason="SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED"
+      cartActivation={{ status: 'eligible', cartAllowed: true, reason: 'CUSTOMER_CART_ELIGIBLE' }}
+      product={product}
+    />);
+    expect(html).toContain('Buy with Shopify');
+    expect(html).toContain('action="/api/checkout"');
+    expect(html).toContain('Signature Series / 001');
+    expect(html).toContain('Made to be lived in.');
+    expect(html).toContain('Securely through Shopify');
+    expect(html).not.toContain('Shopify Storefront — live product');
+    expect(html).not.toContain('Purchasing disabled');
+    expect(html).not.toContain('release state unavailable');
+    expect(html).not.toContain('Cart gate: CUSTOMER_CART_ELIGIBLE');
+    expect(html).not.toContain('gid://');
+  });
+
   it('renders an honest unavailable state without product content', () => {
     const html = renderToStaticMarkup(<CommerceProductUnavailable decision={{ reason: 'SHOPIFY_REQUEST_FAILED' }} />);
-    expect(html).toContain('This product cannot be shown truthfully');
-    expect(html).toContain('Static product data has not been substituted');
-    expect(html).toContain('SHOPIFY_REQUEST_FAILED');
+    expect(html).toContain('This piece is currently unavailable');
+    expect(html).toContain('Return to the collection');
+    expect(html).toContain('data-unavailable-reason="SHOPIFY_REQUEST_FAILED"');
+    expect(html).not.toContain('Reason:');
+  });
+
+  it('renders the disclosed Signature Hoodie editorial study only in Preview', () => {
+    const product = toProductViewModel({
+      source: 'shopify',
+      environment: 'preview',
+      commerceAllowed: false,
+      reason: 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE',
+      product: {
+        id: 'hoodie',
+        handle: 'carlophillips-signature-hoodie',
+        title: 'Signature Hoodie',
+        price: 128,
+        currency: 'USD',
+        description: 'Observed description',
+        availableForSale: true,
+        vendor: 'Apliiq',
+        productType: 'Hoodie',
+        media: [],
+      },
+    });
+    const previewHtml = renderToStaticMarkup(
+      <CommerceProductDetail environment="preview" product={product} />
+    );
+    const productionHtml = renderToStaticMarkup(
+      <CommerceProductDetail environment="production" product={product} />
+    );
+
+    expect(previewHtml).toContain('data-editorial-study="ai-assisted-preview"');
+    expect(previewHtml).toContain('Digital editorial study / 01');
+    expect(previewHtml).toContain('Digital campaign studies created from the Signature Hoodie reference images');
+    expect(previewHtml).toContain('model-front-full.jpg');
+    expect(previewHtml).toContain('model-three-quarter.jpg');
+    expect(previewHtml).toContain('model-seated.jpg');
+    expect(previewHtml).toContain('model-side-profile.jpg');
+    expect(previewHtml).toContain('model-back-digital-study.jpg');
+    expect(previewHtml).toContain('product-flat-lay.jpg');
+    expect(previewHtml).toContain('Unverified back visualisation');
+    expect(previewHtml).toContain('object-contain object-center');
+    expect(previewHtml).toContain('material-embroidery-study.png');
+    expect(previewHtml).toContain('data-motion-study="still-derived"');
+    expect(previewHtml).toContain('still-derived-motion-study.webp');
+    expect(previewHtml).toContain('still-derived-motion-study.gif');
+    expect(previewHtml).toContain('GIF format');
+    expect(previewHtml).not.toContain('moda-shot-10.jpg');
+    expect(previewHtml).not.toContain('embroidery-detail-quarantined');
+    expect(productionHtml).not.toContain('data-editorial-study');
+    expect(productionHtml).not.toContain('/candidates/moda/');
+    expect(productionHtml).not.toContain('material-embroidery-study.png');
+    expect(productionHtml).not.toContain('still-derived-motion-study.webp');
+    expect(productionHtml).not.toContain('still-derived-motion-study.gif');
+  });
+
+  it('does not attach the Hoodie editorial study to other Preview products', () => {
+    const html = renderToStaticMarkup(
+      <CommerceProductDetail
+        environment="preview"
+        product={{
+          handle: 'another-product', title: 'Another Product', price: 100, currency: 'USD', description: '',
+          sourceLabel: 'Shopify Storefront observation', commerceAllowed: false, availableForSale: false,
+          vendor: '', productType: '', media: [], mediaReview: null, colors: [], sizes: [], truthHeading: '', story: '',
+        }}
+      />
+    );
+
+    expect(html).not.toContain('data-editorial-study');
   });
 });
