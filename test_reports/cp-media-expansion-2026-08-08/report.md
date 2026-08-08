@@ -48,10 +48,11 @@ The curated MODA assets plus the macro and still-derived motion studies render o
 
 - Focused product-detail suite: 6/6 passed.
 - Full `yarn verify`: passed — zero-warning lint, 33 files / 320 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
-- Vercel Preview `dpl_5oTCaMM9JutdmSnFtUCJhJacMeGP`: READY at `https://carlophillips-site-pgt28xwy7-adityas-projects-261b17a9.vercel.app`.
-- Direct 1280×720 and 390×844 Hoodie checks: the motion panel is present; animated WebP decodes at 540×675; disclosure and GIF link are visible; no horizontal overflow or framework error overlay.
+- Corrected Vercel Preview `dpl_BhHrt7roU9zYCGxgzLXe2LSst9ap`: READY at `https://carlophillips-site-onkmu0akt-adityas-projects-261b17a9.vercel.app`; Vercel inspection confirms target `preview`.
+- The first MODA deployment exposed desktop `object-cover` cropping of the portrait frames. The corrected candidate uses `object-contain`, and the durable desktop capture confirms the complete head-to-toe front composition.
+- Direct 1280×720 and 390×844 Hoodie checks decode all six curated MODA images, omit rejected Shot 10, show the unverified digital-back disclosure, and have no horizontal overflow or framework error overlay.
 - The browser proof deliberately records `videoCount: 0` and `modelViewerCount: 0`. The Preview does not imply that missing video or 3D work is complete.
-- New durable captures: `motion-preview-desktop.png` and `motion-preview-mobile.png`. Earlier expanded-page/on-model/macro captures remain in the same evidence directory.
+- New durable captures: `moda-preview-desktop-pre-fit-fix.png`, `moda-preview-desktop-final.png`, and `moda-preview-mobile-final.png`. The first documents the caught crop defect; the final pair documents the corrected full portrait composition and the mobile unverified-back disclosure. Earlier expanded-page/on-model/macro/motion captures remain in the same evidence directory.
 - Vercel inspection confirms target `preview`; `https://www.carlophillips.com/` continues to return HTTP 200 from the unchanged production route.
 
 ## Honest conclusion

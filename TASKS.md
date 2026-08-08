@@ -33,7 +33,7 @@
 - [x] Capture direct desktop/mobile Preview evidence with all images loaded and no browser errors or overflow.
 - [ ] Product Owner reviews the updated Preview; production remains unchanged pending a separate decision.
 - [ ] Obtain 16–24 genuine angle images or a real GLB before using Spin Studio; its free one-product tier does not create missing source truth.
-- [ ] Decide separately whether to install MODA after reviewing its requested Shopify permissions; do not buy Modelize credits or a plan without exact approval.
+- [x] Install MODA after reviewing the Shopify permission screen; run only the bounded free candidate job recorded above and accept no paid plan or credits.
 
 ## Current bounded delivery: premium Hobby Preview
 
