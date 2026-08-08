@@ -1,7 +1,7 @@
 # 🔴 HUMAN INTERVENTION REQUIRED — COMPLETE THE MEDIA-APP INSTALL HANDOFFS
 
 Updated: 2026-08-08
-Status: Shopify is authenticated, but the official App Store Install buttons for MODA and Instant 3D do not advance in background automation. Neither app is installed and no new permissions, charges, 3D model, or video were created. The current Preview remains available and production is unchanged.
+Status: The expanded still-image Preview is READY at `https://carlophillips-site-da9l7ctw6-adityas-projects-261b17a9.vercel.app`, with disclosed product-alone, on-body, and macro studies. Shopify is authenticated, but the official App Store Install buttons for MODA and Instant 3D do not advance in background automation. Neither app is installed and no new permissions, charges, 3D model, or video were created. Production is unchanged.
 
 ## Exact action
 

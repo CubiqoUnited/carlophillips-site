@@ -13,7 +13,7 @@
 - [ ] Obtain exact physical-product macro and on-model photography before treating fabric, fit, or construction as factual release media.
 - [ ] Add an interactive headless 3D viewer only after an approved GLB/GLTF/USDZ is available and verified.
 - [x] Pass full lint, 320 tests, zero-vulnerability production audit, and optimized build after the expansion.
-- [ ] Deploy a new Vercel Preview and capture desktop/mobile comparison evidence for the expanded still sequence.
+- [x] Deploy a new Vercel Preview and capture desktop/mobile comparison evidence for the expanded still sequence.
 
 ## Current bounded delivery: Signature Hoodie premium showcase
 

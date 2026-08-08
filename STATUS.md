@@ -13,7 +13,8 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Existing Spin Studio remains the selected 360 owner. It requires 16–24 genuine angle images or a GLB. Reusing AI-generated angles as physical-product proof is prohibited.
 - Instant 3D is the selected one-product 3D experiment candidate. Its official listing advertises a free one-model tier plus six one-time generation credits, but its authenticated Install control also did not advance. No 3D app, model, widget, or product media was added.
 - The storefront already renders approved image and video media, but a `model_3d` item intentionally remains a static-fallback state. An interactive viewer will be added only after a real generated/uploaded model is exported, inspected, release-bound, and proven in the headless Preview.
-- Full verification passes after the expansion: zero-warning lint, 33 files / 320 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build. A new deployed Preview and desktop/mobile visual evidence remain pending.
+- Full verification passes after the expansion: zero-warning lint, 33 files / 320 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Vercel Preview `dpl_GQYEQ89bJLpiYYkauWuQFvuRtno9` is READY at `https://carlophillips-site-da9l7ctw6-adityas-projects-261b17a9.vercel.app`. Direct 1280×720 and 390×844 Hoodie checks return HTTP 200, load all four studies at source resolution, show all disclosure labels, have no overflow or browser errors, and exclude the quarantined asset. Verification also confirms zero video and zero interactive 3D elements, preserving the remaining gap truthfully. Vercel reports target `preview`; production was not repointed.
 
 ## Signature Hoodie premium-showcase bridge — 2026-08-08
 

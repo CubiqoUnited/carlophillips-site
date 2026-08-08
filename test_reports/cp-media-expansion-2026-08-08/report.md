@@ -41,7 +41,11 @@ The two new assets render only when `environment === 'preview'` and the exact ha
 
 - Focused product-detail suite: 6/6 passed.
 - Full `yarn verify`: passed — zero-warning lint, 33 files / 320 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
-- New Vercel Preview desktop/mobile evidence: pending.
+- Vercel Preview `dpl_GQYEQ89bJLpiYYkauWuQFvuRtno9`: target `preview`, READY at `https://carlophillips-site-da9l7ctw6-adityas-projects-261b17a9.vercel.app`.
+- Direct 1280×720 and 390×844 Hoodie checks: HTTP 200; exact viewport widths; no horizontal overflow; all four study images decoded at source resolution; all four disclosure labels present; zero console/page errors; quarantined asset absent.
+- The browser proof deliberately records `videoCount: 0` and `modelViewerCount: 0`. The Preview does not imply that missing video or 3D work is complete.
+- Durable captures: `expanded-pdp-desktop-full.png`, `expanded-pdp-mobile-full.png`, `on-model-desktop.png`, `on-model-mobile.png`, `macro-desktop.png`, and `macro-mobile.png`.
+- Vercel inspection confirms target `preview`; `https://www.carlophillips.com/` continues to return HTTP 200 from the unchanged production route.
 
 ## Honest conclusion
 
