@@ -32,7 +32,7 @@ The current local gallery contains 11 frames: three eligible product stills and 
 `yarn verify` completed with Yarn Classic 1.22.22:
 
 - ESLint: zero warnings.
-- Vitest: 34 files / 329 tests passed.
+- Vitest: 34 files / 330 tests passed.
 - Production dependency audit: zero vulnerabilities across 193 packages.
 - Next.js 15.5.21 optimized build: 12 routes completed successfully.
 
@@ -62,6 +62,8 @@ A separate clean-server traversal advanced through all 11 positions and decoded 
 - `local-mobile-overlay-01.png`
 - `local-mobile-overlay-02.png`
 
+The first Vercel upload attempt was stopped before transfer because no `.vercelignore` existed and 168 MB of recovered design exports could have entered the source bundle. A tested deployment boundary now excludes credentials, dependencies/build output, local recovered exports, temporary files, tests, and QA/governance evidence from Vercel uploads.
+
 ## Deployment state
 
 Vercel Preview deployment and direct deployed verification are pending. Production has not been changed.
@@ -70,7 +72,7 @@ Vercel Preview deployment and direct deployed verification are pending. Producti
 
 What changed: the Homepage Hoodie action now opens a high-end full-screen swipe gallery in place, with all currently eligible and disclosed Hoodie media in one sequence.
 
-Checks passed: lint, 329 tests, dependency audit, optimized build, desktop/mobile interaction checks, all-frame decoding, accessibility close/focus behavior, copy review, console/HTTP checks, and overflow checks.
+Checks passed: lint, 330 tests, dependency audit, optimized build, desktop/mobile interaction checks, all-frame decoding, accessibility close/focus behavior, copy review, console/HTTP checks, and overflow checks.
 
 Known limitations: the current media set has no release-eligible real product video, genuine 360 spin, or interactive 3D model. The viewer presents only the media actually available to its environment.
 
