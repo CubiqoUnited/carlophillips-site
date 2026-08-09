@@ -142,6 +142,9 @@
 
   .cp-campaign-image {
     object-position: 68% center;
+    transform-origin: 62% 48%;
+    animation: cp-campaign-drift 18s var(--cp-ease-standard) infinite alternate;
+    will-change: transform;
   }
 
   .cp-campaign-scrim {
@@ -221,6 +224,7 @@
 
   .cp-product-title {
     max-width: 11ch;
+    color: rgba(255, 255, 255, 0.62);
     font-size: clamp(3rem, 8vw, 6.25rem);
     font-weight: 300;
     line-height: 0.92;
@@ -232,23 +236,6 @@
     font-size: clamp(0.95rem, 1.35vw, 1.15rem);
     line-height: 1.6;
     text-wrap: pretty;
-  }
-
-  .cp-product-highlights {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .cp-product-highlights li {
-    border: 1px solid var(--cp-color-rule-strong);
-    background: rgba(0, 0, 0, 0.6);
-    padding: 0.6rem 0.75rem 0.55rem;
-    color: rgba(255, 255, 255, 0.76);
-    font-size: var(--cp-label-size);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    backdrop-filter: blur(0.5rem);
   }
 
   .cp-product-media-button {
@@ -274,6 +261,24 @@
 
   .cp-product-media-button:hover {
     background: var(--cp-color-paper);
+  }
+
+  .cp-product-media-button-corner {
+    position: absolute;
+    top: calc(var(--cp-header-height) + 1rem);
+    right: var(--cp-page-gutter);
+    z-index: 20;
+    width: min(13.5rem, calc(100% - (2 * var(--cp-page-gutter))));
+    min-height: 3.25rem;
+    border: 1px solid var(--cp-color-rule-strong);
+    background: rgba(0, 0, 0, 0.76);
+    color: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(0.75rem);
+  }
+
+  .cp-product-media-button-corner:hover {
+    background: var(--cp-color-ink);
+    color: var(--cp-color-canvas);
   }
 
   .cp-media-dialog {
@@ -386,6 +391,16 @@
   }
 }
 
+@keyframes cp-campaign-drift {
+  from {
+    transform: scale(1.015) translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: scale(1.075) translate3d(-0.7%, 0.4%, 0);
+  }
+}
+
 @keyframes runway-frame {
   0%, 30% {
     opacity: 1;
@@ -404,6 +419,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .cp-campaign-image,
   .cp-scroll-arrow {
     animation: none;
   }

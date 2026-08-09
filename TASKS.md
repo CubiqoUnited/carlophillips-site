@@ -1,10 +1,23 @@
 # Delivery Tasks
 
+## Current correction: 319×501 homepage simplification
+
+- [x] Dull the Signature Hoodie title without reducing reviewed product readability.
+- [x] Move the eligible media viewer action to a compact upper-right scene control.
+- [x] Change the visible landing cue to `Scroll and explore`.
+- [x] Remove the four meaningless highlight chips and their now-unused derived summary/schema fields.
+- [x] Add restrained camera motion to the flattened campaign still and preserve reduced-motion fallback.
+- [x] Confirm no real campaign video file exists; require a supplied/exported MP4 or WebM for truthful walking/body motion.
+- [x] Pass full `yarn verify` (35 files / 332 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect exact 319×501, 390×844, and 1440×1000 local evidence with no errors, overlays, or overflow.
+- [ ] Deploy the tested temporary-branch commit to a replacement Vercel Preview and repeat direct checks; do not change Production.
+- [ ] Product Owner reviews the replacement Preview and separately decides whether to supply a real runway video.
+
 ## Current correction: homepage hierarchy and media discovery
 
 - [x] Replace the subtle landing rule with an unmistakable centered scroll label and animated circular down control.
 - [x] Reduce the Hoodie title hierarchy and present reviewed human-readable product copy beneath it.
-- [x] Derive material/construction highlights only from reviewed product description/details.
+- [x] Initially derive material/construction highlights only from reviewed product description/details; later remove the chips and derived fields after Product Owner review found them meaningless.
 - [x] Replace the underlined action with a high-contrast media button and truthful view count.
 - [x] Add a direct viewer jump to the disclosed still-derived motion study.
 - [x] Remove the redundant lower product/release section so category navigation and footer follow the Hoodie scene.

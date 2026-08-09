@@ -289,7 +289,7 @@ function CampaignHero() {
           className="cp-scroll-cue mt-10"
           aria-label="Scroll down to discover the Signature Hoodie"
         >
-          <span className="cp-scroll-cue-label">Scroll to the Signature Hoodie</span>
+          <span className="cp-scroll-cue-label">Scroll and explore</span>
           <span className="cp-scroll-cue-control" aria-hidden="true">
             <ArrowDown className="cp-scroll-arrow h-5 w-5" strokeWidth={1.2} />
           </span>
@@ -365,6 +365,32 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
         )}
       </figure>
 
+      {galleryReady ? (
+        <button
+          ref={galleryButtonRef}
+          type="button"
+          onClick={onOpenGallery}
+          aria-haspopup="dialog"
+          aria-controls="product-media-overlay"
+          data-media-trigger="signature-hoodie"
+          className="cp-product-media-button cp-product-media-button-corner"
+        >
+          <span>Explore media</span>
+          <span className="inline-flex items-center gap-2">
+            {String(galleryCount).padStart(2, '0')} views
+            <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
+          </span>
+        </button>
+      ) : (
+        <Link
+          href="/shop"
+          className="cp-product-media-button cp-product-media-button-corner"
+        >
+          Explore the collection
+          <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
+        </Link>
+      )}
+
       <div className="cp-page-shell relative z-10 flex min-h-[var(--cp-viewport-height)] flex-col justify-end pb-[var(--cp-panel-bottom)] pt-[calc(var(--cp-header-height)+3rem)]">
         <div className="cp-product-copy max-w-2xl">
           <p className="cp-eyebrow mb-5">
@@ -376,36 +402,6 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           <p className="cp-product-review mt-5 max-w-xl">
             {runwayReady ? productDescription : 'A considered study in form, material and everyday utility.'}
           </p>
-          {runwayReady && product.highlights?.length > 0 && (
-            <ul className="cp-product-highlights mt-6" aria-label="Signature Hoodie highlights">
-              {product.highlights.map(highlight => <li key={highlight}>{highlight}</li>)}
-            </ul>
-          )}
-          {galleryReady ? (
-            <button
-              ref={galleryButtonRef}
-              type="button"
-              onClick={onOpenGallery}
-              aria-haspopup="dialog"
-              aria-controls="product-media-overlay"
-              data-media-trigger="signature-hoodie"
-              className="cp-product-media-button mt-7"
-            >
-              <span>Explore product media</span>
-              <span className="inline-flex items-center gap-3">
-                {String(galleryCount).padStart(2, '0')} views
-                <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-              </span>
-            </button>
-          ) : (
-            <Link
-              href="/shop"
-              className="cp-product-media-button mt-7"
-            >
-              Explore the collection
-              <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-            </Link>
-          )}
         </div>
       </div>
     </section>

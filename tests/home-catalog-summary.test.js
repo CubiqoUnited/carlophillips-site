@@ -58,12 +58,6 @@ describe('home catalog summary', () => {
         href: '/products/carlophillips-signature-hoodie',
         commerceAllowed: false,
         description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built with structured fleece and a soft interior.',
-        highlights: [
-          'Heavyweight feel',
-          'Structured fleece',
-          'Soft interior',
-          'CP chest embroidery',
-        ],
         heroMedia: {
           url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
         },
@@ -80,7 +74,6 @@ describe('home catalog summary', () => {
       'commerceAllowed',
       'description',
       'heroMedia',
-      'highlights',
       'href',
       'media',
       'sourceLabel',
@@ -90,7 +83,7 @@ describe('home catalog summary', () => {
     expect(JSON.stringify(summary)).not.toContain('Modelize');
   });
 
-  it('derives material highlights only from reviewed description and detail fields', () => {
+  it('passes only the reviewed description without deriving presentation claims', () => {
     const summary = toHomeCatalogSummary(decision({
       products: [{
         ...decision().products[0],
@@ -101,7 +94,7 @@ describe('home catalog summary', () => {
 
     expectValid(summary);
     expect(summary.primaryProduct.description).toContain('restrained black pullover');
-    expect(summary.primaryProduct.highlights).toEqual([]);
+    expect(summary.primaryProduct).not.toHaveProperty('highlights');
   });
 
   it('does not emit a product link or payload for a denied home decision', () => {

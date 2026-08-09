@@ -1,30 +1,27 @@
-# HUMAN INTERVENTION REQUIRED — REVIEW CORRECTED PREVIEW
+# HUMAN INTERVENTION REQUIRED — OPTIONAL REAL RUNWAY VIDEO
 
 Updated: 2026-08-08
 
 ## Exact action
 
-Open this exact non-production Preview manually:
+No human action is needed for the implemented slow camera push/pan. To make the runway people genuinely walk or move, attach one final landscape campaign video to the active Codex task:
 
-`https://carlophillips-site-3qgjsckgg-adityas-projects-261b17a9.vercel.app`
+- MP4 (H.264) preferred; WebM also accepted;
+- 1920×1080 or larger, 16:9;
+- ideally 8–15 seconds with a clean loop;
+- no baked-in navigation, captions, logos, or audio unless those are intended for the final hero.
 
-Confirm that the coastal CARLOPHILLIPS runway is the landing view, the Signature Hoodie runway is the next view on scroll, and the category rail follows it. Then reply in the active Codex task with either:
+Then reply: `Runway video uploaded.`
 
-`Corrected Preview approved for main and Production.`
-
-or list the exact change requested. Do not approve or use the earlier one-stage Preview.
-
-## Why the prior request was withdrawn
-
-Corrected Preview `dpl_42uuiSoQqUyNnhJBbf35smBsud2n` is READY and passed direct desktop/mobile campaign, Hoodie, categories, PDP, console, broken-image, and overflow checks. The previously verified Preview predates the hierarchy correction and is superseded.
+The exact replacement Preview URL for the current visual correction will be added here after deployment. Review that Preview separately before any Production action.
 
 ## Risk and cost
 
-- No purchase, billing change, paid plan, order, or provider action is involved.
+- Supplying a completed file has no website-side purchase or billing action.
+- Do not accept a paid video-generation plan merely to complete this handoff without a separate cost decision.
 - Production remains unchanged.
-- The corrected candidate is deployed to a temporary Vercel Preview only.
-- Reviewing it has no charge and changes no Shopify or Production state.
+- The current candidate will be deployed to a temporary Vercel Preview only.
 
 ## Resume point
 
-After the Product Owner reply, either make the requested bounded correction or—only on the exact approval phrase—merge through canonical `main`, deploy Production from approved `main`, verify `www.carlophillips.com`, and record rollback evidence.
+After `Runway video uploaded`, inspect the file, implement it with poster/fallback/reduced-motion behavior, verify desktop/mobile performance and looping, and create a new Preview. Do not promote Production without the separate Production decision.

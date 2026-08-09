@@ -32,16 +32,16 @@ The Signature Hoodie action on the homepage opens a full-screen viewer instead o
 
 1. `CARLOPHILLIPS / At the edge of life` runway campaign opener.
 2. A centered bordered label and animated circular down control link directly to the first product scene.
-3. The Signature Hoodie runway panel presents a restrained title, reviewed product description, evidence-derived material/construction highlights, and one filled media action.
+3. The Signature Hoodie runway panel presents a muted title, reviewed product description, and one compact upper-right media action.
 4. The category rail identifies Hoodies as active and visually mutes future categories.
 5. The footer follows the category rail. The separate lower product/release stage is intentionally omitted because it duplicated the Hoodie scene.
 
 ## Product-scene hierarchy
 
-- Product titles use `cp-product-title`, capped at 6.25rem, so imagery remains the dominant element.
+- Product titles use `cp-product-title`, capped at 6.25rem and muted to 62% white, so imagery remains the dominant element.
 - Product descriptions use `cp-product-review` and must come from the minimized reviewed catalog summary. They cannot be invented in the client component.
-- Highlight chips use `cp-product-highlights` and are derived by a server mapper only when the reviewed description/details support the exact phrase.
-- The primary scene action uses `cp-product-media-button`: a filled, high-contrast control with its media count. It must not resemble a low-emphasis underlined text link.
+- Product-scene highlight chips are intentionally omitted; the reviewed description carries the material and feel narrative without duplicative tags.
+- The primary scene action uses `cp-product-media-button-corner`: a compact dark-glass upper-right control with its media count. It remains visually distinct from copy and does not resemble an underlined text link.
 
 ## Customer language
 
@@ -49,7 +49,8 @@ The commerce provider is an implementation detail and is not named in customer-f
 
 ## Motion and accessibility
 
-- The runway sequence and scroll prompt respect `prefers-reduced-motion`.
+- The runway sequence, campaign-camera drift, and scroll prompt respect `prefers-reduced-motion`.
+- A flattened campaign still may receive slow camera push/pan only. Actual model movement requires a real video asset and must not be implied by the still-image animation.
 - All actions retain visible keyboard focus.
 - The scroll cue is a real anchor with a descriptive accessible label.
 - Text contrast is intentionally tiered but never relies on color alone for action meaning.

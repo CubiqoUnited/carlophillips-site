@@ -28,12 +28,14 @@ describe('storefront design system', () => {
     expect(home).toContain('cp-scroll-cue-control');
     expect(home).toContain('cp-product-title');
     expect(home).toContain('cp-product-review');
-    expect(home).toContain('cp-product-highlights');
     expect(home).toContain('cp-product-media-button');
+    expect(home).toContain('cp-product-media-button-corner');
     expect(home).toContain('cp-media-jump');
     expect(home).toContain('var(--cp-header-height)');
     expect(home).toContain('cp-media-dialog');
     expect(styles).toContain('scroll-snap-type: x mandatory');
+    expect(styles).toContain('@keyframes cp-campaign-drift');
+    expect(styles).toContain('.cp-campaign-image,');
     expect(home).not.toContain('HomeReleaseStage');
   });
 

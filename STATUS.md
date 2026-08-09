@@ -4,6 +4,17 @@ Updated: 2026-08-08
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Homepage simplification from 319×501 review — 2026-08-08
+
+- The Signature Hoodie title now uses 62% white so it recedes into the product scene instead of competing with the model.
+- The four boxed highlight chips are removed. The reviewed human-readable product description remains the sole material/feel narrative on the scene; the unused derived-highlight summary/schema fields were removed with deterministic coverage.
+- `Explore media / N views` is now a compact dark-glass control in the upper-right of the Hoodie scene, outside the copy flow. Its catalog/media eligibility, dialog behavior, focus return, and truthful count are unchanged.
+- The landing cue now reads `Scroll and explore` while retaining its descriptive accessible label and reduced-motion behavior.
+- The single flattened runway campaign still receives a slow 18-second camera push/pan, disabled under `prefers-reduced-motion`. It adds restrained scene motion but is not described as actual model walking. No MP4/WebM/MOV campaign file exists in the repository.
+- Full `yarn verify` passes unchanged: zero-warning lint, 35 test files / 332 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Local headless checks at the exact 319×501 feedback viewport, 390×844, and 1440×1000 prove the muted title, upper-right control, removed chips, changed cue, changing campaign transform, HTTP 200, zero overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-simplification-2026-08-08/`.
+- A replacement Preview is pending from the tested local commit. Production remains unchanged.
+
 ## Homepage hierarchy and media-discovery refinement — 2026-08-08
 
 - The landing cue is now a centered `Scroll to the Signature Hoodie` control with a bordered label, circular animated down arrow, smooth anchor target, keyboard focus, and reduced-motion support. It replaces the subtle full-width rule that the Product Owner found ambiguous.

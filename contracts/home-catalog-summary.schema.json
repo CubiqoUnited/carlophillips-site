@@ -18,19 +18,13 @@
         { "type": "null" },
         {
           "type": "object",
-          "required": ["title", "href", "sourceLabel", "commerceAllowed", "description", "highlights", "heroMedia", "media"],
+          "required": ["title", "href", "sourceLabel", "commerceAllowed", "description", "heroMedia", "media"],
           "properties": {
             "title": { "type": "string", "minLength": 1 },
             "href": { "type": "string", "pattern": "^/products/[a-z0-9]+(?:-[a-z0-9]+)*$" },
             "sourceLabel": { "type": "string", "minLength": 1 },
             "commerceAllowed": { "type": "boolean" },
             "description": { "type": "string" },
-            "highlights": {
-              "type": "array",
-              "maxItems": 4,
-              "uniqueItems": true,
-              "items": { "type": "string", "minLength": 1 }
-            },
             "heroMedia": {
               "oneOf": [
                 { "type": "null" },

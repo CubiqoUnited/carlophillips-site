@@ -18,7 +18,6 @@ const availableSummary = {
   primaryProduct: {
     title: 'CARLOPHILLIPS Signature Hoodie',
     description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.',
-    highlights: ['Heavyweight feel', 'Structured fleece', 'Soft interior', 'CP chest embroidery'],
     href: '/products/carlophillips-signature-hoodie',
     sourceLabel: 'Local fixture review — not Shopify live data',
     commerceAllowed: false,
@@ -47,14 +46,14 @@ describe('home release composition', () => {
       excludedCount: 1,
       primaryProduct: null,
     }} />);
-    expect(available).toContain('Explore product media');
+    expect(available).toContain('Explore media');
     expect(available).toContain('09 views');
     expect(available).toContain('data-media-trigger="signature-hoodie"');
     expect(available).toContain('aria-haspopup="dialog"');
     expect(available).toContain('aria-controls="product-media-overlay"');
     expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(available).toContain('At the<br/>edge of life.');
-    expect(available).toContain('Scroll to the Signature Hoodie');
+    expect(available).toContain('Scroll and explore');
     expect(available).toContain('cp-scroll-cue-control');
     expect(available).toContain('Runway 001 / Lofoten');
     expect(available).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
@@ -109,14 +108,14 @@ describe('home release composition', () => {
       commerceAllowed: true,
       primaryProduct: { ...availableSummary.primaryProduct, commerceAllowed: true },
     }} />);
-    expect(html).toContain('Explore product media');
+    expect(html).toContain('Explore media');
     expect(html).toContain('Signature Series');
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
-    expect(html).toContain('Heavyweight feel');
-    expect(html).toContain('Structured fleece');
-    expect(html).toContain('Soft interior');
-    expect(html).toContain('CP chest embroidery');
+    expect(html).not.toContain('Heavyweight feel');
+    expect(html).not.toContain('Structured fleece</li>');
+    expect(html).not.toContain('Soft interior</li>');
+    expect(html).not.toContain('CP chest embroidery</li>');
     expect(html).not.toContain('Available now / Black / XS–5XL');
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
     expect(html).toContain('aria-current="page"');
@@ -129,6 +128,7 @@ describe('home release composition', () => {
     expect(html).not.toContain('Candidates</span>');
     expect(html).not.toContain('Withheld</span>');
     expect(html.toLowerCase()).not.toContain('shopify');
+    expect(html).toContain('cp-product-media-button-corner');
   });
 
   it('keeps runway product media and active categories behind product visibility eligibility', () => {
