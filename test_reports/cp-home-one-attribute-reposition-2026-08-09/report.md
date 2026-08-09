@@ -27,6 +27,7 @@ These values are supported by the existing reviewed product description. No fibe
 - After, compact: `screenshots/local-compact-product.png`
 - After, mobile: `screenshots/local-mobile-product.png`
 - After, desktop: `screenshots/local-desktop-product.png`
+- Deployed after: `screenshots/preview-compact-product.png`, `screenshots/preview-mobile-product.png`, and `screenshots/preview-desktop-product.png`
 
 The compact and desktop captures place the information group above its former position and keep the model unobscured. The phone capture retains clear vertical separation from the media control. The three attribute rows fit without horizontal overflow.
 
@@ -57,8 +58,15 @@ Structured local results are in `verification.json`.
 
 ## Vercel Preview
 
-Pending from the tested temporary-branch commit. No Production deployment, alias, or domain action is included.
+- URL: `https://carlophillips-site-jrgq7r66t-adityas-projects-261b17a9.vercel.app`
+- Deployment: `dpl_G1A3CZJ4edFxK46YLMDfjL3Lqvpx`
+- Target/status: Preview / READY
+- Tested implementation commit: `809fedb`
+
+Direct deployed headless checks repeated exact 584×486, 390×844, and 1440×1000. Every route request returned HTTP 200 and reproduced the local copy/media-control geometry. The exact deployed attributes are Color/Black, Material/Structured fleece, and Feel/Heavyweight, soft interior; no exact size chip or provider name is rendered. There was no horizontal overflow, browser/page error, or framework overlay. The compact media trigger opened the inset dialog; Escape closed it and focus returned to the trigger.
+
+Read-only Vercel inspection confirms Production remains READY on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`. No Production deployment, alias, or domain action occurred.
 
 ## Known limits and boundary
 
-This is a presentation refinement only. The local fixture's media count may differ from Preview because the eligible media inputs differ by environment; the control remains runtime-derived. No Shopify/provider state, catalog data, order, billing, `main`, or Production state changed.
+This is a presentation refinement only. Local showed 11 eligible views while Preview showed 12 because the eligible media inputs differ by environment; the control remained runtime-derived and truthful. No Shopify/provider state, catalog data, order, billing, `main`, or Production state changed.

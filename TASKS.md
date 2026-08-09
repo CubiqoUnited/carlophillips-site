@@ -9,7 +9,7 @@
 - [x] Add deterministic component/design-system coverage for the responsive layout and exact attribute contract.
 - [x] Pass focused tests and full `yarn verify` (35 files / 333 tests, zero vulnerabilities, optimized build).
 - [x] Capture and inspect exact 584×486, 390×844, and 1440×1000 local evidence with no browser/framework errors.
-- [ ] Commit the tested candidate, deploy a replacement temporary-branch Preview, repeat direct browser checks, and prove Production remains unchanged.
+- [x] Commit as `809fedb`, deploy READY Preview `dpl_G1A3CZJ4edFxK46YLMDfjL3Lqvpx`, repeat direct compact/mobile/desktop checks, and prove Production remains unchanged on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`.
 - [ ] Product Owner reviews the replacement Preview and separately approves or rejects merge/Production promotion.
 
 ## Current correction: `ONE` product scene and inset media widget

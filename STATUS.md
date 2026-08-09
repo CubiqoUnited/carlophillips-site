@@ -11,7 +11,8 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The values use only facts already present in the reviewed product description. No unverified fiber percentage, provider claim, size change, product identity change, media change, or commerce change was introduced.
 - Focused component/design-system checks pass. Full `yarn verify` passes with zero-warning lint, 35 test files / 333 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
 - Headless local Chrome checks at exact 584×486, 390×844, and 1440×1000 show the upper hierarchy, all three attributes, no size chip, no horizontal overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-one-attribute-reposition-2026-08-09/`.
-- A replacement Vercel Preview is pending from the tested temporary-branch commit. Production remains unchanged; no domain, Production deployment, commerce/provider data, order, billing, merge, push, or remote Git action has occurred in this correction.
+- Tested commit `809fedb` is deployed READY as Vercel Preview `dpl_G1A3CZJ4edFxK46YLMDfjL3Lqvpx` at `https://carlophillips-site-jrgq7r66t-adityas-projects-261b17a9.vercel.app`. Direct compact/mobile/desktop checks match the local geometry and attribute contract, return HTTP 200, preserve media open/Escape/focus-return, and show no provider-name copy, overflow, browser error, or framework overlay.
+- Production remains unchanged and READY on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`; no domain, Production deployment, commerce/provider data, order, billing, merge, push, or remote Git action occurred in this correction.
 
 ## Homepage `ONE` presentation and inset media viewer — 2026-08-09
 

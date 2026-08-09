@@ -36,5 +36,34 @@
       "errorOverlayCount": 0,
       "consoleErrors": []
     }
-  ]
+  ],
+  "preview": {
+    "url": "https://carlophillips-site-jrgq7r66t-adityas-projects-261b17a9.vercel.app/#signature-runway",
+    "deploymentId": "dpl_G1A3CZJ4edFxK46YLMDfjL3Lqvpx",
+    "target": "preview",
+    "status": "READY",
+    "testedCommit": "809fedb",
+    "viewports": [
+      { "name": "compact", "width": 584, "height": 486, "httpStatus": 200 },
+      { "name": "mobile", "width": 390, "height": 844, "httpStatus": 200 },
+      { "name": "desktop", "width": 1440, "height": 1000, "httpStatus": 200 }
+    ],
+    "attributes": ["ColorBlack", "MaterialStructured fleece", "FeelHeavyweight, soft interior"],
+    "exactSizeTagCount": 0,
+    "providerNameMatches": 0,
+    "horizontalOverflow": false,
+    "errorOverlayCount": 0,
+    "consoleErrors": [],
+    "compactMediaInteraction": {
+      "opened": true,
+      "escapeClosed": true,
+      "focusReturned": true
+    }
+  },
+  "production": {
+    "domain": "https://www.carlophillips.com",
+    "deploymentId": "dpl_BdasbDdxHCMruKdy7WSsrUibvcgK",
+    "status": "READY",
+    "changed": false
+  }
 }
