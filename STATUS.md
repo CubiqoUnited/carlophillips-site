@@ -4,6 +4,14 @@ Updated: 2026-08-09
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Saved local baseline `v1.1` — 2026-08-09
+
+- The exact current temporary-branch state is preserved by local annotated Git tag `v1.1`. The tag is a site milestone, not an npm package publication; `package.json` is intentionally unchanged.
+- The customer-visible baseline is the verified `ONE` Preview at `https://carlophillips-site-jrgq7r66t-adityas-projects-261b17a9.vercel.app`. Production remains unchanged.
+- Newly recovered POD campaign concepts and runway-viewer screenshots are included in the snapshot so no current work is lost. The concepts remain explicitly Draft-only, unreferenced by active application code, and ineligible as product or Production truth.
+- All image files decode at their recorded dimensions, representative masters/concepts and every viewer comparison were visually inspected, secret scans are clean, and full `yarn verify` passes with 35 files / 333 tests, zero production vulnerabilities, and the 12-route optimized build.
+- Durable manifest: `docs/releases/v1.1.md`.
+
 ## `ONE` upper hierarchy and product-attribute correction — 2026-08-09
 
 - The second homepage scene now anchors the `Signature Series / 001` and `ONE` copy group in the upper-left visual zone at widths of 520px and above. At 584×486 the group begins 40px higher than the prior Preview; at 390×844 it retains a larger safe offset below the upper-right media control.

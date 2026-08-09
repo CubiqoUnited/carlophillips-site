@@ -1,5 +1,15 @@
 # Delivery Tasks
 
+## Version milestones
+
+- [x] Preserve the complete current baseline, including Draft POD concepts and runway-viewer evidence, in a clean local commit and annotated tag `v1.1`.
+- [x] Confirm all newly included concepts remain Draft-only and unreferenced by active site code.
+- [x] Pass full `yarn verify`, image decode/dimension checks, visual inspection, whitespace review, and secret scan for `v1.1`.
+- [ ] Audit remaining hardcoded storefront design decisions for the token-led `v1.2` milestone.
+- [ ] Implement semantic design tokens and reusable customer-facing primitives without changing product/media/commerce truth.
+- [ ] Pass full automated and compact/mobile/desktop visual regression for `v1.2`.
+- [ ] Commit and create local annotated tag `v1.2`; keep push, merge, Preview/Production deployment, and domains unchanged unless separately requested.
+
 ## Current correction: `ONE` upper hierarchy and product attributes
 
 - [x] Move the `Signature Series / 001` and `ONE` group visibly upward at the Product Owner's 584×486 review width and on desktop.
