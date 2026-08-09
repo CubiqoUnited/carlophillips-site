@@ -1,21 +1,24 @@
 # CARLOPHILLIPS Storefront Design System
 
-Status: active storefront presentation contract.
+Status: active v1.2 storefront presentation contract.
 
 The storefront uses a restrained, media-led system: black canvas, white type, quiet rules, generous full-viewport panels, sparse copy, and one clear action per scene. The visual direction is inspired by premium technical-fashion and runway retail references while remaining an original CARLOPHILLIPS implementation.
 
-## Token source
+## Token architecture
 
-The canonical presentation tokens live in `app/globals.css` under the `--cp-*` namespace. They cover:
+The canonical presentation tokens live in `app/globals.css` under the `--cp-*` namespace. v1.2 separates implementation values from customer-facing decisions:
 
-- canvas, panel, paper, ink, copy, muted text, and rule colors;
-- the approved sans-serif stack;
-- maximum content width and responsive page gutter;
-- navigation and viewport-panel dimensions;
-- label and display typography;
-- standard motion duration and easing.
+- primitives: black, charcoal, grey, paper, and white values;
+- semantic colour roles: canvas, panels, ink, copy tiers, rules, overlays, and glass;
+- typography roles: sans, editorial, and mono families; display, title, body, label, tracking, weight, and leading;
+- spacing and layout roles: a shared scale, shell widths, responsive gutter, section rhythm, header and viewport dimensions;
+- effects and interaction roles: scrims, shadows, blur, control size, motion duration, and easing.
 
-Components should consume a semantic `cp-*` class or a `--cp-*` token before adding a literal value. Literal values remain acceptable for content-specific art direction, media aspect ratios, responsive breakpoints, and isolated layout geometry that is not a reusable design decision.
+Rendered customer components consume semantic `cp-*` classes. They may retain utility classes only for structure, responsive grid behavior, media aspect ratios, and content-specific image positioning. Raw customer-facing colour utilities, CSS colour literals, and one-off letter-spacing values are prohibited by deterministic tests.
+
+`StorefrontHeader` is the shared collection, bag, and product chrome. Reusable classes provide shells, sections, labels, headings, copy tiers, rules, cards, actions, commerce states, variant controls, and the private concept surface. This keeps changes such as a copy-contrast adjustment or rule-strength adjustment centralized in one token instead of repeated across routes.
+
+The noindex `/concept-preview` route is included in the same system but uses the explicit editorial-font role. Its campaign media remains Draft-only and does not become product, release, or Production truth.
 
 ## Product media viewer
 
@@ -38,9 +41,9 @@ The Signature Hoodie action on the homepage opens a full-screen viewer instead o
 
 ## Product-scene hierarchy
 
-- Product titles use `cp-product-title`, capped at 6.25rem and muted to 62% white, so imagery remains the dominant element.
+- Product titles use `cp-product-title`, capped by the shared title scale and resolved through the `copy-soft` role, so imagery remains the dominant element.
 - Product descriptions use `cp-product-review` and must come from the minimized reviewed catalog summary. They cannot be invented in the client component.
-- Product-scene highlight chips are intentionally omitted; the reviewed description carries the material and feel narrative without duplicative tags.
+- Product-scene attributes use the shared fact pattern and contain only reviewed descriptive facts: `Color / Black`, `Material / Structured fleece`, and `Feel / Heavyweight, soft interior`. Size stays in the commerce/variant experience instead of posing as a material attribute.
 - The primary scene action uses `cp-product-media-button-corner`: a compact dark-glass upper-right control with its media count. It remains visually distinct from copy and does not resemble an underlined text link.
 
 ## Customer language

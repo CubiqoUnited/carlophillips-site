@@ -5,10 +5,12 @@
 - [x] Preserve the complete current baseline, including Draft POD concepts and runway-viewer evidence, in a clean local commit and annotated tag `v1.1`.
 - [x] Confirm all newly included concepts remain Draft-only and unreferenced by active site code.
 - [x] Pass full `yarn verify`, image decode/dimension checks, visual inspection, whitespace review, and secret scan for `v1.1`.
-- [ ] Audit remaining hardcoded storefront design decisions for the token-led `v1.2` milestone.
-- [ ] Implement semantic design tokens and reusable customer-facing primitives without changing product/media/commerce truth.
-- [ ] Pass full automated and compact/mobile/desktop visual regression for `v1.2`.
-- [ ] Commit and create local annotated tag `v1.2`; keep push, merge, Preview/Production deployment, and domains unchanged unless separately requested.
+- [x] Audit remaining hardcoded storefront design decisions for the token-led `v1.2` milestone.
+- [x] Implement layered semantic design tokens, a shared storefront header, and reusable customer-facing primitives without changing product/media/commerce truth.
+- [x] Enforce the semantic boundary across every active customer surface with deterministic source tests.
+- [x] Pass full `yarn verify` (35 files / 334 tests, zero vulnerabilities, 13-route build) and 11-route compact/mobile/desktop headless visual regression, including all 11 media slides.
+- [x] Commit the tested candidate and create local annotated tag `v1.2`; keep push, merge, Preview/Production deployment, and domains unchanged unless separately requested.
+- [ ] Product Owner separately decides whether v1.2 should be pushed and deployed as a new Vercel Preview.
 
 ## Current correction: `ONE` upper hierarchy and product attributes
 

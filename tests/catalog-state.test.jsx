@@ -27,9 +27,9 @@ describe('catalog presentation', () => {
     }} />);
 
     expect(html).toContain('1 preview piece');
-    expect(html).toContain('Candidate records</dt><dd class="mt-3 text-white/70">2');
-    expect(html).toContain('Visible here</dt><dd class="mt-3 text-white/70">1');
-    expect(html).toContain('Withheld</dt><dd class="mt-3 text-white/70">1');
+    expect(html).toMatch(/Candidate records<\/dt><dd[^>]*>2/);
+    expect(html).toMatch(/Visible here<\/dt><dd[^>]*>1/);
+    expect(html).toMatch(/Withheld<\/dt><dd[^>]*>1/);
     expect(html).toContain('Local presentation fixture');
     expect(html).toContain('Preview product');
     expect(html).toContain('cannot be purchased');
@@ -54,7 +54,7 @@ describe('catalog presentation', () => {
 
     expect(html).toContain('Coming soon.');
     expect(html).toContain('The next release is being prepared. Return soon.');
-    expect(html).toContain('Visible here</dt><dd class="mt-3 text-white/70">0');
+    expect(html).toMatch(/Visible here<\/dt><dd[^>]*>0/);
     expect(html).not.toContain('PRODUCT_RELEASE_NOT_RELEASED');
     expect(html).not.toContain('/products/');
   });

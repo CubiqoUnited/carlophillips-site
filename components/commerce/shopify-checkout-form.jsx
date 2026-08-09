@@ -22,10 +22,10 @@ export default function ShopifyCheckoutForm({ handle, presentation }) {
   if (!available.length) return null;
 
   return (
-    <form method="post" action="/api/checkout" className="mt-10 border-t border-white/10 pt-7">
+    <form method="post" action="/api/checkout" className="cp-variant-list mt-10 pt-7">
       <input type="hidden" name="handle" value={handle} />
-      <label htmlFor="hoodie-variant" className="mb-4 block text-[10px] uppercase tracking-[0.24em] text-white/45">Select size</label>
-      <select id="hoodie-variant" name="referenceHash" value={referenceHash} onChange={event => setReferenceHash(event.target.value)} className="h-14 w-full border border-white/20 bg-black px-4 text-sm text-white">
+      <label htmlFor="hoodie-variant" className="cp-label mb-4 block">Select size</label>
+      <select id="hoodie-variant" name="referenceHash" value={referenceHash} onChange={event => setReferenceHash(event.target.value)} className="cp-checkout-select">
         {available.map(item => (
           <option key={item.referenceHash} value={item.referenceHash}>
             {sizeFor(item).toUpperCase()} — {money(item.price.amount, item.price.currency)}
@@ -33,10 +33,10 @@ export default function ShopifyCheckoutForm({ handle, presentation }) {
         ))}
       </select>
       <input type="hidden" name="quantity" value="1" />
-      <button type="submit" disabled={!selected} className="mt-4 flex h-14 w-full items-center justify-center bg-white text-[10px] font-medium uppercase tracking-[0.24em] text-black disabled:opacity-40">
+      <button type="submit" disabled={!selected} className="cp-action cp-action-solid mt-4 h-14 w-full disabled:opacity-40">
         Continue to checkout — {selected ? money(selected.price.amount, selected.price.currency) : ''}
       </button>
-      <p className="mt-4 text-xs leading-relaxed text-white/40">Review delivery and payment before confirming your order. No order is placed until you complete checkout.</p>
+      <p className="cp-text-subtle mt-4 text-xs leading-relaxed">Review delivery and payment before confirming your order. No order is placed until you complete checkout.</p>
     </form>
   );
 }

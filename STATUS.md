@@ -4,6 +4,15 @@ Updated: 2026-08-09
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Local candidate `v1.2` — 2026-08-09
+
+- The v1.1 runway and `ONE` Signature Hoodie composition is preserved while the active home, collection/shop, product, bag, checkout, media-viewer, and recovered private concept surfaces now resolve through one semantic `--cp-*` presentation contract.
+- Primitives and semantic roles cover colour, typography, spacing, layout, effects, controls, and motion. A shared `StorefrontHeader` replaces duplicated commerce chrome; deterministic tests prohibit raw customer-component colour literals/utilities and one-off tracking values.
+- The recovered `/concept-preview` remains noindex, visibly private/Draft-only, and isolated from product/release truth.
+- Full `yarn verify` passes with zero-warning lint, 35 test files / 334 tests, zero production vulnerabilities across 193 packages, and a successful 13-route optimized build.
+- Eleven headless local desktop/mobile route checks return HTTP 200 with zero overflow, provider-name copy, broken images, console/page errors, or runtime/build overlays; all 11 Hoodie media slides decode. Visual comparison confirms the v1.1 runway and `ONE` hierarchy remain intact. Evidence is under `test_reports/cp-v1.2-token-system-2026-08-09/`.
+- v1.2 remains local only. Preview, Production, domains, products, providers, orders, billing, and remote Git are unchanged.
+
 ## Saved local baseline `v1.1` — 2026-08-09
 
 - The exact current temporary-branch state is preserved by local annotated Git tag `v1.1`. The tag is a site milestone, not an npm package publication; `package.json` is intentionally unchanged.

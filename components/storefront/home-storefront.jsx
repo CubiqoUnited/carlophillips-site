@@ -250,19 +250,19 @@ function Navigation({ onMenu }) {
 
 function MenuOverlay({ onClose }) {
   return (
-    <aside className="fixed inset-0 z-50 bg-black px-6 py-7 text-white" aria-label="Site navigation">
-      <div className="mx-auto flex max-w-[1700px] items-center justify-between">
-        <span className="text-xs uppercase tracking-[0.38em] text-white/70">CARLOPHILLIPS</span>
+    <aside className="cp-menu-overlay fixed inset-0 z-50" aria-label="Site navigation">
+      <div className="cp-menu-bar flex items-center justify-between">
+        <span className="cp-menu-title">CARLOPHILLIPS</span>
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex h-11 w-11 items-center justify-center border border-white/20 text-white/70"
+          className="cp-menu-close"
           aria-label="Close navigation"
         >
           <X className="h-5 w-5" strokeWidth={1.3} />
         </button>
       </div>
-      <nav className="mx-auto mt-24 grid max-w-[1700px] gap-4 text-5xl font-light tracking-[-0.05em] sm:text-7xl lg:text-8xl" aria-label="Main menu">
+      <nav className="cp-menu-links grid gap-4" aria-label="Main menu">
         <Link onClick={onClose} href="/">Home</Link>
         <Link onClick={onClose} href="/shop">Shop</Link>
         <Link onClick={onClose} href="/collections">Collections</Link>
@@ -376,7 +376,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
         )}
         <div className="cp-product-scrim absolute inset-0" aria-hidden="true" />
         {!summary.commerceAllowed && (
-          <figcaption className="absolute bottom-5 right-5 bg-black/82 px-3 py-2 text-[8px] uppercase tracking-[0.24em] text-white/58">
+          <figcaption className="cp-disclosure absolute bottom-5 right-5 px-3 py-2">
             {runwayReady ? 'Private product preview' : heroMedia ? heroMedia.label : 'Collection preview'}
           </figcaption>
         )}
@@ -440,21 +440,21 @@ function CategoryRail({ summary }) {
     : null;
 
   return (
-    <nav className="sticky top-16 z-30 overflow-hidden border-b border-white/10 bg-black/95 backdrop-blur-md lg:top-20" aria-label="Product categories">
+    <nav className="cp-category-rail sticky top-16 z-30 overflow-hidden lg:top-20" aria-label="Product categories">
       <div className="scrollbar-hide cp-page-shell flex h-14 items-center gap-8 overflow-x-auto lg:h-16">
         {activeProduct ? (
           <Link
             href={activeProduct.href}
             aria-current="page"
-            className="flex h-full shrink-0 items-center border-b border-white text-[9px] uppercase tracking-[0.28em] text-white"
+            className="cp-category-item cp-category-item-active flex shrink-0 items-center"
           >
             Hoodies
           </Link>
         ) : (
-          <span aria-disabled="true" className="shrink-0 text-[9px] uppercase tracking-[0.28em] text-white/24">Hoodies</span>
+          <span aria-disabled="true" className="cp-category-item shrink-0">Hoodies</span>
         )}
         {categoryTabs.map(category => (
-          <span key={category} aria-disabled="true" className="shrink-0 text-[9px] uppercase tracking-[0.28em] text-white/24">
+          <span key={category} aria-disabled="true" className="cp-category-item shrink-0">
             {category}
           </span>
         ))}
@@ -465,8 +465,8 @@ function CategoryRail({ summary }) {
 
 function Footer() {
   return (
-    <footer className="border-t border-white/10 px-5 py-10 sm:px-8 lg:px-12">
-      <div className="mx-auto flex max-w-[1700px] flex-col gap-6 text-[9px] uppercase tracking-[0.28em] text-white/38 sm:flex-row sm:items-center sm:justify-between">
+    <footer className="cp-footer">
+      <div className="cp-footer-inner flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <span>CARLOPHILLIPS</span>
         <nav className="flex gap-6" aria-label="Footer">
           <Link href="/shop">Shop</Link>
@@ -492,7 +492,7 @@ export default function HomeStorefront({ catalogSummary }) {
   }, [mediaOpen]);
 
   return (
-    <main id="main-content" className="cp-site min-h-screen selection:bg-white selection:text-black">
+    <main id="main-content" className="cp-site min-h-screen">
       <div inert={mediaOpen ? true : undefined}>
         <Navigation onMenu={() => setMenuOpen(true)} />
         {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}

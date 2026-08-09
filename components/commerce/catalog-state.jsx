@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { StorefrontHeader } from '../storefront/storefront-header';
 
 function countLabel(count, singular, plural = `${singular}s`) {
   return `${count} ${count === 1 ? singular : plural}`;
@@ -44,20 +45,6 @@ function environmentCopy(decision) {
   };
 }
 
-function CatalogHeader({ pageLabel }) {
-  return (
-    <header className="border-b border-white/10 px-5 py-6 sm:px-8 lg:px-12">
-      <div className="mx-auto flex max-w-[1700px] items-center justify-between">
-        <Link href="/" className="text-xs uppercase tracking-[0.32em] text-white">CARLOPHILLIPS</Link>
-        <nav className="flex gap-6 text-[10px] uppercase tracking-[0.24em] text-white/45" aria-label="Catalog navigation">
-          <span aria-current="page" className="text-white">{pageLabel}</span>
-          <Link href="/bag" className="transition hover:text-white">Bag</Link>
-        </nav>
-      </div>
-    </header>
-  );
-}
-
 export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
   const copy = environmentCopy(decision);
   const available = decision.status === 'available';
@@ -68,30 +55,30 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
       id="main-content"
       data-catalog-status={decision.status}
       data-commerce-source={decision.source === 'shopify' ? 'store' : decision.source}
-      className="min-h-screen bg-[#020202] text-white"
+      className="cp-commerce-page"
     >
-      <CatalogHeader pageLabel={pageLabel} />
-      <section className="storefront-panel border-b border-white/10 px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
-        <div className="mx-auto grid max-w-[1700px] gap-12 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
+      <StorefrontHeader pageLabel={pageLabel} navigationAriaLabel="Catalog navigation" />
+      <section className="cp-commerce-hero storefront-panel">
+        <div className="cp-shell-wide grid gap-12 px-0 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-white/40">{liveCollection ? 'Signature Series / 001' : copy.eyebrow}</p>
-            <h1 className="mt-7 max-w-5xl text-6xl font-light leading-[0.9] tracking-[-0.06em] sm:text-8xl lg:text-9xl">
+            <p className="cp-label">{liveCollection ? 'Signature Series / 001' : copy.eyebrow}</p>
+            <h1 className="cp-commerce-title mt-7 max-w-5xl">
               {liveCollection ? 'The Collection' : available ? countLabel(decision.visibleCount, 'preview piece') : 'Coming soon.'}
             </h1>
-            <p className="mt-8 max-w-3xl text-base leading-relaxed text-white/52 sm:text-lg">
+            <p className="cp-body-large mt-8 max-w-3xl">
               {liveCollection ? 'One essential. Considered in every detail and available through secure checkout.' : copy.body}
             </p>
           </div>
-          {!liveCollection && <dl className="grid grid-cols-2 gap-px bg-white/10 text-sm">
+          {!liveCollection && <dl className="cp-grid-rule grid grid-cols-2 text-sm">
             {[
               ['Candidate records', decision.candidateCount],
               ['Visible here', decision.visibleCount],
               ['Withheld', decision.excludedCount],
               ['Purchasing', decision.commerceAllowed ? 'Secure checkout' : 'Disabled'],
             ].map(([label, value]) => (
-              <div key={label} className="bg-black p-5 sm:p-7">
-                <dt className="text-[9px] uppercase tracking-[0.22em] text-white/30">{label}</dt>
-                <dd className="mt-3 text-white/70">{value}</dd>
+              <div key={label} className="cp-stat-cell sm:p-7">
+                <dt className="cp-label-small">{label}</dt>
+                <dd className="cp-text-copy mt-3">{value}</dd>
               </div>
             ))}
           </dl>}
@@ -99,11 +86,11 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
       </section>
 
       {available ? (
-        <section aria-label="Available products" className="storefront-panel px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
-          <div className={`mx-auto grid max-w-[1700px] gap-px bg-white/10 ${liveCollection && decision.products.length === 1 ? 'lg:grid-cols-[1.35fr_0.65fr]' : 'md:grid-cols-2 xl:grid-cols-3'}`}>
+        <section aria-label="Available products" className="cp-section storefront-panel">
+          <div className={`cp-shell-wide cp-grid-rule grid px-0 ${liveCollection && decision.products.length === 1 ? 'lg:grid-cols-[1.35fr_0.65fr]' : 'md:grid-cols-2 xl:grid-cols-3'}`}>
             {decision.products.map(product => (
-              <article key={product.handle} className={`bg-black ${liveCollection && decision.products.length === 1 ? 'contents' : 'flex min-h-[580px] flex-col'}`}>
-                <div className="relative flex min-h-[62vh] items-center justify-center bg-[#171714] lg:min-h-[78vh]">
+              <article key={product.handle} className={`cp-surface-canvas ${liveCollection && decision.products.length === 1 ? 'contents' : 'flex min-h-[580px] flex-col'}`}>
+                <div className="cp-card-media relative flex min-h-[62vh] items-center justify-center lg:min-h-[78vh]">
                   {product.media[0]?.url ? (
                     <Image
                       src={product.media[0].url}
@@ -113,16 +100,16 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
                       className="object-contain p-8 sm:p-12"
                     />
                   ) : (
-                    <span className="px-8 text-center text-sm text-white/40">Approved catalog media unavailable</span>
+                    <span className="cp-text-subtle px-8 text-center text-sm">Approved catalog media unavailable</span>
                   )}
                 </div>
-                <div className="flex flex-1 flex-col justify-center border-t border-white/10 p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-12">
-                  <p className="text-[9px] uppercase tracking-[0.24em] text-white/35">{liveCollection ? 'Edition 001' : decision.source === 'fixture' ? 'Local presentation fixture' : 'Product review'}</p>
-                  <h2 className="mt-5 text-3xl font-light tracking-[-0.035em] sm:text-5xl">{product.title}</h2>
-                  <p className="mt-5 text-base text-white/58">{formatPrice(product)}</p>
+                <div className="cp-card-copy flex flex-1 flex-col justify-center border-t p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-12">
+                  <p className="cp-label-small">{liveCollection ? 'Edition 001' : decision.source === 'fixture' ? 'Local presentation fixture' : 'Product review'}</p>
+                  <h2 className="cp-heading-product mt-5">{product.title}</h2>
+                  <p className="cp-text-soft mt-5 text-base">{formatPrice(product)}</p>
                   <Link
                     href={`/products/${product.handle}`}
-                    className="mt-10 inline-flex min-h-14 items-center justify-center border border-white/25 px-5 text-[10px] uppercase tracking-[0.24em] text-white/82 transition hover:bg-white hover:text-black lg:mt-14"
+                    className="cp-action cp-action-outline mt-10 min-h-14 lg:mt-14"
                   >
                     {product.commerceAllowed ? 'View product' : 'Preview product'}
                   </Link>
@@ -132,12 +119,14 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
           </div>
         </section>
       ) : (
-        <section className="px-5 py-20 sm:px-8 lg:px-12">
-          <div className="mx-auto max-w-[1700px] border border-white/10 p-8 sm:p-12">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-white/35">CARLOPHILLIPS</p>
-            <p className="mt-6 max-w-3xl text-xl font-light leading-relaxed text-white/62">
-              The next release is being prepared. Return soon.
-            </p>
+        <section className="cp-section">
+          <div className="cp-shell-wide px-0">
+            <div className="cp-empty-state">
+              <p className="cp-label-small">CARLOPHILLIPS</p>
+              <p className="cp-text-copy mt-6 max-w-3xl text-xl font-light leading-relaxed">
+                The next release is being prepared. Return soon.
+              </p>
+            </div>
           </div>
         </section>
       )}

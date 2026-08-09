@@ -147,7 +147,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationJsonLd, websiteJsonLd]) }}
         />
       </head>
-      <body className="min-h-screen bg-black text-white antialiased">
+      <body className="min-h-screen antialiased">
         {/* Skip to main content for accessibility */}
         <a
           href="#main-content"

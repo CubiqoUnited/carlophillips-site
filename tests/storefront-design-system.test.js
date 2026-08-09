@@ -8,16 +8,29 @@ describe('storefront design system', () => {
     const home = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
 
     for (const token of [
+      '--cp-black',
+      '--cp-white',
       '--cp-color-canvas',
       '--cp-color-ink',
+      '--cp-color-copy-strong',
+      '--cp-color-copy-soft',
       '--cp-color-rule',
+      '--cp-color-rule-focus',
       '--cp-color-overlay',
       '--cp-color-backdrop',
       '--cp-font-sans',
+      '--cp-font-editorial',
+      '--cp-size-body-large',
+      '--cp-tracking-action',
+      '--cp-space-24',
       '--cp-content-max',
+      '--cp-content-wide',
       '--cp-page-gutter',
+      '--cp-section-space',
       '--cp-header-height',
       '--cp-label-tracking',
+      '--cp-shadow-dialog',
+      '--cp-scrim-campaign',
       '--cp-duration-standard',
       '--cp-control-size',
       '--cp-media-panel-inset',
@@ -50,6 +63,41 @@ describe('storefront design system', () => {
     expect(styles).toContain('@keyframes cp-campaign-drift');
     expect(styles).toContain('.cp-campaign-image,');
     expect(home).not.toContain('HomeReleaseStage');
+  });
+
+  it('keeps every active customer surface semantic-token led', () => {
+    const customerFiles = [
+      'components/storefront/home-storefront.jsx',
+      'components/storefront/storefront-header.jsx',
+      'components/commerce/catalog-state.jsx',
+      'components/commerce/bag-state.jsx',
+      'components/commerce/product-detail.jsx',
+      'components/commerce/shopify-checkout-form.jsx',
+      'app/concept-preview/page.js',
+    ];
+
+    for (const file of customerFiles) {
+      const source = readFileSync(file, 'utf8');
+      expect(source, `${file} contains a raw visual colour utility`).not.toMatch(
+        /(?:bg|text|border|from|via|to)-(?:black|white)(?:\/\d+)?|(?:bg|text|border)-\[#[0-9a-f]+\]/i
+      );
+      expect(source, `${file} contains a one-off tracking value`).not.toMatch(/tracking-\[[^\]]+\]/);
+      expect(source, `${file} contains a raw CSS colour`).not.toMatch(/rgba?\(/);
+    }
+
+    const sharedHeader = readFileSync('components/storefront/storefront-header.jsx', 'utf8');
+    const catalog = readFileSync('components/commerce/catalog-state.jsx', 'utf8');
+    const bag = readFileSync('components/commerce/bag-state.jsx', 'utf8');
+    const product = readFileSync('components/commerce/product-detail.jsx', 'utf8');
+    const concept = readFileSync('app/concept-preview/page.js', 'utf8');
+
+    expect(sharedHeader).toContain('cp-commerce-header');
+    expect(catalog).toContain('StorefrontHeader');
+    expect(bag).toContain('StorefrontHeader');
+    expect(product).toContain('StorefrontHeader');
+    expect(concept).toContain('cp-concept-page');
+    expect(concept).toContain("robots: { index: false, follow: false }");
+    expect(concept).toContain('Draft only');
   });
 
   it('uses the exact Product Owner supplied runway image', () => {
