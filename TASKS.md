@@ -10,7 +10,7 @@
 - [x] Convert the media viewer from a full-viewport canvas to an inset centered overlay card while retaining swipe, keyboard, close, scroll-lock, focus-return, and release gates.
 - [x] Pass focused component/design tests and full `yarn verify` (35 files / 333 tests, zero vulnerabilities, optimized build).
 - [x] Capture and inspect 1440×1000, exact 584×486, and 390×844 landing/product/overlay evidence with HTTP 200, no overflow, and zero browser/framework errors.
-- [ ] Commit the tested correction, deploy a new temporary-branch Vercel Preview, repeat direct browser verification, and prove Production is unchanged.
+- [x] Commit as `bb9568f`, deploy READY Vercel Preview `dpl_GG8FyXjPuUqyom2vwsYUunGGTggU`, repeat direct browser verification, and prove Production remains on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`.
 - [ ] Product Owner reviews the replacement Preview and separately approves or rejects merge/Production promotion.
 
 ## Current correction: 319×501 homepage simplification

@@ -49,5 +49,28 @@
     "frameworkErrorOverlay": false,
     "consoleErrors": [],
     "pageErrors": []
+  },
+  "preview": {
+    "url": "https://carlophillips-site-hc2b2lput-adityas-projects-261b17a9.vercel.app",
+    "deploymentId": "dpl_GG8FyXjPuUqyom2vwsYUunGGTggU",
+    "target": "preview",
+    "readyState": "READY",
+    "commit": "bb9568f",
+    "runtimeViewCount": 12,
+    "firstMediaDecoded": true,
+    "viewports": ["1440x1000", "584x486", "390x844"],
+    "http200": true,
+    "customerProviderMention": false,
+    "horizontalOverflow": false,
+    "frameworkErrorOverlay": false,
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "productionControl": {
+    "domain": "https://www.carlophillips.com",
+    "deploymentId": "dpl_BdasbDdxHCMruKdy7WSsrUibvcgK",
+    "target": "production",
+    "readyState": "READY",
+    "unchanged": true
   }
 }

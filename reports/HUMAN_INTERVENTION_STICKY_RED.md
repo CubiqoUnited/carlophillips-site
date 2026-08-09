@@ -1,6 +1,6 @@
 # HUMAN INTERVENTION REQUIRED — OPTIONAL REAL RUNWAY VIDEO
 
-Updated: 2026-08-08
+Updated: 2026-08-09
 
 ## Exact action
 
@@ -15,7 +15,7 @@ Then reply: `Runway video uploaded.`
 
 Review the current non-production correction here:
 
-`https://carlophillips-site-i20alyiiu-adityas-projects-261b17a9.vercel.app`
+`https://carlophillips-site-hc2b2lput-adityas-projects-261b17a9.vercel.app`
 
 It contains camera movement only. Review it separately before any Production action.
 

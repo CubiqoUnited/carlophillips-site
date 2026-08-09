@@ -13,7 +13,8 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Focus return, body-scroll lock, horizontal swipe, keyboard arrows, Escape, close, truthful media count, release gating, production-media filtering, and provider-neutral customer copy remain unchanged.
 - Full `yarn verify` passes: zero-warning lint, 35 test files / 333 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
 - Headless local checks at 1440×1000, exact 584×486, and 390×844 return HTTP 200 with the exact PNG source, `ONE`, factual tags, expand-without-arrow control, inset overlay geometry, focus return, no horizontal overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-one-overlay-2026-08-09/`.
-- A new Vercel Preview is pending the tested local commit. Production remains unchanged; no domain, production deployment, commerce/provider data, order, billing, merge, or remote Git action has occurred in this correction.
+- Tested commit `bb9568f` is deployed READY as Vercel Preview `dpl_GG8FyXjPuUqyom2vwsYUunGGTggU` at `https://carlophillips-site-hc2b2lput-adityas-projects-261b17a9.vercel.app`. Direct 1440×1000, 584×486, and 390×844 checks prove the exact PNG, `ONE`, three-line compact/mobile copy, all four facts, `12 views`, expand-without-arrow action, decoded first product media, inset overlay, focus return, zero provider-name copy, zero overflow, and zero browser/framework errors.
+- Production remains unchanged and READY on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`. No domain, production deployment, commerce/provider data, order, billing, merge, push, or remote Git action occurred in this correction.
 
 ## Homepage simplification from 319×501 review — 2026-08-08
 

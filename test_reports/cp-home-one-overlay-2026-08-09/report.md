@@ -60,8 +60,19 @@ The overlay panel remained smaller than the viewport at every size:
 
 Body scroll locked while open and focus returned to the media trigger after close. Structured results are in `verification.json`.
 
+## Vercel Preview
+
+- URL: `https://carlophillips-site-hc2b2lput-adityas-projects-261b17a9.vercel.app`
+- Deployment: `dpl_GG8FyXjPuUqyom2vwsYUunGGTggU`
+- Target/status: Preview / READY
+- Tested implementation commit: `bb9568f`
+
+Direct deployed headless checks repeated 1440×1000, exact 584×486, and 390×844. The Preview renders the exact new PNG, `ONE`, the three-line compact/mobile product copy, all four fact tags, and a truthful `12 views` trigger. Its first product media decoded before capture; the overlay is inset at every size, focus returns after close, and no provider-name copy, horizontal overflow, runtime overlay, console error, or page error was observed. Deployed screenshots use the `preview-*.png` prefix in `screenshots/`.
+
+Read-only Vercel inspection confirms Production remains READY on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`. No alias or Production action occurred.
+
 ## Known limitation and safe boundary
 
 The local fixture gallery contained 11 unique eligible frames during this check; a Preview can truthfully contain a different count when the release-eligible product media set differs. The control always displays the runtime count. The existing Motion Study remains disclosed still-derived motion, not genuine product video, 360, or interactive 3D.
 
-No Shopify/provider state, order, billing, domain, `main`, or Production deployment changed. Vercel Preview deployment and direct deployed verification follow only after the tested local commit.
+No Shopify/provider state, order, billing, domain, `main`, or Production deployment changed. The only external state change was the authorized non-production Preview deployment above.
