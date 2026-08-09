@@ -13,7 +13,8 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Deterministic media-coverage tests prove the Preview gallery can contain both selected Modelize outputs, all six selected MODA frames, the material/embroidery study, and the still-derived motion loop. The quarantined back hypothesis and superseded built-in front study remain excluded. No real video, genuine 360 set, or interactive 3D file exists, so none is claimed.
 - Full `yarn verify` passes: zero-warning lint, 35 test files / 332 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
 - Headless local checks at the exact 641×686 feedback viewport, 390×844 mobile, and 1440×1000 desktop return HTTP 200 with the complete media button visible, centered motion frame, two homepage panels only, category/footer ending, zero browser errors/overlays, and zero horizontal overflow. Evidence is under `test_reports/cp-home-hierarchy-refinement-2026-08-08/`.
-- A replacement Vercel Preview is pending from the tested local commit. Production remains unchanged.
+- Tested commit `ed917ef` is deployed READY as Vercel Preview `dpl_6PWspKMjE5dA8QokMfaYPmR3MGz8` at `https://carlophillips-site-benruk126-adityas-projects-261b17a9.vercel.app`. Direct 641×686, 390×844, and 1440×1000 checks match local evidence; all 12 unique deployed media frames decoded, Motion Study centered frame 08, and browser error arrays remained empty.
+- Production remains unchanged and separately READY on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`; `www.carlophillips.com` returns HTTP 200. No Production promotion, alias, domain, Shopify, provider, order, billing, merge, or remote Git action occurred.
 
 ## In-page Signature Hoodie media viewer — 2026-08-08
 

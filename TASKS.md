@@ -11,7 +11,7 @@
 - [x] Prove selected Modelize/MODA/detail/motion coverage and keep quarantined/superseded assets excluded.
 - [x] Pass full `yarn verify` (35 files / 332 tests, zero vulnerabilities, optimized build).
 - [x] Capture and inspect exact 641×686, 390×844, and 1440×1000 local evidence with no errors, overlays, or overflow.
-- [ ] Deploy the tested temporary-branch commit to a new Vercel Preview and repeat direct browser checks; do not change Production.
+- [x] Deploy tested commit `ed917ef` to READY Vercel Preview `dpl_6PWspKMjE5dA8QokMfaYPmR3MGz8` and repeat direct 641×686/mobile/desktop checks plus all-12-frame decoding; Production remains unchanged.
 - [ ] Product Owner reviews the new Preview and separately approves or rejects merge/Production promotion.
 
 ## Current correction: in-page Signature Hoodie media viewer

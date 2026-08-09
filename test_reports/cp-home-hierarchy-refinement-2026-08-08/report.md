@@ -75,6 +75,28 @@ Screenshots:
 - `mobile-01-landing.png`, `mobile-02-hoodie.png`, `mobile-03-motion.png`, `mobile-04-page-end.png`;
 - `desktop-01-landing.png`, `desktop-02-hoodie.png`, `desktop-03-motion.png`, `desktop-04-page-end.png`.
 
+The same twelve views prefixed with `preview-` are direct screenshots from the deployed Vercel artifact.
+
+## Vercel Preview verification
+
+- Commit: `ed917ef`
+- Deployment: `dpl_6PWspKMjE5dA8QokMfaYPmR3MGz8`
+- Target/status: Preview / READY
+- URL: `https://carlophillips-site-benruk126-adityas-projects-261b17a9.vercel.app`
+- Protected source upload: 120.4 KB
+
+Direct deployed checks at 641×686, 390×844, and 1440×1000 matched the local geometry and copy. The gallery count is 12 because the eligible Preview catalog contains four current product views plus eight disclosed Preview study frames.
+
+An independent frame-by-frame traversal proved:
+
+- HTTP 200;
+- 12 frames and 12 unique sources;
+- every image reported non-zero natural dimensions;
+- frames 01–04 are current product views, including both current Modelize views;
+- frames 05–12 are the six selected MODA views, material/embroidery study, and still-derived motion loop;
+- Motion Study centers frame 08;
+- zero console/page errors.
+
 ## Deployment boundary
 
-The replacement Vercel Preview and direct deployed verification are pending the tested implementation commit. Production, domains, Shopify data, orders, apps, billing, and canonical `main` were not changed by this local correction.
+Production remains READY on separate deployment `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`, and `www.carlophillips.com` returns HTTP 200. The Preview did not alter Production, domains, Shopify data, orders, apps, billing, canonical `main`, or remote Git state.
