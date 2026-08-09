@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, Expand, Menu, ShoppingBag, X } from 'lucide-react';
 import { SIGNATURE_HOODIE_SHOWCASE_MEDIA } from '../../lib/media/signature-hoodie-showcase.js';
 
 const fallbackSummary = {
@@ -34,9 +34,24 @@ const signatureRunwayFrames = [
 const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
 
 const campaignHero = {
-  src: '/campaigns/lofoten-runway-hero.jpg',
+  src: '/campaigns/lofoten-runway-hero.png',
   alt: 'CARLOPHILLIPS runway campaign staged against a dramatic coastal mountain landscape',
 };
+
+const signatureHomepagePresentation = {
+  displayName: 'ONE',
+  facts: [
+    'Black',
+    'XS–5XL',
+    'Heavyweight fleece',
+    'CP embroidery',
+  ],
+};
+
+function firstSentence(value, fallback) {
+  const sentence = value?.trim().match(/^[^.!?]+[.!?]?/)?.[0];
+  return sentence || fallback;
+}
 
 export function buildHomeGalleryMedia(summary) {
   const product = summary?.primaryProduct;
@@ -113,92 +128,94 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
       aria-labelledby="product-media-title"
       tabIndex={-1}
       onKeyDown={handleKeyDown}
-      className="cp-media-dialog fixed inset-0 z-[70]"
+      className="cp-media-dialog fixed inset-0 z-[70] flex items-center justify-center"
       data-product-media-overlay="open"
     >
-      <header className="cp-media-dialog-header absolute inset-x-0 top-0 z-20 flex h-[var(--cp-header-height)] items-center justify-between px-[var(--cp-page-gutter)]">
-        <div className="flex items-center gap-4">
-          <p className="cp-eyebrow hidden sm:block">Signature Series / Media</p>
-          {motionIndex >= 0 && (
-            <button
-              type="button"
-              onClick={() => moveTo(motionIndex)}
-              className="cp-media-jump"
-              aria-label="Jump to motion study"
-            >
-              Motion study
+      <div className="cp-media-panel relative overflow-hidden">
+        <header className="cp-media-dialog-header absolute inset-x-0 top-0 z-20 flex h-[var(--cp-header-height)] items-center justify-between px-[var(--cp-page-gutter)]">
+          <div className="flex items-center gap-4">
+            <p className="cp-eyebrow hidden sm:block">Signature Series / Media</p>
+            {motionIndex >= 0 && (
+              <button
+                type="button"
+                onClick={() => moveTo(motionIndex)}
+                className="cp-media-jump"
+                aria-label="Jump to motion study"
+              >
+                Motion study
+              </button>
+            )}
+            <h2 id="product-media-title" className="sr-only">{title} media viewer</h2>
+          </div>
+          <div className="flex items-center gap-5">
+            <p className="cp-eyebrow" aria-live="polite">
+              {String(activeIndex + 1).padStart(2, '0')} / {String(media.length).padStart(2, '0')}
+            </p>
+            <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close product media viewer">
+              <X className="h-5 w-5" strokeWidth={1.2} />
             </button>
-          )}
-          <h2 id="product-media-title" className="sr-only">{title} media viewer</h2>
+          </div>
+        </header>
+
+        <div
+          ref={trackRef}
+          onScroll={handleScroll}
+          className="cp-media-track scrollbar-hide flex h-full w-full overflow-x-auto"
+          aria-label={`${title} media`}
+        >
+          {media.map((item, index) => {
+            const source = item.src || item.url;
+            const previewSource = item.previewUrl || source;
+            return (
+              <figure key={`${source}-${index}`} className="cp-media-slide relative h-full min-w-full snap-center">
+                {item.type === 'video' ? (
+                  <video
+                    controls
+                    preload="metadata"
+                    poster={previewSource}
+                    src={source}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <Image
+                    src={item.type === 'image' ? source : previewSource}
+                    alt={item.alt}
+                    fill
+                    priority={index === 0}
+                    sizes="90vw"
+                    unoptimized={item.unoptimized}
+                    className={`${item.fit || 'object-contain'} ${item.position || 'object-center'} p-0 sm:p-8`}
+                  />
+                )}
+                <figcaption className="cp-media-caption absolute inset-x-0 bottom-0 z-10 flex flex-col items-start justify-end gap-2 px-[var(--cp-page-gutter)] py-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+                  <span>{item.label}</span>
+                  <span className="text-right">{item.disclosure}</span>
+                </figcaption>
+              </figure>
+            );
+          })}
         </div>
-        <div className="flex items-center gap-5">
-          <p className="cp-eyebrow" aria-live="polite">
-            {String(activeIndex + 1).padStart(2, '0')} / {String(media.length).padStart(2, '0')}
-          </p>
-          <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close product media viewer">
-            <X className="h-5 w-5" strokeWidth={1.2} />
+
+        <div className="pointer-events-none absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 justify-between px-3 sm:px-8">
+          <button
+            type="button"
+            onClick={() => moveTo(activeIndex - 1)}
+            disabled={activeIndex === 0}
+            className="cp-media-arrow pointer-events-auto"
+            aria-label="Previous product image"
+          >
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.2} />
+          </button>
+          <button
+            type="button"
+            onClick={() => moveTo(activeIndex + 1)}
+            disabled={activeIndex === media.length - 1}
+            className="cp-media-arrow pointer-events-auto"
+            aria-label="Next product image"
+          >
+            <ArrowRight className="h-5 w-5" strokeWidth={1.2} />
           </button>
         </div>
-      </header>
-
-      <div
-        ref={trackRef}
-        onScroll={handleScroll}
-        className="cp-media-track scrollbar-hide flex h-full w-full overflow-x-auto"
-        aria-label={`${title} media`}
-      >
-        {media.map((item, index) => {
-          const source = item.src || item.url;
-          const previewSource = item.previewUrl || source;
-          return (
-            <figure key={`${source}-${index}`} className="cp-media-slide relative h-full min-w-full snap-center">
-              {item.type === 'video' ? (
-                <video
-                  controls
-                  preload="metadata"
-                  poster={previewSource}
-                  src={source}
-                  className="h-full w-full object-contain"
-                />
-              ) : (
-                <Image
-                  src={item.type === 'image' ? source : previewSource}
-                  alt={item.alt}
-                  fill
-                  priority={index === 0}
-                  sizes="100vw"
-                  unoptimized={item.unoptimized}
-                  className={`${item.fit || 'object-contain'} ${item.position || 'object-center'} p-0 sm:p-8`}
-                />
-              )}
-              <figcaption className="cp-media-caption absolute inset-x-0 bottom-0 z-10 flex flex-col items-start justify-end gap-2 px-[var(--cp-page-gutter)] py-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
-                <span>{item.label}</span>
-                <span className="text-right">{item.disclosure}</span>
-              </figcaption>
-            </figure>
-          );
-        })}
-      </div>
-
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 justify-between px-3 sm:px-8">
-        <button
-          type="button"
-          onClick={() => moveTo(activeIndex - 1)}
-          disabled={activeIndex === 0}
-          className="cp-media-arrow pointer-events-auto"
-          aria-label="Previous product image"
-        >
-          <ArrowLeft className="h-5 w-5" strokeWidth={1.2} />
-        </button>
-        <button
-          type="button"
-          onClick={() => moveTo(activeIndex + 1)}
-          disabled={activeIndex === media.length - 1}
-          className="cp-media-arrow pointer-events-auto"
-          aria-label="Next product image"
-        >
-          <ArrowRight className="h-5 w-5" strokeWidth={1.2} />
-        </button>
       </div>
     </section>
   );
@@ -307,9 +324,10 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
   const runwayReady = signatureVisible
     && (summary.commerceAllowed || summary.environment !== 'production');
   const galleryReady = runwayReady && galleryCount > 0;
-  const productTitle = product?.title?.replace(/^CARLOPHILLIPS\s+/i, '') || 'Signature Hoodie';
-  const productDescription = product?.description
-    || 'Product description is currently unavailable.';
+  const productDescription = firstSentence(
+    product?.description,
+    'Product description is currently unavailable.'
+  );
 
   return (
     <section
@@ -376,18 +394,16 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           className="cp-product-media-button cp-product-media-button-corner"
         >
           <span>Explore media</span>
-          <span className="inline-flex items-center gap-2">
-            {String(galleryCount).padStart(2, '0')} views
-            <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-          </span>
+          <Expand className="cp-product-media-expand h-4 w-4" strokeWidth={1.2} aria-hidden="true" />
+          <span className="text-right">{String(galleryCount).padStart(2, '0')} views</span>
         </button>
       ) : (
         <Link
           href="/shop"
           className="cp-product-media-button cp-product-media-button-corner"
         >
-          Explore the collection
-          <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
+          <span>Explore the collection</span>
+          <ArrowRight className="col-start-3 h-4 w-4 justify-self-end" strokeWidth={1.2} />
         </Link>
       )}
 
@@ -397,11 +413,16 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
             {runwayReady ? 'Signature Series / 001' : 'CARLOPHILLIPS / 001'}
           </p>
           <h2 className="cp-product-title">
-            {runwayReady ? productTitle : 'Form. Function.'}
+            {runwayReady ? signatureHomepagePresentation.displayName : 'Form. Function.'}
           </h2>
-          <p className="cp-product-review mt-5 max-w-xl">
+          <p className="cp-product-review mt-5">
             {runwayReady ? productDescription : 'A considered study in form, material and everyday utility.'}
           </p>
+          {runwayReady && (
+            <ul className="cp-product-facts mt-6" aria-label="Product highlights">
+              {signatureHomepagePresentation.facts.map(fact => <li key={fact}>{fact}</li>)}
+            </ul>
+          )}
         </div>
       </div>
     </section>

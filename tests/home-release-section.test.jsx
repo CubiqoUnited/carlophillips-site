@@ -51,7 +51,7 @@ describe('home release composition', () => {
     expect(available).toContain('data-media-trigger="signature-hoodie"');
     expect(available).toContain('aria-haspopup="dialog"');
     expect(available).toContain('aria-controls="product-media-overlay"');
-    expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
+    expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.png');
     expect(available).toContain('At the<br/>edge of life.');
     expect(available).toContain('Scroll and explore');
     expect(available).toContain('cp-scroll-cue-control');
@@ -61,7 +61,7 @@ describe('home release composition', () => {
     expect(available).not.toContain('Modelize product portrait · generated candidate · approval pending');
     expect(available).not.toContain('View the Signature Hoodie');
     expect(unavailable).toContain('Explore the collection');
-    expect(unavailable).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
+    expect(unavailable).toContain('%2Fcampaigns%2Flofoten-runway-hero.png');
     expect(unavailable).not.toContain('/products/');
     expect(unavailable).not.toContain('editorial-02.jpg');
     expect(unavailable).not.toContain('data-media-trigger="signature-hoodie"');
@@ -80,6 +80,7 @@ describe('home release composition', () => {
     expect(html).toContain('aria-label="Scroll down to discover the Signature Hoodie"');
     expect(html).toContain('id="signature-runway"');
     expect(html).toContain('CARLOPHILLIPS / At the edge of life');
+    expect(html).toContain('>ONE</h2>');
     expect(html).not.toContain('No restocks');
     expect(html).not.toContain('Join the list');
     expect(html).not.toContain('Current collection');
@@ -112,10 +113,13 @@ describe('home release composition', () => {
     expect(html).toContain('Signature Series');
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
-    expect(html).not.toContain('Heavyweight feel');
-    expect(html).not.toContain('Structured fleece</li>');
-    expect(html).not.toContain('Soft interior</li>');
-    expect(html).not.toContain('CP chest embroidery</li>');
+    expect(html).not.toContain('Built as a premium core layer');
+    expect(html).toContain('>Black</li>');
+    expect(html).toContain('>XS–5XL</li>');
+    expect(html).toContain('>Heavyweight fleece</li>');
+    expect(html).toContain('>CP embroidery</li>');
+    expect(html).toContain('lucide-expand');
+    expect(html).not.toContain('lucide-arrow-right h-4 w-4');
     expect(html).not.toContain('Available now / Black / XS–5XL');
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
     expect(html).toContain('aria-current="page"');
@@ -141,7 +145,7 @@ describe('home release composition', () => {
       primaryProduct: null,
     }} />);
     expect(html).not.toContain('/products/signature-hoodie/candidates/moda/');
-    expect(html).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
+    expect(html).toContain('%2Fcampaigns%2Flofoten-runway-hero.png');
     expect(html).not.toContain('Signature Series / Runway 001');
     expect(html).not.toContain('aria-current="page"');
     expect(html).toContain('aria-disabled="true"');
@@ -201,6 +205,7 @@ describe('home release composition', () => {
     expect(openHtml).toContain('aria-label="Close product media viewer"');
     expect(openHtml).toContain('01 / 09');
     expect(openHtml).toContain('cp-media-track');
+    expect(openHtml).toContain('cp-media-panel');
     expect(openHtml).toContain('aria-label="Jump to motion study"');
     expect(openHtml).toContain('>Motion study</button>');
     expect(openHtml).not.toContain('href="/products/');

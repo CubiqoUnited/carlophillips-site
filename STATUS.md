@@ -1,8 +1,19 @@
 # Current Status
 
-Updated: 2026-08-08
+Updated: 2026-08-09
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Homepage `ONE` presentation and inset media viewer — 2026-08-09
+
+- The landing now uses the exact new Product Owner-supplied 1536×1024 runway PNG, preserved at `public/campaigns/lofoten-runway-hero.png` with SHA-256 `2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338`. The responsive left-aligned `At the edge of life` campaign composition remains live HTML over the image.
+- The exact Signature Hoodie remains the gated commerce/PDP identity, while its homepage campaign display name is now `ONE`. No product handle, release record, Shopify title, PDP title, price, variant, or checkout authority changed.
+- The second scene uses the first reviewed product-description sentence in a token-sized, left-aligned block. It renders as exactly three lines at the Product Owner’s 584×486 compact viewport and at 390×844 mobile. Four concise product facts return: Black, XS–5XL, Heavyweight fleece, and CP embroidery.
+- The upper-right action now reads `Explore media / N views`, places a four-way expand icon between label and count, and contains no forward arrow. The media experience is a centered bordered card over a dimmed/blurred backdrop rather than a full-viewport canvas; the page remains visible around it.
+- Focus return, body-scroll lock, horizontal swipe, keyboard arrows, Escape, close, truthful media count, release gating, production-media filtering, and provider-neutral customer copy remain unchanged.
+- Full `yarn verify` passes: zero-warning lint, 35 test files / 333 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Headless local checks at 1440×1000, exact 584×486, and 390×844 return HTTP 200 with the exact PNG source, `ONE`, factual tags, expand-without-arrow control, inset overlay geometry, focus return, no horizontal overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-one-overlay-2026-08-09/`.
+- A new Vercel Preview is pending the tested local commit. Production remains unchanged; no domain, production deployment, commerce/provider data, order, billing, merge, or remote Git action has occurred in this correction.
 
 ## Homepage simplification from 319×501 review — 2026-08-08
 

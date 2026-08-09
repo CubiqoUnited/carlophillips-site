@@ -1,5 +1,18 @@
 # Delivery Tasks
 
+## Current correction: `ONE` product scene and inset media widget
+
+- [x] Replace the landing asset with the exact Product Owner-supplied 1536×1024 runway PNG and bind its SHA-256 in a deterministic test.
+- [x] Present the Signature Hoodie as homepage campaign name `ONE` without changing its underlying product/PDP/commerce identity.
+- [x] Reduce the reviewed description to a coherent first sentence, left-align it, and make it a three-line block at 584×486 and 390×844.
+- [x] Restore useful tags as factual product information: Black, XS–5XL, Heavyweight fleece, and CP embroidery.
+- [x] Remove the media-action forward arrow and place a four-way expand icon between its label and truthful view count.
+- [x] Convert the media viewer from a full-viewport canvas to an inset centered overlay card while retaining swipe, keyboard, close, scroll-lock, focus-return, and release gates.
+- [x] Pass focused component/design tests and full `yarn verify` (35 files / 333 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect 1440×1000, exact 584×486, and 390×844 landing/product/overlay evidence with HTTP 200, no overflow, and zero browser/framework errors.
+- [ ] Commit the tested correction, deploy a new temporary-branch Vercel Preview, repeat direct browser verification, and prove Production is unchanged.
+- [ ] Product Owner reviews the replacement Preview and separately approves or rejects merge/Production promotion.
+
 ## Current correction: 319×501 homepage simplification
 
 - [x] Dull the Signature Hoodie title without reducing reviewed product readability.

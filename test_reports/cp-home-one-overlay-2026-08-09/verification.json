@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "cp.ui-verification.v1",
+  "date": "2026-08-09",
+  "environment": "local-fixture-review",
+  "route": "http://127.0.0.1:3000/",
+  "asset": {
+    "path": "/campaigns/lofoten-runway-hero.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338",
+    "exactProductOwnerSourceMatch": true
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "descriptionLines": 2,
+      "overlay": { "width": 1280, "height": 896, "x": 80, "y": 52 }
+    },
+    {
+      "name": "compact-feedback",
+      "width": 584,
+      "height": 486,
+      "descriptionLines": 3,
+      "overlay": { "width": 537.265625, "height": 439.265625, "x": 23.359375, "y": 23.359375 }
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "descriptionLines": 3,
+      "overlay": { "width": 358.796875, "height": 812.796875, "x": 15.59375, "y": 15.59375 }
+    }
+  ],
+  "assertions": {
+    "http200": true,
+    "meaningfulContent": true,
+    "exactHeroPath": true,
+    "homepageTitleIsONE": true,
+    "productFacts": ["Black", "XS–5XL", "Heavyweight fleece", "CP embroidery"],
+    "expandIconPresent": true,
+    "mediaTriggerArrowAbsent": true,
+    "overlayInsetAtEveryViewport": true,
+    "backgroundVisibleAroundOverlay": true,
+    "bodyScrollLockedWhileOpen": true,
+    "focusReturnedAfterClose": true,
+    "horizontalOverflow": false,
+    "frameworkErrorOverlay": false,
+    "consoleErrors": [],
+    "pageErrors": []
+  }
+}

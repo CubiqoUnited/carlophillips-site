@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
@@ -11,6 +12,7 @@ describe('storefront design system', () => {
       '--cp-color-ink',
       '--cp-color-rule',
       '--cp-color-overlay',
+      '--cp-color-backdrop',
       '--cp-font-sans',
       '--cp-content-max',
       '--cp-page-gutter',
@@ -18,6 +20,8 @@ describe('storefront design system', () => {
       '--cp-label-tracking',
       '--cp-duration-standard',
       '--cp-control-size',
+      '--cp-media-panel-inset',
+      '--cp-product-copy-width',
     ]) {
       expect(styles).toContain(token);
     }
@@ -33,10 +37,21 @@ describe('storefront design system', () => {
     expect(home).toContain('cp-media-jump');
     expect(home).toContain('var(--cp-header-height)');
     expect(home).toContain('cp-media-dialog');
+    expect(home).toContain('cp-media-panel');
+    expect(home).toContain("displayName: 'ONE'");
+    expect(styles).toContain('-webkit-line-clamp: 3');
     expect(styles).toContain('scroll-snap-type: x mandatory');
     expect(styles).toContain('@keyframes cp-campaign-drift');
     expect(styles).toContain('.cp-campaign-image,');
     expect(home).not.toContain('HomeReleaseStage');
+  });
+
+  it('uses the exact Product Owner supplied runway image', () => {
+    const digest = createHash('sha256')
+      .update(readFileSync('public/campaigns/lofoten-runway-hero.png'))
+      .digest('hex');
+
+    expect(digest).toBe('2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338');
   });
 
   it('keeps the customer-facing route metadata provider-neutral', () => {
