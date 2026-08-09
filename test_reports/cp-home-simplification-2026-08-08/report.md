@@ -42,6 +42,18 @@ At every width:
 
 Screenshots are stored as `local-{feedback|mobile|desktop}-{01-landing|02-landing-motion|03-hoodie}.png` in this folder.
 
+The same nine screenshots prefixed with `preview-` are direct captures from the deployed Vercel artifact.
+
+## Vercel Preview verification
+
+- Commit: `25b2e61`
+- Deployment: `dpl_9zwLjHHh9rSLScZoYG9QWVBf5TuK`
+- Target/status: Preview / READY
+- URL: `https://carlophillips-site-i20alyiiu-adityas-projects-261b17a9.vercel.app`
+- Protected source upload: 120.7 KB
+
+Direct deployed checks at 319×501, 390×844, and 1440×1000 matched local results. Preview correctly reports 12 media views rather than the 11 local fixture views. At all widths the upper-right geometry assertion passed, the computed campaign transform changed during observation, title colour remained 62% white, highlight count remained zero, and browser/framework error arrays remained empty.
+
 ## Deployment boundary
 
-Replacement Vercel Preview and direct deployed verification are pending the tested implementation commit. Production, domains, commerce data, orders, apps, billing, canonical `main`, and remote Git state were not changed by the local correction.
+Production remains separately unchanged on deployment `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`. The Preview did not alter Production, domains, commerce data, orders, apps, billing, canonical `main`, or remote Git state.

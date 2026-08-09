@@ -13,14 +13,18 @@ No human action is needed for the implemented slow camera push/pan. To make the 
 
 Then reply: `Runway video uploaded.`
 
-The exact replacement Preview URL for the current visual correction will be added here after deployment. Review that Preview separately before any Production action.
+Review the current non-production correction here:
+
+`https://carlophillips-site-i20alyiiu-adityas-projects-261b17a9.vercel.app`
+
+It contains camera movement only. Review it separately before any Production action.
 
 ## Risk and cost
 
 - Supplying a completed file has no website-side purchase or billing action.
 - Do not accept a paid video-generation plan merely to complete this handoff without a separate cost decision.
 - Production remains unchanged.
-- The current candidate will be deployed to a temporary Vercel Preview only.
+- The current candidate is deployed to a temporary Vercel Preview only.
 
 ## Resume point
 

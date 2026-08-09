@@ -10,7 +10,7 @@
 - [x] Confirm no real campaign video file exists; require a supplied/exported MP4 or WebM for truthful walking/body motion.
 - [x] Pass full `yarn verify` (35 files / 332 tests, zero vulnerabilities, optimized build).
 - [x] Capture and inspect exact 319×501, 390×844, and 1440×1000 local evidence with no errors, overlays, or overflow.
-- [ ] Deploy the tested temporary-branch commit to a replacement Vercel Preview and repeat direct checks; do not change Production.
+- [x] Deploy tested commit `25b2e61` to READY Vercel Preview `dpl_9zwLjHHh9rSLScZoYG9QWVBf5TuK` and repeat direct 319×501/mobile/desktop checks; Production remains unchanged.
 - [ ] Product Owner reviews the replacement Preview and separately decides whether to supply a real runway video.
 
 ## Current correction: homepage hierarchy and media discovery

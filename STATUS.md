@@ -13,7 +13,8 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The single flattened runway campaign still receives a slow 18-second camera push/pan, disabled under `prefers-reduced-motion`. It adds restrained scene motion but is not described as actual model walking. No MP4/WebM/MOV campaign file exists in the repository.
 - Full `yarn verify` passes unchanged: zero-warning lint, 35 test files / 332 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
 - Local headless checks at the exact 319×501 feedback viewport, 390×844, and 1440×1000 prove the muted title, upper-right control, removed chips, changed cue, changing campaign transform, HTTP 200, zero overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-simplification-2026-08-08/`.
-- A replacement Preview is pending from the tested local commit. Production remains unchanged.
+- Tested commit `25b2e61` is deployed READY as Vercel Preview `dpl_9zwLjHHh9rSLScZoYG9QWVBf5TuK` at `https://carlophillips-site-i20alyiiu-adityas-projects-261b17a9.vercel.app`. Direct 319×501, 390×844, and 1440×1000 checks match local evidence: `SCROLL AND EXPLORE`, changing campaign transform, 62% title colour, upper-right 12-view control, zero chips, zero overflow, and zero browser/framework errors.
+- Production remains unchanged on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`; no Production promotion, alias, domain, commerce/provider data, order, billing, merge, or remote Git action occurred.
 
 ## Homepage hierarchy and media-discovery refinement — 2026-08-08
 
