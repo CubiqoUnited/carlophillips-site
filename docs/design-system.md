@@ -25,15 +25,23 @@ The Signature Hoodie action on the homepage opens a full-screen viewer instead o
 - Pointer and keyboard users receive previous/next controls; Escape and the close control dismiss the viewer.
 - Opening the viewer locks page scrolling and makes the page behind it inert. Closing returns focus to the opening action.
 - Media position is always shown. Captions remain short, provider-neutral, and truthful about Preview-only visual studies.
+- When a disclosed motion asset exists, a compact `Motion study` control jumps directly to it. A still-derived loop is never labeled as real product video, 360, or 3D.
 - The viewer never expands product eligibility. Production receives release-eligible media only; Local/Preview studies remain environment-gated and disclosed.
 
 ## Homepage sequence
 
 1. `CARLOPHILLIPS / At the edge of life` runway campaign opener.
-2. A labeled scroll cue links directly to the first product scene.
-3. The Signature Hoodie runway panel remains the first product release.
+2. A centered bordered label and animated circular down control link directly to the first product scene.
+3. The Signature Hoodie runway panel presents a restrained title, reviewed product description, evidence-derived material/construction highlights, and one filled media action.
 4. The category rail identifies Hoodies as active and visually mutes future categories.
-5. The release section follows the same source and commerce eligibility policy as the product page.
+5. The footer follows the category rail. The separate lower product/release stage is intentionally omitted because it duplicated the Hoodie scene.
+
+## Product-scene hierarchy
+
+- Product titles use `cp-product-title`, capped at 6.25rem, so imagery remains the dominant element.
+- Product descriptions use `cp-product-review` and must come from the minimized reviewed catalog summary. They cannot be invented in the client component.
+- Highlight chips use `cp-product-highlights` and are derived by a server mapper only when the reviewed description/details support the exact phrase.
+- The primary scene action uses `cp-product-media-button`: a filled, high-contrast control with its media count. It must not resemble a low-emphasis underlined text link.
 
 ## Customer language
 

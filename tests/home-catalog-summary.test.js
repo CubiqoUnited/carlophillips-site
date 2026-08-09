@@ -21,6 +21,8 @@ function decision(overrides = {}) {
     products: [{
       handle: 'carlophillips-signature-hoodie',
       title: 'CARLOPHILLIPS Signature Hoodie',
+      description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built with structured fleece and a soft interior.',
+      details: ['Everyday core layer.'],
       sourceLabel: 'Local fixture review — not Shopify live data',
       commerceAllowed: false,
       media: [{
@@ -55,6 +57,13 @@ describe('home catalog summary', () => {
         title: 'CARLOPHILLIPS Signature Hoodie',
         href: '/products/carlophillips-signature-hoodie',
         commerceAllowed: false,
+        description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built with structured fleece and a soft interior.',
+        highlights: [
+          'Heavyweight feel',
+          'Structured fleece',
+          'Soft interior',
+          'CP chest embroidery',
+        ],
         heroMedia: {
           url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
         },
@@ -69,7 +78,9 @@ describe('home catalog summary', () => {
     expect(summary.message).toContain('local non-commerce fixture');
     expect(Object.keys(summary.primaryProduct).sort()).toEqual([
       'commerceAllowed',
+      'description',
       'heroMedia',
+      'highlights',
       'href',
       'media',
       'sourceLabel',
@@ -77,6 +88,20 @@ describe('home catalog summary', () => {
     ]);
     expect(JSON.stringify(summary)).not.toContain('raw-media-id-must-not-pass');
     expect(JSON.stringify(summary)).not.toContain('Modelize');
+  });
+
+  it('derives material highlights only from reviewed description and detail fields', () => {
+    const summary = toHomeCatalogSummary(decision({
+      products: [{
+        ...decision().products[0],
+        description: 'A restrained black pullover for everyday layering.',
+        details: [],
+      }],
+    }));
+
+    expectValid(summary);
+    expect(summary.primaryProduct.description).toContain('restrained black pullover');
+    expect(summary.primaryProduct.highlights).toEqual([]);
   });
 
   it('does not emit a product link or payload for a denied home decision', () => {

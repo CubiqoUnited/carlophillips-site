@@ -3,7 +3,6 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import HomeStorefront, {
   buildHomeGalleryMedia,
-  HomeReleaseStage,
   ProductMediaOverlay,
 } from '../components/storefront/home-storefront.jsx';
 
@@ -18,6 +17,8 @@ const availableSummary = {
   message: '1 local non-commerce fixture is available for review.',
   primaryProduct: {
     title: 'CARLOPHILLIPS Signature Hoodie',
+    description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.',
+    highlights: ['Heavyweight feel', 'Structured fleece', 'Soft interior', 'CP chest embroidery'],
     href: '/products/carlophillips-signature-hoodie',
     sourceLabel: 'Local fixture review — not Shopify live data',
     commerceAllowed: false,
@@ -37,35 +38,6 @@ const availableSummary = {
 };
 
 describe('home release composition', () => {
-  it('renders registry-derived counts and the eligible PDP review link', () => {
-    const html = renderToStaticMarkup(<HomeReleaseStage summary={availableSummary} />);
-    expect(html).toContain('Candidates</span><strong');
-    expect(html).toContain('>1</strong>');
-    expect(html).toContain('Visible</span><strong');
-    expect(html).toContain('Withheld</span><strong');
-    expect(html).toContain('CARLOPHILLIPS Signature Hoodie');
-    expect(html).toContain('href="/products/carlophillips-signature-hoodie"');
-    expect(html).toContain('View product');
-    expect(html).not.toContain('Add to bag');
-  });
-
-  it('withholds the PDP link and payload when no item is eligible', () => {
-    const summary = {
-      ...availableSummary,
-      status: 'unavailable',
-      visibleCount: 0,
-      excludedCount: 1,
-      message: 'No release-eligible products are visible. 1 candidate is withheld.',
-      primaryProduct: null,
-    };
-    const html = renderToStaticMarkup(<HomeReleaseStage summary={summary} />);
-    expect(html).toContain('The next piece is taking shape.');
-    expect(html).toContain('Visible</span><strong');
-    expect(html).not.toContain('/products/');
-    expect(html).not.toContain('Signature Hoodie');
-    expect(html).toContain('href="/collections"');
-  });
-
   it('derives the hero catalog CTA from the same visible count', () => {
     const available = renderToStaticMarkup(<HomeStorefront catalogSummary={availableSummary} />);
     const unavailable = renderToStaticMarkup(<HomeStorefront catalogSummary={{
@@ -75,18 +47,20 @@ describe('home release composition', () => {
       excludedCount: 1,
       primaryProduct: null,
     }} />);
-    expect(available).toContain('View the Signature Hoodie');
+    expect(available).toContain('Explore product media');
+    expect(available).toContain('09 views');
     expect(available).toContain('data-media-trigger="signature-hoodie"');
     expect(available).toContain('aria-haspopup="dialog"');
     expect(available).toContain('aria-controls="product-media-overlay"');
     expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(available).toContain('At the<br/>edge of life.');
-    expect(available).toContain('Discover the Signature Hoodie');
-    expect(available).toContain('Scroll down');
+    expect(available).toContain('Scroll to the Signature Hoodie');
+    expect(available).toContain('cp-scroll-cue-control');
     expect(available).toContain('Runway 001 / Lofoten');
     expect(available).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
     expect(available).toContain('Private product preview');
     expect(available).not.toContain('Modelize product portrait · generated candidate · approval pending');
+    expect(available).not.toContain('View the Signature Hoodie');
     expect(unavailable).toContain('Explore the collection');
     expect(unavailable).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(unavailable).not.toContain('/products/');
@@ -109,6 +83,9 @@ describe('home release composition', () => {
     expect(html).toContain('CARLOPHILLIPS / At the edge of life');
     expect(html).not.toContain('No restocks');
     expect(html).not.toContain('Join the list');
+    expect(html).not.toContain('Current collection');
+    expect(html).not.toContain('Available now / Black / XS–5XL');
+    expect(html).not.toContain('Candidates</span>');
   });
 
   it('keeps the archived board separate when no release-eligible hero media exists', () => {
@@ -132,11 +109,15 @@ describe('home release composition', () => {
       commerceAllowed: true,
       primaryProduct: { ...availableSummary.primaryProduct, commerceAllowed: true },
     }} />);
-    expect(html).toContain('View the Signature Hoodie');
+    expect(html).toContain('Explore product media');
     expect(html).toContain('Signature Series');
-    expect(html).toContain('Available now / Black / XS–5XL');
-    expect(html).toContain('Signature Series / Runway 001');
-    expect(html).toContain('Heavyweight black fleece. Quiet signature detail. Built for every day.');
+    expect(html).toContain('Signature Series / 001');
+    expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
+    expect(html).toContain('Heavyweight feel');
+    expect(html).toContain('Structured fleece');
+    expect(html).toContain('Soft interior');
+    expect(html).toContain('CP chest embroidery');
+    expect(html).not.toContain('Available now / Black / XS–5XL');
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
     expect(html).toContain('aria-current="page"');
     expect(html).toContain('>Hoodies</a>');
@@ -144,6 +125,7 @@ describe('home release composition', () => {
     expect(html).toContain('>Shirts</span>');
     expect(html).toContain('>Bottoms</span>');
     expect(html).not.toContain('release gate');
+    expect(html).not.toContain('Current collection');
     expect(html).not.toContain('Candidates</span>');
     expect(html).not.toContain('Withheld</span>');
     expect(html.toLowerCase()).not.toContain('shopify');
@@ -203,7 +185,7 @@ describe('home release composition', () => {
   });
 
   it('renders an accessible in-page gallery with swipe and directional controls', () => {
-    const media = buildHomeGalleryMedia(availableSummary).slice(0, 2);
+    const media = buildHomeGalleryMedia(availableSummary);
     const openHtml = renderToStaticMarkup(
       <ProductMediaOverlay media={media} onClose={() => {}} open title="Signature Hoodie" />
     );
@@ -217,8 +199,10 @@ describe('home release composition', () => {
     expect(openHtml).toContain('aria-label="Previous product image"');
     expect(openHtml).toContain('aria-label="Next product image"');
     expect(openHtml).toContain('aria-label="Close product media viewer"');
-    expect(openHtml).toContain('01 / 02');
+    expect(openHtml).toContain('01 / 09');
     expect(openHtml).toContain('cp-media-track');
+    expect(openHtml).toContain('aria-label="Jump to motion study"');
+    expect(openHtml).toContain('>Motion study</button>');
     expect(openHtml).not.toContain('href="/products/');
     expect(closedHtml).toBe('');
   });

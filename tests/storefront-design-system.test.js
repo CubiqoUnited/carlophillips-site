@@ -25,9 +25,16 @@ describe('storefront design system', () => {
     expect(home).toContain('cp-page-shell');
     expect(home).toContain('cp-display');
     expect(home).toContain('cp-scroll-cue');
+    expect(home).toContain('cp-scroll-cue-control');
+    expect(home).toContain('cp-product-title');
+    expect(home).toContain('cp-product-review');
+    expect(home).toContain('cp-product-highlights');
+    expect(home).toContain('cp-product-media-button');
+    expect(home).toContain('cp-media-jump');
     expect(home).toContain('var(--cp-header-height)');
     expect(home).toContain('cp-media-dialog');
     expect(styles).toContain('scroll-snap-type: x mandatory');
+    expect(home).not.toContain('HomeReleaseStage');
   });
 
   it('keeps the customer-facing route metadata provider-neutral', () => {

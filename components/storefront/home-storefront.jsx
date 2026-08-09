@@ -81,6 +81,8 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
 
   if (!open || media.length === 0) return null;
 
+  const motionIndex = media.findIndex(item => item.gifHref || item.type === 'video');
+
   const moveTo = nextIndex => {
     const index = Math.max(0, Math.min(nextIndex, media.length - 1));
     const track = trackRef.current;
@@ -115,8 +117,18 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
       data-product-media-overlay="open"
     >
       <header className="cp-media-dialog-header absolute inset-x-0 top-0 z-20 flex h-[var(--cp-header-height)] items-center justify-between px-[var(--cp-page-gutter)]">
-        <div>
-          <p className="cp-eyebrow">Signature Series / Media</p>
+        <div className="flex items-center gap-4">
+          <p className="cp-eyebrow hidden sm:block">Signature Series / Media</p>
+          {motionIndex >= 0 && (
+            <button
+              type="button"
+              onClick={() => moveTo(motionIndex)}
+              className="cp-media-jump"
+              aria-label="Jump to motion study"
+            >
+              Motion study
+            </button>
+          )}
           <h2 id="product-media-title" className="sr-only">{title} media viewer</h2>
         </div>
         <div className="flex items-center gap-5">
@@ -277,10 +289,9 @@ function CampaignHero() {
           className="cp-scroll-cue mt-10"
           aria-label="Scroll down to discover the Signature Hoodie"
         >
-          <span>Discover the Signature Hoodie</span>
-          <span className="inline-flex items-center gap-3" aria-hidden="true">
-            Scroll down
-            <ArrowDown className="cp-scroll-arrow h-4 w-4" strokeWidth={1.2} />
+          <span className="cp-scroll-cue-label">Scroll to the Signature Hoodie</span>
+          <span className="cp-scroll-cue-control" aria-hidden="true">
+            <ArrowDown className="cp-scroll-arrow h-5 w-5" strokeWidth={1.2} />
           </span>
         </a>
       </div>
@@ -288,15 +299,17 @@ function CampaignHero() {
   );
 }
 
-function ProductRunwayHero({ galleryButtonRef, onOpenGallery, summary }) {
+function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summary }) {
   const heroMedia = summary.primaryProduct?.heroMedia || null;
+  const product = summary.primaryProduct;
   const signatureVisible = summary.visibleCount > 0
-    && summary.primaryProduct?.href === '/products/carlophillips-signature-hoodie';
+    && product?.href === '/products/carlophillips-signature-hoodie';
   const runwayReady = signatureVisible
     && (summary.commerceAllowed || summary.environment !== 'production');
-  const catalogLabel = signatureVisible
-    ? 'View the Signature Hoodie'
-    : 'Explore the collection';
+  const galleryReady = runwayReady && galleryCount > 0;
+  const productTitle = product?.title?.replace(/^CARLOPHILLIPS\s+/i, '') || 'Signature Hoodie';
+  const productDescription = product?.description
+    || 'Product description is currently unavailable.';
 
   return (
     <section
@@ -353,19 +366,22 @@ function ProductRunwayHero({ galleryButtonRef, onOpenGallery, summary }) {
       </figure>
 
       <div className="cp-page-shell relative z-10 flex min-h-[var(--cp-viewport-height)] flex-col justify-end pb-[var(--cp-panel-bottom)] pt-[calc(var(--cp-header-height)+3rem)]">
-        <div className="max-w-4xl">
+        <div className="cp-product-copy max-w-2xl">
           <p className="cp-eyebrow mb-5">
-            {runwayReady ? 'Signature Series / Runway 001' : 'CARLOPHILLIPS / 001'}
+            {runwayReady ? 'Signature Series / 001' : 'CARLOPHILLIPS / 001'}
           </p>
-          <h2 className="cp-display uppercase">
-            {runwayReady ? <>Signature<br />Hoodie</> : <>Form.<br />Function.</>}
+          <h2 className="cp-product-title">
+            {runwayReady ? productTitle : 'Form. Function.'}
           </h2>
-          <p className="mt-7 max-w-md text-sm leading-relaxed text-white/66 sm:text-base">
-            {runwayReady
-              ? 'Heavyweight black fleece. Quiet signature detail. Built for every day.'
-              : 'A considered study in form, material and everyday utility.'}
+          <p className="cp-product-review mt-5 max-w-xl">
+            {runwayReady ? productDescription : 'A considered study in form, material and everyday utility.'}
           </p>
-          {runwayReady ? (
+          {runwayReady && product.highlights?.length > 0 && (
+            <ul className="cp-product-highlights mt-6" aria-label="Signature Hoodie highlights">
+              {product.highlights.map(highlight => <li key={highlight}>{highlight}</li>)}
+            </ul>
+          )}
+          {galleryReady ? (
             <button
               ref={galleryButtonRef}
               type="button"
@@ -373,27 +389,24 @@ function ProductRunwayHero({ galleryButtonRef, onOpenGallery, summary }) {
               aria-haspopup="dialog"
               aria-controls="product-media-overlay"
               data-media-trigger="signature-hoodie"
-              className="mt-8 inline-flex items-center gap-4 border-b border-white/45 pb-2 text-[10px] uppercase tracking-[0.3em] text-white transition hover:border-white"
+              className="cp-product-media-button mt-7"
             >
-              {catalogLabel}
-              <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
+              <span>Explore product media</span>
+              <span className="inline-flex items-center gap-3">
+                {String(galleryCount).padStart(2, '0')} views
+                <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
+              </span>
             </button>
           ) : (
             <Link
               href="/shop"
-              className="mt-8 inline-flex items-center gap-4 border-b border-white/45 pb-2 text-[10px] uppercase tracking-[0.3em] text-white transition hover:border-white"
+              className="cp-product-media-button mt-7"
             >
-              {catalogLabel}
+              Explore the collection
               <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
             </Link>
           )}
         </div>
-        {runwayReady && (
-          <div className="mt-10 flex items-center justify-between border-t border-white/20 pt-4 text-[8px] uppercase tracking-[0.28em] text-white/48">
-            <span>Black / XS–5XL</span>
-            <span>Scroll to explore</span>
-          </div>
-        )}
       </div>
     </section>
   );
@@ -426,81 +439,6 @@ function CategoryRail({ summary }) {
         ))}
       </div>
     </nav>
-  );
-}
-
-export function HomeReleaseStage({ summary }) {
-  const product = summary.primaryProduct;
-
-  if (product && summary.commerceAllowed) {
-    return (
-      <section className="storefront-panel min-h-screen border-b border-white/10 bg-[#f1f0ec] px-5 py-20 text-black sm:px-8 lg:px-12 lg:py-28" aria-label="Signature Hoodie">
-        <div className="mx-auto flex min-h-[72vh] max-w-[1700px] flex-col justify-between">
-          <div className="flex items-center justify-between border-b border-black/15 pb-5 text-[9px] uppercase tracking-[0.28em] text-black/48">
-            <span>Signature Series</span>
-            <span>Edition 001</span>
-          </div>
-          <div className="grid min-w-0 gap-12 py-20 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
-            <h2 className="min-w-0 max-w-5xl break-words text-[clamp(2.35rem,10.5vw,4.5rem)] font-light leading-[0.88] tracking-[-0.065em] sm:text-8xl lg:text-[8.5rem]">
-              {product.title}
-            </h2>
-            <div className="max-w-xl lg:pb-2">
-              <p className="text-base leading-relaxed text-black/62 sm:text-lg">
-                Heavyweight fleece. Quiet branding. A precise everyday silhouette, available in black from XS to 5XL.
-              </p>
-              <Link href={product.href} className="mt-9 inline-flex items-center gap-4 border-b border-black/35 pb-2 text-[10px] uppercase tracking-[0.3em] text-black/80 transition hover:border-black">
-                View the Hoodie <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-              </Link>
-            </div>
-          </div>
-          <p className="text-[9px] uppercase tracking-[0.28em] text-black/38">Available now / Black / XS–5XL</p>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="storefront-panel min-h-[82vh] border-b border-white/10 bg-black px-5 py-20 sm:px-8 lg:px-12 lg:py-28" aria-label="Current collection">
-      <div className="mx-auto grid min-h-[62vh] min-w-0 max-w-[1700px] gap-px bg-white/10 lg:grid-cols-[1.12fr_0.88fr]">
-        <div className="flex min-w-0 flex-col justify-between bg-[#030303] p-7 sm:p-10 lg:p-14">
-          <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.28em] text-white/38">
-            <span>Current collection</span>
-            <span>{summary.visibleCount > 0 ? 'Preview' : 'Coming soon'}</span>
-          </div>
-          <div className="py-20">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-white/42">
-              {product ? 'Signature Series' : 'CARLOPHILLIPS'}
-            </p>
-            <h2 className="mt-7 min-w-0 max-w-4xl break-words text-[clamp(2.35rem,10.5vw,4.5rem)] font-light leading-[0.92] tracking-[-0.055em] sm:text-7xl lg:text-8xl">
-              {product ? product.title : 'The next piece is taking shape.'}
-            </h2>
-            <p className="mt-8 max-w-2xl text-sm leading-relaxed text-white/52 sm:text-base">{summary.message}</p>
-          </div>
-          <div className="flex flex-wrap gap-6">
-            {product && (
-              <Link href={product.href} className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/78">
-                View product <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-              </Link>
-            )}
-            <Link href="/collections" className="text-[10px] uppercase tracking-[0.28em] text-white/46">
-              View collection
-            </Link>
-          </div>
-        </div>
-        <aside className="grid min-w-0 bg-black sm:grid-cols-3 lg:grid-cols-1">
-          {[
-            ['Candidates', summary.candidateCount],
-            ['Visible', summary.visibleCount],
-            ['Withheld', summary.excludedCount],
-          ].map(([label, value]) => (
-            <div key={label} className="flex min-h-40 flex-col justify-between border-b border-white/10 p-7 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b lg:border-r-0">
-              <span className="text-[9px] uppercase tracking-[0.28em] text-white/36">{label}</span>
-              <strong className="text-5xl font-light text-white/75">{value}</strong>
-            </div>
-          ))}
-        </aside>
-      </div>
-    </section>
   );
 }
 
@@ -540,11 +478,11 @@ export default function HomeStorefront({ catalogSummary }) {
         <CampaignHero />
         <ProductRunwayHero
           galleryButtonRef={galleryButtonRef}
+          galleryCount={galleryMedia.length}
           onOpenGallery={() => setMediaOpen(true)}
           summary={summary}
         />
         <CategoryRail summary={summary} />
-        <HomeReleaseStage summary={summary} />
         <Footer />
       </div>
       <ProductMediaOverlay

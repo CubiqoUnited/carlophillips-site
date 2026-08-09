@@ -4,6 +4,17 @@ Updated: 2026-08-08
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Homepage hierarchy and media-discovery refinement — 2026-08-08
+
+- The landing cue is now a centered `Scroll to the Signature Hoodie` control with a bordered label, circular animated down arrow, smooth anchor target, keyboard focus, and reduced-motion support. It replaces the subtle full-width rule that the Product Owner found ambiguous.
+- The second panel no longer uses an oversized display headline. It presents `Signature Hoodie` at 48–100 px, followed by the reviewed product description and four evidence-derived highlights: heavyweight feel, structured fleece, soft interior, and CP chest embroidery. These highlights are emitted only when the reviewed description/details contain their source facts.
+- The former underlined action is now a high-contrast `Explore product media` button with a truthful media count. The same-page viewer adds a direct `Motion study` jump to the disclosed still-derived animated WebP/GIF.
+- The redundant lower product/release section is removed. The page sequence is now campaign → Hoodie scene → category rail → footer; product visibility, commerce eligibility, and media gating remain unchanged.
+- Deterministic media-coverage tests prove the Preview gallery can contain both selected Modelize outputs, all six selected MODA frames, the material/embroidery study, and the still-derived motion loop. The quarantined back hypothesis and superseded built-in front study remain excluded. No real video, genuine 360 set, or interactive 3D file exists, so none is claimed.
+- Full `yarn verify` passes: zero-warning lint, 35 test files / 332 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Headless local checks at the exact 641×686 feedback viewport, 390×844 mobile, and 1440×1000 desktop return HTTP 200 with the complete media button visible, centered motion frame, two homepage panels only, category/footer ending, zero browser errors/overlays, and zero horizontal overflow. Evidence is under `test_reports/cp-home-hierarchy-refinement-2026-08-08/`.
+- A replacement Vercel Preview is pending from the tested local commit. Production remains unchanged.
+
 ## In-page Signature Hoodie media viewer — 2026-08-08
 
 - `View the Signature Hoodie` on the second homepage panel now opens a full-screen media viewer over the same page. It does not navigate or change the URL.

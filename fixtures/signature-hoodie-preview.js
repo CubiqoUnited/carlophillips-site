@@ -14,7 +14,7 @@ export const signatureHoodiePreview = {
   statusLabel: 'Local fixture review — not Shopify live data',
   sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '4XL', '5XL'],
   description:
-    'A heavyweight black pullover candidate with a compact CP chest mark. Commerce fields on this local page are fixture data pending a read-only Shopify-backed path.',
+    'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.',
   story:
     'This fixture preserves layout review while product, media, and fulfillment evidence are bound into a Product Release Record. It is not approval to sell or publish.',
   details: [

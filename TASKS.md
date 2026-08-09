@@ -1,5 +1,19 @@
 # Delivery Tasks
 
+## Current correction: homepage hierarchy and media discovery
+
+- [x] Replace the subtle landing rule with an unmistakable centered scroll label and animated circular down control.
+- [x] Reduce the Hoodie title hierarchy and present reviewed human-readable product copy beneath it.
+- [x] Derive material/construction highlights only from reviewed product description/details.
+- [x] Replace the underlined action with a high-contrast media button and truthful view count.
+- [x] Add a direct viewer jump to the disclosed still-derived motion study.
+- [x] Remove the redundant lower product/release section so category navigation and footer follow the Hoodie scene.
+- [x] Prove selected Modelize/MODA/detail/motion coverage and keep quarantined/superseded assets excluded.
+- [x] Pass full `yarn verify` (35 files / 332 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect exact 641×686, 390×844, and 1440×1000 local evidence with no errors, overlays, or overflow.
+- [ ] Deploy the tested temporary-branch commit to a new Vercel Preview and repeat direct browser checks; do not change Production.
+- [ ] Product Owner reviews the new Preview and separately approves or rejects merge/Production promotion.
+
 ## Current correction: in-page Signature Hoodie media viewer
 
 - [x] Replace the second-panel Hoodie navigation CTA with an in-page full-screen viewer.
