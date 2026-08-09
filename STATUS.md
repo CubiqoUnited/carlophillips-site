@@ -4,6 +4,17 @@ Updated: 2026-08-08
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## In-page Signature Hoodie media viewer — 2026-08-08
+
+- `View the Signature Hoodie` on the second homepage panel now opens a full-screen media viewer over the same page. It does not navigate or change the URL.
+- The viewer supports horizontal touch swipe, desktop previous/next controls, keyboard arrows, Escape, a close control, position count, body-scroll lock, background inertness, and focus return to the opening action.
+- Its input is the same minimized home catalog summary as the product hero. A denied or unavailable product emits no trigger and no media payload. Local/Preview can add the explicitly disclosed Hoodie visual studies; production can render only media carried by the eligible release decision.
+- The current local viewer contains three eligible product stills plus eight disclosed local/Preview study frames. All 11 decoded in a clean browser traversal. No video, genuine 360, or interactive 3D is implied where no such eligible asset exists.
+- Customer-visible media labels are neutral and provider-free. Internal media IDs and arbitrary adapter labels are not passed into the home summary.
+- Full `yarn verify` passes: zero-warning lint, 34 test files / 329 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Direct 1440×1000 and 390×844 local checks prove unchanged URL, swipe/arrow progression, all-frame decoding, Escape/close, focus return, zero provider-name copy, zero browser errors, and no horizontal overflow. Evidence is under `test_reports/cp-home-media-overlay-2026-08-08/`.
+- Production remains unchanged. A temporary-branch Vercel Preview and its direct browser verification remain the final delivery step for this bounded change.
+
 ## Runway wording and token-led design correction — 2026-08-08
 
 - The homepage now opens on the supplied coastal runway campaign with the factual brand system `CARLOPHILLIPS / At the edge of life` and `Runway 001 / Lofoten`.

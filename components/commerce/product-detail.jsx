@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { SIGNATURE_HOODIE_SHOWCASE_MEDIA } from '../../lib/media/signature-hoodie-showcase.js';
 import ShopifyCheckoutForm from './shopify-checkout-form';
 
 function formatPrice(value, currency) {
@@ -92,71 +93,6 @@ function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
   );
 }
 
-const SIGNATURE_HOODIE_EDITORIAL_STUDY = [
-  {
-    src: '/products/signature-hoodie/candidates/moda/model-front-full.jpg',
-    alt: 'MODA-assisted full-length front visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
-    label: 'On-body / front',
-    fit: 'object-contain',
-    position: 'object-center',
-    disclosure: 'MODA AI preview',
-  },
-  {
-    src: '/products/signature-hoodie/candidates/moda/model-three-quarter.jpg',
-    alt: 'MODA-assisted three-quarter visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
-    label: 'On-body / three-quarter',
-    fit: 'object-contain',
-    position: 'object-center',
-    disclosure: 'MODA AI preview',
-  },
-  {
-    src: '/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png',
-    alt: 'AI-assisted macro visualisation of the CARLOPHILLIPS CP embroidery and black knit surface',
-    label: 'Material / embroidery study',
-    position: 'object-center',
-  },
-  {
-    src: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.webp',
-    gifHref: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif',
-    alt: 'Animated still-derived motion study cycling through the CARLOPHILLIPS Signature Hoodie visualisations',
-    label: 'Still-derived motion loop',
-    position: 'object-center',
-    unoptimized: true,
-  },
-  {
-    src: '/products/signature-hoodie/candidates/moda/model-seated.jpg',
-    alt: 'MODA-assisted seated visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
-    label: 'On-body / seated',
-    fit: 'object-contain',
-    position: 'object-center',
-    disclosure: 'MODA AI preview',
-  },
-  {
-    src: '/products/signature-hoodie/candidates/moda/model-side-profile.jpg',
-    alt: 'MODA-assisted side-profile visualisation of the CARLOPHILLIPS Signature Hoodie on a male model',
-    label: 'On-body / profile',
-    fit: 'object-contain',
-    position: 'object-center',
-    disclosure: 'MODA AI preview',
-  },
-  {
-    src: '/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg',
-    alt: 'MODA-assisted digital back-view hypothesis of the CARLOPHILLIPS Signature Hoodie on a male model',
-    label: 'Digital back-view study',
-    fit: 'object-contain',
-    position: 'object-center',
-    disclosure: 'Unverified back visualisation',
-  },
-  {
-    src: '/products/signature-hoodie/candidates/moda/product-flat-lay.jpg',
-    alt: 'MODA-assisted flat-lay visualisation of the CARLOPHILLIPS Signature Hoodie',
-    label: 'Product-alone / flat lay',
-    fit: 'object-contain',
-    position: 'object-center',
-    disclosure: 'MODA AI preview',
-  },
-];
-
 function EditorialStudy({ environment, handle }) {
   if (environment !== 'preview' || handle !== 'carlophillips-signature-hoodie') return null;
 
@@ -173,7 +109,7 @@ function EditorialStudy({ environment, handle }) {
           </p>
         </div>
       </div>
-      {SIGNATURE_HOODIE_EDITORIAL_STUDY.map((study, index) => (
+      {SIGNATURE_HOODIE_SHOWCASE_MEDIA.map((study, index) => (
         <figure
           key={study.src}
           data-motion-study={study.gifHref ? 'still-derived' : undefined}

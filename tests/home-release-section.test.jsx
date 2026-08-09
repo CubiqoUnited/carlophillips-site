@@ -1,7 +1,11 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import HomeStorefront, { HomeReleaseStage } from '../components/storefront/home-storefront.jsx';
+import HomeStorefront, {
+  buildHomeGalleryMedia,
+  HomeReleaseStage,
+  ProductMediaOverlay,
+} from '../components/storefront/home-storefront.jsx';
 
 const availableSummary = {
   schemaVersion: 'cp.home-catalog-summary.v1',
@@ -22,6 +26,13 @@ const availableSummary = {
       alt: 'Signature Hoodie front candidate',
       label: 'Modelize product portrait · generated candidate · approval pending',
     },
+    media: [{
+      type: 'image',
+      url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+      previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+      alt: 'Signature Hoodie front candidate',
+      label: 'Product front',
+    }],
   },
 };
 
@@ -65,6 +76,9 @@ describe('home release composition', () => {
       primaryProduct: null,
     }} />);
     expect(available).toContain('View the Signature Hoodie');
+    expect(available).toContain('data-media-trigger="signature-hoodie"');
+    expect(available).toContain('aria-haspopup="dialog"');
+    expect(available).toContain('aria-controls="product-media-overlay"');
     expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(available).toContain('At the<br/>edge of life.');
     expect(available).toContain('Discover the Signature Hoodie');
@@ -77,6 +91,7 @@ describe('home release composition', () => {
     expect(unavailable).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(unavailable).not.toContain('/products/');
     expect(unavailable).not.toContain('editorial-02.jpg');
+    expect(unavailable).not.toContain('data-media-trigger="signature-hoodie"');
   });
 
   it('places the brand campaign before the gated Hoodie runway and category rail', () => {
@@ -148,5 +163,63 @@ describe('home release composition', () => {
     expect(html).not.toContain('Signature Series / Runway 001');
     expect(html).not.toContain('aria-current="page"');
     expect(html).toContain('aria-disabled="true"');
+  });
+
+  it('builds a swipe gallery from eligible media without exposing preview studies in production', () => {
+    const localMedia = buildHomeGalleryMedia(availableSummary);
+    const productionMedia = buildHomeGalleryMedia({ ...availableSummary, environment: 'production' });
+
+    expect(localMedia.length).toBeGreaterThan(productionMedia.length);
+    expect(localMedia[0]).toMatchObject({
+      src: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+      disclosure: 'Product view',
+    });
+    expect(localMedia.some(item => item.src.includes('model-front-full.jpg'))).toBe(true);
+    expect(productionMedia).toHaveLength(1);
+    expect(productionMedia[0].src).toContain('editorial-02.jpg');
+  });
+
+  it('deduplicates eligible gallery URLs and emits no gallery for a denied product', () => {
+    const duplicated = {
+      ...availableSummary,
+      primaryProduct: {
+        ...availableSummary.primaryProduct,
+        media: [
+          availableSummary.primaryProduct.media[0],
+          availableSummary.primaryProduct.media[0],
+        ],
+      },
+    };
+    const denied = {
+      ...availableSummary,
+      visibleCount: 0,
+      excludedCount: 1,
+      primaryProduct: null,
+    };
+
+    const gallery = buildHomeGalleryMedia(duplicated);
+    expect(gallery.filter(item => item.src.includes('editorial-02.jpg'))).toHaveLength(1);
+    expect(buildHomeGalleryMedia(denied)).toEqual([]);
+  });
+
+  it('renders an accessible in-page gallery with swipe and directional controls', () => {
+    const media = buildHomeGalleryMedia(availableSummary).slice(0, 2);
+    const openHtml = renderToStaticMarkup(
+      <ProductMediaOverlay media={media} onClose={() => {}} open title="Signature Hoodie" />
+    );
+    const closedHtml = renderToStaticMarkup(
+      <ProductMediaOverlay media={media} onClose={() => {}} open={false} title="Signature Hoodie" />
+    );
+
+    expect(openHtml).toContain('id="product-media-overlay"');
+    expect(openHtml).toContain('role="dialog"');
+    expect(openHtml).toContain('aria-modal="true"');
+    expect(openHtml).toContain('aria-label="Previous product image"');
+    expect(openHtml).toContain('aria-label="Next product image"');
+    expect(openHtml).toContain('aria-label="Close product media viewer"');
+    expect(openHtml).toContain('01 / 02');
+    expect(openHtml).toContain('cp-media-track');
+    expect(openHtml).not.toContain('href="/products/');
+    expect(closedHtml).toBe('');
   });
 });

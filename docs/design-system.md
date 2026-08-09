@@ -17,6 +17,16 @@ The canonical presentation tokens live in `app/globals.css` under the `--cp-*` n
 
 Components should consume a semantic `cp-*` class or a `--cp-*` token before adding a literal value. Literal values remain acceptable for content-specific art direction, media aspect ratios, responsive breakpoints, and isolated layout geometry that is not a reusable design decision.
 
+## Product media viewer
+
+The Signature Hoodie action on the homepage opens a full-screen viewer instead of navigating away. The viewer uses the same canvas, ink, rule, label, motion, gutter, header-height, overlay, and control-size tokens as the rest of the storefront.
+
+- Touch users move through media with native horizontal swipe and scroll snap.
+- Pointer and keyboard users receive previous/next controls; Escape and the close control dismiss the viewer.
+- Opening the viewer locks page scrolling and makes the page behind it inert. Closing returns focus to the opening action.
+- Media position is always shown. Captions remain short, provider-neutral, and truthful about Preview-only visual studies.
+- The viewer never expands product eligibility. Production receives release-eligible media only; Local/Preview studies remain environment-gated and disclosed.
+
 ## Homepage sequence
 
 1. `CARLOPHILLIPS / At the edge of life` runway campaign opener.

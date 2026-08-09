@@ -10,12 +10,14 @@ describe('storefront design system', () => {
       '--cp-color-canvas',
       '--cp-color-ink',
       '--cp-color-rule',
+      '--cp-color-overlay',
       '--cp-font-sans',
       '--cp-content-max',
       '--cp-page-gutter',
       '--cp-header-height',
       '--cp-label-tracking',
       '--cp-duration-standard',
+      '--cp-control-size',
     ]) {
       expect(styles).toContain(token);
     }
@@ -24,6 +26,8 @@ describe('storefront design system', () => {
     expect(home).toContain('cp-display');
     expect(home).toContain('cp-scroll-cue');
     expect(home).toContain('var(--cp-header-height)');
+    expect(home).toContain('cp-media-dialog');
+    expect(styles).toContain('scroll-snap-type: x mandatory');
   });
 
   it('keeps the customer-facing route metadata provider-neutral', () => {

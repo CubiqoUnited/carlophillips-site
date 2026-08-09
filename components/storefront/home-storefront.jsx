@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { ArrowDown, ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowDown, ArrowLeft, ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
+import { SIGNATURE_HOODIE_SHOWCASE_MEDIA } from '../../lib/media/signature-hoodie-showcase.js';
 
 const fallbackSummary = {
   status: 'denied',
@@ -36,6 +37,160 @@ const campaignHero = {
   src: '/campaigns/lofoten-runway-hero.jpg',
   alt: 'CARLOPHILLIPS runway campaign staged against a dramatic coastal mountain landscape',
 };
+
+export function buildHomeGalleryMedia(summary) {
+  const product = summary?.primaryProduct;
+  const signatureVisible = summary?.visibleCount > 0
+    && product?.href === '/products/carlophillips-signature-hoodie';
+  if (!signatureVisible) return [];
+
+  const releaseMedia = (product.media || []).map(item => ({
+    ...item,
+    src: item.url,
+    disclosure: 'Product view',
+  }));
+  const reviewMedia = summary.environment === 'production'
+    ? []
+    : SIGNATURE_HOODIE_SHOWCASE_MEDIA.map(item => ({ ...item, type: 'image' }));
+  const uniqueMedia = new Map();
+  [...releaseMedia, ...reviewMedia].forEach(item => {
+    const source = item.src || item.url;
+    if (source && !uniqueMedia.has(source)) uniqueMedia.set(source, item);
+  });
+  return [...uniqueMedia.values()];
+}
+
+export function ProductMediaOverlay({ media, open, onClose, title }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const dialogRef = useRef(null);
+  const trackRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    setActiveIndex(0);
+    requestAnimationFrame(() => {
+      trackRef.current?.scrollTo({ left: 0 });
+      dialogRef.current?.focus();
+    });
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
+  if (!open || media.length === 0) return null;
+
+  const moveTo = nextIndex => {
+    const index = Math.max(0, Math.min(nextIndex, media.length - 1));
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollTo({ left: index * track.clientWidth, behavior: 'smooth' });
+    setActiveIndex(index);
+  };
+
+  const handleScroll = event => {
+    const track = event.currentTarget;
+    if (!track.clientWidth) return;
+    const index = Math.round(track.scrollLeft / track.clientWidth);
+    setActiveIndex(current => current === index ? current : index);
+  };
+
+  const handleKeyDown = event => {
+    if (event.key === 'Escape') onClose();
+    if (event.key === 'ArrowLeft') moveTo(activeIndex - 1);
+    if (event.key === 'ArrowRight') moveTo(activeIndex + 1);
+  };
+
+  return (
+    <section
+      id="product-media-overlay"
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="product-media-title"
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+      className="cp-media-dialog fixed inset-0 z-[70]"
+      data-product-media-overlay="open"
+    >
+      <header className="cp-media-dialog-header absolute inset-x-0 top-0 z-20 flex h-[var(--cp-header-height)] items-center justify-between px-[var(--cp-page-gutter)]">
+        <div>
+          <p className="cp-eyebrow">Signature Series / Media</p>
+          <h2 id="product-media-title" className="sr-only">{title} media viewer</h2>
+        </div>
+        <div className="flex items-center gap-5">
+          <p className="cp-eyebrow" aria-live="polite">
+            {String(activeIndex + 1).padStart(2, '0')} / {String(media.length).padStart(2, '0')}
+          </p>
+          <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close product media viewer">
+            <X className="h-5 w-5" strokeWidth={1.2} />
+          </button>
+        </div>
+      </header>
+
+      <div
+        ref={trackRef}
+        onScroll={handleScroll}
+        className="cp-media-track scrollbar-hide flex h-full w-full overflow-x-auto"
+        aria-label={`${title} media`}
+      >
+        {media.map((item, index) => {
+          const source = item.src || item.url;
+          const previewSource = item.previewUrl || source;
+          return (
+            <figure key={`${source}-${index}`} className="cp-media-slide relative h-full min-w-full snap-center">
+              {item.type === 'video' ? (
+                <video
+                  controls
+                  preload="metadata"
+                  poster={previewSource}
+                  src={source}
+                  className="h-full w-full object-contain"
+                />
+              ) : (
+                <Image
+                  src={item.type === 'image' ? source : previewSource}
+                  alt={item.alt}
+                  fill
+                  priority={index === 0}
+                  sizes="100vw"
+                  unoptimized={item.unoptimized}
+                  className={`${item.fit || 'object-contain'} ${item.position || 'object-center'} p-0 sm:p-8`}
+                />
+              )}
+              <figcaption className="cp-media-caption absolute inset-x-0 bottom-0 z-10 flex flex-col items-start justify-end gap-2 px-[var(--cp-page-gutter)] py-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+                <span>{item.label}</span>
+                <span className="text-right">{item.disclosure}</span>
+              </figcaption>
+            </figure>
+          );
+        })}
+      </div>
+
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 justify-between px-3 sm:px-8">
+        <button
+          type="button"
+          onClick={() => moveTo(activeIndex - 1)}
+          disabled={activeIndex === 0}
+          className="cp-media-arrow pointer-events-auto"
+          aria-label="Previous product image"
+        >
+          <ArrowLeft className="h-5 w-5" strokeWidth={1.2} />
+        </button>
+        <button
+          type="button"
+          onClick={() => moveTo(activeIndex + 1)}
+          disabled={activeIndex === media.length - 1}
+          className="cp-media-arrow pointer-events-auto"
+          aria-label="Next product image"
+        >
+          <ArrowRight className="h-5 w-5" strokeWidth={1.2} />
+        </button>
+      </div>
+    </section>
+  );
+}
 
 function Navigation({ onMenu }) {
   return (
@@ -133,7 +288,7 @@ function CampaignHero() {
   );
 }
 
-function ProductRunwayHero({ summary }) {
+function ProductRunwayHero({ galleryButtonRef, onOpenGallery, summary }) {
   const heroMedia = summary.primaryProduct?.heroMedia || null;
   const signatureVisible = summary.visibleCount > 0
     && summary.primaryProduct?.href === '/products/carlophillips-signature-hoodie';
@@ -210,13 +365,28 @@ function ProductRunwayHero({ summary }) {
               ? 'Heavyweight black fleece. Quiet signature detail. Built for every day.'
               : 'A considered study in form, material and everyday utility.'}
           </p>
-          <Link
-            href={runwayReady ? summary.primaryProduct.href : '/shop'}
-            className="mt-8 inline-flex items-center gap-4 border-b border-white/45 pb-2 text-[10px] uppercase tracking-[0.3em] text-white transition hover:border-white"
-          >
-            {catalogLabel}
-            <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-          </Link>
+          {runwayReady ? (
+            <button
+              ref={galleryButtonRef}
+              type="button"
+              onClick={onOpenGallery}
+              aria-haspopup="dialog"
+              aria-controls="product-media-overlay"
+              data-media-trigger="signature-hoodie"
+              className="mt-8 inline-flex items-center gap-4 border-b border-white/45 pb-2 text-[10px] uppercase tracking-[0.3em] text-white transition hover:border-white"
+            >
+              {catalogLabel}
+              <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
+            </button>
+          ) : (
+            <Link
+              href="/shop"
+              className="mt-8 inline-flex items-center gap-4 border-b border-white/45 pb-2 text-[10px] uppercase tracking-[0.3em] text-white transition hover:border-white"
+            >
+              {catalogLabel}
+              <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
+            </Link>
+          )}
         </div>
         {runwayReady && (
           <div className="mt-10 flex items-center justify-between border-t border-white/20 pt-4 text-[8px] uppercase tracking-[0.28em] text-white/48">
@@ -351,17 +521,38 @@ function Footer() {
 
 export default function HomeStorefront({ catalogSummary }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const galleryButtonRef = useRef(null);
+  const wasMediaOpenRef = useRef(false);
   const summary = catalogSummary || fallbackSummary;
+  const galleryMedia = useMemo(() => buildHomeGalleryMedia(summary), [summary]);
+
+  useEffect(() => {
+    if (wasMediaOpenRef.current && !mediaOpen) galleryButtonRef.current?.focus();
+    wasMediaOpenRef.current = mediaOpen;
+  }, [mediaOpen]);
 
   return (
     <main id="main-content" className="cp-site min-h-screen selection:bg-white selection:text-black">
-      <Navigation onMenu={() => setMenuOpen(true)} />
-      {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
-      <CampaignHero />
-      <ProductRunwayHero summary={summary} />
-      <CategoryRail summary={summary} />
-      <HomeReleaseStage summary={summary} />
-      <Footer />
+      <div inert={mediaOpen ? true : undefined}>
+        <Navigation onMenu={() => setMenuOpen(true)} />
+        {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
+        <CampaignHero />
+        <ProductRunwayHero
+          galleryButtonRef={galleryButtonRef}
+          onOpenGallery={() => setMediaOpen(true)}
+          summary={summary}
+        />
+        <CategoryRail summary={summary} />
+        <HomeReleaseStage summary={summary} />
+        <Footer />
+      </div>
+      <ProductMediaOverlay
+        media={galleryMedia}
+        onClose={() => setMediaOpen(false)}
+        open={mediaOpen}
+        title={summary.primaryProduct?.title || 'Signature Hoodie'}
+      />
     </main>
   );
 }

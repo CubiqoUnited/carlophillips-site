@@ -1,5 +1,18 @@
 # Delivery Tasks
 
+## Current correction: in-page Signature Hoodie media viewer
+
+- [x] Replace the second-panel Hoodie navigation CTA with an in-page full-screen viewer.
+- [x] Support touch swipe, previous/next controls, keyboard arrows, Escape, close, position count, scroll lock, background inertness, and focus return.
+- [x] Keep the gallery behind the same catalog/release visibility boundary; denied products expose neither a trigger nor a media payload.
+- [x] Keep production limited to eligible release media while Local/Preview may add explicitly disclosed Signature Hoodie visual studies.
+- [x] Minimize the home media contract and exclude raw IDs, arbitrary adapter labels, and provider jargon.
+- [x] Pass focused tests and full `yarn verify` (34 files / 329 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect direct 1440×1000 and 390×844 local panel/gallery evidence with no URL change, errors, overflow, or provider-name copy.
+- [x] Traverse and decode all 11 current gallery frames in a clean browser session.
+- [ ] Deploy this temporary branch to Vercel Preview, repeat desktop/mobile interaction checks, and record the immutable Preview URL.
+- [ ] Product Owner reviews the new Preview and separately approves or rejects merge/Production promotion. Production must remain unchanged meanwhile.
+
 ## Current correction: runway opener and provider-neutral design system
 
 - [x] Keep the approved coastal runway campaign as the complete first viewport.
