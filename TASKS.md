@@ -1,5 +1,19 @@
 # Delivery Tasks
 
+## Current correction: runway opener and provider-neutral design system
+
+- [x] Keep the approved coastal runway campaign as the complete first viewport.
+- [x] Keep the restored Signature Hoodie hero as the complete second viewport.
+- [x] Add a direct, accessible scroll cue from the runway opener to the Hoodie panel.
+- [x] Use factual campaign copy: `CARLOPHILLIPS / At the edge of life` and `Runway 001 / Lofoten`; do not invent a public tour or event.
+- [x] Centralize the active storefront foundation in semantic CARLOPHILLIPS colour, type, spacing, sizing, motion, and interaction tokens.
+- [x] Remove the underlying commerce-provider name from customer-facing copy and metadata while preserving internal integration truth.
+- [x] Keep Hoodies active and the four future categories visibly disabled after the Hoodie hero.
+- [x] Pass focused component/contract tests and full `yarn verify` (34 files / 325 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect direct local and Vercel Preview desktop/mobile landing, Hoodie, category, and PDP evidence with zero errors, broken images, provider-name copy, or overflow.
+- [x] Deploy only the temporary branch to READY Vercel Preview `dpl_5zYviNwnc8WRFjwbECmnW1pPk8DA`.
+- [ ] Product Owner reviews the Preview and explicitly approves or rejects merge to canonical `main` and Production promotion. Production remains on the restored p92-derived artifact until that action.
+
 ## Current bounded launch: two-stage runway landing
 
 - [x] Save the approved reusable showcase and POD pipeline locally as `podpipe`.

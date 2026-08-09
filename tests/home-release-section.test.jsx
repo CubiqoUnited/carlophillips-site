@@ -64,10 +64,12 @@ describe('home release composition', () => {
       excludedCount: 1,
       primaryProduct: null,
     }} />);
-    expect(available).toContain('Preview the collection');
+    expect(available).toContain('View the Signature Hoodie');
     expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.jpg');
     expect(available).toContain('At the<br/>edge of life.');
-    expect(available).toContain('Enter the collection');
+    expect(available).toContain('Discover the Signature Hoodie');
+    expect(available).toContain('Scroll down');
+    expect(available).toContain('Runway 001 / Lofoten');
     expect(available).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
     expect(available).toContain('Private product preview');
     expect(available).not.toContain('Modelize product portrait · generated candidate · approval pending');
@@ -87,6 +89,9 @@ describe('home release composition', () => {
     expect(productIndex).toBeGreaterThan(campaignIndex);
     expect(categoriesIndex).toBeGreaterThan(productIndex);
     expect(html).toContain('href="#signature-runway"');
+    expect(html).toContain('aria-label="Scroll down to discover the Signature Hoodie"');
+    expect(html).toContain('id="signature-runway"');
+    expect(html).toContain('CARLOPHILLIPS / At the edge of life');
     expect(html).not.toContain('No restocks');
     expect(html).not.toContain('Join the list');
   });
@@ -126,6 +131,7 @@ describe('home release composition', () => {
     expect(html).not.toContain('release gate');
     expect(html).not.toContain('Candidates</span>');
     expect(html).not.toContain('Withheld</span>');
+    expect(html.toLowerCase()).not.toContain('shopify');
   });
 
   it('keeps runway product media and active categories behind product visibility eligibility', () => {

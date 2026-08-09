@@ -17,6 +17,12 @@ function titleCase(value = '') {
   return value ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() : '';
 }
 
+function releaseStatusCopy(reason) {
+  if (reason === 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED') return 'Released / purchasing unavailable';
+  if (reason === 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE') return 'Private product review';
+  return 'Product review';
+}
+
 function ProductMedia({ item, featured }) {
   const frameClass = featured ? 'aspect-[5/4] lg:aspect-[16/10]' : 'aspect-[4/5]';
 
@@ -163,7 +169,7 @@ function EditorialStudy({ environment, handle }) {
             A study in weight, form and restraint.
           </h2>
           <p className="mt-10 max-w-2xl text-sm leading-relaxed text-white/48 sm:text-base">
-            Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the Shopify product views above; the back view is a visualisation, not a photographed garment.
+            Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.
           </p>
         </div>
       </div>
@@ -258,7 +264,7 @@ export function CommerceProductUnavailable({ decision }) {
           <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/56">
             Return to the collection to see what is available now.
           </p>
-          <Link href="/shop" data-unavailable-reason={decision.reason} className="mt-10 inline-flex border border-white/20 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/70">
+          <Link href="/shop" data-unavailable-reason="unavailable" className="mt-10 inline-flex border border-white/20 px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-white/70">
             Return to collection
           </Link>
         </div>
@@ -282,11 +288,11 @@ export function CommerceProductDetail({
       return order.indexOf(left.toUpperCase()) - order.indexOf(right.toUpperCase());
     }) || [];
   const facts = [
-    ['Data source', product.sourceLabel],
-    ['Release decision', releaseReason],
-    ['Availability observed', product.availableForSale ? 'Available in source' : 'Unavailable or not observed'],
-    ['Vendor observed', product.vendor],
-    ['Product type', product.productType],
+    ['Source', product.sourceLabel],
+    ['Status', releaseStatusCopy(releaseReason)],
+    ['Availability', product.availableForSale ? 'Available' : 'Unavailable'],
+    ['Maker', product.vendor],
+    ['Category', product.productType],
   ];
 
   return (
@@ -353,7 +359,7 @@ export function CommerceProductDetail({
                 ['Colour', titleCase(product.variantPresentation?.combinations?.[0]?.selectedOptions?.find(option => option.name.toLowerCase() === 'color')?.value || 'Black')],
                 ['Sizes', liveSizes.join(' / ') || 'See selector'],
                 ['Availability', product.availableForSale ? 'Available' : 'Unavailable'],
-                ['Checkout', 'Securely through Shopify'],
+                ['Checkout', 'Secure encrypted checkout'],
               ] : facts).map(([label, value]) => (
                 <div key={label} className="min-h-32 bg-[#050505] p-6">
                   <p className="mb-6 text-[10px] uppercase tracking-[0.24em] text-white/35">{label}</p>

@@ -34,9 +34,9 @@ export default function ShopifyCheckoutForm({ handle, presentation }) {
       </select>
       <input type="hidden" name="quantity" value="1" />
       <button type="submit" disabled={!selected} className="mt-4 flex h-14 w-full items-center justify-center bg-white text-[10px] font-medium uppercase tracking-[0.24em] text-black disabled:opacity-40">
-        Buy with Shopify — {selected ? money(selected.price.amount, selected.price.currency) : ''}
+        Continue to checkout — {selected ? money(selected.price.amount, selected.price.currency) : ''}
       </button>
-      <p className="mt-4 text-xs leading-relaxed text-white/40">Secure checkout and payment are completed on Shopify. No order is placed until you confirm it there.</p>
+      <p className="mt-4 text-xs leading-relaxed text-white/40">Review delivery and payment before confirming your order. No order is placed until you complete checkout.</p>
     </form>
   );
 }

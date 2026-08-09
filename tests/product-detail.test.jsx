@@ -81,7 +81,7 @@ describe('commerce product presentation', () => {
       />
     );
 
-    expect(html).toContain('Shopify Storefront observation');
+    expect(html).toContain('Private product review');
     expect(html).toContain('private release review');
     expect(html).toContain('Reviewed facts, private release review');
     expect(html).toContain('No reviewed product story is available');
@@ -90,7 +90,8 @@ describe('commerce product presentation', () => {
     expect(html).toContain('Color: Black · Size: M');
     expect(html).toContain('Available in source');
     expect(html).toContain('Unavailable in source');
-    expect(html).toContain('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
+    expect(html).toContain('Private product review');
+    expect(html).not.toContain('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
     expect(html).toContain('Purchasing disabled');
     expect(html).toContain('Purchasing remains disabled');
     expect(html).not.toContain('PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED');
@@ -102,6 +103,7 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('Outer story cannot render');
     expect(html).not.toContain('Add to cart');
     expect(html).not.toContain('Checkout');
+    expect(html.toLowerCase()).not.toContain('shopify');
     const controls = html.match(/<button\b[^>]*>/g) || [];
     expect(controls.length).toBe(3);
     expect(controls.every(control => control.includes('disabled=""'))).toBe(true);
@@ -134,7 +136,7 @@ describe('commerce product presentation', () => {
       />
     );
 
-    expect(html).toContain('released product facts');
+    expect(html).toContain('Released product facts');
     expect(html).toContain('Reviewed facts, released product');
     expect(html).toContain('Product facts are released');
     expect(html).toContain('Purchasing remains disabled until the separate cart and checkout gates are proven');
@@ -143,7 +145,7 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('Outer pending approval story');
   });
 
-  it('renders an active Shopify checkout form only for an eligible launch', () => {
+  it('renders a brand-neutral checkout form only for an eligible launch', () => {
     const product = toProductViewModel({
       source: 'shopify',
       environment: 'production',
@@ -151,7 +153,7 @@ describe('commerce product presentation', () => {
       reason: 'SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED',
       product: {
         id: 'hoodie', handle: 'approved-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
-        description: 'Current Shopify description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
+        description: 'Current product description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
         variantPresentation, media: [],
       },
     });
@@ -160,12 +162,13 @@ describe('commerce product presentation', () => {
       cartActivation={{ status: 'eligible', cartAllowed: true, reason: 'CUSTOMER_CART_ELIGIBLE' }}
       product={product}
     />);
-    expect(html).toContain('Buy with Shopify');
+    expect(html).toContain('Continue to checkout');
     expect(html).toContain('action="/api/checkout"');
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('Made to be lived in.');
-    expect(html).toContain('Securely through Shopify');
+    expect(html).toContain('Secure encrypted checkout');
     expect(html).not.toContain('Shopify Storefront — live product');
+    expect(html.toLowerCase()).not.toContain('shopify');
     expect(html).not.toContain('Purchasing disabled');
     expect(html).not.toContain('release state unavailable');
     expect(html).not.toContain('Cart gate: CUSTOMER_CART_ELIGIBLE');
@@ -176,7 +179,8 @@ describe('commerce product presentation', () => {
     const html = renderToStaticMarkup(<CommerceProductUnavailable decision={{ reason: 'SHOPIFY_REQUEST_FAILED' }} />);
     expect(html).toContain('This piece is currently unavailable');
     expect(html).toContain('Return to the collection');
-    expect(html).toContain('data-unavailable-reason="SHOPIFY_REQUEST_FAILED"');
+    expect(html).toContain('data-unavailable-reason="unavailable"');
+    expect(html).not.toContain('SHOPIFY_REQUEST_FAILED');
     expect(html).not.toContain('Reason:');
   });
 

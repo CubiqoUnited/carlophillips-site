@@ -30,10 +30,11 @@ describe('catalog presentation', () => {
     expect(html).toContain('Candidate records</dt><dd class="mt-3 text-white/70">2');
     expect(html).toContain('Visible here</dt><dd class="mt-3 text-white/70">1');
     expect(html).toContain('Withheld</dt><dd class="mt-3 text-white/70">1');
-    expect(html).toContain('Local fixture review — not Shopify live data');
+    expect(html).toContain('Local presentation fixture');
     expect(html).toContain('Preview product');
     expect(html).toContain('cannot be purchased');
     expect(html).not.toContain('Add to bag');
+    expect(html.toLowerCase()).not.toContain('shopify');
   });
 
   it('renders an empty state without denied product payloads', () => {
@@ -78,5 +79,7 @@ describe('catalog presentation', () => {
     expect(html).not.toContain('Candidate records');
     expect(html).not.toContain('release candidate');
     expect(html).not.toContain('Shopify checkout available');
+    expect(html.toLowerCase()).not.toContain('shopify');
+    expect(html).toContain('data-commerce-source="store"');
   });
 });

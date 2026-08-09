@@ -19,23 +19,23 @@ function environmentCopy(decision) {
   if (decision.source === 'fixture') {
     return {
       eyebrow: 'Local non-commerce fixture review',
-      body: 'These cards are explicitly local layout fixtures. They are not live Shopify catalog data and cannot be purchased.',
+      body: 'These cards are explicitly local layout fixtures. They are not live store data and cannot be purchased.',
     };
   }
   if (decision.environment === 'preview') {
     return {
       eyebrow: decision.commerceAllowed ? 'Private live-commerce staging' : 'Private release review',
       body: decision.commerceAllowed
-        ? 'The approved Hoodie is connected to current Shopify facts and checkout for private staging verification.'
-        : 'Only Shopify-observed products with complete Staged-or-later release evidence can appear in this private Preview catalog.',
+        ? 'The approved Hoodie is connected to current product facts and checkout for private staging verification.'
+        : 'Only observed products with complete review evidence can appear in this private Preview catalog.',
     };
   }
   if (decision.environment === 'production') {
     return {
-      eyebrow: decision.commerceAllowed ? 'Live Shopify catalog' : 'Released catalog',
+      eyebrow: decision.commerceAllowed ? 'Live collection' : 'Released catalog',
       body: decision.commerceAllowed
-        ? 'Current Shopify product facts, availability, pricing, and secure checkout are active for the approved product below.'
-        : 'Only Shopify-observed products with complete Released evidence can appear. Purchasing remains disabled until cart and checkout are proven.',
+        ? 'Current product facts, availability, pricing, and secure checkout are active for the approved product below.'
+        : 'Only products with complete Released evidence can appear. Purchasing remains disabled until cart and checkout are proven.',
     };
   }
   return {
@@ -67,7 +67,7 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
     <main
       id="main-content"
       data-catalog-status={decision.status}
-      data-commerce-source={decision.source}
+      data-commerce-source={decision.source === 'shopify' ? 'store' : decision.source}
       className="min-h-screen bg-[#020202] text-white"
     >
       <CatalogHeader pageLabel={pageLabel} />
@@ -79,7 +79,7 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
               {liveCollection ? 'The Collection' : available ? countLabel(decision.visibleCount, 'preview piece') : 'Coming soon.'}
             </h1>
             <p className="mt-8 max-w-3xl text-base leading-relaxed text-white/52 sm:text-lg">
-              {liveCollection ? 'One essential. Considered in every detail and available through secure Shopify checkout.' : copy.body}
+              {liveCollection ? 'One essential. Considered in every detail and available through secure checkout.' : copy.body}
             </p>
           </div>
           {!liveCollection && <dl className="grid grid-cols-2 gap-px bg-white/10 text-sm">
@@ -87,7 +87,7 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
               ['Candidate records', decision.candidateCount],
               ['Visible here', decision.visibleCount],
               ['Withheld', decision.excludedCount],
-              ['Purchasing', decision.commerceAllowed ? 'Shopify checkout' : 'Disabled'],
+              ['Purchasing', decision.commerceAllowed ? 'Secure checkout' : 'Disabled'],
             ].map(([label, value]) => (
               <div key={label} className="bg-black p-5 sm:p-7">
                 <dt className="text-[9px] uppercase tracking-[0.22em] text-white/30">{label}</dt>
@@ -117,7 +117,7 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
                   )}
                 </div>
                 <div className="flex flex-1 flex-col justify-center border-t border-white/10 p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-12">
-                  <p className="text-[9px] uppercase tracking-[0.24em] text-white/35">{liveCollection ? 'Edition 001' : product.sourceLabel}</p>
+                  <p className="text-[9px] uppercase tracking-[0.24em] text-white/35">{liveCollection ? 'Edition 001' : decision.source === 'fixture' ? 'Local presentation fixture' : 'Product review'}</p>
                   <h2 className="mt-5 text-3xl font-light tracking-[-0.035em] sm:text-5xl">{product.title}</h2>
                   <p className="mt-5 text-base text-white/58">{formatPrice(product)}</p>
                   <Link

@@ -3,6 +3,29 @@
 @tailwind utilities;
 
 :root {
+  /* CARLOPHILLIPS foundation tokens */
+  --cp-color-canvas: #000000;
+  --cp-color-panel: #050505;
+  --cp-color-panel-raised: #171714;
+  --cp-color-paper: #f1f0ec;
+  --cp-color-ink: #ffffff;
+  --cp-color-copy: rgba(255, 255, 255, 0.66);
+  --cp-color-muted: rgba(255, 255, 255, 0.48);
+  --cp-color-subtle: rgba(255, 255, 255, 0.28);
+  --cp-color-rule: rgba(255, 255, 255, 0.1);
+  --cp-color-rule-strong: rgba(255, 255, 255, 0.25);
+  --cp-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --cp-content-max: 112.5rem;
+  --cp-page-gutter: clamp(1.25rem, 3.35vw, 3rem);
+  --cp-header-height: 4rem;
+  --cp-viewport-height: 100svh;
+  --cp-panel-bottom: clamp(2.5rem, 4vw, 3.5rem);
+  --cp-label-size: 0.5625rem;
+  --cp-label-tracking: 0.3em;
+  --cp-display-tracking: -0.065em;
+  --cp-duration-standard: 240ms;
+  --cp-ease-standard: cubic-bezier(0.2, 0.65, 0.3, 1);
+
   --background: 0 0% 0%;
   --foreground: 0 0% 100%;
   --card: 0 0% 5%;
@@ -39,13 +62,13 @@
   
   body {
     @apply bg-black text-white antialiased;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--cp-font-sans);
     font-weight: 300;
     letter-spacing: 0.01em;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--cp-font-sans);
     font-weight: 300;
     letter-spacing: -0.02em;
   }
@@ -56,6 +79,101 @@
 }
 
 @layer components {
+  .cp-site {
+    background: var(--cp-color-canvas);
+    color: var(--cp-color-ink);
+  }
+
+  .cp-page-shell {
+    width: min(100%, var(--cp-content-max));
+    margin-inline: auto;
+    padding-inline: var(--cp-page-gutter);
+  }
+
+  .cp-site-header {
+    border-bottom: 1px solid var(--cp-color-rule);
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .cp-wordmark,
+  .cp-nav-action,
+  .cp-eyebrow,
+  .cp-scroll-cue {
+    text-transform: uppercase;
+  }
+
+  .cp-wordmark {
+    color: var(--cp-color-ink);
+    font-size: 0.75rem;
+    letter-spacing: 0.38em;
+  }
+
+  .cp-nav-action {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.625rem;
+    letter-spacing: 0.28em;
+    transition: color var(--cp-duration-standard) var(--cp-ease-standard);
+  }
+
+  .cp-nav-action:hover {
+    color: var(--cp-color-ink);
+  }
+
+  .cp-viewport-panel {
+    min-height: var(--cp-viewport-height);
+    border-bottom: 1px solid var(--cp-color-rule);
+    background: var(--cp-color-canvas);
+  }
+
+  .cp-eyebrow {
+    color: var(--cp-color-copy);
+    font-size: var(--cp-label-size);
+    letter-spacing: var(--cp-label-tracking);
+  }
+
+  .cp-display {
+    font-size: clamp(4rem, 16vw, 8.5rem);
+    font-weight: 300;
+    line-height: 0.82;
+    letter-spacing: var(--cp-display-tracking);
+  }
+
+  .cp-campaign-image {
+    object-position: 68% center;
+  }
+
+  .cp-campaign-scrim {
+    background:
+      linear-gradient(0deg, rgba(0, 0, 0, 0.68), transparent 48%, rgba(0, 0, 0, 0.28)),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.08) 54%, rgba(0, 0, 0, 0.2));
+  }
+
+  .cp-product-scrim {
+    background:
+      linear-gradient(0deg, rgba(0, 0, 0, 0.8), transparent 48%, rgba(0, 0, 0, 0.35)),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.08) 54%, rgba(0, 0, 0, 0.34));
+  }
+
+  .cp-scroll-cue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--cp-color-rule-strong);
+    padding-top: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.5rem;
+    letter-spacing: 0.28em;
+    transition: color var(--cp-duration-standard) var(--cp-ease-standard);
+  }
+
+  .cp-scroll-cue:hover {
+    color: var(--cp-color-ink);
+  }
+
+  .cp-scroll-arrow {
+    animation: cp-scroll-prompt 1.8s var(--cp-ease-standard) infinite;
+  }
+
   .storefront-panel {
     scroll-snap-align: start;
     scroll-snap-stop: normal;
@@ -94,6 +212,16 @@
 
 }
 
+@keyframes cp-scroll-prompt {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(0.35rem);
+  }
+}
+
 @keyframes runway-frame {
   0%, 30% {
     opacity: 1;
@@ -112,6 +240,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .cp-scroll-arrow {
+    animation: none;
+  }
+
   .runway-frame {
     animation: none;
     opacity: 0;
@@ -120,6 +252,22 @@
 
   .runway-frame-primary {
     opacity: 1;
+  }
+}
+
+@media (min-width: 640px) {
+  .cp-campaign-image {
+    object-position: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --cp-header-height: 5rem;
+  }
+
+  .cp-display {
+    font-size: min(7.4vw, 8.5rem);
   }
 }
 

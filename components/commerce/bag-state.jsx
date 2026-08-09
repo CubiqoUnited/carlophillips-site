@@ -5,22 +5,22 @@ const copyByStatus = {
   local_preview: {
     eyebrow: 'Local non-commerce preview',
     title: 'The bag is intentionally inactive.',
-    body: 'This local surface proves layout and failure policy only. No Shopify cart, checkout, payment, or order exists.',
+    body: 'This local surface proves layout and failure policy only. No live cart, checkout, payment, or order exists.',
   },
   unavailable: {
     eyebrow: 'Commerce unavailable',
     title: 'The bag cannot be opened safely.',
-    body: 'The required Shopify cart capability has not been verified for this environment. No local cart has been substituted.',
+    body: 'The required cart capability has not been verified for this environment. No local cart has been substituted.',
   },
   empty: {
-    eyebrow: 'Shopify cart',
+    eyebrow: 'Your bag',
     title: 'Your bag is empty.',
     body: 'The commerce source is available, but no approved product has been added.',
   },
   ready: {
-    eyebrow: 'Shopify cart',
+    eyebrow: 'Your bag',
     title: 'Bag review',
-    body: 'Cart lines are available from Shopify. Checkout remains disabled until the release and checkout gates pass.',
+    body: 'Cart lines are available. Checkout remains disabled until the release and checkout gates pass.',
   },
 };
 
@@ -31,7 +31,7 @@ export function CommerceBagState({ decision }) {
     <main
       id="main-content"
       data-bag-status={decision.status}
-      data-commerce-source={decision.source}
+      data-commerce-source={decision.source === 'shopify' ? 'store' : decision.source}
       className="min-h-screen bg-[#020202] text-white"
     >
       <header className="border-b border-white/10 px-5 py-6 sm:px-8 lg:px-12">
@@ -55,7 +55,7 @@ export function CommerceBagState({ decision }) {
               </div>
               <div>
                 <dt className="text-[10px] uppercase tracking-[0.24em] text-white/30">Source</dt>
-                <dd className="mt-2 text-white/65">{decision.source}</dd>
+                <dd className="mt-2 text-white/65">{decision.source === 'fixture' ? 'Local preview' : decision.source === 'shopify' ? 'Store' : 'Unavailable'}</dd>
               </div>
               <div>
                 <dt className="text-[10px] uppercase tracking-[0.24em] text-white/30">Checkout</dt>

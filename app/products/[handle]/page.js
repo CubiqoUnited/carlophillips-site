@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Signature Hoodie | CARLOPHILLIPS',
-  description: 'Shop the CARLOPHILLIPS Signature Hoodie through secure Shopify checkout.',
+  description: 'Shop the CARLOPHILLIPS Signature Hoodie through secure checkout.',
 };
 
 export default async function ProductPage({ params }) {

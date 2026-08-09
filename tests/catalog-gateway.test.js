@@ -67,7 +67,7 @@ describe('catalog gateway', () => {
     expect(decision.products[0]).toMatchObject({
       handle: 'test-product',
       source: 'fixture',
-      sourceLabel: 'Local fixture review — not Shopify live data',
+      sourceLabel: 'Local presentation fixture — not live store data',
     });
   });
 

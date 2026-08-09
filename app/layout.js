@@ -4,7 +4,7 @@ import './globals.css';
 const siteConfig = {
   name: 'CARLOPHILLIPS',
   tagline: 'Signature Series',
-  description: 'The CARLOPHILLIPS Signature Hoodie. Heavyweight black fleece, quiet detail, and secure Shopify checkout.',
+  description: 'The CARLOPHILLIPS Signature Hoodie. Heavyweight black fleece, quiet detail, and secure checkout.',
   url: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.carlophillips.com',
   locale: 'en_US',
   type: 'website',
@@ -141,12 +141,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* Preconnect to product media */}
-        <link rel="preconnect" href="https://cdn.shopify.com" />
-        
-        {/* DNS Prefetch for performance */}
-        <link rel="dns-prefetch" href="https://cdn.shopify.com" />
-        
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
 
 const fallbackSummary = {
   status: 'denied',
@@ -39,23 +39,23 @@ const campaignHero = {
 
 function Navigation({ onMenu }) {
   return (
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-md">
-        <div className="mx-auto grid h-16 max-w-[1800px] grid-cols-3 items-center px-5 sm:px-8 lg:h-20 lg:px-12">
+      <header className="cp-site-header fixed inset-x-0 top-0 z-40 backdrop-blur-md">
+        <div className="cp-page-shell grid h-[var(--cp-header-height)] grid-cols-3 items-center">
           <button
             type="button"
             onClick={onMenu}
-            className="inline-flex w-fit items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/70 transition hover:text-white"
+            className="cp-nav-action inline-flex w-fit items-center gap-3"
             aria-label="Open navigation"
           >
             <Menu className="h-4 w-4" strokeWidth={1.3} />
             <span className="hidden sm:inline">Menu</span>
           </button>
-          <Link href="/" className="justify-self-center text-xs uppercase tracking-[0.38em] text-white sm:text-sm">
+          <Link href="/" className="cp-wordmark justify-self-center">
             CARLOPHILLIPS
           </Link>
           <Link
             href="/bag"
-            className="inline-flex items-center gap-3 justify-self-end text-[10px] uppercase tracking-[0.28em] text-white/70 transition hover:text-white"
+            className="cp-nav-action inline-flex items-center gap-3 justify-self-end"
           >
             <span className="hidden sm:inline">Bag</span>
             <ShoppingBag className="h-4 w-4" strokeWidth={1.3} />
@@ -92,7 +92,7 @@ function MenuOverlay({ onClose }) {
 function CampaignHero() {
   return (
     <section
-      className="storefront-panel relative min-h-screen min-h-[100svh] overflow-hidden border-b border-white/10 bg-black"
+      className="storefront-panel cp-viewport-panel relative overflow-hidden"
       aria-label="CARLOPHILLIPS runway campaign"
     >
       <Image
@@ -101,29 +101,32 @@ function CampaignHero() {
         fill
         priority
         sizes="100vw"
-        className="object-cover object-[68%_center] sm:object-center"
+        className="cp-campaign-image object-cover"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.74)_0%,rgba(0,0,0,0.08)_54%,rgba(0,0,0,0.2)_100%)]" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/68 via-transparent to-black/28" aria-hidden="true" />
+      <div className="cp-campaign-scrim absolute inset-0" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto flex min-h-screen min-h-[100svh] max-w-[1800px] flex-col justify-end px-5 pb-10 pt-28 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
+      <div className="cp-page-shell relative z-10 flex min-h-[var(--cp-viewport-height)] flex-col justify-end pb-[var(--cp-panel-bottom)] pt-[calc(var(--cp-header-height)+3rem)]">
         <div className="max-w-4xl">
-          <p className="mb-5 text-[9px] uppercase tracking-[0.34em] text-white/68">
-            CARLOPHILLIPS / Signature Series
+          <p className="cp-eyebrow mb-5">
+            CARLOPHILLIPS / At the edge of life
           </p>
-          <h1 className="max-w-5xl text-[16vw] font-light leading-[0.82] tracking-[-0.065em] sm:text-[11vw] lg:text-[7.4vw]">
+          <h1 className="cp-display max-w-5xl">
             At the<br />edge of life.
           </h1>
-          <p className="mt-7 text-[9px] uppercase tracking-[0.3em] text-white/62">
-            Edition 001
+          <p className="cp-eyebrow mt-7">
+            Runway 001 / Lofoten
           </p>
         </div>
         <a
           href="#signature-runway"
-          className="mt-10 flex items-center justify-between border-t border-white/25 pt-4 text-[8px] uppercase tracking-[0.28em] text-white/58 transition hover:text-white"
+          className="cp-scroll-cue mt-10"
+          aria-label="Scroll down to discover the Signature Hoodie"
         >
-          <span>Enter the collection</span>
-          <span aria-hidden="true">Scroll</span>
+          <span>Discover the Signature Hoodie</span>
+          <span className="inline-flex items-center gap-3" aria-hidden="true">
+            Scroll down
+            <ArrowDown className="cp-scroll-arrow h-4 w-4" strokeWidth={1.2} />
+          </span>
         </a>
       </div>
     </section>
@@ -136,17 +139,17 @@ function ProductRunwayHero({ summary }) {
     && summary.primaryProduct?.href === '/products/carlophillips-signature-hoodie';
   const runwayReady = signatureVisible
     && (summary.commerceAllowed || summary.environment !== 'production');
-  const catalogLabel = summary.visibleCount > 0
-    ? summary.commerceAllowed ? 'View the Signature Hoodie' : 'Preview the collection'
+  const catalogLabel = signatureVisible
+    ? 'View the Signature Hoodie'
     : 'Explore the collection';
 
   return (
     <section
       id="signature-runway"
-      className="storefront-panel relative min-h-screen min-h-[100svh] scroll-mt-16 overflow-hidden border-b border-white/10 bg-black lg:scroll-mt-20"
+      className="storefront-panel cp-viewport-panel relative scroll-mt-[var(--cp-header-height)] overflow-hidden"
       aria-label="Signature Hoodie runway"
     >
-      <figure className="absolute inset-0 overflow-hidden bg-[#050505]">
+      <figure className="absolute inset-0 overflow-hidden bg-[var(--cp-color-panel)]">
         {runwayReady ? (
           <>
             <Image
@@ -186,8 +189,7 @@ function ProductRunwayHero({ summary }) {
               className="object-contain object-center opacity-75"
             />
         )}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.74)_0%,rgba(0,0,0,0.08)_54%,rgba(0,0,0,0.34)_100%)]" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/35" aria-hidden="true" />
+        <div className="cp-product-scrim absolute inset-0" aria-hidden="true" />
         {!summary.commerceAllowed && (
           <figcaption className="absolute bottom-5 right-5 bg-black/82 px-3 py-2 text-[8px] uppercase tracking-[0.24em] text-white/58">
             {runwayReady ? 'Private product preview' : heroMedia ? heroMedia.label : 'Collection preview'}
@@ -195,12 +197,12 @@ function ProductRunwayHero({ summary }) {
         )}
       </figure>
 
-      <div className="relative z-10 mx-auto flex min-h-screen min-h-[100svh] max-w-[1800px] flex-col justify-end px-5 pb-10 pt-28 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
+      <div className="cp-page-shell relative z-10 flex min-h-[var(--cp-viewport-height)] flex-col justify-end pb-[var(--cp-panel-bottom)] pt-[calc(var(--cp-header-height)+3rem)]">
         <div className="max-w-4xl">
-          <p className="mb-5 text-[9px] uppercase tracking-[0.34em] text-white/58">
+          <p className="cp-eyebrow mb-5">
             {runwayReady ? 'Signature Series / Runway 001' : 'CARLOPHILLIPS / 001'}
           </p>
-          <h2 className="text-[16vw] font-light uppercase leading-[0.82] tracking-[-0.065em] sm:text-[11vw] lg:text-[7.4vw]">
+          <h2 className="cp-display uppercase">
             {runwayReady ? <>Signature<br />Hoodie</> : <>Form.<br />Function.</>}
           </h2>
           <p className="mt-7 max-w-md text-sm leading-relaxed text-white/66 sm:text-base">
@@ -235,7 +237,7 @@ function CategoryRail({ summary }) {
 
   return (
     <nav className="sticky top-16 z-30 overflow-hidden border-b border-white/10 bg-black/95 backdrop-blur-md lg:top-20" aria-label="Product categories">
-      <div className="scrollbar-hide mx-auto flex h-14 w-full max-w-[1800px] items-center gap-8 overflow-x-auto px-5 sm:px-8 lg:h-16 lg:px-12">
+      <div className="scrollbar-hide cp-page-shell flex h-14 items-center gap-8 overflow-x-auto lg:h-16">
         {activeProduct ? (
           <Link
             href={activeProduct.href}
@@ -352,7 +354,7 @@ export default function HomeStorefront({ catalogSummary }) {
   const summary = catalogSummary || fallbackSummary;
 
   return (
-    <main id="main-content" className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
+    <main id="main-content" className="cp-site min-h-screen selection:bg-white selection:text-black">
       <Navigation onMenu={() => setMenuOpen(true)} />
       {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
       <CampaignHero />

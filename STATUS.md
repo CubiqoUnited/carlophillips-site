@@ -1,8 +1,19 @@
 # Current Status
 
 Updated: 2026-08-08
-Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
+Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Runway wording and token-led design correction — 2026-08-08
+
+- The homepage now opens on the supplied coastal runway campaign with the factual brand system `CARLOPHILLIPS / At the edge of life` and `Runway 001 / Lofoten`.
+- A visible `Discover the Signature Hoodie / Scroll down` anchor and animated down arrow land directly on the preserved Signature Hoodie hero, which is the second full-viewport panel. The category rail follows with Hoodies active and Shirts, Outerwear, Bottoms, and Accessories disabled.
+- The storefront design foundation is centralized under semantic `--cp-*` tokens and `cp-*` component classes for colour, type, gutters, content width, navigation/panel dimensions, label/display typography, motion, and focus behavior. The maintained contract is recorded in `docs/design-system.md`.
+- Customer-facing headings, body copy, status labels, checkout calls to action, and route metadata no longer name the underlying commerce provider. Internal server integrations and evidence retain precise provider naming.
+- Full `yarn verify` passes: zero-warning lint, 34 test files / 325 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Direct local and Vercel Preview checks at 1440×1000 and 390×844 prove HTTP 200 home/PDP, campaign → Hoodie → category ordering, the scroll target, one active plus four disabled categories, zero visible provider-name matches, zero broken images, zero runtime overlays/console errors, and no horizontal overflow.
+- Vercel Preview `dpl_5zYviNwnc8WRFjwbECmnW1pPk8DA` is READY at `https://carlophillips-site-l04jfxxzx-adityas-projects-261b17a9.vercel.app`. Production remains unchanged on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`; no domain, production deployment, merge, Shopify data, order, app, or billing state changed.
+- Recovered local design exports remain recoverably isolated and ignored at `chat-images/`, `tmp/`, and `tmp_make_chat_pdf.py`; they are not included in this correction or Vercel application source.
 
 ## Two-stage runway landing correction — 2026-08-08
 
