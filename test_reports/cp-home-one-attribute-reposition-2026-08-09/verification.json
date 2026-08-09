@@ -1,0 +1,40 @@
+{
+  "date": "2026-08-09",
+  "method": "headless background Chrome via Playwright",
+  "url": "http://127.0.0.1:3000/#signature-runway",
+  "results": [
+    {
+      "name": "compact",
+      "viewport": { "width": 584, "height": 486 },
+      "copyBox": { "x": 20, "y": 128.09375, "width": 224, "height": 307.046875 },
+      "factsBox": { "x": 20, "y": 328.375, "width": 224, "height": 106.765625 },
+      "mediaButtonBox": { "x": 324, "y": 144.09375, "width": 240, "height": 60.1875 },
+      "attributes": ["ColorBlack", "MaterialStructured fleece", "FeelHeavyweight, soft interior"],
+      "exactSizeTagCount": 0,
+      "errorOverlayCount": 0,
+      "consoleErrors": []
+    },
+    {
+      "name": "mobile",
+      "viewport": { "width": 390, "height": 844 },
+      "copyBox": { "x": 20, "y": 272, "width": 224, "height": 307.046875 },
+      "factsBox": { "x": 20, "y": 472.28125, "width": 224, "height": 106.765625 },
+      "mediaButtonBox": { "x": 130, "y": 144, "width": 240, "height": 60.1875 },
+      "attributes": ["ColorBlack", "MaterialStructured fleece", "FeelHeavyweight, soft interior"],
+      "exactSizeTagCount": 0,
+      "errorOverlayCount": 0,
+      "consoleErrors": []
+    },
+    {
+      "name": "desktop",
+      "viewport": { "width": 1440, "height": 1000 },
+      "copyBox": { "x": 48, "y": 160, "width": 432, "height": 296.6875 },
+      "factsBox": { "x": 48, "y": 387.90625, "width": 432, "height": 68.78125 },
+      "mediaButtonBox": { "x": 1152, "y": 176, "width": 240, "height": 60.1875 },
+      "attributes": ["ColorBlack", "MaterialStructured fleece", "FeelHeavyweight, soft interior"],
+      "exactSizeTagCount": 0,
+      "errorOverlayCount": 0,
+      "consoleErrors": []
+    }
+  ]
+}

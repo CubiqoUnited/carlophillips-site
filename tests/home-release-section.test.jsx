@@ -114,10 +114,12 @@ describe('home release composition', () => {
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
     expect(html).not.toContain('Built as a premium core layer');
-    expect(html).toContain('>Black</li>');
-    expect(html).toContain('>XS–5XL</li>');
-    expect(html).toContain('>Heavyweight fleece</li>');
-    expect(html).toContain('>CP embroidery</li>');
+    expect(html).toContain('aria-label="Product attributes"');
+    expect(html).toContain('>Color</span><span class="cp-product-fact-value">Black</span>');
+    expect(html).toContain('>Material</span><span class="cp-product-fact-value">Structured fleece</span>');
+    expect(html).toContain('>Feel</span><span class="cp-product-fact-value">Heavyweight, soft interior</span>');
+    expect(html).not.toContain('>XS–5XL</span>');
+    expect(html).toContain('cp-product-layout');
     expect(html).toContain('lucide-expand');
     expect(html).not.toContain('lucide-arrow-right h-4 w-4');
     expect(html).not.toContain('Available now / Black / XS–5XL');

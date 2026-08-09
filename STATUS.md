@@ -4,6 +4,15 @@ Updated: 2026-08-09
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## `ONE` upper hierarchy and product-attribute correction — 2026-08-09
+
+- The second homepage scene now anchors the `Signature Series / 001` and `ONE` copy group in the upper-left visual zone at widths of 520px and above. At 584×486 the group begins 40px higher than the prior Preview; at 390×844 it retains a larger safe offset below the upper-right media control.
+- The former size and generic feature chips are replaced by three explicit label/value attributes: `Color / Black`, `Material / Structured fleece`, and `Feel / Heavyweight, soft interior`. The homepage no longer presents `XS–5XL` as a visual-material attribute. Product variants and the PDP remain unchanged.
+- The values use only facts already present in the reviewed product description. No unverified fiber percentage, provider claim, size change, product identity change, media change, or commerce change was introduced.
+- Focused component/design-system checks pass. Full `yarn verify` passes with zero-warning lint, 35 test files / 333 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Headless local Chrome checks at exact 584×486, 390×844, and 1440×1000 show the upper hierarchy, all three attributes, no size chip, no horizontal overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-one-attribute-reposition-2026-08-09/`.
+- A replacement Vercel Preview is pending from the tested temporary-branch commit. Production remains unchanged; no domain, Production deployment, commerce/provider data, order, billing, merge, push, or remote Git action has occurred in this correction.
+
 ## Homepage `ONE` presentation and inset media viewer — 2026-08-09
 
 - The landing now uses the exact new Product Owner-supplied 1536×1024 runway PNG, preserved at `public/campaigns/lofoten-runway-hero.png` with SHA-256 `2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338`. The responsive left-aligned `At the edge of life` campaign composition remains live HTML over the image.

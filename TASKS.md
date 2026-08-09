@@ -1,5 +1,17 @@
 # Delivery Tasks
 
+## Current correction: `ONE` upper hierarchy and product attributes
+
+- [x] Move the `Signature Series / 001` and `ONE` group visibly upward at the Product Owner's 584×486 review width and on desktop.
+- [x] Preserve a phone-safe offset below the upper-right media control at 390×844.
+- [x] Replace the size/generic chips with `Color / Black`, `Material / Structured fleece`, and `Feel / Heavyweight, soft interior`.
+- [x] Keep the Signature Hoodie product, variants, PDP, media viewer, and commerce boundaries unchanged.
+- [x] Add deterministic component/design-system coverage for the responsive layout and exact attribute contract.
+- [x] Pass focused tests and full `yarn verify` (35 files / 333 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect exact 584×486, 390×844, and 1440×1000 local evidence with no browser/framework errors.
+- [ ] Commit the tested candidate, deploy a replacement temporary-branch Preview, repeat direct browser checks, and prove Production remains unchanged.
+- [ ] Product Owner reviews the replacement Preview and separately approves or rejects merge/Production promotion.
+
 ## Current correction: `ONE` product scene and inset media widget
 
 - [x] Replace the landing asset with the exact Product Owner-supplied 1536×1024 runway PNG and bind its SHA-256 in a deterministic test.

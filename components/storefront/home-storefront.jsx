@@ -41,10 +41,9 @@ const campaignHero = {
 const signatureHomepagePresentation = {
   displayName: 'ONE',
   facts: [
-    'Black',
-    'XS–5XL',
-    'Heavyweight fleece',
-    'CP embroidery',
+    { label: 'Color', value: 'Black' },
+    { label: 'Material', value: 'Structured fleece' },
+    { label: 'Feel', value: 'Heavyweight, soft interior' },
   ],
 };
 
@@ -407,7 +406,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
         </Link>
       )}
 
-      <div className="cp-page-shell relative z-10 flex min-h-[var(--cp-viewport-height)] flex-col justify-end pb-[var(--cp-panel-bottom)] pt-[calc(var(--cp-header-height)+3rem)]">
+      <div className="cp-product-layout cp-page-shell relative z-10 flex min-h-[var(--cp-viewport-height)] flex-col">
         <div className="cp-product-copy max-w-2xl">
           <p className="cp-eyebrow mb-5">
             {runwayReady ? 'Signature Series / 001' : 'CARLOPHILLIPS / 001'}
@@ -419,8 +418,13 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
             {runwayReady ? productDescription : 'A considered study in form, material and everyday utility.'}
           </p>
           {runwayReady && (
-            <ul className="cp-product-facts mt-6" aria-label="Product highlights">
-              {signatureHomepagePresentation.facts.map(fact => <li key={fact}>{fact}</li>)}
+            <ul className="cp-product-facts mt-6" aria-label="Product attributes">
+              {signatureHomepagePresentation.facts.map(fact => (
+                <li key={fact.label}>
+                  <span className="cp-product-fact-label">{fact.label}</span>
+                  <span className="cp-product-fact-value">{fact.value}</span>
+                </li>
+              ))}
             </ul>
           )}
         </div>

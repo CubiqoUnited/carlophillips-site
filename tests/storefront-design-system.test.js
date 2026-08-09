@@ -32,6 +32,9 @@ describe('storefront design system', () => {
     expect(home).toContain('cp-scroll-cue-control');
     expect(home).toContain('cp-product-title');
     expect(home).toContain('cp-product-review');
+    expect(home).toContain('cp-product-layout');
+    expect(home).toContain('cp-product-fact-label');
+    expect(home).toContain('cp-product-fact-value');
     expect(home).toContain('cp-product-media-button');
     expect(home).toContain('cp-product-media-button-corner');
     expect(home).toContain('cp-media-jump');
@@ -40,6 +43,9 @@ describe('storefront design system', () => {
     expect(home).toContain('cp-media-panel');
     expect(home).toContain("displayName: 'ONE'");
     expect(styles).toContain('-webkit-line-clamp: 3');
+    expect(styles).toContain('padding-top: calc(var(--cp-header-height) + 9rem)');
+    expect(styles).toContain('@media (min-width: 520px)');
+    expect(styles).toContain('padding-top: var(--cp-header-height)');
     expect(styles).toContain('scroll-snap-type: x mandatory');
     expect(styles).toContain('@keyframes cp-campaign-drift');
     expect(styles).toContain('.cp-campaign-image,');
