@@ -1,0 +1,211 @@
+:root {
+  /*
+   * CARLOPHILLIPS DESIGN TOKENS — canonical v1.2.1 source
+   * Naming grammar: --cp-[category]-[concept]-[variant]-[state]
+   * Raw visual values are permitted only in this file. Storefront components
+   * consume semantic or component tokens through cp-* classes.
+   */
+
+  /* Tier 1 — primitive values. Never consume these from component rules. */
+  --cp-color-neutral-000: #000000;
+  --cp-color-neutral-025: #020202;
+  --cp-color-neutral-050: #050505;
+  --cp-color-neutral-100: #0a0a0a;
+  --cp-color-neutral-150: #111111;
+  --cp-color-neutral-200: #171714;
+  --cp-color-neutral-300: #24231f;
+  --cp-color-neutral-400: #333333;
+  --cp-color-neutral-500: #555555;
+  --cp-color-neutral-950: #f1f0ec;
+  --cp-color-neutral-1000: #ffffff;
+  --cp-color-channel-dark: 0 0 0;
+  --cp-color-channel-light: 255 255 255;
+
+  --cp-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --cp-font-editorial: Georgia, 'Times New Roman', serif;
+  --cp-font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --cp-weight-light: 300;
+  --cp-weight-regular: 400;
+  --cp-size-label: 0.5625rem;
+  --cp-size-label-small: 0.5rem;
+  --cp-size-body: 1rem;
+  --cp-size-body-large: clamp(1rem, 1.35vw, 1.15rem);
+  --cp-size-heading-product: clamp(2.5rem, 5vw, 4.5rem);
+  --cp-size-heading-section: clamp(3.25rem, 8vw, 8rem);
+  --cp-size-heading-commerce: clamp(3.75rem, 9vw, 8rem);
+  --cp-size-heading-concept: clamp(4rem, 9vw, 9rem);
+  --cp-size-heading-concept-section: clamp(2.25rem, 5vw, 4rem);
+  --cp-size-heading-concept-story: clamp(3rem, 6vw, 6.5rem);
+  --cp-size-display: clamp(4rem, 16vw, 8.5rem);
+  --cp-size-title: clamp(4rem, 10vw, 7rem);
+  --cp-tracking-label: 0.3em;
+  --cp-tracking-action: 0.24em;
+  --cp-tracking-display: -0.065em;
+  --cp-tracking-body: 0.01em;
+  --cp-tracking-heading: -0.02em;
+  --cp-tracking-heading-section: -0.06em;
+  --cp-tracking-heading-product: -0.045em;
+  --cp-tracking-heading-concept: -0.055em;
+  --cp-tracking-heading-concept-section: -0.035em;
+  --cp-leading-display: 0.82;
+  --cp-leading-title: 0.85;
+  --cp-leading-heading-section: 0.9;
+  --cp-leading-heading-product: 0.98;
+  --cp-leading-body: 1.5;
+  --cp-leading-body-relaxed: 1.75;
+
+  --cp-space-1: 0.25rem;
+  --cp-space-2: 0.5rem;
+  --cp-space-3: 0.75rem;
+  --cp-space-4: 1rem;
+  --cp-space-5: 1.25rem;
+  --cp-space-6: 1.5rem;
+  --cp-space-8: 2rem;
+  --cp-space-10: 2.5rem;
+  --cp-space-12: 3rem;
+  --cp-space-16: 4rem;
+  --cp-space-20: 5rem;
+  --cp-space-24: 6rem;
+  --cp-space-28: 7rem;
+  --cp-space-32: 8rem;
+
+  --cp-radius-none: 0;
+  --cp-radius-small: 0.25rem;
+  --cp-radius-medium: 0.5rem;
+  --cp-radius-large: 1rem;
+  --cp-radius-full: 9999px;
+  --cp-border-width-hairline: 1px;
+  --cp-border-style-default: solid;
+
+  --cp-duration-standard: 240ms;
+  --cp-duration-image: 700ms;
+  --cp-duration-campaign: 18s;
+  --cp-duration-runway: 15s;
+  --cp-duration-scroll-prompt: 1.8s;
+  --cp-delay-runway-first: 0s;
+  --cp-delay-runway-second: -10s;
+  --cp-delay-runway-third: -20s;
+  --cp-ease-standard: cubic-bezier(0.2, 0.65, 0.3, 1);
+
+  /* Tier 2 — semantic intent. These may reference primitives only. */
+  --cp-color-canvas: var(--cp-color-neutral-000);
+  --cp-color-canvas-deep: var(--cp-color-neutral-025);
+  --cp-color-panel: var(--cp-color-neutral-050);
+  --cp-color-panel-subtle: var(--cp-color-neutral-100);
+  --cp-color-panel-strong: var(--cp-color-neutral-150);
+  --cp-color-panel-raised: var(--cp-color-neutral-200);
+  --cp-color-media-featured: var(--cp-color-neutral-300);
+  --cp-color-scrollbar: var(--cp-color-neutral-400);
+  --cp-color-scrollbar-hover: var(--cp-color-neutral-500);
+  --cp-color-paper: var(--cp-color-neutral-950);
+  --cp-color-ink: var(--cp-color-neutral-1000);
+  --cp-color-copy: rgb(var(--cp-color-channel-light) / 66%);
+  --cp-color-copy-strong: rgb(var(--cp-color-channel-light) / 82%);
+  --cp-color-copy-soft: rgb(var(--cp-color-channel-light) / 58%);
+  --cp-color-muted: rgb(var(--cp-color-channel-light) / 48%);
+  --cp-color-subtle: rgb(var(--cp-color-channel-light) / 35%);
+  --cp-color-faint: rgb(var(--cp-color-channel-light) / 24%);
+  --cp-color-rule: rgb(var(--cp-color-channel-light) / 10%);
+  --cp-color-rule-strong: rgb(var(--cp-color-channel-light) / 25%);
+  --cp-color-rule-focus: rgb(var(--cp-color-channel-light) / 55%);
+  --cp-color-overlay: rgb(var(--cp-color-channel-dark) / 98.5%);
+  --cp-color-backdrop: rgb(var(--cp-color-channel-dark) / 76%);
+  --cp-color-glass: rgb(var(--cp-color-channel-dark) / 76%);
+  --cp-color-glass-soft: rgb(var(--cp-color-channel-dark) / 68%);
+
+  --cp-content-max: 112.5rem;
+  --cp-content-wide: 106.25rem;
+  --cp-content-medium: 93.75rem;
+  --cp-copy-max: 46.25rem;
+  --cp-page-gutter: clamp(1.25rem, 3.35vw, 3rem);
+  --cp-section-space: clamp(5rem, 8vw, 8rem);
+  --cp-control-size: 3rem;
+  --cp-touch-target-min: 2.75rem;
+  --cp-header-height: 4rem;
+  --cp-viewport-height: 100svh;
+  --cp-panel-bottom: clamp(2.5rem, 4vw, 3.5rem);
+  --cp-media-panel-width: 80rem;
+  --cp-media-panel-height: 56rem;
+  --cp-media-panel-inset: clamp(0.75rem, 4vw, 2.5rem);
+  --cp-product-copy-width: clamp(14rem, 36vw, 27rem);
+  --cp-label-size: var(--cp-size-label);
+  --cp-label-tracking: var(--cp-tracking-label);
+  --cp-display-tracking: var(--cp-tracking-display);
+  --cp-aspect-product-portrait: 4 / 5;
+  --cp-aspect-product-featured: 5 / 4;
+  --cp-aspect-product-featured-wide: 16 / 10;
+
+  --cp-shape-control: var(--cp-radius-none);
+  --cp-shape-card: var(--cp-radius-none);
+  --cp-shape-dialog: var(--cp-radius-none);
+  --cp-shape-round: var(--cp-radius-full);
+  --cp-border-rule: var(--cp-border-width-hairline) var(--cp-border-style-default) var(--cp-color-rule);
+  --cp-border-rule-strong: var(--cp-border-width-hairline) var(--cp-border-style-default) var(--cp-color-rule-strong);
+  --cp-focus-width: var(--cp-border-width-hairline);
+  --cp-focus-offset: 0.125rem;
+  --cp-opacity-disabled: 0.18;
+
+  --cp-layer-content: 10;
+  --cp-layer-control: 20;
+  --cp-layer-header: 40;
+  --cp-layer-menu: 50;
+  --cp-layer-dialog: 70;
+
+  --cp-shadow-copy: 0 1px 2rem rgb(var(--cp-color-channel-dark) / 90%);
+  --cp-shadow-dialog: 0 2rem 6rem rgb(var(--cp-color-channel-dark) / 72%);
+  --cp-blur-glass: 0.75rem;
+  --cp-scrim-campaign:
+    linear-gradient(0deg, rgb(var(--cp-color-channel-dark) / 68%), transparent 48%, rgb(var(--cp-color-channel-dark) / 28%)),
+    linear-gradient(90deg, rgb(var(--cp-color-channel-dark) / 74%), rgb(var(--cp-color-channel-dark) / 8%) 54%, rgb(var(--cp-color-channel-dark) / 20%));
+  --cp-scrim-product:
+    linear-gradient(0deg, rgb(var(--cp-color-channel-dark) / 80%), transparent 48%, rgb(var(--cp-color-channel-dark) / 35%)),
+    linear-gradient(90deg, rgb(var(--cp-color-channel-dark) / 74%), rgb(var(--cp-color-channel-dark) / 8%) 54%, rgb(var(--cp-color-channel-dark) / 34%));
+  --cp-scrim-media: linear-gradient(0deg, rgb(var(--cp-color-channel-dark) / 92%), rgb(var(--cp-color-channel-dark) / 45%));
+  --cp-scrim-card: linear-gradient(0deg, rgb(var(--cp-color-channel-dark) / 80%), transparent 60%);
+  --cp-scrim-concept:
+    linear-gradient(90deg, rgb(var(--cp-color-channel-dark) / 86%) 0%, rgb(var(--cp-color-channel-dark) / 38%) 42%, rgb(var(--cp-color-channel-dark) / 8%) 72%),
+    linear-gradient(0deg, rgb(var(--cp-color-channel-dark) / 72%) 0%, transparent 48%);
+
+  /* Tier 3 — component aliases. Component CSS consumes these where local. */
+  --cp-component-action-min-height: var(--cp-control-size);
+  --cp-component-action-radius: var(--cp-shape-control);
+  --cp-component-card-radius: var(--cp-shape-card);
+  --cp-component-dialog-radius: var(--cp-shape-dialog);
+  --cp-component-scroll-control-radius: var(--cp-shape-round);
+  --cp-component-product-title-color: var(--cp-color-copy-soft);
+  --cp-component-product-title-size: var(--cp-size-title);
+  --cp-component-media-control-size: var(--cp-control-size);
+  --cp-component-media-control-opacity-disabled: var(--cp-opacity-disabled);
+  --cp-component-header-layer: var(--cp-layer-header);
+  --cp-component-dialog-layer: var(--cp-layer-dialog);
+  --cp-component-menu-layer: var(--cp-layer-menu);
+  --cp-component-control-layer: var(--cp-layer-control);
+
+  /* Tailwind/shadcn compatibility bridge; not a second CP token source. */
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 5%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 5%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 0 0% 100%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 0 0% 80%;
+  --radius: 0px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --cp-header-height: 5rem;
+  }
+}

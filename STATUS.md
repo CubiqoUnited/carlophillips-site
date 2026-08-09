@@ -4,6 +4,16 @@ Updated: 2026-08-09
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Local standards patch `v1.2.1` — 2026-08-09
+
+- The Product Owner's recovered 18-page design-system standard was reviewed in full and reconciled against the active storefront. Its project-independence, discovery, three-tier token architecture, complete domain coverage, component-state, accessibility, governance, and drift-testing requirements are now explicit in `docs/design-system.md`.
+- `app/design-tokens.css` is the single canonical raw-value source under the `--cp-*` namespace: Tier 1 primitives feed Tier 2 semantic intent, which feeds Tier 3 component aliases. Active customer routes consume the resulting roles through `app/globals.css`; documented framework and media-query exceptions remain explicit.
+- Automated design-boundary tests prohibit raw customer-facing colours, inline JSX styles, un-tokenized arbitrary utilities, primitive-token consumption from component CSS, and representative colour/spacing/shape dependency breaks.
+- Full `yarn verify` passes with zero-warning lint, 35 test files / 336 tests, zero production vulnerabilities across 193 packages, and a successful 13-route optimized build.
+- Eleven background headless Chrome route/viewport checks plus the media overlay and reduced-motion checks pass with HTTP 200, zero horizontal overflow, customer-visible provider-name copy, broken images, browser/page errors, or framework overlays. Keyboard focus, Escape close, responsive overlay geometry, token resolution, and reduced-motion suppression are proven.
+- Visual comparison with the v1.2 evidence confirms that the runway, `ONE` product panel, commerce states, and private concept composition remain intact. This is a structural standards patch, not a redesign.
+- v1.2.1 remains local only. No push, Preview/Production deployment, domain change, provider action, product write, order, billing action, or merge occurred.
+
 ## Local candidate `v1.2` — 2026-08-09
 
 - The v1.1 runway and `ONE` Signature Hoodie composition is preserved while the active home, collection/shop, product, bag, checkout, media-viewer, and recovered private concept surfaces now resolve through one semantic `--cp-*` presentation contract.

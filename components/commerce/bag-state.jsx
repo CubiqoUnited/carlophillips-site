@@ -37,9 +37,9 @@ export function CommerceBagState({ decision }) {
     >
       <StorefrontHeader pageLabel="Bag" navigationAriaLabel="Bag navigation" />
 
-      <section className="cp-section flex min-h-[calc(100vh-5rem)] items-center">
-        <div className="cp-shell-medium cp-grid-rule grid px-0 lg:grid-cols-[0.72fr_1.28fr]">
-          <aside className="cp-bag-panel flex min-h-64 flex-col justify-between p-7 sm:p-10 lg:min-h-[540px]">
+      <section className="cp-bag-section cp-section flex items-center">
+        <div className="cp-bag-layout cp-shell-medium cp-grid-rule grid px-0">
+          <aside className="cp-bag-panel flex flex-col justify-between">
             <p className="cp-label">Commerce truth</p>
             <dl className="cp-definition-list grid gap-6 pt-7 text-sm">
               <div>
@@ -57,7 +57,7 @@ export function CommerceBagState({ decision }) {
             </dl>
           </aside>
 
-          <div className="cp-bag-copy flex min-h-[540px] flex-col justify-center p-7 sm:p-12 lg:p-16">
+          <div className="cp-bag-copy flex flex-col justify-center">
             <p className="cp-label">{copy.eyebrow}</p>
             <h1 className="cp-heading-section mt-8 max-w-4xl">
               {copy.title}

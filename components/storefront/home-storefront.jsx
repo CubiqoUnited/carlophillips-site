@@ -31,6 +31,12 @@ const signatureRunwayFrames = [
   },
 ];
 
+const signatureRunwayFrameClasses = [
+  'runway-frame-primary',
+  'runway-frame-secondary',
+  'runway-frame-tertiary',
+];
+
 const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
 
 const campaignHero = {
@@ -127,11 +133,11 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
       aria-labelledby="product-media-title"
       tabIndex={-1}
       onKeyDown={handleKeyDown}
-      className="cp-media-dialog fixed inset-0 z-[70] flex items-center justify-center"
+      className="cp-media-dialog fixed inset-0 flex items-center justify-center"
       data-product-media-overlay="open"
     >
       <div className="cp-media-panel relative overflow-hidden">
-        <header className="cp-media-dialog-header absolute inset-x-0 top-0 z-20 flex h-[var(--cp-header-height)] items-center justify-between px-[var(--cp-page-gutter)]">
+        <header className="cp-media-dialog-header absolute inset-x-0 top-0 flex h-[var(--cp-header-height)] items-center justify-between px-[var(--cp-page-gutter)]">
           <div className="flex items-center gap-4">
             <p className="cp-eyebrow hidden sm:block">Signature Series / Media</p>
             {motionIndex >= 0 && (
@@ -222,7 +228,7 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
 
 function Navigation({ onMenu }) {
   return (
-      <header className="cp-site-header fixed inset-x-0 top-0 z-40 backdrop-blur-md">
+      <header className="cp-site-header fixed inset-x-0 top-0 backdrop-blur-md">
         <div className="cp-page-shell grid h-[var(--cp-header-height)] grid-cols-3 items-center">
           <button
             type="button"
@@ -250,7 +256,7 @@ function Navigation({ onMenu }) {
 
 function MenuOverlay({ onClose }) {
   return (
-    <aside className="cp-menu-overlay fixed inset-0 z-50" aria-label="Site navigation">
+    <aside className="cp-menu-overlay fixed inset-0" aria-label="Site navigation">
       <div className="cp-menu-bar flex items-center justify-between">
         <span className="cp-menu-title">CARLOPHILLIPS</span>
         <button
@@ -334,7 +340,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
       className="storefront-panel cp-viewport-panel relative scroll-mt-[var(--cp-header-height)] overflow-hidden"
       aria-label="Signature Hoodie runway"
     >
-      <figure className="absolute inset-0 overflow-hidden bg-[var(--cp-color-panel)]">
+      <figure className="cp-surface-panel absolute inset-0 overflow-hidden">
         {runwayReady ? (
           <>
             <Image
@@ -352,8 +358,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
                 alt={frame.alt}
                 fill
                 sizes="100vw"
-                className={`runway-frame ${index === 0 ? 'runway-frame-primary' : ''} object-contain object-center`}
-                style={{ animationDelay: `${index * -10}s` }}
+                className={`runway-frame ${signatureRunwayFrameClasses[index]} object-contain object-center`}
               />
             ))}
           </>

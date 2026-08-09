@@ -1,132 +1,8 @@
+@import './design-tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  /* CARLOPHILLIPS v1.2 primitives: never consume directly in components. */
-  --cp-black: #000000;
-  --cp-charcoal-950: #020202;
-  --cp-charcoal-900: #050505;
-  --cp-charcoal-850: #0a0a0a;
-  --cp-charcoal-800: #111111;
-  --cp-charcoal-700: #171714;
-  --cp-charcoal-600: #24231f;
-  --cp-grey-700: #333333;
-  --cp-grey-500: #555555;
-  --cp-paper: #f1f0ec;
-  --cp-white: #ffffff;
-
-  /* Semantic colour roles. */
-  --cp-color-canvas: var(--cp-black);
-  --cp-color-panel: var(--cp-charcoal-900);
-  --cp-color-panel-subtle: var(--cp-charcoal-850);
-  --cp-color-panel-raised: var(--cp-charcoal-700);
-  --cp-color-media-featured: var(--cp-charcoal-600);
-  --cp-color-paper: var(--cp-paper);
-  --cp-color-ink: var(--cp-white);
-  --cp-color-copy: rgb(255 255 255 / 66%);
-  --cp-color-copy-strong: rgb(255 255 255 / 82%);
-  --cp-color-copy-soft: rgb(255 255 255 / 58%);
-  --cp-color-muted: rgb(255 255 255 / 48%);
-  --cp-color-subtle: rgb(255 255 255 / 35%);
-  --cp-color-faint: rgb(255 255 255 / 24%);
-  --cp-color-rule: rgb(255 255 255 / 10%);
-  --cp-color-rule-strong: rgb(255 255 255 / 25%);
-  --cp-color-rule-focus: rgb(255 255 255 / 55%);
-  --cp-color-overlay: rgb(0 0 0 / 98.5%);
-  --cp-color-backdrop: rgb(0 0 0 / 76%);
-  --cp-color-glass: rgb(0 0 0 / 76%);
-  --cp-color-glass-soft: rgb(0 0 0 / 68%);
-
-  /* Typography roles. */
-  --cp-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --cp-font-editorial: Georgia, 'Times New Roman', serif;
-  --cp-font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  --cp-weight-light: 300;
-  --cp-weight-regular: 400;
-  --cp-size-label: 0.5625rem;
-  --cp-size-label-small: 0.5rem;
-  --cp-size-body: 1rem;
-  --cp-size-body-large: clamp(1rem, 1.35vw, 1.15rem);
-  --cp-size-display: clamp(4rem, 16vw, 8.5rem);
-  --cp-size-title: clamp(4rem, 10vw, 7rem);
-  --cp-tracking-label: 0.3em;
-  --cp-tracking-action: 0.24em;
-  --cp-tracking-display: -0.065em;
-  --cp-leading-display: 0.82;
-  --cp-leading-title: 0.85;
-  --cp-leading-body: 1.5;
-
-  /* Spacing and layout roles. */
-  --cp-space-1: 0.25rem;
-  --cp-space-2: 0.5rem;
-  --cp-space-3: 0.75rem;
-  --cp-space-4: 1rem;
-  --cp-space-5: 1.25rem;
-  --cp-space-6: 1.5rem;
-  --cp-space-8: 2rem;
-  --cp-space-10: 2.5rem;
-  --cp-space-12: 3rem;
-  --cp-space-16: 4rem;
-  --cp-space-20: 5rem;
-  --cp-space-24: 6rem;
-  --cp-space-28: 7rem;
-  --cp-space-32: 8rem;
-  --cp-content-max: 112.5rem;
-  --cp-content-wide: 106.25rem;
-  --cp-content-medium: 93.75rem;
-  --cp-copy-max: 46.25rem;
-  --cp-page-gutter: clamp(1.25rem, 3.35vw, 3rem);
-  --cp-section-space: clamp(5rem, 8vw, 8rem);
-  --cp-control-size: 3rem;
-  --cp-header-height: 4rem;
-  --cp-viewport-height: 100svh;
-  --cp-panel-bottom: clamp(2.5rem, 4vw, 3.5rem);
-  --cp-media-panel-width: 80rem;
-  --cp-media-panel-height: 56rem;
-  --cp-media-panel-inset: clamp(0.75rem, 4vw, 2.5rem);
-  --cp-product-copy-width: clamp(14rem, 36vw, 27rem);
-  --cp-label-size: var(--cp-size-label);
-  --cp-label-tracking: var(--cp-tracking-label);
-  --cp-display-tracking: var(--cp-tracking-display);
-
-  /* Effects and interaction roles. */
-  --cp-shadow-copy: 0 1px 2rem rgb(0 0 0 / 90%);
-  --cp-shadow-dialog: 0 2rem 6rem rgb(0 0 0 / 72%);
-  --cp-blur-glass: 0.75rem;
-  --cp-scrim-campaign:
-    linear-gradient(0deg, rgb(0 0 0 / 68%), transparent 48%, rgb(0 0 0 / 28%)),
-    linear-gradient(90deg, rgb(0 0 0 / 74%), rgb(0 0 0 / 8%) 54%, rgb(0 0 0 / 20%));
-  --cp-scrim-product:
-    linear-gradient(0deg, rgb(0 0 0 / 80%), transparent 48%, rgb(0 0 0 / 35%)),
-    linear-gradient(90deg, rgb(0 0 0 / 74%), rgb(0 0 0 / 8%) 54%, rgb(0 0 0 / 34%));
-  --cp-scrim-media: linear-gradient(0deg, rgb(0 0 0 / 92%), rgb(0 0 0 / 45%));
-  --cp-scrim-card: linear-gradient(0deg, rgb(0 0 0 / 80%), transparent 60%);
-  --cp-duration-standard: 240ms;
-  --cp-duration-image: 700ms;
-  --cp-ease-standard: cubic-bezier(0.2, 0.65, 0.3, 1);
-
-  --background: 0 0% 0%;
-  --foreground: 0 0% 100%;
-  --card: 0 0% 5%;
-  --card-foreground: 0 0% 100%;
-  --popover: 0 0% 5%;
-  --popover-foreground: 0 0% 100%;
-  --primary: 0 0% 100%;
-  --primary-foreground: 0 0% 0%;
-  --secondary: 0 0% 10%;
-  --secondary-foreground: 0 0% 100%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 60%;
-  --accent: 0 0% 15%;
-  --accent-foreground: 0 0% 100%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 0 0% 80%;
-  --radius: 0px;
-}
 
 @layer base {
   * {
@@ -145,13 +21,13 @@
     color: var(--cp-color-ink);
     font-family: var(--cp-font-sans);
     font-weight: var(--cp-weight-light);
-    letter-spacing: 0.01em;
+    letter-spacing: var(--cp-tracking-body);
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--cp-font-sans);
     font-weight: var(--cp-weight-light);
-    letter-spacing: -0.02em;
+    letter-spacing: var(--cp-tracking-heading);
   }
   
   ::selection {
@@ -257,23 +133,23 @@
   }
 
   .cp-heading-section {
-    font-size: clamp(3.25rem, 8vw, 8rem);
+    font-size: var(--cp-size-heading-section);
     font-weight: var(--cp-weight-light);
-    line-height: 0.9;
-    letter-spacing: -0.06em;
+    line-height: var(--cp-leading-heading-section);
+    letter-spacing: var(--cp-tracking-heading-section);
   }
 
   .cp-heading-product {
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: var(--cp-size-heading-product);
     font-weight: var(--cp-weight-light);
-    line-height: 0.98;
-    letter-spacing: -0.045em;
+    line-height: var(--cp-leading-heading-product);
+    letter-spacing: var(--cp-tracking-heading-product);
   }
 
   .cp-body {
     color: var(--cp-color-copy-soft);
     font-size: var(--cp-size-body);
-    line-height: 1.75;
+    line-height: var(--cp-leading-body-relaxed);
   }
 
   .cp-body-large {
@@ -284,13 +160,14 @@
 
   .cp-action {
     display: inline-flex;
-    min-height: 3rem;
+    min-height: var(--cp-component-action-min-height);
     align-items: center;
     justify-content: center;
     padding-inline: var(--cp-space-6);
     font-size: var(--cp-size-label);
     letter-spacing: var(--cp-tracking-action);
     text-transform: uppercase;
+    border-radius: var(--cp-component-action-radius);
     transition:
       background var(--cp-duration-standard) var(--cp-ease-standard),
       border-color var(--cp-duration-standard) var(--cp-ease-standard),
@@ -298,7 +175,7 @@
   }
 
   .cp-action-outline {
-    border: 1px solid var(--cp-color-rule-strong);
+    border: var(--cp-border-rule-strong);
     color: var(--cp-color-copy-strong);
   }
 
@@ -332,7 +209,8 @@
   }
 
   .cp-site-header {
-    border-bottom: 1px solid var(--cp-color-rule);
+    z-index: var(--cp-component-header-layer);
+    border-bottom: var(--cp-border-rule);
     background: color-mix(in srgb, var(--cp-color-canvas) 80%, transparent);
   }
 
@@ -382,7 +260,7 @@
   .cp-campaign-image {
     object-position: 68% center;
     transform-origin: 62% 48%;
-    animation: cp-campaign-drift 18s var(--cp-ease-standard) infinite alternate;
+    animation: cp-campaign-drift var(--cp-duration-campaign) var(--cp-ease-standard) infinite alternate;
     will-change: transform;
   }
 
@@ -424,8 +302,8 @@
     height: 3rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--cp-color-rule-focus);
-    border-radius: 9999px;
+    border: var(--cp-border-width-hairline) var(--cp-border-style-default) var(--cp-color-rule-focus);
+    border-radius: var(--cp-component-scroll-control-radius);
     background: var(--cp-color-glass);
     transition:
       background var(--cp-duration-standard) var(--cp-ease-standard),
@@ -438,7 +316,7 @@
   }
 
   .cp-scroll-arrow {
-    animation: cp-scroll-prompt 1.8s var(--cp-ease-standard) infinite;
+    animation: cp-scroll-prompt var(--cp-duration-scroll-prompt) var(--cp-ease-standard) infinite;
   }
 
   .storefront-panel {
@@ -448,8 +326,20 @@
 
   .runway-frame {
     opacity: 0;
-    animation: runway-frame 15s infinite both;
+    animation: runway-frame var(--cp-duration-runway) infinite both;
     transform: scale(1.01);
+  }
+
+  .runway-frame-primary {
+    animation-delay: var(--cp-delay-runway-first);
+  }
+
+  .runway-frame-secondary {
+    animation-delay: var(--cp-delay-runway-second);
+  }
+
+  .runway-frame-tertiary {
+    animation-delay: var(--cp-delay-runway-third);
   }
 
   .cp-product-layout {
@@ -465,8 +355,8 @@
 
   .cp-product-title {
     max-width: 5ch;
-    color: var(--cp-color-copy-soft);
-    font-size: var(--cp-size-title);
+    color: var(--cp-component-product-title-color);
+    font-size: var(--cp-component-product-title-size);
     font-weight: var(--cp-weight-light);
     line-height: var(--cp-leading-title);
     letter-spacing: var(--cp-tracking-display);
@@ -566,6 +456,7 @@
   }
 
   .cp-media-dialog {
+    z-index: var(--cp-component-dialog-layer);
     padding: var(--cp-media-panel-inset);
     background: var(--cp-color-backdrop);
     color: var(--cp-color-ink);
@@ -575,13 +466,15 @@
   .cp-media-panel {
     width: min(calc(100vw - (2 * var(--cp-media-panel-inset))), var(--cp-media-panel-width));
     height: min(calc(100svh - (2 * var(--cp-media-panel-inset))), var(--cp-media-panel-height));
-    border: 1px solid var(--cp-color-rule-strong);
+    border: var(--cp-border-rule-strong);
+    border-radius: var(--cp-component-dialog-radius);
     background: var(--cp-color-overlay);
     box-shadow: var(--cp-shadow-dialog);
   }
 
   .cp-media-dialog-header {
-    border-bottom: 1px solid var(--cp-color-rule);
+    z-index: var(--cp-component-control-layer);
+    border-bottom: var(--cp-border-rule);
     background: color-mix(in srgb, var(--cp-color-canvas) 74%, transparent);
     backdrop-filter: blur(1rem);
   }
@@ -626,11 +519,12 @@
   .cp-media-icon-button,
   .cp-media-arrow {
     display: inline-flex;
-    width: var(--cp-control-size);
-    height: var(--cp-control-size);
+    width: var(--cp-component-media-control-size);
+    height: var(--cp-component-media-control-size);
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--cp-color-rule-strong);
+    border: var(--cp-border-rule-strong);
+    border-radius: var(--cp-shape-control);
     background: color-mix(in srgb, var(--cp-color-canvas) 72%, transparent);
     color: var(--cp-color-ink);
     transition:
@@ -645,11 +539,12 @@
 
   .cp-media-arrow:disabled {
     cursor: default;
-    opacity: 0.18;
+    opacity: var(--cp-component-media-control-opacity-disabled);
   }
 
   /* Shared storefront chrome. */
   .cp-menu-overlay {
+    z-index: var(--cp-component-menu-layer);
     background: var(--cp-color-canvas);
     color: var(--cp-color-ink);
     padding: var(--cp-space-8) var(--cp-page-gutter);
@@ -729,7 +624,7 @@
   /* Shared commerce presentation. */
   .cp-commerce-page {
     min-height: 100vh;
-    background: var(--cp-charcoal-950);
+    background: var(--cp-color-canvas-deep);
     color: var(--cp-color-ink);
   }
 
@@ -789,10 +684,10 @@
   }
 
   .cp-commerce-title {
-    font-size: clamp(3.75rem, 9vw, 8rem);
+    font-size: var(--cp-size-heading-commerce);
     font-weight: var(--cp-weight-light);
-    line-height: 0.9;
-    letter-spacing: -0.06em;
+    line-height: var(--cp-leading-heading-section);
+    letter-spacing: var(--cp-tracking-heading-section);
   }
 
   .cp-grid-rule {
@@ -817,8 +712,36 @@
     background: var(--cp-color-media-featured);
   }
 
+  .cp-product-media-portrait {
+    aspect-ratio: var(--cp-aspect-product-portrait);
+  }
+
+  .cp-product-media-featured {
+    aspect-ratio: var(--cp-aspect-product-featured);
+  }
+
+  .cp-product-gallery-empty {
+    min-height: 60vh;
+  }
+
+  .cp-editorial-intro {
+    min-height: 72vh;
+  }
+
+  .cp-editorial-study-frame {
+    min-height: 78vh;
+  }
+
   .cp-card-copy {
     border-color: var(--cp-color-rule);
+  }
+
+  .cp-catalog-card {
+    min-height: 36.25rem;
+  }
+
+  .cp-catalog-card-media {
+    min-height: 62vh;
   }
 
   .cp-empty-state {
@@ -827,11 +750,19 @@
   }
 
   .cp-bag-panel {
+    min-height: 16rem;
     background: var(--cp-color-panel);
+    padding: var(--cp-space-8);
   }
 
   .cp-bag-copy {
+    min-height: 33.75rem;
     background: var(--cp-color-canvas);
+    padding: var(--cp-space-8);
+  }
+
+  .cp-bag-section {
+    min-height: calc(100vh - var(--cp-header-height));
   }
 
   .cp-definition-list {
@@ -839,7 +770,9 @@
   }
 
   .cp-commerce-detail {
+    min-height: var(--cp-viewport-height);
     border-color: var(--cp-color-rule);
+    padding-top: var(--cp-header-height);
   }
 
   .cp-variant-list {
@@ -847,6 +780,7 @@
   }
 
   .cp-variant-item {
+    grid-template-columns: 1fr auto;
     border: 1px solid var(--cp-color-rule);
     color: var(--cp-color-muted);
   }
@@ -898,26 +832,34 @@
   }
 
   .cp-concept-hero-scrim {
-    background:
-      linear-gradient(90deg, rgb(0 0 0 / 86%) 0%, rgb(0 0 0 / 38%) 42%, rgb(0 0 0 / 8%) 72%),
-      linear-gradient(0deg, rgb(0 0 0 / 72%) 0%, transparent 48%);
+    background: var(--cp-scrim-concept);
   }
 
   .cp-concept-title {
-    font-size: clamp(4rem, 9vw, 9rem);
+    font-size: var(--cp-size-heading-concept);
     font-weight: var(--cp-weight-regular);
-    line-height: 0.82;
-    letter-spacing: -0.055em;
+    line-height: var(--cp-leading-display);
+    letter-spacing: var(--cp-tracking-heading-concept);
   }
 
   .cp-concept-section-title {
     font-family: var(--cp-font-editorial);
-    font-size: clamp(2.25rem, 5vw, 4rem);
-    letter-spacing: -0.035em;
+    font-size: var(--cp-size-heading-concept-section);
+    letter-spacing: var(--cp-tracking-heading-concept-section);
   }
 
   .cp-concept-card {
-    background: var(--cp-charcoal-800);
+    border-radius: var(--cp-component-card-radius);
+    background: var(--cp-color-panel-strong);
+  }
+
+  .cp-concept-card-media {
+    aspect-ratio: var(--cp-aspect-product-portrait);
+  }
+
+  .cp-concept-story-title {
+    font-size: var(--cp-size-heading-concept-story);
+    line-height: var(--cp-leading-heading-section);
   }
 
   .cp-concept-card img {
@@ -1028,15 +970,63 @@
   .cp-campaign-image {
     object-position: center;
   }
+
+  .cp-bag-panel,
+  .cp-bag-copy {
+    padding: var(--cp-space-10);
+  }
 }
 
 @media (min-width: 1024px) {
-  :root {
-    --cp-header-height: 5rem;
-  }
-
   .cp-display {
     font-size: min(7.4vw, 8.5rem);
+  }
+
+  .cp-product-media-featured {
+    aspect-ratio: var(--cp-aspect-product-featured-wide);
+  }
+
+  .cp-product-gallery-grid {
+    min-height: calc(100vh - var(--cp-header-height));
+  }
+
+  .cp-editorial-intro,
+  .cp-editorial-study-frame {
+    min-height: var(--cp-viewport-height);
+  }
+
+  .cp-catalog-hero-layout,
+  .cp-catalog-grid-featured {
+    grid-template-columns: 1.35fr 0.65fr;
+  }
+
+  .cp-catalog-card-media {
+    min-height: 78vh;
+  }
+
+  .cp-bag-layout {
+    grid-template-columns: 0.72fr 1.28fr;
+  }
+
+  .cp-bag-panel,
+  .cp-bag-copy {
+    min-height: 33.75rem;
+  }
+
+  .cp-bag-copy {
+    padding: var(--cp-space-16);
+  }
+
+  .cp-commerce-detail {
+    grid-template-columns: 1.08fr 0.92fr;
+  }
+
+  .cp-commerce-information-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+
+  .cp-concept-story-layout {
+    grid-template-columns: 1fr auto;
   }
 }
 
@@ -1056,16 +1046,16 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--cp-grey-700);
+  background: var(--cp-color-scrollbar);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--cp-grey-500);
+  background: var(--cp-color-scrollbar-hover);
 }
 
 /* Smooth image loading */
 img {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--cp-duration-standard) var(--cp-ease-standard);
 }
 
 /* Video styling */
@@ -1075,11 +1065,11 @@ video {
 
 /* Focus styles */
 button:focus-visible {
-  outline: 1px solid var(--cp-color-rule-focus);
-  outline-offset: 2px;
+  outline: var(--cp-focus-width) var(--cp-border-style-default) var(--cp-color-rule-focus);
+  outline-offset: var(--cp-focus-offset);
 }
 
 a:focus-visible {
-  outline: 1px solid var(--cp-color-rule-focus);
-  outline-offset: 2px;
+  outline: var(--cp-focus-width) var(--cp-border-style-default) var(--cp-color-rule-focus);
+  outline-offset: var(--cp-focus-offset);
 }

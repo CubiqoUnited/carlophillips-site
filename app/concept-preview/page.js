@@ -101,7 +101,7 @@ export default function ConceptPreviewPage() {
         <div className="grid gap-5 lg:grid-cols-3">
           {studies.map(study => (
             <article key={study.title} className="group">
-              <div className="cp-concept-card relative aspect-[4/5] overflow-hidden">
+              <div className="cp-concept-card cp-concept-card-media relative overflow-hidden">
                 <Image
                   src={study.src}
                   alt={`${study.title} CARLOPHILLIPS concept study`}
@@ -122,10 +122,10 @@ export default function ConceptPreviewPage() {
       </section>
 
       <section className="cp-concept-story">
-        <div className="cp-shell-wide grid gap-10 py-20 lg:grid-cols-[1fr_auto] lg:items-end lg:py-28">
+        <div className="cp-concept-story-layout cp-shell-wide grid gap-10 py-20 lg:items-end lg:py-28">
           <div className="max-w-4xl">
             <p className="cp-label-small mb-4">The proposed landing story</p>
-            <h2 className="cp-concept-title text-[clamp(3rem,6vw,6.5rem)] leading-[0.92]">
+            <h2 className="cp-concept-title cp-concept-story-title">
               One cinematic entrance.<br />Three credible forms.
             </h2>
           </div>

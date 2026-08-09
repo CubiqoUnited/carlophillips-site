@@ -2,6 +2,16 @@
 
 ## Version milestones
 
+- [x] Read and visually inspect all 18 pages of `Recovered-Design-System-Guidance.docx` before changing the v1.2 design-system boundary.
+- [x] Preserve v1.2 and implement the standards reconciliation as the bounded v1.2.1 patch.
+- [x] Move raw storefront presentation values into one canonical `app/design-tokens.css` source with primitive, semantic, and component tiers under `--cp-*`.
+- [x] Cover colour, type, spacing, sizing, shape, depth, motion, media, iconography, accessibility, state, exception, dependency, and project-independence requirements in the maintained contract.
+- [x] Refactor active customer surfaces to semantic/component roles without changing approved v1.2 product, media, commerce, or visual hierarchy.
+- [x] Add deterministic source/drift/dependency tests and pass full `yarn verify` (35 files / 336 tests, zero vulnerabilities, 13-route build).
+- [x] Capture and inspect desktop/mobile headless evidence for home landing/product, media overlay, shop, PDP, bag, and concept routes; prove focus, Escape, reduced motion, token resolution, and zero overflow/errors.
+- [x] Compare v1.2.1 evidence against v1.2 and record that the visible runway/`ONE` design is preserved.
+- [ ] Product Owner separately decides whether v1.2.1 should be pushed and deployed as a new Vercel Preview. Production remains unchanged.
+
 - [x] Preserve the complete current baseline, including Draft POD concepts and runway-viewer evidence, in a clean local commit and annotated tag `v1.1`.
 - [x] Confirm all newly included concepts remain Draft-only and unreferenced by active site code.
 - [x] Pass full `yarn verify`, image decode/dimension checks, visual inspection, whitespace review, and secret scan for `v1.1`.

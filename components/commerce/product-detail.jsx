@@ -26,7 +26,7 @@ function releaseStatusCopy(reason) {
 }
 
 function ProductMedia({ item, featured }) {
-  const frameClass = featured ? 'aspect-[5/4] lg:aspect-[16/10]' : 'aspect-[4/5]';
+  const frameClass = featured ? 'cp-product-media-featured' : 'cp-product-media-portrait';
 
   if (item.type === 'video' && item.url) {
     return <video controls preload="metadata" poster={item.previewUrl} className={`${frameClass} h-full w-full object-contain`} src={item.url} />;
@@ -62,7 +62,7 @@ function ProductMedia({ item, featured }) {
 function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
   if (media.length === 0) {
     return (
-      <div className="cp-surface-raised cp-text-muted flex min-h-[60vh] flex-col items-center justify-center gap-4 p-10 text-center text-sm">
+      <div className="cp-product-gallery-empty cp-surface-raised cp-text-muted flex flex-col items-center justify-center gap-4 p-10 text-center text-sm">
         <p>No approved product media was returned by the selected source.</p>
         {mediaReview && (
           <p data-media-review={mediaReview.status} className="cp-label-small max-w-xl font-mono">
@@ -75,7 +75,7 @@ function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
 
   return (
     <div>
-      <div className="cp-grid-rule grid lg:min-h-[calc(100vh-5rem)] lg:grid-cols-2">
+      <div className="cp-product-gallery-grid cp-grid-rule grid lg:grid-cols-2">
         {media.map((item, index) => (
           <figure key={item.id} className={index === 0 ? 'cp-card-media-featured lg:col-span-2' : 'cp-card-media'}>
             <ProductMedia item={item} featured={index === 0} />
@@ -99,7 +99,7 @@ function EditorialStudy({ environment, handle }) {
 
   return (
     <section data-editorial-study="ai-assisted-preview" aria-labelledby="editorial-study-title">
-      <div className="cp-rule storefront-panel flex min-h-[72vh] items-end border-b px-[var(--cp-page-gutter)] py-16 lg:min-h-screen lg:py-24">
+      <div className="cp-editorial-intro cp-rule storefront-panel flex items-end border-b px-[var(--cp-page-gutter)] py-16 lg:py-24">
         <div className="cp-shell-wide px-0">
           <p className="cp-label mb-8">Digital editorial study / 01</p>
           <h2 id="editorial-study-title" className="cp-heading-section max-w-6xl">
@@ -114,7 +114,7 @@ function EditorialStudy({ environment, handle }) {
         <figure
           key={study.src}
           data-motion-study={study.gifHref ? 'still-derived' : undefined}
-          className="cp-concept-card cp-rule storefront-panel relative min-h-[78vh] overflow-hidden border-b lg:min-h-screen"
+          className="cp-editorial-study-frame cp-concept-card cp-rule storefront-panel relative overflow-hidden border-b"
         >
           <Image
             src={study.src}
@@ -155,7 +155,7 @@ function VariantPresentation({ presentation }) {
             type="button"
             disabled
             data-variant-available={combination.availableForSale}
-            className="cp-variant-item grid min-h-16 grid-cols-[1fr_auto] items-center gap-5 px-4 py-3 text-left disabled:cursor-not-allowed"
+            className="cp-variant-item grid min-h-16 items-center gap-5 px-4 py-3 text-left disabled:cursor-not-allowed"
           >
             <span>
               <span className="cp-text-copy block text-xs">{combination.title}</span>
@@ -221,7 +221,7 @@ export function CommerceProductDetail({
   return (
     <main id="main-content" className="cp-commerce-page">
       <StorefrontHeader fixed navigationAriaLabel="Product navigation" />
-      <section className="cp-commerce-detail grid min-h-screen border-b pt-[var(--cp-header-height)] lg:grid-cols-[1.08fr_0.92fr]">
+      <section className="cp-commerce-detail grid border-b">
         <div className="cp-commerce-detail border-b lg:border-b-0 lg:border-r">
           <ProductGallery media={product.media} mediaReview={product.mediaReview} customerFacing={liveProduct} />
         </div>
@@ -270,7 +270,7 @@ export function CommerceProductDetail({
       </section>
 
       <section className="cp-section cp-rule storefront-panel border-b">
-        <div className="cp-shell-wide grid gap-14 px-0 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="cp-commerce-information-grid cp-shell-wide grid gap-14 px-0">
           <div>
             <p className="cp-label mb-8">{liveProduct ? 'The piece' : 'Product information'}</p>
             <h2 className="cp-heading-section max-w-3xl">{liveProduct ? 'Made to be lived in.' : product.truthHeading}</h2>

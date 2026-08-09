@@ -59,7 +59,7 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
     >
       <StorefrontHeader pageLabel={pageLabel} navigationAriaLabel="Catalog navigation" />
       <section className="cp-commerce-hero storefront-panel">
-        <div className="cp-shell-wide grid gap-12 px-0 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
+        <div className="cp-catalog-hero-layout cp-shell-wide grid gap-12 px-0 lg:items-end">
           <div>
             <p className="cp-label">{liveCollection ? 'Signature Series / 001' : copy.eyebrow}</p>
             <h1 className="cp-commerce-title mt-7 max-w-5xl">
@@ -87,10 +87,10 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
 
       {available ? (
         <section aria-label="Available products" className="cp-section storefront-panel">
-          <div className={`cp-shell-wide cp-grid-rule grid px-0 ${liveCollection && decision.products.length === 1 ? 'lg:grid-cols-[1.35fr_0.65fr]' : 'md:grid-cols-2 xl:grid-cols-3'}`}>
+          <div className={`cp-shell-wide cp-grid-rule cp-catalog-grid grid px-0 ${liveCollection && decision.products.length === 1 ? 'cp-catalog-grid-featured' : 'cp-catalog-grid-standard md:grid-cols-2 xl:grid-cols-3'}`}>
             {decision.products.map(product => (
-              <article key={product.handle} className={`cp-surface-canvas ${liveCollection && decision.products.length === 1 ? 'contents' : 'flex min-h-[580px] flex-col'}`}>
-                <div className="cp-card-media relative flex min-h-[62vh] items-center justify-center lg:min-h-[78vh]">
+              <article key={product.handle} className={`cp-surface-canvas ${liveCollection && decision.products.length === 1 ? 'contents' : 'cp-catalog-card flex flex-col'}`}>
+                <div className="cp-catalog-card-media cp-card-media relative flex items-center justify-center">
                   {product.media[0]?.url ? (
                     <Image
                       src={product.media[0].url}
