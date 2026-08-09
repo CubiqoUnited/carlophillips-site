@@ -66,7 +66,24 @@ The first Vercel upload attempt was stopped before transfer because no `.verceli
 
 ## Deployment state
 
-Vercel Preview deployment and direct deployed verification are pending. Production has not been changed.
+- Deployment: `dpl_AGBftTVy679m6Bz16mYKQKs4C6JX`
+- Target/status: Preview / READY
+- URL: `https://carlophillips-site-4rw1x4ogn-adityas-projects-261b17a9.vercel.app`
+- Candidate commit: `48f9e24`
+- Protected source upload: 132.3 KB
+
+Direct deployed checks at 1440×1000 and 390×844 pass HTTP 200, unchanged URL, desktop arrow and emulated touch-swipe progression, close/focus restoration, zero provider/internal wording, zero overflow, and zero console/page/HTTP errors. Preview exposes 12 frames: four eligible product stills and the eight disclosed Preview study frames. A separate traversal advanced through and decoded all 12 deployed frames.
+
+Deployed evidence screenshots:
+
+- `preview-desktop-hoodie-panel.png`
+- `preview-desktop-overlay-01.png`
+- `preview-desktop-overlay-02.png`
+- `preview-mobile-hoodie-panel.png`
+- `preview-mobile-overlay-01.png`
+- `preview-mobile-overlay-02.png`
+
+Production remains unchanged on READY deployment `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`. No production alias or domain changed.
 
 ## Product Owner demo release note
 
@@ -76,4 +93,6 @@ Checks passed: lint, 330 tests, dependency audit, optimized build, desktop/mobil
 
 Known limitations: the current media set has no release-eligible real product video, genuine 360 spin, or interactive 3D model. The viewer presents only the media actually available to its environment.
 
-Preview/staging URL: pending the temporary-branch Vercel Preview deployment. Production remains unchanged.
+Preview/staging URL: `https://carlophillips-site-4rw1x4ogn-adityas-projects-261b17a9.vercel.app`
+
+Production remains unchanged. The exact remaining action is Product Owner visual review and a separate explicit decision on merge/Production promotion.

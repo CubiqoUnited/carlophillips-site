@@ -14,7 +14,9 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Full `yarn verify` passes: zero-warning lint, 34 test files / 330 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
 - Direct 1440×1000 and 390×844 local checks prove unchanged URL, swipe/arrow progression, all-frame decoding, Escape/close, focus return, zero provider-name copy, zero browser errors, and no horizontal overflow. Evidence is under `test_reports/cp-home-media-overlay-2026-08-08/`.
 - A missing Vercel upload boundary was caught before transfer. The repository now has a tested `.vercelignore` excluding local credentials, dependencies/build output, the 168 MB recovered design archive, temporary work, and QA/governance evidence from the runtime upload.
-- Production remains unchanged. A temporary-branch Vercel Preview and its direct browser verification remain the final delivery step for this bounded change.
+- Vercel Preview `dpl_AGBftTVy679m6Bz16mYKQKs4C6JX` is READY at `https://carlophillips-site-4rw1x4ogn-adityas-projects-261b17a9.vercel.app`. The protected upload was 132.3 KB and targeted Preview only.
+- Direct deployed checks at 1440×1000 and 390×844 pass HTTP 200, unchanged URL, arrow/touch-swipe progression, close/focus behavior, provider-neutral copy, zero overflow/errors, and all 12 deployed media frames decoded. Preview has four release-eligible product stills plus the eight disclosed Preview study frames.
+- Production remains unchanged on READY deployment `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`. No alias, domain, Production deployment, Shopify data, order, app, billing, merge, or remote Git state changed.
 
 ## Runway wording and token-led design correction — 2026-08-08
 
