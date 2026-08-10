@@ -140,6 +140,10 @@
 
 ## Current bounded delivery: Signature Hoodie premium showcase
 
+- [ ] First remaining physical-media gate: verify the exact existing Apliiq Hoodie mapping read-only, then present one sample item/size/destination/total for explicit Product Owner order approval.
+- [ ] After sample delivery, capture front/back/profiles/three-quarter/on-body/detail frames, a short product film, and 24–36 evenly spaced spin angles in one consolidated session.
+- [ ] Derive and inspect genuine spin and GLB/USDZ candidates from the verified capture; do not treat AI studies as physical fit, fabric, construction, or fulfillment proof.
+
 - [x] Diagnose the gap between the premium layout and the limited two-image product presentation.
 - [x] Inspect Modelize, Spin Studio, MyDesigns, and a zero-subscription video/model candidate without accepting charges or broad permissions.
 - [x] Publish only the two usable outputs from existing Modelize job `#137843f7`; leave the artifacted close-up unpublished.

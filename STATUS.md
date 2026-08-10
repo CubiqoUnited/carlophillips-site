@@ -4,6 +4,13 @@ Updated: 2026-08-09
 Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Product Owner priority: physical Hoodie sample first — 2026-08-09
+
+- The Product Owner selected one exact Signature Hoodie sample as the first remaining media-production gate. Additional paid image credits, video, spin, or 3D work should not precede verification of this sample path.
+- The existing Apliiq product/blank/decoration/variant mapping must be observed read-only before any order; the historical `IND4000` resemblance is not ordering evidence.
+- No sample charge is approved yet. After mapping verification, the exact item, size, destination requirement, total cost, and risk must be presented for a separate order approval.
+- Once delivered, one consolidated capture supplies truthful fit, fabric, construction, embroidery, motion, 24–36 genuine spin angles, and reference input for an inspected GLB/USDZ. The exact human action and resume points are recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+
 ## Local standards patch `v1.2.1` — 2026-08-09
 
 - The Product Owner's recovered 18-page design-system standard was reviewed in full and reconciled against the active storefront. Its project-independence, discovery, three-tier token architecture, complete domain coverage, component-state, accessibility, governance, and drift-testing requirements are now explicit in `docs/design-system.md`.

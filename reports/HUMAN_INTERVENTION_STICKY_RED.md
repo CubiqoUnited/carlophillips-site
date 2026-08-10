@@ -1,31 +1,30 @@
-# HUMAN INTERVENTION REQUIRED — OPTIONAL REAL RUNWAY VIDEO
+# HUMAN INTERVENTION REQUIRED — SIGNATURE HOODIE SAMPLE FIRST
 
 Updated: 2026-08-09
 
-## Exact action
+## Product Owner decision
 
-No human action is needed for the implemented slow camera push/pan. To make the runway people genuinely walk or move, attach one final landscape campaign video to the active Codex task:
+The first remaining physical-media gate is one exact Signature Hoodie sample. Do not spend on additional image credits, video, 360, or 3D generation before this sample path is confirmed.
 
-- MP4 (H.264) preferred; WebM also accepted;
-- 1920×1080 or larger, 16:9;
-- ideally 8–15 seconds with a clean loop;
-- no baked-in navigation, captions, logos, or audio unless those are intended for the final hero.
+## Exact action and safe order
 
-Then reply: `Runway video uploaded.`
+1. Complete the newest Apliiq password-reset link and sign in to the existing Apliiq account without accepting a plan, charge, or configuration change.
+2. Signal `Apliiq open` in the active Codex task.
+3. Codex resumes with a read-only check of the existing Hoodie product, blank, decoration placement, artwork, and Shopify variant mapping. A reported `IND4000` resemblance is not sufficient to place an order.
+4. After the exact item is verified, Codex reports the one-sample item, selected size, shipping destination requirement, total price, and any risk. The Product Owner must approve that exact order and total before checkout.
+5. After delivery, capture the sample in one consolidated session: front, back, both profiles, both three-quarter views, on-body fit, walking/turning video, 24–36 evenly spaced spin angles, embroidery macro, outer fleece, inner fleece, hood/drawcord, pocket/seams, cuffs, and hem.
 
-Review the current non-production correction here:
+## Cost and risk
 
-`https://carlophillips-site-jrgq7r66t-adityas-projects-261b17a9.vercel.app`
+- A physical sample, shipping, and possibly tax will incur a real charge; no amount is approved yet.
+- Do not order a guessed blank, size, decoration, or unverified provider mapping.
+- Do not accept paid media-app plans or generation credits as part of this handoff.
+- No production publish, customer order, bulk inventory, or live-site change is authorized by this sample-first decision.
 
-It contains camera movement only. Review it separately before any Production action.
+## Resume points
 
-## Risk and cost
+- After provider sign-in: `Apliiq open` → inspect the mapping read-only.
+- After exact sample quote: Product Owner approves or rejects the named item and exact total.
+- After delivery/capture: `Hoodie sample media uploaded` → ingest, curate, produce the genuine spin/video/3D derivatives, verify desktop/mobile, and stage in Vercel Preview before any separate Production decision.
 
-- Supplying a completed file has no website-side purchase or billing action.
-- Do not accept a paid video-generation plan merely to complete this handoff without a separate cost decision.
-- Production remains unchanged.
-- The current candidate is deployed to a temporary Vercel Preview only.
-
-## Resume point
-
-After `Runway video uploaded`, inspect the file, implement it with poster/fallback/reduced-motion behavior, verify desktop/mobile performance and looping, and create a new Preview. Do not promote Production without the separate Production decision.
+The previously requested runway-motion file remains optional and secondary to the physical Hoodie sample.
