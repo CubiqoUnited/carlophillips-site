@@ -10,7 +10,7 @@ The tested candidate on branch `codex/cp-e2e-admin-control-plane`, exact clean i
 
 A subsequent local-only lifecycle core at exact clean implementation commit `0a4485a` validates and projects sanitized payment-to-post-sale events, but it has no webhook listener, provider credential, durable database, customer data, connector, payment/order/refund authority, or external mutation. It does not reduce any human action below and does not make the live funnel ready.
 
-A further local-only Shopify webhook verifier validates exact-body HMAC, allowlisted shop/topic, trigger-time/replay bounds, and fingerprint-only quarantine evidence. It still has no registered webhook, authorized secret, durable replay store, payload sanitizer, inbox/outbox, lifecycle mutation, or external call. It does not reduce the intervention or authorize connecting Shopify.
+A further local-only Shopify webhook verifier at exact clean implementation commit `f6b6ee0` validates exact-body HMAC, allowlisted shop/topic, trigger-time/replay bounds, and fingerprint-only quarantine evidence. It still has no registered webhook, authorized secret, durable replay store, payload sanitizer, inbox/outbox, lifecycle mutation, or external call. It does not reduce the intervention or authorize connecting Shopify.
 
 ## Exact human action
 

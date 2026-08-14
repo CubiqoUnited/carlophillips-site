@@ -37,8 +37,8 @@
 - [x] Return only provider/topic plus shop, delivery, and payload fingerprints; exclude payload, raw shop/delivery identity, customer data, and every lifecycle/release/checkout/refund/publication authority.
 - [x] Inject replay-claim storage and fail closed for replay or store failure without inventing durable persistence.
 - [x] Register the verifier as local-only; keep the webhook inbox unavailable and every end-to-end order/post-sale stage blocked or human-required.
-- [x] Pass working-tree full verification (42 files / 412 tests), 538/538 headless assertions, 58 desktop/tablet/mobile screenshots, and 8/8 exact zero-pixel public comparisons.
-- [ ] Bind the same full test/build/browser matrix to the exact clean implementation commit.
+- [x] Pass exact-clean-commit full verification (42 files / 412 tests), 538/538 headless assertions, 58 desktop/tablet/mobile screenshots, and 8/8 exact zero-pixel public comparisons at `f6b6ee0`.
+- [x] Bind the complete test/build/browser matrix and offscreen inspection to the exact implementation commit without claiming provider ingress.
 - [ ] Product Owner selects exact Shopify topics/shop, secret owner/storage/rotation, privacy/retention policy, durable database/queue, payload sanitizer, retry/dead-letter rules, and incident owner before any listener or subscription is created.
 - [ ] Implement and verify the authorized durable quarantine inbox/outbox and an explicit sanitized lifecycle bridge; never route a verified raw payload directly into the lifecycle reducer.
 

@@ -2,12 +2,12 @@
 
 Date: 2026-08-14
 Branch: `codex/cp-e2e-admin-control-plane`
-Source state: working tree based on `f2716dfefb32740d76524c35d51a4ba099efcba4`; exact clean implementation commit binding follows
+Source state: exact clean implementation commit `f6b6ee0cc127f342345ddad070803ee20499abda`
 Environment: local pure verifier only; no webhook registration/listener, provider secret, customer payload retention, lifecycle mutation, connector, or Production action
 
 ## Outcome
 
-The isolated verification boundary passes its working-tree QA. It does **not** prove provider ingress, a controlled order, or any end-to-end stage ready.
+The isolated verification boundary passes exact-clean-commit QA. It does **not** prove provider ingress, a controlled order, or any end-to-end stage ready.
 
 Implemented locally:
 
@@ -34,6 +34,7 @@ The `x-shopify-triggered-at` input and surrounding header contract were derived 
 ## Deterministic verification
 
 - Yarn Classic: 1.22.22
+- Frozen install: passed
 - Full `yarn verify`: passed
 - Lint: zero warnings
 - Tests: 42 files / 412 tests passed
@@ -44,7 +45,7 @@ The `x-shopify-triggered-at` input and surrounding header contract were derived 
 
 ## Headless browser and visual verification
 
-Working-tree result: 538/538 findings passed, 0 failures, 58 screenshots.
+Final clean-commit result: 538/538 findings passed, 0 failures, 58 screenshots.
 
 The protected admin/public matrix covers reviewer and Product Owner boundaries, same/cross-origin API behavior, Draft checkout denial, Axe, keyboard navigation, mobile navigation reachability, overflow, raw-reference/provider leakage, console/network health, and decoded public media.
 
