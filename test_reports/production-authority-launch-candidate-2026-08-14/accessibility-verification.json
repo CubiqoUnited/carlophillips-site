@@ -1,0 +1,334 @@
+[
+  {
+    "route": "/",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "CARLOPHILLIPS | Signature Series",
+    "canonical": "https://www.carlophillips.com",
+    "robots": "index, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/shop",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Collection | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/shop",
+    "robots": "index, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/products/carlophillips-signature-hoodie",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Product preview | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/products/carlophillips-signature-hoodie",
+    "robots": "noindex, nofollow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#595959",
+                  "bgColor": "#000000",
+                  "contrastRatio": 2.99,
+                  "fontSize": "9.0pt (12px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<main id=\"main-content\" class=\"cp-commerce-page cp-product-detail-page\">",
+                    "target": [
+                      "#main-content"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 2.99 (foreground color: #595959, background color: #000000, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"cp-text-subtle cp-commerce-explanation\">This is a private release review. Purchasing remains disabled until the separate release and commerce gates pass.</p>",
+            "target": [
+              ".cp-commerce-explanation"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.99 (foreground color: #595959, background color: #000000, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ],
+    "consoleErrors": []
+  },
+  {
+    "route": "/bag",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Bag | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/bag",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/privacy",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Privacy | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/privacy",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/terms",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Terms | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/terms",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/cookie-policy",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Cookie policy | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/cookie-policy",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "CARLOPHILLIPS | Signature Series",
+    "canonical": "https://www.carlophillips.com",
+    "robots": "index, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/shop",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Collection | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/shop",
+    "robots": "index, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/products/carlophillips-signature-hoodie",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Product preview | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/products/carlophillips-signature-hoodie",
+    "robots": "noindex, nofollow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#595959",
+                  "bgColor": "#000000",
+                  "contrastRatio": 2.99,
+                  "fontSize": "9.0pt (12px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<main id=\"main-content\" class=\"cp-commerce-page cp-product-detail-page\">",
+                    "target": [
+                      "#main-content"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 2.99 (foreground color: #595959, background color: #000000, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"cp-text-subtle cp-commerce-explanation\">This is a private release review. Purchasing remains disabled until the separate release and commerce gates pass.</p>",
+            "target": [
+              ".cp-commerce-explanation"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.99 (foreground color: #595959, background color: #000000, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ],
+    "consoleErrors": []
+  },
+  {
+    "route": "/bag",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Bag | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/bag",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/privacy",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Privacy | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/privacy",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/terms",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Terms | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/terms",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/cookie-policy",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Cookie policy | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/cookie-policy",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  }
+]

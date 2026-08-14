@@ -253,6 +253,8 @@ describe('storefront design system', () => {
     expect(styles).toContain('border-radius: var(--cp-component-card-radius)');
     expect(tokens).toContain('--cp-semantic-duration-runway: var(--cp-primitive-duration-runway)');
     expect(styles).toContain('animation: cp-runway-frame var(--cp-semantic-duration-runway)');
+    expect(tokens).toContain('--cp-component-commerce-explanation-color: var(--cp-semantic-color-status-copy)');
+    expect(styles).toContain('color: var(--cp-component-commerce-explanation-color)');
     expect(styles).toContain('@media (prefers-reduced-motion: reduce)');
     expect(styles).toContain('button:focus-visible');
     expect(styles).toContain('a:focus-visible');

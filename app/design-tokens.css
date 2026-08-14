@@ -413,6 +413,7 @@
   --cp-semantic-color-copy-soft: rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-058));
   --cp-semantic-color-muted: rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-048));
   --cp-semantic-color-subtle: rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-035));
+  --cp-semantic-color-status-copy: rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-058));
   --cp-semantic-color-faint: rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-024));
   --cp-semantic-color-rule: rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-010));
   --cp-semantic-color-overlay: rgb(var(--cp-primitive-color-channel-dark) / var(--cp-primitive-opacity-0985));
@@ -891,6 +892,7 @@
   --cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-mobile);
   --cp-component-product-detail-title-line-height: var(--cp-semantic-font-line-height-product);
   --cp-component-product-detail-price-line-height: var(--cp-semantic-font-line-height-price);
+  --cp-component-commerce-explanation-color: var(--cp-semantic-color-status-copy);
   --cp-component-checkout-label-letter-spacing: var(--cp-semantic-font-tracking-action);
   --cp-component-checkout-explanation-line-height: var(--cp-semantic-font-line-height-commerce-body-mobile);
   --cp-component-information-title-size: var(--cp-semantic-font-size-information-title-mobile);
