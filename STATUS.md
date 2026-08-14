@@ -1,7 +1,7 @@
 # Current Status
 
 Updated: 2026-08-14
-Branch: integrated local candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `cd5c64d`; no push, PR, new release candidate, merge, or Production change from this branch
+Branch: integrated candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `9e23189`; pushed to the authorized fork and opened as canonical draft PR #12; no Preview, merge to `main`, or Production change
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Canonical consolidation candidate — 2026-08-14
@@ -53,12 +53,13 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Production authority closure — 2026-08-14
 
+- The proposed `apps/`/`packages/` monorepo structure has been reconciled against the actual storefront and saved `podpipe` process. `docs/architecture-layout-decision.md` adopts its single-source and boundary controls but defers repository migration until a second deployable or independently consumed/versioned package exists; the current root layout remains authoritative.
 - The 12 production areas now have a versioned operating registry at `config/production-authorities.json` and plain-English acceptance brief at `docs/production-closure-brief.md`.
 - Read-only Vercel inspection identifies the production target as `aditya's projects` / `carlophillips-site` with exact non-secret organization/project IDs. A local link guard blocks absent or mismatched identity before a future deployment.
 - Repository CI now defines frozen Yarn install, lint, tests, production dependency audit, build, and retained test evidence for pull requests and `main` pushes. GitHub branch-protection enforcement remains external and must be verified read-only.
 - One `main` branch remains production intent; temporary PR branches create Vercel Preview staging. A READY Preview or mergeable PR is evidence, not approval.
 - Checkout remains present but denied by default. Git tags identify code milestones; Product Release Records independently govern product truth and release authority.
-- This work changes no Vercel/GitHub/Shopify setting, does not merge or deploy, and does not assert production readiness.
+- The authority-closure merge changes repository documentation only. It does not itself assert Production readiness; external account, identity, deployment, and live-commerce gates remain evidence-bound.
 ## Canonical v1.2.2 merge and CI/CD bootstrap — 2026-08-14
 
 - PR #9 merged successfully into canonical `main` as `cd1cd771fdd6d22e49d772acf8850599e2dad692`. Its parents are exact prior `main` `9b153bf1` and reviewed head `f82733ca`; the immutable replacement receipt is `https://github.com/CubiqoUnited/carlophillips-site/pull/9#issuecomment-5291120282`.

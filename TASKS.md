@@ -55,6 +55,12 @@
 - [x] Bind the expanded 15-reviewer-section plus Product Owner Theme matrix to exact clean commit `25cf7e9`: 43 files / 427 tests, 567/567 browser assertions, 61 inspected screenshots, and 8/8 zero-pixel public comparisons.
 - [ ] Product Owner selects identity provider, initial users/roles/grants, session policy, durable database/idempotency/audit/outbox, retention/privacy, connector scopes, retry/dead-letter rules, spend ceilings, and incident owner before any remote admin or executor is wired.
 - [ ] Implement one authorized connector command at a time behind the policy and durable attempted/denied/approved/executed/failed/reconciled/rolled-back events; keep every unimplemented domain read-only.
+## Repository discipline reconciliation
+
+- [x] Reconcile the proposed headless-commerce monorepo tree against the actual CARLOPHILLIPS architecture and saved `podpipe` note.
+- [x] Preserve `app/design-tokens.css`, the tested runtime mirror, commerce/provider adapters, Media Registry, Product Release Records, and the production-authority registry as separate sources of truth.
+- [x] Adopt the useful controls while rejecting a premature folder migration, parallel TypeScript token authority, blanket numeric-literal ban, and theme-app-block assumptions.
+- [ ] Reconsider an `apps/`/`packages/` migration only after a second deployable or independently consumed/versioned package satisfies the documented migration gate.
 
 ## v1.2.2 design-system release candidate
 
