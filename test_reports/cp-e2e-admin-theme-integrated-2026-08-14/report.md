@@ -46,3 +46,5 @@ The clean pre-Theme integrated baseline `ade03e6` was rebuilt in an isolated dis
 ## Remaining gates
 
 The overall system remains RED / NOT END-TO-END READY. Production still runs the older checkout-capable artifact until a separately authorized containment release. Shopify/POD mapping, the physical sample, approved media bindings, immutable Preview evidence, Product Owner approvals, remote identity/RBAC, durable persistence, live checkout/payment/order evidence, fulfillment/tracking, support/returns/refunds/reviews, and analytics reconciliation remain unproven or externally blocked.
+
+Independent architecture commit `1f3fc46` was also reviewed. It is a separately passing but nine-commits-behind, 312-file monorepo migration from `e3dc7c2`; it removes the root runtime and does not include this admin/Theme work. Direct integration was rejected as unsafe. Its typed packages, Storybook, and 17-step PODPIPE model require a deliberate rebase or selective port onto the current authority-safe branch before they can become part of one candidate.

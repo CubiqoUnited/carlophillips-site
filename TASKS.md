@@ -418,7 +418,8 @@
 - [x] Pass final integrated source checks: zero-warning lint, 39 files / 374 tests, zero production vulnerabilities, and optimized build.
 - [x] Capture and inspect reviewer/Product Owner/denied admin plus public-regression evidence at 1440×1000, 1024×768, and 390×844; 459/459 checks cover console, network, decoded media, overflow, accessibility, provider/raw-ID leakage, Theme authorization/API boundaries, and canonical Draft checkout denial.
 - [x] Bind the tested integrated candidate at `05d3d72` and its evidence report without touching the unrelated dirty worktree.
-- [ ] Review the independently running architecture correction only after it produces a clean scoped commit; do not absorb user-owned media, notes, reports, or unrelated worktree material.
+- [x] Audit independent architecture commit `1f3fc46`; record why its 312-file, nine-commits-behind monorepo rewrite cannot be directly merged without deleting/conflicting with current admin, Theme, release, and PR #9 parity work.
+- [ ] Rebase or selectively port the typed `apps/web`, package, Storybook, and 17-step PODPIPE architecture onto the newest approved candidate, preserving current admin/release authority and rerunning full QA; do not treat `1f3fc46` itself as release-ready.
 - [ ] Product Owner authorizes a new immutable fail-closed Preview; no Preview deployment is implied by this local task.
 - [ ] Product Owner reviews exact Preview containment evidence and separately authorizes or rejects Production containment.
 - [ ] Verify Apliiq mapping and one physical sample through the sticky handoff; no spend is authorized yet.
