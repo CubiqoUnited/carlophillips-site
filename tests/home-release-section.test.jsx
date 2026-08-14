@@ -74,6 +74,7 @@ describe('home release composition', () => {
     expect(available).toContain('data-media-trigger="signature-hoodie"');
     expect(available).toContain('aria-haspopup="dialog"');
     expect(available).toContain('aria-controls="product-media-overlay"');
+    expect(available).toContain('class="cp-nav-action cp-nav-action-end" aria-label="Bag" href="/bag"');
     expect(available).toContain('%2Fcampaigns%2Flofoten-runway-hero.png');
     expect(available).toContain('At the<br/>edge of life.');
     expect(available).toContain('Scroll and explore');

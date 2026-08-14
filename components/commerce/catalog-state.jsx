@@ -87,7 +87,7 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
       </section>
 
       {available ? (
-        <section aria-label="Available products" className="cp-section cp-storefront-panel">
+        <section aria-label="Available products" className="cp-section cp-catalog-section cp-storefront-panel">
           <div className={`cp-shell-wide cp-grid-rule cp-catalog-grid ${liveCollection && decision.products.length === 1 ? 'cp-catalog-grid-featured' : 'cp-catalog-grid-standard'}`}>
             {decision.products.map(product => (
               <article key={product.handle} className={`cp-surface-canvas ${liveCollection && decision.products.length === 1 ? 'cp-contents' : 'cp-catalog-card'}`}>

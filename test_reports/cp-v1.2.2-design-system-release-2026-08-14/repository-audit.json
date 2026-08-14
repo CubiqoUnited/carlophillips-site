@@ -8,10 +8,10 @@
     "deletedUiScaffoldFiles": 48
   },
   "designTokens": {
-    "total": 781,
-    "primitive": 352,
-    "semantic": 355,
-    "component": 74
+    "total": 807,
+    "primitive": 361,
+    "semantic": 364,
+    "component": 82
   },
   "dependencies": {
     "runtimeCount": 5,

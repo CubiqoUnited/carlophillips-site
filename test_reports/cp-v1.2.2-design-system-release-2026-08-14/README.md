@@ -11,7 +11,7 @@ Method: background/headless Google Chrome through the bundled Playwright runtime
 - Vitest: 35 files / 340 tests: pass.
 - Production dependency audit: 55 packages / zero vulnerabilities: pass after advancing the existing transitive `nanoid` resolution from 3.3.17 to patched 3.3.18.
 - Next.js optimized build: 13 routes: pass.
-- Repository audit: 781 reachable tokens, five used runtime dependencies, zero removed-path references, zero exact duplicate active code files, zero unused runtime dependencies, zero strong-pattern secret matches.
+- Repository audit: 807 reachable tokens, five used runtime dependencies, zero removed-path references, zero exact duplicate active code files, zero unused runtime dependencies, zero strong-pattern secret matches.
 - CSS/source audit: zero raw active CSS declarations, zero primitive references from active CSS, zero dormant `cp-*` selectors, zero source inline styles/raw visual literals/arbitrary utilities/non-CP active classes.
 - Asset audit: 26 public raster/SVG assets decoded or parsed, zero failures.
 

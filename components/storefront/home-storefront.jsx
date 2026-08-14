@@ -39,6 +39,7 @@ const signatureRunwayFrameClasses = [
 ];
 
 const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
+const dialogFocusableSelector = 'button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])';
 
 const campaignHero = {
   src: '/campaigns/lofoten-runway-hero.png',
@@ -58,6 +59,38 @@ const signatureHomepagePresentation = {
 function firstSentence(value, fallback) {
   const sentence = value?.trim().match(/^[^.!?]+[.!?]?/)?.[0];
   return sentence || fallback;
+}
+
+function lockDocumentScroll() {
+  const root = document.documentElement;
+  const body = document.body;
+  const rootWasLocked = root.classList.contains('cp-scroll-locked');
+  const bodyWasLocked = body.classList.contains('cp-scroll-locked');
+  const preventScroll = event => event.preventDefault();
+
+  root.classList.add('cp-scroll-locked');
+  body.classList.add('cp-scroll-locked');
+  window.addEventListener('wheel', preventScroll, { passive: false });
+  window.addEventListener('touchmove', preventScroll, { passive: false });
+
+  return () => {
+    window.removeEventListener('wheel', preventScroll);
+    window.removeEventListener('touchmove', preventScroll);
+    if (!rootWasLocked) root.classList.remove('cp-scroll-locked');
+    if (!bodyWasLocked) body.classList.remove('cp-scroll-locked');
+  };
+}
+
+function moveDialogFocus(event, dialog) {
+  const focusable = [...(dialog?.querySelectorAll(dialogFocusableSelector) || [])];
+  if (focusable.length === 0) return;
+
+  event.preventDefault();
+  const activeIndex = focusable.indexOf(document.activeElement);
+  const nextIndex = activeIndex < 0
+    ? event.shiftKey ? focusable.length - 1 : 0
+    : (activeIndex + (event.shiftKey ? -1 : 1) + focusable.length) % focusable.length;
+  focusable[nextIndex].focus();
 }
 
 export function buildHomeGalleryMedia(summary) {
@@ -89,16 +122,13 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
 
   useEffect(() => {
     if (!open) return undefined;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const releaseDocumentScroll = lockDocumentScroll();
     setActiveIndex(0);
     requestAnimationFrame(() => {
       trackRef.current?.scrollTo({ left: 0 });
-      dialogRef.current?.focus();
+      dialogRef.current?.querySelector(dialogFocusableSelector)?.focus();
     });
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
+    return releaseDocumentScroll;
   }, [open]);
 
   const motionIndex = media.findIndex(item => item.gifHref || item.type === 'video');
@@ -127,26 +157,22 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
   useEffect(() => {
     if (!open) return undefined;
     const handleKeyDown = event => {
-      if (event.key === 'Escape') onClose();
-      if (event.key === 'ArrowLeft') moveTo(activeIndex - 1);
-      if (event.key === 'ArrowRight') moveTo(activeIndex + 1);
-      if (event.key !== 'Tab') return;
-
-      const dialog = dialogRef.current;
-      const focusable = [...(dialog?.querySelectorAll('button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])') || [])];
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (!dialog.contains(document.activeElement)) {
+      if (event.key === 'Escape') {
         event.preventDefault();
-        first.focus();
-      } else if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
+        onClose();
+        return;
       }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        moveTo(activeIndex - 1);
+        return;
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        moveTo(activeIndex + 1);
+        return;
+      }
+      if (event.key === 'Tab') moveDialogFocus(event, dialogRef.current);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -277,6 +303,7 @@ function Navigation({ menuButtonRef, menuOpen, onMenu }) {
           <Link
             href="/bag"
             className="cp-nav-action cp-nav-action-end"
+            aria-label="Bag"
           >
             <span className="cp-nav-label">Bag</span>
             <ShoppingBag className="cp-icon cp-icon-small" />
@@ -290,14 +317,12 @@ function MenuOverlay({ onClose }) {
   const dialogRef = useRef(null);
 
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
     const dialog = dialogRef.current;
-    const focusableSelector = 'button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])';
+    const releaseDocumentScroll = lockDocumentScroll();
     const focusDialog = window.requestAnimationFrame(() => {
-      dialog?.querySelector(focusableSelector)?.focus();
+      dialog?.querySelector(dialogFocusableSelector)?.focus();
     });
 
-    document.body.style.overflow = 'hidden';
     const handleKeyDown = event => {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -305,28 +330,14 @@ function MenuOverlay({ onClose }) {
         return;
       }
       if (event.key !== 'Tab') return;
-
-      const focusable = [...(dialog?.querySelectorAll(focusableSelector) || [])];
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (!dialog.contains(document.activeElement)) {
-        event.preventDefault();
-        first.focus();
-      } else if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
+      moveDialogFocus(event, dialog);
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.cancelAnimationFrame(focusDialog);
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = previousOverflow;
+      releaseDocumentScroll();
     };
   }, [onClose]);
 
