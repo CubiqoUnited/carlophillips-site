@@ -27,8 +27,20 @@
 - [x] Drive truthful empty and sanitized populated Admin projections from the pure reducer; keep the canonical screen empty because no controlled order exists.
 - [x] Register only the local reducer/projection capability; keep signed provider webhook ingress, durable persistence, connectors, customer data, and all external mutations unavailable.
 - [x] Pass full Yarn verification (41 files / 400 tests), 538/538 headless assertions, 58 desktop/tablet/mobile screenshots, and 8/8 exact zero-pixel public comparisons.
-- [ ] After exact external approvals, implement provider-specific signature/topic/shop/timestamp/replay verification and a durable inbox/outbox without weakening the provider-neutral reducer.
+- [ ] After exact external approvals, configure the local verifier for the approved shop/topics/secret boundary and implement a durable quarantine inbox/outbox without weakening the provider-neutral reducer.
 - [ ] Exercise one approved controlled order through payment, POD, delivery, support, return/refund, review eligibility, and reconciliation before changing any readiness stage from blocked/human-required.
+
+## Current local P2: signed Shopify webhook verification boundary
+
+- [x] Verify Shopify HMAC-SHA256 against the exact raw body with timing-safe comparison and no payload parsing before signature acceptance.
+- [x] Require allowlisted shop/topic, delivery identity, provider trigger time, bounded replay/future windows, valid JSON, and a configurable one-megabyte maximum body.
+- [x] Return only provider/topic plus shop, delivery, and payload fingerprints; exclude payload, raw shop/delivery identity, customer data, and every lifecycle/release/checkout/refund/publication authority.
+- [x] Inject replay-claim storage and fail closed for replay or store failure without inventing durable persistence.
+- [x] Register the verifier as local-only; keep the webhook inbox unavailable and every end-to-end order/post-sale stage blocked or human-required.
+- [x] Pass working-tree full verification (42 files / 412 tests), 538/538 headless assertions, 58 desktop/tablet/mobile screenshots, and 8/8 exact zero-pixel public comparisons.
+- [ ] Bind the same full test/build/browser matrix to the exact clean implementation commit.
+- [ ] Product Owner selects exact Shopify topics/shop, secret owner/storage/rotation, privacy/retention policy, durable database/queue, payload sanitizer, retry/dead-letter rules, and incident owner before any listener or subscription is created.
+- [ ] Implement and verify the authorized durable quarantine inbox/outbox and an explicit sanitized lifecycle bridge; never route a verified raw payload directly into the lifecycle reducer.
 
 ## v1.2.2 design-system release candidate
 

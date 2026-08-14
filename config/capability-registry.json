@@ -357,6 +357,20 @@
       }
     },
     {
+      "capability": "shopify-webhook-verifier",
+      "selectedAdapter": "cp-shopify-webhook-verifier",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "observedAt": "2026-08-14",
+      "evidenceRef": "tests/shopify-webhook-verifier.test.js",
+      "allowedOperations": ["verify-signature-envelope", "derive-quarantine-fingerprints"],
+      "requiresApproval": ["privacy", "connector", "production"],
+      "costGate": "pure local verification only; no listener, registered subscription, provider secret, durable store, payload projection, lifecycle mutation, or external call",
+      "draftSafety": "validates exact raw bytes, HMAC, allowlisted shop/topic, delivery identity, timestamp window, and replay claim; returns fingerprints only with every authority false",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
       "capability": "provider-webhook-inbox",
       "selectedAdapter": null,
       "accessState": "unavailable",
@@ -367,9 +381,9 @@
       "draftSafety": "no unsigned or replayed provider event can change product, release, order, or fulfillment state",
       "alternatives": ["shopify-webhooks", "provider-polling-read-only"],
       "blocker": {
-        "code": "WEBHOOK_SECURITY_NOT_IMPLEMENTED",
-        "humanAction": "Approve each provider event surface, secret owner, retention, data classification, and incident response boundary.",
-        "resumePoint": "Implement signature verification, timestamp/replay checks, provider-event deduplication, inbox/outbox, retries, and dead-letter handling."
+        "code": "WEBHOOK_INGRESS_AND_DURABILITY_NOT_IMPLEMENTED",
+        "humanAction": "Approve each provider event surface, subscription/topic/shop scope, secret owner, durable store, retention, data classification, and incident response boundary.",
+        "resumePoint": "Reuse the locally verified fingerprint-only signature boundary, then add authorized subscription, durable inbox/outbox, payload sanitization, retries, and dead-letter handling before lifecycle projection."
       }
     },
     {

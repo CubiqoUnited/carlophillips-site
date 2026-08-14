@@ -131,7 +131,9 @@
       "owner": "Product Owner and commerce operator",
       "evidenceRefs": [
         "contracts/order-lifecycle-event.schema.json",
-        "tests/order-lifecycle.test.js"
+        "tests/order-lifecycle.test.js",
+        "contracts/provider-webhook-verification.schema.json",
+        "tests/shopify-webhook-verifier.test.js"
       ],
       "blocker": {
         "code": "CONTROLLED_ORDER_NOT_AUTHORIZED",
@@ -147,7 +149,9 @@
       "owner": "Fulfillment operator",
       "evidenceRefs": [
         "contracts/order-lifecycle-event.schema.json",
-        "tests/order-lifecycle.test.js"
+        "tests/order-lifecycle.test.js",
+        "contracts/provider-webhook-verification.schema.json",
+        "tests/shopify-webhook-verifier.test.js"
       ],
       "blocker": {
         "code": "NO_CONTROLLED_ORDER_LIFECYCLE",
@@ -164,7 +168,9 @@
       "evidenceRefs": [
         "config/capability-registry.json",
         "contracts/order-lifecycle-event.schema.json",
-        "tests/order-lifecycle.test.js"
+        "tests/order-lifecycle.test.js",
+        "contracts/provider-webhook-verification.schema.json",
+        "tests/shopify-webhook-verifier.test.js"
       ],
       "blocker": {
         "code": "POST_SALE_OWNERS_UNSELECTED",

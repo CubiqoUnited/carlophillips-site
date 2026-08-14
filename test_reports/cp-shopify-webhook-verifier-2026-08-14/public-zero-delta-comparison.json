@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "cp.public-screenshot-comparison.v1",
+  "comparedAt": "2026-08-14T17:55:05.580Z",
+  "baselineRoot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-order-lifecycle-core-2026-08-14/screenshots",
+  "candidateRoot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-shopify-webhook-verifier-2026-08-14/screenshots",
+  "fileCount": 8,
+  "passed": true,
+  "comparisons": [
+    {
+      "file": "public-desktop-1440x1000-bag.png",
+      "dimensionsEqual": true,
+      "baselineSha256": "8f03d14801efbd6c5a9878404155ea580d8bc86ff906ca953993606a1f4c8cc3",
+      "candidateSha256": "8f03d14801efbd6c5a9878404155ea580d8bc86ff906ca953993606a1f4c8cc3",
+      "changedChannels": 0,
+      "changedPixels": 0,
+      "exact": true
+    },
+    {
+      "file": "public-desktop-1440x1000-home.png",
+      "dimensionsEqual": true,
+      "baselineSha256": "bc6631fb930ca9f8f3332b546d8d15f57b7e9c38c7d1a27ac6912ca67f12e2d4",
+      "candidateSha256": "bc6631fb930ca9f8f3332b546d8d15f57b7e9c38c7d1a27ac6912ca67f12e2d4",
+      "changedChannels": 0,
+      "changedPixels": 0,
+      "exact": true
+    },
+    {
+      "file": "public-desktop-1440x1000-products-carlophillips-signature-hoodie.png",
+      "dimensionsEqual": true,
+      "baselineSha256": "cc7c7d616435a018fa2c505ff577825d54c11991eb66aee2a7f58fc14b3ea560",
+      "candidateSha256": "cc7c7d616435a018fa2c505ff577825d54c11991eb66aee2a7f58fc14b3ea560",
+      "changedChannels": 0,
+      "changedPixels": 0,
+      "exact": true
+    },
+    {
+      "file": "public-desktop-1440x1000-shop.png",
+      "dimensionsEqual": true,
+      "baselineSha256": "8ebbc7165972ef01c30bce18edd3349b51d0e51db1b292d23eb151a68ecf4937",
+      "candidateSha256": "8ebbc7165972ef01c30bce18edd3349b51d0e51db1b292d23eb151a68ecf4937",
+      "changedChannels": 0,
+      "changedPixels": 0,
+      "exact": true
+    },
+    {
+      "file": "public-mobile-390x844-bag.png",
+      "dimensionsEqual": true,
+      "baselineSha256": "3fead5263b7a979cd4568993049132b4c2be997a61380c3f2c3f6b639e4b1feb",
+      "candidateSha256": "3fead5263b7a979cd4568993049132b4c2be997a61380c3f2c3f6b639e4b1feb",
+      "changedChannels": 0,
+      "changedPixels": 0,
+      "exact": true
+    },
+    {
+      "file": "public-mobile-390x844-home.png",
+      "dimensionsEqual": true,
+      "baselineSha256": "be561adc46b44300ae9ab56f300221209c52a94d3d32c0af2d6b3676cdcfeffe",
+      "candidateSha256": "be561adc46b44300ae9ab56f300221209c52a94d3d32c0af2d6b3676cdcfeffe",
+      "changedChannels": 0,
+      "changedPixels": 0,
+      "exact": true
+    },
+    {
+      "file": "public-mobile-390x844-products-carlophillips-signature-hoodie.png",
+      "dimensionsEqual": true,
+      "baselineSha256": "345905971665a685891437fd7a74bc8c41a0c716c96ccce5d1926b729cb9b8c2",
+      "candidateSha256": "345905971665a685891437fd7a74bc8c41a0c716c96ccce5d1926b729cb9b8c2",
+      "changedChannels": 0,
+      "changedPixels": 0,
+      "exact": true
+    },
+    {
+      "file": "public-mobile-390x844-shop.png",
+      "dimensionsEqual": true,
+      "baselineSha256": "7cbab82580a6cd7d7cb512842db882f826ec19746c23cc4cae44df58b0e7ace4",
+      "candidateSha256": "7cbab82580a6cd7d7cb512842db882f826ec19746c23cc4cae44df58b0e7ace4",
+      "changedChannels": 0,
+      "changedPixels": 0,
+      "exact": true
+    }
+  ]
+}

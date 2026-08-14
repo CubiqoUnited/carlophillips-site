@@ -18,6 +18,7 @@ import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
 import releaseTransitionDecisionSchema from '../contracts/release-transition-decision.schema.json';
 import orderLifecycleEventSchema from '../contracts/order-lifecycle-event.schema.json';
+import providerWebhookVerificationSchema from '../contracts/provider-webhook-verification.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
@@ -591,5 +592,31 @@ describe('truth contracts', () => {
     expect(ajv.validate(orderLifecycleEventSchema, lifecycleEvent), ajv.errorsText()).toBe(true);
     expect(Object.keys(orderLifecycleEventSchema.properties.details.properties))
       .not.toEqual(expect.arrayContaining(['name', 'email', 'address', 'phone', 'customer', 'orderId']));
+  });
+
+  it('validates a fingerprint-only webhook verification decision with zero mutation authority', () => {
+    const verification = {
+      schemaVersion: 'cp.provider-webhook-verification.v1',
+      status: 'verified',
+      provider: 'shopify',
+      authority: 'observation_only',
+      topic: 'orders/updated',
+      shopFingerprint: `sha256:${'a'.repeat(64)}`,
+      deliveryFingerprint: `sha256:${'b'.repeat(64)}`,
+      payloadFingerprint: `sha256:${'c'.repeat(64)}`,
+      payloadBytes: 128,
+      triggeredAt: '2026-08-14T15:59:30Z',
+      observedAt: '2026-08-14T16:00:00Z',
+      rawPayloadReturned: false,
+      lifecycleMutationAuthorized: false,
+      releaseAuthority: false,
+      checkoutAuthority: false,
+      refundAuthority: false,
+      publicationAuthority: false,
+    };
+    expect(ajv.validate(providerWebhookVerificationSchema, verification), ajv.errorsText()).toBe(true);
+    expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('payload');
+    expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('shop');
+    expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('webhookId');
   });
 });

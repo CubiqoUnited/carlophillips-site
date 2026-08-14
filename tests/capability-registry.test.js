@@ -104,6 +104,28 @@ describe('capability registry policy', () => {
     });
   });
 
+  it('registers only local webhook verification, not provider ingress', () => {
+    const registry = getCapabilityRegistry();
+    expect(discoverCapability(
+      registry,
+      'shopify-webhook-verifier',
+      'verify-signature-envelope'
+    )).toMatchObject({
+      status: 'ready',
+      callableSurface: 'local',
+      operationalAuthority: 'local_only',
+    });
+    expect(discoverCapability(
+      registry,
+      'provider-webhook-inbox',
+      'receive-webhook'
+    )).toMatchObject({
+      status: 'unavailable',
+      reason: 'WEBHOOK_INGRESS_AND_DURABILITY_NOT_IMPLEMENTED',
+      operationalAuthority: 'blocked',
+    });
+  });
+
   it('keeps OTP-gated app workers registered but non-callable', () => {
     const registry = getCapabilityRegistry();
     for (const [capability, operation] of [
