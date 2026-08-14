@@ -1,5 +1,12 @@
 # Delivery Tasks
 
+## Repository discipline reconciliation
+
+- [x] Reconcile the proposed headless-commerce monorepo tree against the actual CARLOPHILLIPS architecture and saved `podpipe` note.
+- [x] Preserve `app/design-tokens.css`, the tested runtime mirror, commerce/provider adapters, Media Registry, Product Release Records, and the production-authority registry as separate sources of truth.
+- [x] Adopt the useful controls while rejecting a premature folder migration, parallel TypeScript token authority, blanket numeric-literal ban, and theme-app-block assumptions.
+- [ ] Reconsider an `apps/`/`packages/` migration only after a second deployable or independently consumed/versioned package satisfies the documented migration gate.
+
 ## v1.2.2 design-system release candidate
 
 - [x] Create `codex/cp-v1-2-2-design-system-release` from clean `e3dc7c2` without touching the separate `/Users/edv/Documents/cp` checkout.
@@ -404,3 +411,15 @@
 - [ ] Complete the separate Apliiq sign-in handoff, then inspect the exact Hoodie mapping read-only.
 - [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
 - [ ] Keep Shopify writes, product activation, test orders, paid app actions, and fulfillment activation separately evidenced and fail-closed until tested.
+# Production authority closure (2026-08-14)
+
+- [x] Define all 12 production authorities with source, consumers, owner, validation, gate, failure mode and rollback.
+- [x] Record one-main / temporary-PR / Vercel-Preview delivery policy and Preview/Production acceptance criteria.
+- [x] Bind local deployment tooling to the read-only verified production Vercel project and reject unrelated linkage.
+- [x] Add repository CI for frozen install, lint, tests, production audit, build and test evidence.
+- [x] Clarify checkout present-but-denied, Git tag and Product Release Record responsibilities, crawl posture and minimal analytics boundaries.
+- [ ] Sushma completes cross-functional review of Pushpa and Malti deliverables and the exact PR #9 candidate.
+- [ ] Product Owner assigns human Platform/Security and Account/Billing owners.
+- [ ] Authorized GitHub owner makes the Quality check required on `main`; verify this read-only before release.
+- [ ] Run exact-commit Vercel Preview acceptance and capture evidence; no production alias or promotion.
+- [ ] Product Owner explicitly approves or rejects merge and Production only after all applicable gates pass.

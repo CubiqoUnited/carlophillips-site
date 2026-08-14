@@ -46,9 +46,9 @@ describe('storefront route policy', () => {
   });
 
   it('keeps site metadata aligned with the active Signature Series', () => {
-    const source = readFileSync('app/layout.js', 'utf8');
+    const source = readFileSync('lib/site/site-config.js', 'utf8');
     expect(source).toContain("tagline: 'Signature Series'");
-    expect(source).toContain('The CARLOPHILLIPS Signature Hoodie.');
+    expect(source).toContain('Product availability and checkout remain release-gated.');
     expect(source).not.toContain('Gesture of Luxury');
   });
 });

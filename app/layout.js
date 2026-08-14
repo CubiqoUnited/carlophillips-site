@@ -1,15 +1,11 @@
 import './globals.css';
 import { designSystemRuntimeContract } from '@/lib/design-system/runtime-contract';
+import { ConsentPreferences } from '@/components/privacy/consent-preferences';
+import { SitePoliciesFooter } from '@/components/storefront/site-policies-footer';
+import { siteConfig } from '@/lib/site/site-config';
 
 // SEO and Metadata Configuration
-const siteConfig = {
-  name: 'CARLOPHILLIPS',
-  tagline: 'Signature Series',
-  description: 'The CARLOPHILLIPS Signature Hoodie. Heavyweight black fleece, quiet detail, and secure checkout.',
-  url: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.carlophillips.com',
-  locale: 'en_US',
-  type: 'website',
-  twitterHandle: '@carlophillips',
+const metadataConfig = {
   keywords: [
     'premium essentials',
     'premium apparel',
@@ -24,10 +20,10 @@ export const metadata = {
   // Basic Metadata
   title: `${siteConfig.name} | ${siteConfig.tagline}`,
   description: siteConfig.description,
-  keywords: siteConfig.keywords,
+  keywords: metadataConfig.keywords,
   
   // Canonical URL
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(siteConfig.baseUrl),
   alternates: {
     canonical: '/',
   },
@@ -36,10 +32,10 @@ export const metadata = {
   openGraph: {
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
-    url: siteConfig.url,
+    url: siteConfig.baseUrl,
     siteName: siteConfig.name,
     locale: siteConfig.locale,
-    type: siteConfig.type,
+    type: 'website',
     images: [
       {
         url: '/opengraph-image',
@@ -55,8 +51,6 @@ export const metadata = {
     card: 'summary_large_image',
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
-    site: siteConfig.twitterHandle,
-    creator: siteConfig.twitterHandle,
     images: ['/opengraph-image'],
   },
   
@@ -115,25 +109,15 @@ const organizationJsonLd = {
   '@type': 'Organization',
   name: siteConfig.name,
   description: siteConfig.description,
-  url: siteConfig.url,
-  logo: `${siteConfig.url}/icon.svg`,
-  sameAs: [
-    'https://instagram.com/carlophillips',
-    'https://tiktok.com/@carlophillips',
-    'https://pinterest.com/carlophillips',
-  ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    contactType: 'customer service',
-    availableLanguage: ['English'],
-  },
+  url: siteConfig.baseUrl,
+  logo: `${siteConfig.baseUrl}/icon.svg`,
 };
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: siteConfig.name,
-  url: siteConfig.url,
+  url: siteConfig.baseUrl,
   description: siteConfig.description,
   inLanguage: 'en-US',
 };
@@ -158,6 +142,8 @@ export default function RootLayout({ children }) {
         </a>
         
         {children}
+        <SitePoliciesFooter />
+        <ConsentPreferences />
       </body>
     </html>
   );

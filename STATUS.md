@@ -4,6 +4,16 @@ Updated: 2026-08-14
 Branch: CI/CD candidate `codex/cp-cicd-bootstrap`, based on canonical `main` at `cd1cd771`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Production authority closure — 2026-08-14
+
+- The proposed `apps/`/`packages/` monorepo structure has been reconciled against the actual storefront and saved `podpipe` process. `docs/architecture-layout-decision.md` adopts its single-source and boundary controls but defers repository migration until a second deployable or independently consumed/versioned package exists; the current root layout remains authoritative.
+- The 12 production areas now have a versioned operating registry at `config/production-authorities.json` and plain-English acceptance brief at `docs/production-closure-brief.md`.
+- Read-only Vercel inspection identifies the production target as `aditya's projects` / `carlophillips-site` with exact non-secret organization/project IDs. A local link guard blocks absent or mismatched identity before a future deployment.
+- Repository CI now defines frozen Yarn install, lint, tests, production dependency audit, build, and retained test evidence for pull requests and `main` pushes. GitHub branch-protection enforcement remains external and must be verified read-only.
+- One `main` branch remains production intent; temporary PR branches create Vercel Preview staging. A READY Preview or mergeable PR is evidence, not approval.
+- Checkout remains present but denied by default. Git tags identify code milestones; Product Release Records independently govern product truth and release authority.
+- This authority-closure work does not itself assert production readiness; external account and live-commerce gates remain evidence-bound.
+
 ## Canonical v1.2.2 merge and CI/CD bootstrap — 2026-08-14
 
 - PR #9 merged successfully into canonical `main` as `cd1cd771fdd6d22e49d772acf8850599e2dad692`. Its parents are exact prior `main` `9b153bf1` and reviewed head `f82733ca`; the immutable replacement receipt is `https://github.com/CubiqoUnited/carlophillips-site/pull/9#issuecomment-5291120282`.

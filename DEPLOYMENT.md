@@ -30,23 +30,13 @@ Also require:
 - explicit product/media provenance;
 - a rollback point and reviewer approval.
 
-## Current Vercel blocker
+## Verified Vercel target and current release boundary
 
-Project: `carlophillips-site`.
+Read-only inspection on 2026-08-14 supersedes the historical 2026-07-22 HTTP 402 diagnosis. The production target is team `aditya's projects` (`team_8ABMxicIAtMyzgNYsJawFad0`), project `carlophillips-site` (`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`). `www.carlophillips.com` was observed on deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`, commit `bb9568f46bd60b587f3fc16b82513ae5ea220026`.
 
-Production and the Hoodie preview were diagnosed on 2026-07-22 as HTTP 402 with `x-vercel-error: DEPLOYMENT_DISABLED`. A deployment may exist in Vercel while public HTTP remains disabled.
+A separate same-named Cubiqo-team project is not the live-domain target. Before any Vercel command capable of deployment, run `yarn verify:vercel-link --require-link`; it aborts unless ignored local linkage matches the exact verified organization and project IDs.
 
-Human action: an authorized Vercel account owner must restore deployment access or explicitly choose another hosting path.
-
-Exact resume point:
-
-1. Deploy the approved feature branch as a Preview only.
-2. Configure Preview environment variables without exposing their values.
-3. Keep draft review and purchasing fail-closed except for the specifically approved test.
-4. Verify Preview HTTP, desktop/mobile rendering, console, network, and the selected Shopify boundary.
-5. Record evidence in `test_reports/` and update `STATUS.md`.
-
-Do not attach production aliases, merge to `main`, or promote the preview as part of that resume step.
+PR #9 was observed open and mergeable with a READY Preview for head `f82733c`, but neither status grants merge or Production authority. Resume at exact-commit cross-functional Preview QA and Product Owner review. Do not attach production aliases, merge, or promote without the explicit approval and gates in `docs/production-closure-brief.md`.
 
 ## Production gates
 
