@@ -1,9 +1,7 @@
 import { CommerceCatalogBoundary } from '@/components/commerce/catalog-boundary';
+import { routeMetadata } from '@/lib/site/site-config';
 
-export const metadata = {
-  title: 'Shop | CARLOPHILLIPS',
-  description: 'Shop the live CARLOPHILLIPS collection through secure checkout.',
-};
+export const metadata = routeMetadata({ title: 'Collection | CARLOPHILLIPS', description: 'Review the CARLOPHILLIPS collection. Product availability and checkout remain release-gated.', path: '/shop' });
 
 export const dynamic = 'force-dynamic';
 

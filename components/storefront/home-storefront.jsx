@@ -534,7 +534,7 @@ function CategoryRail({ summary }) {
 
   return (
     <nav className="cp-category-rail" aria-label="Product categories">
-      <div className="cp-scrollbar-hide cp-category-list cp-page-shell">
+      <div className="cp-scrollbar-hide cp-category-list cp-page-shell" tabIndex="0" aria-label="Collection categories">
         {activeProduct ? (
           <Link
             href={activeProduct.href}

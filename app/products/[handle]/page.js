@@ -5,13 +5,14 @@ import { toProductViewModel } from '@/lib/commerce/product-view-model';
 import { canRenderDraftProductPreviews, canRenderProducts, getCommerceEnvironment } from '@/lib/config/product-visibility';
 import { loadShopifyProduct } from '@/lib/providers/shopify/storefront-product-adapter';
 import { getProductReleaseEvidence } from '@/lib/releases/product-release-registry';
+import { routeMetadata } from '@/lib/site/site-config';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = {
-  title: 'Signature Hoodie | CARLOPHILLIPS',
-  description: 'Shop the CARLOPHILLIPS Signature Hoodie through secure checkout.',
-};
+export async function generateMetadata({ params }) {
+  const { handle } = await params;
+  return routeMetadata({ title: 'Product preview | CARLOPHILLIPS', description: 'A release-gated CARLOPHILLIPS product preview. Availability and checkout are not implied.', path: `/products/${encodeURIComponent(handle)}`, index: false, follow: false });
+}
 
 export default async function ProductPage({ params }) {
   const { handle } = await params;

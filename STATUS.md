@@ -4,6 +4,15 @@ Updated: 2026-08-14
 Branch: temporary local branch `codex/cp-v1-2-2-design-system-release`, based on clean `e3dc7c2`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Production authority closure — 2026-08-14
+
+- The 12 production areas now have a versioned operating registry at `config/production-authorities.json` and plain-English acceptance brief at `docs/production-closure-brief.md`.
+- Read-only Vercel inspection identifies the production target as `aditya's projects` / `carlophillips-site` with exact non-secret organization/project IDs. A local link guard blocks absent or mismatched identity before a future deployment.
+- Repository CI now defines frozen Yarn install, lint, tests, production dependency audit, build, and retained test evidence for pull requests and `main` pushes. GitHub branch-protection enforcement remains external and must be verified read-only.
+- One `main` branch remains production intent; temporary PR branches create Vercel Preview staging. A READY Preview or mergeable PR is evidence, not approval.
+- Checkout remains present but denied by default. Git tags identify code milestones; Product Release Records independently govern product truth and release authority.
+- This work changes no Vercel/GitHub/Shopify setting, does not merge or deploy, and does not assert production readiness.
+
 ## Local verified candidate `v1.2.2` — 2026-08-14
 
 - v1.2.2 corrects and expands v1.2.1 while restoring the approved `bb9568f` visible contract: Lofoten `At the edge of life`, persistent header/navigation, lower-left `ONE`, the four approved tags, `Explore media / 12 views`, and the inset truthful viewer. The superseded three-label/11-view/upper-positioned experiment is excluded.
