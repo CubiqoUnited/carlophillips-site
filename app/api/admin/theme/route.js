@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { evaluateLocalAdminRequest } from '@/lib/admin/access-server';
+import { evaluateAdminRequest } from '@/lib/admin/access-server';
 import { saveThemeCandidate } from '@/lib/theme/theme-repository';
 import { isSameOriginRequest } from '@/lib/theme/theme-workflow';
 
@@ -14,7 +14,7 @@ function noStoreJson(body, status) {
 }
 
 export async function POST(request) {
-  const access = evaluateLocalAdminRequest(request.headers, {
+  const access = await evaluateAdminRequest(request.headers, {
     requiredRole: 'product_owner',
   });
   if (!access.allowed) return noStoreJson({ error: 'Not found' }, 404);

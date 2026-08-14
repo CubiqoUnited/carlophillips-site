@@ -1,3 +1,5 @@
+import { ClerkProvider } from '@clerk/nextjs';
+import { resolveAdminClerkConfiguration } from '@/lib/admin/clerk-config';
 import styles from './admin.module.css';
 
 export const metadata = {
@@ -7,5 +9,8 @@ export const metadata = {
 };
 
 export default function AdminLayout({ children }) {
-  return <div className={styles.boundary}>{children}</div>;
+  const content = <div className={styles.boundary}>{children}</div>;
+  return resolveAdminClerkConfiguration().ready
+    ? <ClerkProvider>{content}</ClerkProvider>
+    : content;
 }

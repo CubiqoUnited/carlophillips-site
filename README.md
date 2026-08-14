@@ -88,9 +88,9 @@ NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true
 
 This exposes a labeled, disabled review page. It does not fetch the Hoodie from Shopify and does not authorize publication or checkout.
 
-### Local control plane
+### Admin control plane
 
-The protected `/admin` prototype reads sanitized committed artifacts. It is absent from public navigation, emits `noindex`, and hard-denies every Vercel environment. All operational screens remain read-only. The Product Owner-only Theme screen is the sole bounded exception: it may atomically save exactly four validated values to root `theme.json` on a local `codex/*` branch. That save is an uncommitted repository proposal only; it creates no commit, PR, Preview, merge, publication, or Production change.
+The protected `/admin` prototype reads sanitized committed artifacts. It is absent from public navigation and emits `noindex`. All operational screens remain read-only. The Product Owner-only Theme screen is the sole bounded local exception: it may atomically save exactly four validated values to root `theme.json` on a local `codex/*` branch. That save is an uncommitted repository proposal only; it creates no commit, PR, Preview, merge, publication, or Production change.
 
 Use distinct random local tokens of at least 32 characters in an ignored `.env.local`:
 
@@ -101,7 +101,9 @@ CP_ADMIN_PRODUCT_OWNER_TOKEN=replace-with-a-different-random-local-token-at-leas
 CP_ADMIN_THEME_WRITES_ENABLED=false
 ```
 
-Send `Authorization: Bearer <token>` from a local test client. General reviewers cannot see or open Theme. Theme writes additionally require `CP_ADMIN_THEME_WRITES_ENABLED=true`, same-origin POST, `NEXT_PUBLIC_COMMERCE_ENVIRONMENT=local`, and a temporary `codex/*` branch. This prototype is not remote authentication, durable RBAC/persistence, GitHub PR automation, deployment, or publication authority.
+Send `Authorization: Bearer <token>` from a local test client. General reviewers cannot see or open Theme. Theme writes additionally require `CP_ADMIN_THEME_WRITES_ENABLED=true`, same-origin POST, `NEXT_PUBLIC_COMMERCE_ENVIRONMENT=local`, and a temporary `codex/*` branch.
+
+The isolated remote-auth adapter accepts a Clerk session only on Vercel Preview or Production and only when the SDK keys and one immutable `user_...` Product Owner subject are all configured. Missing configuration, missing/expired sessions, every other identity, and every non-Vercel remote surface fail closed. After provisioning, the Product Owner entry point is `/admin/sign-in`, followed by `/admin/theme`. Remote Theme saves remain disabled: the current save implementation is local-filesystem-only and does not create a branch or pull request. A least-privilege GitHub proposal adapter and real Preview QA are separate prerequisites before remote read/write can be called complete.
 
 ## Quality gates
 
@@ -141,6 +143,9 @@ Copy `.env.example` and supply values only in ignored local files or the appropr
 | `CP_ADMIN_REVIEW_TOKEN` | Server-only local bearer token with a minimum length of 32 characters; never use `NEXT_PUBLIC_` |
 | `CP_ADMIN_PRODUCT_OWNER_TOKEN` | Distinct server-only Product Owner bearer credential required to read or write Theme |
 | `CP_ADMIN_THEME_WRITES_ENABLED` | Explicit local feature-branch gate for atomic `theme.json` proposals; grants no commit/deploy authority |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk browser key provisioned by the approved Vercel integration; not an authorization decision by itself |
+| `CLERK_SECRET_KEY` | Server-only Clerk verification key; never expose or commit its value |
+| `CP_ADMIN_PRODUCT_OWNER_USER_ID` | Exact immutable Clerk `user_...` subject allowed to access the remote admin surface |
 
 ## Response security
 

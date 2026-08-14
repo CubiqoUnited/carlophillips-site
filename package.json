@@ -17,6 +17,7 @@
         "verify": "yarn lint && yarn test && yarn audit:prod && yarn build"
     },
     "dependencies": {
+        "@clerk/nextjs": "7.7.5",
         "lucide-react": "^0.516.0",
         "next": "15.5.21",
         "react": "19.2.8",

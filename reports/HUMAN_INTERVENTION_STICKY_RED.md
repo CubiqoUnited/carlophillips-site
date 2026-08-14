@@ -1,3 +1,33 @@
+# HUMAN INTERVENTION REQUIRED — PRODUCT OWNER ADMIN SIGN-IN
+
+Updated: 2026-08-14
+
+## What is blocked
+
+The Theme screen is implemented and locally verified, but the admin portal deliberately denies every Vercel Preview and Production request. The verified Vercel project has no remote identity provider or Product Owner identity configuration. Deploying the current code would therefore leave `/admin/theme` inaccessible, and replacing that boundary with a shared bearer token would not establish a named Product Owner identity.
+
+## Exact human action
+
+1. Manually open Vercel Dashboard → team **aditya's projects** → project **carlophillips-site** (`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`) → Integrations/Marketplace → Clerk. Do not use the duplicate same-named project under the Cubiqo Vercel team.
+2. Install Clerk only for this project and only on a no-cost plan. If Vercel or Clerk requests payment, an upgrade, broader team access, or access to another project, stop and report the exact price and permission request instead of accepting it.
+3. In Clerk Dashboard, set sign-up mode to **Restricted**, create or invite only the Product Owner account, enable MFA for that account, and keep public sign-up disabled. Do not paste Clerk secret keys into Codex or commit them; the Marketplace integration should provision encrypted environment variables.
+4. Copy the Product Owner's non-secret immutable Clerk user ID (format `user_...`) from Clerk Dashboard → Users.
+5. Signal completion in the active CARLOPHILLIPS task as: `CP Clerk Product Owner ready: user_...`.
+
+Do not ask Codex to foreground either dashboard. Boss must open these screens manually unless Boss explicitly approves that exact visible action.
+
+## Cost and risk
+
+- The intended setup uses Clerk's no-cost tier, but pricing and plan limits are external and may change. No paid plan or charge is authorized by this handoff.
+- Installing the integration creates an external authentication application and encrypted Vercel environment variables for the selected project.
+- Public sign-up, email/domain-wide allowlisting, a mutable email-only authorization check, or installing into the duplicate Vercel project could expose the private admin surface.
+
+## Resume point
+
+After the exact completion signal, Sushma resumes from the immutable integration candidate, binds the supplied Clerk user ID to the Product Owner allowlist, verifies unauthenticated/wrong-user/Product Owner access and CSRF/origin behavior in a real Vercel Preview, and returns the Preview evidence before merge and exact-artifact Production promotion.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — CONTAIN LIVE CHECKOUT AUTHORITY DEFECT
 
 Updated: 2026-08-14

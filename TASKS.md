@@ -516,3 +516,14 @@
 - [x] Make the screen state exactly-four/no-layout scope, current/proposed values, local uncommitted proposal semantics, and the mandatory PR → Preview → review → merge path.
 - [x] Pass full lint/test/audit/build QA and capture inspected desktop/mobile Theme plus unchanged public storefront comparisons under `test_reports/`.
 - [x] Commit the verified scoped candidate and report the exact SHA; no push or deployment.
+
+# Remote Product Owner admin identity
+
+- [x] Add a fail-closed Clerk adapter limited to `/admin/*` and `/api/admin/*`, preserving local reviewer/Product Owner RBAC and public-route isolation.
+- [x] Authorize Vercel Preview/Production only for the exact configured immutable Clerk Product Owner subject; reject incomplete configuration, absent sessions, other users, and non-Vercel remote surfaces.
+- [x] Add a restricted `/admin/sign-in` entry point that is absent unless all provider and owner-identity configuration is valid.
+- [x] Pass full lint/test/audit/build and desktop/tablet/mobile local RBAC shell QA, plus identical-fixture public parity against `f737716`.
+- [ ] Product Owner installs Clerk only into the verified Vercel project on a no-cost plan, enables restricted sign-up/MFA, and returns the non-secret immutable `user_...` ID.
+- [ ] Sushma integrates the isolated auth commit into the canonical candidate and verifies real unauthenticated, wrong-user, Product Owner, expired-session, and origin/CSRF behavior in an immutable Vercel Preview.
+- [ ] Implement and review a least-privilege GitHub adapter that may update only root `theme.json` on a temporary `codex/*` branch and open a draft PR; remote saves stay disabled until then.
+- [ ] Merge and Production promotion remain blocked until required GitHub checks/protection, exact Preview evidence, rollback, and Product Owner approval are all recorded.

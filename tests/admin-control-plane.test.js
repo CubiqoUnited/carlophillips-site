@@ -11,7 +11,15 @@ import readiness from '../config/end-to-end-capability-map.json';
 import adminCommandSchema from '../contracts/admin-command.schema.json';
 import operationalEventSchema from '../contracts/operational-event.schema.json';
 import readinessSchema from '../contracts/end-to-end-capability-map.schema.json';
-import { evaluateAdminAccess, resolveAdminRuntimeSurface } from '../lib/admin/access-policy';
+import {
+  evaluateAdminAccess,
+  evaluateRemoteProductOwnerAccess,
+  resolveAdminRuntimeSurface,
+} from '../lib/admin/access-policy';
+import {
+  adminClerkEnvironmentNames,
+  resolveAdminClerkConfiguration,
+} from '../lib/admin/clerk-config';
 import { adminSections, deriveAdminControlPlane } from '../lib/admin/control-plane';
 
 const validToken = 'cp-local-review-token-is-at-least-32-characters';
@@ -47,6 +55,73 @@ describe('local read-only admin access', () => {
     }
     expect(resolveAdminRuntimeSurface({ vercelEnvironment: null, commerceEnvironment: 'production' })).toBe('commerce-production');
     expect(resolveAdminRuntimeSurface({ vercelEnvironment: 'preview', commerceEnvironment: 'local' })).toBe('vercel-preview');
+  });
+});
+
+describe('remote Product Owner identity boundary', () => {
+  const ownerId = 'user_productowner123';
+
+  it('requires complete Clerk configuration with an immutable Product Owner subject', () => {
+    expect(adminClerkEnvironmentNames).toEqual([
+      'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY',
+      'CLERK_SECRET_KEY',
+      'CP_ADMIN_PRODUCT_OWNER_USER_ID',
+    ]);
+    expect(resolveAdminClerkConfiguration({})).toMatchObject({
+      ready: false,
+      reason: 'clerk_keys_unconfigured',
+      productOwnerUserId: null,
+    });
+    expect(resolveAdminClerkConfiguration({
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: 'pk_test_example123',
+      CLERK_SECRET_KEY: 'sk_test_example123',
+      CP_ADMIN_PRODUCT_OWNER_USER_ID: 'owner@example.com',
+    })).toMatchObject({
+      ready: false,
+      reason: 'product_owner_identity_unconfigured',
+      productOwnerUserId: null,
+    });
+    expect(resolveAdminClerkConfiguration({
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: 'pk_test_example123',
+      CLERK_SECRET_KEY: 'sk_test_example123',
+      CP_ADMIN_PRODUCT_OWNER_USER_ID: ownerId,
+    })).toEqual({ ready: true, reason: 'ready', productOwnerUserId: ownerId });
+  });
+
+  it('allows only the exact configured Product Owner on Vercel Preview or Production', () => {
+    const base = {
+      authenticatedUserId: ownerId,
+      expectedProductOwnerUserId: ownerId,
+      identityProviderReady: true,
+      runtimeSurface: 'vercel-preview',
+    };
+    expect(evaluateRemoteProductOwnerAccess(base)).toEqual({
+      allowed: true,
+      reason: 'remote_product_owner_session',
+      role: 'product_owner',
+    });
+    expect(evaluateRemoteProductOwnerAccess({ ...base, runtimeSurface: 'vercel-production' }).allowed).toBe(true);
+    expect(evaluateRemoteProductOwnerAccess({ ...base, runtimeSurface: 'local' }).allowed).toBe(false);
+    expect(evaluateRemoteProductOwnerAccess({ ...base, identityProviderReady: false }).reason)
+      .toBe('identity_provider_unconfigured');
+    expect(evaluateRemoteProductOwnerAccess({ ...base, authenticatedUserId: null }).reason)
+      .toBe('authenticated_session_required');
+    expect(evaluateRemoteProductOwnerAccess({ ...base, authenticatedUserId: 'user_reviewer123' }).reason)
+      .toBe('product_owner_required');
+  });
+
+  it('keeps route protection server-side and limits Clerk middleware to admin resources', () => {
+    const route = readFileSync('app/admin/[[...section]]/page.js', 'utf8');
+    const apiRoute = readFileSync('app/api/admin/theme/route.js', 'utf8');
+    const signInRoute = readFileSync('app/admin/sign-in/[[...sign-in]]/page.js', 'utf8');
+    const middleware = readFileSync('middleware.js', 'utf8');
+
+    expect(route.indexOf('requireAdminAccess')).toBeLessThan(route.indexOf('loadAdminControlPlane'));
+    expect(apiRoute).toContain('await evaluateAdminRequest');
+    expect(signInRoute).toContain('resolveAdminClerkConfiguration');
+    expect(signInRoute).toContain('fallbackRedirectUrl="/admin/theme"');
+    expect(middleware).toContain("matcher: ['/admin/:path*', '/api/admin/:path*']");
+    expect(middleware).toContain('NextResponse.next()');
   });
 });
 
@@ -182,7 +257,7 @@ describe('admin operational projection', () => {
     ].map(path => readFileSync(path, 'utf8')).join('\n');
 
     expect(route).toContain("dynamic = 'force-dynamic'");
-    expect(route.indexOf('requireLocalAdminAccess')).toBeLessThan(route.indexOf('loadAdminControlPlane'));
+    expect(route.indexOf('requireAdminAccess')).toBeLessThan(route.indexOf('loadAdminControlPlane'));
     expect(layout).toContain('index: false');
     expect(component).not.toMatch(/<button|<form|onClick|action=/);
     expect(component).toContain("section.id !== 'theme' || viewerRole === 'product_owner'");

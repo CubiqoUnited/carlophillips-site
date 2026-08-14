@@ -8,6 +8,7 @@ import AxeBuilder from '@axe-core/playwright';
 import sharp from 'sharp';
 
 const baseUrl = process.env.CP_QA_BASE_URL || 'http://127.0.0.1:3100';
+const remoteDenialBaseUrl = process.env.CP_QA_REMOTE_DENIAL_BASE_URL || null;
 const token = process.env.CP_ADMIN_REVIEW_TOKEN;
 const ownerToken = process.env.CP_ADMIN_PRODUCT_OWNER_TOKEN;
 const reportRoot = path.resolve(process.env.CP_QA_REPORT_DIR || 'test_reports/cp-e2e-admin-control-plane-2026-08-14');
@@ -185,24 +186,60 @@ try {
     await ownerContext.close();
   }
 
-  const deniedContext = await browser.newContext({ viewport: { width: 1024, height: 768 } });
-  const deniedPage = await deniedContext.newPage();
-  const deniedResponse = await deniedPage.goto(`${baseUrl}/admin`, { waitUntil: 'networkidle' });
-  check(deniedResponse?.status() === 404, 'Unauthenticated admin request is indistinguishable from a missing page.', { status: deniedResponse?.status() });
-  check(!/(control plane|release|shopify|pod|approval)/i.test(await deniedPage.locator('body').innerText()), 'Denied response exposes no operational vocabulary.', {});
-  await deniedPage.screenshot({ path: path.join(screenshotRoot, 'denied-1024x768.png'), fullPage: true });
-  await deniedContext.close();
+  for (const viewport of viewports) {
+    const deniedContext = await browser.newContext({
+      viewport: { width: viewport.width, height: viewport.height },
+      reducedMotion: 'reduce',
+    });
+    const deniedPage = await deniedContext.newPage();
+    const deniedResponse = await deniedPage.goto(`${baseUrl}/admin`, { waitUntil: 'networkidle' });
+    check(deniedResponse?.status() === 404, 'Unauthenticated admin request is indistinguishable from a missing page.', {
+      viewport: viewport.id,
+      status: deniedResponse?.status(),
+    });
+    check(!/(control plane|release|shopify|pod|approval)/i.test(await deniedPage.locator('body').innerText()), 'Denied response exposes no operational vocabulary.', { viewport: viewport.id });
+    await deniedPage.screenshot({ path: path.join(screenshotRoot, `${viewport.id}-unauthenticated-denied.png`), fullPage: true });
+    await deniedContext.close();
 
-  const reviewerThemeContext = await browser.newContext({
-    viewport: { width: 1024, height: 768 },
-    extraHTTPHeaders: { Authorization: `Bearer ${token}` },
-  });
-  const reviewerThemePage = await reviewerThemeContext.newPage();
-  const reviewerThemeResponse = await reviewerThemePage.goto(`${baseUrl}/admin/theme`, { waitUntil: 'networkidle' });
-  check(reviewerThemeResponse?.status() === 404, 'Reviewer direct Theme request is indistinguishable from a missing page.', { status: reviewerThemeResponse?.status() });
-  check(!/(theme\.json|accent colour|corner radius|base spacing|text weight)/i.test(await reviewerThemePage.locator('body').innerText()), 'Reviewer denial exposes no Theme values or vocabulary.', {});
-  await reviewerThemePage.screenshot({ path: path.join(screenshotRoot, 'reviewer-theme-denied-1024x768.png'), fullPage: true });
-  await reviewerThemeContext.close();
+    const reviewerThemeContext = await browser.newContext({
+      viewport: { width: viewport.width, height: viewport.height },
+      extraHTTPHeaders: { Authorization: `Bearer ${token}` },
+      reducedMotion: 'reduce',
+    });
+    const reviewerThemePage = await reviewerThemeContext.newPage();
+    const reviewerThemeResponse = await reviewerThemePage.goto(`${baseUrl}/admin/theme`, { waitUntil: 'networkidle' });
+    check(reviewerThemeResponse?.status() === 404, 'Reviewer direct Theme request is indistinguishable from a missing page.', {
+      viewport: viewport.id,
+      status: reviewerThemeResponse?.status(),
+    });
+    check(!/(theme\.json|accent colour|corner radius|base spacing|text weight)/i.test(await reviewerThemePage.locator('body').innerText()), 'Reviewer denial exposes no Theme values or vocabulary.', { viewport: viewport.id });
+    await reviewerThemePage.screenshot({ path: path.join(screenshotRoot, `${viewport.id}-reviewer-theme-denied.png`), fullPage: true });
+    await reviewerThemeContext.close();
+  }
+
+  if (remoteDenialBaseUrl) {
+    for (const viewport of viewports) {
+      const remoteContext = await browser.newContext({
+        viewport: { width: viewport.width, height: viewport.height },
+        reducedMotion: 'reduce',
+      });
+      const remotePage = await remoteContext.newPage();
+      for (const route of ['/admin/theme', '/admin/sign-in']) {
+        const response = await remotePage.goto(`${remoteDenialBaseUrl}${route}`, { waitUntil: 'networkidle' });
+        check(response?.status() === 404, 'Unconfigured Vercel admin identity surface is indistinguishable from a missing page.', {
+          viewport: viewport.id,
+          route,
+          status: response?.status(),
+        });
+        check(!/(theme\.json|accent colour|corner radius|base spacing|text weight|clerk)/i.test(await remotePage.locator('body').innerText()), 'Unconfigured Vercel denial exposes no Theme or provider vocabulary.', {
+          viewport: viewport.id,
+          route,
+        });
+      }
+      await remotePage.screenshot({ path: path.join(screenshotRoot, `${viewport.id}-vercel-unconfigured-denied.png`), fullPage: true });
+      await remoteContext.close();
+    }
+  }
 
   const publicConsoleErrors = [];
   const publicRequestFailures = [];
@@ -367,8 +404,15 @@ const report = {
   schemaVersion: 'cp.admin-visual-qa.v1',
   capturedAt: new Date().toISOString(),
   baseUrl,
+  remoteDenialBaseUrl,
   gitCommit,
   candidateState,
+  identityEvidence: {
+    kind: 'local-rbac-shell',
+    remoteClerkSessionVerified: false,
+    remoteUnconfiguredDenialVerified: Boolean(remoteDenialBaseUrl),
+    limitation: 'Real Clerk sessions require the Product Owner provisioning handoff and Vercel Preview.',
+  },
   browser: 'Playwright Chromium headless',
   visibility: 'background; no focus or foreground window',
   viewports,
@@ -387,5 +431,6 @@ if (failures.length) {
   console.error(JSON.stringify({ passed: false, failures }, null, 2));
   process.exitCode = 1;
 } else {
-  console.log(JSON.stringify({ passed: true, findingCount: findings.length, screenshotCount: (viewports.length * (sections.length + 2)) + 2 + (publicRoutes.length * publicViewports.length) }, null, 2));
+  const remoteDenialScreenshotCount = remoteDenialBaseUrl ? viewports.length : 0;
+  console.log(JSON.stringify({ passed: true, findingCount: findings.length, screenshotCount: (viewports.length * (sections.length + 4)) + (publicRoutes.length * publicViewports.length) + remoteDenialScreenshotCount }, null, 2));
 }

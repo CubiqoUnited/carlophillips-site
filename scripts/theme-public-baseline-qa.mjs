@@ -7,8 +7,13 @@ import sharp from 'sharp';
 
 const baselineUrl = process.env.CP_QA_BASELINE_URL;
 const candidateUrl = process.env.CP_QA_CANDIDATE_URL;
-const baselineCommit = process.env.CP_QA_BASELINE_COMMIT || 'f566ef7';
-const candidateState = process.env.CP_QA_CANDIDATE_STATE || 'working-tree';
+const baselineLabel = process.env.CP_QA_BASELINE_LABEL || process.env.CP_QA_BASELINE_COMMIT || 'f566ef7';
+const candidateLabel = process.env.CP_QA_CANDIDATE_LABEL || process.env.CP_QA_CANDIDATE_STATE || 'working-tree';
+const baselineSlug = process.env.CP_QA_BASELINE_SLUG || baselineLabel.replaceAll(/[^a-zA-Z0-9._-]/g, '-');
+const candidateSlug = process.env.CP_QA_CANDIDATE_SLUG || 'comparison-candidate';
+const baselineThemeBridgeCount = Number(process.env.CP_QA_BASELINE_THEME_BRIDGE_COUNT || 0);
+const candidateThemeBridgeCount = Number(process.env.CP_QA_CANDIDATE_THEME_BRIDGE_COUNT || 1);
+const comparisonFilename = process.env.CP_QA_COMPARISON_FILENAME || 'public-baseline-comparison.json';
 const reportRoot = path.resolve(
   process.env.CP_QA_REPORT_DIR || 'test_reports/cp-admin-theme-tokens-2026-08-14'
 );
@@ -21,8 +26,8 @@ const viewports = [
   { id: 'desktop-1440x1000', width: 1440, height: 1000 },
   { id: 'mobile-390x844', width: 390, height: 844 },
 ];
-const baselineRoot = path.join(reportRoot, `baseline-${baselineCommit.replaceAll(/[^a-zA-Z0-9._-]/g, '-')}`);
-const candidateRoot = path.join(reportRoot, 'comparison-candidate');
+const baselineRoot = path.join(reportRoot, `baseline-${baselineSlug}`);
+const candidateRoot = path.join(reportRoot, candidateSlug);
 await fs.mkdir(baselineRoot, { recursive: true });
 await fs.mkdir(candidateRoot, { recursive: true });
 
@@ -162,8 +167,8 @@ const browser = await chromium.launch({ headless: true });
 let baseline;
 let candidate;
 try {
-  baseline = await captureSurface(browser, baselineCommit, baselineUrl, baselineRoot);
-  candidate = await captureSurface(browser, candidateState, candidateUrl, candidateRoot);
+  baseline = await captureSurface(browser, baselineLabel, baselineUrl, baselineRoot);
+  candidate = await captureSurface(browser, candidateLabel, candidateUrl, candidateRoot);
 } finally {
   await browser.close();
 }
@@ -182,8 +187,8 @@ for (const viewport of viewports) {
       structureHashEqual: baselineEntry.treeHash === candidateEntry.treeHash,
       textHashEqual: baselineEntry.textHash === candidateEntry.textHash,
       elementCountEqual: baselineEntry.elementCount === candidateEntry.elementCount,
-      governedHeadBridgeExpected: baselineEntry.governedHeadBridgeCount === 0
-        && candidateEntry.governedHeadBridgeCount === 1,
+      governedHeadBridgeExpected: baselineEntry.governedHeadBridgeCount === baselineThemeBridgeCount
+        && candidateEntry.governedHeadBridgeCount === candidateThemeBridgeCount,
       bodyStyleEqual: JSON.stringify(baselineEntry.bodyStyle) === JSON.stringify(candidateEntry.bodyStyle),
       rectanglesEqual: JSON.stringify(baselineEntry.rectangles) === JSON.stringify(candidateEntry.rectangles),
       noOverflow: !baselineEntry.overflow && !candidateEntry.overflow,
@@ -211,8 +216,8 @@ const report = {
   capturedAt: new Date().toISOString(),
   browser: 'Playwright Chromium headless',
   visibility: 'background; no focus or foreground window',
-  baseline: { commit: baselineCommit, url: baselineUrl },
-  candidate: { state: candidateState, url: candidateUrl },
+  baseline: { commit: baselineLabel, url: baselineUrl, governedHeadBridgeCount: baselineThemeBridgeCount },
+  candidate: { state: candidateLabel, url: candidateUrl, governedHeadBridgeCount: candidateThemeBridgeCount },
   viewports,
   routes,
   passed,
@@ -221,7 +226,7 @@ const report = {
   captures: { baseline, candidate },
 };
 await fs.writeFile(
-  path.join(reportRoot, 'public-baseline-comparison.json'),
+  path.join(reportRoot, comparisonFilename),
   `${JSON.stringify(report, null, 2)}\n`
 );
 console.log(JSON.stringify({ passed, comparisons }, null, 2));

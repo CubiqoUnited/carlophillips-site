@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { AdminControlPlane } from '@/components/admin/control-plane';
-import { requireLocalAdminAccess } from '@/lib/admin/access-server';
+import { requireAdminAccess } from '@/lib/admin/access-server';
 import { adminSections } from '@/lib/admin/control-plane';
 import { loadAdminControlPlane } from '@/lib/admin/control-plane-server';
 import { loadCanonicalTheme } from '@/lib/theme/theme-repository';
@@ -15,7 +15,7 @@ export default async function AdminPage({ params }) {
 
   const activeSection = path[0] || 'overview';
   if (!adminSections.some(section => section.id === activeSection)) notFound();
-  const access = await requireLocalAdminAccess({
+  const access = await requireAdminAccess({
     requiredRole: activeSection === 'theme' ? 'product_owner' : null,
   });
 
