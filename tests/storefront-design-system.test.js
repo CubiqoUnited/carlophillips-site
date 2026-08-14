@@ -260,6 +260,9 @@ describe('storefront design system', () => {
     const styles = readFileSync(globalPath, 'utf8');
 
     expect(tokens).toContain('--cp-semantic-font-size-label-small: var(--cp-primitive-font-size-062)');
+    expect(tokens).toContain('--cp-semantic-color-canvas-deep: var(--cp-primitive-color-neutral-025)');
+    expect(tokens).toContain('--cp-component-commerce-page-background: var(--cp-semantic-color-canvas-deep)');
+    expect(tokens).toContain('--cp-component-product-detail-page-background: var(--cp-semantic-color-canvas)');
     expect(tokens).toContain('--cp-component-product-runway-scroll-margin: var(--cp-semantic-size-header)');
     expect(tokens).toContain('--cp-component-commerce-header-outer-height: calc(var(--cp-semantic-size-header) + var(--cp-semantic-size-hairline))');
     expect(tokens).toContain('--cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-mobile)');
@@ -268,6 +271,8 @@ describe('storefront design system', () => {
     expect(tokens).toContain('--cp-component-bag-definition-line-height: var(--cp-semantic-font-line-height-control)');
     expect(tokens).toContain('--cp-component-bag-description-line-height: var(--cp-semantic-font-line-height-commerce-body-mobile)');
     expect(styles).toContain('scroll-margin-top: var(--cp-component-product-runway-scroll-margin)');
+    expect(selectorDeclarations('.cp-commerce-page').background).toBe('var(--cp-component-commerce-page-background)');
+    expect(selectorDeclarations('.cp-product-detail-page').background).toBe('var(--cp-component-product-detail-page-background)');
     expect(styles).toContain('height: var(--cp-component-commerce-header-outer-height)');
     expect(styles).toContain('font-size: var(--cp-component-product-detail-title-size)');
     expect(styles).toContain('line-height: var(--cp-component-commerce-title-line-height)');

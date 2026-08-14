@@ -819,6 +819,8 @@
   --cp-component-media-control-size: var(--cp-semantic-size-control);
   --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-disabled);
   --cp-component-header-layer: var(--cp-semantic-layer-header);
+  --cp-component-commerce-page-background: var(--cp-semantic-color-canvas-deep);
+  --cp-component-product-detail-page-background: var(--cp-semantic-color-canvas);
   --cp-component-commerce-header-outer-height: calc(var(--cp-semantic-size-header) + var(--cp-semantic-size-hairline));
   --cp-component-commerce-header-inner-height: var(--cp-semantic-size-header);
   --cp-component-dialog-layer: var(--cp-semantic-layer-dialog);

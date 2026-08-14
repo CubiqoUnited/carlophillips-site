@@ -26,6 +26,8 @@ describe('catalog presentation', () => {
       }],
     }} />);
 
+    expect(html).toContain('class="cp-commerce-page"');
+    expect(html).not.toContain('cp-product-detail-page');
     expect(html).toContain('1 preview piece');
     expect(html).toMatch(/Candidate records<\/dt><dd[^>]*>2/);
     expect(html).toMatch(/Visible here<\/dt><dd[^>]*>1/);

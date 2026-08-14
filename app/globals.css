@@ -1084,8 +1084,12 @@
   /* Shared commerce presentation. */
   .cp-commerce-page {
     min-height: var(--cp-semantic-size-viewport-height-legacy);
-    background: var(--cp-semantic-color-canvas-deep);
+    background: var(--cp-component-commerce-page-background);
     color: var(--cp-semantic-color-ink);
+  }
+
+  .cp-product-detail-page {
+    background: var(--cp-component-product-detail-page-background);
   }
 
   .cp-commerce-header {
