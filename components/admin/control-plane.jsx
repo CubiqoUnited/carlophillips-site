@@ -78,7 +78,7 @@ function Overview({ model }) {
 function Rows({ columns, rows, empty = 'No records in this read-only projection.' }) {
   if (!rows.length) return <p className={styles.empty}>{empty}</p>;
   return (
-    <div className={styles.tableWrap}>
+    <div className={styles.tableWrap} role="region" aria-label="Scrollable data table" tabIndex={0}>
       <table>
         <thead><tr>{columns.map(column => <th key={column.key}>{column.label}</th>)}</tr></thead>
         <tbody>
@@ -155,7 +155,7 @@ export function AdminControlPlane({ activeSection, model }) {
         </div>
         <nav aria-label="Admin sections">
           {adminSections.map(section => (
-            <Link key={section.id} href={section.id === 'overview' ? '/admin' : `/admin/${section.id}`} aria-current={section.id === activeSection ? 'page' : undefined}>
+            <Link key={section.id} href={section.id === 'overview' ? '/admin' : `/admin/${section.id}`} prefetch={false} aria-current={section.id === activeSection ? 'page' : undefined}>
               {section.label}
             </Link>
           ))}

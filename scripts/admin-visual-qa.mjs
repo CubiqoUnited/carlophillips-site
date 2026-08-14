@@ -57,7 +57,11 @@ try {
     page.on('console', message => {
       if (message.type() === 'error') consoleErrors.push(message.text());
     });
-    page.on('requestfailed', request => requestFailures.push(`${request.method()} ${request.url()}: ${request.failure()?.errorText}`));
+    page.on('requestfailed', request => {
+      const failure = request.failure()?.errorText;
+      const expectedNavigationAbort = failure === 'net::ERR_ABORTED' && request.url().includes('_rsc=');
+      if (!expectedNavigationAbort) requestFailures.push(`${request.method()} ${request.url()}: ${failure}`);
+    });
 
     for (const [section, route] of sections) {
       const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
@@ -119,7 +123,6 @@ try {
   check(publicConsoleErrors.length === 0, 'Public regression route matrix emits no console errors.', { consoleErrors: publicConsoleErrors });
 
   const checkoutResponse = await publicContext.request.post(`${baseUrl}/api/checkout`, {
-    headers: { Origin: baseUrl },
     form: {
       handle: 'carlophillips-signature-hoodie',
       referenceHash: `sha256:${'a'.repeat(64)}`,
