@@ -2,7 +2,7 @@
 
 Date: 2026-08-14
 
-Candidate state: working tree based on `93442bec13b89d664db5b858d68b13b047addfa2`; exact clean commit validation follows in the evidence-binding commit.
+Exact clean implementation commit: `98a23f2a551f2c2128d437908b01dff3576474b9`.
 
 ## Outcome
 
@@ -34,7 +34,7 @@ Tests cover missing physical sample truth, incomplete inspection, mapping mismat
 
 ## Headless visual and interaction verification
 
-Final working-tree run:
+Final exact-clean-commit run:
 
 - Playwright Chromium, headless/background; no visible window or focus change
 - 669/669 findings passed
