@@ -4,6 +4,13 @@ Updated: 2026-08-14
 Branch: integrated local candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `cd5c64d`; no push, PR, new release candidate, merge, or Production change from this branch
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Canonical consolidation candidate — 2026-08-14
+
+- Exact integrated source commit `ee5ebaece14fe75356461bce3e02292b55d29ef6` combines the canonical admin/Theme/release containment candidate, immutable Preview and safe-fallback workflow corrections, current Apliiq access truth, and fail-closed Clerk Product Owner identity adapter without merging the incompatible architecture rewrite or dirty display worktree.
+- Frozen Yarn Classic 1.22.22 install and full verification pass: zero-warning lint, 44 test files / 468 tests, zero Production dependency vulnerabilities across 67 audited packages, and a successful Next.js 15.5.21 build. Four workflow YAML files and all changed executable Node scripts parse.
+- Exact-commit headless/background Chromium passes 689/689 findings with 68 screenshots at 1440×1000, 1024×768, and 390×844. All admin sections, Theme, reviewer/unauthenticated concealment, unconfigured-Vercel denial, public routes, accessibility, console/network, raw-reference, checkout, and overflow checks pass. All eight public desktop/mobile screenshots are byte-identical to the pre-auth integrated baseline. Evidence is under `test_reports/cp-canonical-final-2026-08-14/`.
+- Deployment remains blocked, not failed: the current GitHub identity has pull-only access to the canonical repository, the protected same-repository Preview lane cannot run from a fork, Clerk is not provisioned in the verified Vercel project, and no real Product Owner session has passed immutable Preview QA. Production and Shopify remain unchanged.
+
 ## CI/CD immutable Preview and safe-fallback correction — 2026-08-14
 
 - The local candidate now separates a protected, manual immutable Vercel Preview from staged Production artifacts. Preview accepts only an exact open same-repository PR head SHA targeting `main`, uses Preview environment semantics with checkout disabled, assigns no Production alias, performs protected-route smoke checks, and retains a role-bound receipt.

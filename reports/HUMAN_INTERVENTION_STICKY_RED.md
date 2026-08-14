@@ -28,11 +28,40 @@ After the exact completion signal, Sushma resumes from the immutable integration
 
 ---
 
+# HUMAN INTERVENTION REQUIRED — CANONICAL GITHUB DELIVERY AUTHORITY
+
+Updated: 2026-08-14
+
+## What is blocked
+
+The canonical integration candidate is locally verified, but the authenticated GitHub identity `avloy07-eng` has `pull=true` and `push=false` on `CubiqoUnited/carlophillips-site`. The protected Preview workflow intentionally rejects fork-owned code, so a fork pull request alone cannot receive protected Vercel credentials or become canonical `main`.
+
+## Exact human action
+
+1. Manually open GitHub → `CubiqoUnited/carlophillips-site` → Settings → Collaborators/Teams and grant `avloy07-eng` the minimum repository role that permits pushing a temporary `codex/*` branch and updating its pull request. Do not grant organization administration.
+2. Configure the `Preview` and `Production` environments and `main` ruleset exactly as recorded later in this file: required reviewers, `CI / Verify`, blocked force-push/deletion, and environment-scoped Vercel secret/variable names only.
+3. Signal completion in the active CARLOPHILLIPS task as: `CP canonical GitHub delivery ready`.
+
+If permission cannot be granted, a current repository maintainer must push the exact candidate commit to a same-repository `codex/*` branch and own the protected PR/merge. Do not copy files manually or merge the fork branch without preserving the exact SHA and checks.
+
+## Cost and risk
+
+- No charge is intended.
+- Repository write access can alter source and workflows. Keep branch protection and required review enabled; do not grant admin or bypass rights.
+
+## Resume point
+
+Sushma rechecks permissions read-only, pushes the exact candidate, opens/updates the canonical PR, runs `CI / Verify`, and only then dispatches the protected immutable Preview after Clerk provisioning is complete.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — CONTAIN LIVE CHECKOUT AUTHORITY DEFECT
 
 Updated: 2026-08-14
 
 ## What is blocked
+
+The current superseding candidate is exact commit `ee5ebaece14fe75356461bce3e02292b55d29ef6`. Its frozen verification passes 44 files / 468 tests, and exact headless QA passes 689/689 findings with 68 screenshots and eight byte-identical public comparisons. Boss has requested staging and Production delivery, but the request does not bypass the missing canonical GitHub write path, Clerk Product Owner provisioning, protected Preview evidence, or safe candidate/fallback receipts.
 
 The live Signature Hoodie PDP was independently observed showing `Continue to checkout` while the canonical Product Release Record is Draft, required fingerprints and approvals are missing, rollback verification is null, and the Media Registry has zero storefront bindings. A historical single-product launch file bypassed the canonical release and media gates.
 
