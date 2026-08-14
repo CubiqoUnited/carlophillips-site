@@ -129,7 +129,10 @@
       "group": "sale",
       "status": "human_required",
       "owner": "Product Owner and commerce operator",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        "contracts/order-lifecycle-event.schema.json",
+        "tests/order-lifecycle.test.js"
+      ],
       "blocker": {
         "code": "CONTROLLED_ORDER_NOT_AUTHORIZED",
         "humanAction": "After all release gates pass, approve one exact controlled order, payment exposure, shipping destination, tax, total, and refund boundary.",
@@ -142,7 +145,10 @@
       "group": "post-sale",
       "status": "blocked",
       "owner": "Fulfillment operator",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        "contracts/order-lifecycle-event.schema.json",
+        "tests/order-lifecycle.test.js"
+      ],
       "blocker": {
         "code": "NO_CONTROLLED_ORDER_LIFECYCLE",
         "humanAction": "Do not infer fulfillment from installed-app or product-mapping evidence.",
@@ -155,7 +161,11 @@
       "group": "post-sale",
       "status": "human_required",
       "owner": "Support and operations owner",
-      "evidenceRefs": ["config/capability-registry.json"],
+      "evidenceRefs": [
+        "config/capability-registry.json",
+        "contracts/order-lifecycle-event.schema.json",
+        "tests/order-lifecycle.test.js"
+      ],
       "blocker": {
         "code": "POST_SALE_OWNERS_UNSELECTED",
         "humanAction": "Approve one accountable owner, privacy/retention policy, access scope, service level, and cost boundary for each post-sale capability.",

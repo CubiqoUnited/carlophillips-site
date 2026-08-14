@@ -83,6 +83,27 @@ describe('capability registry policy', () => {
     ).status).toBe('human_required');
   });
 
+  it('registers the lifecycle reducer as local-only contract logic', () => {
+    const registry = getCapabilityRegistry();
+    expect(discoverCapability(
+      registry,
+      'sale-post-sale-lifecycle-core',
+      'reduce-lifecycle'
+    )).toMatchObject({
+      status: 'ready',
+      callableSurface: 'local',
+      operationalAuthority: 'local_only',
+    });
+    expect(discoverCapability(
+      registry,
+      'sale-post-sale-lifecycle-core',
+      'refund'
+    )).toMatchObject({
+      status: 'human_required',
+      operationalAuthority: 'blocked',
+    });
+  });
+
   it('keeps OTP-gated app workers registered but non-callable', () => {
     const registry = getCapabilityRegistry();
     for (const [capability, operation] of [

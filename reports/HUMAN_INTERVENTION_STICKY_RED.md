@@ -8,6 +8,8 @@ The live Signature Hoodie PDP was independently observed showing `Continue to ch
 
 The tested candidate on branch `codex/cp-e2e-admin-control-plane`, exact clean implementation commit `1ea82ef`, removes that authority path, denies checkout before any Shopify read or cart mutation, and requires an independent `checkoutAllowed` decision before the PDP can render a checkout form. It also contains the local Product Owner-only Theme proposal screen and an Evidence Health reconciliation view. Historical cart proof is now `cart-write-test` evidence-only; it cannot satisfy operational `cart-write`. Source QA passes 40 files / 382 tests and the integrated browser matrix passes 538/538 checks with 58 screenshots and an 8/8 exact zero-pixel public comparison. This local change does not alter Production.
 
+A subsequent local-only lifecycle core validates and projects sanitized payment-to-post-sale events, but it has no webhook listener, provider credential, durable database, customer data, connector, payment/order/refund authority, or external mutation. It does not reduce any human action below and does not make the live funnel ready.
+
 ## Exact human action
 
 1. Boss decides whether to authorize a fail-closed hotfix deployment from a new immutable reviewed candidate, or to authorize a rollback only after the proposed rollback artifact is verified not to contain the same bypass.

@@ -327,6 +327,20 @@
       }
     },
     {
+      "capability": "sale-post-sale-lifecycle-core",
+      "selectedAdapter": "cp-order-lifecycle",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "observedAt": "2026-08-14",
+      "evidenceRef": "tests/order-lifecycle.test.js",
+      "allowedOperations": ["validate-sanitized-event", "reduce-lifecycle", "project-sanitized-state"],
+      "requiresApproval": ["privacy", "connector", "payment", "order", "refund", "production"],
+      "costGate": "pure local validation and projection only; no provider ingress, customer data, external write, payment, order, refund, or notification",
+      "draftSafety": "strict binding, idempotency, sequence, hash-chain, transition, authority-fingerprint, and PII rejection gates; no event can approve a release or perform a side effect",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
       "capability": "append-only-operational-audit",
       "selectedAdapter": null,
       "accessState": "unavailable",

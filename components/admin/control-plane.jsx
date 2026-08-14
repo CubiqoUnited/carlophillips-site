@@ -150,6 +150,13 @@ function LifecycleView({ summary, blockers }) {
         </div>
         <p>{summary.detail}</p>
       </article>
+      {summary.rows.length ? <Rows columns={[
+        { key: 'sequence', label: 'Sequence' },
+        { key: 'event', label: 'Event' },
+        { key: 'source', label: 'Source' },
+        { key: 'recordedAt', label: 'Recorded' },
+        { key: 'classification', label: 'Classification', render: row => <Status value={row.classification} /> },
+      ]} rows={summary.rows} /> : null}
       <section className={styles.section}>
         <div className={styles.sectionHeading}>
           <div><span className={styles.eyebrow}>Dependencies</span><h2>Blocked lifecycle stages</h2></div>

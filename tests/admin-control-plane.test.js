@@ -116,6 +116,13 @@ describe('admin operational projection', () => {
     expect(model.lifecycle.orders.title).toBe('No controlled order exists.');
     expect(model.lifecycle.postSale.title).toBe('No post-sale case exists.');
     expect(model.lifecycle.analytics.title).toBe('No approved analytics ledger exists.');
+    expect(model.lifecycle).toMatchObject({
+      authoritative: false,
+      source: 'no_controlled_order_observed',
+      orders: { rows: [] },
+      postSale: { rows: [] },
+      analytics: { rows: [] },
+    });
   });
 
   it('does not project raw Shopify or POD references', () => {

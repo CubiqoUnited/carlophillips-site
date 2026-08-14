@@ -17,6 +17,7 @@ import mediaAssetSchema from '../contracts/media-asset.schema.json';
 import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
 import releaseTransitionDecisionSchema from '../contracts/release-transition-decision.schema.json';
+import orderLifecycleEventSchema from '../contracts/order-lifecycle-event.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
@@ -557,5 +558,38 @@ describe('truth contracts', () => {
       requiresApproval: ['activation', 'production', 'order'],
       blocker: { code: 'CART_ACTIVATION_AUTHORITY_REQUIRED' },
     });
+  });
+
+  it('validates the PII-safe, release-bound order lifecycle event contract', () => {
+    const lifecycleEvent = {
+      schemaVersion: 'cp.order-lifecycle-event.v1',
+      eventId: 'evt-lifecycle-001',
+      idempotencyKey: 'lifecycle:001:payment-authorized',
+      sequence: 1,
+      aggregateReferenceHash: `sha256:${'a'.repeat(64)}`,
+      binding: {
+        releaseId: 'cp-signature-hoodie-2026-001',
+        releaseFingerprint: `sha256:${'b'.repeat(64)}`,
+        variantFingerprint: `sha256:${'c'.repeat(64)}`,
+        environment: 'production',
+      },
+      eventType: 'payment-authorized',
+      source: 'commerce-gateway',
+      occurredAt: '2026-08-14T16:00:00Z',
+      recordedAt: '2026-08-14T16:00:01Z',
+      authority: {
+        releaseState: 'released',
+        approvalFingerprints: [`sha256:${'d'.repeat(64)}`],
+        checkoutAuthorizationFingerprint: `sha256:${'e'.repeat(64)}`,
+        refundAuthorizationFingerprint: null,
+      },
+      details: { amount: { amount: '128.00', currency: 'USD' } },
+      dataClassification: 'sanitized_operational',
+      previousEventHash: null,
+      eventHash: `sha256:${'f'.repeat(64)}`,
+    };
+    expect(ajv.validate(orderLifecycleEventSchema, lifecycleEvent), ajv.errorsText()).toBe(true);
+    expect(Object.keys(orderLifecycleEventSchema.properties.details.properties))
+      .not.toEqual(expect.arrayContaining(['name', 'email', 'address', 'phone', 'customer', 'orderId']));
   });
 });
