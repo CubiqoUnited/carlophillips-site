@@ -1,7 +1,33 @@
 import { createProductObservation } from '../../lib/commerce/product-observation.js';
 import { fingerprintStorefrontMedia } from '../../lib/commerce/media-visibility-policy.js';
+import {
+  fingerprintReleaseApprovalTarget,
+  fingerprintReleaseArtifact,
+} from '../../lib/releases/product-release-transition.js';
 
 const observedAt = '2026-07-22T00:00:00Z';
+const candidateCommit = 'abcdef1';
+
+function evidenceBinding(reference, fingerprintCharacter, recordedAt = '2026-07-22T00:01:00Z') {
+  return {
+    reference,
+    fingerprint: `sha256:${fingerprintCharacter.repeat(64)}`,
+    releaseId: 'cp-test-release-2026-001',
+    candidateCommit,
+    recordedAt,
+  };
+}
+
+function approvalEvidence(scope, fingerprintCharacter, approvedTargetFingerprint) {
+  return {
+    reference: `approval/${scope}.json`,
+    fingerprint: `sha256:${fingerprintCharacter.repeat(64)}`,
+    releaseId: 'cp-test-release-2026-001',
+    candidateCommit,
+    approvedTargetFingerprint,
+    approvedAt: '2026-07-22T00:05:00Z',
+  };
+}
 
 const imageModalities = [
   'front',
@@ -87,7 +113,8 @@ export function createCompleteReleaseRecord(
   } = {}
 ) {
   const observation = createObservedEnvelope(handle, environment);
-  return {
+  const mappingFingerprint = `sha256:${'d'.repeat(64)}`;
+  const record = {
     schemaVersion: 'cp.product-release.v1',
     releaseId: 'cp-test-release-2026-001',
     state,
@@ -103,33 +130,69 @@ export function createCompleteReleaseRecord(
       observationFingerprint: observation.observationFingerprint,
       observationFingerprintStatus: 'reviewed',
       observationReviewEvidence: 'evidence/product-observation-review.json',
+      observationReviewBinding: evidenceBinding('evidence/product-observation-review.json', 'c'),
+      productionObservation: null,
     },
     fulfillmentMappings: [{
       adapter: 'test-provider',
       providerProductId: 'sanitized-provider-product',
       variantFingerprint: observation.variantFingerprint,
       variantFingerprintStatus: 'observed',
+      mappingFingerprint,
+      mappingFingerprintStatus: 'reviewed',
     }],
+    physicalSample: {
+      status: 'approved',
+      providerMappingFingerprint: mappingFingerprint,
+      sampleFingerprint: `sha256:${'e'.repeat(64)}`,
+      evidence: evidenceBinding('evidence/physical-sample.json', 'f', '2026-07-22T00:03:00Z'),
+      approvalEvidence: evidenceBinding('approval/physical-sample.json', '1', '2026-07-22T00:04:00Z'),
+      inspection: {
+        fit: 'verified',
+        colour: 'verified',
+        artworkPlacement: 'verified',
+        finish: 'verified',
+      },
+    },
     mediaManifest: 'fixtures/complete-media-manifest.json',
+    mediaManifestFingerprint: fingerprintReleaseArtifact(createCompleteMediaManifest()),
     approvals: {
-      product: { status: 'approved', owner: 'Product Owner' },
-      media: { status: 'approved', owner: 'Product Owner/designee' },
-      fulfillment: { status: 'approved', owner: 'Product Owner/designee' },
+      product: { status: 'approved', owner: 'Product Owner', evidence: null },
+      media: { status: 'approved', owner: 'Product Owner/designee', evidence: null },
+      fulfillment: { status: 'approved', owner: 'Product Owner/designee', evidence: null },
     },
     candidate: {
-      gitCommit: 'abcdef1',
-      buildEvidence: 'test_reports/candidate/verification.json',
-      stagingEvidence: 'test_reports/candidate/staging.json',
+      gitCommit: candidateCommit,
+      buildEvidence: evidenceBinding('test_reports/candidate/verification.json', '3'),
+      stagingEvidence: evidenceBinding('test_reports/candidate/staging.json', '4'),
+      releaseEvidenceFingerprint: null,
     },
     rollback: {
       strategy: 'withdraw-release',
-      planEvidence: 'test_reports/candidate/rollback-plan.json',
+      planEvidence: evidenceBinding('test_reports/candidate/rollback-plan.json', '5'),
       verificationEvidence: state === 'released'
-        ? 'test_reports/candidate/rollback-verification.json'
+        ? evidenceBinding('test_reports/candidate/rollback-verification.json', '6', '2026-07-22T00:09:00Z')
         : null,
       previousReleaseId: null,
     },
   };
+  record.candidate.releaseEvidenceFingerprint = fingerprintReleaseApprovalTarget(record);
+  record.approvals.product.evidence = approvalEvidence('product', '7', record.candidate.releaseEvidenceFingerprint);
+  record.approvals.media.evidence = approvalEvidence('media', '8', record.candidate.releaseEvidenceFingerprint);
+  record.approvals.fulfillment.evidence = approvalEvidence('fulfillment', '9', record.candidate.releaseEvidenceFingerprint);
+  if (state === 'released') {
+    record.shopify.productionObservation = {
+      environment: 'production',
+      statusObserved: 'ACTIVE',
+      observedAt: '2026-07-22T00:10:00Z',
+      variantFingerprint: observation.variantFingerprint,
+      commerceFactsFingerprint: observation.commerceFactsFingerprint,
+      currentObservationFingerprint: `sha256:${'a'.repeat(64)}`,
+      reviewedObservationFingerprint: observation.observationFingerprint,
+      capabilityEvidence: evidenceBinding('evidence/production-storefront-read.json', 'b', '2026-07-22T00:10:00Z'),
+    };
+  }
+  return record;
 }
 
 export function createObservedShopifyProduct(

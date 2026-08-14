@@ -475,7 +475,13 @@
 - [x] Capture and inspect reviewer/Product Owner/denied admin plus public-regression evidence at 1440×1000, 1024×768, and 390×844; 459/459 checks cover console, network, decoded media, overflow, accessibility, provider/raw-ID leakage, Theme authorization/API boundaries, and canonical Draft checkout denial.
 - [x] Bind the tested integrated candidate at `05d3d72` and its evidence report without touching the unrelated dirty worktree.
 - [x] Audit independent architecture commit `1f3fc46`; record why its 312-file, nine-commits-behind monorepo rewrite cannot be directly merged without deleting/conflicting with current admin, Theme, release, and PR #9 parity work.
-- [ ] Rebase or selectively port the typed `apps/web`, package, Storybook, and 17-step PODPIPE architecture onto the newest approved candidate, preserving current admin/release authority and rerunning full QA; do not treat `1f3fc46` itself as release-ready.
+- [x] Resolve the `1f3fc46` port decision: reject its destructive 1,072-file direct comparison and unsafe raw webhook/PODPIPE authority; selectively implement the higher-priority canonical release-proof bindings without removing the current Admin, Theme, routes, or fail-closed authority.
+- [x] Require immutable release/candidate/fingerprint descriptors for observation review, build, staging, rollback, sample, and Production capability evidence.
+- [x] Require an exact provider-mapped physical sample with verified fit, colour, artwork placement, finish, and approval evidence before Approved.
+- [x] Bind product, media, and fulfillment approvals to the complete release-evidence fingerprint and reject altered manifests, tampered evidence, and cross-release/cross-candidate reuse.
+- [x] Require a fresh post-approval Production ACTIVE observation with matching reviewed variant identity and commerce facts before Released.
+- [x] Reconcile obsolete Shopify-login capability blockers and make Admin state explicit as `Release: Draft` plus `System: Not end-to-end ready`.
+- [x] Pass 43 files / 433 tests, zero-vulnerability audit, optimized build, 669/669 headless checks, 61 screenshots, inspected desktop/mobile release views, and 8/8 exact zero-pixel public comparisons.
 - [ ] Product Owner authorizes a new immutable fail-closed Preview; no Preview deployment is implied by this local task.
 - [ ] Product Owner reviews exact Preview containment evidence and separately authorizes or rejects Production containment.
 - [ ] Verify Apliiq mapping and one physical sample through the sticky handoff; no spend is authorized yet.

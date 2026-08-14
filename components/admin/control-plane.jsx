@@ -3,9 +3,9 @@ import { adminSections, statusLabel } from '@/lib/admin/control-plane';
 import { ThemeEditor } from './theme-editor';
 import styles from '@/app/admin/admin.module.css';
 
-function Status({ value }) {
+function Status({ value, label }) {
   const normalized = String(value || 'unknown').replaceAll('_', '-');
-  return <span className={styles.status} data-status={normalized}>{statusLabel(value)}</span>;
+  return <span className={styles.status} data-status={normalized}>{label ? `${label}: ` : ''}{statusLabel(value)}</span>;
 }
 
 function Metric({ label, value, detail }) {
@@ -193,6 +193,35 @@ function CommandsView({ commands }) {
   );
 }
 
+function ReleasesView({ model }) {
+  const blockers = model.blockers.filter(blocker => {
+    const stage = model.stages.find(item => item.id === blocker.stageId);
+    return stage?.group === 'release';
+  });
+  return (
+    <>
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Immutable authority envelope</span><h2>Release-proof bindings</h2></div>
+          <p>File paths and approval labels are insufficient; every descriptor must bind to the exact release and candidate.</p>
+        </div>
+        <Rows columns={[
+          { key: 'gate', label: 'Gate' },
+          { key: 'status', label: 'Status', render: row => <Status value={row.status} /> },
+          { key: 'boundary', label: 'Required binding' },
+        ]} rows={model.release.bindings} />
+      </section>
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Release dependencies</span><h2>Blocked transitions</h2></div>
+          <p>The current Draft cannot advance until its canonical stage blockers and immutable bindings both pass.</p>
+        </div>
+        <BlockerCards blockers={blockers} />
+      </section>
+    </>
+  );
+}
+
 function SectionView({ section, model, themeModel }) {
   if (section === 'overview') return <Overview model={model} />;
   if (section === 'evidence') return <EvidenceHealth model={model} />;
@@ -227,6 +256,7 @@ function SectionView({ section, model, themeModel }) {
     { key: 'status', label: 'Status', render: row => <Status value={row.status} /> },
   ]} rows={model.approvals} />;
   if (section === 'commands') return <CommandsView commands={model.commands} />;
+  if (section === 'releases') return <ReleasesView model={model} />;
   if (section === 'capabilities') return <Rows columns={[
     { key: 'id', label: 'Capability' },
     { key: 'callableSurface', label: 'Surface' },
@@ -294,7 +324,12 @@ export function AdminControlPlane({ activeSection, model, themeModel, viewerRole
             <h1>{definition.label}</h1>
             <p>{definition.description}</p>
           </div>
-          {isTheme ? <Status value="branch_proposal" /> : <Status value={model.release.state} />}
+          {isTheme ? <Status value="branch_proposal" /> : (
+            <div className={styles.headerStatuses} aria-label="Canonical release and system status">
+              <Status value={model.release.state} label="Release" />
+              <Status value={model.meta.systemStatus} label="System" />
+            </div>
+          )}
         </header>
         <div className={styles.warning} role="status"><span aria-hidden="true">!</span><p>{isTheme ? 'Local repo proposal only. Production is unchanged; QA, pull request, Preview, review, and merge remain separate.' : model.meta.warning}</p></div>
         <SectionView section={activeSection} model={model} themeModel={themeModel} />

@@ -322,38 +322,34 @@ describe('truth contracts', () => {
   });
 
   it('validates a pending release record without claiming approval', () => {
-    expect(validateProductRelease({
-      schemaVersion: 'cp.product-release.v1',
-      releaseId: 'cp-test-product-2026-001',
-      state: 'draft',
-      shopify: {
-        productReference: 'sanitized-test-product',
-        handle: 'test-product',
-        statusObserved: 'DRAFT',
-        observedAt: '2026-07-22T22:00:00Z',
-        variantFingerprint: `sha256:${'a'.repeat(64)}`,
-        variantFingerprintStatus: 'observed',
-        commerceFactsFingerprint: `sha256:${'b'.repeat(64)}`,
-        commerceFactsFingerprintStatus: 'reviewed',
-        observationFingerprint: `sha256:${'c'.repeat(64)}`,
-        observationFingerprintStatus: 'reviewed',
-        observationReviewEvidence: 'approval/product-observation-001',
-      },
-      fulfillmentMappings: [],
-      mediaManifest: 'fixtures/test-media-manifest.json',
-      approvals: {
-        product: { status: 'pending', owner: 'Product Owner' },
-        media: { status: 'pending', owner: 'Product Owner/designee' },
-        fulfillment: { status: 'pending', owner: 'Product Owner/designee' },
-      },
-      candidate: { gitCommit: null, buildEvidence: null, stagingEvidence: null },
-      rollback: {
-        strategy: null,
-        planEvidence: null,
-        verificationEvidence: null,
-        previousReleaseId: null,
-      },
-    })).toBe(true);
+    const record = createCompleteReleaseRecord('draft');
+    record.fulfillmentMappings = [];
+    record.physicalSample = {
+      status: 'not_ordered',
+      providerMappingFingerprint: null,
+      sampleFingerprint: null,
+      evidence: null,
+      approvalEvidence: null,
+      inspection: { fit: 'pending', colour: 'pending', artworkPlacement: 'pending', finish: 'pending' },
+    };
+    record.mediaManifestFingerprint = null;
+    for (const approval of Object.values(record.approvals)) {
+      approval.status = 'pending';
+      approval.evidence = null;
+    }
+    record.candidate = {
+      gitCommit: null,
+      buildEvidence: null,
+      stagingEvidence: null,
+      releaseEvidenceFingerprint: null,
+    };
+    record.rollback = {
+      strategy: null,
+      planEvidence: null,
+      verificationEvidence: null,
+      previousReleaseId: null,
+    };
+    expect(validateProductRelease(record)).toBe(true);
   });
 
   it('validates an explicit unavailable release decision', () => {
@@ -440,6 +436,7 @@ describe('truth contracts', () => {
 
   it.each([
     ['missing fulfillment mapping', record => { record.fulfillmentMappings = []; }],
+    ['unapproved physical sample', record => { record.physicalSample.status = 'not_ordered'; }],
     ['pending product approval', record => { record.approvals.product.status = 'pending'; }],
     ['pending media approval', record => { record.approvals.media.status = 'pending'; }],
     ['pending fulfillment approval', record => { record.approvals.fulfillment.status = 'pending'; }],
@@ -467,6 +464,7 @@ describe('truth contracts', () => {
   it('rejects a Released record without ACTIVE and verified rollback observations', () => {
     const record = createCompleteReleaseRecord('released');
     record.shopify.statusObserved = 'DRAFT';
+    record.shopify.productionObservation = null;
     record.rollback.verificationEvidence = null;
     expect(validateProductRelease(record)).toBe(false);
   });

@@ -127,6 +127,14 @@
   color: var(--cp-semantic-color-copy);
 }
 
+.headerStatuses {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--cp-semantic-space-2);
+}
+
 .status {
   display: inline-flex;
   min-height: var(--cp-semantic-size-touch-target);
@@ -153,6 +161,8 @@
 .status[data-status='historical'],
 .status[data-status='superseded'],
 .status[data-status='conflicting'],
+.status[data-status='not-end-to-end-ready'],
+.status[data-status='not-ordered'],
 .status[data-status='not-implemented'] {
   border-style: dashed;
   background: var(--cp-semantic-color-panel-raised);
@@ -668,6 +678,10 @@
   .sectionHeading,
   .cardHeading {
     display: grid;
+  }
+
+  .headerStatuses {
+    justify-content: flex-start;
   }
 
   .metrics,

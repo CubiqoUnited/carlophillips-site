@@ -90,6 +90,8 @@ try {
       check(!/(gid:\/\/shopify|9432704909549|5958463)/i.test(pageState.bodyText), 'Admin route exposes no raw Shopify or POD reference.', { viewport: viewport.id, route });
       check(Boolean(pageState.activeNav), 'Admin route exposes a labelled active navigation state.', { viewport: viewport.id, route });
       check(await page.getByRole('link', { name: 'Theme', exact: true }).count() === 0, 'Reviewer navigation hides Product Owner Theme.', { viewport: viewport.id, route });
+      check(pageState.bodyText.includes('RELEASE: DRAFT'), 'Admin route labels the canonical release state explicitly.', { viewport: viewport.id, route });
+      check(pageState.bodyText.includes('SYSTEM: NOT END TO END READY'), 'Admin route labels whole-system readiness explicitly.', { viewport: viewport.id, route });
 
       if (section === 'evidence') {
         check(pageState.bodyText.includes('Evidence is not authority'), 'Evidence screen states the technical-evidence authority boundary.', { viewport: viewport.id });
@@ -97,6 +99,12 @@ try {
         check(pageState.bodyText.includes('CART_ACTIVATION_AUTHORITY_REQUIRED'), 'Evidence screen keeps the historical cart test activation-blocked.', { viewport: viewport.id });
       }
       if (section === 'orders') check(pageState.bodyText.includes('No controlled order exists.'), 'Orders screen exposes a truthful canonical empty state.', { viewport: viewport.id });
+      if (section === 'releases') {
+        check(pageState.bodyText.includes('Release-proof bindings'), 'Releases screen exposes the immutable authority envelope.', { viewport: viewport.id });
+        check(pageState.bodyText.includes('Physical sample'), 'Releases screen exposes the physical-sample gate.', { viewport: viewport.id });
+        check(pageState.bodyText.includes('Release evidence fingerprint'), 'Releases screen exposes the aggregate evidence binding.', { viewport: viewport.id });
+        check(pageState.bodyText.includes('Fresh Production observation'), 'Releases screen exposes the fresh Production-observation gate.', { viewport: viewport.id });
+      }
       if (section === 'post-sale') check(pageState.bodyText.includes('No post-sale case exists.'), 'Post-sale screen exposes a truthful canonical empty state.', { viewport: viewport.id });
       if (section === 'analytics') check(pageState.bodyText.includes('No approved analytics ledger exists.'), 'Analytics screen exposes a truthful canonical empty state.', { viewport: viewport.id });
       if (section === 'audit') check(pageState.bodyText.includes('durable hash-chained audit is not implemented'), 'Audit screen disclaims durable append-only persistence.', { viewport: viewport.id });

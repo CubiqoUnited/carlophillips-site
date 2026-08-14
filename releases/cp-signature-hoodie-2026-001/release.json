@@ -13,30 +13,55 @@
     "commerceFactsFingerprintStatus": "missing",
     "observationFingerprint": null,
     "observationFingerprintStatus": "missing",
-    "observationReviewEvidence": null
+    "observationReviewEvidence": null,
+    "observationReviewBinding": null,
+    "productionObservation": null
   },
   "fulfillmentMappings": [
     {
       "adapter": "apliiq",
       "providerProductId": "5958463",
       "variantFingerprint": null,
-      "variantFingerprintStatus": "missing"
+      "variantFingerprintStatus": "missing",
+      "mappingFingerprint": null,
+      "mappingFingerprintStatus": "missing"
     }
   ],
+  "physicalSample": {
+    "status": "not_ordered",
+    "providerMappingFingerprint": null,
+    "sampleFingerprint": null,
+    "evidence": null,
+    "approvalEvidence": null,
+    "inspection": {
+      "fit": "pending",
+      "colour": "pending",
+      "artworkPlacement": "pending",
+      "finish": "pending"
+    }
+  },
   "mediaManifest": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
+  "mediaManifestFingerprint": null,
   "approvals": {
-    "product": { "status": "pending", "owner": "Product Owner" },
-    "media": { "status": "pending", "owner": "Product Owner/designee" },
-    "fulfillment": { "status": "pending", "owner": "Product Owner/designee" }
+    "product": { "status": "pending", "owner": "Product Owner", "evidence": null },
+    "media": { "status": "pending", "owner": "Product Owner/designee", "evidence": null },
+    "fulfillment": { "status": "pending", "owner": "Product Owner/designee", "evidence": null }
   },
   "candidate": {
     "gitCommit": null,
     "buildEvidence": null,
-    "stagingEvidence": null
+    "stagingEvidence": null,
+    "releaseEvidenceFingerprint": null
   },
   "rollback": {
     "strategy": "withdraw-release",
-    "planEvidence": "releases/cp-signature-hoodie-2026-001/rollback-plan.md",
+    "planEvidence": {
+      "reference": "releases/cp-signature-hoodie-2026-001/rollback-plan.md",
+      "fingerprint": "sha256:f209d9cf1fbebddb7d79da616d8aab3878f2667aed5469d362e9ea65544a1fbd",
+      "releaseId": "cp-signature-hoodie-2026-001",
+      "candidateCommit": null,
+      "recordedAt": "2026-07-22T00:00:00Z"
+    },
     "verificationEvidence": null,
     "previousReleaseId": null
   }

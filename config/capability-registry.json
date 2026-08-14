@@ -68,10 +68,12 @@
       "costGate": "sample/order/fulfillment approval required",
       "draftSafety": "draft-only until release approvals",
       "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"],
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-shopify-capability-followthrough-2026-08-04/report.md",
       "blocker": {
-        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
-        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
-        "resumePoint": "Resume at installed-app inventory, open Apliiq read-only, and observe the Hoodie provider-to-Shopify mapping without ordering, sampling, or enabling fulfillment."
+        "code": "APLIQ_PROVIDER_SIGN_IN_REQUIRED",
+        "humanAction": "Complete the newest Apliiq password-reset email link, confirm the new password, and sign in without accepting charges or changing configuration; then signal `Apliiq open`.",
+        "resumePoint": "Observe the exact Hoodie product, design, decoration, and variant mapping read-only without ordering, sampling, syncing, or enabling fulfillment."
       }
     },
     {
@@ -84,10 +86,12 @@
       "costGate": "plan/credit approval required",
       "draftSafety": "exact-product bake-off and human QA required",
       "alternatives": ["spin-studio", "zs-spin-view"],
+      "observedAt": "2026-08-08",
+      "evidenceRef": "test_reports/cp-media-expansion-2026-08-08/report.md",
       "blocker": {
-        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
-        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
-        "resumePoint": "Resume at installed-app inventory, inspect Spin Studio and ZS-Spin-View settings/billing read-only, and select neither until evidence and Product Owner approval."
+        "code": "SPIN_SOURCE_AND_HEADLESS_PATH_UNPROVEN",
+        "humanAction": "Obtain or approve capture of 16–24 genuine angle images or a real GLB, and separately approve a no-charge headless export or API compatibility check; keep the theme embed disabled.",
+        "resumePoint": "Inspect an immutable exact-product spin output and prove a headless-safe delivery path before any activation, charge, or storefront binding."
       }
     },
     {
@@ -100,10 +104,12 @@
       "costGate": "credit/subscription approval required",
       "draftSafety": "derived provenance and human media approval required",
       "alternatives": ["modelize"],
+      "observedAt": "2026-08-08",
+      "evidenceRef": "test_reports/cp-media-expansion-2026-08-08/report.md",
       "blocker": {
-        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
-        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
-        "resumePoint": "Resume at installed-app inventory, inspect Modelize access/credits/settings read-only, and record inputs, outputs, provenance controls, and Draft-safe export path."
+        "code": "MODELIZE_CREDITS_EXHAUSTED_AND_MEDIA_APPROVALS_MISSING",
+        "humanAction": "Keep the two existing usable outputs as disclosed candidates and the artifacted output quarantined; approve any new plan or credits separately and obtain physical exact-product evidence before factual media approval.",
+        "resumePoint": "Bind only reviewed exact-product candidates to the Media Registry, with provenance and Preview-only limits, after explicit media approval."
       }
     },
     {
@@ -116,10 +122,12 @@
       "costGate": "plan and activation approval required",
       "draftSafety": "versioned Draft-safe flow only",
       "alternatives": [],
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-shopify-audit-2026-08-04/audit-report.md",
       "blocker": {
-        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
-        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
-        "resumePoint": "Resume at installed-app inventory, inspect Flow access/templates read-only, and record supported triggers/actions without enabling or editing a workflow."
+        "code": "SHOPIFY_FLOW_INACTIVE_AND_ACTIVATION_UNAPPROVED",
+        "humanAction": "Review the existing inactive `CARLOPHILLIPS - POD Product Review Gate` steps and version read-only, then approve activation separately without granting publication authority.",
+        "resumePoint": "Bind the reviewed Flow version to the Draft-only release process, activate only after exact approval, and verify it cannot publish or bypass release gates."
       }
     },
     {
@@ -132,10 +140,12 @@
       "costGate": "credits, plan changes, generation, and publication require approval",
       "draftSafety": "read-only audit first; any later job must remain Draft and release-record bound",
       "alternatives": [],
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-shopify-audit-2026-08-04/audit-report.md",
       "blocker": {
-        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
-        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
-        "resumePoint": "Resume at installed-app inventory, inspect MyDesigns access/API/billing read-only, and record whether Draft-safe bulk jobs are actually callable."
+        "code": "MYDESIGNS_PERMISSION_AND_SELECTION_UNAPPROVED",
+        "humanAction": "Keep MyDesigns inactive while Apliiq and the selected media tools cover the Hoodie POC; approve any new theme permission, provider change, or paid plan separately.",
+        "resumePoint": "Only if the selected stack fails, audit the exact MyDesigns permission, API, billing, and Draft-safe export boundary before selecting it."
       }
     },
     {
@@ -148,10 +158,12 @@
       "costGate": "plan, credits, and paid data require approval",
       "draftSafety": "research output is evidence input only and never automatic product or publish truth",
       "alternatives": [],
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-shopify-audit-2026-08-04/audit-report.md",
       "blocker": {
-        "code": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED",
-        "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
-        "resumePoint": "Resume at installed-app inventory, inspect CS Trending Products Finder access/export/billing read-only, and record source, date, confidence, and callable surface."
+        "code": "TREND_RESEARCH_SCOPE_AND_COST_UNAPPROVED",
+        "humanAction": "Approve the exact research source, date range, access boundary, credit or plan cost, and attribution requirements before any new trend extraction.",
+        "resumePoint": "Record a dated, attributed research-only input with freshness and confidence; it must remain inspiration evidence and cannot establish product, media, or publication truth."
       }
     },
     {

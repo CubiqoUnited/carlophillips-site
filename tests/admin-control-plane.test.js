@@ -102,11 +102,17 @@ describe('admin operational projection', () => {
 
   it('reports canonical Draft truth and does not synthesize release readiness', () => {
     expect(model.release.state).toBe('draft');
+    expect(model.meta.systemStatus).toBe('not_end_to_end_ready');
     expect(model.meta.authoritative).toBe(false);
     expect(model.metrics.openStages).toBe(model.metrics.stages);
     expect(model.metrics.boundMedia).toBe(0);
     expect(model.metrics.evidenceConflicts).toBeGreaterThan(0);
     expect(model.blockers.find(blocker => blocker.stageId === 'cart-checkout')?.code).toBe('CHECKOUT_AUTHORITY_NOT_RELEASE_BOUND');
+    expect(model.release.bindings).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'physical-sample', status: 'not_ordered' }),
+      expect.objectContaining({ id: 'release-fingerprint', status: 'missing' }),
+      expect.objectContaining({ id: 'production-observation', status: 'missing' }),
+    ]));
   });
 
   it('labels audit and lifecycle projections without inventing durable operations', () => {
