@@ -4,6 +4,14 @@ Updated: 2026-08-14
 Branch: integrated local candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `cd5c64d`; no push, PR, new release candidate, merge, or Production change from this branch
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## CI/CD immutable Preview and safe-fallback correction — 2026-08-14
+
+- The local candidate now separates a protected, manual immutable Vercel Preview from staged Production artifacts. Preview accepts only an exact open same-repository PR head SHA targeting `main`, uses Preview environment semantics with checkout disabled, assigns no Production alias, performs protected-route smoke checks, and retains a role-bound receipt.
+- A staged Production run builds one exact `main` SHA/release with checkout disabled and deploys that prebuilt output twice, without aliases, as distinct `staged-production` and `safe-fallback` artifacts. Receipt verification requires distinct deployment IDs and URLs plus identical SHA, release, build semantics, project identity, zero aliases, and an unchanged live Production drift anchor.
+- Production promotion re-verifies both artifacts and the compare-and-swap drift anchor immediately before promotion. After any attempted-promotion failure, recovery promotes only the separately verified safe-fallback ID. The captured current Production deployment—including observed deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`—is an unsafe drift anchor only and is never emitted or used as a rollback target.
+- Workflow fixtures deterministically cover role, SHA/release, metadata/alias tampering, distinct identity, provider-recorded promotion wrappers, fallback identity, and rejection of unsafe-anchor recovery. The CI consolidation, workflow correction, and Apliiq evidence reconciliation remain local: no push, merge, workflow dispatch, deployment, alias, Shopify/POD mutation, purchase, or Production change occurred.
+- Read-only Apliiq authentication and saved-product facts are already evidenced for product `5958463`, blank `IND4000`, black, front embroidery, and the retained artwork. The remaining provider boundary is an exact variant/SKU mapping fingerprint plus a separately approved, delivered, inspected physical sample; these observations grant no ordering, fulfillment, publication, release, or commerce authority.
+
 ## End-to-end authority containment and admin control plane — 2026-08-14
 
 - Strict Sushma, Aarti, Richa, Pushpa, and Malti reconciliation is **RED / NOT END-TO-END READY**. The canonical Signature Hoodie Product Release Record remains Draft with missing Shopify fingerprints/review, provider mapping fingerprint, physical sample, media approvals/bindings, candidate build/staging evidence, approvals, and rollback verification.
@@ -69,7 +77,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 ## Product Owner priority: physical Hoodie sample first — 2026-08-09
 
 - The Product Owner selected one exact Signature Hoodie sample as the first remaining media-production gate. Additional paid image credits, video, spin, or 3D work should not precede verification of this sample path.
-- The existing Apliiq product/blank/decoration/variant mapping must be observed read-only before any order; the historical `IND4000` resemblance is not ordering evidence.
+- Apliiq authentication and saved-product facts for product `5958463` are evidenced read-only: `IND4000`, black, front embroidery, and the retained artwork. The exact provider variant/SKU mapping fingerprint and physical sample remain unbound; no ordering, fulfillment, or release authority follows from the saved-product observation.
 - No sample charge is approved yet. After mapping verification, the exact item, size, destination requirement, total cost, and risk must be presented for a separate order approval.
 - Once delivered, one consolidated capture supplies truthful fit, fabric, construction, embroidery, motion, 24–36 genuine spin angles, and reference input for an inspected GLB/USDZ. The exact human action and resume points are recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
 
@@ -246,7 +254,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Production and preview HTTP endpoints were diagnosed as `402 DEPLOYMENT_DISABLED` on 2026-07-22.
 - Canonical `main` and `staging` were recorded at `d172cfb`; the Hoodie preview branch is at `425f50b`.
 - The historical Product Owner-observed 30-app Shopify inventory is preserved in a schema-validated evidence record. The authenticated 2026-08-04 read-only audit supersedes it with 33 installed apps and direct browser-surface findings; installation still does not prove an API or authorize writes.
-- Shopify Admin authentication is no longer blocked. The current human boundary is the separate Apliiq provider sign-in required to inspect the exact Hoodie mapping.
+- Shopify Admin and Apliiq read-only authentication are no longer blocked. The current provider boundary is binding the exact Hoodie variant/SKU mapping fingerprint and then obtaining a separately approved physical sample.
 - The App Router now runs on Next.js `15.5.21` Maintenance LTS with React/React DOM `19.2.8`; async route params were migrated and the full local regression passed.
 - The authenticated Modelize app contains one completed three-image Signature Hoodie job (`#137843f7`, observed 2026-08-04). Two usable outputs are stored locally and were selectively published to the Shopify Hoodie on 2026-08-08 under the Product Owner's app-use authorization; the third remains quarantined for a visible layout artifact. They remain AI-assisted visualisations, not physical-product proof.
 
@@ -254,11 +262,11 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 - A normal Corepack-provided `yarn` executable on this machine; verification used Yarn 1.22.22 bootstrapped through the bundled runtime, then proved a frozen install.
 - A completed paid checkout/order and post-order lifecycle; only the safe no-order cart/redirect boundary is proven.
-- Any verified app-private API path for the current installed Shopify app inventory; Shopify Admin browser access is proven, while Apliiq remains at provider sign-in and Storefront secrets remain unconfigured.
+- Any verified app-private API path for the current installed Shopify app inventory; Shopify Admin and Apliiq browser access are proven read-only, while the exact Apliiq variant/SKU fingerprint and Storefront secrets remain unconfigured.
 - Live deployment of the new Shopify-backed commerce build on the production domain; Vercel billing suspension prevents configuration and deployment.
 - Payment, POD order handoff, fulfillment, tracking, support, or returns.
 - Any real product video, spin/360, 3D/AR, or physical on-model/lifestyle campaign asset. The two published Modelize outputs are explicitly AI-assisted visualisations.
-- An authenticated Apliiq observation proving the exact Hoodie design/product/variant mapping. The retained provider tab is at the separate Apliiq sign-in screen.
+- An Apliiq observation binding the exact Hoodie provider variant/SKU fingerprint. Authenticated access and saved-product facts are evidenced, but they do not prove mapping, sample, fulfillment, or release authority.
 - Any approved Modelize plan or credits for additional on-model generation. The observed free allowance is exhausted (3/3); no plan or charge was accepted.
 
 ## Hoodie end-to-end POC checkpoint — 2026-08-04
@@ -293,7 +301,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Unit/contract tests cover add/update/remove transitions, invalid quantities, expired-cart replacement through Shopify, fixture denial, and malicious checkout-host rejection.
 - Desktop/mobile browser checks passed with no console errors, error overlays, or mobile overflow. The active bag showed its unopened state with no checkout link; the Hoodie remained source-labeled and non-buyable. This is not a live cart API proof.
 - A provider-neutral PipelineRun schema/state machine now records all four lanes, idempotent events, isolated blockers, exact resume points, and Product Owner-owned restricted approvals. Runs remain `in_progress_with_blockers` while safe work is actionable and become globally `blocked` only when none remains.
-- The durable Hoodie local simulation completed the safe commerce/orchestration items and remains blocked only on authorized Apliiq observation and media inputs/approval; spend, credits, sample, publish, and production approvals all remain pending.
+- The durable Hoodie local simulation completed the safe commerce/orchestration items and remains blocked on the exact Apliiq variant/SKU mapping fingerprint, physical sample, and media inputs/approval; spend, credits, sample, publish, and Production approvals all remain pending.
 - The media manifest now enumerates every required Hoodie modality. The single front asset remains a pending candidate; back/angle, embroidery/material detail, on-model, lifestyle, spin, exact-product 3D/AR, and video remain unresolved. Release policy accepts a where-feasible omission only through an explicit Product Owner-approved infeasibility record.
 
 ## Cycle 4 verification
@@ -488,7 +496,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 - The in-app Shopify Admin session is authenticated. A read-only audit observed 33 installed apps, the Draft `CARLOPHILLIPS Signature Hoodie`, the active native Headless storefront connection, app permission surfaces, selected dashboards, and current billing boundaries without exposing secrets or changing Shopify.
 - The minimum POC stack is Apliiq for Hoodie POD, Modelize for reviewed still imagery, one provisional spin worker (Spin Studio), native Shopify Headless for Next.js commerce truth, Flow for an approval gate, and the CP Next.js storefront for presentation.
-- Apliiq opens to provider sign-in; Modelize has used 3/3 free images but contains three completed Hoodie outputs; Spin Studio is disabled and has no Hoodie spin; ZS-Spin-View/MyDesigns request new theme permissions; the CP Flow exists but is inactive.
+- Apliiq authenticated read-only access and saved-product facts are evidenced, but exact variant/SKU mapping is still unbound; Modelize has used 3/3 free images but contains three completed Hoodie outputs; Spin Studio is disabled and has no Hoodie spin; ZS-Spin-View/MyDesigns request new theme permissions; the CP Flow exists but is inactive.
 - Native Shopify Headless, not the broken `Carlophillips Headless` custom app or embedded Codex/CLI/Claude connector shells, is the supported storefront path.
 - Follow-through proved exactly where the Modelize allowance went: one Auto Mode job (`#137843f7`) generated three Signature Hoodie images from one reference at 2026-07-11 16:16; all three remain unpublished.
 - Spin Studio is inactive because its required Online Store theme app embed is off. Its documented default installation targets a Shopify theme and replaces a product-gallery image; no export, API, or CP Next.js integration was exposed, so enabling the embed would not activate 360 media on the headless storefront.
@@ -505,11 +513,11 @@ Resume point: mark `shopify-storefront-product-read` ready only with its durable
 
 ### Shopify app capability/access audit
 
-Observed blocker: Shopify Admin is now authenticated and audited. Apliiq accepted a password-reset request, but both owner-supplied candidate passwords were rejected; no provider product/variant mapping was observed. Modelize requires a plan for new generations. Spin Studio's theme embed is disabled and a headless/export path is unproven.
+Observed blocker: Shopify Admin and Apliiq are authenticated read-only. Apliiq saved product `5958463` is evidenced as `IND4000`, black, front embroidery, with the retained artwork; the exact provider variant/SKU fingerprint remains unbound. Modelize requires a plan for new generations. Spin Studio's theme embed is disabled and a headless/export path is unproven.
 
-Human action: complete the newest Apliiq password-reset email link, confirm the new password on Apliiq, and sign in without accepting charges or changing configuration; then signal `Apliiq open`. Approve any Modelize spend, Flow activation, spin configuration, Shopify write/publication, Preview deployment, merge, or production action separately.
+Human action: inspect and record the exact Apliiq provider variant/SKU mapping fingerprint without changing configuration, then obtain the exact one-sample quote. Approve that named item, size, destination, and total separately before any order. Approve any Modelize spend, Flow activation, spin configuration, Shopify write/publication, Preview deployment, merge, or Production action separately.
 
-Resume point: observe the exact Hoodie mapping in Apliiq read-only. The native Headless credential is callable, but the Draft Hoodie is intentionally unavailable to Storefront API; obtain an explicit controlled publication/channel decision before any Shopify write, then bind reviewed Shopify/POD/media evidence before generating a Vercel Preview.
+Resume point: bind the exact Hoodie provider variant/SKU fingerprint to the release evidence, then quote/order/inspect one exact physical sample only after separate approval. The native Headless credential is callable, but the Draft Hoodie is intentionally unavailable to Storefront API; obtain an explicit controlled publication/channel decision before any Shopify write, then bind reviewed Shopify/POD/media evidence before generating a Vercel Preview.
 
 ### Production and commerce operations
 
@@ -523,7 +531,7 @@ Resume point: execute only the specifically approved action, capture evidence wi
 - Observation review, build, staging, rollback, sample, and Production-capability evidence are structured SHA-256 descriptors bound to the exact release and candidate commit. The media manifest and complete candidate truth envelope have separate fingerprints. Product, media, and fulfillment approvals must target the derived release-evidence fingerprint.
 - Staging and approval reject missing, altered, cross-release, cross-candidate, or stale evidence. Release additionally requires a fresh post-approval Production ACTIVE observation whose current variant identity and commerce facts match the reviewed bindings; the new full observation fingerprint remains separate audit evidence, consistent with legitimate timestamped fresh reads.
 - The Admin Releases screen exposes nine explicit proof gates. Every reviewer page distinguishes `Release: Draft` from `System: Not end-to-end ready`.
-- Capability blockers were reconciled to authenticated evidence: Apliiq requires its separate provider sign-in; Modelize is credit/physical-truth gated; Spin lacks genuine source/headless proof; Flow is inactive/unapproved; MyDesigns requires new permission/selection; trend research requires an approved research/cost boundary. None became callable.
+- Capability blockers were reconciled to authenticated evidence: Apliiq read-only access and saved-product facts are proven, while the exact variant/SKU fingerprint and physical sample remain gated; Modelize is credit/physical-truth gated; Spin lacks genuine source/headless proof; Flow is inactive/unapproved; MyDesigns requires new permission/selection; trend research requires an approved research/cost boundary. No connector mutation became callable.
 - Full `yarn verify` passed with zero-warning lint, 43 files / 433 tests, zero production vulnerabilities across 55 packages, and a successful Next.js 15.5.21 build. Headless QA passed 669/669 findings with 61 screenshots; offscreen desktop/mobile inspection found no clipping or misleading control. Eight public desktop/mobile route captures are byte-identical to the prior baseline with zero changed pixels.
 - Fresh read-only Git/Vercel/HTTP evidence confirms `origin/main` at `cd1cd77`, the latest READY Preview at `f82733c`, and READY Production at `bb9568f`; neither contains this local containment branch. The live PDP still returns `action="/api/checkout"` and `Continue to checkout`, so Production remains NO-GO and the sticky containment handoff remains active.
 - Exact clean implementation commit `98a23f2` passed the same full source and browser gates; its machine-readable run is marked `exact-clean-commit`. Evidence: `test_reports/cp-release-binding-truth-2026-08-14/` and `test_reports/cp-live-authority-recheck-2026-08-14/report.md`. No external state changed.

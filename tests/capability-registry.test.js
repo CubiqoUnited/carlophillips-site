@@ -141,7 +141,6 @@ describe('capability registry policy', () => {
   it('keeps provider-specific app workers registered but non-callable', () => {
     const registry = getCapabilityRegistry();
     for (const [capability, operation, reason] of [
-      ['hoodie-fulfillment', 'read-mapping', 'APLIQ_PROVIDER_SIGN_IN_REQUIRED'],
       ['spin-360', 'create-spin', 'SPIN_SOURCE_AND_HEADLESS_PATH_UNPROVEN'],
       ['model-lifestyle-media', 'generate-media', 'MODELIZE_CREDITS_EXHAUSTED_AND_MEDIA_APPROVALS_MISSING'],
       ['shopify-local-automation', 'activate-flow', 'SHOPIFY_FLOW_INACTIVE_AND_ACTIVATION_UNAPPROVED'],
@@ -154,6 +153,30 @@ describe('capability registry policy', () => {
         reason,
       });
     }
+  });
+
+  it('records Apliiq access and saved-product facts without granting mapping or fulfillment authority', () => {
+    const registry = getCapabilityRegistry();
+    expect(discoverCapability(
+      registry,
+      'hoodie-fulfillment',
+      'read-saved-product-facts'
+    )).toMatchObject({
+      status: 'ready',
+      callableSurface: 'authenticated_browser',
+      operationalAuthority: 'observation_only',
+      evidenceRef: 'test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/final-apliiq-assets-rerun-report.md',
+    });
+    expect(discoverCapability(
+      registry,
+      'hoodie-fulfillment',
+      'read-mapping'
+    )).toMatchObject({
+      status: 'human_required',
+      technicalStatus: 'verified',
+      operationalAuthority: 'blocked',
+      reason: 'APLIQ_VARIANT_MAPPING_FINGERPRINT_UNBOUND',
+    });
   });
 
   it('requires the exact operation even on a verified capability', () => {

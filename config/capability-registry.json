@@ -61,19 +61,19 @@
     {
       "capability": "hoodie-fulfillment",
       "selectedAdapter": "apliiq",
-      "accessState": "human_required",
-      "callableSurface": "unverified",
-      "allowedOperations": [],
+      "accessState": "read_only_verified",
+      "callableSurface": "authenticated_browser",
+      "allowedOperations": ["read-saved-product-facts"],
       "requiresApproval": ["sample", "spend"],
       "costGate": "sample/order/fulfillment approval required",
-      "draftSafety": "draft-only until release approvals",
+      "draftSafety": "saved-product observation only; no variant binding, sample, order, sync, fulfillment, publication, or release authority",
       "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"],
-      "observedAt": "2026-08-04",
-      "evidenceRef": "test_reports/cp-shopify-capability-followthrough-2026-08-04/report.md",
+      "observedAt": "2026-08-14",
+      "evidenceRef": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/final-apliiq-assets-rerun-report.md",
       "blocker": {
-        "code": "APLIQ_PROVIDER_SIGN_IN_REQUIRED",
-        "humanAction": "Complete the newest Apliiq password-reset email link, confirm the new password, and sign in without accepting charges or changing configuration; then signal `Apliiq open`.",
-        "resumePoint": "Observe the exact Hoodie product, design, decoration, and variant mapping read-only without ordering, sampling, syncing, or enabling fulfillment."
+        "code": "APLIQ_VARIANT_MAPPING_FINGERPRINT_UNBOUND",
+        "humanAction": "Review the captured Apliiq saved-product, IND4000, black, and front-embroidery facts and authorize exact read-only reconciliation of every provider variant and SKU; do not order, sample, sync, or enable fulfillment.",
+        "resumePoint": "Bind the complete one-to-one provider variant/SKU fingerprint to the nine reviewed Shopify variants and the Draft release, then separately approve and inspect one physical sample before any fulfillment authority."
       }
     },
     {

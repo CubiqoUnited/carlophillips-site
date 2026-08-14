@@ -38,11 +38,14 @@
       "group": "product",
       "status": "human_required",
       "owner": "Product/POD owner",
-      "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
+      "evidenceRefs": [
+        "releases/cp-signature-hoodie-2026-001/release.json",
+        "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/final-apliiq-assets-rerun-report.md"
+      ],
       "blocker": {
-        "code": "PROVIDER_MAPPING_EVIDENCE_MISSING",
-        "humanAction": "Open Apliiq manually after explicit approval for that read-only screen; do not order, accept charges, or enable fulfillment.",
-        "resumePoint": "Capture sanitized evidence for the exact garment, decoration, artwork, and one-to-one mapping of all nine Shopify variants, then bind the provider fingerprint."
+        "code": "PROVIDER_VARIANT_FINGERPRINT_UNBOUND",
+        "humanAction": "Use the confirmed Apliiq access and captured saved-product, IND4000, black, and front-embroidery facts only to reconcile every provider variant and SKU; do not order, sample, sync, or enable fulfillment.",
+        "resumePoint": "Bind a complete one-to-one provider variant/SKU fingerprint to all nine reviewed Shopify variants and the Draft release; access and saved-product facts alone are not fulfillment or release authority."
       }
     },
     {

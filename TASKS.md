@@ -82,13 +82,16 @@
 
 - [x] Create isolated `codex/cp-cicd-bootstrap` from canonical `main` at `cd1cd771` without touching the dirty primary checkout or display branch.
 - [x] Add `CI / Verify` for pull requests and pushes to `main` using read-only permissions, Node.js 24, Yarn Classic 1.22.22, frozen install, concurrency cancellation, and `yarn verify`.
-- [x] Add a protected manual Vercel release-candidate workflow with pinned CLI, canonical-main binding, Production commerce semantics, checkout disabled, `--prod --skip-domain`, immutable metadata, live-domain non-assignment proof, route/PDP smoke checks, and retained receipts.
-- [x] Add manual Production promotion with required-reviewer and enable-variable gates, shared candidate/promotion concurrency, exact candidate/main/reviewed-anchor verification, no Production environment pull, no build or redeploy command, same-deployment identity proof, fail-closed route/PDP checks, and deterministic rollback reconciliation for ambiguous post-attempt failure.
-- [x] Scope the Vercel credential only to Vercel CLI steps in the protected `Production` environment; use protected environment variables for organization/project IDs, expose no deployment authority to pull-request CI, and remove pulled candidate environment data before artifact upload.
-- [x] Re-run 22/22 focused policy and executable receipt/rollback checks, all three workflow YAML parses, both verifier scripts, full `yarn verify` (37 files / 364 tests, zero vulnerabilities, 13-route build), secret/diff audits, and confirm byte-identical desktop/mobile visual evidence; stop the two disposable QA servers.
+- [x] Add a protected manual immutable Vercel Preview workflow bound to the exact same-repository PR head SHA with Preview semantics, checkout disabled, no production aliases/promotion, protected-route smoke checks, and retained receipts.
+- [x] Add a protected manual Vercel release-candidate workflow with pinned CLI, canonical-main binding, Production commerce semantics, checkout disabled, one prebuilt output deployed twice as distinct no-alias `staged-production` and `safe-fallback` artifacts, live Production drift proof, route/PDP smoke checks, and retained pair receipts.
+- [x] Add manual Production promotion with required-reviewer and enable-variable gates, shared candidate/promotion concurrency, exact candidate/fallback/main/reviewed-anchor verification, no Production environment pull, no build or redeploy command, exact promoted-source identity proof, fail-closed route/PDP checks, and deterministic promotion of only the verified safe fallback after any attempted-promotion failure.
+- [x] Make the captured current Production deployment a compare-and-swap drift anchor only; it is never a rollback target, including the currently observed `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`.
+- [x] Scope the Vercel credential only to Vercel CLI steps in the protected `Preview` and `Production` environments; use protected environment variables for organization/project IDs, expose no deployment authority to pull-request CI, and remove pulled environment data before artifact upload.
+- [x] Add deterministic workflow/receipt tests for artifact roles, distinct deployment identities, exact SHA/release bindings, metadata and alias tampering, provider-recorded promotion identity, fallback identity, and rejection of the unsafe current-Production anchor as recovery.
+- [ ] Re-run the corrected four-workflow YAML parses, verifier/fallback scripts, focused policy fixtures, full `yarn verify`, secret/diff audits, and confirm the retained visual regression evidence remains applicable because no application/public/admin/runtime source changed.
 - [ ] Push the automation branch and open a separate draft PR; receive Aarti architecture GO and the first green `CI / Verify` run.
 - [ ] After green CI, configure the `main` ruleset requiring PRs, one approval, `CI / Verify`, and blocked force-push/deletion; do not require the stale Vercel fork-policy status.
-- [ ] Add a required reviewer, `VERCEL_TOKEN` secret, and `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` variables to GitHub `Production`, then set `CP_PRODUCTION_PROMOTION_ENABLED=true`. Workflows alone grant no release authority.
+- [ ] Add required reviewers plus scoped `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` configuration to GitHub `Preview` and `Production`, then set `CP_PRODUCTION_PROMOTION_ENABLED=true` only in `Production`. Workflows alone grant no release authority.
 
 ## Version milestones
 
@@ -334,7 +337,8 @@
 
 - [x] Select the minimum stack: Apliiq, Modelize, one spin candidate, native Shopify Headless, Flow, and the existing CP Next.js storefront.
 - [x] Record the 33-app live inventory, duplicate groups, callable surfaces, permissions/billing boundaries, screenshots, and exact blockers.
-- [ ] Product Owner signs in to the existing Apliiq account; then observe the Hoodie product/design/variant mapping read-only.
+- [x] Verify authenticated read-only Apliiq access and saved product facts for product `5958463`: blank `IND4000`, black, front embroidery, and the retained artwork; this observation grants no mapping, sample, fulfillment, or release authority.
+- [ ] Bind the exact provider variant/SKU fingerprint for the Hoodie mapping read-only, then order and inspect one exact physical sample only after separate Product Owner price approval.
 - [x] Prove the existing native Headless public credential and required product/checkouts scopes with a secret-free live HTTP 200 query.
 - [ ] Produce a sanitized Storefront Hoodie observation after an explicit controlled publication/channel decision; the current Draft is correctly withheld and must not be made Active implicitly.
 - [x] Export the existing completed Modelize job read-only; retain two usable generated candidates for labeled local review and quarantine the artifacted third image.
@@ -457,7 +461,8 @@
 
 - [x] Restore Vercel deployment access and verify Preview plus production desktop/mobile routes.
 - [x] Complete Shopify authentication and the read-only Admin/app capability audit without accepting charges.
-- [ ] Complete the separate Apliiq sign-in handoff, then inspect the exact Hoodie mapping read-only.
+- [x] Complete the separate Apliiq sign-in handoff and retain the read-only saved-product observation.
+- [ ] Bind the exact Apliiq provider variant/SKU fingerprint and verify one physical sample; keep ordering, fulfillment, and release authority blocked meanwhile.
 - [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
 - [ ] Keep Shopify writes, product activation, test orders, paid app actions, and fulfillment activation separately evidenced and fail-closed until tested.
 # Production authority closure (2026-08-14)
@@ -469,7 +474,7 @@
 - [x] Clarify checkout present-but-denied, Git tag and Product Release Record responsibilities, crawl posture and minimal analytics boundaries.
 - [ ] Sushma completes cross-functional review of Pushpa and Malti deliverables and the exact PR #9 candidate.
 - [ ] Product Owner assigns human Platform/Security and Account/Billing owners.
-- [ ] Authorized GitHub owner makes the Quality check required on `main`; verify this read-only before release.
+- [ ] Authorized GitHub owner makes the exact `CI / Verify` check required on `main`; verify this read-only before release.
 - [ ] Run exact-commit Vercel Preview acceptance and capture evidence; no production alias or promotion.
 - [ ] Product Owner explicitly approves or rejects merge and Production only after all applicable gates pass.
 # Current closure: canonical authority, end-to-end readiness, and protected admin

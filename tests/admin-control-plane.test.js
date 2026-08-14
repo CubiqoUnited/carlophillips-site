@@ -62,6 +62,16 @@ describe('admin operational projection', () => {
   it('validates the readiness index and reviewed command/event foundations', () => {
     expect(ajv.validate(readinessSchema, readiness), ajv.errorsText()).toBe(true);
     expect(new Set(readiness.stages.map(stage => stage.id)).size).toBe(readiness.stages.length);
+    expect(readiness.stages).toHaveLength(13);
+    expect(readiness.stages.filter(stage => ['succeeded', 'verified'].includes(stage.status))).toHaveLength(0);
+    expect(readiness.stages.reduce((counts, stage) => ({
+      ...counts,
+      [stage.status]: (counts[stage.status] || 0) + 1,
+    }), {})).toEqual({ partial: 2, human_required: 6, blocked: 5 });
+    expect(readiness.stages.find(stage => stage.id === 'pod-mapping')).toMatchObject({
+      status: 'human_required',
+      blocker: { code: 'PROVIDER_VARIANT_FINGERPRINT_UNBOUND' },
+    });
 
     const command = {
       schemaVersion: 'cp.admin-command.v1',
