@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "cp.cicd-visual-proof.v1",
+  "date": "2026-08-14",
+  "comparison": "canonical main cd1cd771 vs automation-only candidate",
+  "runtimeSourceChanged": false,
+  "pass": true,
+  "results": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "target": "main",
+      "status": 200,
+      "state": {
+        "contentLength": 365,
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "imageCount": 2,
+        "decodedImageCount": 2
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "requestFailures": [],
+      "screenshot": "/Users/edv/.codex/worktrees/cp-cicd-bootstrap/test_reports/cp-cicd-bootstrap-2026-08-14/screenshots/desktop-main.png"
+    },
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "target": "candidate",
+      "status": 200,
+      "state": {
+        "contentLength": 365,
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "imageCount": 2,
+        "decodedImageCount": 2
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "requestFailures": [],
+      "screenshot": "/Users/edv/.codex/worktrees/cp-cicd-bootstrap/test_reports/cp-cicd-bootstrap-2026-08-14/screenshots/desktop-candidate.png"
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "target": "main",
+      "status": 200,
+      "state": {
+        "contentLength": 356,
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "imageCount": 2,
+        "decodedImageCount": 2
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "requestFailures": [],
+      "screenshot": "/Users/edv/.codex/worktrees/cp-cicd-bootstrap/test_reports/cp-cicd-bootstrap-2026-08-14/screenshots/mobile-main.png"
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "target": "candidate",
+      "status": 200,
+      "state": {
+        "contentLength": 356,
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "imageCount": 2,
+        "decodedImageCount": 2
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "requestFailures": [],
+      "screenshot": "/Users/edv/.codex/worktrees/cp-cicd-bootstrap/test_reports/cp-cicd-bootstrap-2026-08-14/screenshots/mobile-candidate.png"
+    }
+  ]
+}

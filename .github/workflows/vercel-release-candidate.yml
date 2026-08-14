@@ -1,0 +1,208 @@
+name: Vercel Release Candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Full 40-character canonical main SHA selected for this candidate
+        required: true
+        type: string
+      release:
+        description: Release identifier recorded in deployment metadata
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: vercel-production-release
+  cancel-in-progress: false
+
+jobs:
+  deploy-candidate:
+    name: Build staged Production candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: Production
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+      NEXT_PUBLIC_COMMERCE_ENVIRONMENT: production
+      COMMERCE_DATA_MODE: shopify
+      SHOPIFY_CART_UI_ENABLED: "false"
+
+    steps:
+      - name: Enforce protected candidate environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/environments/Production" > production-environment.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const environment = JSON.parse(fs.readFileSync('production-environment.json', 'utf8'));
+          const reviewerRule = environment.protection_rules?.find(rule => rule.type === 'required_reviewers');
+          if (!reviewerRule || !Array.isArray(reviewerRule.reviewers) || reviewerRule.reviewers.length === 0) {
+            throw new Error('Candidate staging is disabled until the Production environment has a required reviewer.');
+          }
+          NODE
+
+      - name: Check out canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Validate immutable inputs
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          RELEASE: ${{ inputs.release }}
+        run: |
+          test "$GITHUB_REF" = "refs/heads/main"
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
+          test "$EXPECTED_SHA" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test -n "$VERCEL_ORG_ID"
+          test -n "$VERCEL_PROJECT_ID"
+          test "$NEXT_PUBLIC_COMMERCE_ENVIRONMENT" = "production"
+          test "$SHOPIFY_CART_UI_ENABLED" = "false"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Activate Yarn Classic
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          test "$(yarn --version)" = "1.22.22"
+
+      - name: Install locked dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Verify repository before deployment
+        run: yarn verify
+
+      - name: Install pinned Vercel CLI
+        run: |
+          yarn global add vercel@56.1.0
+          echo "$(yarn global bin)" >> "$GITHUB_PATH"
+          export PATH="$(yarn global bin):$PATH"
+          test "$(vercel --version | tail -1)" = "56.1.0"
+
+      - name: Pull Production project settings
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Capture current Production before staging
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: >-
+          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN"
+          > production-before.json
+
+      - name: Build fail-closed Production artifact
+        run: vercel build --prod
+
+      - name: Stage exact artifact without assigning Production domains
+        id: deploy
+        env:
+          RELEASE: ${{ inputs.release }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          deployment_url="$(vercel deploy --prebuilt --archive=tgz --prod --skip-domain --token="$VERCEL_TOKEN" \
+            --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=production \
+            --env COMMERCE_DATA_MODE=shopify \
+            --env SHOPIFY_CART_UI_ENABLED=false \
+            --meta gitCommitSha="$GITHUB_SHA" \
+            --meta cpGitCommitSha="$GITHUB_SHA" \
+            --meta cpGitCommitRef="$GITHUB_REF_NAME" \
+            --meta cpRelease="$RELEASE" \
+            --meta cpArtifactKind=staged-production \
+            --meta cpBuildEnvironment=production \
+            --meta cpCheckoutEnabled=false \
+            --meta cpWorkflowRun="$GITHUB_RUN_ID" \
+            --meta cpWorkflowAttempt="$GITHUB_RUN_ATTEMPT")"
+          echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
+
+      - name: Capture staged candidate evidence
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel inspect "$DEPLOYMENT_URL" --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > candidate-inspect.json
+          vercel list --meta cpGitCommitSha="$GITHUB_SHA" --limit=10 --format=json --token="$VERCEL_TOKEN" > candidate-list.json
+          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN" > production-after-staging.json
+
+      - name: Verify staged candidate receipt without deployment credential
+        env:
+          RELEASE: ${{ inputs.release }}
+        run: |
+          node .github/scripts/verify-vercel-receipt.mjs candidate \
+            --candidate-inspect candidate-inspect.json \
+            --candidate-list candidate-list.json \
+            --production-before production-before.json \
+            --production-after production-after-staging.json \
+            --expected-sha "$GITHUB_SHA" \
+            --expected-release "$RELEASE" \
+            --output candidate-release-receipt.json
+
+      - name: Run fail-closed candidate route smoke test
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
+            curl --fail --silent --show-error --location --max-time 30 "${DEPLOYMENT_URL}${route}" > /dev/null
+          done
+          curl --fail --silent --show-error --location --max-time 30 \
+            "${DEPLOYMENT_URL}/products/carlophillips-signature-hoodie" > candidate-pdp.html
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const html = fs.readFileSync('candidate-pdp.html', 'utf8');
+          if (!html.includes('Selection disabled')) throw new Error('Candidate PDP is missing the disabled-selection proof.');
+          if (!html.includes('Purchasing disabled')) throw new Error('Candidate PDP is missing the fail-closed purchasing proof.');
+          if (html.includes('Continue to checkout')) throw new Error('Candidate PDP unexpectedly exposes checkout continuation.');
+          if (/<form\b[^>]*>[\s\S]*?type=["']submit["']/i.test(html)) {
+            throw new Error('Candidate PDP unexpectedly exposes an enabled submit form.');
+          }
+          NODE
+
+      - name: Remove pulled Production environment data
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          fs.rmSync('.vercel', { recursive: true, force: true });
+          NODE
+
+      - name: Publish workflow receipt
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          {
+            echo "## Vercel staged Production candidate receipt"
+            echo "- Deployment: $DEPLOYMENT_URL"
+            echo "- Commit: $GITHUB_SHA"
+            echo "- Production domains assigned: no"
+            echo "- Commerce: fail-closed"
+            echo "- Receipt artifact: candidate-release-receipt"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload immutable candidate receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate-release-receipt-${{ github.sha }}
+          path: |
+            production-environment.json
+            candidate-inspect.json
+            candidate-list.json
+            production-before.json
+            production-after-staging.json
+            candidate-release-receipt.json
+            candidate-pdp.html
+          if-no-files-found: error
+          retention-days: 90
