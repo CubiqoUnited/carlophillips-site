@@ -2,8 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowDown, ArrowLeft, ArrowRight, Expand, Menu, ShoppingBag, X } from 'lucide-react';
+import { SIGNATURE_HOODIE_SHOWCASE_MEDIA } from '../../lib/media/signature-hoodie-showcase.js';
+import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
 
 const fallbackSummary = {
   status: 'denied',
@@ -30,35 +32,281 @@ const signatureRunwayFrames = [
   },
 ];
 
+const signatureRunwayFrameClasses = [
+  'cp-runway-frame-primary',
+  'cp-runway-frame-secondary',
+  'cp-runway-frame-tertiary',
+];
+
 const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
+const dialogFocusableSelector = 'button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])';
 
 const campaignHero = {
-  src: '/campaigns/lofoten-runway-hero.jpg',
+  src: '/campaigns/lofoten-runway-hero.png',
   alt: 'CARLOPHILLIPS runway campaign staged against a dramatic coastal mountain landscape',
 };
 
-function Navigation({ onMenu }) {
+const signatureHomepagePresentation = {
+  displayName: 'ONE',
+  facts: [
+    'Black',
+    'XS–5XL',
+    'Heavyweight fleece',
+    'CP embroidery',
+  ],
+};
+
+function firstSentence(value, fallback) {
+  const sentence = value?.trim().match(/^[^.!?]+[.!?]?/)?.[0];
+  return sentence || fallback;
+}
+
+function lockDocumentScroll() {
+  const root = document.documentElement;
+  const body = document.body;
+  const rootWasLocked = root.classList.contains('cp-scroll-locked');
+  const bodyWasLocked = body.classList.contains('cp-scroll-locked');
+  const preventScroll = event => event.preventDefault();
+
+  root.classList.add('cp-scroll-locked');
+  body.classList.add('cp-scroll-locked');
+  window.addEventListener('wheel', preventScroll, { passive: false });
+  window.addEventListener('touchmove', preventScroll, { passive: false });
+
+  return () => {
+    window.removeEventListener('wheel', preventScroll);
+    window.removeEventListener('touchmove', preventScroll);
+    if (!rootWasLocked) root.classList.remove('cp-scroll-locked');
+    if (!bodyWasLocked) body.classList.remove('cp-scroll-locked');
+  };
+}
+
+function moveDialogFocus(event, dialog) {
+  const focusable = [...(dialog?.querySelectorAll(dialogFocusableSelector) || [])];
+  if (focusable.length === 0) return;
+
+  event.preventDefault();
+  const activeIndex = focusable.indexOf(document.activeElement);
+  const nextIndex = activeIndex < 0
+    ? event.shiftKey ? focusable.length - 1 : 0
+    : (activeIndex + (event.shiftKey ? -1 : 1) + focusable.length) % focusable.length;
+  focusable[nextIndex].focus();
+}
+
+export function buildHomeGalleryMedia(summary) {
+  const product = summary?.primaryProduct;
+  const signatureVisible = summary?.visibleCount > 0
+    && product?.href === '/products/carlophillips-signature-hoodie';
+  if (!signatureVisible) return [];
+
+  const releaseMedia = (product.media || []).map(item => ({
+    ...item,
+    src: item.url,
+    disclosure: 'Product view',
+  }));
+  const reviewMedia = summary.environment === 'production'
+    ? []
+    : SIGNATURE_HOODIE_SHOWCASE_MEDIA.map(item => ({ ...item, type: 'image' }));
+  const uniqueMedia = new Map();
+  [...releaseMedia, ...reviewMedia].forEach(item => {
+    const source = item.src || item.url;
+    if (source && !uniqueMedia.has(source)) uniqueMedia.set(source, item);
+  });
+  return [...uniqueMedia.values()];
+}
+
+export function ProductMediaOverlay({ media, open, onClose, title }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const dialogRef = useRef(null);
+  const trackRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const releaseDocumentScroll = lockDocumentScroll();
+    setActiveIndex(0);
+    requestAnimationFrame(() => {
+      trackRef.current?.scrollTo({ left: 0 });
+      dialogRef.current?.querySelector(dialogFocusableSelector)?.focus();
+    });
+    return releaseDocumentScroll;
+  }, [open]);
+
+  const motionIndex = media.findIndex(item => item.gifHref || item.type === 'video');
+
+  const moveTo = useCallback(nextIndex => {
+    const index = Math.max(0, Math.min(nextIndex, media.length - 1));
+    const track = trackRef.current;
+    if (!track) return;
+    const reducedMotion = window.matchMedia(designSystemRuntimeContract.media.reducedMotion).matches;
+    track.scrollTo({
+      left: index * track.clientWidth,
+      behavior: reducedMotion
+        ? designSystemRuntimeContract.behavior.instantScroll
+        : designSystemRuntimeContract.behavior.smoothScroll,
+    });
+    setActiveIndex(index);
+  }, [media.length]);
+
+  const handleScroll = event => {
+    const track = event.currentTarget;
+    if (!track.clientWidth) return;
+    const index = Math.round(track.scrollLeft / track.clientWidth);
+    setActiveIndex(current => current === index ? current : index);
+  };
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        moveTo(activeIndex - 1);
+        return;
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        moveTo(activeIndex + 1);
+        return;
+      }
+      if (event.key === 'Tab') moveDialogFocus(event, dialogRef.current);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeIndex, moveTo, onClose, open]);
+
+  if (!open || media.length === 0) return null;
+
   return (
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-md">
-        <div className="mx-auto grid h-16 max-w-[1800px] grid-cols-3 items-center px-5 sm:px-8 lg:h-20 lg:px-12">
+    <section
+      id="product-media-overlay"
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="product-media-title"
+      tabIndex={-1}
+      className="cp-media-dialog"
+      data-product-media-overlay="open"
+    >
+      <div className="cp-media-panel">
+        <header className="cp-media-dialog-header">
+          <div className="cp-media-header-group">
+            <p className="cp-eyebrow cp-media-title-eyebrow">Signature Series / Media</p>
+            {motionIndex >= 0 && (
+              <button
+                type="button"
+                onClick={() => moveTo(motionIndex)}
+                className="cp-media-jump"
+                aria-label="Jump to motion study"
+              >
+                Motion study
+              </button>
+            )}
+            <h2 id="product-media-title" className="cp-visually-hidden">{title} media viewer</h2>
+          </div>
+          <div className="cp-media-header-group cp-media-header-status">
+            <p className="cp-eyebrow" aria-live="polite">
+              {String(activeIndex + 1).padStart(2, '0')} / {String(media.length).padStart(2, '0')}
+            </p>
+            <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close product media viewer">
+              <X className="cp-icon cp-icon-medium" />
+            </button>
+          </div>
+        </header>
+
+        <div
+          ref={trackRef}
+          onScroll={handleScroll}
+          className="cp-media-track cp-scrollbar-hide"
+          aria-label={`${title} media`}
+        >
+          {media.map((item, index) => {
+            const source = item.src || item.url;
+            const previewSource = item.previewUrl || source;
+            return (
+              <figure key={`${source}-${index}`} className="cp-media-slide">
+                {item.type === 'video' ? (
+                  <video
+                    controls
+                    preload="metadata"
+                    poster={previewSource}
+                    src={source}
+                    className="cp-media-asset cp-media-fit-contain"
+                  />
+                ) : (
+                  <Image
+                    src={item.type === 'image' ? source : previewSource}
+                    alt={item.alt}
+                    fill
+                    priority={index === 0}
+                    sizes={designSystemRuntimeContract.imageSizes.galleryAsset}
+                    unoptimized={item.unoptimized}
+                    className={`cp-media-asset cp-media-asset-image ${item.fit || 'cp-media-fit-contain'} ${item.position || 'cp-media-position-center'}`}
+                  />
+                )}
+                <figcaption className="cp-media-caption">
+                  <span>{item.label}</span>
+                  <span className="cp-text-align-end">{item.disclosure}</span>
+                </figcaption>
+              </figure>
+            );
+          })}
+        </div>
+
+        <div className="cp-media-navigation">
           <button
             type="button"
-            onClick={onMenu}
-            className="inline-flex w-fit items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/70 transition hover:text-white"
-            aria-label="Open navigation"
+            onClick={() => moveTo(activeIndex - 1)}
+            disabled={activeIndex === 0}
+            className="cp-media-arrow"
+            aria-label="Previous product image"
           >
-            <Menu className="h-4 w-4" strokeWidth={1.3} />
-            <span className="hidden sm:inline">Menu</span>
+            <ArrowLeft className="cp-icon cp-icon-medium" />
           </button>
-          <Link href="/" className="justify-self-center text-xs uppercase tracking-[0.38em] text-white sm:text-sm">
+          <button
+            type="button"
+            onClick={() => moveTo(activeIndex + 1)}
+            disabled={activeIndex === media.length - 1}
+            className="cp-media-arrow"
+            aria-label="Next product image"
+          >
+            <ArrowRight className="cp-icon cp-icon-medium" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Navigation({ menuButtonRef, menuOpen, onMenu }) {
+  return (
+      <header className="cp-site-header">
+        <div className="cp-site-header-inner cp-page-shell">
+          <button
+            ref={menuButtonRef}
+            type="button"
+            onClick={onMenu}
+            className="cp-nav-action cp-nav-action-start"
+            aria-label="Open navigation"
+            aria-controls="site-menu-overlay"
+            aria-expanded={menuOpen}
+          >
+            <Menu className="cp-icon cp-icon-small" />
+            <span className="cp-nav-label">Menu</span>
+          </button>
+          <Link href="/" className="cp-wordmark">
             CARLOPHILLIPS
           </Link>
           <Link
             href="/bag"
-            className="inline-flex items-center gap-3 justify-self-end text-[10px] uppercase tracking-[0.28em] text-white/70 transition hover:text-white"
+            className="cp-nav-action cp-nav-action-end"
+            aria-label="Bag"
           >
-            <span className="hidden sm:inline">Bag</span>
-            <ShoppingBag className="h-4 w-4" strokeWidth={1.3} />
+            <span className="cp-nav-label">Bag</span>
+            <ShoppingBag className="cp-icon cp-icon-small" />
           </Link>
         </div>
       </header>
@@ -66,20 +314,54 @@ function Navigation({ onMenu }) {
 }
 
 function MenuOverlay({ onClose }) {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const releaseDocumentScroll = lockDocumentScroll();
+    const focusDialog = window.requestAnimationFrame(() => {
+      dialog?.querySelector(dialogFocusableSelector)?.focus();
+    });
+
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      moveDialogFocus(event, dialog);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusDialog);
+      window.removeEventListener('keydown', handleKeyDown);
+      releaseDocumentScroll();
+    };
+  }, [onClose]);
+
   return (
-    <aside className="fixed inset-0 z-50 bg-black px-6 py-7 text-white" aria-label="Site navigation">
-      <div className="mx-auto flex max-w-[1700px] items-center justify-between">
-        <span className="text-xs uppercase tracking-[0.38em] text-white/70">CARLOPHILLIPS</span>
+    <aside
+      id="site-menu-overlay"
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="site-menu-title"
+      className="cp-menu-overlay"
+    >
+      <div className="cp-menu-bar">
+        <span id="site-menu-title" className="cp-menu-title">CARLOPHILLIPS</span>
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex h-11 w-11 items-center justify-center border border-white/20 text-white/70"
+          className="cp-menu-close"
           aria-label="Close navigation"
         >
-          <X className="h-5 w-5" strokeWidth={1.3} />
+          <X className="cp-icon cp-icon-medium" />
         </button>
       </div>
-      <nav className="mx-auto mt-24 grid max-w-[1700px] gap-4 text-5xl font-light tracking-[-0.05em] sm:text-7xl lg:text-8xl" aria-label="Main menu">
+      <nav className="cp-menu-links" aria-label="Main menu">
         <Link onClick={onClose} href="/">Home</Link>
         <Link onClick={onClose} href="/shop">Shop</Link>
         <Link onClick={onClose} href="/collections">Collections</Link>
@@ -92,7 +374,7 @@ function MenuOverlay({ onClose }) {
 function CampaignHero() {
   return (
     <section
-      className="storefront-panel relative min-h-screen min-h-[100svh] overflow-hidden border-b border-white/10 bg-black"
+      className="cp-storefront-panel cp-viewport-panel cp-campaign"
       aria-label="CARLOPHILLIPS runway campaign"
     >
       <Image
@@ -100,61 +382,66 @@ function CampaignHero() {
         alt={campaignHero.alt}
         fill
         priority
-        sizes="100vw"
-        className="object-cover object-[68%_center] sm:object-center"
+        sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+        className="cp-campaign-image"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.74)_0%,rgba(0,0,0,0.08)_54%,rgba(0,0,0,0.2)_100%)]" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/68 via-transparent to-black/28" aria-hidden="true" />
+      <div className="cp-campaign-scrim" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto flex min-h-screen min-h-[100svh] max-w-[1800px] flex-col justify-end px-5 pb-10 pt-28 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
-        <div className="max-w-4xl">
-          <p className="mb-5 text-[9px] uppercase tracking-[0.34em] text-white/68">
-            CARLOPHILLIPS / Signature Series
+      <div className="cp-campaign-content cp-page-shell">
+        <div className="cp-campaign-copy">
+          <p className="cp-eyebrow cp-space-after-label">
+            CARLOPHILLIPS / At the edge of life
           </p>
-          <h1 className="max-w-5xl text-[16vw] font-light leading-[0.82] tracking-[-0.065em] sm:text-[11vw] lg:text-[7.4vw]">
+          <h1 className="cp-display">
             At the<br />edge of life.
           </h1>
-          <p className="mt-7 text-[9px] uppercase tracking-[0.3em] text-white/62">
-            Edition 001
+          <p className="cp-eyebrow cp-space-before-caption">
+            Runway 001 / Lofoten
           </p>
         </div>
         <a
           href="#signature-runway"
-          className="mt-10 flex items-center justify-between border-t border-white/25 pt-4 text-[8px] uppercase tracking-[0.28em] text-white/58 transition hover:text-white"
+          className="cp-scroll-cue"
+          aria-label="Scroll down to discover the Signature Hoodie"
         >
-          <span>Enter the collection</span>
-          <span aria-hidden="true">Scroll</span>
+          <span className="cp-scroll-cue-label">Scroll and explore</span>
+          <span className="cp-scroll-cue-control" aria-hidden="true">
+            <ArrowDown className="cp-scroll-arrow cp-icon cp-icon-medium" />
+          </span>
         </a>
       </div>
     </section>
   );
 }
 
-function ProductRunwayHero({ summary }) {
+function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summary }) {
   const heroMedia = summary.primaryProduct?.heroMedia || null;
+  const product = summary.primaryProduct;
   const signatureVisible = summary.visibleCount > 0
-    && summary.primaryProduct?.href === '/products/carlophillips-signature-hoodie';
+    && product?.href === '/products/carlophillips-signature-hoodie';
   const runwayReady = signatureVisible
     && (summary.commerceAllowed || summary.environment !== 'production');
-  const catalogLabel = summary.visibleCount > 0
-    ? summary.commerceAllowed ? 'View the Signature Hoodie' : 'Preview the collection'
-    : 'Explore the collection';
+  const galleryReady = runwayReady && galleryCount > 0;
+  const productDescription = firstSentence(
+    product?.description,
+    'Product description is currently unavailable.'
+  );
 
   return (
     <section
       id="signature-runway"
-      className="storefront-panel relative min-h-screen min-h-[100svh] scroll-mt-16 overflow-hidden border-b border-white/10 bg-black lg:scroll-mt-20"
+      className="cp-storefront-panel cp-viewport-panel cp-product-runway"
       aria-label="Signature Hoodie runway"
     >
-      <figure className="absolute inset-0 overflow-hidden bg-[#050505]">
+      <figure className="cp-runway-media cp-surface-panel">
         {runwayReady ? (
           <>
             <Image
               src={signatureRunwayFrames[0].src}
               alt=""
               fill
-              sizes="100vw"
-              className="scale-110 object-cover object-center opacity-25 blur-2xl"
+              sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+              className="cp-runway-backdrop"
               aria-hidden="true"
             />
             {signatureRunwayFrames.map((frame, index) => (
@@ -163,9 +450,8 @@ function ProductRunwayHero({ summary }) {
                 src={frame.src}
                 alt={frame.alt}
                 fill
-                sizes="100vw"
-                className={`runway-frame ${index === 0 ? 'runway-frame-primary' : ''} object-contain object-center`}
-                style={{ animationDelay: `${index * -10}s` }}
+                sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+                className={`cp-runway-frame ${signatureRunwayFrameClasses[index]}`}
               />
             ))}
           </>
@@ -174,54 +460,67 @@ function ProductRunwayHero({ summary }) {
               src={heroMedia.url}
               alt={heroMedia.alt}
               fill
-              sizes="(min-width: 1024px) 58vw, 100vw"
-              className="object-cover object-center"
+              sizes={designSystemRuntimeContract.imageSizes.productPanel}
+              className="cp-media-fit-cover cp-media-position-center"
             />
         ) : (
             <Image
               src="/brand-boards/carlophillips-drop-board.png"
               alt="Archived CARLOPHILLIPS visual-system reference board"
               fill
-              sizes="(min-width: 1024px) 58vw, 100vw"
-              className="object-contain object-center opacity-75"
+              sizes={designSystemRuntimeContract.imageSizes.productPanel}
+              className="cp-runway-fallback"
             />
         )}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.74)_0%,rgba(0,0,0,0.08)_54%,rgba(0,0,0,0.34)_100%)]" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/35" aria-hidden="true" />
+        <div className="cp-product-scrim" aria-hidden="true" />
         {!summary.commerceAllowed && (
-          <figcaption className="absolute bottom-5 right-5 bg-black/82 px-3 py-2 text-[8px] uppercase tracking-[0.24em] text-white/58">
+          <figcaption className="cp-disclosure">
             {runwayReady ? 'Private product preview' : heroMedia ? heroMedia.label : 'Collection preview'}
           </figcaption>
         )}
       </figure>
 
-      <div className="relative z-10 mx-auto flex min-h-screen min-h-[100svh] max-w-[1800px] flex-col justify-end px-5 pb-10 pt-28 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
-        <div className="max-w-4xl">
-          <p className="mb-5 text-[9px] uppercase tracking-[0.34em] text-white/58">
-            {runwayReady ? 'Signature Series / Runway 001' : 'CARLOPHILLIPS / 001'}
+      {galleryReady ? (
+        <button
+          ref={galleryButtonRef}
+          type="button"
+          onClick={onOpenGallery}
+          aria-haspopup="dialog"
+          aria-controls="product-media-overlay"
+          data-media-trigger="signature-hoodie"
+          className="cp-product-media-button cp-product-media-button-corner"
+        >
+          <span>Explore media</span>
+          <Expand className="cp-product-media-expand cp-icon cp-icon-small" aria-hidden="true" />
+          <span className="cp-text-align-end">{String(galleryCount).padStart(2, '0')} views</span>
+        </button>
+      ) : (
+        <Link
+          href="/shop"
+          className="cp-product-media-button cp-product-media-button-corner"
+        >
+          <span>Explore the collection</span>
+          <ArrowRight className="cp-product-media-fallback-icon cp-icon cp-icon-small" />
+        </Link>
+      )}
+
+      <div className="cp-product-layout cp-page-shell">
+        <div className="cp-product-copy">
+          <p className="cp-eyebrow cp-space-after-label">
+            {runwayReady ? 'Signature Series / 001' : 'CARLOPHILLIPS / 001'}
           </p>
-          <h2 className="text-[16vw] font-light uppercase leading-[0.82] tracking-[-0.065em] sm:text-[11vw] lg:text-[7.4vw]">
-            {runwayReady ? <>Signature<br />Hoodie</> : <>Form.<br />Function.</>}
+          <h2 className="cp-product-title">
+            {runwayReady ? signatureHomepagePresentation.displayName : 'Form. Function.'}
           </h2>
-          <p className="mt-7 max-w-md text-sm leading-relaxed text-white/66 sm:text-base">
-            {runwayReady
-              ? 'Heavyweight black fleece. Quiet signature detail. Built for every day.'
-              : 'A considered study in form, material and everyday utility.'}
+          <p className="cp-product-review cp-space-before-review">
+            {runwayReady ? productDescription : 'A considered study in form, material and everyday utility.'}
           </p>
-          <Link
-            href={runwayReady ? summary.primaryProduct.href : '/shop'}
-            className="mt-8 inline-flex items-center gap-4 border-b border-white/45 pb-2 text-[10px] uppercase tracking-[0.3em] text-white transition hover:border-white"
-          >
-            {catalogLabel}
-            <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-          </Link>
+          {runwayReady && (
+            <ul className="cp-product-facts cp-space-before-facts" aria-label="Product highlights">
+              {signatureHomepagePresentation.facts.map(fact => <li key={fact}>{fact}</li>)}
+            </ul>
+          )}
         </div>
-        {runwayReady && (
-          <div className="mt-10 flex items-center justify-between border-t border-white/20 pt-4 text-[8px] uppercase tracking-[0.28em] text-white/48">
-            <span>Black / XS–5XL</span>
-            <span>Scroll to explore</span>
-          </div>
-        )}
       </div>
     </section>
   );
@@ -234,21 +533,21 @@ function CategoryRail({ summary }) {
     : null;
 
   return (
-    <nav className="sticky top-16 z-30 overflow-hidden border-b border-white/10 bg-black/95 backdrop-blur-md lg:top-20" aria-label="Product categories">
-      <div className="scrollbar-hide mx-auto flex h-14 w-full max-w-[1800px] items-center gap-8 overflow-x-auto px-5 sm:px-8 lg:h-16 lg:px-12">
+    <nav className="cp-category-rail" aria-label="Product categories">
+      <div className="cp-scrollbar-hide cp-category-list cp-page-shell">
         {activeProduct ? (
           <Link
             href={activeProduct.href}
             aria-current="page"
-            className="flex h-full shrink-0 items-center border-b border-white text-[9px] uppercase tracking-[0.28em] text-white"
+            className="cp-category-item cp-category-item-active"
           >
             Hoodies
           </Link>
         ) : (
-          <span aria-disabled="true" className="shrink-0 text-[9px] uppercase tracking-[0.28em] text-white/24">Hoodies</span>
+          <span aria-disabled="true" className="cp-category-item">Hoodies</span>
         )}
         {categoryTabs.map(category => (
-          <span key={category} aria-disabled="true" className="shrink-0 text-[9px] uppercase tracking-[0.28em] text-white/24">
+          <span key={category} aria-disabled="true" className="cp-category-item">
             {category}
           </span>
         ))}
@@ -257,87 +556,12 @@ function CategoryRail({ summary }) {
   );
 }
 
-export function HomeReleaseStage({ summary }) {
-  const product = summary.primaryProduct;
-
-  if (product && summary.commerceAllowed) {
-    return (
-      <section className="storefront-panel min-h-screen border-b border-white/10 bg-[#f1f0ec] px-5 py-20 text-black sm:px-8 lg:px-12 lg:py-28" aria-label="Signature Hoodie">
-        <div className="mx-auto flex min-h-[72vh] max-w-[1700px] flex-col justify-between">
-          <div className="flex items-center justify-between border-b border-black/15 pb-5 text-[9px] uppercase tracking-[0.28em] text-black/48">
-            <span>Signature Series</span>
-            <span>Edition 001</span>
-          </div>
-          <div className="grid min-w-0 gap-12 py-20 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
-            <h2 className="min-w-0 max-w-5xl break-words text-[clamp(2.35rem,10.5vw,4.5rem)] font-light leading-[0.88] tracking-[-0.065em] sm:text-8xl lg:text-[8.5rem]">
-              {product.title}
-            </h2>
-            <div className="max-w-xl lg:pb-2">
-              <p className="text-base leading-relaxed text-black/62 sm:text-lg">
-                Heavyweight fleece. Quiet branding. A precise everyday silhouette, available in black from XS to 5XL.
-              </p>
-              <Link href={product.href} className="mt-9 inline-flex items-center gap-4 border-b border-black/35 pb-2 text-[10px] uppercase tracking-[0.3em] text-black/80 transition hover:border-black">
-                View the Hoodie <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-              </Link>
-            </div>
-          </div>
-          <p className="text-[9px] uppercase tracking-[0.28em] text-black/38">Available now / Black / XS–5XL</p>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="storefront-panel min-h-[82vh] border-b border-white/10 bg-black px-5 py-20 sm:px-8 lg:px-12 lg:py-28" aria-label="Current collection">
-      <div className="mx-auto grid min-h-[62vh] min-w-0 max-w-[1700px] gap-px bg-white/10 lg:grid-cols-[1.12fr_0.88fr]">
-        <div className="flex min-w-0 flex-col justify-between bg-[#030303] p-7 sm:p-10 lg:p-14">
-          <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.28em] text-white/38">
-            <span>Current collection</span>
-            <span>{summary.visibleCount > 0 ? 'Preview' : 'Coming soon'}</span>
-          </div>
-          <div className="py-20">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-white/42">
-              {product ? 'Signature Series' : 'CARLOPHILLIPS'}
-            </p>
-            <h2 className="mt-7 min-w-0 max-w-4xl break-words text-[clamp(2.35rem,10.5vw,4.5rem)] font-light leading-[0.92] tracking-[-0.055em] sm:text-7xl lg:text-8xl">
-              {product ? product.title : 'The next piece is taking shape.'}
-            </h2>
-            <p className="mt-8 max-w-2xl text-sm leading-relaxed text-white/52 sm:text-base">{summary.message}</p>
-          </div>
-          <div className="flex flex-wrap gap-6">
-            {product && (
-              <Link href={product.href} className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/78">
-                View product <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-              </Link>
-            )}
-            <Link href="/collections" className="text-[10px] uppercase tracking-[0.28em] text-white/46">
-              View collection
-            </Link>
-          </div>
-        </div>
-        <aside className="grid min-w-0 bg-black sm:grid-cols-3 lg:grid-cols-1">
-          {[
-            ['Candidates', summary.candidateCount],
-            ['Visible', summary.visibleCount],
-            ['Withheld', summary.excludedCount],
-          ].map(([label, value]) => (
-            <div key={label} className="flex min-h-40 flex-col justify-between border-b border-white/10 p-7 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b lg:border-r-0">
-              <span className="text-[9px] uppercase tracking-[0.28em] text-white/36">{label}</span>
-              <strong className="text-5xl font-light text-white/75">{value}</strong>
-            </div>
-          ))}
-        </aside>
-      </div>
-    </section>
-  );
-}
-
 function Footer() {
   return (
-    <footer className="border-t border-white/10 px-5 py-10 sm:px-8 lg:px-12">
-      <div className="mx-auto flex max-w-[1700px] flex-col gap-6 text-[9px] uppercase tracking-[0.28em] text-white/38 sm:flex-row sm:items-center sm:justify-between">
+    <footer className="cp-footer">
+      <div className="cp-footer-inner">
         <span>CARLOPHILLIPS</span>
-        <nav className="flex gap-6" aria-label="Footer">
+        <nav className="cp-footer-nav" aria-label="Footer">
           <Link href="/shop">Shop</Link>
           <Link href="/collections">Collections</Link>
           <Link href="/bag">Bag</Link>
@@ -349,17 +573,49 @@ function Footer() {
 
 export default function HomeStorefront({ catalogSummary }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const menuButtonRef = useRef(null);
+  const galleryButtonRef = useRef(null);
+  const wasMenuOpenRef = useRef(false);
+  const wasMediaOpenRef = useRef(false);
   const summary = catalogSummary || fallbackSummary;
+  const galleryMedia = useMemo(() => buildHomeGalleryMedia(summary), [summary]);
+
+  useEffect(() => {
+    if (wasMenuOpenRef.current && !menuOpen) menuButtonRef.current?.focus();
+    wasMenuOpenRef.current = menuOpen;
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (wasMediaOpenRef.current && !mediaOpen) galleryButtonRef.current?.focus();
+    wasMediaOpenRef.current = mediaOpen;
+  }, [mediaOpen]);
 
   return (
-    <main id="main-content" className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
-      <Navigation onMenu={() => setMenuOpen(true)} />
+    <main id="main-content" className="cp-site">
+      <div inert={menuOpen || mediaOpen ? true : undefined}>
+        <Navigation
+          menuButtonRef={menuButtonRef}
+          menuOpen={menuOpen}
+          onMenu={() => setMenuOpen(true)}
+        />
+        <CampaignHero />
+        <ProductRunwayHero
+          galleryButtonRef={galleryButtonRef}
+          galleryCount={galleryMedia.length}
+          onOpenGallery={() => setMediaOpen(true)}
+          summary={summary}
+        />
+        <CategoryRail summary={summary} />
+        <Footer />
+      </div>
       {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
-      <CampaignHero />
-      <ProductRunwayHero summary={summary} />
-      <CategoryRail summary={summary} />
-      <HomeReleaseStage summary={summary} />
-      <Footer />
+      <ProductMediaOverlay
+        media={galleryMedia}
+        onClose={() => setMediaOpen(false)}
+        open={mediaOpen}
+        title={summary.primaryProduct?.title || 'Signature Hoodie'}
+      />
     </main>
   );
 }

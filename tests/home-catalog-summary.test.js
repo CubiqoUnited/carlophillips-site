@@ -21,13 +21,17 @@ function decision(overrides = {}) {
     products: [{
       handle: 'carlophillips-signature-hoodie',
       title: 'CARLOPHILLIPS Signature Hoodie',
-      sourceLabel: 'Local fixture review — not Shopify live data',
+      description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built with structured fleece and a soft interior.',
+      details: ['Everyday core layer.'],
+      sourceLabel: 'Local fixture review — not live store data',
       commerceAllowed: false,
       media: [{
         type: 'image',
         url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+        previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
         alt: 'Signature Hoodie front candidate',
         label: 'Modelize product portrait · generated candidate · approval pending',
+        id: 'raw-media-id-must-not-pass',
       }],
     }],
     ...overrides,
@@ -53,19 +57,44 @@ describe('home catalog summary', () => {
         title: 'CARLOPHILLIPS Signature Hoodie',
         href: '/products/carlophillips-signature-hoodie',
         commerceAllowed: false,
+        description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built with structured fleece and a soft interior.',
         heroMedia: {
           url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
         },
+        media: [{
+          type: 'image',
+          url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+          previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+          label: 'Product still',
+        }],
       },
     });
     expect(summary.message).toContain('local non-commerce fixture');
     expect(Object.keys(summary.primaryProduct).sort()).toEqual([
       'commerceAllowed',
+      'description',
       'heroMedia',
       'href',
+      'media',
       'sourceLabel',
       'title',
     ]);
+    expect(JSON.stringify(summary)).not.toContain('raw-media-id-must-not-pass');
+    expect(JSON.stringify(summary)).not.toContain('Modelize');
+  });
+
+  it('passes only the reviewed description without deriving presentation claims', () => {
+    const summary = toHomeCatalogSummary(decision({
+      products: [{
+        ...decision().products[0],
+        description: 'A restrained black pullover for everyday layering.',
+        details: [],
+      }],
+    }));
+
+    expectValid(summary);
+    expect(summary.primaryProduct.description).toContain('restrained black pullover');
+    expect(summary.primaryProduct).not.toHaveProperty('highlights');
   });
 
   it('does not emit a product link or payload for a denied home decision', () => {
@@ -107,5 +136,21 @@ describe('home catalog summary', () => {
     expect(zero.primaryProduct).toBeNull();
     expect(JSON.stringify(zero)).not.toContain('editorial-02.jpg');
     expect(mixed.message).toContain('1 private Staged-or-later release candidate');
+  });
+
+  it('keeps customer-facing availability copy provider-neutral', () => {
+    const preview = toHomeCatalogSummary(decision({
+      environment: 'preview',
+      source: 'shopify',
+      commerceAllowed: true,
+    }));
+    const production = toHomeCatalogSummary(decision({
+      environment: 'production',
+      source: 'shopify',
+      commerceAllowed: true,
+    }));
+
+    expect(preview.message.toLowerCase()).not.toContain('shopify');
+    expect(production.message.toLowerCase()).not.toContain('shopify');
   });
 });

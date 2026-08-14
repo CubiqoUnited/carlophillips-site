@@ -1,8 +1,124 @@
 # Current Status
 
-Updated: 2026-08-08
-Branch: temporary audit branch `codex/cp-shopify-poc-audit`, based on canonical `main` at `81dbb60`
+Updated: 2026-08-14
+Branch: temporary local branch `codex/cp-v1-2-2-design-system-release`, based on clean `e3dc7c2`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Local verified candidate `v1.2.2` — 2026-08-14
+
+- v1.2.2 corrects and expands v1.2.1 while restoring the approved `bb9568f` visible contract: Lofoten `At the edge of life`, persistent header/navigation, lower-left `ONE`, the four approved tags, `Explore media / 12 views`, and the inset truthful viewer. The superseded three-label/11-view/upper-positioned experiment is excluded.
+- `app/design-tokens.css` is the sole CSS design authority with 807 reachable lowercase kebab-case tokens and strict Primitive → Semantic → Component direction. Active CSS has zero raw declarations or primitive references. The one runtime serializer mirror is mechanically bound back to CSS breakpoints, colours, geometry, image sizing, scrolling, metadata, and Open Graph values.
+- Active customer JSX has no source inline styles, raw visual literals, arbitrary utilities, literal responsive image contracts, icon stroke props, or non-`cp-*` classes. Deterministic checks cover naming, direction, domain coverage, reference closure, reachability, propagation, production content/layout, runtime mirrors, and cleanup.
+- Exhaustive reference analysis removed 48 unused generic UI components plus scaffold-only hooks/helper/config and dormant Tailwind generation. All 53 deleted paths and dependency removals are recoverable through Git and recorded in `docs/cleanup-manifest-v1.2.2.md`; no user assets, release truth, or evidence were deleted.
+- Full Yarn Classic verification passes: frozen install; zero-warning lint; 35 test files / 340 tests; zero production vulnerabilities across 55 audited packages; successful 13-route optimized build; clean whitespace and secret scans; zero unused runtime dependencies, duplicate active code, dormant CP selectors, or removed-path references; 26 public visual assets decode with no failure.
+- Headless/background Chrome captured 21 required screenshots at 1440×1000, 584×486, and 390×844 for hero, navigation, `ONE`, overlay, shop, PDP, and bag. All routes return 200 with zero overflow, provider leakage, errors, failed requests, or broken media. Navigation and media-dialog background isolation, scroll lock, Escape, focus containment/return, arrows, touch swipe, and reduced motion pass.
+- Saved `bb9568f` comparison confirms identical viewport and inset-overlay geometry, exact approved copy/hierarchy/assets, and visually preserved composition. Near-zero overlay deltas and low animated-hero deltas are recorded; product-frame pixel variance is limited to normal runway timing plus the required 11→12 correction in the saved local evidence.
+- Candidate is ready for Sushma's local/Preview review checkpoint. No push, pull request, Preview/Production deployment, merge, domain change, Shopify write, catalog/order mutation, or billing action occurred.
+
+## Product Owner priority: physical Hoodie sample first — 2026-08-09
+
+- The Product Owner selected one exact Signature Hoodie sample as the first remaining media-production gate. Additional paid image credits, video, spin, or 3D work should not precede verification of this sample path.
+- The existing Apliiq product/blank/decoration/variant mapping must be observed read-only before any order; the historical `IND4000` resemblance is not ordering evidence.
+- No sample charge is approved yet. After mapping verification, the exact item, size, destination requirement, total cost, and risk must be presented for a separate order approval.
+- Once delivered, one consolidated capture supplies truthful fit, fabric, construction, embroidery, motion, 24–36 genuine spin angles, and reference input for an inspected GLB/USDZ. The exact human action and resume points are recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+
+## Local standards patch `v1.2.1` — 2026-08-09
+
+- The Product Owner's recovered 18-page design-system standard was reviewed in full and reconciled against the active storefront. Its project-independence, discovery, three-tier token architecture, complete domain coverage, component-state, accessibility, governance, and drift-testing requirements are now explicit in `docs/design-system.md`.
+- `app/design-tokens.css` is the single canonical raw-value source under the `--cp-*` namespace: Tier 1 primitives feed Tier 2 semantic intent, which feeds Tier 3 component aliases. Active customer routes consume the resulting roles through `app/globals.css`; documented framework and media-query exceptions remain explicit.
+- Automated design-boundary tests prohibit raw customer-facing colours, inline JSX styles, un-tokenized arbitrary utilities, primitive-token consumption from component CSS, and representative colour/spacing/shape dependency breaks.
+- Full `yarn verify` passes with zero-warning lint, 35 test files / 336 tests, zero production vulnerabilities across 193 packages, and a successful 13-route optimized build.
+- Eleven background headless Chrome route/viewport checks plus the media overlay and reduced-motion checks pass with HTTP 200, zero horizontal overflow, customer-visible provider-name copy, broken images, browser/page errors, or framework overlays. Keyboard focus, Escape close, responsive overlay geometry, token resolution, and reduced-motion suppression are proven.
+- Visual comparison with the v1.2 evidence confirms that the runway, `ONE` product panel, commerce states, and private concept composition remain intact. This is a structural standards patch, not a redesign.
+- v1.2.1 remains local only. No push, Preview/Production deployment, domain change, provider action, product write, order, billing action, or merge occurred.
+
+## Local candidate `v1.2` — 2026-08-09
+
+- The v1.1 runway and `ONE` Signature Hoodie composition is preserved while the active home, collection/shop, product, bag, checkout, media-viewer, and recovered private concept surfaces now resolve through one semantic `--cp-*` presentation contract.
+- Primitives and semantic roles cover colour, typography, spacing, layout, effects, controls, and motion. A shared `StorefrontHeader` replaces duplicated commerce chrome; deterministic tests prohibit raw customer-component colour literals/utilities and one-off tracking values.
+- The recovered `/concept-preview` remains noindex, visibly private/Draft-only, and isolated from product/release truth.
+- Full `yarn verify` passes with zero-warning lint, 35 test files / 334 tests, zero production vulnerabilities across 193 packages, and a successful 13-route optimized build.
+- Eleven headless local desktop/mobile route checks return HTTP 200 with zero overflow, provider-name copy, broken images, console/page errors, or runtime/build overlays; all 11 Hoodie media slides decode. Visual comparison confirms the v1.1 runway and `ONE` hierarchy remain intact. Evidence is under `test_reports/cp-v1.2-token-system-2026-08-09/`.
+- v1.2 remains local only. Preview, Production, domains, products, providers, orders, billing, and remote Git are unchanged.
+
+## Saved local baseline `v1.1` — 2026-08-09
+
+- The exact current temporary-branch state is preserved by local annotated Git tag `v1.1`. The tag is a site milestone, not an npm package publication; `package.json` is intentionally unchanged.
+- The customer-visible baseline is the verified `ONE` Preview at `https://carlophillips-site-jrgq7r66t-adityas-projects-261b17a9.vercel.app`. Production remains unchanged.
+- Newly recovered POD campaign concepts and runway-viewer screenshots are included in the snapshot so no current work is lost. The concepts remain explicitly Draft-only, unreferenced by active application code, and ineligible as product or Production truth.
+- All image files decode at their recorded dimensions, representative masters/concepts and every viewer comparison were visually inspected, secret scans are clean, and full `yarn verify` passes with 35 files / 333 tests, zero production vulnerabilities, and the 12-route optimized build.
+- Durable manifest: `docs/releases/v1.1.md`.
+
+## `ONE` upper hierarchy and product-attribute correction — 2026-08-09
+
+- The second homepage scene now anchors the `Signature Series / 001` and `ONE` copy group in the upper-left visual zone at widths of 520px and above. At 584×486 the group begins 40px higher than the prior Preview; at 390×844 it retains a larger safe offset below the upper-right media control.
+- The former size and generic feature chips are replaced by three explicit label/value attributes: `Color / Black`, `Material / Structured fleece`, and `Feel / Heavyweight, soft interior`. The homepage no longer presents `XS–5XL` as a visual-material attribute. Product variants and the PDP remain unchanged.
+- The values use only facts already present in the reviewed product description. No unverified fiber percentage, provider claim, size change, product identity change, media change, or commerce change was introduced.
+- Focused component/design-system checks pass. Full `yarn verify` passes with zero-warning lint, 35 test files / 333 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Headless local Chrome checks at exact 584×486, 390×844, and 1440×1000 show the upper hierarchy, all three attributes, no size chip, no horizontal overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-one-attribute-reposition-2026-08-09/`.
+- Tested commit `809fedb` is deployed READY as Vercel Preview `dpl_G1A3CZJ4edFxK46YLMDfjL3Lqvpx` at `https://carlophillips-site-jrgq7r66t-adityas-projects-261b17a9.vercel.app`. Direct compact/mobile/desktop checks match the local geometry and attribute contract, return HTTP 200, preserve media open/Escape/focus-return, and show no provider-name copy, overflow, browser error, or framework overlay.
+- Production remains unchanged and READY on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`; no domain, Production deployment, commerce/provider data, order, billing, merge, push, or remote Git action occurred in this correction.
+
+## Homepage `ONE` presentation and inset media viewer — 2026-08-09
+
+- The landing now uses the exact new Product Owner-supplied 1536×1024 runway PNG, preserved at `public/campaigns/lofoten-runway-hero.png` with SHA-256 `2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338`. The responsive left-aligned `At the edge of life` campaign composition remains live HTML over the image.
+- The exact Signature Hoodie remains the gated commerce/PDP identity, while its homepage campaign display name is now `ONE`. No product handle, release record, Shopify title, PDP title, price, variant, or checkout authority changed.
+- The second scene uses the first reviewed product-description sentence in a token-sized, left-aligned block. It renders as exactly three lines at the Product Owner’s 584×486 compact viewport and at 390×844 mobile. Four concise product facts return: Black, XS–5XL, Heavyweight fleece, and CP embroidery.
+- The upper-right action now reads `Explore media / N views`, places a four-way expand icon between label and count, and contains no forward arrow. The media experience is a centered bordered card over a dimmed/blurred backdrop rather than a full-viewport canvas; the page remains visible around it.
+- Focus return, body-scroll lock, horizontal swipe, keyboard arrows, Escape, close, truthful media count, release gating, production-media filtering, and provider-neutral customer copy remain unchanged.
+- Full `yarn verify` passes: zero-warning lint, 35 test files / 333 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Headless local checks at 1440×1000, exact 584×486, and 390×844 return HTTP 200 with the exact PNG source, `ONE`, factual tags, expand-without-arrow control, inset overlay geometry, focus return, no horizontal overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-one-overlay-2026-08-09/`.
+- Tested commit `bb9568f` is deployed READY as Vercel Preview `dpl_GG8FyXjPuUqyom2vwsYUunGGTggU` at `https://carlophillips-site-hc2b2lput-adityas-projects-261b17a9.vercel.app`. Direct 1440×1000, 584×486, and 390×844 checks prove the exact PNG, `ONE`, three-line compact/mobile copy, all four facts, `12 views`, expand-without-arrow action, decoded first product media, inset overlay, focus return, zero provider-name copy, zero overflow, and zero browser/framework errors.
+- Production remains unchanged and READY on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`. No domain, production deployment, commerce/provider data, order, billing, merge, push, or remote Git action occurred in this correction.
+
+## Homepage simplification from 319×501 review — 2026-08-08
+
+- The Signature Hoodie title now uses 62% white so it recedes into the product scene instead of competing with the model.
+- The four boxed highlight chips are removed. The reviewed human-readable product description remains the sole material/feel narrative on the scene; the unused derived-highlight summary/schema fields were removed with deterministic coverage.
+- `Explore media / N views` is now a compact dark-glass control in the upper-right of the Hoodie scene, outside the copy flow. Its catalog/media eligibility, dialog behavior, focus return, and truthful count are unchanged.
+- The landing cue now reads `Scroll and explore` while retaining its descriptive accessible label and reduced-motion behavior.
+- The single flattened runway campaign still receives a slow 18-second camera push/pan, disabled under `prefers-reduced-motion`. It adds restrained scene motion but is not described as actual model walking. No MP4/WebM/MOV campaign file exists in the repository.
+- Full `yarn verify` passes unchanged: zero-warning lint, 35 test files / 332 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Local headless checks at the exact 319×501 feedback viewport, 390×844, and 1440×1000 prove the muted title, upper-right control, removed chips, changed cue, changing campaign transform, HTTP 200, zero overflow, and zero browser/framework errors. Evidence is under `test_reports/cp-home-simplification-2026-08-08/`.
+- Tested commit `25b2e61` is deployed READY as Vercel Preview `dpl_9zwLjHHh9rSLScZoYG9QWVBf5TuK` at `https://carlophillips-site-i20alyiiu-adityas-projects-261b17a9.vercel.app`. Direct 319×501, 390×844, and 1440×1000 checks match local evidence: `SCROLL AND EXPLORE`, changing campaign transform, 62% title colour, upper-right 12-view control, zero chips, zero overflow, and zero browser/framework errors.
+- Production remains unchanged on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`; no Production promotion, alias, domain, commerce/provider data, order, billing, merge, or remote Git action occurred.
+
+## Homepage hierarchy and media-discovery refinement — 2026-08-08
+
+- The landing cue is now a centered `Scroll to the Signature Hoodie` control with a bordered label, circular animated down arrow, smooth anchor target, keyboard focus, and reduced-motion support. It replaces the subtle full-width rule that the Product Owner found ambiguous.
+- The second panel no longer uses an oversized display headline. It presents `Signature Hoodie` at 48–100 px, followed by the reviewed product description and four evidence-derived highlights: heavyweight feel, structured fleece, soft interior, and CP chest embroidery. These highlights are emitted only when the reviewed description/details contain their source facts.
+- The former underlined action is now a high-contrast `Explore product media` button with a truthful media count. The same-page viewer adds a direct `Motion study` jump to the disclosed still-derived animated WebP/GIF.
+- The redundant lower product/release section is removed. The page sequence is now campaign → Hoodie scene → category rail → footer; product visibility, commerce eligibility, and media gating remain unchanged.
+- Deterministic media-coverage tests prove the Preview gallery can contain both selected Modelize outputs, all six selected MODA frames, the material/embroidery study, and the still-derived motion loop. The quarantined back hypothesis and superseded built-in front study remain excluded. No real video, genuine 360 set, or interactive 3D file exists, so none is claimed.
+- Full `yarn verify` passes: zero-warning lint, 35 test files / 332 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Headless local checks at the exact 641×686 feedback viewport, 390×844 mobile, and 1440×1000 desktop return HTTP 200 with the complete media button visible, centered motion frame, two homepage panels only, category/footer ending, zero browser errors/overlays, and zero horizontal overflow. Evidence is under `test_reports/cp-home-hierarchy-refinement-2026-08-08/`.
+- Tested commit `ed917ef` is deployed READY as Vercel Preview `dpl_6PWspKMjE5dA8QokMfaYPmR3MGz8` at `https://carlophillips-site-benruk126-adityas-projects-261b17a9.vercel.app`. Direct 641×686, 390×844, and 1440×1000 checks match local evidence; all 12 unique deployed media frames decoded, Motion Study centered frame 08, and browser error arrays remained empty.
+- Production remains unchanged and separately READY on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`; `www.carlophillips.com` returns HTTP 200. No Production promotion, alias, domain, Shopify, provider, order, billing, merge, or remote Git action occurred.
+
+## In-page Signature Hoodie media viewer — 2026-08-08
+
+- `View the Signature Hoodie` on the second homepage panel now opens a full-screen media viewer over the same page. It does not navigate or change the URL.
+- The viewer supports horizontal touch swipe, desktop previous/next controls, keyboard arrows, Escape, a close control, position count, body-scroll lock, background inertness, and focus return to the opening action.
+- Its input is the same minimized home catalog summary as the product hero. A denied or unavailable product emits no trigger and no media payload. Local/Preview can add the explicitly disclosed Hoodie visual studies; production can render only media carried by the eligible release decision.
+- The current local viewer contains three eligible product stills plus eight disclosed local/Preview study frames. All 11 decoded in a clean browser traversal. No video, genuine 360, or interactive 3D is implied where no such eligible asset exists.
+- Customer-visible media labels are neutral and provider-free. Internal media IDs and arbitrary adapter labels are not passed into the home summary.
+- Full `yarn verify` passes: zero-warning lint, 34 test files / 330 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Direct 1440×1000 and 390×844 local checks prove unchanged URL, swipe/arrow progression, all-frame decoding, Escape/close, focus return, zero provider-name copy, zero browser errors, and no horizontal overflow. Evidence is under `test_reports/cp-home-media-overlay-2026-08-08/`.
+- A missing Vercel upload boundary was caught before transfer. The repository now has a tested `.vercelignore` excluding local credentials, dependencies/build output, the 168 MB recovered design archive, temporary work, and QA/governance evidence from the runtime upload.
+- Vercel Preview `dpl_AGBftTVy679m6Bz16mYKQKs4C6JX` is READY at `https://carlophillips-site-4rw1x4ogn-adityas-projects-261b17a9.vercel.app`. The protected upload was 132.3 KB and targeted Preview only.
+- Direct deployed checks at 1440×1000 and 390×844 pass HTTP 200, unchanged URL, arrow/touch-swipe progression, close/focus behavior, provider-neutral copy, zero overflow/errors, and all 12 deployed media frames decoded. Preview has four release-eligible product stills plus the eight disclosed Preview study frames.
+- Production remains unchanged on READY deployment `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`. No alias, domain, Production deployment, Shopify data, order, app, billing, merge, or remote Git state changed.
+
+## Runway wording and token-led design correction — 2026-08-08
+
+- The homepage now opens on the supplied coastal runway campaign with the factual brand system `CARLOPHILLIPS / At the edge of life` and `Runway 001 / Lofoten`.
+- A visible `Discover the Signature Hoodie / Scroll down` anchor and animated down arrow land directly on the preserved Signature Hoodie hero, which is the second full-viewport panel. The category rail follows with Hoodies active and Shirts, Outerwear, Bottoms, and Accessories disabled.
+- The storefront design foundation is centralized under semantic `--cp-*` tokens and `cp-*` component classes for colour, type, gutters, content width, navigation/panel dimensions, label/display typography, motion, and focus behavior. The maintained contract is recorded in `docs/design-system.md`.
+- Customer-facing headings, body copy, status labels, checkout calls to action, and route metadata no longer name the underlying commerce provider. Internal server integrations and evidence retain precise provider naming.
+- Full `yarn verify` passes: zero-warning lint, 34 test files / 325 tests, zero production vulnerabilities across 193 packages, and a successful 12-route optimized build.
+- Direct local and Vercel Preview checks at 1440×1000 and 390×844 prove HTTP 200 home/PDP, campaign → Hoodie → category ordering, the scroll target, one active plus four disabled categories, zero visible provider-name matches, zero broken images, zero runtime overlays/console errors, and no horizontal overflow.
+- Vercel Preview `dpl_5zYviNwnc8WRFjwbECmnW1pPk8DA` is READY at `https://carlophillips-site-l04jfxxzx-adityas-projects-261b17a9.vercel.app`. Production remains unchanged on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`; no domain, production deployment, merge, Shopify data, order, app, or billing state changed.
+- Recovered local design exports remain recoverably isolated and ignored at `chat-images/`, `tmp/`, and `tmp_make_chat_pdf.py`; they are not included in this correction or Vercel application source.
 
 ## Two-stage runway landing correction — 2026-08-08
 

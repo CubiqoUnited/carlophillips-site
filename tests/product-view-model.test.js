@@ -67,7 +67,7 @@ describe('product view model', () => {
       productType: 'Hoodie',
       tagline: 'SIGNATURE',
       details: ['Reviewed detail'],
-      sourceLabel: 'Shopify Storefront observation — private release review',
+      sourceLabel: 'Private product review',
       truthHeading: 'Reviewed facts, private release review.',
       story: 'No reviewed product story is available.',
       commerceExplanation: 'This is a private release review. Purchasing remains disabled until the separate release and commerce gates pass.',
@@ -99,7 +99,7 @@ describe('product view model', () => {
     });
 
     expect(model).toMatchObject({
-      sourceLabel: 'Shopify Storefront observation — released product facts',
+      sourceLabel: 'Released product facts',
       truthHeading: 'Reviewed facts, released product.',
       story: 'No reviewed product story is available.',
       commerceExplanation: 'Product facts are released. Purchasing remains disabled until the separate cart and checkout gates are proven.',
@@ -118,9 +118,9 @@ describe('product view model', () => {
       product: { id: 'hoodie', title: 'Live Hoodie', price: 128, currency: 'USD', availableForSale: true, variantPresentation, media: [] },
     });
     expect(model).toMatchObject({
-      sourceLabel: 'Shopify Storefront — live product',
-      truthHeading: 'Current Shopify product facts.',
-      commerceExplanation: 'Variant selection and secure Shopify checkout are active for this product.',
+      sourceLabel: 'Live product',
+      truthHeading: 'Current product facts.',
+      commerceExplanation: 'Variant selection and secure checkout are active for this product.',
     });
     expect(JSON.stringify(model)).not.toContain('disabled');
     expect(JSON.stringify(model)).not.toContain('unavailable');

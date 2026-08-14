@@ -1,0 +1,31 @@
+# Local dependencies and framework output
+node_modules/
+.next/
+out/
+coverage/
+
+# Local configuration and credentials
+.env
+.env.*
+.vercel/
+.git/
+.DS_Store
+
+# Recovered design exports and temporary working files
+chat-images/
+tmp/
+tmp_make_chat_pdf.py
+
+# Local QA/governance evidence is committed but not runtime application input
+test_reports/
+tests/
+reports/
+docs/
+memory/
+test_result.md
+
+# Local tool metadata
+.emergent/
+.vscode/
+.idea/
+*.log

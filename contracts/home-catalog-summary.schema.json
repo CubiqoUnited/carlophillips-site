@@ -18,12 +18,13 @@
         { "type": "null" },
         {
           "type": "object",
-          "required": ["title", "href", "sourceLabel", "commerceAllowed", "heroMedia"],
+          "required": ["title", "href", "sourceLabel", "commerceAllowed", "description", "heroMedia", "media"],
           "properties": {
             "title": { "type": "string", "minLength": 1 },
             "href": { "type": "string", "pattern": "^/products/[a-z0-9]+(?:-[a-z0-9]+)*$" },
             "sourceLabel": { "type": "string", "minLength": 1 },
             "commerceAllowed": { "type": "boolean" },
+            "description": { "type": "string" },
             "heroMedia": {
               "oneOf": [
                 { "type": "null" },
@@ -38,6 +39,21 @@
                   "additionalProperties": false
                 }
               ]
+            },
+            "media": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["type", "url", "previewUrl", "alt", "label"],
+                "properties": {
+                  "type": { "enum": ["image", "video", "external_video", "model_3d"] },
+                  "url": { "type": "string", "minLength": 1 },
+                  "previewUrl": { "type": "string", "minLength": 1 },
+                  "alt": { "type": "string", "minLength": 1 },
+                  "label": { "type": "string", "minLength": 1 }
+                },
+                "additionalProperties": false
+              }
             }
           },
           "additionalProperties": false

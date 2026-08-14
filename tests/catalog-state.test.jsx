@@ -21,19 +21,20 @@ describe('catalog presentation', () => {
         title: 'Visible fixture',
         price: 20,
         currency: 'USD',
-        sourceLabel: 'Local fixture review — not Shopify live data',
+        sourceLabel: 'Local fixture review — not live store data',
         media: [],
       }],
     }} />);
 
     expect(html).toContain('1 preview piece');
-    expect(html).toContain('Candidate records</dt><dd class="mt-3 text-white/70">2');
-    expect(html).toContain('Visible here</dt><dd class="mt-3 text-white/70">1');
-    expect(html).toContain('Withheld</dt><dd class="mt-3 text-white/70">1');
-    expect(html).toContain('Local fixture review — not Shopify live data');
+    expect(html).toMatch(/Candidate records<\/dt><dd[^>]*>2/);
+    expect(html).toMatch(/Visible here<\/dt><dd[^>]*>1/);
+    expect(html).toMatch(/Withheld<\/dt><dd[^>]*>1/);
+    expect(html).toContain('Local presentation fixture');
     expect(html).toContain('Preview product');
     expect(html).toContain('cannot be purchased');
     expect(html).not.toContain('Add to bag');
+    expect(html.toLowerCase()).not.toContain('shopify');
   });
 
   it('renders an empty state without denied product payloads', () => {
@@ -53,7 +54,7 @@ describe('catalog presentation', () => {
 
     expect(html).toContain('Coming soon.');
     expect(html).toContain('The next release is being prepared. Return soon.');
-    expect(html).toContain('Visible here</dt><dd class="mt-3 text-white/70">0');
+    expect(html).toMatch(/Visible here<\/dt><dd[^>]*>0/);
     expect(html).not.toContain('PRODUCT_RELEASE_NOT_RELEASED');
     expect(html).not.toContain('/products/');
   });
@@ -78,5 +79,7 @@ describe('catalog presentation', () => {
     expect(html).not.toContain('Candidate records');
     expect(html).not.toContain('release candidate');
     expect(html).not.toContain('Shopify checkout available');
+    expect(html.toLowerCase()).not.toContain('shopify');
+    expect(html).toContain('data-commerce-source="store"');
   });
 });

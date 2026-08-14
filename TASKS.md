@@ -1,5 +1,121 @@
 # Delivery Tasks
 
+## v1.2.2 design-system release candidate
+
+- [x] Create `codex/cp-v1-2-2-design-system-release` from clean `e3dc7c2` without touching the separate `/Users/edv/Documents/cp` checkout.
+- [x] Restore and bind the exact `bb9568f` customer contract: approved Lofoten opener, header/navigation, lower-left `ONE`, four tags, 12-view action, and inset truthful viewer.
+- [x] Promote `app/design-tokens.css` as the sole CSS raw-value authority with strict lowercase kebab-case Primitive → Semantic → Component dependency.
+- [x] Add one documented runtime serializer mirror and mechanically match its breakpoints, image sizing, theme, viewport, Open Graph, and motion behavior to CSS primitives.
+- [x] Enforce naming, tier direction, domain coverage, reference closure/reachability, zero raw declarations, no source inline styles/arbitrary utilities, representative propagation, production content/media/layout, and cleanup boundaries in deterministic tests.
+- [x] Exhaustively prove and recoverably remove the unreferenced `components/ui/` scaffold, scaffold-only hooks/helper/config, dormant Tailwind generation, and direct dependencies; preserve every asset, release record, report, and ambiguous file.
+- [x] Update design-system guidance, v1.2.2 release notes, cleanup manifest, status/tasks, private package marker, and QA evidence.
+- [x] Pass Yarn 1.22.22 frozen install, lint, 340 tests, zero-vulnerability production audit, optimized build, secret scan, dependency/reference/duplicate/dormant-code audit, and all-public-asset decode.
+- [x] Capture and inspect 21 local screenshots across 1440×1000, 584×486, and 390×844 for hero, navigation, `ONE`, overlay, shop, PDP, and bag; traverse/decode all 12 views and prove background isolation, focus, Escape, arrows, swipe, scroll lock, reduced motion, zero overflow/errors/broken media/provider leakage.
+- [x] Compare the candidate with saved `bb9568f` evidence and record exact geometry/content acceptance plus animation-timing pixel variance.
+- [ ] Sushma reviews the committed local candidate and separately authorizes any push, Preview deployment, PR, merge, or Production action.
+
+## Version milestones
+
+- [x] Read and visually inspect all 18 pages of `Recovered-Design-System-Guidance.docx` before changing the v1.2 design-system boundary.
+- [x] Preserve v1.2 and implement the standards reconciliation as the bounded v1.2.1 patch.
+- [x] Move raw storefront presentation values into one canonical `app/design-tokens.css` source with primitive, semantic, and component tiers under `--cp-*`.
+- [x] Cover colour, type, spacing, sizing, shape, depth, motion, media, iconography, accessibility, state, exception, dependency, and project-independence requirements in the maintained contract.
+- [x] Refactor active customer surfaces to semantic/component roles without changing approved v1.2 product, media, commerce, or visual hierarchy.
+- [x] Add deterministic source/drift/dependency tests and pass full `yarn verify` (35 files / 336 tests, zero vulnerabilities, 13-route build).
+- [x] Capture and inspect desktop/mobile headless evidence for home landing/product, media overlay, shop, PDP, bag, and concept routes; prove focus, Escape, reduced motion, token resolution, and zero overflow/errors.
+- [x] Compare v1.2.1 evidence against v1.2 and record that the visible runway/`ONE` design is preserved.
+- [ ] Product Owner separately decides whether v1.2.1 should be pushed and deployed as a new Vercel Preview. Production remains unchanged.
+
+- [x] Preserve the complete current baseline, including Draft POD concepts and runway-viewer evidence, in a clean local commit and annotated tag `v1.1`.
+- [x] Confirm all newly included concepts remain Draft-only and unreferenced by active site code.
+- [x] Pass full `yarn verify`, image decode/dimension checks, visual inspection, whitespace review, and secret scan for `v1.1`.
+- [x] Audit remaining hardcoded storefront design decisions for the token-led `v1.2` milestone.
+- [x] Implement layered semantic design tokens, a shared storefront header, and reusable customer-facing primitives without changing product/media/commerce truth.
+- [x] Enforce the semantic boundary across every active customer surface with deterministic source tests.
+- [x] Pass full `yarn verify` (35 files / 334 tests, zero vulnerabilities, 13-route build) and 11-route compact/mobile/desktop headless visual regression, including all 11 media slides.
+- [x] Commit the tested candidate and create local annotated tag `v1.2`; keep push, merge, Preview/Production deployment, and domains unchanged unless separately requested.
+- [ ] Product Owner separately decides whether v1.2 should be pushed and deployed as a new Vercel Preview.
+
+## Current correction: `ONE` upper hierarchy and product attributes
+
+- [x] Move the `Signature Series / 001` and `ONE` group visibly upward at the Product Owner's 584×486 review width and on desktop.
+- [x] Preserve a phone-safe offset below the upper-right media control at 390×844.
+- [x] Replace the size/generic chips with `Color / Black`, `Material / Structured fleece`, and `Feel / Heavyweight, soft interior`.
+- [x] Keep the Signature Hoodie product, variants, PDP, media viewer, and commerce boundaries unchanged.
+- [x] Add deterministic component/design-system coverage for the responsive layout and exact attribute contract.
+- [x] Pass focused tests and full `yarn verify` (35 files / 333 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect exact 584×486, 390×844, and 1440×1000 local evidence with no browser/framework errors.
+- [x] Commit as `809fedb`, deploy READY Preview `dpl_G1A3CZJ4edFxK46YLMDfjL3Lqvpx`, repeat direct compact/mobile/desktop checks, and prove Production remains unchanged on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`.
+- [ ] Product Owner reviews the replacement Preview and separately approves or rejects merge/Production promotion.
+
+## Current correction: `ONE` product scene and inset media widget
+
+- [x] Replace the landing asset with the exact Product Owner-supplied 1536×1024 runway PNG and bind its SHA-256 in a deterministic test.
+- [x] Present the Signature Hoodie as homepage campaign name `ONE` without changing its underlying product/PDP/commerce identity.
+- [x] Reduce the reviewed description to a coherent first sentence, left-align it, and make it a three-line block at 584×486 and 390×844.
+- [x] Restore useful tags as factual product information: Black, XS–5XL, Heavyweight fleece, and CP embroidery.
+- [x] Remove the media-action forward arrow and place a four-way expand icon between its label and truthful view count.
+- [x] Convert the media viewer from a full-viewport canvas to an inset centered overlay card while retaining swipe, keyboard, close, scroll-lock, focus-return, and release gates.
+- [x] Pass focused component/design tests and full `yarn verify` (35 files / 333 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect 1440×1000, exact 584×486, and 390×844 landing/product/overlay evidence with HTTP 200, no overflow, and zero browser/framework errors.
+- [x] Commit as `bb9568f`, deploy READY Vercel Preview `dpl_GG8FyXjPuUqyom2vwsYUunGGTggU`, repeat direct browser verification, and prove Production remains on `dpl_BdasbDdxHCMruKdy7WSsrUibvcgK`.
+- [ ] Product Owner reviews the replacement Preview and separately approves or rejects merge/Production promotion.
+
+## Current correction: 319×501 homepage simplification
+
+- [x] Dull the Signature Hoodie title without reducing reviewed product readability.
+- [x] Move the eligible media viewer action to a compact upper-right scene control.
+- [x] Change the visible landing cue to `Scroll and explore`.
+- [x] Remove the four meaningless highlight chips and their now-unused derived summary/schema fields.
+- [x] Add restrained camera motion to the flattened campaign still and preserve reduced-motion fallback.
+- [x] Confirm no real campaign video file exists; require a supplied/exported MP4 or WebM for truthful walking/body motion.
+- [x] Pass full `yarn verify` (35 files / 332 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect exact 319×501, 390×844, and 1440×1000 local evidence with no errors, overlays, or overflow.
+- [x] Deploy tested commit `25b2e61` to READY Vercel Preview `dpl_9zwLjHHh9rSLScZoYG9QWVBf5TuK` and repeat direct 319×501/mobile/desktop checks; Production remains unchanged.
+- [ ] Product Owner reviews the replacement Preview and separately decides whether to supply a real runway video.
+
+## Current correction: homepage hierarchy and media discovery
+
+- [x] Replace the subtle landing rule with an unmistakable centered scroll label and animated circular down control.
+- [x] Reduce the Hoodie title hierarchy and present reviewed human-readable product copy beneath it.
+- [x] Initially derive material/construction highlights only from reviewed product description/details; later remove the chips and derived fields after Product Owner review found them meaningless.
+- [x] Replace the underlined action with a high-contrast media button and truthful view count.
+- [x] Add a direct viewer jump to the disclosed still-derived motion study.
+- [x] Remove the redundant lower product/release section so category navigation and footer follow the Hoodie scene.
+- [x] Prove selected Modelize/MODA/detail/motion coverage and keep quarantined/superseded assets excluded.
+- [x] Pass full `yarn verify` (35 files / 332 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect exact 641×686, 390×844, and 1440×1000 local evidence with no errors, overlays, or overflow.
+- [x] Deploy tested commit `ed917ef` to READY Vercel Preview `dpl_6PWspKMjE5dA8QokMfaYPmR3MGz8` and repeat direct 641×686/mobile/desktop checks plus all-12-frame decoding; Production remains unchanged.
+- [ ] Product Owner reviews the new Preview and separately approves or rejects merge/Production promotion.
+
+## Current correction: in-page Signature Hoodie media viewer
+
+- [x] Replace the second-panel Hoodie navigation CTA with an in-page full-screen viewer.
+- [x] Support touch swipe, previous/next controls, keyboard arrows, Escape, close, position count, scroll lock, background inertness, and focus return.
+- [x] Keep the gallery behind the same catalog/release visibility boundary; denied products expose neither a trigger nor a media payload.
+- [x] Keep production limited to eligible release media while Local/Preview may add explicitly disclosed Signature Hoodie visual studies.
+- [x] Minimize the home media contract and exclude raw IDs, arbitrary adapter labels, and provider jargon.
+- [x] Pass focused tests and full `yarn verify` (34 files / 330 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect direct 1440×1000 and 390×844 local panel/gallery evidence with no URL change, errors, overflow, or provider-name copy.
+- [x] Traverse and decode all 11 current gallery frames in a clean browser session.
+- [x] Add and test `.vercelignore` so local credentials, recovered exports, temporary files, and QA evidence cannot enter the deployment upload.
+- [x] Deploy this temporary branch to READY Vercel Preview `dpl_AGBftTVy679m6Bz16mYKQKs4C6JX`, repeat desktop/mobile interaction checks, and record the immutable Preview URL.
+- [ ] Product Owner reviews the new Preview and separately approves or rejects merge/Production promotion. Production must remain unchanged meanwhile.
+
+## Current correction: runway opener and provider-neutral design system
+
+- [x] Keep the approved coastal runway campaign as the complete first viewport.
+- [x] Keep the restored Signature Hoodie hero as the complete second viewport.
+- [x] Add a direct, accessible scroll cue from the runway opener to the Hoodie panel.
+- [x] Use factual campaign copy: `CARLOPHILLIPS / At the edge of life` and `Runway 001 / Lofoten`; do not invent a public tour or event.
+- [x] Centralize the active storefront foundation in semantic CARLOPHILLIPS colour, type, spacing, sizing, motion, and interaction tokens.
+- [x] Remove the underlying commerce-provider name from customer-facing copy and metadata while preserving internal integration truth.
+- [x] Keep Hoodies active and the four future categories visibly disabled after the Hoodie hero.
+- [x] Pass focused component/contract tests and full `yarn verify` (34 files / 325 tests, zero vulnerabilities, optimized build).
+- [x] Capture and inspect direct local and Vercel Preview desktop/mobile landing, Hoodie, category, and PDP evidence with zero errors, broken images, provider-name copy, or overflow.
+- [x] Deploy only the temporary branch to READY Vercel Preview `dpl_5zYviNwnc8WRFjwbECmnW1pPk8DA`.
+- [ ] Product Owner reviews the Preview and explicitly approves or rejects merge to canonical `main` and Production promotion. Production remains on the restored p92-derived artifact until that action.
+
 ## Current bounded launch: two-stage runway landing
 
 - [x] Save the approved reusable showcase and POD pipeline locally as `podpipe`.
@@ -37,6 +153,10 @@
 - [x] Deploy a new Vercel Preview and capture direct 1280×720 and 390×844 evidence for the expanded still/motion sequence.
 
 ## Current bounded delivery: Signature Hoodie premium showcase
+
+- [ ] First remaining physical-media gate: verify the exact existing Apliiq Hoodie mapping read-only, then present one sample item/size/destination/total for explicit Product Owner order approval.
+- [ ] After sample delivery, capture front/back/profiles/three-quarter/on-body/detail frames, a short product film, and 24–36 evenly spaced spin angles in one consolidated session.
+- [ ] Derive and inspect genuine spin and GLB/USDZ candidates from the verified capture; do not treat AI studies as physical fit, fabric, construction, or fulfillment proof.
 
 - [x] Diagnose the gap between the premium layout and the limited two-image product presentation.
 - [x] Inspect Modelize, Spin Studio, MyDesigns, and a zero-subscription video/model candidate without accepting charges or broad permissions.

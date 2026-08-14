@@ -1,0 +1,262 @@
+{
+  "generatedAt": "2026-08-09T19:22:06.642Z",
+  "results": [
+    {
+      "name": "home-landing-desktop",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/home-landing-desktop-1440x1000.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "5rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "home-product-desktop",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/home-product-desktop-1440x1000.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "5rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "home-product-mobile",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/home-product-mobile-390x844.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "4rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "home-overlay-mobile",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/home-overlay-mobile-390x844.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "4rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": {
+        "count": 11,
+        "decodedCount": 11,
+        "allDecoded": true
+      },
+      "errors": []
+    },
+    {
+      "name": "shop-desktop",
+      "route": "/shop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/shop-desktop-1440x1000.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "5rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "shop-mobile",
+      "route": "/shop",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/shop-mobile-390x844.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "4rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "product-desktop",
+      "route": "/products/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/product-desktop-1440x1000.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "5rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "product-mobile",
+      "route": "/products/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/product-mobile-390x844.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "4rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "bag-mobile",
+      "route": "/bag",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/bag-mobile-390x844.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "4rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "concept-desktop",
+      "route": "/concept-preview",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/concept-desktop-1440x1000.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "5rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    },
+    {
+      "name": "concept-mobile",
+      "route": "/concept-preview",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "screenshot": "/Users/edv/Documents/cp/test_reports/cp-v1.2-token-system-2026-08-09/screenshots/concept-mobile-390x844.png",
+      "overflow": false,
+      "providerNameVisible": false,
+      "tokens": {
+        "canvas": "#000000",
+        "copy": "rgb(255 255 255 / 66%)",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "header": "4rem",
+        "section": "clamp(5rem, 8vw, 8rem)"
+      },
+      "brokenImages": [],
+      "frameworkOverlay": false,
+      "mediaTraversal": null,
+      "errors": []
+    }
+  ]
+}

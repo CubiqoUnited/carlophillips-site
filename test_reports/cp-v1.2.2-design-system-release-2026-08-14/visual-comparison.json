@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "cp.visual-comparison.v1",
+  "baselineCommit": "bb9568f",
+  "baselineEvidence": "test_reports/cp-home-one-overlay-2026-08-09",
+  "candidate": "v1.2.2",
+  "acceptanceContract": {
+    "sameViewportDimensions": true,
+    "exactOverlayGeometry": true,
+    "exactHeroAssetAndCopy": true,
+    "exactProductHierarchyAndFourTags": true,
+    "truthfulViewCount": 12,
+    "normalMotionVarianceExpected": true
+  },
+  "comparisons": [
+    {
+      "viewport": "desktop",
+      "state": "home-hero",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/desktop-landing.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/desktop-home-hero.png",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "meanAbsoluteError": 0.009479,
+      "normalizedRms": 0.01736,
+      "changedPixelPercentOver4": 16.1662,
+      "differenceBoundingBox": [
+        0,
+        0,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/desktop-home-hero-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/desktop-home-hero-side-by-side.png"
+    },
+    {
+      "viewport": "desktop",
+      "state": "home-one",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/desktop-product.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/desktop-home-one.png",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "meanAbsoluteError": 0.022629,
+      "normalizedRms": 0.069881,
+      "changedPixelPercentOver4": 27.9116,
+      "differenceBoundingBox": [
+        0,
+        0,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/desktop-home-one-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/desktop-home-one-side-by-side.png"
+    },
+    {
+      "viewport": "desktop",
+      "state": "home-overlay",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/desktop-overlay.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/desktop-home-overlay.png",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "meanAbsoluteError": 0.000479,
+      "normalizedRms": 0.002066,
+      "changedPixelPercentOver4": 0.1394,
+      "differenceBoundingBox": [
+        0,
+        0,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/desktop-home-overlay-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/desktop-home-overlay-side-by-side.png"
+    },
+    {
+      "viewport": "compact",
+      "state": "home-hero",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/compact-landing.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/compact-home-hero.png",
+      "dimensions": [
+        584,
+        486
+      ],
+      "meanAbsoluteError": 0.008761,
+      "normalizedRms": 0.017539,
+      "changedPixelPercentOver4": 14.4304,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        486
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/compact-home-hero-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/compact-home-hero-side-by-side.png"
+    },
+    {
+      "viewport": "compact",
+      "state": "home-one",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/compact-product.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/compact-home-one.png",
+      "dimensions": [
+        584,
+        486
+      ],
+      "meanAbsoluteError": 0.044459,
+      "normalizedRms": 0.102478,
+      "changedPixelPercentOver4": 47.9515,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        486
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/compact-home-one-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/compact-home-one-side-by-side.png"
+    },
+    {
+      "viewport": "compact",
+      "state": "home-overlay",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/compact-overlay.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/compact-home-overlay.png",
+      "dimensions": [
+        584,
+        486
+      ],
+      "meanAbsoluteError": 0.000424,
+      "normalizedRms": 0.00263,
+      "changedPixelPercentOver4": 0.0099,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        486
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/compact-home-overlay-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/compact-home-overlay-side-by-side.png"
+    },
+    {
+      "viewport": "mobile",
+      "state": "home-hero",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/mobile-landing.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/mobile-home-hero.png",
+      "dimensions": [
+        390,
+        844
+      ],
+      "meanAbsoluteError": 0.006082,
+      "normalizedRms": 0.012296,
+      "changedPixelPercentOver4": 8.1681,
+      "differenceBoundingBox": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/mobile-home-hero-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/mobile-home-hero-side-by-side.png"
+    },
+    {
+      "viewport": "mobile",
+      "state": "home-one",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/mobile-product.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/mobile-home-one.png",
+      "dimensions": [
+        390,
+        844
+      ],
+      "meanAbsoluteError": 0.046201,
+      "normalizedRms": 0.099912,
+      "changedPixelPercentOver4": 48.961,
+      "differenceBoundingBox": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/mobile-home-one-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/mobile-home-one-side-by-side.png"
+    },
+    {
+      "viewport": "mobile",
+      "state": "home-overlay",
+      "baseline": "test_reports/cp-home-one-overlay-2026-08-09/screenshots/mobile-overlay.png",
+      "candidate": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/screenshots/mobile-home-overlay.png",
+      "dimensions": [
+        390,
+        844
+      ],
+      "meanAbsoluteError": 0.00041,
+      "normalizedRms": 0.003128,
+      "changedPixelPercentOver4": 0.1641,
+      "differenceBoundingBox": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/mobile-home-overlay-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-design-system-release-2026-08-14/comparisons/mobile-home-overlay-side-by-side.png"
+    }
+  ]
+}

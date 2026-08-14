@@ -1,30 +1,30 @@
-# HUMAN INTERVENTION REQUIRED — REVIEW CORRECTED PREVIEW
+# HUMAN INTERVENTION REQUIRED — SIGNATURE HOODIE SAMPLE FIRST
 
-Updated: 2026-08-08
+Updated: 2026-08-09
 
-## Exact action
+## Product Owner decision
 
-Open this exact non-production Preview manually:
+The first remaining physical-media gate is one exact Signature Hoodie sample. Do not spend on additional image credits, video, 360, or 3D generation before this sample path is confirmed.
 
-`https://carlophillips-site-3qgjsckgg-adityas-projects-261b17a9.vercel.app`
+## Exact action and safe order
 
-Confirm that the coastal CARLOPHILLIPS runway is the landing view, the Signature Hoodie runway is the next view on scroll, and the category rail follows it. Then reply in the active Codex task with either:
+1. Complete the newest Apliiq password-reset link and sign in to the existing Apliiq account without accepting a plan, charge, or configuration change.
+2. Signal `Apliiq open` in the active Codex task.
+3. Codex resumes with a read-only check of the existing Hoodie product, blank, decoration placement, artwork, and Shopify variant mapping. A reported `IND4000` resemblance is not sufficient to place an order.
+4. After the exact item is verified, Codex reports the one-sample item, selected size, shipping destination requirement, total price, and any risk. The Product Owner must approve that exact order and total before checkout.
+5. After delivery, capture the sample in one consolidated session: front, back, both profiles, both three-quarter views, on-body fit, walking/turning video, 24–36 evenly spaced spin angles, embroidery macro, outer fleece, inner fleece, hood/drawcord, pocket/seams, cuffs, and hem.
 
-`Corrected Preview approved for main and Production.`
+## Cost and risk
 
-or list the exact change requested. Do not approve or use the earlier one-stage Preview.
+- A physical sample, shipping, and possibly tax will incur a real charge; no amount is approved yet.
+- Do not order a guessed blank, size, decoration, or unverified provider mapping.
+- Do not accept paid media-app plans or generation credits as part of this handoff.
+- No production publish, customer order, bulk inventory, or live-site change is authorized by this sample-first decision.
 
-## Why the prior request was withdrawn
+## Resume points
 
-Corrected Preview `dpl_42uuiSoQqUyNnhJBbf35smBsud2n` is READY and passed direct desktop/mobile campaign, Hoodie, categories, PDP, console, broken-image, and overflow checks. The previously verified Preview predates the hierarchy correction and is superseded.
+- After provider sign-in: `Apliiq open` → inspect the mapping read-only.
+- After exact sample quote: Product Owner approves or rejects the named item and exact total.
+- After delivery/capture: `Hoodie sample media uploaded` → ingest, curate, produce the genuine spin/video/3D derivatives, verify desktop/mobile, and stage in Vercel Preview before any separate Production decision.
 
-## Risk and cost
-
-- No purchase, billing change, paid plan, order, or provider action is involved.
-- Production remains unchanged.
-- The corrected candidate is deployed to a temporary Vercel Preview only.
-- Reviewing it has no charge and changes no Shopify or Production state.
-
-## Resume point
-
-After the Product Owner reply, either make the requested bounded correction or—only on the exact approval phrase—merge through canonical `main`, deploy Production from approved `main`, verify `www.carlophillips.com`, and record rollback evidence.
+The previously requested runway-motion file remains optional and secondary to the physical Hoodie sample.
