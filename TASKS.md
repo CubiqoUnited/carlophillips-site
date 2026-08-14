@@ -51,6 +51,7 @@
 - [x] Enforce spend ceilings, rollback for write/publish/Production mutation, and Product Owner role for Production mutation.
 - [x] Prove malformed, pending, expired, premature, overlong, identity/RBAC, capability, approval, connector, target, evidence, idempotency, audit, cost, rollback, and Production-owner denials without invoking a connector.
 - [x] Pass and bind full Yarn (43 files / 426 tests), 538/538 browser assertions, 58 screenshot inspections, and 8/8 public zero-delta QA to exact clean implementation commit `216cb9d`.
+- [x] Add a dedicated protected Commands section with the canonical empty queue and all missing execution dependencies; expose no form, button, endpoint, actor/target data, or synthetic command.
 - [ ] Product Owner selects identity provider, initial users/roles/grants, session policy, durable database/idempotency/audit/outbox, retention/privacy, connector scopes, retry/dead-letter rules, spend ceilings, and incident owner before any remote admin or executor is wired.
 - [ ] Implement one authorized connector command at a time behind the policy and durable attempted/denied/approved/executed/failed/reconciled/rolled-back events; keep every unimplemented domain read-only.
 

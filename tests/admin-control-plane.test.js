@@ -55,7 +55,7 @@ describe('admin operational projection', () => {
 
   it('covers the complete protected information architecture', () => {
     expect(adminSections.map(section => section.id)).toEqual([
-      'overview', 'evidence', 'theme', 'drops', 'runs', 'products', 'media', 'releases', 'approvals', 'publication', 'orders', 'post-sale', 'analytics', 'capabilities', 'audit',
+      'overview', 'evidence', 'theme', 'drops', 'runs', 'products', 'media', 'releases', 'approvals', 'commands', 'publication', 'orders', 'post-sale', 'analytics', 'capabilities', 'audit',
     ]);
   });
 
@@ -123,6 +123,19 @@ describe('admin operational projection', () => {
       postSale: { rows: [] },
       analytics: { rows: [] },
     });
+  });
+
+  it('projects a truthful empty command queue with every execution dependency unavailable', () => {
+    expect(model.commands).toMatchObject({
+      authoritative: false,
+      title: 'No executable admin commands.',
+      status: 'blocked',
+    });
+    expect(model.commands.rows.find(row => row.id === 'policy')).toMatchObject({
+      status: 'local_verified',
+      boundary: 'Pure local decision only',
+    });
+    expect(model.commands.rows.filter(row => row.id !== 'policy').every(row => row.status === 'unavailable')).toBe(true);
   });
 
   it('does not project raw Shopify or POD references', () => {

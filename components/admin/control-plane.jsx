@@ -168,6 +168,31 @@ function LifecycleView({ summary, blockers }) {
   );
 }
 
+function CommandsView({ commands }) {
+  return (
+    <>
+      <article className={styles.emptyState}>
+        <div className={styles.cardHeading}>
+          <div><span className={styles.eyebrow}>Canonical empty state</span><h2>{commands.title}</h2></div>
+          <Status value={commands.status} />
+        </div>
+        <p>{commands.detail}</p>
+      </article>
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Execution boundary</span><h2>Required command gates</h2></div>
+          <p>Every row must be backed by current durable evidence before a command can leave this read-only projection.</p>
+        </div>
+        <Rows columns={[
+          { key: 'gate', label: 'Gate' },
+          { key: 'status', label: 'Status', render: row => <Status value={row.status} /> },
+          { key: 'boundary', label: 'Current boundary' },
+        ]} rows={commands.rows} />
+      </section>
+    </>
+  );
+}
+
 function SectionView({ section, model, themeModel }) {
   if (section === 'overview') return <Overview model={model} />;
   if (section === 'evidence') return <EvidenceHealth model={model} />;
@@ -201,6 +226,7 @@ function SectionView({ section, model, themeModel }) {
     { key: 'owner', label: 'Owner' },
     { key: 'status', label: 'Status', render: row => <Status value={row.status} /> },
   ]} rows={model.approvals} />;
+  if (section === 'commands') return <CommandsView commands={model.commands} />;
   if (section === 'capabilities') return <Rows columns={[
     { key: 'id', label: 'Capability' },
     { key: 'callableSurface', label: 'Surface' },

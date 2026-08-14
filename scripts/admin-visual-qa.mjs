@@ -32,6 +32,7 @@ const sections = [
   ['media', '/admin/media'],
   ['releases', '/admin/releases'],
   ['approvals', '/admin/approvals'],
+  ['commands', '/admin/commands'],
   ['publication', '/admin/publication'],
   ['orders', '/admin/orders'],
   ['post-sale', '/admin/post-sale'],
