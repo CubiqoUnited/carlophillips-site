@@ -71,11 +71,9 @@ function lockDocumentScroll() {
   root.classList.add('cp-scroll-locked');
   body.classList.add('cp-scroll-locked');
   window.addEventListener('wheel', preventScroll, { passive: false });
-  window.addEventListener('touchmove', preventScroll, { passive: false });
 
   return () => {
     window.removeEventListener('wheel', preventScroll);
-    window.removeEventListener('touchmove', preventScroll);
     if (!rootWasLocked) root.classList.remove('cp-scroll-locked');
     if (!bodyWasLocked) body.classList.remove('cp-scroll-locked');
   };

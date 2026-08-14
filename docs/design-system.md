@@ -59,6 +59,19 @@ The v1.2.2 implementation preserves these exact customer-facing decisions from `
 
 The superseded v1.2.1 three-label experiment (`Color`, `Material`, `Feel`), its 11-view evidence, and its upper product-copy placement are not the production contract.
 
+## Measured Production parity roles
+
+The corrected v1.2.2 candidate keeps typography and geometry roles independent so a gallery or shared-control change cannot move an unrelated surface:
+
+- homepage product facts use their own 8px role while gallery and information labels remain 10px;
+- compact/mobile commerce body copy resolves to 26px line-height and resolves to 28px at 40rem and above;
+- general actions use 10px/15px type, 0.24em tracking, and 24px inline padding, while catalog actions retain their dedicated 56px height and 20px padding;
+- catalog edition labels remain 9px/13.5px and catalog titles retain -0.035em tracking;
+- PDP price, description, checkout label/disclosure, and form controls have dedicated roles that preserve Production line-heights and document coordinates;
+- Information and Editorial titles, supporting copy, section padding, and editorial measure use component-specific responsive roles rather than shared heading/body aliases.
+
+The Production-parity harness compares the exact PR #9 Preview DOM plus the local candidate CSS against live Production without deploying or submitting commerce forms. All 222 role/property checks pass at 1440×1000, 584×486, and 390×844. Screenshot pixel variance caused by Production lazy-media/animation timing is non-authoritative once decoded media, DOM geometry, route health, and representative visual review pass.
+
 ## Interaction and accessibility
 
 - Menu and media dialogs lock background scroll, isolate background interaction, close with Escape, and return focus to their opener.

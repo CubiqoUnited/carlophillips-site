@@ -20,6 +20,8 @@ function render(status, source, environment = 'local') {
 describe('CommerceBagState', () => {
   it('labels local preview as non-commerce and checkout-disabled', () => {
     const html = render('local_preview', 'fixture');
+    expect(html).toContain('class="cp-commerce-page"');
+    expect(html).not.toContain('cp-product-detail-page');
     expect(html).toContain('data-bag-status="local_preview"');
     expect(html).toContain('Local non-commerce preview');
     expect(html).toContain('No live cart, checkout, payment, or order exists.');

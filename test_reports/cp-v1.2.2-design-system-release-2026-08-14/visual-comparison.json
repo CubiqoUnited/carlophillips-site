@@ -21,9 +21,9 @@
         1440,
         1000
       ],
-      "meanAbsoluteError": 0.009479,
-      "normalizedRms": 0.01736,
-      "changedPixelPercentOver4": 16.1662,
+      "meanAbsoluteError": 0.005142,
+      "normalizedRms": 0.010574,
+      "changedPixelPercentOver4": 6.5448,
       "differenceBoundingBox": [
         0,
         0,
@@ -42,9 +42,9 @@
         1440,
         1000
       ],
-      "meanAbsoluteError": 0.022629,
-      "normalizedRms": 0.069881,
-      "changedPixelPercentOver4": 27.9116,
+      "meanAbsoluteError": 0.006442,
+      "normalizedRms": 0.053921,
+      "changedPixelPercentOver4": 1.5568,
       "differenceBoundingBox": [
         0,
         0,
@@ -63,11 +63,11 @@
         1440,
         1000
       ],
-      "meanAbsoluteError": 0.000479,
-      "normalizedRms": 0.002066,
-      "changedPixelPercentOver4": 0.1394,
+      "meanAbsoluteError": 0.000328,
+      "normalizedRms": 0.00834,
+      "changedPixelPercentOver4": 0.1834,
       "differenceBoundingBox": [
-        0,
+        3,
         0,
         1440,
         1000
@@ -84,9 +84,9 @@
         584,
         486
       ],
-      "meanAbsoluteError": 0.008761,
-      "normalizedRms": 0.017539,
-      "changedPixelPercentOver4": 14.4304,
+      "meanAbsoluteError": 0.004612,
+      "normalizedRms": 0.014465,
+      "changedPixelPercentOver4": 5.3001,
       "differenceBoundingBox": [
         0,
         0,
@@ -105,9 +105,9 @@
         584,
         486
       ],
-      "meanAbsoluteError": 0.044459,
-      "normalizedRms": 0.102478,
-      "changedPixelPercentOver4": 47.9515,
+      "meanAbsoluteError": 0.015539,
+      "normalizedRms": 0.079829,
+      "changedPixelPercentOver4": 4.9404,
       "differenceBoundingBox": [
         0,
         0,
@@ -126,9 +126,9 @@
         584,
         486
       ],
-      "meanAbsoluteError": 0.000424,
-      "normalizedRms": 0.00263,
-      "changedPixelPercentOver4": 0.0099,
+      "meanAbsoluteError": 0.001183,
+      "normalizedRms": 0.018742,
+      "changedPixelPercentOver4": 0.4869,
       "differenceBoundingBox": [
         0,
         0,
@@ -147,9 +147,9 @@
         390,
         844
       ],
-      "meanAbsoluteError": 0.006082,
-      "normalizedRms": 0.012296,
-      "changedPixelPercentOver4": 8.1681,
+      "meanAbsoluteError": 0.003148,
+      "normalizedRms": 0.012141,
+      "changedPixelPercentOver4": 2.4584,
       "differenceBoundingBox": [
         0,
         0,
@@ -168,9 +168,9 @@
         390,
         844
       ],
-      "meanAbsoluteError": 0.046201,
-      "normalizedRms": 0.099912,
-      "changedPixelPercentOver4": 48.961,
+      "meanAbsoluteError": 0.013198,
+      "normalizedRms": 0.073801,
+      "changedPixelPercentOver4": 4.2171,
       "differenceBoundingBox": [
         0,
         0,
@@ -189,12 +189,12 @@
         390,
         844
       ],
-      "meanAbsoluteError": 0.00041,
-      "normalizedRms": 0.003128,
-      "changedPixelPercentOver4": 0.1641,
+      "meanAbsoluteError": 0.001006,
+      "normalizedRms": 0.018375,
+      "changedPixelPercentOver4": 0.4241,
       "differenceBoundingBox": [
         0,
-        0,
+        4,
         390,
         844
       ],
