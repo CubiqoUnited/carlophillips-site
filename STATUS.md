@@ -6,6 +6,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Production authority closure — 2026-08-14
 
+- The proposed `apps/`/`packages/` monorepo structure has been reconciled against the actual storefront and saved `podpipe` process. `docs/architecture-layout-decision.md` adopts its single-source and boundary controls but defers repository migration until a second deployable or independently consumed/versioned package exists; the current root layout remains authoritative.
 - The 12 production areas now have a versioned operating registry at `config/production-authorities.json` and plain-English acceptance brief at `docs/production-closure-brief.md`.
 - Read-only Vercel inspection identifies the production target as `aditya's projects` / `carlophillips-site` with exact non-secret organization/project IDs. A local link guard blocks absent or mismatched identity before a future deployment.
 - Repository CI now defines frozen Yarn install, lint, tests, production dependency audit, build, and retained test evidence for pull requests and `main` pushes. GitHub branch-protection enforcement remains external and must be verified read-only.
