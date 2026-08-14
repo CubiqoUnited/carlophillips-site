@@ -15,6 +15,7 @@ export function ConsentPreferences() {
   const [open, setOpen] = useState(false);
   const [analyticsReady, setAnalyticsReady] = useState(false);
   const pathname = usePathname();
+  const isAdminSurface = pathname.startsWith('/admin');
 
   useEffect(() => {
     const saved = window.localStorage.getItem(storageKey);
@@ -27,14 +28,16 @@ export function ConsentPreferences() {
     setOpen(false);
   }
 
-  const analyticsEnabled = canLoadAnalytics({ approved: analyticsApproved, consent: choice, measurementId });
+  const analyticsEnabled = !isAdminSurface && canLoadAnalytics({ approved: analyticsApproved, consent: choice, measurementId });
 
   useEffect(() => {
-    if (!analyticsEnabled || !analyticsReady) return;
+    if (!analyticsEnabled || !analyticsReady || isAdminSurface) return;
     const routeGroup = pathname.startsWith('/products/') ? 'product' : pathname.split('/')[1] || 'home';
     const event = createAnalyticsEvent('page_view', { route_group: routeGroup });
     emitGaEvent(window, event);
-  }, [analyticsEnabled, analyticsReady, pathname]);
+  }, [analyticsEnabled, analyticsReady, isAdminSurface, pathname]);
+
+  if (isAdminSurface) return null;
 
   return (
     <>

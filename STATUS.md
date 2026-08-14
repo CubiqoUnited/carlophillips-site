@@ -4,6 +4,17 @@ Updated: 2026-08-14
 Branch: published PR #9 branch `codex/cp-v1-2-2-design-system-release`; final correction binding pending
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## End-to-end authority containment and admin control plane — 2026-08-14
+
+- Strict Sushma, Aarti, Richa, Pushpa, and Malti reconciliation is **RED / NOT END-TO-END READY**. The canonical Signature Hoodie Product Release Record remains Draft with missing Shopify fingerprints/review, provider mapping fingerprint, physical sample, media approvals/bindings, candidate build/staging evidence, approvals, and rollback verification.
+- Read-only Production evidence exposed `Continue to checkout` despite that Draft state. The cause was a separate single-product launch file that bypassed Product Release Record and Media Registry authority, synthesized Released/cart approval in server code, and allowed `/api/checkout` to call Shopify `cartCreate`.
+- The isolated candidate branch `codex/cp-e2e-admin-control-plane` removes the launch file/policy, refuses ad-hoc release/cart/media authority, makes checkout perform no Shopify read or mutation, and requires an independent `checkoutAllowed` decision before the PDP can render a checkout form. Production is unchanged; containment deployment requires explicit approval recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+- `config/end-to-end-capability-map.json` is a non-authoritative readiness index covering trigger → POD → sample → Shopify truth → media → showcase → release/publication → cart/checkout → payment/order → fulfillment/tracking → support/returns/refunds/reviews → analytics → admin. It points back to canonical artifacts and cannot override them.
+- `contracts/admin-command.schema.json` and `contracts/operational-event.schema.json` define reviewed idempotent commands and hash-chained append-only events without implementing external execution authority.
+- `/admin` now provides Overview, Briefs/Drops, Jobs/Runs, Products/POD/Samples, Media, Releases, Approvals, Preview/Publication, Orders/Fulfillment, Post-sale, Analytics, Capabilities, and Audit. It is local-only, server bearer-gated, noindex, absent from public navigation, sanitized, read-only, and hard-denied on Vercel. Real identity/RBAC, durable persistence, audit immutability, and connector mutations remain blocked.
+- The capability registry now explicitly records the missing checkout, payment/order, order reconciliation, POD fulfillment, tracking, returns/refunds, reviews, analytics, admin identity, audit persistence, webhook, and durable-executor capabilities with exact owner decisions and resume points.
+- Local source QA currently passes 38 test files / 363 tests, zero-warning lint, whitespace validation, and an optimized build with the dynamic admin route. Full visual evidence and final integrated-candidate verification remain in progress.
+
 ## Production authority closure — 2026-08-14
 
 - The 12 production areas now have a versioned operating registry at `config/production-authorities.json` and plain-English acceptance brief at `docs/production-closure-brief.md`.

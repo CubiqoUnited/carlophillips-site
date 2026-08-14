@@ -22,7 +22,7 @@
           "callableSurface": { "enum": ["local", "shopify_storefront", "shopify_admin", "shopify_flow", "app_api", "authenticated_browser", "human_only", "unverified", "unavailable"] },
           "evidenceRef": { "type": ["string", "null"], "minLength": 1 },
           "allowedOperations": { "type": "array", "items": { "type": "string", "pattern": "^[a-z0-9-]+$" } },
-          "requiresApproval": { "type": "array", "items": { "enum": ["spend", "credits", "sample", "publish", "production"] } },
+          "requiresApproval": { "type": "array", "uniqueItems": true, "items": { "enum": ["spend", "credits", "sample", "publish", "production", "identity", "privacy", "payment", "order", "refund", "connector"] } },
           "costGate": { "type": "string", "minLength": 1 },
           "draftSafety": { "type": "string", "minLength": 1 },
           "alternatives": { "type": "array", "items": { "type": "string", "minLength": 1 } },

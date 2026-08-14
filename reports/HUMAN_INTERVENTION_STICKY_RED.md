@@ -1,3 +1,35 @@
+# HUMAN INTERVENTION REQUIRED — CONTAIN LIVE CHECKOUT AUTHORITY DEFECT
+
+Updated: 2026-08-14
+
+## What is blocked
+
+The live Signature Hoodie PDP was independently observed showing `Continue to checkout` while the canonical Product Release Record is Draft, required fingerprints and approvals are missing, rollback verification is null, and the Media Registry has zero storefront bindings. A historical single-product launch file bypassed the canonical release and media gates.
+
+The tested candidate on branch `codex/cp-e2e-admin-control-plane` removes that authority path, denies checkout before any Shopify read or cart mutation, and requires an independent `checkoutAllowed` decision before the PDP can render a checkout form. This local change does not alter Production.
+
+## Exact human action
+
+1. Boss decides whether to authorize a fail-closed hotfix deployment from a new immutable reviewed candidate, or to authorize a rollback only after the proposed rollback artifact is verified not to contain the same bypass.
+2. If authorizing the hotfix, signal exactly: `Approve CP fail-closed hotfix Preview only`. Sushma may then prepare and verify a Vercel Preview; this signal does not authorize merge or Production.
+3. After exact Preview QA visibly proves no checkout CTA, no unbound media, no Shopify mutation, and a safe rollback, Boss may separately signal: `Approve CP fail-closed Production containment`.
+4. If considering rollback instead, signal: `Review CP rollback candidate`. Sushma will verify the artifact read-only and return an evidence-bound recommendation before any alias or deployment change.
+
+Do not open Shopify, GitHub settings, Vercel, or any browser screen for Codex. If a visible screen is later necessary, Boss must manually open it or explicitly approve that exact visible action first.
+
+## Cost and risk
+
+- A Preview deployment should not change the live site, but account/build usage may apply.
+- Production containment changes customer purchase availability and therefore needs explicit Product Owner approval.
+- An unverified rollback could restore the same bypass or older defects. No rollback is safe merely because it is older.
+- No Shopify catalog, channel, order, payment, fulfillment, or billing change is authorized.
+
+## Resume point
+
+Resume from the isolated branch by creating one immutable candidate commit, verifying Local and exact Preview at 1440×1000, 1024×768, and 390×844, and binding the results to the Product Release Record. Production remains a separate approval.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — SIGNATURE HOODIE SAMPLE FIRST
 
 Updated: 2026-08-09

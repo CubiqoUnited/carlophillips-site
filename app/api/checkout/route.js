@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createApprovedHoodieCheckout } from '@/lib/commerce/shopify-checkout-server';
+import { getProductReleaseEvidence } from '@/lib/releases/product-release-registry';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,10 +16,13 @@ export async function POST(request) {
     }
   }
   const form = await request.formData();
+  const handle = String(form.get('handle') || '');
+  const releaseEvidence = getProductReleaseEvidence(handle);
   const result = await createApprovedHoodieCheckout({
-    handle: String(form.get('handle') || ''),
+    handle,
     referenceHash: String(form.get('referenceHash') || ''),
     quantity: Number(form.get('quantity')),
+    ...(releaseEvidence || {}),
   });
   if (!result.ok) return NextResponse.json({ error: result.reason }, { status: 409 });
   return NextResponse.redirect(result.checkoutUrl, 303);

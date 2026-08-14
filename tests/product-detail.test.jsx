@@ -147,12 +147,12 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('Outer pending approval story');
   });
 
-  it('renders a brand-neutral checkout form only for an eligible launch', () => {
+  it('does not render checkout from cart eligibility without separate checkout authority', () => {
     const product = toProductViewModel({
       source: 'shopify',
       environment: 'production',
       commerceAllowed: true,
-      reason: 'SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED',
+      reason: 'AD_HOC_COMMERCE_APPROVAL',
       product: {
         id: 'hoodie', handle: 'approved-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
         description: 'Current product description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
@@ -160,19 +160,16 @@ describe('commerce product presentation', () => {
       },
     });
     const html = renderToStaticMarkup(<CommerceProductDetail
-      releaseReason="SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED"
+      releaseReason="AD_HOC_COMMERCE_APPROVAL"
       cartActivation={{ status: 'eligible', cartAllowed: true, reason: 'CUSTOMER_CART_ELIGIBLE' }}
       product={product}
     />);
-    expect(html).toContain('Continue to checkout');
-    expect(html).toContain('action="/api/checkout"');
-    expect(html).toContain('Signature Series / 001');
-    expect(html).toContain('Made to be lived in.');
-    expect(html).toContain('Secure encrypted checkout');
+    expect(html).not.toContain('Continue to checkout');
+    expect(html).not.toContain('action="/api/checkout"');
+    expect(html).toContain('Purchasing disabled');
     expect(html).not.toContain('Shopify Storefront — live product');
     expect(html.toLowerCase()).not.toContain('shopify');
-    expect(html).not.toContain('Purchasing disabled');
-    expect(html).not.toContain('release state unavailable');
+    expect(html).toContain('release state unavailable');
     expect(html).not.toContain('Cart gate: CUSTOMER_CART_ELIGIBLE');
     expect(html).not.toContain('gid://');
   });

@@ -403,3 +403,23 @@
 - [ ] Authorized GitHub owner makes the Quality check required on `main`; verify this read-only before release.
 - [ ] Run exact-commit Vercel Preview acceptance and capture evidence; no production alias or promotion.
 - [ ] Product Owner explicitly approves or rejects merge and Production only after all applicable gates pass.
+# Current closure: canonical authority, end-to-end readiness, and protected admin
+
+- [x] Reconcile every identifiable CP Codex task plus Git, GitHub, Vercel, PRD, architecture, status, tasks, release, media, run, and capability evidence.
+- [x] Run independent Sushma/Aarti/Richa/Pushpa/Malti architecture, security, evidence, product, funnel, UX, admin, and QA audits.
+- [x] Identify the live P0 where a historical single-product launch bypasses the Draft Product Release Record and empty Media Registry bindings.
+- [x] Remove the ad-hoc launch config/policy and every synthetic Released/cart/media authority path in the isolated candidate.
+- [x] Make `/api/checkout` perform no Shopify read or cart mutation until canonical Released evidence and a separate release-bound checkout authorization exist.
+- [x] Require both `cartAllowed` and independent `checkoutAllowed` before rendering any checkout form.
+- [x] Add one non-authoritative machine-readable end-to-end readiness index with owners, evidence counts, exact human actions, and resume points.
+- [x] Add reviewed admin-command and hash-chained operational-event contract foundations.
+- [x] Add explicit capability entries for payment/order, fulfillment, tracking, support, returns/refunds, reviews, analytics, admin identity/audit, webhooks, and durable execution.
+- [x] Implement the local-only read-only `/admin` control plane across all required information areas with server access enforcement, noindex, sanitization, and no mutation UI.
+- [x] Pass focused and full source checks: zero-warning lint, 38 files / 363 tests, whitespace validation, and optimized build.
+- [ ] Capture and inspect authorized/denied admin plus public-regression evidence at 1440×1000, 1024×768, and 390×844; record console, network, overflow, accessibility, raw-ID, and checkout-denial results.
+- [ ] Bind the final candidate commit and evidence report after reconciling any independently completed architecture task without touching its dirty worktree.
+- [ ] Product Owner authorizes a new immutable fail-closed Preview; no Preview deployment is implied by this local task.
+- [ ] Product Owner reviews exact Preview containment evidence and separately authorizes or rejects Production containment.
+- [ ] Verify Apliiq mapping and one physical sample through the sticky handoff; no spend is authorized yet.
+- [ ] Select identity/RBAC, durable event/read-model storage, connector owners, privacy/retention, cost, and incident boundaries before remote admin or mutations.
+- [ ] Run one separately approved controlled order through payment, POD receipt, fulfillment, shipment, tracking, support, return/refund, and review eligibility before claiming end-to-end readiness.
