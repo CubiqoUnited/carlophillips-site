@@ -1,109 +1,104 @@
-import { describe, expect, it } from 'vitest';
-import { normalizeCart, normalizeProduct } from '../lib/shopify/normalize.js';
+import { describe, expect, it, vi } from 'vitest';
 
-describe('Shopify normalization', () => {
-  it('preserves product, variant, and real rich-media truth', () => {
-    const product = normalizeProduct({
-      id: 'gid://shopify/Product/1',
+vi.mock('server-only', () => ({}));
+import { normalizeStorefrontProduct } from '@repo/shopify';
+
+describe('Shopify transport normalization', () => {
+  it('preserves query-only product, variant, price, and rich-media truth', () => {
+    const product = normalizeStorefrontProduct({
+      product: {
+        id: 'gid://shopify/Product/1',
+        handle: 'signature-hoodie',
+        title: 'Signature Hoodie',
+        description: 'Heavyweight hoodie\nEmbroidered chest mark',
+        descriptionHtml: '<p>Heavyweight hoodie</p>',
+        productType: 'Hoodie',
+        vendor: 'Apliiq',
+        tags: ['Signature'],
+        priceRange: {
+          minVariantPrice: { amount: '128.00', currencyCode: 'USD' },
+          maxVariantPrice: { amount: '128.00', currencyCode: 'USD' },
+        },
+        images: { edges: [] },
+        media: {
+          edges: [
+            {
+              node: {
+                __typename: 'MediaImage',
+                id: 'media-image',
+                alt: 'Front view',
+                previewImage: {
+                  url: 'https://cdn.example/front.jpg',
+                  altText: 'Front view',
+                  width: 800,
+                  height: 800,
+                },
+                image: {
+                  url: 'https://cdn.example/front.jpg',
+                  altText: 'Front view',
+                  width: 800,
+                  height: 800,
+                },
+              },
+            },
+            {
+              node: {
+                __typename: 'Video',
+                id: 'media-video',
+                alt: 'Product film',
+                previewImage: {
+                  url: 'https://cdn.example/film.jpg',
+                  altText: 'Film poster',
+                  width: 800,
+                  height: 800,
+                },
+                sources: [
+                  {
+                    url: 'https://cdn.example/film.mp4',
+                    mimeType: 'video/mp4',
+                    format: 'mp4',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        variants: {
+          edges: [
+            {
+              node: {
+                id: 'gid://shopify/ProductVariant/1',
+                title: 'Black / M',
+                availableForSale: true,
+                price: { amount: '128.00', currencyCode: 'USD' },
+                selectedOptions: [
+                  { name: 'Color', value: 'Black' },
+                  { name: 'Size', value: 'M' },
+                ],
+                image: null,
+              },
+            },
+          ],
+        },
+        options: [],
+      },
+    });
+
+    expect(product).toMatchObject({
+      schemaVersion: 'cp.shopify-product-transport-input.v1',
+      authority: 'transport-only',
       handle: 'signature-hoodie',
       title: 'Signature Hoodie',
-      description: 'Heavyweight hoodie\nEmbroidered chest mark',
-      descriptionHtml: '<p>Heavyweight hoodie</p>',
-      productType: 'Hoodie',
-      vendor: 'Apliiq',
-      tags: ['Signature'],
       priceRange: {
-        minVariantPrice: { amount: '128.00', currencyCode: 'USD' },
-        maxVariantPrice: { amount: '128.00', currencyCode: 'USD' },
-      },
-      images: { edges: [] },
-      media: {
-        edges: [
-          {
-            node: {
-              id: 'media-image',
-              mediaContentType: 'IMAGE',
-              alt: 'Front view',
-              previewImage: { url: 'https://cdn.example/front.jpg', width: 800, height: 800 },
-              image: { url: 'https://cdn.example/front.jpg', width: 800, height: 800 },
-            },
-          },
-          {
-            node: {
-              id: 'media-video',
-              mediaContentType: 'VIDEO',
-              alt: 'Product film',
-              previewImage: { url: 'https://cdn.example/film.jpg' },
-              sources: [{ url: 'https://cdn.example/film.mp4', mimeType: 'video/mp4' }],
-            },
-          },
-        ],
-      },
-      variants: {
-        edges: [{ node: {
-          id: 'gid://shopify/ProductVariant/1',
-          availableForSale: true,
-          selectedOptions: [
-            { name: 'Color', value: 'Black' },
-            { name: 'Size', value: 'M' },
-          ],
-        } }],
+        minimum: { amount: '128.00', currency: 'USD' },
+        maximum: { amount: '128.00', currency: 'USD' },
       },
     });
-
-    expect(product.id).toBe('signature-hoodie');
-    expect(product.handle).toBe('signature-hoodie');
-    expect(product.price).toBe(128);
-    expect(product.currency).toBe('USD');
-    expect(product).toMatchObject({
-      description: 'Heavyweight hoodie\nEmbroidered chest mark',
-      vendor: 'Apliiq',
-      productType: 'Hoodie',
-      tagline: 'SIGNATURE',
-      details: ['Heavyweight hoodie', 'Embroidered chest mark'],
-    });
-    expect(product.media.map(item => item.type)).toEqual(['image', 'video']);
-    expect(product).not.toHaveProperty('shopifyVariants');
-    expect(product).not.toHaveProperty('firstVariantId');
-    expect(product.observedVariants[0].id).toBe('gid://shopify/ProductVariant/1');
-    expect(product.availableForSale).toBe(true);
-  });
-
-  it('maps a Shopify cart into the storefront cart contract', () => {
-    const cart = normalizeCart({
-      id: 'gid://shopify/Cart/1',
-      checkoutUrl: 'https://checkout.example/cart/1',
-      totalQuantity: 2,
-      cost: {
-        subtotalAmount: { amount: '256.00' },
-        totalAmount: { amount: '256.00' },
-      },
-      lines: {
-        edges: [{ node: {
-          id: 'line-1',
-          quantity: 2,
-          merchandise: {
-            id: 'variant-1',
-            price: { amount: '128.00' },
-            image: { url: 'https://cdn.example/front.jpg' },
-            selectedOptions: [
-              { name: 'Color', value: 'Black' },
-              { name: 'Size', value: 'M' },
-            ],
-            product: { handle: 'signature-hoodie', title: 'Signature Hoodie' },
-          },
-        } }],
-      },
-    });
-
-    expect(cart.totalQuantity).toBe(2);
-    expect(cart.total).toBe(256);
-    expect(cart.items[0]).toMatchObject({
-      key: 'signature-hoodie-Black-M',
-      variantId: 'variant-1',
-      lineItemId: 'line-1',
-      quantity: 2,
-    });
-    expect(cart.checkoutUrl).toBe('https://checkout.example/cart/1');
+    expect(product.media.map((item) => item.type)).toEqual(['image', 'video']);
+    expect(product.variants[0].rawReference).toBe(
+      'gid://shopify/ProductVariant/1'
+    );
+    expect(product).not.toHaveProperty('releaseState');
+    expect(product).not.toHaveProperty('cartAllowed');
   });
 });

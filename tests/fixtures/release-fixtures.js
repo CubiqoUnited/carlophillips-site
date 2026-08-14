@@ -1,5 +1,5 @@
-import { createProductObservation } from '../../lib/commerce/product-observation.js';
-import { fingerprintStorefrontMedia } from '../../lib/commerce/media-visibility-policy.js';
+import { createProductObservation } from '../../apps/web/src/lib/commerce/product-observation.ts';
+import { fingerprintStorefrontMedia } from '../../apps/web/src/lib/commerce/media-visibility-policy.ts';
 
 const observedAt = '2026-07-22T00:00:00Z';
 
@@ -14,6 +14,25 @@ const imageModalities = [
 
 function approvedAsset({ assetId, kind, fallbackAssetId = null }) {
   const storefrontMedia = observedStorefrontMedia(assetId, kind);
+  const formatEvidence =
+    kind === 'spin'
+      ? {
+          spinEvidence: {
+            sourceType: 'physical-multi-angle',
+            frameCount: 36,
+            rotationTestEvidence: `evidence/${assetId}-rotation-test.json`,
+          },
+        }
+      : kind === 'model_3d'
+        ? {
+            modelEvidence: {
+              formats: ['glb', 'usdz'],
+              loadTestEvidence: `evidence/${assetId}-load-test.json`,
+              arClaimed: true,
+              arTestEvidence: `evidence/${assetId}-ar-test.json`,
+            },
+          }
+        : {};
   return {
     schemaVersion: 'cp.product-media-asset.v1',
     assetId,
@@ -33,6 +52,7 @@ function approvedAsset({ assetId, kind, fallbackAssetId = null }) {
     },
     alt: `Exact product ${assetId}`,
     fallbackAssetId,
+    ...formatEvidence,
   };
 }
 
@@ -59,13 +79,15 @@ function observedProductInput(handle) {
     compareAtPrice: 128,
     currency: 'USD',
     availableForSale: true,
-    observedVariants: [{
-      id: 'sanitized-test-variant',
-      title: 'Default Title',
-      selectedOptions: [{ name: 'Title', value: 'Default Title' }],
-      availableForSale: true,
-      price: { amount: '128.00', currencyCode: 'USD' },
-    }],
+    observedVariants: [
+      {
+        id: 'sanitized-test-variant',
+        title: 'Default Title',
+        selectedOptions: [{ name: 'Title', value: 'Default Title' }],
+        availableForSale: true,
+        price: { amount: '128.00', currencyCode: 'USD' },
+      },
+    ],
   };
 }
 
@@ -104,12 +126,23 @@ export function createCompleteReleaseRecord(
       observationFingerprintStatus: 'reviewed',
       observationReviewEvidence: 'evidence/product-observation-review.json',
     },
-    fulfillmentMappings: [{
-      adapter: 'test-provider',
-      providerProductId: 'sanitized-provider-product',
-      variantFingerprint: observation.variantFingerprint,
-      variantFingerprintStatus: 'observed',
-    }],
+    fulfillmentMappings: [
+      {
+        adapter: 'test-provider',
+        providerProductId: 'sanitized-provider-product',
+        variantFingerprint: observation.variantFingerprint,
+        variantFingerprintStatus: 'observed',
+      },
+    ],
+    physicalSample: {
+      status: 'approved',
+      sampleReference: 'sample:test-product:001',
+      fit: 'approved',
+      colour: 'approved',
+      artworkPlacement: 'approved',
+      finish: 'approved',
+      evidence: 'evidence/physical-sample-approval.json',
+    },
     mediaManifest: 'fixtures/complete-media-manifest.json',
     approvals: {
       product: { status: 'approved', owner: 'Product Owner' },
@@ -120,13 +153,17 @@ export function createCompleteReleaseRecord(
       gitCommit: 'abcdef1',
       buildEvidence: 'test_reports/candidate/verification.json',
       stagingEvidence: 'test_reports/candidate/staging.json',
+      responsiveEvidence: 'test_reports/candidate/responsive.json',
+      performanceEvidence: 'test_reports/candidate/performance.json',
+      tokenEvidence: 'test_reports/candidate/design-token-regression.json',
     },
     rollback: {
       strategy: 'withdraw-release',
       planEvidence: 'test_reports/candidate/rollback-plan.json',
-      verificationEvidence: state === 'released'
-        ? 'test_reports/candidate/rollback-verification.json'
-        : null,
+      verificationEvidence:
+        state === 'released'
+          ? 'test_reports/candidate/rollback-verification.json'
+          : null,
       previousReleaseId: null,
     },
   };
@@ -159,25 +196,30 @@ export function createObservedShopifyProduct(
       'material-detail',
       'on-model',
       'lifestyle',
-    ].map(modality => observedStorefrontMedia(`${modality}-image`, 'image')).concat([
-      observedStorefrontMedia('model-asset', 'model_3d'),
-      observedStorefrontMedia('film-asset', 'video'),
-    ]),
+    ]
+      .map((modality) => observedStorefrontMedia(`${modality}-image`, 'image'))
+      .concat([
+        observedStorefrontMedia('spin-asset', 'spin'),
+        observedStorefrontMedia('model-asset', 'model_3d'),
+        observedStorefrontMedia('film-asset', 'video'),
+      ]),
   };
 }
 
 export function createCompleteMediaManifest() {
-  const imageRequirements = imageModalities.map(modality => ({
+  const imageRequirements = imageModalities.map((modality) => ({
     modality,
     requirement: 'required',
     status: 'approved',
     assetIds: [`${modality}-image`],
     infeasibilityBlocker: null,
   }));
-  const imageAssets = imageModalities.map(modality => approvedAsset({
-    assetId: `${modality}-image`,
-    kind: 'image',
-  }));
+  const imageAssets = imageModalities.map((modality) =>
+    approvedAsset({
+      assetId: `${modality}-image`,
+      kind: 'image',
+    })
+  );
 
   return {
     schemaVersion: 'cp.product-media-manifest.v1',
@@ -186,14 +228,10 @@ export function createCompleteMediaManifest() {
       ...imageRequirements,
       {
         modality: 'spin-360',
-        requirement: 'where-feasible',
-        status: 'infeasible-approved',
-        assetIds: [],
-        infeasibilityBlocker: {
-          reason: 'No truthful spin renderer is active in the current storefront fixture.',
-          approvalStatus: 'approved',
-          owner: 'Product Owner',
-        },
+        requirement: 'required',
+        status: 'approved',
+        assetIds: ['spin-asset'],
+        infeasibilityBlocker: null,
       },
       {
         modality: 'model-3d-ar',
@@ -212,6 +250,11 @@ export function createCompleteMediaManifest() {
     ],
     assets: [
       ...imageAssets,
+      approvedAsset({
+        assetId: 'spin-asset',
+        kind: 'spin',
+        fallbackAssetId: 'front-image',
+      }),
       approvedAsset({
         assetId: 'model-asset',
         kind: 'model_3d',

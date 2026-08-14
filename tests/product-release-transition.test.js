@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import hoodieManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
-import { evaluateProductReleaseTransition } from '../lib/releases/product-release-transition';
+import { evaluateProductReleaseTransition } from '../apps/web/src/lib/releases/product-release-transition';
 import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
 } from './fixtures/release-fixtures';
 
 function blockerCodes(decision) {
-  return decision.blockers.map(blocker => blocker.code);
+  return decision.blockers.map((blocker) => blocker.code);
 }
 
 describe('Product Release Record transitions', () => {
@@ -22,13 +22,15 @@ describe('Product Release Record transitions', () => {
 
     expect(decision.allowed).toBe(false);
     expect(decision.candidate).toBeNull();
-    expect(blockerCodes(decision)).toEqual(expect.arrayContaining([
-      'SHOPIFY_VARIANT_FINGERPRINT_MISSING',
-      'FULFILLMENT_VARIANT_FINGERPRINT_MISSING',
-      'CANDIDATE_COMMIT_MISSING',
-      'BUILD_EVIDENCE_MISSING',
-      'STAGING_EVIDENCE_MISSING',
-    ]));
+    expect(blockerCodes(decision)).toEqual(
+      expect.arrayContaining([
+        'SHOPIFY_VARIANT_FINGERPRINT_MISSING',
+        'FULFILLMENT_VARIANT_FINGERPRINT_MISSING',
+        'CANDIDATE_COMMIT_MISSING',
+        'BUILD_EVIDENCE_MISSING',
+        'STAGING_EVIDENCE_MISSING',
+      ])
+    );
     expect(hoodieRelease).toEqual(original);
   });
 
@@ -62,7 +64,9 @@ describe('Product Release Record transitions', () => {
       targetState: 'staged',
     });
     expect(decision.allowed).toBe(false);
-    expect(blockerCodes(decision)).toContain('ROLLBACK_PREVIOUS_RELEASE_MISSING');
+    expect(blockerCodes(decision)).toContain(
+      'ROLLBACK_PREVIOUS_RELEASE_MISSING'
+    );
   });
 
   it('allows a complete immutable candidate to enter private staging without claiming media approval', () => {
@@ -94,12 +98,37 @@ describe('Product Release Record transitions', () => {
       targetState: 'approved',
     });
     expect(decision.allowed).toBe(false);
-    expect(blockerCodes(decision)).toEqual(expect.arrayContaining([
-      'PRODUCT_APPROVAL_REQUIRED',
-      'MEDIA_APPROVAL_REQUIRED',
-      'FULFILLMENT_APPROVAL_REQUIRED',
-      'MEDIA_MANIFEST_RELEASE_MISMATCH',
-    ]));
+    expect(blockerCodes(decision)).toEqual(
+      expect.arrayContaining([
+        'PRODUCT_APPROVAL_REQUIRED',
+        'MEDIA_APPROVAL_REQUIRED',
+        'FULFILLMENT_APPROVAL_REQUIRED',
+        'MEDIA_MANIFEST_RELEASE_MISMATCH',
+      ])
+    );
+  });
+
+  it('keeps a product Staged until the exact physical sample and release QA are approved', () => {
+    const record = createCompleteReleaseRecord('staged');
+    record.physicalSample.status = 'pending';
+    record.physicalSample.evidence = null;
+    record.candidate.responsiveEvidence = null;
+    record.candidate.performanceEvidence = null;
+    record.candidate.tokenEvidence = null;
+
+    const decision = evaluateProductReleaseTransition({
+      record,
+      manifest: createCompleteMediaManifest(),
+      targetState: 'approved',
+    });
+    expect(blockerCodes(decision)).toEqual(
+      expect.arrayContaining([
+        'PHYSICAL_SAMPLE_APPROVAL_REQUIRED',
+        'RESPONSIVE_QA_EVIDENCE_REQUIRED',
+        'PERFORMANCE_EVIDENCE_REQUIRED',
+        'DESIGN_TOKEN_EVIDENCE_REQUIRED',
+      ])
+    );
   });
 
   it('allows Staged → Approved only with complete truth and evidence', () => {
@@ -124,16 +153,19 @@ describe('Product Release Record transitions', () => {
       targetState: 'released',
     });
     expect(decision.allowed).toBe(false);
-    expect(blockerCodes(decision)).toEqual(expect.arrayContaining([
-      'SHOPIFY_ACTIVE_OBSERVATION_REQUIRED',
-      'ROLLBACK_VERIFICATION_REQUIRED',
-    ]));
+    expect(blockerCodes(decision)).toEqual(
+      expect.arrayContaining([
+        'SHOPIFY_ACTIVE_OBSERVATION_REQUIRED',
+        'ROLLBACK_VERIFICATION_REQUIRED',
+      ])
+    );
   });
 
   it('allows Approved → Released only after active and rollback observations', () => {
     const record = createCompleteReleaseRecord('approved');
     record.shopify.statusObserved = 'ACTIVE';
-    record.rollback.verificationEvidence = 'test_reports/candidate/rollback-verification.json';
+    record.rollback.verificationEvidence =
+      'test_reports/candidate/rollback-verification.json';
     const decision = evaluateProductReleaseTransition({
       record,
       manifest: createCompleteMediaManifest(),
@@ -149,11 +181,15 @@ describe('Product Release Record transitions', () => {
   it('records withdrawal only after rollback or withdrawal evidence exists', () => {
     const missing = createCompleteReleaseRecord('released');
     missing.rollback.verificationEvidence = null;
-    expect(blockerCodes(evaluateProductReleaseTransition({
-      record: missing,
-      manifest: createCompleteMediaManifest(),
-      targetState: 'withdrawn',
-    }))).toContain('WITHDRAWAL_EVIDENCE_REQUIRED');
+    expect(
+      blockerCodes(
+        evaluateProductReleaseTransition({
+          record: missing,
+          manifest: createCompleteMediaManifest(),
+          targetState: 'withdrawn',
+        })
+      )
+    ).toContain('WITHDRAWAL_EVIDENCE_REQUIRED');
 
     const verified = evaluateProductReleaseTransition({
       record: createCompleteReleaseRecord('released'),

@@ -2,16 +2,16 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const runtimeSources = [
-  'app/page.js',
-  'app/shop/page.js',
-  'app/collections/page.js',
-  'app/products/[handle]/page.js',
-  'app/bag/page.js',
-  'app/cart/page.js',
-  'components/storefront/home-storefront.jsx',
-  'components/commerce/catalog-boundary.jsx',
-  'components/commerce/product-detail.jsx',
-  'components/commerce/bag-state.jsx',
+  'apps/web/src/app/(editorial)/page.tsx',
+  'apps/web/src/app/shop/page.tsx',
+  'apps/web/src/app/collections/page.tsx',
+  'apps/web/src/app/product/[handle]/page.tsx',
+  'apps/web/src/app/bag/page.tsx',
+  'apps/web/src/app/cart/page.tsx',
+  'apps/web/src/components/editorial/HomeStorefront/index.tsx',
+  'apps/web/src/components/commerce/catalog-boundary.tsx',
+  'apps/web/src/components/product/ProductInfo/index.tsx',
+  'apps/web/src/components/commerce/bag-state.tsx',
 ];
 
 describe('active commerce boundary policy', () => {
@@ -31,17 +31,31 @@ describe('active commerce boundary policy', () => {
   it('keeps runtime routes and components away from low-level Shopify and legacy stores', () => {
     for (const path of runtimeSources) {
       const source = readFileSync(path, 'utf8');
-      expect(source, path).not.toMatch(/lib\/(?:data\/products|store\/cart|shopify\/(?:client|index|mutations))/);
+      expect(source, path).not.toMatch(
+        /lib\/(?:data\/products|store\/cart|shopify\/(?:client|index|mutations))/
+      );
       expect(source, path).not.toMatch(/variant-resolution-(?:policy|server)/);
-      expect(source, path).not.toMatch(/observedVariants|shopifyVariants|rawShopifyProduct/);
+      expect(source, path).not.toMatch(
+        /observedVariants|shopifyVariants|rawShopifyProduct/
+      );
       expect(source, path).not.toContain('NEXT_PUBLIC_SHOPIFY_');
     }
   });
 
   it('keeps the Shopify product transport server-only and read-only', () => {
-    const adapter = readFileSync('lib/providers/shopify/storefront-product-adapter.js', 'utf8');
-    const loader = readFileSync('lib/providers/shopify/product-loader.js', 'utf8');
-    const combined = `${adapter}\n${loader}`;
+    const adapter = readFileSync(
+      'apps/web/src/lib/providers/shopify/storefront-product-adapter.ts',
+      'utf8'
+    );
+    const loader = readFileSync(
+      'apps/web/src/lib/providers/shopify/product-loader.ts',
+      'utf8'
+    );
+    const shopifyPackage = readFileSync(
+      'packages/shopify/src/client.ts',
+      'utf8'
+    );
+    const combined = `${adapter}\n${loader}\n${shopifyPackage}`;
 
     expect(adapter).toContain("import 'server-only'");
     expect(combined).toContain('SHOPIFY_STOREFRONT_TOKEN');
@@ -49,16 +63,18 @@ describe('active commerce boundary policy', () => {
     expect(adapter).toContain('capabilityDecision.evidenceRef');
     expect(combined).not.toContain('NEXT_PUBLIC_SHOPIFY_');
     expect(combined).not.toMatch(/mutation\s+/);
-    expect(combined).not.toMatch(/createCart|cartLinesAdd|cartLinesUpdate|cartLinesRemove/);
+    expect(combined).not.toMatch(
+      /createCart|cartLinesAdd|cartLinesUpdate|cartLinesRemove/
+    );
   });
 
   it('keeps raw Shopify variant resolution behind a server-only production entry', () => {
     const serverEntry = readFileSync(
-      'lib/commerce/variant-resolution-server.js',
+      'apps/web/src/lib/commerce/variant-resolution-server.ts',
       'utf8'
     );
     const purePolicy = readFileSync(
-      'lib/commerce/variant-resolution-policy.js',
+      'apps/web/src/lib/commerce/variant-resolution-policy.ts',
       'utf8'
     );
 
@@ -67,18 +83,36 @@ describe('active commerce boundary policy', () => {
     expect(serverEntry).toContain('evaluateVariantResolutionReadiness');
     expect(serverEntry).not.toContain('console.');
     expect(purePolicy).not.toContain('console.');
-    expect(readFileSync('lib/commerce/cart-activation-server.js', 'utf8'))
-      .toContain('variantResolverDecision = null');
+    expect(
+      readFileSync(
+        'apps/web/src/lib/commerce/cart-activation-server.ts',
+        'utf8'
+      )
+    ).toContain('variantResolverDecision = null');
   });
 
-  it('contains the approved cart mutation and raw references inside a server-only boundary', () => {
-    const serverEntry = readFileSync('lib/commerce/shopify-checkout-server.js', 'utf8');
-    const route = readFileSync('app/api/checkout/route.js', 'utf8');
-    const form = readFileSync('components/commerce/shopify-checkout-form.jsx', 'utf8');
+  it('keeps checkout server-only and fail-closed without a Shopify mutation surface', () => {
+    const serverEntry = readFileSync(
+      'apps/web/src/lib/commerce/shopify-checkout-server.ts',
+      'utf8'
+    );
+    const route = readFileSync(
+      'apps/web/src/app/api/checkout/route.ts',
+      'utf8'
+    );
+    const form = readFileSync(
+      'apps/web/src/components/product/ProductForm/index.tsx',
+      'utf8'
+    );
 
     expect(serverEntry).toContain("import 'server-only'");
-    expect(serverEntry).toContain('cartCreate');
+    expect(serverEntry).not.toContain('cartCreate');
+    expect(serverEntry).toContain('PRODUCT_RELEASE_NOT_RELEASED');
+    expect(serverEntry).toContain(
+      'CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION'
+    );
     expect(serverEntry).not.toContain('console.');
+    expect(route).toContain('getProductReleaseEvidence');
     expect(route).not.toContain('SHOPIFY_STOREFRONT_TOKEN');
     expect(route).not.toContain('merchandiseId');
     expect(form).not.toContain('gid://');
@@ -86,7 +120,10 @@ describe('active commerce boundary policy', () => {
   });
 
   it('keeps public API routes from exposing catalog audit or mutation surfaces', () => {
-    const source = readFileSync('app/api/[[...path]]/route.js', 'utf8');
+    const source = readFileSync(
+      'apps/web/src/app/api/[[...path]]/route.ts',
+      'utf8'
+    );
     expect(source).not.toContain('media-audit');
     expect(source).not.toContain('premium-readiness');
     expect(source).not.toContain('SHOPIFY_STOREFRONT_TOKEN');

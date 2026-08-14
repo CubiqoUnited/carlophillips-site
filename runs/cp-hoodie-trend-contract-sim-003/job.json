@@ -80,7 +80,7 @@
   "contractBindings": {
     "productReleaseRecord": "releases/cp-signature-hoodie-2026-001/release.json",
     "mediaRegistry": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
-    "commerceGateway": "lib/commerce/product-gateway.js",
+    "commerceGateway": "lib/commerce/product-gateway.ts",
     "pipelineRunContract": "contracts/pipeline-run.schema.json",
     "pipelineRunId": "cp-hoodie-trend-contract-sim-003"
   },

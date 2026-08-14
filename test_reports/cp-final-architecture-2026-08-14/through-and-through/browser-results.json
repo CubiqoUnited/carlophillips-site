@@ -1,0 +1,185 @@
+{
+  "generatedAt": "2026-08-14T17:12:00.826Z",
+  "checks": [
+    {
+      "name": "home-mobile-390x844",
+      "path": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 435,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "home-compact-584x486",
+      "path": "/",
+      "viewport": {
+        "width": 584,
+        "height": 486
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 435,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "home-tablet-768x1024",
+      "path": "/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 444,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "home-desktop-1440x1000",
+      "path": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 444,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "product-mobile-390x844",
+      "path": "/product/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/product/carlophillips-signature-hoodie",
+      "title": "Product Review | CARLOPHILLIPS",
+      "bodyTextLength": 1767,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "product-desktop-1440x1000",
+      "path": "/product/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/product/carlophillips-signature-hoodie",
+      "title": "Product Review | CARLOPHILLIPS",
+      "bodyTextLength": 1767,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "collection-tablet-768x1024",
+      "path": "/collection/signature-series",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/collection/signature-series",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 397,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "legacy-product-redirect",
+      "path": "/products/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/product/carlophillips-signature-hoodie",
+      "title": "Product Review | CARLOPHILLIPS",
+      "bodyTextLength": 1767,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "removed-concept-route",
+      "path": "/concept-preview",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 404,
+      "url": "http://127.0.0.1:3100/concept-preview",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 54,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "pageErrors": [],
+      "failedRequests": []
+    }
+  ],
+  "overlay": null,
+  "interactionErrors": [],
+  "checkout": {
+    "status": 409,
+    "body": "{\"error\":\"PRODUCT_RELEASE_NOT_RELEASED\"}",
+    "location": null
+  }
+}

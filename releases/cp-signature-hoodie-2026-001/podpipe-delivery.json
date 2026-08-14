@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "cp.podpipe-delivery-evidence.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "releaseState": "draft",
+  "steps": {
+    "product-brief": {
+      "status": "candidate",
+      "evidence": [
+        "runs/cp-hoodie-designer-contract-sim-002/brief.json"
+      ]
+    },
+    "select-provider-garment": {
+      "status": "candidate",
+      "evidence": [
+        "releases/cp-signature-hoodie-2026-001/release.json"
+      ]
+    },
+    "prepare-production-artwork": {
+      "status": "candidate",
+      "evidence": [
+        "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/02-exported-assets.json"
+      ]
+    },
+    "create-pod-draft": {
+      "status": "candidate",
+      "evidence": [
+        "releases/cp-signature-hoodie-2026-001/release.json"
+      ]
+    },
+    "configure-fulfillment-truth": {
+      "status": "missing",
+      "evidence": []
+    },
+    "sync-shopify-draft": {
+      "status": "candidate",
+      "evidence": [
+        "releases/cp-signature-hoodie-2026-001/release.json"
+      ]
+    },
+    "verify-physical-sample": {
+      "status": "missing",
+      "evidence": []
+    },
+    "collect-canonical-references": {
+      "status": "candidate",
+      "evidence": [
+        "releases/cp-signature-hoodie-2026-001/media-manifest.json"
+      ]
+    },
+    "produce-editorial-media": {
+      "status": "candidate",
+      "evidence": [
+        "test_reports/cp-shopify-audit-2026-08-04/audit-report.md"
+      ]
+    },
+    "curate-quarantine-media": {
+      "status": "verified",
+      "evidence": [
+        "releases/cp-signature-hoodie-2026-001/media-manifest.json"
+      ]
+    },
+    "produce-real-360-3d": {
+      "status": "missing",
+      "evidence": []
+    },
+    "register-approved-media": {
+      "status": "missing",
+      "evidence": []
+    },
+    "assemble-headless-display": {
+      "status": "verified",
+      "evidence": [
+        "apps/web/src/lib/media/sequences/podpipe.ts"
+      ]
+    },
+    "preview-qa": {
+      "status": "missing",
+      "evidence": []
+    },
+    "product-owner-approval": {
+      "status": "missing",
+      "evidence": []
+    },
+    "merge-production-deployment": {
+      "status": "missing",
+      "evidence": []
+    },
+    "live-verification": {
+      "status": "missing",
+      "evidence": []
+    }
+  },
+  "approvals": {
+    "externalExecution": {
+      "status": "pending",
+      "owner": "Product Owner"
+    },
+    "spend": {
+      "status": "pending",
+      "owner": "Product Owner"
+    },
+    "sample": {
+      "status": "pending",
+      "owner": "Product Owner"
+    },
+    "shopifyWrite": {
+      "status": "pending",
+      "owner": "Product Owner"
+    },
+    "publish": {
+      "status": "pending",
+      "owner": "Product Owner"
+    },
+    "production": {
+      "status": "pending",
+      "owner": "Product Owner"
+    },
+    "liveVerification": {
+      "status": "pending",
+      "owner": "Product Owner"
+    }
+  }
+}

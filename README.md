@@ -62,7 +62,16 @@ a current approved match; unrelated or unapproved extras are discarded.
 - Tailwind CSS 3 and Framer Motion
 - Server-only Shopify Storefront GraphQL adapter for product/media reads
 - Yarn Classic 1.22.22
-- ESLint and Vitest
+- Yarn workspaces with private `@repo/design-system`, `@repo/config`,
+  `@repo/shopify`, and `@repo/utils` boundaries
+- ESLint, strict TypeScript, Stylelint, Prettier, Husky/lint-staged,
+  Commitlint, Vitest, and GitHub Actions
+
+The active Next.js source lives in `apps/web/src`; root commands delegate to the
+`@repo/web` workspace. Visual authority lives in `@repo/design-system`, Shopify
+query/webhook transport lives in `@repo/shopify`, and all customer-facing media
+passes through the typed registry projection under `apps/web/src/lib/media`.
+There is no compatibility storefront at the repository root.
 
 ## Setup
 
@@ -91,6 +100,9 @@ This exposes a labeled, disabled review page. It does not fetch the Hoodie from 
 
 ```bash
 yarn lint
+yarn typecheck
+yarn stylelint
+yarn format:check
 yarn test
 yarn audit:prod
 yarn build
@@ -110,17 +122,17 @@ Run all gates with `yarn verify`; it includes the production-dependency audit. D
 
 Copy `.env.example` and supply values only in ignored local files or the appropriate Vercel environment. Do not commit real values.
 
-| Variable | Purpose |
-|---|---|
-| `NEXT_PUBLIC_BASE_URL` | Environment-specific storefront URL |
-| `NEXT_PUBLIC_COMMERCE_ENVIRONMENT` | Policy boundary: `local`, `preview`, or `production` |
-| `COMMERCE_DATA_MODE` | Server-only data source: `fixture` or `shopify` |
-| `NEXT_PUBLIC_SHOW_PRODUCTS` | Top-level product visibility gate |
-| `NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS` | Secondary static draft-review gate |
-| `SHOPIFY_STORE_DOMAIN` | Preferred server-only Shopify Storefront domain |
-| `SHOPIFY_STOREFRONT_TOKEN` | Preferred server-only Storefront API token |
-| `SHOPIFY_CART_UI_ENABLED` | Server-only customer-cart UI gate; defaults false and grants no authority by itself |
-| `CORS_ORIGINS` | Exact comma-separated HTTP(S) origins allowed to call `/api` cross-origin; wildcards and paths are rejected |
+| Variable                             | Purpose                                                                                                     |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_BASE_URL`               | Environment-specific storefront URL                                                                         |
+| `NEXT_PUBLIC_COMMERCE_ENVIRONMENT`   | Policy boundary: `local`, `preview`, or `production`                                                        |
+| `COMMERCE_DATA_MODE`                 | Server-only data source: `fixture` or `shopify`                                                             |
+| `NEXT_PUBLIC_SHOW_PRODUCTS`          | Top-level product visibility gate                                                                           |
+| `NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS` | Secondary static draft-review gate                                                                          |
+| `SHOPIFY_STORE_DOMAIN`               | Preferred server-only Shopify Storefront domain                                                             |
+| `SHOPIFY_STOREFRONT_TOKEN`           | Preferred server-only Storefront API token                                                                  |
+| `SHOPIFY_CART_UI_ENABLED`            | Server-only customer-cart UI gate; defaults false and grants no authority by itself                         |
+| `CORS_ORIGINS`                       | Exact comma-separated HTTP(S) origins allowed to call `/api` cross-origin; wildcards and paths are rejected |
 
 ## Response security
 
@@ -129,17 +141,16 @@ Storefront pages deny third-party framing with both `X-Frame-Options: DENY` and 
 ## Repository map
 
 ```text
-app/                 routes; home, product, catalog, and bag/cart have dedicated server boundaries
-components/storefront/ VOLLBAK-aligned home receiving minimized server truth
-components/commerce/ reusable, non-buyable product/catalog and truthful bag presentation
+apps/web/            canonical Next.js storefront runtime and public root
+packages/design-system/ canonical tokens, global roles, and visual primitives
+packages/config/     strict TypeScript and shared tooling contracts
+packages/shopify/    transport-only package boundary; release authority stays outside
+packages/utils/      shared non-domain utilities
+apps/web/src/app/     editorial, product, collection, commerce, and API routes
+apps/web/src/components/ controlled product, layout, commerce, and editorial surfaces
 contracts/           machine-readable truth, observation, review, and release schemas
 releases/            evidence-bound release records and media manifests
-lib/config/          environment/release visibility policy
-lib/commerce/        provider-neutral product/catalog/cart-activation gateways, policy, and view models
-lib/providers/       server-only provider adapters
-lib/shopify/         pure response normalization and read-only Storefront queries
-lib/orchestration/   creation jobs, PipelineRun state, capability policy
-lib/releases/        non-mutating release-transition policy and exact blockers
+apps/web/src/lib/    media, commerce, provider, orchestration, release, and environment policy
 runs/                durable local simulations and blocker/resume evidence
 tests/               automated fitness and commerce-contract tests
 test_reports/        historical and generated verification evidence

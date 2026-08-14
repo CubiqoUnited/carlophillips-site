@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { toProductViewModel } from '../lib/commerce/product-view-model.js';
+import { toProductViewModel } from '../apps/web/src/lib/commerce/product-view-model.ts';
 
 const variantPresentation = {
   schemaVersion: 'cp.variant-presentation.v1',
@@ -9,16 +9,18 @@ const variantPresentation = {
   selectionAllowed: false,
   cartAuthority: false,
   optionNames: ['Color', 'Size'],
-  combinations: [{
-    referenceHash: `sha256:${'a'.repeat(64)}`,
-    title: 'Black / M',
-    selectedOptions: [
-      { name: 'Color', value: 'Black' },
-      { name: 'Size', value: 'M' },
-    ],
-    availableForSale: true,
-    price: { amount: '128.00', currency: 'USD' },
-  }],
+  combinations: [
+    {
+      referenceHash: `sha256:${'a'.repeat(64)}`,
+      title: 'Black / M',
+      selectedOptions: [
+        { name: 'Color', value: 'Black' },
+        { name: 'Size', value: 'M' },
+      ],
+      availableForSale: true,
+      price: { amount: '128.00', currency: 'USD' },
+    },
+  ],
 };
 
 describe('product view model', () => {
@@ -41,7 +43,20 @@ describe('product view model', () => {
         currency: 'USD',
         availableForSale: true,
         variantPresentation,
-        media: [{ id: 'front', type: 'image', url: 'https://cdn.example/front.jpg', alt: 'Front' }],
+        media: [
+          {
+            id: 'front',
+            registryAssetId: 'approved-front',
+            approvalStatus: 'approved',
+            sourceAuthority: 'product-release-media-registry',
+            type: 'image',
+            url: 'https://cdn.example/front.jpg',
+            previewUrl: 'https://cdn.example/front.jpg',
+            alt: 'Front',
+            label: 'Front',
+            modalities: ['front'],
+          },
+        ],
         mediaReview: {
           status: 'incomplete',
           coveredModalities: ['front'],
@@ -70,13 +85,18 @@ describe('product view model', () => {
       sourceLabel: 'Private product review',
       truthHeading: 'Reviewed facts, private release review.',
       story: 'No reviewed product story is available.',
-      commerceExplanation: 'This is a private release review. Purchasing remains disabled until the separate release and commerce gates pass.',
+      commerceExplanation:
+        'This is a private release review. Purchasing remains disabled until the separate release and commerce gates pass.',
       mediaReview: {
         status: 'incomplete',
         missingModalities: ['video'],
       },
     });
-    expect(model.media[0]).toMatchObject({ id: 'front', type: 'image', url: 'https://cdn.example/front.jpg' });
+    expect(model.media[0]).toMatchObject({
+      id: 'front',
+      type: 'image',
+      url: 'https://cdn.example/front.jpg',
+    });
     expect(JSON.stringify(model)).not.toContain('Outer adapter story');
   });
 
@@ -102,28 +122,36 @@ describe('product view model', () => {
       sourceLabel: 'Released product facts',
       truthHeading: 'Reviewed facts, released product.',
       story: 'No reviewed product story is available.',
-      commerceExplanation: 'Product facts are released. Purchasing remains disabled until the separate cart and checkout gates are proven.',
+      commerceExplanation:
+        'Product facts are released. Purchasing remains disabled until the separate cart and checkout gates are proven.',
     });
     expect(JSON.stringify(model)).not.toContain('approval pending');
     expect(JSON.stringify(model)).not.toContain('unresolved release');
     expect(JSON.stringify(model)).not.toContain('Outer pending release story');
   });
 
-  it('labels the approved single-product launch as live commerce', () => {
+  it('does not synthesize a live-commerce presentation from an ad hoc reason', () => {
     const model = toProductViewModel({
       source: 'shopify',
       environment: 'production',
       commerceAllowed: true,
-      reason: 'SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED',
-      product: { id: 'hoodie', title: 'Live Hoodie', price: 128, currency: 'USD', availableForSale: true, variantPresentation, media: [] },
+      reason: 'AD_HOC_COMMERCE_APPROVAL',
+      product: {
+        id: 'hoodie',
+        title: 'Live Hoodie',
+        price: 128,
+        currency: 'USD',
+        availableForSale: true,
+        variantPresentation,
+        media: [],
+      },
     });
     expect(model).toMatchObject({
-      sourceLabel: 'Live product',
-      truthHeading: 'Current product facts.',
-      commerceExplanation: 'Variant selection and secure checkout are active for this product.',
+      sourceLabel: 'Commerce source — release state unavailable',
+      truthHeading: 'Release state unavailable.',
+      commerceExplanation:
+        'Purchasing remains disabled because the release context is unavailable.',
     });
-    expect(JSON.stringify(model)).not.toContain('disabled');
-    expect(JSON.stringify(model)).not.toContain('unavailable');
   });
 
   it('returns null for an unavailable decision', () => {

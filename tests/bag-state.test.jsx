@@ -1,19 +1,21 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { CommerceBagState } from '../components/commerce/bag-state';
+import { CommerceBagState } from '../apps/web/src/components/commerce/bag-state.tsx';
 
 function render(status, source, environment = 'local') {
   return renderToStaticMarkup(
-    <CommerceBagState decision={{
-      status,
-      source,
-      environment,
-      commerceAllowed: false,
-      checkoutAllowed: false,
-      reason: 'TEST_REASON',
-      cart: null,
-    }} />
+    <CommerceBagState
+      decision={{
+        status,
+        source,
+        environment,
+        commerceAllowed: false,
+        checkoutAllowed: false,
+        reason: 'TEST_REASON',
+        cart: null,
+      }}
+    />
   );
 }
 

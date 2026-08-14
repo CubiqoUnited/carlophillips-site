@@ -25,7 +25,9 @@
       "properties": {
         "type": { "enum": ["on-demand", "scheduled"] },
         "requestedAt": { "type": "string", "format": "date-time" },
-        "cadence": { "enum": ["on-demand", "daily", "weekly", "monthly", "custom"] },
+        "cadence": {
+          "enum": ["on-demand", "daily", "weekly", "monthly", "custom"]
+        },
         "schedule": {
           "oneOf": [
             {
@@ -75,26 +77,45 @@
       "required": ["key", "inputFingerprint", "duplicatePolicy"],
       "properties": {
         "key": { "type": "string", "pattern": "^cp:[a-z0-9:-]+$" },
-        "inputFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "inputFingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
         "duplicatePolicy": { "const": "suppress" }
       },
       "additionalProperties": false
     },
     "contractBindings": {
       "type": "object",
-      "required": ["productReleaseRecord", "mediaRegistry", "commerceGateway", "pipelineRunContract", "pipelineRunId"],
+      "required": [
+        "productReleaseRecord",
+        "mediaRegistry",
+        "commerceGateway",
+        "pipelineRunContract",
+        "pipelineRunId"
+      ],
       "properties": {
         "productReleaseRecord": { "type": "string", "minLength": 1 },
         "mediaRegistry": { "type": "string", "minLength": 1 },
-        "commerceGateway": { "const": "lib/commerce/product-gateway.js" },
-        "pipelineRunContract": { "const": "contracts/pipeline-run.schema.json" },
+        "commerceGateway": { "const": "lib/commerce/product-gateway.ts" },
+        "pipelineRunContract": {
+          "const": "contracts/pipeline-run.schema.json"
+        },
         "pipelineRunId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" }
       },
       "additionalProperties": false
     },
     "approvals": {
       "type": "object",
-      "required": ["externalExecution", "spend", "credits", "sample", "shopifyWrite", "publish", "production"],
+      "required": [
+        "externalExecution",
+        "spend",
+        "credits",
+        "sample",
+        "shopifyWrite",
+        "publish",
+        "production"
+      ],
       "properties": {
         "externalExecution": { "$ref": "#/$defs/approval" },
         "spend": { "$ref": "#/$defs/approval" },

@@ -3,10 +3,13 @@ import { describe, expect, it } from 'vitest';
 
 describe('storefront route policy', () => {
   it('keeps home bound to the shared server catalog decision', () => {
-    const source = readFileSync('app/page.js', 'utf8');
+    const source = readFileSync(
+      'apps/web/src/app/(editorial)/page.tsx',
+      'utf8'
+    );
     expect(source).toContain('getServerCatalogDecision');
     expect(source).toContain('toHomeCatalogSummary');
-    expect(source).toContain('components/storefront/home-storefront');
+    expect(source).toContain('components/editorial/HomeStorefront');
     expect(source).not.toContain('signature-hoodie-preview');
   });
 
@@ -23,20 +26,24 @@ describe('storefront route policy', () => {
   });
 
   it('keeps the storefront client free of product fixtures and Shopify transport', () => {
-    const source = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
+    const source = readFileSync(
+      'apps/web/src/components/editorial/HomeStorefront/index.tsx',
+      'utf8'
+    );
     expect(source).not.toContain('signature-hoodie-preview');
     expect(source).not.toContain('loadShopifyProduct');
     expect(source).not.toContain('SHOPIFY_');
     expect(source).not.toContain('Add to bag');
-    expect(source).toContain('/campaigns/lofoten-runway-hero.png');
-    expect(source).toContain('At the<br />edge of life.');
+    expect(source).toContain('campaignAsset');
+    expect(source).toContain('At the');
+    expect(source).toContain('edge of life.');
     expect(source).toContain('Collection preview');
-    expect(source).toContain('/brand-boards/carlophillips-drop-board.png');
+    expect(source).toContain('cp-media-withheld');
   });
 
   it('publishes only active product and commerce routes in the sitemap', () => {
-    const source = readFileSync('app/sitemap.js', 'utf8');
-    const robots = readFileSync('app/robots.js', 'utf8');
+    const source = readFileSync('apps/web/src/app/sitemap.ts', 'utf8');
+    const robots = readFileSync('apps/web/src/app/robots.ts', 'utf8');
     expect(source).toContain('/shop');
     expect(source).toContain('/collections');
     expect(source).not.toContain('/about');
@@ -46,9 +53,12 @@ describe('storefront route policy', () => {
   });
 
   it('keeps site metadata aligned with the active Signature Series', () => {
-    const source = readFileSync('app/layout.js', 'utf8');
+    const source = readFileSync('apps/web/src/app/layout.tsx', 'utf8');
     expect(source).toContain("tagline: 'Signature Series'");
-    expect(source).toContain('The CARLOPHILLIPS Signature Hoodie.');
+    expect(source).toContain(
+      'CARLOPHILLIPS presents a restrained study in product, material, and editorial form.'
+    );
+    expect(source).not.toMatch(/secure checkout|live checkout/i);
     expect(source).not.toContain('Gesture of Luxury');
   });
 });

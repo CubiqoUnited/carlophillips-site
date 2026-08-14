@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   createVariantPresentation,
   hasSellableReviewedVariant,
-} from '../lib/commerce/variant-presentation-policy.js';
-import { createProductObservation } from '../lib/commerce/product-observation.js';
+} from '../apps/web/src/lib/commerce/variant-presentation-policy.ts';
+import { createProductObservation } from '../apps/web/src/lib/commerce/product-observation.ts';
 
 function observation() {
   return {
@@ -56,11 +56,13 @@ describe('review-only variant presentation', () => {
       cartAuthority: false,
       optionNames: ['Color', 'Size'],
     });
-    expect(presentation.combinations.map(item => ({
-      title: item.title,
-      selectedOptions: item.selectedOptions,
-      availableForSale: item.availableForSale,
-    }))).toEqual([
+    expect(
+      presentation.combinations.map((item) => ({
+        title: item.title,
+        selectedOptions: item.selectedOptions,
+        availableForSale: item.availableForSale,
+      }))
+    ).toEqual([
       {
         title: 'Black / M',
         selectedOptions: [
@@ -100,84 +102,156 @@ describe('review-only variant presentation', () => {
         price: 128,
         compareAtPrice: 128,
         availableForSale: true,
-        observedVariants: [{
-          id: 'gid://shopify/ProductVariant/100',
-          title: 'M / Black',
-          selectedOptions: [
-            { name: 'Size', value: 'M' },
-            { name: 'Color', value: 'Black' },
-          ],
-          availableForSale: true,
-          price: { amount: '128.00', currencyCode: 'USD' },
-        }],
+        observedVariants: [
+          {
+            id: 'gid://shopify/ProductVariant/100',
+            title: 'M / Black',
+            selectedOptions: [
+              { name: 'Size', value: 'M' },
+              { name: 'Color', value: 'Black' },
+            ],
+            availableForSale: true,
+            price: { amount: '128.00', currencyCode: 'USD' },
+          },
+        ],
       },
     });
 
-    expect(canonicalObservation.variants[0].selectedOptions.map(option => option.name))
-      .toEqual(['Color', 'Size']);
+    expect(
+      canonicalObservation.variants[0].selectedOptions.map(
+        (option) => option.name
+      )
+    ).toEqual(['Color', 'Size']);
     const presentation = createVariantPresentation(canonicalObservation);
     expect(presentation.optionNames).toEqual(['Color', 'Size']);
-    expect(presentation.combinations[0].selectedOptions.map(option => option.name))
-      .toEqual(['Color', 'Size']);
+    expect(
+      presentation.combinations[0].selectedOptions.map((option) => option.name)
+    ).toEqual(['Color', 'Size']);
     expect(readiness(presentation)).toBe(true);
   });
 
   it.each([
-    ['selection authority', value => { value.selectionAllowed = true; }],
-    ['cart authority', value => { value.cartAuthority = true; }],
-    ['raw or malformed reference', value => { value.combinations[0].referenceHash = 'gid://shopify/ProductVariant/1'; }],
-    ['duplicate reference', value => { value.combinations[1].referenceHash = value.combinations[0].referenceHash; }],
-    ['invalid option', value => { value.combinations[0].selectedOptions = []; }],
-    ['invalid price', value => { value.combinations[0].price.amount = '-1'; }],
-  ])('does not treat a presentation with %s as a sellable reviewed mapping', (_label, mutate) => {
-    const presentation = createVariantPresentation(observation());
-    mutate(presentation);
-    expect(readiness(presentation)).toBe(false);
-  });
+    [
+      'selection authority',
+      (value) => {
+        value.selectionAllowed = true;
+      },
+    ],
+    [
+      'cart authority',
+      (value) => {
+        value.cartAuthority = true;
+      },
+    ],
+    [
+      'raw or malformed reference',
+      (value) => {
+        value.combinations[0].referenceHash = 'gid://shopify/ProductVariant/1';
+      },
+    ],
+    [
+      'duplicate reference',
+      (value) => {
+        value.combinations[1].referenceHash =
+          value.combinations[0].referenceHash;
+      },
+    ],
+    [
+      'invalid option',
+      (value) => {
+        value.combinations[0].selectedOptions = [];
+      },
+    ],
+    [
+      'invalid price',
+      (value) => {
+        value.combinations[0].price.amount = '-1';
+      },
+    ],
+  ])(
+    'does not treat a presentation with %s as a sellable reviewed mapping',
+    (_label, mutate) => {
+      const presentation = createVariantPresentation(observation());
+      mutate(presentation);
+      expect(readiness(presentation)).toBe(false);
+    }
+  );
 
   it('returns false when every reviewed combination is unavailable', () => {
     const value = observation();
-    value.variants.forEach(variant => { variant.availableForSale = false; });
+    value.variants.forEach((variant) => {
+      variant.availableForSale = false;
+    });
     const presentation = createVariantPresentation(value);
     expect(readiness(presentation)).toBe(false);
   });
 
   it.each([
-    ['duplicate option signature', presentation => {
-      presentation.combinations[1].selectedOptions = structuredClone(
-        presentation.combinations[0].selectedOptions
-      );
-    }],
-    ['missing option dimension', presentation => {
-      presentation.combinations[1].selectedOptions.pop();
-    }],
-    ['extra option dimension', presentation => {
-      presentation.combinations[1].selectedOptions.push({ name: 'Material', value: 'Cotton' });
-    }],
-    ['mismatched optionNames', presentation => {
-      presentation.optionNames = ['Color', 'Material'];
-    }],
-    ['mismatched currency', presentation => {
-      presentation.combinations[0].price.currency = 'EUR';
-    }],
-    ['non-canonical optionNames', presentation => {
-      presentation.optionNames = ['Size', 'Color'];
-    }],
-    ['non-canonical option order', presentation => {
-      presentation.combinations[0].selectedOptions.reverse();
-    }],
-    ['case-ambiguous option names', presentation => {
-      presentation.optionNames = ['Color', 'color'];
-      presentation.combinations.forEach(combination => {
-        combination.selectedOptions = [
-          { name: 'Color', value: 'Black' },
-          { name: 'color', value: 'Navy' },
-        ];
-      });
-    }],
-    ['untrimmed option value', presentation => {
-      presentation.combinations[0].selectedOptions[0].value = ' Black ';
-    }],
+    [
+      'duplicate option signature',
+      (presentation) => {
+        presentation.combinations[1].selectedOptions = structuredClone(
+          presentation.combinations[0].selectedOptions
+        );
+      },
+    ],
+    [
+      'missing option dimension',
+      (presentation) => {
+        presentation.combinations[1].selectedOptions.pop();
+      },
+    ],
+    [
+      'extra option dimension',
+      (presentation) => {
+        presentation.combinations[1].selectedOptions.push({
+          name: 'Material',
+          value: 'Cotton',
+        });
+      },
+    ],
+    [
+      'mismatched optionNames',
+      (presentation) => {
+        presentation.optionNames = ['Color', 'Material'];
+      },
+    ],
+    [
+      'mismatched currency',
+      (presentation) => {
+        presentation.combinations[0].price.currency = 'EUR';
+      },
+    ],
+    [
+      'non-canonical optionNames',
+      (presentation) => {
+        presentation.optionNames = ['Size', 'Color'];
+      },
+    ],
+    [
+      'non-canonical option order',
+      (presentation) => {
+        presentation.combinations[0].selectedOptions.reverse();
+      },
+    ],
+    [
+      'case-ambiguous option names',
+      (presentation) => {
+        presentation.optionNames = ['Color', 'color'];
+        presentation.combinations.forEach((combination) => {
+          combination.selectedOptions = [
+            { name: 'Color', value: 'Black' },
+            { name: 'color', value: 'Navy' },
+          ];
+        });
+      },
+    ],
+    [
+      'untrimmed option value',
+      (presentation) => {
+        presentation.combinations[0].selectedOptions[0].value = ' Black ';
+      },
+    ],
   ])('rejects %s', (_label, mutate) => {
     const presentation = createVariantPresentation(observation());
     mutate(presentation);
@@ -186,14 +260,20 @@ describe('review-only variant presentation', () => {
 
   it('rejects a presentation not bound to both current product and release fingerprints', () => {
     const presentation = createVariantPresentation(observation());
-    expect(readiness(presentation, {
-      expectedVariantFingerprint: `sha256:${'e'.repeat(64)}`,
-    })).toBe(false);
-    expect(readiness(presentation, {
-      productVariantFingerprint: `sha256:${'d'.repeat(64)}`,
-    })).toBe(false);
-    expect(readiness(presentation, {
-      productCurrency: 'EUR',
-    })).toBe(false);
+    expect(
+      readiness(presentation, {
+        expectedVariantFingerprint: `sha256:${'e'.repeat(64)}`,
+      })
+    ).toBe(false);
+    expect(
+      readiness(presentation, {
+        productVariantFingerprint: `sha256:${'d'.repeat(64)}`,
+      })
+    ).toBe(false);
+    expect(
+      readiness(presentation, {
+        productCurrency: 'EUR',
+      })
+    ).toBe(false);
   });
 });

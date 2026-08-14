@@ -1,0 +1,30 @@
+{
+  "extends": "./packages/config/typescript.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "checkJs": false,
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./apps/web/src/*"],
+      "@repo/design-system": ["./packages/design-system/index.ts"],
+      "@repo/design-system/*": ["./packages/design-system/*"],
+      "@repo/shopify": ["./packages/shopify"],
+      "@repo/utils": ["./packages/utils/src/index.ts"]
+    },
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "apps/web/src/**/*.ts",
+    "apps/web/src/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}

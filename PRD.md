@@ -6,6 +6,34 @@ Status: working product definition, not a production-readiness claim. Updated 20
 
 CARLOPHILLIPS is the first proof of concept for a reusable premium POD-to-publish system. The experience layer is Next.js; Shopify remains commerce truth; approved POD providers supply manufacturable products and fulfillment mappings. The Signature Hoodie is the first complete acceptance journey through that system, not permission to reduce the product to one static PDP. Reusable interfaces and evidence records must support later products and brands without rebuilding the pipeline.
 
+## Final design-token and PODPIPE definition — 2026-08-14
+
+- `packages/design-system` is the single visual authority. Raw colours, spacing,
+  typography, radii, shadows, motion, and stacking values may exist only in its
+  token source. Active customer components consume semantic roles or exported
+  primitives; a page cannot create a visual exception.
+- Automated acceptance requires ESLint, strict TypeScript, Stylelint, format
+  checks, contract tests, responsive screenshot comparisons, and a production
+  build. A major release additionally requires manual primitive review in the
+  design-system Storybook and a homepage/PDP comparison to the approved dark
+  editorial reference. Storybook review evidence must be bound to the release
+  candidate before approval; this architecture change is not a release.
+- Every product display follows the exact eleven-section podpipe order recorded
+  in `ARCHITECTURE.md`. Sequence position is presentation policy, not asset
+  approval. Missing truth withholds the section and blocks approval where the
+  modality is required.
+- A real approved physical sample is the critical product gate. Fit, colour,
+  print or embroidery placement, and finish must all be approved against the
+  exact garment before the record can advance from Staged to Approved.
+- 360 requires a real physical multi-angle sequence and successful interactive
+  rotation test. It cannot be waived or simulated with a fake slideshow.
+- 3D appears only with a verified GLB. USDZ and successful AR evidence are
+  mandatory when AR is claimed. Missing verified 3D remains absent and requires
+  the Product Owner-approved infeasibility path if it is not feasible.
+- Desktop/mobile interaction, performance, token regression, Media Registry
+  approval, Product Owner approval, live checkout, and fulfilment verification
+  remain independent evidence gates. Passing one cannot satisfy another.
+
 ## Coordinated delivery lanes
 
 1. **Product/POD truth:** supplier selection, real blank/SKU, decoration feasibility, variants, price, and fulfillment mapping.

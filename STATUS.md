@@ -1,8 +1,63 @@
 # Current Status
 
-Updated: 2026-08-09
-Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
+Updated: 2026-08-14
+Branch: temporary correction branch `codex/cp-runway-wording-design-system`; deliberate integration is required because this branch is behind `origin/main`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Definitive headless + PODPIPE architecture implementation — 2026-08-14
+
+- P0 release-authority correction: the standalone
+  `production-commerce-launch.json` approval and its single-product launch
+  policy were removed. They could synthesize a Released/live-commerce path
+  over the canonical Draft record and accept Shopify CDN media with no Media
+  Registry binding. Product visibility now resolves only through the canonical
+  Product Release Record and Media Registry; the checkout boundary denies the
+  current Draft before any Shopify read or cart mutation.
+- Historical entries below describing the 2026-08-04 bounded launch and its
+  checkout proof remain audit history only. They no longer supersede the
+  canonical Draft record and grant no current storefront or release authority.
+
+- Sushma delivery review and Aarti architecture review were applied separately,
+  then reconciled into a compatibility-first implementation. Yarn Classic
+  remains mandatory; no pnpm/npm lock or workspace was introduced.
+- Yarn workspaces now define `apps/web`, `packages/design-system`,
+  `packages/config`, `packages/shopify`, and `packages/utils`. The complete
+  Next.js runtime is under `apps/web/src`; the former root `app/`, `components/`,
+  `hooks/`, `fixtures/`, and `lib/` runtime trees have been removed.
+- `@repo/design-system` is the visual control room: typed tokens, dark theme,
+  Button/Text/Media/Layout primitives, semantic styles, and Storybook. Active
+  Tailwind visual scales resolve only to design tokens, and ESLint/Stylelint
+  reject raw JSX/CSS visual values. Strict TypeScript, Prettier, Husky with
+  lint-staged, Commitlint, Turbo, and PR CI are active.
+- The official PODPIPE contract is eleven ordered sections inside the exact
+  seventeen-step Draft → Staged → Approved → Released workflow. A controlled
+  twelve-view viewer maps and orders only approved Media Registry projections.
+  Active home and PDP code imports neither quarantined AI/MODA candidates nor
+  direct provider media.
+- The release contract blocks approval without exact physical-sample fit,
+  colour, artwork-placement, and finish evidence; desktop/mobile, performance,
+  and token-regression evidence; required real 24+ frame physical 360 evidence;
+  and verified GLB/USDZ/AR evidence whenever those claims are made.
+- The Signature Hoodie remains Draft with a pending physical sample and
+  incomplete media. No Product Release state, Shopify product, sales channel,
+  cart/checkout authority, deployment, domain, order, or production state was
+  advanced by this architecture work.
+- This foundation is not a release-readiness claim. The current Product Release
+  Record remains Draft, the Media Registry has zero storefront bindings, and
+  checkout remains closed pending a future evidence-backed release.
+- Storybook desktop/mobile evidence is recorded under
+  `test_reports/cp-design-system-storybook-2026-08-14/`. Final repository gate
+  and storefront browser evidence is recorded under
+  `test_reports/cp-final-architecture-2026-08-14/` and must remain local-only.
+- Frozen install and the complete repository gates pass: zero-warning ESLint,
+  strict TypeScript, Stylelint, Prettier, 41 test files / 366 tests, Storybook
+  static build, zero production vulnerabilities across 65 packages, and the
+  successful 14-route optimized Next.js build. Fresh background headless checks
+  pass at 390×844, 584×486, 768×1024, and 1440×1000 with zero overflow, broken
+  images, framework overlays, page errors, failed requests, or customer
+  checkout copy. Canonical and legacy product routes behave as intended, the
+  removed concept route returns 404, and a correctly encoded local checkout POST
+  returns 409 `PRODUCT_RELEASE_NOT_RELEASED` with no redirect.
 
 ## Product Owner priority: physical Hoodie sample first — 2026-08-09
 
@@ -176,7 +231,8 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Paused Cycle 20 fulfillment-contract work is recoverably isolated in stash `stash@{0}` / `ab3f004119ac28547d0ecddb50634a9e9d7806e4` and is not part of this branch diff.
 - Recovered Product Owner intent confirms the Hoodie is the first complete POC for a reusable POD-to-publish system with four coordinated lanes and designer-led plus trend-led workflows; it is not a static-page endpoint.
 - The storefront UI remains fail-closed. Home, product, `/shop`, `/collections`, and bag/cart routes use dedicated server-rendered truth boundaries.
-- Historical release records still describe the pre-activation Draft path; the bounded launch approval and current live observation supersede that status for this one Hoodie only.
+- The canonical Product Release Record remains Draft. The former bounded launch
+  approval was removed after P0 review and no longer supersedes that state.
 - Shopify product reads sit behind a server-only adapter that now refuses network access until the exact product-read capability is ready with a durable evidence reference. Configuration, capability evidence, and a live observation are all still blocked/unverified.
 - The versioned Hoodie release record binds the observed Shopify/Apliiq identities and media ledger while leaving variant fingerprints missing and every approval pending.
 - Yarn 1.22.22 and `yarn.lock` are the declared package strategy; baseline work adds real lint and test commands.

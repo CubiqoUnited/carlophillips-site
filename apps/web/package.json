@@ -1,0 +1,25 @@
+{
+  "name": "@repo/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CARLOPHILLIPS headless storefront workspace boundary",
+  "scripts": {
+    "dev": "NODE_OPTIONS='--max-old-space-size=512' next dev --hostname 0.0.0.0 --port 3000",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0 --port 3000",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@next/env": "15.5.21",
+    "@repo/design-system": "0.1.0",
+    "@repo/shopify": "0.1.0",
+    "@repo/utils": "0.1.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.516.0",
+    "next": "15.5.21",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^3.3.1"
+  }
+}

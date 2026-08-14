@@ -13,6 +13,63 @@ Customer browser
 
 Vollebak is an experience benchmark only. CARLOPHILLIPS content, identity, media, and product design must remain original.
 
+## Final headless + PODPIPE architecture boundary — 2026-08-14
+
+The repository uses Yarn Classic workspaces (`apps/*`, `packages/*`) as the
+monorepo boundary. `apps/web` is the canonical storefront runtime and command
+boundary; all Next.js routes, customer components, policy adapters, and media
+projection code live below `apps/web/src`. The former root `app/`, `components/`,
+`hooks/`, `fixtures/`, and `lib/` runtime trees are removed. Root scripts delegate
+to `@repo/web`, so a second storefront cannot silently diverge from the app.
+
+`packages/design-system` is the visual control room. Its
+`styles/tokens.css` file is the only raw CP visual-value source; `apps/web`
+imports the package stylesheet through `@repo/design-system/styles`. Typed
+token references and the initial Button, Text, Media, and Layout primitives are
+exported from the same package. `packages/shopify` is transport only:
+Storefront queries, generated types, and webhooks may move there, while the
+Commerce Gateway, Product Release Record, Media Registry, visibility, cart,
+checkout, and customer-copy authority remain outside it.
+
+The official podpipe presentation contract has eleven ordered sections:
+
+1. campaign opening with reviewed product name and price;
+2. clean front and back product-alone views;
+3. on-body editorial views;
+4. signature embroidery detail;
+5. material and construction story;
+6. approved product film and lightweight motion preview;
+7. customer-controlled real 360 presentation;
+8. verified interactive 3D presentation;
+9. construction details;
+10. reviewed Shopify facts, size guide, bag, and checkout;
+11. approved production, delivery, care, returns, and fulfilment information.
+
+`apps/web/src/lib/media/sequences/podpipe.ts` orders eligible projections only. It does not
+approve assets, repair incomplete media, or create customer-visible authority.
+Product Release Records and the Media Registry remain the approval boundary;
+`public/` is storage, never proof. Missing inputs produce a withheld section.
+Active home and PDP components no longer import quarantined Hoodie studies
+directly. `apps/web/public/media` is checked against approved registry entries;
+the repository-root candidate media tree is not a served storefront root.
+Preview and production both consume only media already carried by the server
+release decision with Media Registry identity and approval authority intact.
+
+The exact seventeen-step delivery contract is implemented in
+`apps/web/src/lib/orchestration/podpipe-delivery.ts`. Each step is sequential,
+durable-evidence based, and separately approval-gated where it can spend money,
+write to Shopify, invoke an external system, publish, deploy, or verify live
+commerce. The current Signature Hoodie evidence record remains Draft and
+authorizes zero external steps.
+
+The release definition is fail-closed. `spin-360` is required and accepts only
+a real physical multi-angle set of at least 24 frames with rotation-test
+evidence. A 3D claim requires a verified GLB load test; an AR claim additionally
+requires USDZ and AR test evidence. Draft may record incomplete evidence;
+approval is blocked until the exact physical sample passes fit, colour,
+artwork-placement, and finish review and the immutable candidate binds desktop
+and mobile, performance, and design-token/visual-regression evidence.
+
 The architecture coordinates four lanes—Product/POD truth, Media truth, Commerce/frontend, and Agentic orchestration—through a versioned Product Release Record. That record binds Shopify product/variant evidence, provider fulfillment mappings, a truthful media manifest, human approvals, candidate build/staging evidence, and rollback. Provider and media-tool integrations sit behind capability adapters so no single app becomes the platform boundary.
 
 ## Runtime today
@@ -97,27 +154,27 @@ Product Release Record transitions are also fail-closed. Draft may contain incom
 
 ## Implementation gap map
 
-| Boundary | Current implementation | Evidence status | Required change |
-|---|---|---|---|
-| Route composition | Home, product, shop/collections, and bag/cart have server truth boundaries; the editorial-only About/Lookbook detour is removed | Home receives a minimized shared catalog summary; per-item catalog and PDP filtering remain canonical | Decompose only when a new approved user flow needs a distinct truth boundary |
-| Product truth | Gateway accepts explicit local fixture or capability-evidenced read-only Shopify adapter and resolves Shopify observations against the release registry | Canonical observation/review contracts and failure policy proven; live Shopify capability/config/product observation blocked | Verify read capability, create and approve an exact observation candidate, then separately authorize any release-record patch |
-| Variant and commerce-facts truth | Normalization preserves current variants and plain customer copy; observation fingerprints identity, rendered facts, and the full envelope; a disabled combination model binds fingerprint/currency and exact option dimensions | Runtime freshness, copy/price/availability tamper, stale identity, duplicate/missing/extra dimensions, raw-map injection, catalog isolation, and non-mutation tests pass; live evidence remains missing | Observe Shopify, review the exact complete envelope, then separately authorize binding the accepted patch to the Draft release |
-| Media truth | Gateway filters Shopify media through hashed, approved registry bindings; PDP exposes partial-review state; production requires current modality/fallback coverage | ID/URL/type tamper, unapproved extra, duplicate binding, partial Preview, complete Released, and missing-production-binding tests pass; Hoodie assets remain unbound/unapproved | Obtain current Hoodie media, provenance/rights/quality approval, and hashed storefront bindings without inventing missing modalities |
-| Cart | Browser product/cart services and broad Storefront mutation client are removed; server policy evaluates eight activation prerequisites, separating reviewed variant presentation from evidence-backed server-only mutation-resolution readiness | The resolver re-derives current facts and proves one-to-one coverage without exposing raw IDs; real-decision cart integration, schema, tamper, route-boundary, local fixture denial, and sanitized-summary tests pass; no Shopify write or live API proof | Audit the authenticated Storefront cart surface and prove no-order capability; only after explicit approval add a selected-variant server adapter without weakening the readiness boundary |
-| Checkout | Explicitly separate from cart eligibility and hard-false in the current activation contract | No active redirect or public mutation surface exists; no returned Shopify URL observed | Add a separate approved checkout contract only after live cart proof, exact host validation, and operational authorization |
-| POD mapping | Draft release record binds Apliiq product `5958463` provider-neutrally | Product/design facts partial; variant fingerprint/order proof missing | Observe exact variant mapping without ordering, then later prove authorized order handoff |
-| Catalog | Prior audit recorded 12 products with image-only media | Later reuse/scale input; individual release truth unproven | After the complete Hoodie journey, prove a different product through the same cores before catalog expansion |
-| Hosting | Vercel project linked but public responses are HTTP 402 | External blocker | Restore deployment access, then redeploy approved preview and resume browser proof |
-| Agentic orchestration | Durable ProductBrief, ProductCreationJob v2, PipelineRun, and executable capability registry exist locally | On-demand designer and scheduled trend simulations converge on the same truth contracts; provenance/freshness, binding brand/reference rules, deterministic duplicate suppression, blocker isolation, and restricted gates are tested; external app access remains unverified | Run the authorized read-only app audit and bind evidence-backed callable surfaces to registry entries |
-| Release state | Draft Hoodie record, strict transition schema/policy, route-level release registry, and release-specific withdrawal plan exist | Current Hoodie staging readiness is denied by seven exact evidence blockers; the route denies Draft Shopify observations outside Local | Resolve reviewed Shopify observation/commerce facts, provider fingerprint, immutable candidate/build evidence, and private staging evidence before staging |
+| Boundary                         | Current implementation                                                                                                                                                                                                                          | Evidence status                                                                                                                                                                                                                                                               | Required change                                                                                                                                                                            |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Route composition                | Home, product, shop/collections, and bag/cart have server truth boundaries; the editorial-only About/Lookbook detour is removed                                                                                                                 | Home receives a minimized shared catalog summary; per-item catalog and PDP filtering remain canonical                                                                                                                                                                         | Decompose only when a new approved user flow needs a distinct truth boundary                                                                                                               |
+| Product truth                    | Gateway accepts explicit local fixture or capability-evidenced read-only Shopify adapter and resolves Shopify observations against the release registry                                                                                         | Canonical observation/review contracts and failure policy proven; live Shopify capability/config/product observation blocked                                                                                                                                                  | Verify read capability, create and approve an exact observation candidate, then separately authorize any release-record patch                                                              |
+| Variant and commerce-facts truth | Normalization preserves current variants and plain customer copy; observation fingerprints identity, rendered facts, and the full envelope; a disabled combination model binds fingerprint/currency and exact option dimensions                 | Runtime freshness, copy/price/availability tamper, stale identity, duplicate/missing/extra dimensions, raw-map injection, catalog isolation, and non-mutation tests pass; live evidence remains missing                                                                       | Observe Shopify, review the exact complete envelope, then separately authorize binding the accepted patch to the Draft release                                                             |
+| Media truth                      | Gateway filters Shopify media through hashed, approved registry bindings; PDP exposes partial-review state; production requires current modality/fallback coverage                                                                              | ID/URL/type tamper, unapproved extra, duplicate binding, partial Preview, complete Released, and missing-production-binding tests pass; Hoodie assets remain unbound/unapproved                                                                                               | Obtain current Hoodie media, provenance/rights/quality approval, and hashed storefront bindings without inventing missing modalities                                                       |
+| Cart                             | Browser product/cart services and broad Storefront mutation client are removed; server policy evaluates eight activation prerequisites, separating reviewed variant presentation from evidence-backed server-only mutation-resolution readiness | The resolver re-derives current facts and proves one-to-one coverage without exposing raw IDs; real-decision cart integration, schema, tamper, route-boundary, local fixture denial, and sanitized-summary tests pass; no Shopify write or live API proof                     | Audit the authenticated Storefront cart surface and prove no-order capability; only after explicit approval add a selected-variant server adapter without weakening the readiness boundary |
+| Checkout                         | The public POST boundary resolves canonical release evidence and returns a fail-closed denial; no Shopify cart mutation implementation is reachable                                                                                             | Draft, missing, and incomplete release evidence are denied before any provider read/write; no checkout URL is returned                                                                                                                                                        | Add a separate release-bound authorization contract and server adapter only after Released evidence, live cart proof, exact host validation, and operational authorization                 |
+| POD mapping                      | Draft release record binds Apliiq product `5958463` provider-neutrally                                                                                                                                                                          | Product/design facts partial; variant fingerprint/order proof missing                                                                                                                                                                                                         | Observe exact variant mapping without ordering, then later prove authorized order handoff                                                                                                  |
+| Catalog                          | Prior audit recorded 12 products with image-only media                                                                                                                                                                                          | Later reuse/scale input; individual release truth unproven                                                                                                                                                                                                                    | After the complete Hoodie journey, prove a different product through the same cores before catalog expansion                                                                               |
+| Hosting                          | Vercel project linked but public responses are HTTP 402                                                                                                                                                                                         | External blocker                                                                                                                                                                                                                                                              | Restore deployment access, then redeploy approved preview and resume browser proof                                                                                                         |
+| Agentic orchestration            | Durable ProductBrief, ProductCreationJob v2, PipelineRun, and executable capability registry exist locally                                                                                                                                      | On-demand designer and scheduled trend simulations converge on the same truth contracts; provenance/freshness, binding brand/reference rules, deterministic duplicate suppression, blocker isolation, and restricted gates are tested; external app access remains unverified | Run the authorized read-only app audit and bind evidence-backed callable surfaces to registry entries                                                                                      |
+| Release state                    | Draft Hoodie record, strict transition schema/policy, route-level release registry, and release-specific withdrawal plan exist                                                                                                                  | Current Hoodie staging readiness is denied by seven exact evidence blockers; the route denies Draft Shopify observations outside Local                                                                                                                                        | Resolve reviewed Shopify observation/commerce facts, provider fingerprint, immutable candidate/build evidence, and private staging evidence before staging                                 |
 
 ## Environment model
 
-| Environment | Purpose | Data/release policy |
-|---|---|---|
-| Local | Implementation and evidence | Defaults fail closed; fixture permitted only when visibly labeled and gated |
-| Vercel Preview | Private staging/review | Branch deployment, environment-specific values, no fixtures, Staged-or-later evidence required, no production promotion |
-| Production | Customer commerce | Approved `main` only; no fixtures or unreleased products; complete Released evidence required and all operational gates directly proven |
+| Environment    | Purpose                     | Data/release policy                                                                                                                     |
+| -------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Local          | Implementation and evidence | Defaults fail closed; fixture permitted only when visibly labeled and gated                                                             |
+| Vercel Preview | Private staging/review      | Branch deployment, environment-specific values, no fixtures, Staged-or-later evidence required, no production promotion                 |
+| Production     | Customer commerce           | Approved `main` only; no fixtures or unreleased products; complete Released evidence required and all operational gates directly proven |
 
 ## Target decomposition
 

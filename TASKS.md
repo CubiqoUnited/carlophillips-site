@@ -1,5 +1,43 @@
 # Delivery Tasks
 
+## Current implementation: final headless + PODPIPE architecture
+
+- [x] Engage Sushma for scope, QA, dirty-worktree, and delivery review.
+- [x] Engage Aarti for architecture, trusted-boundary, and media-flow review.
+- [x] Keep Yarn Classic 1.22.22 and add private Yarn workspaces; do not add
+      pnpm/npm workspace or lock state.
+- [x] Establish `apps/web`, `packages/design-system`, `packages/config`,
+      `packages/shopify`, and `packages/utils` as executable workspace boundaries
+      without overwriting Product Owner media/evidence.
+- [x] Move the complete Next.js runtime to `apps/web/src` and remove the former
+      root runtime trees while preserving canonical routes and fail-closed gates.
+- [x] Move canonical tokens/global CSS into `@repo/design-system`; expose only
+      the small typed Button/Text/Media/Layout primitive set and dark theme.
+- [x] Add strict TypeScript, Stylelint, Prettier, Husky/lint-staged, Commitlint,
+      Turbo task configuration, and GitHub PR CI.
+- [x] Define the exact eleven-section PODPIPE order and seventeen-step delivery
+      workflow as typed, schema-validated contracts without granting release
+      authority.
+- [x] Implement the controlled twelve-view MediaViewer and render the official
+      sequence with explicit withheld/not-applicable states.
+- [x] Remove direct AI/MODA candidate-media imports from active home and PDP
+      components; consume only the server-eligible media projection.
+- [x] Make physical-sample review, responsive/performance/token evidence, real
+      360 evidence, and verified 3D/AR evidence explicit release blockers.
+- [x] Remove the P0 standalone production-launch bypass and its synthetic
+      Released record, cart approval, and unregistered Shopify-media acceptance.
+- [x] Bind the checkout POST boundary to the canonical release registry and
+      deny the current Draft before any Shopify read or mutation.
+- [x] Build and manually review the design-system Storybook at desktop and
+      mobile widths; retain screenshot evidence without binding it to the Draft
+      Product Release candidate.
+- [x] Re-run frozen install, all static gates, full tests, Storybook, audit, and
+      production build after the final strict-TypeScript migration.
+- [x] Capture and compare fresh background headless desktop, compact, tablet,
+      and mobile storefront screenshots; verify interactions, overflow, broken
+      media, provider leakage, checkout denial, console/page errors, and canonical
+      route behavior.
+
 ## Version milestones
 
 - [x] Read and visually inspect all 18 pages of `Recovered-Design-System-Guidance.docx` before changing the v1.2 design-system boundary.
@@ -168,6 +206,12 @@
 - [ ] Product Owner reviews the Preview and separately approves or rejects production promotion.
 
 ## Current bounded launch: one Signature Hoodie
+
+> Superseded authority notice (2026-08-14): this section records historical
+> execution only. Its standalone launch approval was removed after P0 review;
+> the canonical Draft Product Release Record and unbound Media Registry are the
+> current authority. None of the checked items below authorizes present release,
+> media visibility, cart, checkout, deployment, or production changes.
 
 - [x] Activate only the Signature Hoodie in Shopify and publish it to Carlophillips Headless.
 - [x] Verify nine current Storefront variants, availability, prices, truthful media, and stable identity/facts fingerprints without exposing raw identifiers.

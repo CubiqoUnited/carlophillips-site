@@ -3,11 +3,24 @@
   "$id": "https://carlophillips.com/contracts/product-release.schema.json",
   "title": "ProductReleaseRecord v1",
   "type": "object",
-  "required": ["schemaVersion", "releaseId", "state", "shopify", "fulfillmentMappings", "mediaManifest", "approvals", "candidate", "rollback"],
+  "required": [
+    "schemaVersion",
+    "releaseId",
+    "state",
+    "shopify",
+    "fulfillmentMappings",
+    "physicalSample",
+    "mediaManifest",
+    "approvals",
+    "candidate",
+    "rollback"
+  ],
   "properties": {
     "schemaVersion": { "const": "cp.product-release.v1" },
     "releaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
-    "state": { "enum": ["draft", "staged", "approved", "released", "withdrawn"] },
+    "state": {
+      "enum": ["draft", "staged", "approved", "released", "withdrawn"]
+    },
     "shopify": {
       "type": "object",
       "required": [
@@ -26,7 +39,9 @@
       "properties": {
         "productReference": { "type": "string", "minLength": 1 },
         "handle": { "type": "string", "minLength": 1 },
-        "statusObserved": { "enum": ["DRAFT", "ACTIVE", "ARCHIVED", "UNKNOWN"] },
+        "statusObserved": {
+          "enum": ["DRAFT", "ACTIVE", "ARCHIVED", "UNKNOWN"]
+        },
         "observedAt": { "type": "string", "format": "date-time" },
         "variantFingerprint": {
           "oneOf": [
@@ -54,12 +69,17 @@
       "allOf": [
         {
           "if": {
-            "properties": { "variantFingerprintStatus": { "const": "observed" } },
+            "properties": {
+              "variantFingerprintStatus": { "const": "observed" }
+            },
             "required": ["variantFingerprintStatus"]
           },
           "then": {
             "properties": {
-              "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+              "variantFingerprint": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              }
             }
           },
           "else": {
@@ -68,12 +88,17 @@
         },
         {
           "if": {
-            "properties": { "commerceFactsFingerprintStatus": { "const": "reviewed" } },
+            "properties": {
+              "commerceFactsFingerprintStatus": { "const": "reviewed" }
+            },
             "required": ["commerceFactsFingerprintStatus"]
           },
           "then": {
             "properties": {
-              "commerceFactsFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+              "commerceFactsFingerprint": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              }
             }
           },
           "else": {
@@ -82,12 +107,17 @@
         },
         {
           "if": {
-            "properties": { "observationFingerprintStatus": { "const": "reviewed" } },
+            "properties": {
+              "observationFingerprintStatus": { "const": "reviewed" }
+            },
             "required": ["observationFingerprintStatus"]
           },
           "then": {
             "properties": {
-              "observationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+              "observationFingerprint": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
               "observationReviewEvidence": { "type": "string", "minLength": 1 }
             }
           },
@@ -105,6 +135,28 @@
       "type": "array",
       "items": { "$ref": "#/$defs/fulfillmentMapping" }
     },
+    "physicalSample": {
+      "type": "object",
+      "required": [
+        "status",
+        "sampleReference",
+        "fit",
+        "colour",
+        "artworkPlacement",
+        "finish",
+        "evidence"
+      ],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "rejected"] },
+        "sampleReference": { "type": ["string", "null"] },
+        "fit": { "enum": ["pending", "approved", "rejected"] },
+        "colour": { "enum": ["pending", "approved", "rejected"] },
+        "artworkPlacement": { "enum": ["pending", "approved", "rejected"] },
+        "finish": { "enum": ["pending", "approved", "rejected"] },
+        "evidence": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
     "mediaManifest": { "type": "string", "minLength": 1 },
     "approvals": {
       "type": "object",
@@ -118,17 +170,32 @@
     },
     "candidate": {
       "type": "object",
-      "required": ["gitCommit", "buildEvidence", "stagingEvidence"],
+      "required": [
+        "gitCommit",
+        "buildEvidence",
+        "stagingEvidence",
+        "responsiveEvidence",
+        "performanceEvidence",
+        "tokenEvidence"
+      ],
       "properties": {
         "gitCommit": { "type": ["string", "null"] },
         "buildEvidence": { "type": ["string", "null"] },
-        "stagingEvidence": { "type": ["string", "null"] }
+        "stagingEvidence": { "type": ["string", "null"] },
+        "responsiveEvidence": { "type": ["string", "null"] },
+        "performanceEvidence": { "type": ["string", "null"] },
+        "tokenEvidence": { "type": ["string", "null"] }
       },
       "additionalProperties": false
     },
     "rollback": {
       "type": "object",
-      "required": ["strategy", "planEvidence", "verificationEvidence", "previousReleaseId"],
+      "required": [
+        "strategy",
+        "planEvidence",
+        "verificationEvidence",
+        "previousReleaseId"
+      ],
       "properties": {
         "strategy": {
           "oneOf": [
@@ -143,7 +210,9 @@
       "allOf": [
         {
           "if": {
-            "properties": { "strategy": { "const": "restore-previous-release" } },
+            "properties": {
+              "strategy": { "const": "restore-previous-release" }
+            },
             "required": ["strategy"]
           },
           "then": {
@@ -162,7 +231,9 @@
   "allOf": [
     {
       "if": {
-        "properties": { "state": { "enum": ["staged", "approved", "released"] } },
+        "properties": {
+          "state": { "enum": ["staged", "approved", "released"] }
+        },
         "required": ["state"]
       },
       "then": {
@@ -170,11 +241,20 @@
           "shopify": {
             "type": "object",
             "properties": {
-              "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+              "variantFingerprint": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
               "variantFingerprintStatus": { "const": "observed" },
-              "commerceFactsFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+              "commerceFactsFingerprint": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
               "commerceFactsFingerprintStatus": { "const": "reviewed" },
-              "observationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+              "observationFingerprint": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
               "observationFingerprintStatus": { "const": "reviewed" },
               "observationReviewEvidence": { "type": "string", "minLength": 1 }
             }
@@ -188,7 +268,10 @@
                 {
                   "type": "object",
                   "properties": {
-                    "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+                    "variantFingerprint": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
                     "variantFingerprintStatus": { "const": "observed" }
                   }
                 }
@@ -206,7 +289,9 @@
           "rollback": {
             "type": "object",
             "properties": {
-              "strategy": { "enum": ["withdraw-release", "restore-previous-release"] },
+              "strategy": {
+                "enum": ["withdraw-release", "restore-previous-release"]
+              },
               "planEvidence": { "type": "string", "minLength": 1 }
             }
           }
@@ -220,6 +305,18 @@
       },
       "then": {
         "properties": {
+          "physicalSample": {
+            "type": "object",
+            "properties": {
+              "status": { "const": "approved" },
+              "sampleReference": { "type": "string", "minLength": 1 },
+              "fit": { "const": "approved" },
+              "colour": { "const": "approved" },
+              "artworkPlacement": { "const": "approved" },
+              "finish": { "const": "approved" },
+              "evidence": { "type": "string", "minLength": 1 }
+            }
+          },
           "approvals": {
             "type": "object",
             "properties": {
@@ -235,6 +332,14 @@
                 "type": "object",
                 "properties": { "status": { "const": "approved" } }
               }
+            }
+          },
+          "candidate": {
+            "type": "object",
+            "properties": {
+              "responsiveEvidence": { "type": "string", "minLength": 1 },
+              "performanceEvidence": { "type": "string", "minLength": 1 },
+              "tokenEvidence": { "type": "string", "minLength": 1 }
             }
           }
         }
@@ -264,7 +369,12 @@
   "$defs": {
     "fulfillmentMapping": {
       "type": "object",
-      "required": ["adapter", "providerProductId", "variantFingerprint", "variantFingerprintStatus"],
+      "required": [
+        "adapter",
+        "providerProductId",
+        "variantFingerprint",
+        "variantFingerprintStatus"
+      ],
       "properties": {
         "adapter": { "type": "string", "minLength": 1 },
         "providerProductId": { "type": "string", "minLength": 1 },

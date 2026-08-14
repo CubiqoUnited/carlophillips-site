@@ -13,11 +13,37 @@
       "maxItems": 9,
       "items": {
         "type": "object",
-        "required": ["modality", "requirement", "status", "assetIds", "infeasibilityBlocker"],
+        "required": [
+          "modality",
+          "requirement",
+          "status",
+          "assetIds",
+          "infeasibilityBlocker"
+        ],
         "properties": {
-          "modality": { "enum": ["front", "back-angle", "embroidery-detail", "material-detail", "on-model", "lifestyle", "spin-360", "model-3d-ar", "video"] },
+          "modality": {
+            "enum": [
+              "front",
+              "back-angle",
+              "embroidery-detail",
+              "material-detail",
+              "on-model",
+              "lifestyle",
+              "spin-360",
+              "model-3d-ar",
+              "video"
+            ]
+          },
           "requirement": { "enum": ["required", "where-feasible"] },
-          "status": { "enum": ["missing", "candidate", "approved", "infeasible-pending", "infeasible-approved"] },
+          "status": {
+            "enum": [
+              "missing",
+              "candidate",
+              "approved",
+              "infeasible-pending",
+              "infeasible-approved"
+            ]
+          },
           "assetIds": {
             "type": "array",
             "uniqueItems": true,
@@ -36,7 +62,14 @@
         },
         "allOf": [
           {
-            "if": { "properties": { "status": { "enum": ["infeasible-pending", "infeasible-approved"] } }, "required": ["status"] },
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": ["infeasible-pending", "infeasible-approved"]
+                }
+              },
+              "required": ["status"]
+            },
             "then": {
               "properties": {
                 "requirement": { "const": "where-feasible" },
@@ -45,7 +78,10 @@
             }
           },
           {
-            "if": { "properties": { "status": { "const": "infeasible-approved" } }, "required": ["status"] },
+            "if": {
+              "properties": { "status": { "const": "infeasible-approved" } },
+              "required": ["status"]
+            },
             "then": {
               "properties": {
                 "infeasibilityBlocker": {
@@ -59,7 +95,16 @@
             "if": {
               "properties": {
                 "modality": {
-                  "enum": ["front", "back-angle", "embroidery-detail", "material-detail", "on-model", "lifestyle", "video"]
+                  "enum": [
+                    "front",
+                    "back-angle",
+                    "embroidery-detail",
+                    "material-detail",
+                    "on-model",
+                    "lifestyle",
+                    "spin-360",
+                    "video"
+                  ]
                 }
               },
               "required": ["modality"]
@@ -68,27 +113,86 @@
           },
           {
             "if": {
-              "properties": { "modality": { "enum": ["spin-360", "model-3d-ar"] } },
+              "properties": { "modality": { "const": "model-3d-ar" } },
               "required": ["modality"]
             },
-            "then": { "properties": { "requirement": { "const": "where-feasible" } } }
+            "then": {
+              "properties": { "requirement": { "const": "where-feasible" } }
+            }
           }
         ],
         "additionalProperties": false
       },
       "allOf": [
-        { "contains": { "type": "object", "properties": { "modality": { "const": "front" } }, "required": ["modality"] } },
-        { "contains": { "type": "object", "properties": { "modality": { "const": "back-angle" } }, "required": ["modality"] } },
-        { "contains": { "type": "object", "properties": { "modality": { "const": "embroidery-detail" } }, "required": ["modality"] } },
-        { "contains": { "type": "object", "properties": { "modality": { "const": "material-detail" } }, "required": ["modality"] } },
-        { "contains": { "type": "object", "properties": { "modality": { "const": "on-model" } }, "required": ["modality"] } },
-        { "contains": { "type": "object", "properties": { "modality": { "const": "lifestyle" } }, "required": ["modality"] } },
-        { "contains": { "type": "object", "properties": { "modality": { "const": "spin-360" } }, "required": ["modality"] } },
-        { "contains": { "type": "object", "properties": { "modality": { "const": "model-3d-ar" } }, "required": ["modality"] } },
-        { "contains": { "type": "object", "properties": { "modality": { "const": "video" } }, "required": ["modality"] } }
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "front" } },
+            "required": ["modality"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "back-angle" } },
+            "required": ["modality"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "embroidery-detail" } },
+            "required": ["modality"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "material-detail" } },
+            "required": ["modality"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "on-model" } },
+            "required": ["modality"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "lifestyle" } },
+            "required": ["modality"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "spin-360" } },
+            "required": ["modality"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "model-3d-ar" } },
+            "required": ["modality"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "modality": { "const": "video" } },
+            "required": ["modality"]
+          }
+        }
       ]
     },
-    "assets": { "type": "array", "items": { "$ref": "media-asset.schema.json" } }
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "media-asset.schema.json" }
+    }
   },
   "additionalProperties": false
 }

@@ -1,8 +1,11 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { CommerceProductDetail, CommerceProductUnavailable } from '../components/commerce/product-detail.jsx';
-import { toProductViewModel } from '../lib/commerce/product-view-model.js';
+import {
+  CommerceProductDetail,
+  CommerceProductUnavailable,
+} from '../apps/web/src/components/product/ProductInfo/index.tsx';
+import { toProductViewModel } from '../apps/web/src/lib/commerce/product-view-model.ts';
 
 const variantPresentation = {
   schemaVersion: 'cp.variant-presentation.v1',
@@ -54,14 +57,16 @@ describe('commerce product presentation', () => {
         availableForSale: true,
         vendor: 'Observed vendor',
         productType: 'Hoodie',
-        media: [{
-          id: 'front-approved',
-          type: 'image',
-          url: 'https://cdn.example/front-approved.jpg',
-          previewUrl: 'https://cdn.example/front-approved.jpg',
-          alt: 'Approved front',
-          label: 'front',
-        }],
+        media: [
+          {
+            id: 'front-approved',
+            type: 'image',
+            url: 'https://cdn.example/front-approved.jpg',
+            previewUrl: 'https://cdn.example/front-approved.jpg',
+            alt: 'Approved front',
+            label: 'front',
+          },
+        ],
         mediaReview: {
           status: 'incomplete',
           coveredModalities: ['front'],
@@ -94,10 +99,12 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
     expect(html).toContain('Purchasing disabled');
     expect(html).toContain('Purchasing remains disabled');
-    expect(html).not.toContain('PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED');
+    expect(html).not.toContain(
+      'PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED'
+    );
     expect(html).toContain('data-cart-activation="blocked"');
     expect(html).toContain('data-media-review="incomplete"');
-    expect(html).toContain('Private media review incomplete');
+    expect(html).toContain('Media review incomplete');
     expect(html).toContain('video, on-model');
     expect(html).toContain('disabled=""');
     expect(html).not.toContain('Outer story cannot render');
@@ -106,7 +113,9 @@ describe('commerce product presentation', () => {
     expect(html.toLowerCase()).not.toContain('shopify');
     const controls = html.match(/<button\b[^>]*>/g) || [];
     expect(controls.length).toBe(3);
-    expect(controls.every(control => control.includes('disabled=""'))).toBe(true);
+    expect(controls.every((control) => control.includes('disabled=""'))).toBe(
+      true
+    );
   });
 
   it('renders Released production facts without pending or unresolved release copy', () => {
@@ -139,44 +148,58 @@ describe('commerce product presentation', () => {
     expect(html).toContain('Released product facts');
     expect(html).toContain('Reviewed facts, released product');
     expect(html).toContain('Product facts are released');
-    expect(html).toContain('Purchasing remains disabled until the separate cart and checkout gates are proven');
+    expect(html).toContain(
+      'Purchasing remains disabled until the separate cart and checkout gates are proven'
+    );
     expect(html).not.toContain('release approval pending');
     expect(html).not.toContain('unresolved release');
     expect(html).not.toContain('Outer pending approval story');
   });
 
-  it('renders a brand-neutral checkout form only for an eligible launch', () => {
+  it('does not render checkout when canonical commerce authority remains false', () => {
     const product = toProductViewModel({
       source: 'shopify',
       environment: 'production',
-      commerceAllowed: true,
-      reason: 'SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED',
+      commerceAllowed: false,
+      reason: 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED',
       product: {
-        id: 'hoodie', handle: 'approved-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
-        description: 'Current product description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
-        variantPresentation, media: [],
+        id: 'hoodie',
+        handle: 'approved-hoodie',
+        title: 'Live Hoodie',
+        price: 128,
+        currency: 'USD',
+        description: 'Current product description',
+        availableForSale: true,
+        vendor: 'Provider',
+        productType: 'Hoodie',
+        variantPresentation,
+        media: [],
       },
     });
-    const html = renderToStaticMarkup(<CommerceProductDetail
-      releaseReason="SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED"
-      cartActivation={{ status: 'eligible', cartAllowed: true, reason: 'CUSTOMER_CART_ELIGIBLE' }}
-      product={product}
-    />);
-    expect(html).toContain('Continue to checkout');
-    expect(html).toContain('action="/api/checkout"');
-    expect(html).toContain('Signature Series / 001');
-    expect(html).toContain('Made to be lived in.');
-    expect(html).toContain('Secure encrypted checkout');
-    expect(html).not.toContain('Shopify Storefront — live product');
-    expect(html.toLowerCase()).not.toContain('shopify');
-    expect(html).not.toContain('Purchasing disabled');
-    expect(html).not.toContain('release state unavailable');
-    expect(html).not.toContain('Cart gate: CUSTOMER_CART_ELIGIBLE');
+    const html = renderToStaticMarkup(
+      <CommerceProductDetail
+        releaseReason="RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED"
+        cartActivation={{
+          status: 'eligible',
+          cartAllowed: true,
+          reason: 'CUSTOMER_CART_ELIGIBLE',
+        }}
+        product={product}
+      />
+    );
+    expect(html).not.toContain('Continue to checkout');
+    expect(html).not.toContain('action="/api/checkout"');
+    expect(html).toContain('Purchasing disabled');
+    expect(html).toContain('Product facts are released');
     expect(html).not.toContain('gid://');
   });
 
   it('renders an honest unavailable state without product content', () => {
-    const html = renderToStaticMarkup(<CommerceProductUnavailable decision={{ reason: 'SHOPIFY_REQUEST_FAILED' }} />);
+    const html = renderToStaticMarkup(
+      <CommerceProductUnavailable
+        decision={{ reason: 'SHOPIFY_REQUEST_FAILED' }}
+      />
+    );
     expect(html).toContain('This piece is currently unavailable');
     expect(html).toContain('Return to the collection');
     expect(html).toContain('data-unavailable-reason="unavailable"');
@@ -184,7 +207,7 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('Reason:');
   });
 
-  it('renders the disclosed Signature Hoodie editorial study only in Preview', () => {
+  it('does not attach candidate studies to the active PDP in any environment', () => {
     const product = toProductViewModel({
       source: 'shopify',
       environment: 'preview',
@@ -210,29 +233,12 @@ describe('commerce product presentation', () => {
       <CommerceProductDetail environment="production" product={product} />
     );
 
-    expect(previewHtml).toContain('data-editorial-study="ai-assisted-preview"');
-    expect(previewHtml).toContain('Digital editorial study / 01');
-    expect(previewHtml).toContain('Digital campaign studies created from the Signature Hoodie reference images');
-    expect(previewHtml).toContain('model-front-full.jpg');
-    expect(previewHtml).toContain('model-three-quarter.jpg');
-    expect(previewHtml).toContain('model-seated.jpg');
-    expect(previewHtml).toContain('model-side-profile.jpg');
-    expect(previewHtml).toContain('model-back-digital-study.jpg');
-    expect(previewHtml).toContain('product-flat-lay.jpg');
-    expect(previewHtml).toContain('Unverified back visualisation');
-    expect(previewHtml).toContain('object-contain object-center');
-    expect(previewHtml).toContain('material-embroidery-study.png');
-    expect(previewHtml).toContain('data-motion-study="still-derived"');
-    expect(previewHtml).toContain('still-derived-motion-study.webp');
-    expect(previewHtml).toContain('still-derived-motion-study.gif');
-    expect(previewHtml).toContain('GIF format');
-    expect(previewHtml).not.toContain('moda-shot-10.jpg');
-    expect(previewHtml).not.toContain('embroidery-detail-quarantined');
-    expect(productionHtml).not.toContain('data-editorial-study');
-    expect(productionHtml).not.toContain('/candidates/moda/');
-    expect(productionHtml).not.toContain('material-embroidery-study.png');
-    expect(productionHtml).not.toContain('still-derived-motion-study.webp');
-    expect(productionHtml).not.toContain('still-derived-motion-study.gif');
+    for (const html of [previewHtml, productionHtml]) {
+      expect(html).not.toContain('data-editorial-study');
+      expect(html).not.toContain('/candidates/moda/');
+      expect(html).not.toContain('/candidates/ai-assisted/');
+      expect(html).not.toContain('still-derived-motion-study');
+    }
   });
 
   it('does not attach the Hoodie editorial study to other Preview products', () => {
@@ -240,9 +246,22 @@ describe('commerce product presentation', () => {
       <CommerceProductDetail
         environment="preview"
         product={{
-          handle: 'another-product', title: 'Another Product', price: 100, currency: 'USD', description: '',
-          sourceLabel: 'Shopify Storefront observation', commerceAllowed: false, availableForSale: false,
-          vendor: '', productType: '', media: [], mediaReview: null, colors: [], sizes: [], truthHeading: '', story: '',
+          handle: 'another-product',
+          title: 'Another Product',
+          price: 100,
+          currency: 'USD',
+          description: '',
+          sourceLabel: 'Shopify Storefront observation',
+          commerceAllowed: false,
+          availableForSale: false,
+          vendor: '',
+          productType: '',
+          media: [],
+          mediaReview: null,
+          colors: [],
+          sizes: [],
+          truthHeading: '',
+          story: '',
         }}
       />
     );

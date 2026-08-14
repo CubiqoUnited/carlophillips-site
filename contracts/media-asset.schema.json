@@ -3,16 +3,38 @@
   "$id": "https://carlophillips.com/contracts/media-asset.schema.json",
   "title": "ProductMediaAsset v1",
   "type": "object",
-  "required": ["schemaVersion", "assetId", "kind", "source", "storefrontBinding", "exactProductMatch", "rightsStatus", "approvalStatus", "quality", "alt"],
+  "required": [
+    "schemaVersion",
+    "assetId",
+    "kind",
+    "source",
+    "storefrontBinding",
+    "exactProductMatch",
+    "rightsStatus",
+    "approvalStatus",
+    "quality",
+    "alt"
+  ],
   "properties": {
     "schemaVersion": { "const": "cp.product-media-asset.v1" },
     "assetId": { "type": "string", "minLength": 1 },
-    "kind": { "enum": ["image", "video", "external_video", "model_3d", "spin"] },
+    "kind": {
+      "enum": ["image", "video", "external_video", "model_3d", "spin"]
+    },
     "source": {
       "type": "object",
       "required": ["type", "reference"],
       "properties": {
-        "type": { "enum": ["pod-original", "shopify", "photography", "derived", "generated", "unknown"] },
+        "type": {
+          "enum": [
+            "pod-original",
+            "shopify",
+            "photography",
+            "derived",
+            "generated",
+            "unknown"
+          ]
+        },
         "reference": { "type": "string", "minLength": 1 },
         "method": { "type": "string" }
       },
@@ -25,7 +47,10 @@
           "required": ["adapter", "referenceHash", "evidence"],
           "properties": {
             "adapter": { "const": "shopify-storefront-media" },
-            "referenceHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "referenceHash": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
             "evidence": { "type": "string", "minLength": 1 }
           },
           "additionalProperties": false
@@ -33,9 +58,13 @@
         { "type": "null" }
       ]
     },
-    "exactProductMatch": { "enum": ["verified", "partial", "unverified", "not-applicable"] },
+    "exactProductMatch": {
+      "enum": ["verified", "partial", "unverified", "not-applicable"]
+    },
     "rightsStatus": { "enum": ["verified", "pending", "unknown"] },
-    "approvalStatus": { "enum": ["pending", "approved", "rejected", "quarantined"] },
+    "approvalStatus": {
+      "enum": ["pending", "approved", "rejected", "quarantined"]
+    },
     "quality": {
       "type": "object",
       "required": ["status", "evidence"],
@@ -57,7 +86,83 @@
       "additionalProperties": false
     },
     "alt": { "type": "string", "minLength": 1 },
-    "fallbackAssetId": { "type": ["string", "null"] }
+    "fallbackAssetId": { "type": ["string", "null"] },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "onBodyPose": {
+          "enum": ["front", "three-quarter", "profile", "seated", "back"]
+        },
+        "constructionDetail": {
+          "enum": ["hood", "pocket", "seams", "cuffs", "waistband", "branding"]
+        },
+        "motionRole": { "enum": ["film", "preview"] }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+    "spinEvidence": {
+      "type": "object",
+      "required": ["sourceType", "frameCount", "rotationTestEvidence"],
+      "properties": {
+        "sourceType": { "const": "physical-multi-angle" },
+        "frameCount": { "type": "integer", "minimum": 24 },
+        "rotationTestEvidence": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "modelEvidence": {
+      "type": "object",
+      "required": [
+        "formats",
+        "loadTestEvidence",
+        "arClaimed",
+        "arTestEvidence"
+      ],
+      "properties": {
+        "formats": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["glb", "usdz"] },
+          "contains": { "const": "glb" }
+        },
+        "loadTestEvidence": { "type": "string", "minLength": 1 },
+        "arClaimed": { "type": "boolean" },
+        "arTestEvidence": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "arClaimed": { "const": true } },
+            "required": ["arClaimed"]
+          },
+          "then": {
+            "properties": {
+              "formats": { "type": "array", "contains": { "const": "usdz" } },
+              "arTestEvidence": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "kind": { "const": "spin" } },
+        "required": ["kind"]
+      },
+      "then": { "required": ["spinEvidence"] }
+    },
+    {
+      "if": {
+        "properties": { "kind": { "const": "model_3d" } },
+        "required": ["kind"]
+      },
+      "then": { "required": ["modelEvidence"] }
+    }
+  ],
   "additionalProperties": false
 }

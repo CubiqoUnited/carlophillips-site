@@ -2,8 +2,73 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://carlophillips.com/contracts/home-catalog-summary.schema.json",
   "title": "HomeCatalogSummary v1",
+  "$defs": {
+    "releaseBoundMedia": {
+      "type": "object",
+      "required": [
+        "id",
+        "registryAssetId",
+        "approvalStatus",
+        "sourceAuthority",
+        "type",
+        "url",
+        "previewUrl",
+        "alt",
+        "label",
+        "modalities"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "registryAssetId": { "type": "string", "minLength": 1 },
+        "approvalStatus": { "const": "approved" },
+        "sourceAuthority": { "const": "product-release-media-registry" },
+        "type": {
+          "enum": ["image", "video", "external_video", "model_3d", "spin"]
+        },
+        "url": { "type": "string", "minLength": 1 },
+        "previewUrl": { "type": "string", "minLength": 1 },
+        "alt": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "modalities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "front",
+              "back-angle",
+              "embroidery-detail",
+              "material-detail",
+              "on-model",
+              "lifestyle",
+              "spin-360",
+              "model-3d-ar",
+              "video"
+            ]
+          }
+        },
+        "onBodyPose": {
+          "enum": ["front", "three-quarter", "profile", "seated", "back"]
+        },
+        "constructionDetail": {
+          "enum": ["hood", "pocket", "seams", "cuffs", "waistband", "branding"]
+        },
+        "motionRole": { "enum": ["film", "preview"] }
+      },
+      "additionalProperties": false
+    }
+  },
   "type": "object",
-  "required": ["schemaVersion", "environment", "status", "candidateCount", "visibleCount", "excludedCount", "commerceAllowed", "message", "primaryProduct"],
+  "required": [
+    "schemaVersion",
+    "environment",
+    "status",
+    "candidateCount",
+    "visibleCount",
+    "excludedCount",
+    "commerceAllowed",
+    "message",
+    "primaryProduct"
+  ],
   "properties": {
     "schemaVersion": { "const": "cp.home-catalog-summary.v1" },
     "environment": { "enum": ["local", "preview", "production"] },
@@ -18,42 +83,33 @@
         { "type": "null" },
         {
           "type": "object",
-          "required": ["title", "href", "sourceLabel", "commerceAllowed", "description", "heroMedia", "media"],
+          "required": [
+            "title",
+            "href",
+            "sourceLabel",
+            "commerceAllowed",
+            "description",
+            "heroMedia",
+            "media"
+          ],
           "properties": {
             "title": { "type": "string", "minLength": 1 },
-            "href": { "type": "string", "pattern": "^/products/[a-z0-9]+(?:-[a-z0-9]+)*$" },
+            "href": {
+              "type": "string",
+              "pattern": "^/product/[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
             "sourceLabel": { "type": "string", "minLength": 1 },
             "commerceAllowed": { "type": "boolean" },
             "description": { "type": "string" },
             "heroMedia": {
               "oneOf": [
                 { "type": "null" },
-                {
-                  "type": "object",
-                  "required": ["url", "alt", "label"],
-                  "properties": {
-                    "url": { "type": "string", "minLength": 1 },
-                    "alt": { "type": "string", "minLength": 1 },
-                    "label": { "type": "string", "minLength": 1 }
-                  },
-                  "additionalProperties": false
-                }
+                { "$ref": "#/$defs/releaseBoundMedia" }
               ]
             },
             "media": {
               "type": "array",
-              "items": {
-                "type": "object",
-                "required": ["type", "url", "previewUrl", "alt", "label"],
-                "properties": {
-                  "type": { "enum": ["image", "video", "external_video", "model_3d"] },
-                  "url": { "type": "string", "minLength": 1 },
-                  "previewUrl": { "type": "string", "minLength": 1 },
-                  "alt": { "type": "string", "minLength": 1 },
-                  "label": { "type": "string", "minLength": 1 }
-                },
-                "additionalProperties": false
-              }
+              "items": { "$ref": "#/$defs/releaseBoundMedia" }
             }
           },
           "additionalProperties": false
@@ -63,11 +119,17 @@
   },
   "allOf": [
     {
-      "if": { "properties": { "visibleCount": { "const": 0 } }, "required": ["visibleCount"] },
+      "if": {
+        "properties": { "visibleCount": { "const": 0 } },
+        "required": ["visibleCount"]
+      },
       "then": { "properties": { "primaryProduct": { "type": "null" } } }
     },
     {
-      "if": { "properties": { "visibleCount": { "minimum": 1 } }, "required": ["visibleCount"] },
+      "if": {
+        "properties": { "visibleCount": { "minimum": 1 } },
+        "required": ["visibleCount"]
+      },
       "then": { "properties": { "primaryProduct": { "type": "object" } } }
     }
   ],

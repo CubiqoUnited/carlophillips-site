@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   evaluateCartActivation,
   toCartActivationSummary,
-} from '../lib/commerce/cart-activation-policy';
+} from '../apps/web/src/lib/commerce/cart-activation-policy';
 
 const readyCapability = {
   status: 'ready',
@@ -52,16 +52,18 @@ const reviewedVariantPresentation = {
   selectionAllowed: false,
   cartAuthority: false,
   optionNames: ['Color', 'Size'],
-  combinations: [{
-    referenceHash: `sha256:${'a'.repeat(64)}`,
-    title: 'Black / M',
-    selectedOptions: [
-      { name: 'Color', value: 'Black' },
-      { name: 'Size', value: 'M' },
-    ],
-    availableForSale: true,
-    price: { amount: '128.00', currency: 'USD' },
-  }],
+  combinations: [
+    {
+      referenceHash: `sha256:${'a'.repeat(64)}`,
+      title: 'Black / M',
+      selectedOptions: [
+        { name: 'Color', value: 'Black' },
+        { name: 'Size', value: 'M' },
+      ],
+      availableForSale: true,
+      price: { amount: '128.00', currency: 'USD' },
+    },
+  ],
 };
 const productDecision = {
   source: 'shopify',
@@ -122,7 +124,8 @@ describe('cart activation policy', () => {
     expect(decision.prerequisites).toContainEqual({
       code: 'PRODUCT_OWNER_CART_ACTIVATION_APPROVAL_REQUIRED',
       status: 'human_required',
-      resumePoint: 'Record explicit Product Owner approval scoped to activate-customer-cart with durable evidence.',
+      resumePoint:
+        'Record explicit Product Owner approval scoped to activate-customer-cart with durable evidence.',
     });
   });
 
@@ -154,7 +157,11 @@ describe('cart activation policy', () => {
       environment: 'preview',
       productDecision: {
         ...productDecision,
-        product: { handle: 'test-product', availableForSale: false, variantPresentation: null },
+        product: {
+          handle: 'test-product',
+          availableForSale: false,
+          variantPresentation: null,
+        },
       },
       releaseRecord: {
         ...releasedRecord,
@@ -171,12 +178,17 @@ describe('cart activation policy', () => {
     });
 
     expect(decision.cartAllowed).toBe(false);
-    expect(decision.prerequisites.filter(item => item.status === 'blocked').map(item => item.code))
-      .toEqual(expect.arrayContaining([
+    expect(
+      decision.prerequisites
+        .filter((item) => item.status === 'blocked')
+        .map((item) => item.code)
+    ).toEqual(
+      expect.arrayContaining([
         'RELEASED_PRODUCT_REQUIRED',
         'OBSERVED_VARIANT_FINGERPRINT_REQUIRED',
         'SELLABLE_REVIEWED_VARIANT_REQUIRED',
-      ]));
+      ])
+    );
   });
 
   it('does not accept an outer raw variant map without a reviewed presentation', () => {
@@ -201,7 +213,8 @@ describe('cart activation policy', () => {
     expect(decision.prerequisites).toContainEqual({
       code: 'SELLABLE_REVIEWED_VARIANT_REQUIRED',
       status: 'blocked',
-      resumePoint: 'Verify at least one available canonical variant combination through an authorized read-only observation.',
+      resumePoint:
+        'Verify at least one available canonical variant combination through an authorized read-only observation.',
     });
   });
 
@@ -223,7 +236,8 @@ describe('cart activation policy', () => {
     expect(decision.prerequisites).toContainEqual({
       code: 'SERVER_VARIANT_RESOLVER_REQUIRED',
       status: 'blocked',
-      resumePoint: 'Bind an evidence-backed server-only resolver to this exact reviewed variant fingerprint; never expose or infer raw Shopify references.',
+      resumePoint:
+        'Bind an evidence-backed server-only resolver to this exact reviewed variant fingerprint; never expose or infer raw Shopify references.',
     });
   });
 
@@ -237,11 +251,18 @@ describe('cart activation policy', () => {
     ['raw reference exposure', { rawReferenceExposed: true }],
     ['cart authority', { cartMutationAuthorized: true }],
     ['checkout authority', { checkoutAuthorized: true }],
-    ['reported blocker', { blockers: [{
-      code: 'UNRESOLVED',
-      humanAction: 'Resolve it.',
-      resumePoint: 'Resume after resolution.',
-    }] }],
+    [
+      'reported blocker',
+      {
+        blockers: [
+          {
+            code: 'UNRESOLVED',
+            humanAction: 'Resolve it.',
+            resumePoint: 'Resume after resolution.',
+          },
+        ],
+      },
+    ],
   ])('does not accept resolver readiness with %s', (_label, override) => {
     const decision = evaluateCartActivation({
       environment: 'production',
@@ -302,16 +323,20 @@ describe('cart activation policy', () => {
       reason: 'CUSTOMER_CART_ELIGIBLE',
       checkoutReason: 'CHECKOUT_REQUIRES_SEPARATE_APPROVAL_AND_LIVE_PROOF',
     });
-    expect(decision.prerequisites.every(item => item.status === 'satisfied')).toBe(true);
+    expect(
+      decision.prerequisites.every((item) => item.status === 'satisfied')
+    ).toBe(true);
   });
 
   it('sanitizes the client summary and never carries product or variant payloads', () => {
-    const summary = toCartActivationSummary(evaluateCartActivation({
-      environment: 'production',
-      productDecision,
-      releaseRecord: releasedRecord,
-      capabilityDecision: blockedCapability,
-    }));
+    const summary = toCartActivationSummary(
+      evaluateCartActivation({
+        environment: 'production',
+        productDecision,
+        releaseRecord: releasedRecord,
+        capabilityDecision: blockedCapability,
+      })
+    );
 
     expect(JSON.stringify(summary)).not.toContain('opaque-variant-reference');
     expect(summary).not.toHaveProperty('productHandle');

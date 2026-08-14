@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { resolveProductSource } from '../lib/commerce/release-policy.js';
+import { resolveProductSource } from '../apps/web/src/lib/commerce/release-policy.ts';
 import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
@@ -10,7 +10,10 @@ const fixtureProduct = { id: 'fixture-1', title: 'Layout Fixture' };
 
 describe('release source policy', () => {
   it('allows an explicitly labeled non-commerce fixture locally', () => {
-    const decision = resolveProductSource({ environment: 'local', fixtureProduct });
+    const decision = resolveProductSource({
+      environment: 'local',
+      fixtureProduct,
+    });
     expect(decision).toMatchObject({
       status: 'available',
       source: 'fixture',
@@ -25,23 +28,26 @@ describe('release source policy', () => {
     });
   });
 
-  it.each(['preview', 'production'])('returns unavailable instead of a fixture after Shopify failure in %s', environment => {
-    const decision = resolveProductSource({
-      environment,
-      fixtureProduct,
-      shopifyError: new Error('deliberate test failure'),
-    });
-    expect(decision).toEqual({
-      schemaVersion: 'cp.release-decision.v1',
-      environment,
-      status: 'unavailable',
-      source: 'unavailable',
-      visibilityAllowed: false,
-      commerceAllowed: false,
-      reason: 'SHOPIFY_REQUEST_FAILED',
-      product: null,
-    });
-  });
+  it.each(['preview', 'production'])(
+    'returns unavailable instead of a fixture after Shopify failure in %s',
+    (environment) => {
+      const decision = resolveProductSource({
+        environment,
+        fixtureProduct,
+        shopifyError: new Error('deliberate test failure'),
+      });
+      expect(decision).toEqual({
+        schemaVersion: 'cp.release-decision.v1',
+        environment,
+        status: 'unavailable',
+        source: 'unavailable',
+        visibilityAllowed: false,
+        commerceAllowed: false,
+        reason: 'SHOPIFY_REQUEST_FAILED',
+        product: null,
+      });
+    }
+  );
 
   it('allows a matching Staged Shopify candidate for private Preview review only', () => {
     const releaseRecord = createCompleteReleaseRecord('staged');
@@ -62,7 +68,10 @@ describe('release source policy', () => {
   });
 
   it('returns only observation-bound customer copy from the complete Preview release path', () => {
-    const shopifyProduct = createObservedShopifyProduct('test-product', 'preview');
+    const shopifyProduct = createObservedShopifyProduct(
+      'test-product',
+      'preview'
+    );
     Object.assign(shopifyProduct, {
       title: 'Outer injected title',
       name: 'Outer injected name',
@@ -105,36 +114,47 @@ describe('release source policy', () => {
       selectionAllowed: false,
       cartAuthority: false,
     });
-    expect(JSON.stringify(decision.product)).not.toContain('Injected selectable combination');
+    expect(JSON.stringify(decision.product)).not.toContain(
+      'Injected selectable combination'
+    );
   });
 
-  it.each(['preview', 'production'])('denies an observed Shopify product without a release record in %s', environment => {
-    expect(resolveProductSource({
-      environment,
-      shopifyProduct: { handle: 'test-product' },
-    })).toMatchObject({
-      status: 'denied',
-      visibilityAllowed: false,
-      commerceAllowed: false,
-      reason: 'PRODUCT_RELEASE_RECORD_REQUIRED',
-      product: null,
-    });
-  });
+  it.each(['preview', 'production'])(
+    'denies an observed Shopify product without a release record in %s',
+    (environment) => {
+      expect(
+        resolveProductSource({
+          environment,
+          shopifyProduct: { handle: 'test-product' },
+        })
+      ).toMatchObject({
+        status: 'denied',
+        visibilityAllowed: false,
+        commerceAllowed: false,
+        reason: 'PRODUCT_RELEASE_RECORD_REQUIRED',
+        product: null,
+      });
+    }
+  );
 
   it('denies a Draft release in Preview and an Approved release in production', () => {
-    expect(resolveProductSource({
-      environment: 'preview',
-      shopifyProduct: { handle: 'test-product' },
-      releaseRecord: createCompleteReleaseRecord('draft'),
-      mediaManifest: createCompleteMediaManifest(),
-    }).reason).toBe('PRODUCT_RELEASE_NOT_STAGED');
+    expect(
+      resolveProductSource({
+        environment: 'preview',
+        shopifyProduct: { handle: 'test-product' },
+        releaseRecord: createCompleteReleaseRecord('draft'),
+        mediaManifest: createCompleteMediaManifest(),
+      }).reason
+    ).toBe('PRODUCT_RELEASE_NOT_STAGED');
 
-    expect(resolveProductSource({
-      environment: 'production',
-      shopifyProduct: { handle: 'test-product' },
-      releaseRecord: createCompleteReleaseRecord('approved'),
-      mediaManifest: createCompleteMediaManifest(),
-    }).reason).toBe('PRODUCT_RELEASE_NOT_RELEASED');
+    expect(
+      resolveProductSource({
+        environment: 'production',
+        shopifyProduct: { handle: 'test-product' },
+        releaseRecord: createCompleteReleaseRecord('approved'),
+        mediaManifest: createCompleteMediaManifest(),
+      }).reason
+    ).toBe('PRODUCT_RELEASE_NOT_RELEASED');
   });
 
   it('denies Preview when reviewed observation bindings are missing', () => {
@@ -145,12 +165,14 @@ describe('release source policy', () => {
     releaseRecord.shopify.observationFingerprintStatus = 'missing';
     releaseRecord.shopify.observationReviewEvidence = null;
 
-    expect(resolveProductSource({
-      environment: 'preview',
-      shopifyProduct: createObservedShopifyProduct('test-product', 'preview'),
-      releaseRecord,
-      mediaManifest: createCompleteMediaManifest(),
-    })).toMatchObject({
+    expect(
+      resolveProductSource({
+        environment: 'preview',
+        shopifyProduct: createObservedShopifyProduct('test-product', 'preview'),
+        releaseRecord,
+        mediaManifest: createCompleteMediaManifest(),
+      })
+    ).toMatchObject({
       status: 'denied',
       reason: 'PRODUCT_OBSERVATION_REVIEW_REQUIRED',
       product: null,
@@ -160,7 +182,10 @@ describe('release source policy', () => {
   it('allows truthful production visibility only for a complete Released record while commerce stays disabled', () => {
     const decision = resolveProductSource({
       environment: 'production',
-      shopifyProduct: createObservedShopifyProduct('test-product', 'production'),
+      shopifyProduct: createObservedShopifyProduct(
+        'test-product',
+        'production'
+      ),
       releaseRecord: createCompleteReleaseRecord('released'),
       mediaManifest: createCompleteMediaManifest(),
     });
@@ -175,30 +200,40 @@ describe('release source policy', () => {
 
   it('denies production when a Released record has incomplete media evidence', () => {
     const manifest = createCompleteMediaManifest();
-    manifest.requirements.find(item => item.modality === 'video').status = 'missing';
-    expect(resolveProductSource({
-      environment: 'production',
-      shopifyProduct: createObservedShopifyProduct('test-product', 'production'),
-      releaseRecord: createCompleteReleaseRecord('released'),
-      mediaManifest: manifest,
-    }).reason).toBe('PRODUCT_RELEASE_EVIDENCE_INCOMPLETE');
+    manifest.requirements.find((item) => item.modality === 'video').status =
+      'missing';
+    expect(
+      resolveProductSource({
+        environment: 'production',
+        shopifyProduct: createObservedShopifyProduct(
+          'test-product',
+          'production'
+        ),
+        releaseRecord: createCompleteReleaseRecord('released'),
+        mediaManifest: manifest,
+      }).reason
+    ).toBe('PRODUCT_RELEASE_EVIDENCE_INCOMPLETE');
   });
 
   it('denies mismatched or withdrawn release evidence', () => {
-    expect(resolveProductSource({
-      environment: 'preview',
-      shopifyProduct: { handle: 'another-product' },
-      releaseRecord: createCompleteReleaseRecord('staged'),
-      mediaManifest: createCompleteMediaManifest(),
-    }).reason).toBe('PRODUCT_RELEASE_EVIDENCE_MISMATCH');
+    expect(
+      resolveProductSource({
+        environment: 'preview',
+        shopifyProduct: { handle: 'another-product' },
+        releaseRecord: createCompleteReleaseRecord('staged'),
+        mediaManifest: createCompleteMediaManifest(),
+      }).reason
+    ).toBe('PRODUCT_RELEASE_EVIDENCE_MISMATCH');
 
     const withdrawn = createCompleteReleaseRecord('released');
     withdrawn.state = 'withdrawn';
-    expect(resolveProductSource({
-      environment: 'production',
-      shopifyProduct: { handle: 'test-product' },
-      releaseRecord: withdrawn,
-      mediaManifest: createCompleteMediaManifest(),
-    }).reason).toBe('PRODUCT_RELEASE_WITHDRAWN');
+    expect(
+      resolveProductSource({
+        environment: 'production',
+        shopifyProduct: { handle: 'test-product' },
+        releaseRecord: withdrawn,
+        mediaManifest: createCompleteMediaManifest(),
+      }).reason
+    ).toBe('PRODUCT_RELEASE_WITHDRAWN');
   });
 });

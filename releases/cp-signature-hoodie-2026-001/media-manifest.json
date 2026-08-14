@@ -8,7 +8,7 @@
     { "modality": "material-detail", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "on-model", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "lifestyle", "requirement": "required", "status": "candidate", "assetIds": ["modelize-137843f7-editorial-chair"], "infeasibilityBlocker": null },
-    { "modality": "spin-360", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "spin-360", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "model-3d-ar", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "video", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null }
   ],

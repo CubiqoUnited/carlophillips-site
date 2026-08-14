@@ -23,6 +23,15 @@
       "variantFingerprintStatus": "missing"
     }
   ],
+  "physicalSample": {
+    "status": "pending",
+    "sampleReference": null,
+    "fit": "pending",
+    "colour": "pending",
+    "artworkPlacement": "pending",
+    "finish": "pending",
+    "evidence": null
+  },
   "mediaManifest": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
   "approvals": {
     "product": { "status": "pending", "owner": "Product Owner" },
@@ -32,7 +41,10 @@
   "candidate": {
     "gitCommit": null,
     "buildEvidence": null,
-    "stagingEvidence": null
+    "stagingEvidence": null,
+    "responsiveEvidence": null,
+    "performanceEvidence": null,
+    "tokenEvidence": null
   },
   "rollback": {
     "strategy": "withdraw-release",

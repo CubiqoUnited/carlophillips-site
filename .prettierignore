@@ -1,0 +1,7 @@
+.next
+node_modules
+public
+releases
+runs
+test_reports
+yarn.lock

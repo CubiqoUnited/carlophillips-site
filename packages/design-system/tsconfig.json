@@ -1,0 +1,11 @@
+{
+  "extends": "../config/typescript.json",
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": true,
+    "jsx": "react-jsx",
+    "lib": ["dom", "esnext"],
+    "noUncheckedIndexedAccess": true
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "storybook-static"]
+}

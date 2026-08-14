@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "cp.campaign-media-registry.v1",
+  "assets": [
+    {
+      "assetId": "at-edge-of-life-lofoten-runway-hero",
+      "publicPath": "/media/editorial/lofoten-runway-hero.png",
+      "sha256": "2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338",
+      "approvalStatus": "approved",
+      "approvalOwner": "Product Owner",
+      "evidence": "test_reports/cp-v1.2.1-design-system-standards-2026-08-09/"
+    }
+  ]
+}

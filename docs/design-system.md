@@ -1,6 +1,6 @@
 # CARLOPHILLIPS Storefront Design System
 
-Status: active v1.2.1 storefront presentation contract, reconciled against `Recovered-Design-System-Guidance.docx` on 2026-08-09.
+Status: active headless workspace presentation contract, migrated from v1.2.1 on 2026-08-14.
 
 The storefront uses a restrained, media-led system: black canvas, white type, quiet rules, generous full-viewport panels, sparse copy, and one clear action per scene. The visual direction is inspired by premium technical-fashion and runway retail references while remaining an original CARLOPHILLIPS implementation.
 
@@ -12,18 +12,18 @@ CARLOPHILLIPS is an independent editorial, media-led commerce product. Its visua
 - Reference traits: oversized media, controlled whitespace, sparse typography, restrained controls, product storytelling, and clear product/purchasing actions.
 - Technical boundary: Next.js 15 App Router, React 19, Tailwind CSS 3, server-owned commerce decisions, and client interaction only where the media viewer or menu requires it.
 - Responsive boundary: mobile, tablet, and desktop browsers; keyboard, pointer, swipe, reduced-motion, reflow, and zoom behavior are required.
-- Project separation: CP owns its tokens, components, documentation, tests, and versioning. It does not import a universal cross-project design package.
+- Project separation: CP owns its private `@repo/design-system` workspace package, documentation, tests, and versioning. It is not a public or cross-project package.
 
 ## Token architecture
 
-The sole raw-value source is `app/design-tokens.css` under the `--cp-*` namespace. `app/globals.css` imports it and contains semantic component rules, not a second raw-value source. The naming grammar is `--cp-[category]-[concept]-[variant]-[state]`.
+The sole raw-value source is `packages/design-system/styles/tokens.css` under the `--cp-*` namespace. `packages/design-system/styles/globals.css` contains semantic component rules, and the root `app/globals.css` is only an `@repo/design-system/styles` compatibility import. Typed modules under `packages/design-system/tokens/` expose CSS-token references without duplicating raw values. The naming grammar is `--cp-[category]-[concept]-[variant]-[state]`.
 
 ```text
-app/design-tokens.css
+packages/design-system/styles/tokens.css
   Tier 1 primitives
     -> Tier 2 semantic intent
       -> Tier 3 component aliases
-        -> app/globals.css cp-* classes
+        -> packages/design-system/styles/globals.css cp-* classes
           -> active storefront components and routes
 ```
 
@@ -33,22 +33,22 @@ app/design-tokens.css
 
 Rendered customer components consume semantic `cp-*` classes. Ordinary Tailwind utilities may express non-visual structure; CSS-variable-backed arbitrary utilities may consume a named token; content-specific object positions may describe an image crop. Raw customer-facing colour utilities, CSS colour literals, inline JSX styles, un-tokenized arbitrary Tailwind values, primitive-token consumption by component CSS, and one-off tracking values are prohibited by deterministic tests.
 
-`StorefrontHeader` is the shared collection, bag, and product chrome. Reusable classes provide shells, sections, labels, headings, copy tiers, rules, cards, actions, commerce states, variant controls, and the private concept surface. The noindex `/concept-preview` route uses the explicit editorial-font role, while its campaign media remains Draft-only and outside product/release truth.
+`StorefrontHeader` is the shared collection, bag, and product chrome. Reusable classes provide shells, sections, labels, headings, copy tiers, rules, cards, actions, commerce states, variant controls, and controlled media surfaces. Unapproved concept and campaign candidates remain outside `apps/web/public` and outside product/release truth.
 
 ## Domain coverage
 
-| Domain | CP decision |
-| --- | --- |
-| Colour | Neutral primitives feed semantic canvas, surface, copy, rule, overlay, focus, selection, and disabled roles. CP is intentionally dark-only; light/high-contrast themes are not currently supported. |
-| Typography | Sans, editorial, and mono families; weights, responsive scales, line heights, tracking, text roles, wrapping, and clamping are tokenized. |
-| Spacing/layout | Primitive spacing scale plus semantic gutters, section rhythm, content/copy widths, viewport/header geometry, and responsive layout classes. |
-| Sizing | Controls, touch targets, media panels, copy, and viewport dimensions are defined. |
-| Shape | `none`, `small`, `medium`, `large`, and `full` primitives feed control/card/dialog/round aliases. The storefront remains sharp; circular affordances use the round alias. |
-| Depth | Rules, scrims, overlays, backdrop, blur, copy/dialog shadows, opacity, and named stacking layers are defined. |
-| Motion | Standard/image/campaign/runway durations, easing, frame delays, scroll prompting, and reduced-motion behavior are defined. |
-| Media | Product aspect ratios, panel geometry, focal-position conventions, captions, controls, placeholders, truthful disclosures, and contrast scrims are defined. |
-| Iconography | Lucide icons inherit `currentColor`, retain accessible control names, and use restrained shared sizing/stroke conventions. |
-| Data visualization | Not applicable to the active fashion storefront. Dormant generic chart scaffolding is not a customer surface. |
+| Domain             | CP decision                                                                                                                                                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Colour             | Neutral primitives feed semantic canvas, surface, copy, rule, overlay, focus, selection, and disabled roles. CP is intentionally dark-only; light/high-contrast themes are not currently supported. |
+| Typography         | Sans, editorial, and mono families; weights, responsive scales, line heights, tracking, text roles, wrapping, and clamping are tokenized.                                                           |
+| Spacing/layout     | Primitive spacing scale plus semantic gutters, section rhythm, content/copy widths, viewport/header geometry, and responsive layout classes.                                                        |
+| Sizing             | Controls, touch targets, media panels, copy, and viewport dimensions are defined.                                                                                                                   |
+| Shape              | `none`, `small`, `medium`, `large`, and `full` primitives feed control/card/dialog/round aliases. The storefront remains sharp; circular affordances use the round alias.                           |
+| Depth              | Rules, scrims, overlays, backdrop, blur, copy/dialog shadows, opacity, and named stacking layers are defined.                                                                                       |
+| Motion             | Standard/image/campaign/runway durations, easing, frame delays, scroll prompting, and reduced-motion behavior are defined.                                                                          |
+| Media              | Product aspect ratios, panel geometry, focal-position conventions, captions, controls, placeholders, truthful disclosures, and contrast scrims are defined.                                         |
+| Iconography        | Lucide icons inherit `currentColor`, retain accessible control names, and use restrained shared sizing/stroke conventions.                                                                          |
+| Data visualization | Not applicable to the active fashion storefront. Dormant generic chart scaffolding is not a customer surface.                                                                                       |
 
 ## Required component states
 
@@ -60,10 +60,10 @@ Rendered customer components consume semantic `cp-*` classes. Ordinary Tailwind 
 
 ## Governance and documented exceptions
 
-- `app/design-tokens.css` is the only raw CP visual-value source. Generated cross-project packages, Figma synchronization, and npm publication are intentionally not introduced.
+- `packages/design-system/styles/tokens.css` is the only raw CP visual-value source. The package is private; Figma synchronization and npm publication are intentionally not introduced.
 - CSS media-query breakpoints remain literal technical boundaries because custom properties cannot drive `@media` conditions. They are documented and tested as responsive contracts.
-- `app/layout.js` viewport theme colour and `app/opengraph-image.js` Satori styles require serialized values outside browser CSS. They are documented framework-output exceptions and must visually match the canonical neutral palette.
-- The generic `components/ui` scaffold retains framework compatibility tokens but is not an active CP storefront surface. A dormant component must be migrated to CP semantic/component roles before customer use.
+- `apps/web/src/app/layout.tsx` viewport theme colour and `apps/web/src/app/opengraph-image.tsx` Satori styles consume serialized values from `packages/design-system/tokens/serialized.ts`; the framework exception remains inside the token package rather than duplicating raw values in routes.
+- The former generic `components/ui` scaffold is removed. Customer components may use only the deliberately small `@repo/design-system` primitive and semantic-class surface.
 - Token renames, removals, or semantic changes require a migration note, deterministic tests, and screenshot comparison. Unrelated projects never inherit CP values automatically.
 
 ## Product media viewer
@@ -73,9 +73,22 @@ The Signature Hoodie action on the homepage opens a full-screen viewer instead o
 - Touch users move through media with native horizontal swipe and scroll snap.
 - Pointer and keyboard users receive previous/next controls; Escape and the close control dismiss the viewer.
 - Opening the viewer locks page scrolling and makes the page behind it inert. Closing returns focus to the opening action.
-- Media position is always shown. Captions remain short, provider-neutral, and truthful about Preview-only visual studies.
-- When a disclosed motion asset exists, a compact `Motion study` control jumps directly to it. A still-derived loop is never labeled as real product video, 360, or 3D.
-- The viewer never expands product eligibility. Production receives release-eligible media only; Local/Preview studies remain environment-gated and disclosed.
+- Media position is always shown. Captions remain short, provider-neutral, and derived from the release-bound projection.
+- A motion control appears only when eligible video exists. Still-derived candidate loops, fake 360, and unverified 3D never enter the active viewer.
+- The viewer never expands product eligibility. Local, Preview, and production all receive only media carried by the server decision; candidate studies remain quarantined evidence.
+
+## Continuous token testing
+
+- ESLint and deterministic tests reject raw colours, inline visual styles,
+  un-tokenized arbitrary utilities, direct candidate-media imports, and
+  primitive-token consumption by component CSS.
+- Strict TypeScript verifies the typed token contract; Stylelint validates the
+  canonical CSS source; Prettier and lint-staged keep changed source consistent.
+- Responsive visual checks cover desktop, compact, and mobile layouts, while
+  reduced-motion checks confirm deliberate motion can be disabled.
+- Before every major release, the design-system Storybook, homepage, and PDP
+  must be reviewed against the approved dark editorial baseline. The review is
+  release evidence, not an informal sign-off.
 
 ## Homepage sequence
 

@@ -3,7 +3,7 @@ import {
   discoverCapability,
   getCapabilityRegistry,
   validateCapabilityRegistry,
-} from '../lib/orchestration/capability-registry';
+} from '../apps/web/src/lib/orchestration/capability-registry';
 
 describe('capability registry policy', () => {
   it('discovers a proven local orchestration operation', () => {
@@ -30,7 +30,8 @@ describe('capability registry policy', () => {
       status: 'ready',
       adapter: 'shopify-storefront-cart',
       callableSurface: 'shopify_storefront',
-      evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
+      evidenceRef:
+        'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
       reason: null,
     });
   });
@@ -45,7 +46,8 @@ describe('capability registry policy', () => {
       status: 'ready',
       adapter: 'shopify-storefront-product',
       callableSurface: 'shopify_storefront',
-      evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json',
+      evidenceRef:
+        'test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json',
       reason: null,
     });
   });
@@ -62,11 +64,13 @@ describe('capability registry policy', () => {
       callableSurface: 'local',
       evidenceRef: 'tests/variant-resolution-policy.test.js',
     });
-    expect(discoverCapability(
-      getCapabilityRegistry(),
-      'shopify-storefront-variant-resolver',
-      'cart-write'
-    ).status).toBe('human_required');
+    expect(
+      discoverCapability(
+        getCapabilityRegistry(),
+        'shopify-storefront-variant-resolver',
+        'cart-write'
+      ).status
+    ).toBe('human_required');
   });
 
   it('keeps OTP-gated app workers registered but non-callable', () => {
@@ -75,11 +79,13 @@ describe('capability registry policy', () => {
       ['pod-bulk-workflow', 'create-draft-job'],
       ['trend-research-input', 'read-trends'],
     ]) {
-      expect(discoverCapability(registry, capability, operation)).toMatchObject({
-        status: 'human_required',
-        callableSurface: 'unverified',
-        reason: 'SHOPIFY_AUTHENTICATED_SESSION_REQUIRED',
-      });
+      expect(discoverCapability(registry, capability, operation)).toMatchObject(
+        {
+          status: 'human_required',
+          callableSurface: 'unverified',
+          reason: 'SHOPIFY_AUTHENTICATED_SESSION_REQUIRED',
+        }
+      );
     }
   });
 
@@ -94,7 +100,11 @@ describe('capability registry policy', () => {
   });
 
   it('returns an exact blocker for an unregistered capability', () => {
-    const decision = discoverCapability(getCapabilityRegistry(), 'unknown-worker', 'read');
+    const decision = discoverCapability(
+      getCapabilityRegistry(),
+      'unknown-worker',
+      'read'
+    );
     expect(decision).toMatchObject({
       status: 'unavailable',
       reason: 'CAPABILITY_NOT_REGISTERED',
@@ -113,7 +123,7 @@ describe('capability registry policy', () => {
   it('requires durable evidence before external access can be marked verified', () => {
     const registry = getCapabilityRegistry();
     const productRead = registry.capabilities.find(
-      item => item.capability === 'shopify-storefront-product-read'
+      (item) => item.capability === 'shopify-storefront-product-read'
     );
     productRead.accessState = 'read_only_verified';
     productRead.callableSurface = 'shopify_storefront';
