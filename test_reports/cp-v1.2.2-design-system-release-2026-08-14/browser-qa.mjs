@@ -1,7 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import { chromium } from '/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 
-const baseUrl = 'http://127.0.0.1:3000';
+const baseUrl = process.env.CP_QA_BASE_URL || 'http://127.0.0.1:3000';
 const evidenceRoot = 'test_reports/cp-v1.2.2-design-system-release-2026-08-14';
 const screenshotRoot = `${evidenceRoot}/screenshots`;
 const executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';

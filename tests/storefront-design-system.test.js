@@ -243,6 +243,24 @@ describe('storefront design system', () => {
     expect(styles).toContain('a:focus-visible');
   });
 
+  it('locks the approved responsive commerce geometry to named component tokens', () => {
+    const tokens = readFileSync(tokenPath, 'utf8');
+    const styles = readFileSync(globalPath, 'utf8');
+
+    expect(tokens).toContain('--cp-semantic-font-size-label-small: var(--cp-primitive-font-size-062)');
+    expect(tokens).toContain('--cp-component-product-runway-scroll-margin: var(--cp-semantic-size-header)');
+    expect(tokens).toContain('--cp-component-commerce-header-outer-height: calc(var(--cp-semantic-size-header) + var(--cp-semantic-size-hairline))');
+    expect(tokens).toContain('--cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-mobile)');
+    expect(tokens).toContain('--cp-component-commerce-title-line-height: var(--cp-semantic-font-line-height-section)');
+    expect(tokens).toContain('--cp-component-bag-panel-padding: var(--cp-semantic-space-7)');
+    expect(tokens).toContain('--cp-component-bag-definition-line-height: var(--cp-semantic-font-line-height-control)');
+    expect(tokens).toContain('--cp-component-bag-description-line-height: var(--cp-semantic-font-line-height-commerce-body-mobile)');
+    expect(styles).toContain('scroll-margin-top: var(--cp-component-product-runway-scroll-margin)');
+    expect(styles).toContain('height: var(--cp-component-commerce-header-outer-height)');
+    expect(styles).toContain('font-size: var(--cp-component-product-detail-title-size)');
+    expect(styles).toContain('line-height: var(--cp-component-commerce-title-line-height)');
+  });
+
   it('keeps the production composition contract and exact supplied runway asset', () => {
     const home = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
     const styles = readFileSync(globalPath, 'utf8');

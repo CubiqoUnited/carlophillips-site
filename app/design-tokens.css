@@ -36,7 +36,6 @@
   --cp-primitive-font-size-mono: 1em;
   --cp-primitive-font-size-small: 80%;
   --cp-primitive-font-size-script: 75%;
-  --cp-primitive-font-size-050: 0.5rem;
   --cp-primitive-font-size-056: 0.5625rem;
   --cp-primitive-font-size-062: 0.625rem;
   --cp-primitive-font-size-075: 0.75rem;
@@ -48,7 +47,9 @@
   --cp-primitive-font-size-137: 1.375rem;
   --cp-primitive-font-size-150: 1.5rem;
   --cp-primitive-font-size-187: 1.875rem;
+  --cp-primitive-font-size-225: 2.25rem;
   --cp-primitive-font-size-300: 3rem;
+  --cp-primitive-font-size-375: 3.75rem;
   --cp-primitive-font-size-450: 4.5rem;
   --cp-primitive-font-size-600: 6rem;
   --cp-primitive-font-size-product: clamp(2.5rem, 5vw, 4.5rem);
@@ -68,6 +69,8 @@
   --cp-primitive-font-line-height-product: 0.98;
   --cp-primitive-font-line-height-solid: 1;
   --cp-primitive-font-line-height-navigation: 1rem;
+  --cp-primitive-font-line-height-control: 1.25rem;
+  --cp-primitive-font-line-height-commerce-body-mobile: 1.625;
   --cp-primitive-font-line-height-commerce-body: 1.75rem;
   --cp-primitive-font-line-height-commerce-section-mobile: 0.94;
   --cp-primitive-font-line-height-commerce-product-mobile: 1.2;
@@ -432,7 +435,7 @@
   --cp-semantic-font-size-mono: var(--cp-primitive-font-size-mono);
   --cp-semantic-font-size-small: var(--cp-primitive-font-size-small);
   --cp-semantic-font-size-script: var(--cp-primitive-font-size-script);
-  --cp-semantic-font-size-label-small: var(--cp-primitive-font-size-050);
+  --cp-semantic-font-size-label-small: var(--cp-primitive-font-size-062);
   --cp-semantic-font-size-label: var(--cp-primitive-font-size-056);
   --cp-semantic-font-size-navigation: var(--cp-primitive-font-size-062);
   --cp-semantic-font-size-wordmark: var(--cp-primitive-font-size-075);
@@ -456,6 +459,10 @@
   --cp-semantic-font-size-card-title: var(--cp-primitive-font-size-187);
   --cp-semantic-font-size-commerce-body: var(--cp-primitive-font-size-112);
   --cp-semantic-font-size-commerce-product: var(--cp-primitive-font-size-300);
+  --cp-semantic-font-size-product-detail-mobile: var(--cp-primitive-font-size-225);
+  --cp-semantic-font-size-product-detail-tablet: var(--cp-primitive-font-size-300);
+  --cp-semantic-font-size-product-detail-desktop: var(--cp-primitive-font-size-375);
+  --cp-semantic-font-size-product-detail-wide: var(--cp-primitive-font-size-450);
   --cp-semantic-font-size-commerce-section-tablet: var(--cp-primitive-font-size-450);
   --cp-semantic-font-size-commerce-section-desktop: var(--cp-primitive-font-size-600);
   --cp-semantic-font-line-height-display: var(--cp-primitive-font-line-height-display);
@@ -464,6 +471,8 @@
   --cp-semantic-font-line-height-product: var(--cp-primitive-font-line-height-product);
   --cp-semantic-font-line-height-solid: var(--cp-primitive-font-line-height-solid);
   --cp-semantic-font-line-height-navigation: var(--cp-primitive-font-line-height-navigation);
+  --cp-semantic-font-line-height-control: var(--cp-primitive-font-line-height-control);
+  --cp-semantic-font-line-height-commerce-body-mobile: var(--cp-primitive-font-line-height-commerce-body-mobile);
   --cp-semantic-font-line-height-commerce-body: var(--cp-primitive-font-line-height-commerce-body);
   --cp-semantic-font-line-height-commerce-section-mobile: var(--cp-primitive-font-line-height-commerce-section-mobile);
   --cp-semantic-font-line-height-commerce-product-mobile: var(--cp-primitive-font-line-height-commerce-product-mobile);
@@ -770,6 +779,8 @@
   --cp-component-media-control-size: var(--cp-semantic-size-control);
   --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-disabled);
   --cp-component-header-layer: var(--cp-semantic-layer-header);
+  --cp-component-commerce-header-outer-height: calc(var(--cp-semantic-size-header) + var(--cp-semantic-size-hairline));
+  --cp-component-commerce-header-inner-height: var(--cp-semantic-size-header);
   --cp-component-dialog-layer: var(--cp-semantic-layer-dialog);
   --cp-component-menu-layer: var(--cp-semantic-layer-menu);
   --cp-component-control-layer: var(--cp-semantic-layer-control);
@@ -797,10 +808,13 @@
   --cp-component-concept-card-padding: var(--cp-semantic-space-6);
   --cp-component-product-featured-ratio: var(--cp-semantic-ratio-product-featured);
   --cp-component-product-gallery-min-height: var(--cp-semantic-layout-size-auto);
+  --cp-component-product-runway-scroll-margin: var(--cp-semantic-size-header);
   --cp-component-concept-story-grid-template: var(--cp-semantic-layout-grid-single);
   --cp-component-bag-panel-min-height: var(--cp-semantic-size-panel-bag);
-  --cp-component-bag-panel-padding: var(--cp-semantic-space-8);
-  --cp-component-bag-copy-padding: var(--cp-semantic-space-8);
+  --cp-component-bag-panel-padding: var(--cp-semantic-space-7);
+  --cp-component-bag-copy-padding: var(--cp-semantic-space-7);
+  --cp-component-bag-definition-line-height: var(--cp-semantic-font-line-height-control);
+  --cp-component-bag-description-line-height: var(--cp-semantic-font-line-height-commerce-body-mobile);
   --cp-component-product-copy-offset: var(--cp-semantic-space-negative-8);
   --cp-component-icon-stroke-width: var(--cp-semantic-icon-stroke-width);
   --cp-component-catalog-hero-align: var(--cp-semantic-layout-align-stretch);
@@ -813,6 +827,7 @@
   --cp-component-commerce-product-line-height: var(--cp-semantic-font-line-height-commerce-product-mobile);
   --cp-component-commerce-section-size: var(--cp-semantic-font-size-commerce-product);
   --cp-component-commerce-section-line-height: var(--cp-semantic-font-line-height-commerce-section-mobile);
+  --cp-component-commerce-title-line-height: var(--cp-semantic-font-line-height-section);
   --cp-component-commerce-hero-padding-block: var(--cp-semantic-space-20);
   --cp-component-catalog-section-padding-block: var(--cp-semantic-space-12);
   --cp-component-card-copy-padding: var(--cp-semantic-space-6);
@@ -826,6 +841,8 @@
   --cp-component-editorial-caption-padding: var(--cp-semantic-space-7);
   --cp-component-product-detail-copy-inline: var(--cp-semantic-space-5);
   --cp-component-product-detail-copy-block: var(--cp-semantic-space-12);
+  --cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-mobile);
+  --cp-component-product-detail-title-line-height: var(--cp-semantic-font-line-height-product);
   --cp-component-product-media-border-bottom: var(--cp-semantic-border-rule);
   --cp-component-product-media-border-right: var(--cp-semantic-border-none);
   --cp-component-product-copy-position: var(--cp-semantic-layout-size-auto);
@@ -860,6 +877,7 @@
     --cp-component-concept-header-label-display: var(--cp-semantic-layout-display-block);
     --cp-component-bag-panel-padding: var(--cp-semantic-space-10);
     --cp-component-bag-copy-padding: var(--cp-semantic-space-10);
+    --cp-component-bag-description-line-height: var(--cp-semantic-font-line-height-commerce-body);
     --cp-component-catalog-stat-padding: var(--cp-semantic-space-7);
     --cp-component-catalog-image-padding: var(--cp-semantic-space-12);
     --cp-component-commerce-body-size: var(--cp-semantic-font-size-commerce-body);
@@ -870,6 +888,8 @@
     --cp-component-card-copy-padding: var(--cp-semantic-space-8);
     --cp-component-product-media-image-padding: var(--cp-semantic-space-12);
     --cp-component-product-detail-copy-inline: var(--cp-semantic-space-8);
+    --cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-tablet);
+    --cp-component-product-detail-title-line-height: var(--cp-semantic-font-line-height-solid);
     --cp-component-size-grid-template: var(--cp-semantic-layout-grid-five);
     --cp-component-information-facts-grid-template: var(--cp-semantic-layout-grid-two);
     --cp-component-concept-section-header-direction: var(--cp-semantic-layout-direction-row);
@@ -906,6 +926,7 @@
     --cp-component-catalog-hero-align: var(--cp-semantic-layout-align-end);
     --cp-component-commerce-section-size: var(--cp-semantic-font-size-commerce-section-desktop);
     --cp-component-commerce-section-line-height: var(--cp-semantic-font-line-height-solid);
+    --cp-component-commerce-title-line-height: var(--cp-semantic-font-line-height-solid);
     --cp-component-commerce-hero-padding-block: var(--cp-semantic-space-28);
     --cp-component-catalog-section-padding-block: var(--cp-semantic-space-16);
     --cp-component-card-copy-padding: var(--cp-semantic-space-12);
@@ -918,6 +939,7 @@
     --cp-component-editorial-caption-padding: var(--cp-semantic-space-10);
     --cp-component-product-detail-copy-inline: var(--cp-semantic-space-12);
     --cp-component-product-detail-copy-block: var(--cp-semantic-space-16);
+    --cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-desktop);
     --cp-component-product-media-border-bottom: var(--cp-semantic-border-none);
     --cp-component-product-media-border-right: var(--cp-semantic-border-rule);
     --cp-component-product-copy-position: var(--cp-semantic-layout-position-sticky);
@@ -929,6 +951,7 @@
 @media (min-width: 80rem) {
   :root {
     --cp-component-catalog-standard-grid-template: var(--cp-semantic-layout-grid-three);
+    --cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-wide);
   }
 }
 

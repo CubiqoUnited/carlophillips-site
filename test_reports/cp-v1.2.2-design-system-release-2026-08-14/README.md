@@ -1,6 +1,6 @@
 # v1.2.2 verification evidence
 
-Environment: local, gated non-commerce fixture at `http://127.0.0.1:3000`.
+Environment: local, gated non-commerce fixture at `http://127.0.0.1:3012`.
 
 Method: background/headless Google Chrome through the bundled Playwright runtime. The mandated `agent-browser` launcher was not present on PATH or in the bundled runtime, so the equivalent bundled headless browser was used. No visible browser or focus-changing action occurred.
 
@@ -8,10 +8,10 @@ Method: background/headless Google Chrome through the bundled Playwright runtime
 
 - Yarn Classic 1.22.22 frozen install: pass.
 - ESLint with zero warnings: pass.
-- Vitest: 35 files / 340 tests: pass.
+- Vitest: 35 files / 341 tests: pass.
 - Production dependency audit: 55 packages / zero vulnerabilities: pass after advancing the existing transitive `nanoid` resolution from 3.3.17 to patched 3.3.18.
 - Next.js optimized build: 13 routes: pass.
-- Repository audit: 807 reachable tokens, five used runtime dependencies, zero removed-path references, zero exact duplicate active code files, zero unused runtime dependencies, zero strong-pattern secret matches.
+- Repository audit: 824 reachable tokens, five used runtime dependencies, zero removed-path references, zero exact duplicate active code files, zero unused runtime dependencies, zero strong-pattern secret matches.
 - CSS/source audit: zero raw active CSS declarations, zero primitive references from active CSS, zero dormant `cp-*` selectors, zero source inline styles/raw visual literals/arbitrary utilities/non-CP active classes.
 - Asset audit: 26 public raster/SVG assets decoded or parsed, zero failures.
 
@@ -60,4 +60,4 @@ Comparison artifacts are under `comparisons/`, including `baseline-contact-sheet
 
 ## Remaining boundary
 
-This evidence does not claim Vercel Preview or Production verification, live Shopify/catalog mutation, checkout/payment/order proof, or deployment readiness beyond Sushma's next review checkpoint. Those external actions were explicitly out of scope.
+This local evidence does not itself claim Production verification, live Shopify/catalog mutation, or checkout/payment/order proof. Immutable Vercel Preview evidence and independent parity review are separate release gates recorded on PR #8; Production remains unchanged until those gates and canonical-main verification pass.

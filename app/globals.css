@@ -598,6 +598,10 @@
     overflow: var(--cp-semantic-layout-overflow-hidden);
   }
 
+  .cp-product-runway {
+    scroll-margin-top: var(--cp-component-product-runway-scroll-margin);
+  }
+
   .cp-campaign-content,
   .cp-product-layout {
     position: var(--cp-semantic-layout-position-relative);
@@ -1092,7 +1096,7 @@
     position: var(--cp-semantic-layout-position-fixed);
     inset: var(--cp-semantic-layout-inset-top);
     z-index: var(--cp-component-header-layer);
-    height: var(--cp-semantic-size-header);
+    height: var(--cp-component-commerce-header-outer-height);
     padding-block: var(--cp-semantic-space-none);
     background: var(--cp-semantic-color-header-commerce);
     backdrop-filter: blur(var(--cp-semantic-effect-blur-strong));
@@ -1105,7 +1109,7 @@
   }
 
   .cp-commerce-header-fixed .cp-commerce-header-inner {
-    height: var(--cp-semantic-size-full);
+    height: var(--cp-component-commerce-header-inner-height);
   }
 
   .cp-commerce-brand {
@@ -1163,7 +1167,7 @@
   .cp-commerce-title {
     font-size: var(--cp-semantic-font-size-commerce);
     font-weight: var(--cp-semantic-font-weight-light);
-    line-height: var(--cp-semantic-font-line-height-solid);
+    line-height: var(--cp-component-commerce-title-line-height);
     letter-spacing: var(--cp-semantic-font-tracking-section);
   }
 
@@ -1298,6 +1302,7 @@
     gap: var(--cp-semantic-space-6);
     padding-top: var(--cp-semantic-space-7);
     font-size: var(--cp-semantic-font-size-control);
+    line-height: var(--cp-component-bag-definition-line-height);
   }
 
   .cp-definition-value {
@@ -1316,9 +1321,10 @@
     letter-spacing: var(--cp-semantic-font-tracking-concept);
   }
 
-  .cp-bag-description {
+  .cp-commerce-page .cp-bag-description {
     max-width: var(--cp-semantic-size-copy-medium);
     margin-top: var(--cp-semantic-space-8);
+    line-height: var(--cp-component-bag-description-line-height);
   }
 
   .cp-bag-actions {
@@ -1620,8 +1626,10 @@
     margin-bottom: var(--cp-semantic-space-7);
   }
 
-  .cp-product-detail-title {
+  .cp-commerce-page .cp-product-detail-title {
     max-width: var(--cp-semantic-size-copy-max);
+    font-size: var(--cp-component-product-detail-title-size);
+    line-height: var(--cp-component-product-detail-title-line-height);
   }
 
   .cp-product-detail-price {
