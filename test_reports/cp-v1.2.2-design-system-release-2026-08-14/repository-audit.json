@@ -2,16 +2,16 @@
   "schemaVersion": "cp.repository-audit.v1",
   "date": "2026-08-14",
   "inventory": {
-    "trackedAndCandidateFiles": 587,
+    "trackedAndCandidateFiles": 688,
     "activeCodeFiles": 61,
     "deletedPaths": 53,
     "deletedUiScaffoldFiles": 48
   },
   "designTokens": {
-    "total": 824,
-    "primitive": 364,
-    "semantic": 370,
-    "component": 90
+    "total": 884,
+    "primitive": 372,
+    "semantic": 397,
+    "component": 115
   },
   "dependencies": {
     "runtimeCount": 5,
@@ -58,7 +58,7 @@
     "exactDuplicateCode": []
   },
   "secrets": {
-    "scannedFiles": 587,
+    "scannedFiles": 688,
     "strongPatternMatchCount": 0,
     "matchesRedactedToFileAndKind": [],
     "trackedEnvironmentFiles": [

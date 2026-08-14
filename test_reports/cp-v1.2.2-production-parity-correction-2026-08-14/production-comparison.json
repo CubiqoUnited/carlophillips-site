@@ -1,0 +1,5205 @@
+{
+  "schemaVersion": "cp.production-parity-correction.v1",
+  "date": "2026-08-14",
+  "method": "headless background Chrome; candidate is exact PR #9 Preview DOM with worktree CSS injected ephemerally",
+  "productionUrl": "https://www.carlophillips.com",
+  "previewUrl": "https://carlophillips-site-l1zq41yzo-adityas-projects-261b17a9.vercel.app",
+  "previewHead": "55604acb90878a6973c8c13524608c2191577b64",
+  "externalMutation": false,
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "metrics": {
+        "home": {
+          "production": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 432,
+                "height": 30.796875,
+                "documentX": 48,
+                "documentY": 1882.203125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "8px",
+                "lineHeight": "12px",
+                "letterSpacing": "1.6px",
+                "width": 58.359375,
+                "height": 30.796875,
+                "documentX": 48,
+                "documentY": 1882.203125,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 432,
+                "height": 74.78125,
+                "documentX": 48,
+                "documentY": 1838.21875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2px",
+                "width": 66.734375,
+                "height": 33.796875,
+                "documentX": 48,
+                "documentY": 1838.21875,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 2
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 432,
+                "height": 30.796875,
+                "documentX": 48,
+                "documentY": 1882.203125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "8px",
+                "lineHeight": "12px",
+                "letterSpacing": "1.6px",
+                "width": 58.359375,
+                "height": 30.796875,
+                "documentX": 48,
+                "documentY": 1882.203125,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 3
+              }
+            }
+          ]
+        },
+        "shop": {
+          "production": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "18px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 768,
+                "height": 28,
+                "documentX": 48,
+                "documentY": 380,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 339.484375,
+                "height": 13.5,
+                "documentX": 1004.515625,
+                "documentY": 832.25,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "48px",
+                "lineHeight": "48px",
+                "letterSpacing": "-1.68px",
+                "width": 339.484375,
+                "height": 96,
+                "documentX": 1004.515625,
+                "documentY": 865.75,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 339.484375,
+                "height": 56,
+                "documentX": 1004.515625,
+                "documentY": 1061.75,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "18px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 740,
+                "height": 28,
+                "documentX": 48,
+                "documentY": 380,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 339.484375,
+                "height": 15,
+                "documentX": 1004.515625,
+                "documentY": 827.5,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "48px",
+                "lineHeight": "48px",
+                "letterSpacing": "-2.16px",
+                "width": 339.484375,
+                "height": 96,
+                "documentX": 1004.515625,
+                "documentY": 862.5,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 339.484375,
+                "height": 64,
+                "documentX": 1004.515625,
+                "documentY": 1058.5,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "18px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 740,
+                "height": 28,
+                "documentX": 48,
+                "documentY": 380,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 339.484375,
+                "height": 13.5,
+                "documentX": 1004.515625,
+                "documentY": 832.25,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "48px",
+                "lineHeight": "48px",
+                "letterSpacing": "-1.68px",
+                "width": 339.484375,
+                "height": 96,
+                "documentX": 1004.515625,
+                "documentY": 865.75,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 339.484375,
+                "height": 56,
+                "documentX": 1004.515625,
+                "documentY": 1061.75,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ]
+        },
+        "pdp": {
+          "production": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "32px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 32,
+                "documentX": 825.59375,
+                "documentY": 359,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "18px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 84,
+                "documentX": 825.59375,
+                "documentY": 423,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 566.40625,
+                "height": 15,
+                "documentX": 825.59375,
+                "documentY": 576,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 56,
+                "documentX": 825.59375,
+                "documentY": 607,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 566.40625,
+                "height": 56,
+                "documentX": 825.59375,
+                "documentY": 679,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "19.5px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 39,
+                "documentX": 825.59375,
+                "documentY": 751,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 1440,
+                "height": 627.5,
+                "documentX": 0,
+                "documentY": 1681.828125,
+                "paddingInlineStart": "48px",
+                "paddingInlineEnd": "48px",
+                "paddingTop": "112px",
+                "paddingBottom": "112px",
+                "lineCount": 26
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "72px",
+                "lineHeight": "72px",
+                "letterSpacing": "-3.96px",
+                "width": 579.59375,
+                "height": 72,
+                "documentX": 48,
+                "documentY": 1840.828125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "20px",
+                "lineHeight": "32.5px",
+                "letterSpacing": "0.16px",
+                "width": 708.40625,
+                "height": 97.5,
+                "documentX": 683.59375,
+                "documentY": 1793.828125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 305.703125,
+                "height": 15,
+                "documentX": 707.59375,
+                "documentY": 1963.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "128px",
+                "lineHeight": "128px",
+                "letterSpacing": "-7.68px",
+                "width": 1152,
+                "height": 256,
+                "documentX": 48,
+                "documentY": 2844.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 672,
+                "height": 72,
+                "documentX": 48,
+                "documentY": 3140.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "36px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 36,
+                "documentX": 825.59375,
+                "documentY": 359,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "18px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 84,
+                "documentX": 825.59375,
+                "documentY": 427,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "3px",
+                "width": 566.40625,
+                "height": 15,
+                "documentX": 825.59375,
+                "documentY": 580,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 56,
+                "documentX": 825.59375,
+                "documentY": 611,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 566.40625,
+                "height": 56,
+                "documentX": 825.59375,
+                "documentY": 683,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "21px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 42,
+                "documentX": 825.59375,
+                "documentY": 755,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 1440,
+                "height": 662.375,
+                "documentX": 0,
+                "documentY": 1681.828125,
+                "paddingInlineStart": "48px",
+                "paddingInlineEnd": "48px",
+                "paddingTop": "115.2px",
+                "paddingBottom": "115.2px",
+                "lineCount": 28
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "96px",
+                "lineHeight": "96px",
+                "letterSpacing": "-5.76px",
+                "width": 579.59375,
+                "height": 192,
+                "documentX": 48,
+                "documentY": 1844.015625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "24px",
+                "lineHeight": "42px",
+                "letterSpacing": "0.16px",
+                "width": 708.40625,
+                "height": 126,
+                "documentX": 683.59375,
+                "documentY": 1797.015625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 305.703125,
+                "height": 15,
+                "documentX": 707.59375,
+                "documentY": 1995.015625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "96px",
+                "lineHeight": "96px",
+                "letterSpacing": "-5.76px",
+                "width": 1024,
+                "height": 192,
+                "documentX": 48,
+                "documentY": 2931.203125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "16px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 672,
+                "height": 84,
+                "documentX": 48,
+                "documentY": 3163.203125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "32px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 32,
+                "documentX": 825.59375,
+                "documentY": 359,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "18px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 84,
+                "documentX": 825.59375,
+                "documentY": 423,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 566.40625,
+                "height": 15,
+                "documentX": 825.59375,
+                "documentY": 576,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 56,
+                "documentX": 825.59375,
+                "documentY": 607,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 566.40625,
+                "height": 56,
+                "documentX": 825.59375,
+                "documentY": 679,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "19.5px",
+                "letterSpacing": "0.16px",
+                "width": 566.40625,
+                "height": 39,
+                "documentX": 825.59375,
+                "documentY": 751,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 1440,
+                "height": 627.5,
+                "documentX": 0,
+                "documentY": 1681.828125,
+                "paddingInlineStart": "48px",
+                "paddingInlineEnd": "48px",
+                "paddingTop": "112px",
+                "paddingBottom": "112px",
+                "lineCount": 26
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "72px",
+                "lineHeight": "72px",
+                "letterSpacing": "-3.96px",
+                "width": 579.59375,
+                "height": 72,
+                "documentX": 48,
+                "documentY": 1840.828125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "20px",
+                "lineHeight": "32.5px",
+                "letterSpacing": "0.16px",
+                "width": 708.40625,
+                "height": 97.5,
+                "documentX": 683.59375,
+                "documentY": 1793.828125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 305.703125,
+                "height": 15,
+                "documentX": 707.59375,
+                "documentY": 1963.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "128px",
+                "lineHeight": "128px",
+                "letterSpacing": "-7.68px",
+                "width": 1152,
+                "height": 256,
+                "documentX": 48,
+                "documentY": 2844.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 672,
+                "height": 72,
+                "documentX": 48,
+                "documentY": 3140.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ]
+        },
+        "bag": {
+          "production": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 192.640625,
+                "height": 48,
+                "documentX": 596.46875,
+                "documentY": 684.5,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 144.5,
+                "height": 48,
+                "documentX": 801.109375,
+                "documentY": 684.5,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 178.375,
+                "height": 48,
+                "documentX": 596.46875,
+                "documentY": 684.5,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 134.84375,
+                "height": 48,
+                "documentX": 786.84375,
+                "documentY": 684.5,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 192.640625,
+                "height": 48,
+                "documentX": 596.46875,
+                "documentY": 684.5,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 144.5,
+                "height": 48,
+                "documentX": 801.109375,
+                "documentY": 684.5,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ]
+        }
+      },
+      "productionHealth": {
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenVideos": []
+      },
+      "candidateHealth": {
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenVideos": []
+      },
+      "productionErrors": [],
+      "candidateErrors": []
+    },
+    {
+      "name": "compact",
+      "width": 584,
+      "height": 486,
+      "metrics": {
+        "home": {
+          "production": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 224,
+                "height": 106.765625,
+                "documentX": 20,
+                "documentY": 822.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "8px",
+                "lineHeight": "12px",
+                "letterSpacing": "1.6px",
+                "width": 58.359375,
+                "height": 30.796875,
+                "documentX": 20,
+                "documentY": 822.328125,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 224,
+                "height": 115.765625,
+                "documentX": 20,
+                "documentY": 813.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2px",
+                "width": 66.734375,
+                "height": 33.796875,
+                "documentX": 20,
+                "documentY": 813.328125,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 2
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 224,
+                "height": 106.765625,
+                "documentX": 20,
+                "documentY": 822.328125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "8px",
+                "lineHeight": "12px",
+                "letterSpacing": "1.6px",
+                "width": 58.359375,
+                "height": 30.796875,
+                "documentX": 20,
+                "documentY": 822.328125,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 3
+              }
+            }
+          ]
+        },
+        "shop": {
+          "production": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "16px",
+                "lineHeight": "26px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 52,
+                "documentX": 20,
+                "documentY": 274,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 496,
+                "height": 13.5,
+                "documentX": 44,
+                "documentY": 782.3125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "30px",
+                "lineHeight": "36px",
+                "letterSpacing": "-1.05px",
+                "width": 496,
+                "height": 36,
+                "documentX": 44,
+                "documentY": 815.8125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 496,
+                "height": 56,
+                "documentX": 44,
+                "documentY": 935.8125,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 48,
+                "documentX": 20,
+                "documentY": 274,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 496,
+                "height": 15,
+                "documentX": 44,
+                "documentY": 778.3125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "30px",
+                "lineHeight": "36px",
+                "letterSpacing": "-1.35px",
+                "width": 496,
+                "height": 36,
+                "documentX": 44,
+                "documentY": 813.3125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 496,
+                "height": 56,
+                "documentX": 44,
+                "documentY": 933.3125,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "16px",
+                "lineHeight": "26px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 52,
+                "documentX": 20,
+                "documentY": 274,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 496,
+                "height": 13.5,
+                "documentX": 44,
+                "documentY": 782.3125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "30px",
+                "lineHeight": "36px",
+                "letterSpacing": "-1.05px",
+                "width": 496,
+                "height": 36,
+                "documentX": 44,
+                "documentY": 815.8125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 496,
+                "height": 56,
+                "documentX": 44,
+                "documentY": 935.8125,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ]
+        },
+        "pdp": {
+          "production": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "32px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 32,
+                "documentX": 20,
+                "documentY": 3071.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "16px",
+                "lineHeight": "26px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 78,
+                "documentX": 20,
+                "documentY": 3135.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 544,
+                "height": 15,
+                "documentX": 20,
+                "documentY": 3282.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 3313.453125,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 544,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 3385.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "19.5px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 39,
+                "documentX": 20,
+                "documentY": 3457.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 584,
+                "height": 970.09375,
+                "documentX": 0,
+                "documentY": 3545.453125,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "80px",
+                "paddingBottom": "80px",
+                "lineCount": 40
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "48px",
+                "lineHeight": "45.6px",
+                "letterSpacing": "-2.64px",
+                "width": 544,
+                "height": 45.59375,
+                "documentX": 20,
+                "documentY": 3672.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "20px",
+                "lineHeight": "32.5px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 97.5,
+                "documentX": 20,
+                "documentY": 3774.046875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 496,
+                "height": 15,
+                "documentX": 44,
+                "documentY": 3943.546875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "48px",
+                "lineHeight": "43.2px",
+                "letterSpacing": "-2.88px",
+                "width": 544,
+                "height": 86.375,
+                "documentX": 20,
+                "documentY": 4626.546875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "14px",
+                "lineHeight": "22.75px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 68.25,
+                "documentX": 20,
+                "documentY": 4752.921875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "36px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 36,
+                "documentX": 20,
+                "documentY": 3071.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 72,
+                "documentX": 20,
+                "documentY": 3139.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "3px",
+                "width": 544,
+                "height": 15,
+                "documentX": 20,
+                "documentY": 3280.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 3311.453125,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 544,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 3383.453125,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "21px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 42,
+                "documentX": 20,
+                "documentY": 3455.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 584,
+                "height": 977.109375,
+                "documentX": 0,
+                "documentY": 3546.453125,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "80px",
+                "paddingBottom": "80px",
+                "lineCount": 41
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "48px",
+                "lineHeight": "45.12px",
+                "letterSpacing": "-2.88px",
+                "width": 544,
+                "height": 45.109375,
+                "documentX": 20,
+                "documentY": 3673.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "20px",
+                "lineHeight": "35px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 105,
+                "documentX": 20,
+                "documentY": 3774.5625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 496,
+                "height": 15,
+                "documentX": 44,
+                "documentY": 3951.5625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "48px",
+                "lineHeight": "45.12px",
+                "letterSpacing": "-2.88px",
+                "width": 544,
+                "height": 90.21875,
+                "documentX": 20,
+                "documentY": 4634.5625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "16px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 84,
+                "documentX": 20,
+                "documentY": 4764.78125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "32px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 32,
+                "documentX": 20,
+                "documentY": 3071.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "16px",
+                "lineHeight": "26px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 78,
+                "documentX": 20,
+                "documentY": 3135.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 544,
+                "height": 15,
+                "documentX": 20,
+                "documentY": 3282.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 3313.453125,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 544,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 3385.453125,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "19.5px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 39,
+                "documentX": 20,
+                "documentY": 3457.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 584,
+                "height": 970.09375,
+                "documentX": 0,
+                "documentY": 3545.453125,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "80px",
+                "paddingBottom": "80px",
+                "lineCount": 40
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "48px",
+                "lineHeight": "45.6px",
+                "letterSpacing": "-2.64px",
+                "width": 544,
+                "height": 45.59375,
+                "documentX": 20,
+                "documentY": 3672.453125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "20px",
+                "lineHeight": "32.5px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 97.5,
+                "documentX": 20,
+                "documentY": 3774.046875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 496,
+                "height": 15,
+                "documentX": 44,
+                "documentY": 3943.546875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "48px",
+                "lineHeight": "43.2px",
+                "letterSpacing": "-2.88px",
+                "width": 544,
+                "height": 86.375,
+                "documentX": 20,
+                "documentY": 4626.546875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "14px",
+                "lineHeight": "22.75px",
+                "letterSpacing": "0.16px",
+                "width": 544,
+                "height": 68.25,
+                "documentX": 20,
+                "documentY": 4752.921875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ]
+        },
+        "bag": {
+          "production": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 192.640625,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 814.609375,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 144.5,
+                "height": 48,
+                "documentX": 252.640625,
+                "documentY": 814.609375,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 178.375,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 814.609375,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 134.84375,
+                "height": 48,
+                "documentX": 238.375,
+                "documentY": 814.609375,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 192.640625,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 814.609375,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 144.5,
+                "height": 48,
+                "documentX": 252.640625,
+                "documentY": 814.609375,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ]
+        }
+      },
+      "productionHealth": {
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenVideos": []
+      },
+      "candidateHealth": {
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenVideos": []
+      },
+      "productionErrors": [],
+      "candidateErrors": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "metrics": {
+        "home": {
+          "production": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 224,
+                "height": 106.765625,
+                "documentX": 20,
+                "documentY": 1510.234375,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "8px",
+                "lineHeight": "12px",
+                "letterSpacing": "1.6px",
+                "width": 58.359375,
+                "height": 30.796875,
+                "documentX": 20,
+                "documentY": 1510.234375,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 224,
+                "height": 115.765625,
+                "documentX": 20,
+                "documentY": 1501.234375,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2px",
+                "width": 66.734375,
+                "height": 33.796875,
+                "documentX": 20,
+                "documentY": 1501.234375,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 2
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "product-facts",
+              "metric": {
+                "text": "BlackXS–5XLHeavyweight fleeceCP embroidery",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 224,
+                "height": 106.765625,
+                "documentX": 20,
+                "documentY": 1510.234375,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "product-fact",
+              "metric": {
+                "text": "Black",
+                "fontSize": "8px",
+                "lineHeight": "12px",
+                "letterSpacing": "1.6px",
+                "width": 58.359375,
+                "height": 30.796875,
+                "documentX": 20,
+                "documentY": 1510.234375,
+                "paddingInlineStart": "12.48px",
+                "paddingInlineEnd": "10.4px",
+                "paddingTop": "8.8px",
+                "paddingBottom": "8px",
+                "lineCount": 3
+              }
+            }
+          ]
+        },
+        "shop": {
+          "production": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "16px",
+                "lineHeight": "26px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 52,
+                "documentX": 20,
+                "documentY": 274,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 302,
+                "height": 13.5,
+                "documentX": 44,
+                "documentY": 1004.265625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "30px",
+                "lineHeight": "36px",
+                "letterSpacing": "-1.05px",
+                "width": 302,
+                "height": 72,
+                "documentX": 44,
+                "documentY": 1037.765625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 302,
+                "height": 56,
+                "documentX": 44,
+                "documentY": 1193.765625,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 48,
+                "documentX": 20,
+                "documentY": 274,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 302,
+                "height": 15,
+                "documentX": 44,
+                "documentY": 1000.265625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "30px",
+                "lineHeight": "36px",
+                "letterSpacing": "-1.35px",
+                "width": 302,
+                "height": 72,
+                "documentX": 44,
+                "documentY": 1035.265625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 302,
+                "height": 56,
+                "documentX": 44,
+                "documentY": 1191.265625,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "commerce-body",
+              "metric": {
+                "text": "One essential. Considered in every detail and available through secure checkout.",
+                "fontSize": "16px",
+                "lineHeight": "26px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 52,
+                "documentX": 20,
+                "documentY": 274,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-label",
+              "metric": {
+                "text": "Edition 001",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 302,
+                "height": 13.5,
+                "documentX": 44,
+                "documentY": 1004.265625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "card-title",
+              "metric": {
+                "text": "CARLOPHILLIPS Signature Hoodie",
+                "fontSize": "30px",
+                "lineHeight": "36px",
+                "letterSpacing": "-1.05px",
+                "width": 302,
+                "height": 72,
+                "documentX": 44,
+                "documentY": 1037.765625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "card-action",
+              "metric": {
+                "text": "View product",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 302,
+                "height": 56,
+                "documentX": 44,
+                "documentY": 1193.765625,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ]
+        },
+        "pdp": {
+          "production": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "32px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 32,
+                "documentX": 20,
+                "documentY": 2224.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "16px",
+                "lineHeight": "26px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 104,
+                "documentX": 20,
+                "documentY": 2288.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 350,
+                "height": 15,
+                "documentX": 20,
+                "documentY": 2461.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 2492.03125,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 350,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 2564.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "19.5px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 39,
+                "documentX": 20,
+                "documentY": 2636.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 390,
+                "height": 1080.6875,
+                "documentX": 0,
+                "documentY": 2724.03125,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "80px",
+                "paddingBottom": "80px",
+                "lineCount": 45
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "48px",
+                "lineHeight": "45.6px",
+                "letterSpacing": "-2.64px",
+                "width": 350,
+                "height": 91.1875,
+                "documentX": 20,
+                "documentY": 2851.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "20px",
+                "lineHeight": "32.5px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 162.5,
+                "documentX": 20,
+                "documentY": 2998.21875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 302,
+                "height": 15,
+                "documentX": 44,
+                "documentY": 3232.71875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "48px",
+                "lineHeight": "43.2px",
+                "letterSpacing": "-2.88px",
+                "width": 350,
+                "height": 86.375,
+                "documentX": 20,
+                "documentY": 4107.265625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "14px",
+                "lineHeight": "22.75px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 113.75,
+                "documentX": 20,
+                "documentY": 4233.640625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "36px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 36,
+                "documentX": 20,
+                "documentY": 2224.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 96,
+                "documentX": 20,
+                "documentY": 2292.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "3px",
+                "width": 350,
+                "height": 15,
+                "documentX": 20,
+                "documentY": 2457.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 2488.03125,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 350,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 2560.03125,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "21px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 42,
+                "documentX": 20,
+                "documentY": 2632.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 390,
+                "height": 1047.109375,
+                "documentX": 0,
+                "documentY": 2723.03125,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "80px",
+                "paddingBottom": "80px",
+                "lineCount": 44
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "48px",
+                "lineHeight": "45.12px",
+                "letterSpacing": "-2.88px",
+                "width": 350,
+                "height": 45.109375,
+                "documentX": 20,
+                "documentY": 2850.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "20px",
+                "lineHeight": "35px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 175,
+                "documentX": 20,
+                "documentY": 2951.140625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 302,
+                "height": 15,
+                "documentX": 44,
+                "documentY": 3198.140625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "48px",
+                "lineHeight": "45.12px",
+                "letterSpacing": "-2.88px",
+                "width": 350,
+                "height": 90.21875,
+                "documentX": 20,
+                "documentY": 4042.59375,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "16px",
+                "lineHeight": "28px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 140,
+                "documentX": 20,
+                "documentY": 4172.8125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "pdp-price",
+              "metric": {
+                "text": "$128",
+                "fontSize": "24px",
+                "lineHeight": "32px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 32,
+                "documentX": 20,
+                "documentY": 2224.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "pdp-description",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "16px",
+                "lineHeight": "26px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 104,
+                "documentX": 20,
+                "documentY": 2288.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-label",
+              "metric": {
+                "text": "Select size",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 350,
+                "height": 15,
+                "documentX": 20,
+                "documentY": 2461.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "checkout-select",
+              "metric": {
+                "text": "XS — $128S — $128M — $128L — $128XL — $128XXL — $130XXXL — $1324XL — $1335XL — $134",
+                "fontSize": "14px",
+                "lineHeight": "normal",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 2492.03125,
+                "paddingInlineStart": "16px",
+                "paddingInlineEnd": "16px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": null
+              }
+            },
+            {
+              "role": "checkout-action",
+              "metric": {
+                "text": "Continue to checkout — $128",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 350,
+                "height": 56,
+                "documentX": 20,
+                "documentY": 2564.03125,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "checkout-explanation",
+              "metric": {
+                "text": "Review delivery and payment before confirming your order. No order is placed until you complete checkout.",
+                "fontSize": "12px",
+                "lineHeight": "19.5px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 39,
+                "documentX": 20,
+                "documentY": 2636.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-section",
+              "metric": {
+                "text": "The pieceMade to be lived in.Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.ColourBlackSizesxs / s / m / l / xl / xxl / xxxl / 4xl / 5xlAvailabilityAvailableCheckoutSecure encrypted checkout",
+                "fontSize": "16px",
+                "lineHeight": "24px",
+                "letterSpacing": "0.16px",
+                "width": 390,
+                "height": 1080.6875,
+                "documentX": 0,
+                "documentY": 2724.03125,
+                "paddingInlineStart": "20px",
+                "paddingInlineEnd": "20px",
+                "paddingTop": "80px",
+                "paddingBottom": "80px",
+                "lineCount": 45
+              }
+            },
+            {
+              "role": "information-title",
+              "metric": {
+                "text": "Made to be lived in.",
+                "fontSize": "48px",
+                "lineHeight": "45.6px",
+                "letterSpacing": "-2.64px",
+                "width": 350,
+                "height": 91.1875,
+                "documentX": 20,
+                "documentY": 2851.03125,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "information-copy",
+              "metric": {
+                "text": "Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.",
+                "fontSize": "20px",
+                "lineHeight": "32.5px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 162.5,
+                "documentX": 20,
+                "documentY": 2998.21875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            },
+            {
+              "role": "information-label",
+              "metric": {
+                "text": "Colour",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 302,
+                "height": 15,
+                "documentX": 44,
+                "documentY": 3232.71875,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 1
+              }
+            },
+            {
+              "role": "editorial-title",
+              "metric": {
+                "text": "A study in weight, form and restraint.",
+                "fontSize": "48px",
+                "lineHeight": "43.2px",
+                "letterSpacing": "-2.88px",
+                "width": 350,
+                "height": 86.375,
+                "documentX": 20,
+                "documentY": 4107.265625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 2
+              }
+            },
+            {
+              "role": "editorial-copy",
+              "metric": {
+                "text": "Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.",
+                "fontSize": "14px",
+                "lineHeight": "22.75px",
+                "letterSpacing": "0.16px",
+                "width": 350,
+                "height": 113.75,
+                "documentX": 20,
+                "documentY": 4233.640625,
+                "paddingInlineStart": "0px",
+                "paddingInlineEnd": "0px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 5
+              }
+            }
+          ]
+        },
+        "bag": {
+          "production": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 192.640625,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 820.15625,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 144.5,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 880.15625,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ],
+          "previewHeadBeforeCorrection": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 178.375,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 820.15625,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "9px",
+                "lineHeight": "13.5px",
+                "letterSpacing": "2.16px",
+                "width": 134.84375,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 880.15625,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 4
+              }
+            }
+          ],
+          "candidate": [
+            {
+              "role": "bag-primary-action",
+              "metric": {
+                "text": "View release state",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 192.640625,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 820.15625,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            },
+            {
+              "role": "bag-secondary-action",
+              "metric": {
+                "text": "Return home",
+                "fontSize": "10px",
+                "lineHeight": "15px",
+                "letterSpacing": "2.4px",
+                "width": 144.5,
+                "height": 48,
+                "documentX": 48,
+                "documentY": 880.15625,
+                "paddingInlineStart": "24px",
+                "paddingInlineEnd": "24px",
+                "paddingTop": "0px",
+                "paddingBottom": "0px",
+                "lineCount": 3
+              }
+            }
+          ]
+        }
+      },
+      "productionHealth": {
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenVideos": []
+      },
+      "candidateHealth": {
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenVideos": []
+      },
+      "productionErrors": [],
+      "candidateErrors": []
+    }
+  ],
+  "screenshotStates": [
+    "home-hero",
+    "home-one",
+    "home-overlay",
+    "shop",
+    "pdp",
+    "pdp-information",
+    "pdp-editorial",
+    "bag"
+  ],
+  "checks": [
+    {
+      "viewport": "desktop",
+      "role": "product-facts",
+      "property": "height",
+      "production": 30.796875,
+      "candidate": 30.796875,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "product-fact",
+      "property": "fontSize",
+      "production": "8px",
+      "candidate": "8px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "product-fact",
+      "property": "lineHeight",
+      "production": "12px",
+      "candidate": "12px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "product-fact",
+      "property": "letterSpacing",
+      "production": "1.6px",
+      "candidate": "1.6px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "product-fact",
+      "property": "height",
+      "production": 30.796875,
+      "candidate": 30.796875,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "commerce-body",
+      "property": "fontSize",
+      "production": "18px",
+      "candidate": "18px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "commerce-body",
+      "property": "lineHeight",
+      "production": "28px",
+      "candidate": "28px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-label",
+      "property": "fontSize",
+      "production": "9px",
+      "candidate": "9px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-label",
+      "property": "lineHeight",
+      "production": "13.5px",
+      "candidate": "13.5px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-title",
+      "property": "letterSpacing",
+      "production": "-1.68px",
+      "candidate": "-1.68px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-action",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-action",
+      "property": "paddingInlineStart",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "card-action",
+      "property": "paddingInlineEnd",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "pdp-price",
+      "property": "lineHeight",
+      "production": "32px",
+      "candidate": "32px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "pdp-price",
+      "property": "height",
+      "production": 32,
+      "candidate": 32,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "pdp-price",
+      "property": "documentY",
+      "production": 359,
+      "candidate": 359,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "pdp-description",
+      "property": "fontSize",
+      "production": "18px",
+      "candidate": "18px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "pdp-description",
+      "property": "lineHeight",
+      "production": "28px",
+      "candidate": "28px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "pdp-description",
+      "property": "height",
+      "production": 84,
+      "candidate": 84,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "pdp-description",
+      "property": "documentY",
+      "production": 423,
+      "candidate": 423,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-label",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-label",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-label",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-label",
+      "property": "documentY",
+      "production": 576,
+      "candidate": 576,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-select",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-select",
+      "property": "documentY",
+      "production": 607,
+      "candidate": 607,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-action",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-action",
+      "property": "documentY",
+      "production": 679,
+      "candidate": 679,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-explanation",
+      "property": "fontSize",
+      "production": "12px",
+      "candidate": "12px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-explanation",
+      "property": "lineHeight",
+      "production": "19.5px",
+      "candidate": "19.5px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-explanation",
+      "property": "height",
+      "production": 39,
+      "candidate": 39,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "checkout-explanation",
+      "property": "documentY",
+      "production": 751,
+      "candidate": 751,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-section",
+      "property": "height",
+      "production": 627.5,
+      "candidate": 627.5,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-section",
+      "property": "paddingTop",
+      "production": "112px",
+      "candidate": "112px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-section",
+      "property": "paddingBottom",
+      "production": "112px",
+      "candidate": "112px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-title",
+      "property": "fontSize",
+      "production": "72px",
+      "candidate": "72px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-title",
+      "property": "lineHeight",
+      "production": "72px",
+      "candidate": "72px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-title",
+      "property": "letterSpacing",
+      "production": "-3.96px",
+      "candidate": "-3.96px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-title",
+      "property": "width",
+      "production": 579.59375,
+      "candidate": 579.59375,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-title",
+      "property": "lineCount",
+      "production": 1,
+      "candidate": 1,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-title",
+      "property": "documentY",
+      "production": 1840.828125,
+      "candidate": 1840.828125,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-copy",
+      "property": "fontSize",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-copy",
+      "property": "lineHeight",
+      "production": "32.5px",
+      "candidate": "32.5px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-copy",
+      "property": "height",
+      "production": 97.5,
+      "candidate": 97.5,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-copy",
+      "property": "documentY",
+      "production": 1793.828125,
+      "candidate": 1793.828125,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "information-label",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-title",
+      "property": "fontSize",
+      "production": "128px",
+      "candidate": "128px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-title",
+      "property": "lineHeight",
+      "production": "128px",
+      "candidate": "128px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-title",
+      "property": "letterSpacing",
+      "production": "-7.68px",
+      "candidate": "-7.68px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-title",
+      "property": "width",
+      "production": 1152,
+      "candidate": 1152,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-title",
+      "property": "lineCount",
+      "production": 2,
+      "candidate": 2,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-title",
+      "property": "documentY",
+      "production": 2844.328125,
+      "candidate": 2844.328125,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-copy",
+      "property": "fontSize",
+      "production": "16px",
+      "candidate": "16px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-copy",
+      "property": "lineHeight",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-copy",
+      "property": "height",
+      "production": 72,
+      "candidate": 72,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "editorial-copy",
+      "property": "documentY",
+      "production": 3140.328125,
+      "candidate": 3140.328125,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-primary-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-primary-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-primary-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-primary-action",
+      "property": "width",
+      "production": 192.640625,
+      "candidate": 192.640625,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-primary-action",
+      "property": "paddingInlineStart",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-primary-action",
+      "property": "paddingInlineEnd",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-secondary-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-secondary-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-secondary-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-secondary-action",
+      "property": "width",
+      "production": 144.5,
+      "candidate": 144.5,
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-secondary-action",
+      "property": "paddingInlineStart",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "desktop",
+      "role": "bag-secondary-action",
+      "property": "paddingInlineEnd",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "product-facts",
+      "property": "height",
+      "production": 106.765625,
+      "candidate": 106.765625,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "product-fact",
+      "property": "fontSize",
+      "production": "8px",
+      "candidate": "8px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "product-fact",
+      "property": "lineHeight",
+      "production": "12px",
+      "candidate": "12px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "product-fact",
+      "property": "letterSpacing",
+      "production": "1.6px",
+      "candidate": "1.6px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "product-fact",
+      "property": "height",
+      "production": 30.796875,
+      "candidate": 30.796875,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "commerce-body",
+      "property": "fontSize",
+      "production": "16px",
+      "candidate": "16px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "commerce-body",
+      "property": "lineHeight",
+      "production": "26px",
+      "candidate": "26px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-label",
+      "property": "fontSize",
+      "production": "9px",
+      "candidate": "9px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-label",
+      "property": "lineHeight",
+      "production": "13.5px",
+      "candidate": "13.5px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-title",
+      "property": "letterSpacing",
+      "production": "-1.05px",
+      "candidate": "-1.05px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-action",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-action",
+      "property": "paddingInlineStart",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "card-action",
+      "property": "paddingInlineEnd",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "pdp-price",
+      "property": "lineHeight",
+      "production": "32px",
+      "candidate": "32px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "pdp-price",
+      "property": "height",
+      "production": 32,
+      "candidate": 32,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "pdp-price",
+      "property": "documentY",
+      "production": 3071.453125,
+      "candidate": 3071.453125,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "pdp-description",
+      "property": "fontSize",
+      "production": "16px",
+      "candidate": "16px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "pdp-description",
+      "property": "lineHeight",
+      "production": "26px",
+      "candidate": "26px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "pdp-description",
+      "property": "height",
+      "production": 78,
+      "candidate": 78,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "pdp-description",
+      "property": "documentY",
+      "production": 3135.453125,
+      "candidate": 3135.453125,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-label",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-label",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-label",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-label",
+      "property": "documentY",
+      "production": 3282.453125,
+      "candidate": 3282.453125,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-select",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-select",
+      "property": "documentY",
+      "production": 3313.453125,
+      "candidate": 3313.453125,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-action",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-action",
+      "property": "documentY",
+      "production": 3385.453125,
+      "candidate": 3385.453125,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-explanation",
+      "property": "fontSize",
+      "production": "12px",
+      "candidate": "12px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-explanation",
+      "property": "lineHeight",
+      "production": "19.5px",
+      "candidate": "19.5px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-explanation",
+      "property": "height",
+      "production": 39,
+      "candidate": 39,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "checkout-explanation",
+      "property": "documentY",
+      "production": 3457.453125,
+      "candidate": 3457.453125,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-section",
+      "property": "height",
+      "production": 970.09375,
+      "candidate": 970.09375,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-section",
+      "property": "paddingTop",
+      "production": "80px",
+      "candidate": "80px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-section",
+      "property": "paddingBottom",
+      "production": "80px",
+      "candidate": "80px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-title",
+      "property": "fontSize",
+      "production": "48px",
+      "candidate": "48px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-title",
+      "property": "lineHeight",
+      "production": "45.6px",
+      "candidate": "45.6px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-title",
+      "property": "letterSpacing",
+      "production": "-2.64px",
+      "candidate": "-2.64px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-title",
+      "property": "width",
+      "production": 544,
+      "candidate": 544,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-title",
+      "property": "lineCount",
+      "production": 1,
+      "candidate": 1,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-title",
+      "property": "documentY",
+      "production": 3672.453125,
+      "candidate": 3672.453125,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-copy",
+      "property": "fontSize",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-copy",
+      "property": "lineHeight",
+      "production": "32.5px",
+      "candidate": "32.5px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-copy",
+      "property": "height",
+      "production": 97.5,
+      "candidate": 97.5,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-copy",
+      "property": "documentY",
+      "production": 3774.046875,
+      "candidate": 3774.046875,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "information-label",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-title",
+      "property": "fontSize",
+      "production": "48px",
+      "candidate": "48px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-title",
+      "property": "lineHeight",
+      "production": "43.2px",
+      "candidate": "43.2px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-title",
+      "property": "letterSpacing",
+      "production": "-2.88px",
+      "candidate": "-2.88px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-title",
+      "property": "width",
+      "production": 544,
+      "candidate": 544,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-title",
+      "property": "lineCount",
+      "production": 2,
+      "candidate": 2,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-title",
+      "property": "documentY",
+      "production": 4626.546875,
+      "candidate": 4626.546875,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-copy",
+      "property": "fontSize",
+      "production": "14px",
+      "candidate": "14px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-copy",
+      "property": "lineHeight",
+      "production": "22.75px",
+      "candidate": "22.75px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-copy",
+      "property": "height",
+      "production": 68.25,
+      "candidate": 68.25,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "editorial-copy",
+      "property": "documentY",
+      "production": 4752.921875,
+      "candidate": 4752.921875,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-primary-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-primary-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-primary-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-primary-action",
+      "property": "width",
+      "production": 192.640625,
+      "candidate": 192.640625,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-primary-action",
+      "property": "paddingInlineStart",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-primary-action",
+      "property": "paddingInlineEnd",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-secondary-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-secondary-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-secondary-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-secondary-action",
+      "property": "width",
+      "production": 144.5,
+      "candidate": 144.5,
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-secondary-action",
+      "property": "paddingInlineStart",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "compact",
+      "role": "bag-secondary-action",
+      "property": "paddingInlineEnd",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "product-facts",
+      "property": "height",
+      "production": 106.765625,
+      "candidate": 106.765625,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "product-fact",
+      "property": "fontSize",
+      "production": "8px",
+      "candidate": "8px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "product-fact",
+      "property": "lineHeight",
+      "production": "12px",
+      "candidate": "12px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "product-fact",
+      "property": "letterSpacing",
+      "production": "1.6px",
+      "candidate": "1.6px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "product-fact",
+      "property": "height",
+      "production": 30.796875,
+      "candidate": 30.796875,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "commerce-body",
+      "property": "fontSize",
+      "production": "16px",
+      "candidate": "16px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "commerce-body",
+      "property": "lineHeight",
+      "production": "26px",
+      "candidate": "26px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-label",
+      "property": "fontSize",
+      "production": "9px",
+      "candidate": "9px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-label",
+      "property": "lineHeight",
+      "production": "13.5px",
+      "candidate": "13.5px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-title",
+      "property": "letterSpacing",
+      "production": "-1.05px",
+      "candidate": "-1.05px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-action",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-action",
+      "property": "paddingInlineStart",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "card-action",
+      "property": "paddingInlineEnd",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "pdp-price",
+      "property": "lineHeight",
+      "production": "32px",
+      "candidate": "32px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "pdp-price",
+      "property": "height",
+      "production": 32,
+      "candidate": 32,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "pdp-price",
+      "property": "documentY",
+      "production": 2224.03125,
+      "candidate": 2224.03125,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "pdp-description",
+      "property": "fontSize",
+      "production": "16px",
+      "candidate": "16px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "pdp-description",
+      "property": "lineHeight",
+      "production": "26px",
+      "candidate": "26px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "pdp-description",
+      "property": "height",
+      "production": 104,
+      "candidate": 104,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "pdp-description",
+      "property": "documentY",
+      "production": 2288.03125,
+      "candidate": 2288.03125,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-label",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-label",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-label",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-label",
+      "property": "documentY",
+      "production": 2461.03125,
+      "candidate": 2461.03125,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-select",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-select",
+      "property": "documentY",
+      "production": 2492.03125,
+      "candidate": 2492.03125,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-action",
+      "property": "height",
+      "production": 56,
+      "candidate": 56,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-action",
+      "property": "documentY",
+      "production": 2564.03125,
+      "candidate": 2564.03125,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-explanation",
+      "property": "fontSize",
+      "production": "12px",
+      "candidate": "12px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-explanation",
+      "property": "lineHeight",
+      "production": "19.5px",
+      "candidate": "19.5px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-explanation",
+      "property": "height",
+      "production": 39,
+      "candidate": 39,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "checkout-explanation",
+      "property": "documentY",
+      "production": 2636.03125,
+      "candidate": 2636.03125,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-section",
+      "property": "height",
+      "production": 1080.6875,
+      "candidate": 1080.6875,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-section",
+      "property": "paddingTop",
+      "production": "80px",
+      "candidate": "80px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-section",
+      "property": "paddingBottom",
+      "production": "80px",
+      "candidate": "80px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-title",
+      "property": "fontSize",
+      "production": "48px",
+      "candidate": "48px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-title",
+      "property": "lineHeight",
+      "production": "45.6px",
+      "candidate": "45.6px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-title",
+      "property": "letterSpacing",
+      "production": "-2.64px",
+      "candidate": "-2.64px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-title",
+      "property": "width",
+      "production": 350,
+      "candidate": 350,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-title",
+      "property": "lineCount",
+      "production": 2,
+      "candidate": 2,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-title",
+      "property": "documentY",
+      "production": 2851.03125,
+      "candidate": 2851.03125,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-copy",
+      "property": "fontSize",
+      "production": "20px",
+      "candidate": "20px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-copy",
+      "property": "lineHeight",
+      "production": "32.5px",
+      "candidate": "32.5px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-copy",
+      "property": "height",
+      "production": 162.5,
+      "candidate": 162.5,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-copy",
+      "property": "documentY",
+      "production": 2998.21875,
+      "candidate": 2998.21875,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "information-label",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-title",
+      "property": "fontSize",
+      "production": "48px",
+      "candidate": "48px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-title",
+      "property": "lineHeight",
+      "production": "43.2px",
+      "candidate": "43.2px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-title",
+      "property": "letterSpacing",
+      "production": "-2.88px",
+      "candidate": "-2.88px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-title",
+      "property": "width",
+      "production": 350,
+      "candidate": 350,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-title",
+      "property": "lineCount",
+      "production": 2,
+      "candidate": 2,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-title",
+      "property": "documentY",
+      "production": 4107.265625,
+      "candidate": 4107.265625,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-copy",
+      "property": "fontSize",
+      "production": "14px",
+      "candidate": "14px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-copy",
+      "property": "lineHeight",
+      "production": "22.75px",
+      "candidate": "22.75px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-copy",
+      "property": "height",
+      "production": 113.75,
+      "candidate": 113.75,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "editorial-copy",
+      "property": "documentY",
+      "production": 4233.640625,
+      "candidate": 4233.640625,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-primary-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-primary-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-primary-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-primary-action",
+      "property": "width",
+      "production": 192.640625,
+      "candidate": 192.640625,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-primary-action",
+      "property": "paddingInlineStart",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-primary-action",
+      "property": "paddingInlineEnd",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-secondary-action",
+      "property": "fontSize",
+      "production": "10px",
+      "candidate": "10px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-secondary-action",
+      "property": "lineHeight",
+      "production": "15px",
+      "candidate": "15px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-secondary-action",
+      "property": "letterSpacing",
+      "production": "2.4px",
+      "candidate": "2.4px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-secondary-action",
+      "property": "width",
+      "production": 144.5,
+      "candidate": 144.5,
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-secondary-action",
+      "property": "paddingInlineStart",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    },
+    {
+      "viewport": "mobile",
+      "role": "bag-secondary-action",
+      "property": "paddingInlineEnd",
+      "production": "24px",
+      "candidate": "24px",
+      "pass": true
+    }
+  ],
+  "summary": {
+    "totalChecks": 222,
+    "passedChecks": 222,
+    "failedChecks": [],
+    "allRoleChecksPassed": true,
+    "allPagesHealthy": true
+  }
+}

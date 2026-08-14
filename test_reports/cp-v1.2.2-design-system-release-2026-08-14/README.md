@@ -1,6 +1,6 @@
 # v1.2.2 verification evidence
 
-Environment: local, gated non-commerce fixture at `http://127.0.0.1:3012`.
+Environment: local, gated non-commerce fixture at `http://127.0.0.1:3000`.
 
 Method: background/headless Google Chrome through the bundled Playwright runtime. The mandated `agent-browser` launcher was not present on PATH or in the bundled runtime, so the equivalent bundled headless browser was used. No visible browser or focus-changing action occurred.
 
@@ -8,10 +8,10 @@ Method: background/headless Google Chrome through the bundled Playwright runtime
 
 - Yarn Classic 1.22.22 frozen install: pass.
 - ESLint with zero warnings: pass.
-- Vitest: 35 files / 341 tests: pass.
+- Vitest: 35 files / 343 tests: pass.
 - Production dependency audit: 55 packages / zero vulnerabilities: pass after advancing the existing transitive `nanoid` resolution from 3.3.17 to patched 3.3.18.
 - Next.js optimized build: 13 routes: pass.
-- Repository audit: 824 reachable tokens, five used runtime dependencies, zero removed-path references, zero exact duplicate active code files, zero unused runtime dependencies, zero strong-pattern secret matches.
+- Repository audit: 884 reachable tokens, five used runtime dependencies, zero removed-path references, zero exact duplicate active code files, zero unused runtime dependencies, zero strong-pattern secret matches.
 - CSS/source audit: zero raw active CSS declarations, zero primitive references from active CSS, zero dormant `cp-*` selectors, zero source inline styles/raw visual literals/arbitrary utilities/non-CP active classes.
 - Asset audit: 26 public raster/SVG assets decoded or parsed, zero failures.
 
@@ -57,6 +57,8 @@ Acceptance criteria and result:
 6. Manual inspection of all side-by-side home states and all route contact sheets: pass; no unintended layout, hierarchy, crop-rule, typography, disclosure, or responsive regression observed.
 
 Comparison artifacts are under `comparisons/`, including `baseline-contact-sheet.png`, `route-contact-sheet.png`, per-state side-by-side images, and amplified diff images.
+
+The follow-up live-Production role/geometry matrix and its screenshot pairs are under `../cp-v1.2.2-production-parity-correction-2026-08-14/`.
 
 ## Remaining boundary
 
