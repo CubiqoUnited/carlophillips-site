@@ -14,6 +14,8 @@ A further local-only Shopify webhook verifier at exact clean implementation comm
 
 A local admin command policy at exact clean implementation commit `216cb9d` additionally proves fail-closed authorization decisions, but it has no real identity/RBAC, durable idempotency/audit, approval service, connector evidence, executor, or external mutation. It does not make the admin operational, reduce this intervention, or authorize any Shopify/Vercel/GitHub/provider action.
 
+The protected Commands portal at exact clean implementation commit `25cf7e9` makes those unavailable gates visible but adds no control, command, endpoint, or authority. It does not reduce the intervention or authorize external access.
+
 ## Exact human action
 
 1. Boss decides whether to authorize a fail-closed hotfix deployment from a new immutable reviewed candidate, or to authorize a rollback only after the proposed rollback artifact is verified not to contain the same bypass.

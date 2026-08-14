@@ -2,12 +2,12 @@
 
 Date: 2026-08-14
 Branch: `codex/cp-e2e-admin-control-plane`
-Source state: working tree based on `81a8a21`; exact clean implementation commit binding follows
+Source state: exact clean implementation commit `25cf7e91ed2b44c729dfff9fe4280aafcfb3fdaa`
 Environment: protected local read-only projection only; no remote identity, command records, durable queue/audit, connector, executor, mutation endpoint, or Production action
 
 ## Outcome
 
-The protected Commands information architecture passes its working-tree QA. It does **not** make the admin operational or create a command queue.
+The protected Commands information architecture passes exact-clean-commit QA. It does **not** make the admin operational or create a command queue.
 
 Implemented locally:
 
@@ -20,6 +20,7 @@ Implemented locally:
 ## Deterministic verification
 
 - Yarn Classic: 1.22.22
+- Frozen install: passed
 - Full `yarn verify`: passed
 - Lint: zero warnings
 - Tests: 43 files / 427 tests passed
@@ -30,7 +31,7 @@ Implemented locally:
 
 ## Headless browser and visual verification
 
-Working-tree result: 567/567 findings passed, 0 failures, 61 screenshots.
+Final clean-commit result: 567/567 findings passed, 0 failures, 61 screenshots.
 
 The matrix covers 15 reviewer sections plus Product Owner Theme at 1440×1000, 1024×768, and 390×844, denial states, same/cross-origin Theme behavior, Draft checkout denial, Axe, keyboard navigation, mobile navigation reachability, overflow, raw-reference/provider leakage, console/network health, and decoded public media.
 
