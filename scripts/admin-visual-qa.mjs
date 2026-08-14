@@ -108,23 +108,44 @@ try {
   const publicContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
   const publicPage = await publicContext.newPage();
   const publicConsoleErrors = [];
+  const publicRequestFailures = [];
   publicPage.on('console', message => {
     if (message.type() === 'error') publicConsoleErrors.push(message.text());
+  });
+  publicPage.on('requestfailed', request => {
+    const failure = request.failure()?.errorText;
+    const expectedNavigationAbort = failure === 'net::ERR_ABORTED' && request.url().includes('_rsc=');
+    if (!expectedNavigationAbort) publicRequestFailures.push(`${request.method()} ${request.url()}: ${failure}`);
   });
   for (const route of publicRoutes) {
     const response = await publicPage.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
     check(response?.status() === 200, 'Public regression route returns HTTP 200.', { route, status: response?.status() });
+    await publicPage.evaluate(async () => {
+      const pageHeight = document.documentElement.scrollHeight;
+      for (let offset = 0; offset < pageHeight; offset += window.innerHeight) {
+        window.scrollTo(0, offset);
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      }
+      await Promise.all([...document.images].map(image => image.decode().catch(() => null)));
+      window.scrollTo(0, 0);
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    });
     const publicState = await publicPage.evaluate(() => ({
       overflow: document.documentElement.scrollWidth > window.innerWidth + 1,
       adminLinks: [...document.querySelectorAll('a')].filter(link => link.getAttribute('href')?.startsWith('/admin')).length,
       bodyText: document.body.innerText,
+      brokenImages: [...document.images]
+        .filter(image => image.currentSrc && (!image.complete || image.naturalWidth === 0))
+        .map(image => image.currentSrc),
     }));
     check(!publicState.overflow, 'Public regression route has no horizontal overflow.', { route });
     check(publicState.adminLinks === 0, 'Public regression route contains no admin navigation.', { route });
     check(!/(gid:\/\/shopify|shopify|modelize|apliiq|9432704909549|5958463)/i.test(publicState.bodyText), 'Public regression route exposes no provider name or raw provider reference.', { route });
+    check(publicState.brokenImages.length === 0, 'Public regression route has no broken decoded images.', { route, brokenImages: publicState.brokenImages });
     await publicPage.screenshot({ path: path.join(screenshotRoot, `public-${route === '/' ? 'home' : route.slice(1).replaceAll('/', '-')}.png`), fullPage: false });
   }
   check(publicConsoleErrors.length === 0, 'Public regression route matrix emits no console errors.', { consoleErrors: publicConsoleErrors });
+  check(publicRequestFailures.length === 0, 'Public regression route matrix has no failed requests.', { requestFailures: publicRequestFailures });
 
   const checkoutResponse = await publicContext.request.post(`${baseUrl}/api/checkout`, {
     form: {
