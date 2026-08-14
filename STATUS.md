@@ -1,7 +1,7 @@
 # Current Status
 
 Updated: 2026-08-14
-Branch: integrated candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `9e23189`; pushed to the authorized fork and opened as canonical draft PR #12; no Preview, merge to `main`, or Production change
+Branch: integrated candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `1291e54`; pushed to the authorized fork and opened as canonical draft PR #12; no Preview, merge to `main`, or Production change
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Canonical consolidation candidate — 2026-08-14
@@ -9,6 +9,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Exact integrated source commit `ee5ebaece14fe75356461bce3e02292b55d29ef6` combines the canonical admin/Theme/release containment candidate, immutable Preview and safe-fallback workflow corrections, current Apliiq access truth, and fail-closed Clerk Product Owner identity adapter without merging the incompatible architecture rewrite or dirty display worktree.
 - Frozen Yarn Classic 1.22.22 install and full verification pass: zero-warning lint, 44 test files / 468 tests, zero Production dependency vulnerabilities across 67 audited packages, and a successful Next.js 15.5.21 build. Four workflow YAML files and all changed executable Node scripts parse.
 - Exact-commit headless/background Chromium passes 689/689 findings with 68 screenshots at 1440×1000, 1024×768, and 390×844. All admin sections, Theme, reviewer/unauthenticated concealment, unconfigured-Vercel denial, public routes, accessibility, console/network, raw-reference, checkout, and overflow checks pass. All eight public desktop/mobile screenshots are byte-identical to the pre-auth integrated baseline. Evidence is under `test_reports/cp-canonical-final-2026-08-14/`.
+- Canonical reconciliation commit `26a750ca2b4a0563322a97b65d2c5cff81b3eec4` includes current `main` `1291e54` and its dedicated disabled-commerce contrast correction. Exact-head headless/background Chromium again passes 689/689 findings with zero failures and 68 screenshots; the PDP explanation colour change is intentional and preserves the fail-closed checkout state. Evidence is under `test_reports/cp-canonical-head-26a750c-2026-08-14/`.
 - Deployment remains blocked, not failed: the current GitHub identity has pull-only access to the canonical repository, the protected same-repository Preview lane cannot run from a fork, Clerk is not provisioned in the verified Vercel project, and no real Product Owner session has passed immutable Preview QA. Production and Shopify remain unchanged.
 
 ## CI/CD immutable Preview and safe-fallback correction — 2026-08-14
