@@ -10,7 +10,7 @@
 - [x] Exhaustively prove and recoverably remove the unreferenced `components/ui/` scaffold, scaffold-only hooks/helper/config, dormant Tailwind generation, and direct dependencies; preserve every asset, release record, report, and ambiguous file.
 - [x] Update design-system guidance, v1.2.2 release notes, cleanup manifest, status/tasks, private package marker, and QA evidence.
 - [x] Pass Yarn 1.22.22 frozen install, lint, 340 tests, zero-vulnerability production audit, optimized build, secret scan, dependency/reference/duplicate/dormant-code audit, and all-public-asset decode.
-- [x] Capture and inspect 18 local screenshots across 1440×1000, 584×486, and 390×844 for hero, `ONE`, overlay, shop, PDP, and bag; traverse/decode all 12 views and prove focus, Escape, arrows, swipe, scroll lock, reduced motion, zero overflow/errors/broken media/provider leakage.
+- [x] Capture and inspect 21 local screenshots across 1440×1000, 584×486, and 390×844 for hero, navigation, `ONE`, overlay, shop, PDP, and bag; traverse/decode all 12 views and prove background isolation, focus, Escape, arrows, swipe, scroll lock, reduced motion, zero overflow/errors/broken media/provider leakage.
 - [x] Compare the candidate with saved `bb9568f` evidence and record exact geometry/content acceptance plus animation-timing pixel variance.
 - [ ] Sushma reviews the committed local candidate and separately authorizes any push, Preview deployment, PR, merge, or Production action.
 

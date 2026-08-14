@@ -255,15 +255,18 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
   );
 }
 
-function Navigation({ onMenu }) {
+function Navigation({ menuButtonRef, menuOpen, onMenu }) {
   return (
       <header className="cp-site-header">
         <div className="cp-site-header-inner cp-page-shell">
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={onMenu}
             className="cp-nav-action cp-nav-action-start"
             aria-label="Open navigation"
+            aria-controls="site-menu-overlay"
+            aria-expanded={menuOpen}
           >
             <Menu className="cp-icon cp-icon-small" />
             <span className="cp-nav-label">Menu</span>
@@ -284,10 +287,60 @@ function Navigation({ onMenu }) {
 }
 
 function MenuOverlay({ onClose }) {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const dialog = dialogRef.current;
+    const focusableSelector = 'button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])';
+    const focusDialog = window.requestAnimationFrame(() => {
+      dialog?.querySelector(focusableSelector)?.focus();
+    });
+
+    document.body.style.overflow = 'hidden';
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const focusable = [...(dialog?.querySelectorAll(focusableSelector) || [])];
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!dialog.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusDialog);
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [onClose]);
+
   return (
-    <aside className="cp-menu-overlay" aria-label="Site navigation">
+    <aside
+      id="site-menu-overlay"
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="site-menu-title"
+      className="cp-menu-overlay"
+    >
       <div className="cp-menu-bar">
-        <span className="cp-menu-title">CARLOPHILLIPS</span>
+        <span id="site-menu-title" className="cp-menu-title">CARLOPHILLIPS</span>
         <button
           type="button"
           onClick={onClose}
@@ -510,10 +563,17 @@ function Footer() {
 export default function HomeStorefront({ catalogSummary }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
+  const menuButtonRef = useRef(null);
   const galleryButtonRef = useRef(null);
+  const wasMenuOpenRef = useRef(false);
   const wasMediaOpenRef = useRef(false);
   const summary = catalogSummary || fallbackSummary;
   const galleryMedia = useMemo(() => buildHomeGalleryMedia(summary), [summary]);
+
+  useEffect(() => {
+    if (wasMenuOpenRef.current && !menuOpen) menuButtonRef.current?.focus();
+    wasMenuOpenRef.current = menuOpen;
+  }, [menuOpen]);
 
   useEffect(() => {
     if (wasMediaOpenRef.current && !mediaOpen) galleryButtonRef.current?.focus();
@@ -522,9 +582,12 @@ export default function HomeStorefront({ catalogSummary }) {
 
   return (
     <main id="main-content" className="cp-site">
-      <div inert={mediaOpen ? true : undefined}>
-        <Navigation onMenu={() => setMenuOpen(true)} />
-        {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
+      <div inert={menuOpen || mediaOpen ? true : undefined}>
+        <Navigation
+          menuButtonRef={menuButtonRef}
+          menuOpen={menuOpen}
+          onMenu={() => setMenuOpen(true)}
+        />
         <CampaignHero />
         <ProductRunwayHero
           galleryButtonRef={galleryButtonRef}
@@ -535,6 +598,7 @@ export default function HomeStorefront({ catalogSummary }) {
         <CategoryRail summary={summary} />
         <Footer />
       </div>
+      {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
       <ProductMediaOverlay
         media={galleryMedia}
         onClose={() => setMediaOpen(false)}

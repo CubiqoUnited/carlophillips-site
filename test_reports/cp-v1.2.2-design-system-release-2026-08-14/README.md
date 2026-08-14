@@ -30,18 +30,18 @@ At 1440×1000, 584×486, and 390×844:
 - exact approved hero asset/copy, persistent header, lower-left `ONE`, four tags, and `12 views` render;
 - the viewer is inset with the exact saved baseline geometry and locks body scroll;
 - all 12 media assets decode and retain truthful disclosures;
-- arrow navigation, terminal focus containment, Escape, focus return, and mobile touch swipe pass;
+- navigation and media-dialog focus containment, Escape, focus return, background isolation, scroll lock, arrow navigation, and mobile touch swipe pass;
 - reduced motion resolves campaign, scroll, runway, and image transition motion to `none`/`0s`, with automatic scrolling;
 - zero horizontal overflow, framework overlays, provider-name customer leakage, console errors, page errors, request failures, broken images, or broken videos.
 
 ## Screenshot matrix
 
-The `screenshots/` folder contains 18 captures:
+The `screenshots/` folder contains 21 captures:
 
 - `desktop-*`: 1440×1000;
 - `compact-*`: 584×486;
 - `mobile-*`: 390×844;
-- states: `home-hero`, `home-one`, `home-overlay`, `shop`, `pdp`, and `bag`.
+- states: `home-hero`, `home-menu`, `home-one`, `home-overlay`, `shop`, `pdp`, and `bag`.
 
 ## Saved-baseline comparison
 

@@ -18,6 +18,19 @@
         "horizontalOverflow": false,
         "providerLeakage": false
       },
+      "navigationMenu": {
+        "focusOutline": "solid",
+        "bodyOverflow": "hidden",
+        "backgroundInert": true,
+        "focusContained": true,
+        "reverseTabContained": true,
+        "focusReturned": true,
+        "semanticDialog": {
+          "role": "dialog",
+          "modal": "true",
+          "labelledBy": "site-menu-title"
+        }
+      },
       "productText": "PRIVATE PRODUCT PREVIEW\nEXPLORE MEDIA\n12 VIEWS\n\nSIGNATURE SERIES / 001\n\nONE\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery.\n\nBLACK\nXS–5XL\nHEAVYWEIGHT FLEECE\nCP EMBROIDERY",
       "productTags": [
         "BLACK",
@@ -138,6 +151,19 @@
         "horizontalOverflow": false,
         "providerLeakage": false
       },
+      "navigationMenu": {
+        "focusOutline": "solid",
+        "bodyOverflow": "hidden",
+        "backgroundInert": true,
+        "focusContained": true,
+        "reverseTabContained": true,
+        "focusReturned": true,
+        "semanticDialog": {
+          "role": "dialog",
+          "modal": "true",
+          "labelledBy": "site-menu-title"
+        }
+      },
       "productText": "PRIVATE PRODUCT PREVIEW\nEXPLORE MEDIA\n12 VIEWS\n\nSIGNATURE SERIES / 001\n\nONE\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery.\n\nBLACK\nXS–5XL\nHEAVYWEIGHT FLEECE\nCP EMBROIDERY",
       "productTags": [
         "BLACK",
@@ -257,6 +283,19 @@
         "frameworkOverlay": false,
         "horizontalOverflow": false,
         "providerLeakage": false
+      },
+      "navigationMenu": {
+        "focusOutline": "solid",
+        "bodyOverflow": "hidden",
+        "backgroundInert": true,
+        "focusContained": true,
+        "reverseTabContained": true,
+        "focusReturned": true,
+        "semanticDialog": {
+          "role": "dialog",
+          "modal": "true",
+          "labelledBy": "site-menu-title"
+        }
       },
       "productText": "PRIVATE PRODUCT PREVIEW\nEXPLORE MEDIA\n12 VIEWS\n\nSIGNATURE SERIES / 001\n\nONE\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery.\n\nBLACK\nXS–5XL\nHEAVYWEIGHT FLEECE\nCP EMBROIDERY",
       "productTags": [

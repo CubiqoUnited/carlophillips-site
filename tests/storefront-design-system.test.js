@@ -256,6 +256,14 @@ describe('storefront design system', () => {
     }
     expect(home).toContain('cp-product-layout cp-page-shell');
     expect(home).toContain('cp-product-media-button cp-product-media-button-corner');
+    expect(home).toContain('aria-controls="site-menu-overlay"');
+    expect(home).toContain('aria-expanded={menuOpen}');
+    expect(home).toContain('role="dialog"');
+    expect(home).toContain('aria-modal="true"');
+    expect(home).toContain("document.body.style.overflow = 'hidden'");
+    expect(home).toContain("event.key === 'Escape'");
+    expect(home).toContain('menuButtonRef.current?.focus()');
+    expect(home).toContain('inert={menuOpen || mediaOpen ? true : undefined}');
     expect(styles).toContain('.cp-product-layout');
     expect(styles).toContain('justify-content: var(--cp-semantic-layout-justify-end)');
     expect(styles).toContain('transform: translateY(var(--cp-component-product-copy-offset))');

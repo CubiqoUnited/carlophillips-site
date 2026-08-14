@@ -2,7 +2,7 @@
   "schemaVersion": "cp.repository-audit.v1",
   "date": "2026-08-14",
   "inventory": {
-    "trackedAndCandidateFiles": 583,
+    "trackedAndCandidateFiles": 586,
     "activeCodeFiles": 61,
     "deletedPaths": 53,
     "deletedUiScaffoldFiles": 48
@@ -58,7 +58,7 @@
     "exactDuplicateCode": []
   },
   "secrets": {
-    "scannedFiles": 583,
+    "scannedFiles": 586,
     "strongPatternMatchCount": 0,
     "matchesRedactedToFileAndKind": [],
     "trackedEnvironmentFiles": [

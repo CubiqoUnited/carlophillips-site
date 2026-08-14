@@ -55,6 +55,42 @@ async function openRoute(page, path) {
   return response?.status() || 0;
 }
 
+async function verifyNavigationMenu(page, viewportName) {
+  const trigger = page.getByRole('button', { name: 'Open navigation' });
+  await trigger.focus();
+  const focusOutline = await trigger.evaluate(element => getComputedStyle(element).outlineStyle);
+  await trigger.click();
+
+  const dialog = page.locator('#site-menu-overlay');
+  await dialog.waitFor({ state: 'visible' });
+  await page.waitForTimeout(50);
+  const bodyOverflow = await page.locator('body').evaluate(element => getComputedStyle(element).overflow);
+  const backgroundInert = await page.locator('main > div').first().evaluate(element => element.hasAttribute('inert'));
+  const focusContained = await dialog.evaluate(element => element.contains(document.activeElement));
+  const semanticDialog = await dialog.evaluate(element => ({
+    role: element.getAttribute('role'),
+    modal: element.getAttribute('aria-modal'),
+    labelledBy: element.getAttribute('aria-labelledby'),
+  }));
+  await page.screenshot({ path: `${screenshotRoot}/${viewportName}-home-menu.png` });
+
+  await page.keyboard.press('Shift+Tab');
+  const reverseTabContained = await dialog.evaluate(element => element.contains(document.activeElement));
+  await page.keyboard.press('Escape');
+  await dialog.waitFor({ state: 'detached' });
+  const focusReturned = await trigger.evaluate(element => document.activeElement === element);
+
+  return {
+    focusOutline,
+    bodyOverflow,
+    backgroundInert,
+    focusContained,
+    reverseTabContained,
+    focusReturned,
+    semanticDialog,
+  };
+}
+
 async function verifyGallery(page, viewportName) {
   const trigger = page.locator('[data-media-trigger="signature-hoodie"]');
   await trigger.focus();
@@ -186,6 +222,7 @@ try {
     const headerVisible = await page.locator('.cp-site-header').isVisible();
     const homeHealth = await routeHealth(page);
     await page.screenshot({ path: `${screenshotRoot}/${viewport.name}-home-hero.png` });
+    const navigationMenu = await verifyNavigationMenu(page, viewport.name);
 
     await page.locator('#signature-runway').scrollIntoViewIfNeeded();
     await page.waitForTimeout(100);
@@ -236,6 +273,7 @@ try {
       heroAsset,
       headerVisible,
       homeHealth,
+      navigationMenu,
       productText,
       productTags,
       viewCountText,

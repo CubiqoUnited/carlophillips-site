@@ -3,6 +3,7 @@ import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
 const evidenceRoot = 'test_reports/cp-v1.2.2-design-system-release-2026-08-14';
+const releaseBase = 'e3dc7c2';
 const gitFiles = execFileSync('git', ['ls-files', '-co', '--exclude-standard', '-z'])
   .toString()
   .split('\0')
@@ -48,7 +49,10 @@ for (const file of codeFiles) {
   digests.get(digest).push(file);
 }
 const exactDuplicateCode = [...digests.values()].filter(files => files.length > 1);
-const deletedPaths = execFileSync('git', ['diff', '--name-only', '--diff-filter=D'])
+// Compare the candidate working tree with the immutable v1.2.1 lineage base.
+// A bare `git diff` only sees uncommitted changes and makes the evidence change
+// after the release candidate is committed.
+const deletedPaths = execFileSync('git', ['diff', '--name-only', '--diff-filter=D', releaseBase, '--'])
   .toString()
   .trim()
   .split('\n')
