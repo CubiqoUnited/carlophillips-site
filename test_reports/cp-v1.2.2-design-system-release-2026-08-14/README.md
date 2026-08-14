@@ -60,4 +60,4 @@ Comparison artifacts are under `comparisons/`, including `baseline-contact-sheet
 
 ## Remaining boundary
 
-This local evidence does not itself claim Production verification, live Shopify/catalog mutation, or checkout/payment/order proof. Immutable Vercel Preview evidence and independent parity review are separate release gates recorded on PR #8; Production remains unchanged until those gates and canonical-main verification pass.
+This local evidence does not itself claim Production verification, live Shopify/catalog mutation, or checkout/payment/order proof. Immutable Vercel Preview evidence and independent parity review are separate release gates recorded on corrected PR #9; superseded PR #8 was not promoted to Production. Production remains unchanged until the corrected gates and canonical-main verification pass.

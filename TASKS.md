@@ -12,8 +12,9 @@
 - [x] Pass Yarn 1.22.22 frozen install, lint, 341 tests, zero-vulnerability production audit, optimized build, secret scan, dependency/reference/duplicate/dormant-code audit, and all-public-asset decode.
 - [x] Capture and inspect 21 local screenshots across 1440×1000, 584×486, and 390×844 for hero, navigation, `ONE`, overlay, shop, PDP, and bag; traverse/decode all 12 views and prove background isolation, focus, Escape, arrows, swipe, scroll lock, reduced motion, zero overflow/errors/broken media/provider leakage.
 - [x] Compare the candidate with saved `bb9568f` evidence and record exact geometry/content acceptance plus animation-timing pixel variance.
-- [x] Sushma reviews the committed candidate, publishes the release branch and PR #8, and records immutable Preview evidence without changing Production.
+- [x] Sushma reviews the first committed candidate, publishes PR #8, and records immutable Preview evidence without changing Production.
 - [x] Run an independent Preview review; retain its first NO-GO evidence and correct every reported parity offset through named design-system tokens.
+- [x] Publish the corrected follow-up as PR #9 from immutable commit `cfef2e3` after PR #8 merged the superseded candidate without Production promotion.
 - [ ] Publish the corrected immutable Preview and receive independent desktop/compact/mobile visual and interaction GO.
 - [ ] Product Owner merges the exact reviewed PR to canonical `main`; then promote that exact artifact, verify both live aliases, and retain the recorded rollback anchor.
 
