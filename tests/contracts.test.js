@@ -545,15 +545,17 @@ describe('truth contracts', () => {
     expect(validateProductCreationJob(invalid)).toBe(false);
   });
 
-  it('validates the evidence-labeled capability registry with the proven cart surface', () => {
+  it('validates the evidence-labeled capability registry without treating a cart test as authority', () => {
     expect(validateCapabilityRegistry(capabilityRegistry)).toBe(true);
     const cartCapability = capabilityRegistry.capabilities.find(item => item.capability === 'shopify-storefront-cart');
     expect(cartCapability).toMatchObject({
       accessState: 'write_test_verified',
       callableSurface: 'shopify_storefront',
-      allowedOperations: ['cart-write'],
+      observedAt: '2026-08-04',
+      allowedOperations: ['cart-write-test'],
       evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
-      blocker: null,
+      requiresApproval: ['activation', 'production', 'order'],
+      blocker: { code: 'CART_ACTIVATION_AUTHORITY_REQUIRED' },
     });
   });
 });

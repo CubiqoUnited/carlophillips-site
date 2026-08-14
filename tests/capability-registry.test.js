@@ -20,18 +20,32 @@ describe('capability registry policy', () => {
     });
   });
 
-  it('discovers the live no-order-verified Shopify cart surface', () => {
-    const decision = discoverCapability(
-      getCapabilityRegistry(),
+  it('keeps the historical no-order Shopify cart test evidence-only', () => {
+    const registry = getCapabilityRegistry();
+    const operationalDecision = discoverCapability(
+      registry,
       'shopify-storefront-cart',
       'cart-write'
     );
-    expect(decision).toMatchObject({
-      status: 'ready',
+    expect(operationalDecision).toMatchObject({
+      status: 'human_required',
+      operationalAuthority: 'blocked',
+      reason: 'CART_ACTIVATION_AUTHORITY_REQUIRED',
+    });
+
+    const testDecision = discoverCapability(
+      registry,
+      'shopify-storefront-cart',
+      'cart-write-test'
+    );
+    expect(testDecision).toMatchObject({
+      status: 'evidence_only',
       adapter: 'shopify-storefront-cart',
       callableSurface: 'shopify_storefront',
       evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
-      reason: null,
+      technicalStatus: 'verified_test',
+      operationalAuthority: 'blocked',
+      reason: 'CART_ACTIVATION_AUTHORITY_REQUIRED',
     });
   });
 
@@ -120,13 +134,31 @@ describe('capability registry policy', () => {
     productRead.allowedOperations = ['product-read'];
     productRead.blocker = null;
     productRead.evidenceRef = null;
+    productRead.observedAt = null;
 
     expect(validateCapabilityRegistry(registry)).toContain(
       'shopify-storefront-product-read has verified external access without evidenceRef'
     );
+    expect(validateCapabilityRegistry(registry)).toContain(
+      'shopify-storefront-product-read has verified external access without observedAt'
+    );
     productRead.evidenceRef = 'evidence/shopify-storefront-read-001';
+    productRead.observedAt = '2026-08-14';
     expect(validateCapabilityRegistry(registry)).not.toContain(
       'shopify-storefront-product-read has verified external access without evidenceRef'
     );
+  });
+
+  it('rejects any write-test entry that masquerades as operational authority', () => {
+    const registry = getCapabilityRegistry();
+    const cart = registry.capabilities.find(item => item.capability === 'shopify-storefront-cart');
+    cart.allowedOperations = ['cart-write'];
+    cart.requiresApproval = [];
+    cart.blocker = null;
+    expect(validateCapabilityRegistry(registry)).toEqual(expect.arrayContaining([
+      'shopify-storefront-cart exposes a write test as an operational write',
+      'shopify-storefront-cart lacks activation approvals for write-test evidence',
+      'shopify-storefront-cart lacks an operational blocker for write-test evidence',
+    ]));
   });
 });

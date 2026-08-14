@@ -12,6 +12,7 @@ const token = process.env.CP_ADMIN_REVIEW_TOKEN;
 const ownerToken = process.env.CP_ADMIN_PRODUCT_OWNER_TOKEN;
 const reportRoot = path.resolve(process.env.CP_QA_REPORT_DIR || 'test_reports/cp-e2e-admin-control-plane-2026-08-14');
 const screenshotRoot = path.join(reportRoot, 'screenshots');
+const candidateState = process.env.CP_QA_CANDIDATE_STATE || 'working-tree';
 
 if (!token || token.length < 32) throw new Error('CP_ADMIN_REVIEW_TOKEN must contain at least 32 characters.');
 if (!ownerToken || ownerToken.length < 32) throw new Error('CP_ADMIN_PRODUCT_OWNER_TOKEN must contain at least 32 characters.');
@@ -24,6 +25,7 @@ const viewports = [
 ];
 const sections = [
   ['overview', '/admin'],
+  ['evidence', '/admin/evidence'],
   ['drops', '/admin/drops'],
   ['runs', '/admin/runs'],
   ['products', '/admin/products'],
@@ -74,7 +76,7 @@ try {
     for (const [section, route] of sections) {
       const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
       check(response?.status() === 200, 'Authorized admin route returns HTTP 200.', { viewport: viewport.id, route, status: response?.status() });
-      check(await page.locator('meta[name="robots"]').getAttribute('content').then(value => value?.includes('noindex')), 'Admin metadata is noindex.', { viewport: viewport.id, route });
+      check(await page.locator('meta[name="robots"]').evaluateAll(elements => elements.some(element => element.content.includes('noindex'))), 'Admin metadata is noindex.', { viewport: viewport.id, route });
       check(await page.locator('form').count() === 0, 'Read-only admin contains no forms.', { viewport: viewport.id, route });
       check(await page.locator('button').count() === 0, 'Read-only admin contains no buttons.', { viewport: viewport.id, route });
 
@@ -87,6 +89,28 @@ try {
       check(!/(gid:\/\/shopify|9432704909549|5958463)/i.test(pageState.bodyText), 'Admin route exposes no raw Shopify or POD reference.', { viewport: viewport.id, route });
       check(Boolean(pageState.activeNav), 'Admin route exposes a labelled active navigation state.', { viewport: viewport.id, route });
       check(await page.getByRole('link', { name: 'Theme', exact: true }).count() === 0, 'Reviewer navigation hides Product Owner Theme.', { viewport: viewport.id, route });
+
+      if (section === 'evidence') {
+        check(pageState.bodyText.includes('Evidence is not authority'), 'Evidence screen states the technical-evidence authority boundary.', { viewport: viewport.id });
+        check(pageState.bodyText.includes('STALE_AUTH_BLOCKER_SUPERSEDED'), 'Evidence screen marks the historical Shopify authentication blocker superseded.', { viewport: viewport.id });
+        check(pageState.bodyText.includes('CART_ACTIVATION_AUTHORITY_REQUIRED'), 'Evidence screen keeps the historical cart test activation-blocked.', { viewport: viewport.id });
+      }
+      if (section === 'orders') check(pageState.bodyText.includes('No controlled order exists.'), 'Orders screen exposes a truthful canonical empty state.', { viewport: viewport.id });
+      if (section === 'post-sale') check(pageState.bodyText.includes('No post-sale case exists.'), 'Post-sale screen exposes a truthful canonical empty state.', { viewport: viewport.id });
+      if (section === 'analytics') check(pageState.bodyText.includes('No approved analytics ledger exists.'), 'Analytics screen exposes a truthful canonical empty state.', { viewport: viewport.id });
+      if (section === 'audit') check(pageState.bodyText.includes('durable hash-chained audit is not implemented'), 'Audit screen disclaims durable append-only persistence.', { viewport: viewport.id });
+      if (section === 'capabilities') {
+        const cartRowText = await page.getByRole('row').filter({ hasText: 'shopify-storefront-cart' }).innerText();
+        check(/write[-_ ]test[-_ ]verified/i.test(cartRowText) && cartRowText.includes('CART_ACTIVATION_AUTHORITY_REQUIRED') && /blocked/i.test(cartRowText), 'Capabilities screen separates cart technical access from operating authority.', { viewport: viewport.id, cartRowText });
+      }
+
+      if (viewport.id === 'mobile-390x844') {
+        check(await page.getByText('Scroll navigation for more sections →', { exact: true }).isVisible(), 'Mobile navigation exposes a visible horizontal-scroll affordance.', { route });
+        const auditNav = page.getByRole('link', { name: 'Audit history', exact: true });
+        await auditNav.scrollIntoViewIfNeeded();
+        const auditNavBox = await auditNav.boundingBox();
+        check(Boolean(auditNavBox) && auditNavBox.x >= 0 && auditNavBox.x + auditNavBox.width <= viewport.width + 1, 'Mobile navigation can reveal the final section without viewport overflow.', { route, auditNavBox });
+      }
 
       const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
       const serious = accessibility.violations.filter(violation => ['critical', 'serious'].includes(violation.impact));
@@ -125,6 +149,7 @@ try {
     check(await ownerPage.getByText('branch proposal', { exact: true }).isVisible(), 'Theme status is branch proposal, not the product release state.', { viewport: viewport.id });
 
     const themeNav = ownerPage.getByRole('link', { name: 'Theme', exact: true });
+    await themeNav.scrollIntoViewIfNeeded();
     const themeNavBox = await themeNav.boundingBox();
     check(Boolean(themeNavBox) && themeNavBox.x < viewport.width && themeNavBox.x + themeNavBox.width > 0, 'Theme navigation remains visibly discoverable at this viewport.', { viewport: viewport.id, themeNavBox });
     await themeNav.focus();
@@ -334,7 +359,7 @@ const report = {
   capturedAt: new Date().toISOString(),
   baseUrl,
   gitCommit,
-  candidateState: 'working-tree',
+  candidateState,
   browser: 'Playwright Chromium headless',
   visibility: 'background; no focus or foreground window',
   viewports,

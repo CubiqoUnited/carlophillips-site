@@ -2,6 +2,7 @@
   "schemaVersion": "cp.capability-registry.v1",
   "observedAt": "2026-08-04",
   "source": "Reconciled live Shopify evidence, local contracts, Product Release Record, Media Registry, PipelineRun, and strict 2026-08-14 end-to-end gap audit; secrets, customer data, and raw provider references are excluded",
+  "evidenceBoundary": "Technical access evidence is historical observation only. It never grants release, publication, cart, checkout, payment, order, fulfillment, refund, or Production authority.",
   "canonicalOwners": {
     "releaseTruth": "Product Release Record",
     "mediaTruth": "Media Registry",
@@ -17,6 +18,7 @@
       "selectedAdapter": "shopify-storefront-product",
       "accessState": "read_only_verified",
       "callableSurface": "shopify_storefront",
+      "observedAt": "2026-08-04",
       "evidenceRef": "test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json",
       "allowedOperations": ["product-read"],
       "requiresApproval": [],
@@ -30,13 +32,18 @@
       "selectedAdapter": "shopify-storefront-cart",
       "accessState": "write_test_verified",
       "callableSurface": "shopify_storefront",
+      "observedAt": "2026-08-04",
       "evidenceRef": "test_reports/cp-hoodie-production-activation-2026-08-04/report.md",
-      "allowedOperations": ["cart-write"],
-      "requiresApproval": [],
-      "costGate": "checkout and order submission remain separately approval-gated",
-      "draftSafety": "read-only audit and no-order cart test required before activation",
+      "allowedOperations": ["cart-write-test"],
+      "requiresApproval": ["activation", "production", "order"],
+      "costGate": "historical no-order technical test only; release-bound activation, checkout, payment, and order authority remain absent",
+      "draftSafety": "the no-order cart test is evidence-only and cannot activate customer cart UI or authorize a Shopify mutation",
       "alternatives": [],
-      "blocker": null
+      "blocker": {
+        "code": "CART_ACTIVATION_AUTHORITY_REQUIRED",
+        "humanAction": "Keep customer cart and checkout disabled while the Product Release Record is Draft and current release-bound fingerprints and activation approval are absent.",
+        "resumePoint": "After Released, re-observe the exact product and variants, prove server-only resolution, record Product Owner activation approval for the exact environment, and enable the server gate separately."
+      }
     },
     {
       "capability": "shopify-storefront-variant-resolver",

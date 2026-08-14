@@ -55,7 +55,7 @@ describe('admin operational projection', () => {
 
   it('covers the complete protected information architecture', () => {
     expect(adminSections.map(section => section.id)).toEqual([
-      'overview', 'theme', 'drops', 'runs', 'products', 'media', 'releases', 'approvals', 'publication', 'orders', 'post-sale', 'analytics', 'capabilities', 'audit',
+      'overview', 'evidence', 'theme', 'drops', 'runs', 'products', 'media', 'releases', 'approvals', 'publication', 'orders', 'post-sale', 'analytics', 'capabilities', 'audit',
     ]);
   });
 
@@ -105,7 +105,17 @@ describe('admin operational projection', () => {
     expect(model.meta.authoritative).toBe(false);
     expect(model.metrics.openStages).toBe(model.metrics.stages);
     expect(model.metrics.boundMedia).toBe(0);
+    expect(model.metrics.evidenceConflicts).toBeGreaterThan(0);
     expect(model.blockers.find(blocker => blocker.stageId === 'cart-checkout')?.code).toBe('CHECKOUT_AUTHORITY_NOT_RELEASE_BOUND');
+  });
+
+  it('labels audit and lifecycle projections without inventing durable operations', () => {
+    expect(adminSections.find(section => section.id === 'audit')?.description)
+      .toContain('durable hash-chained audit is not implemented');
+    expect(model.audit).toMatchObject({ durable: false, hashChained: false, status: 'not_implemented' });
+    expect(model.lifecycle.orders.title).toBe('No controlled order exists.');
+    expect(model.lifecycle.postSale.title).toBe('No post-sale case exists.');
+    expect(model.lifecycle.analytics.title).toBe('No approved analytics ledger exists.');
   });
 
   it('does not project raw Shopify or POD references', () => {

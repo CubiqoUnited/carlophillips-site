@@ -49,6 +49,7 @@ function Overview({ model }) {
         <Metric label="Open stages" value={`${model.metrics.openStages}/${model.metrics.stages}`} detail={`${model.metrics.humanRequired} require a human`} />
         <Metric label="Pending approvals" value={model.metrics.pendingApprovals} detail="No approval is implied" />
         <Metric label="Storefront-bound media" value={`${model.metrics.boundMedia}/${model.media.assetCount}`} detail={`${model.metrics.approvedMedia} approved`} />
+        <Metric label="Evidence conflicts" value={model.metrics.evidenceConflicts} detail="Require reconciliation" />
       </section>
       <section className={styles.section}>
         <div className={styles.sectionHeading}>
@@ -76,6 +77,51 @@ function Overview({ model }) {
   );
 }
 
+function EvidenceHealth({ model }) {
+  const nextActions = model.evidence.safeNextActions.map(action => ({
+    stageId: action.id,
+    stage: action.label,
+    owner: action.owner,
+    status: action.authority,
+    code: action.code,
+    humanAction: action.humanAction,
+    resumePoint: action.resumePoint,
+  }));
+
+  return (
+    <>
+      <section className={styles.metrics} aria-label="Evidence reconciliation summary">
+        <Metric label="Evidence records" value={model.evidence.metrics.records} detail={`As of ${model.evidence.asOfDate}`} />
+        <Metric label="Conflicts" value={model.evidence.metrics.conflicts} detail="Source contradictions" />
+        <Metric label="Stale observations" value={model.evidence.metrics.stale} detail="Older than seven days" />
+        <Metric label="Missing bindings" value={model.evidence.metrics.missing} detail="Cannot grant authority" />
+      </section>
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Canonical reconciliation</span><h2>Evidence is not authority</h2></div>
+          <p>{model.evidence.evidenceBoundary}</p>
+        </div>
+        <Rows columns={[
+          { key: 'label', label: 'Evidence' },
+          { key: 'classification', label: 'Class', render: row => <Status value={row.classification} /> },
+          { key: 'freshness', label: 'Freshness', render: row => <Status value={row.freshness} /> },
+          { key: 'observedAt', label: 'Observed', render: row => row.observedAt || 'Not recorded' },
+          { key: 'technicalAccess', label: 'Technical evidence' },
+          { key: 'operationalAuthority', label: 'Operating authority', render: row => <Status value={row.operationalAuthority} /> },
+          { key: 'issueCode', label: 'Dependency' },
+        ]} rows={model.evidence.records} />
+      </section>
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Approval queue</span><h2>Safe next actions</h2></div>
+          <p>Instructions only. This local screen has no connector, spend, order, publication, or Production authority.</p>
+        </div>
+        <BlockerCards blockers={nextActions} />
+      </section>
+    </>
+  );
+}
+
 function Rows({ columns, rows, empty = 'No records in this read-only projection.' }) {
   if (!rows.length) return <p className={styles.empty}>{empty}</p>;
   return (
@@ -94,8 +140,30 @@ function Rows({ columns, rows, empty = 'No records in this read-only projection.
   );
 }
 
+function LifecycleView({ summary, blockers }) {
+  return (
+    <>
+      <article className={styles.emptyState}>
+        <div className={styles.cardHeading}>
+          <div><span className={styles.eyebrow}>Canonical empty state</span><h2>{summary.title}</h2></div>
+          <Status value={summary.status} />
+        </div>
+        <p>{summary.detail}</p>
+      </article>
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Dependencies</span><h2>Blocked lifecycle stages</h2></div>
+          <p>These gates must pass before an operational record can appear.</p>
+        </div>
+        <BlockerCards blockers={blockers} />
+      </section>
+    </>
+  );
+}
+
 function SectionView({ section, model, themeModel }) {
   if (section === 'overview') return <Overview model={model} />;
+  if (section === 'evidence') return <EvidenceHealth model={model} />;
   if (section === 'theme') {
     return (
       <ThemeEditor
@@ -108,7 +176,10 @@ function SectionView({ section, model, themeModel }) {
   if (section === 'runs') return <Rows columns={[
     { key: 'capability', label: 'Work item' },
     { key: 'lane', label: 'Lane' },
-    { key: 'status', label: 'Status', render: row => <Status value={row.status} /> },
+    { key: 'sourceStatus', label: 'Source status', render: row => <Status value={row.sourceStatus} /> },
+    { key: 'evidenceState', label: 'Evidence state', render: row => <Status value={row.evidenceState} /> },
+    { key: 'lastObservedAt', label: 'Last observed', render: row => row.lastObservedAt || 'Not recorded' },
+    { key: 'currentAuthority', label: 'Current authority' },
     { key: 'attempts', label: 'Attempts' },
     { key: 'evidenceCount', label: 'Evidence' },
   ]} rows={model.run.items} />;
@@ -126,14 +197,18 @@ function SectionView({ section, model, themeModel }) {
   if (section === 'capabilities') return <Rows columns={[
     { key: 'id', label: 'Capability' },
     { key: 'callableSurface', label: 'Surface' },
-    { key: 'status', label: 'Access', render: row => <Status value={row.status} /> },
-    { key: 'costGate', label: 'Boundary' },
+    { key: 'technicalAccess', label: 'Technical access', render: row => <Status value={row.technicalAccess} /> },
+    { key: 'observedAt', label: 'Observed', render: row => row.observedAt || 'Not recorded' },
+    { key: 'evidenceClass', label: 'Evidence class', render: row => <Status value={row.evidenceClass} /> },
+    { key: 'operationalAuthority', label: 'Operating authority', render: row => <Status value={row.operationalAuthority} /> },
+    { key: 'blockingDependency', label: 'Blocking dependency' },
   ]} rows={model.capabilities} />;
   if (section === 'audit') return <Rows columns={[
     { key: 'recordedAt', label: 'Recorded' },
     { key: 'aggregate', label: 'Work item' },
     { key: 'actor', label: 'Actor' },
     { key: 'status', label: 'Status', render: row => <Status value={row.status} /> },
+    { key: 'evidenceState', label: 'Evidence state', render: row => <Status value={row.evidenceState} /> },
   ]} rows={model.auditEvents} />;
 
   const stageGroups = {
@@ -150,6 +225,9 @@ function SectionView({ section, model, themeModel }) {
     const stage = model.stages.find(item => item.id === blocker.stageId);
     return groups.includes(stage?.group);
   });
+  if (section === 'orders') return <LifecycleView summary={model.lifecycle.orders} blockers={blockers} />;
+  if (section === 'post-sale') return <LifecycleView summary={model.lifecycle.postSale} blockers={blockers} />;
+  if (section === 'analytics') return <LifecycleView summary={model.lifecycle.analytics} blockers={blockers} />;
   return <BlockerCards blockers={blockers} />;
 }
 
@@ -167,6 +245,7 @@ export function AdminControlPlane({ activeSection, model, themeModel, viewerRole
           <strong>Control plane</strong>
           <small>{viewerRole === 'product_owner' ? 'Product Owner workspace' : 'Local read-only review'}</small>
         </div>
+        <p className={styles.navHint}>Scroll navigation for more sections →</p>
         <nav aria-label="Admin sections">
           {visibleSections.map(section => (
             <Link key={section.id} href={section.id === 'overview' ? '/admin' : `/admin/${section.id}`} prefetch={false} aria-current={section.id === activeSection ? 'page' : undefined}>

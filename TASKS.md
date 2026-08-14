@@ -1,5 +1,20 @@
 # Delivery Tasks
 
+## Current local P0: evidence reconciliation and authority separation
+
+- [x] Re-engage Sushma, Aarti, Richa, Pushpa, and Malti for independent architecture, completion, funnel, operational, and QA audits.
+- [x] Reconcile the current fail-closed branch against `origin/main`, live Production observations, the 13-stage capability map, and divergent architecture commit `1f3fc46`; do not merge the destructive monorepo rewrite.
+- [x] Preserve historical PipelineRun evidence while classifying current, historical, stale, superseded, conflicting, and missing evidence deterministically against an explicit date.
+- [x] Mark the old Shopify authentication blocker superseded by later technical evidence without treating that later evidence as current operating authority.
+- [x] Restrict the historical no-order cart proof to `cart-write-test`; keep operational `cart-write`, checkout, payment, and order blocked until exact release-bound activation evidence exists.
+- [x] Add Evidence Health to the protected local admin and expose source status, freshness, technical access, operating authority, and blocking dependency without evidence paths or raw provider identifiers.
+- [x] Replace implied Orders/Post-sale/Analytics operations with truthful canonical empty states and relabel Audit History as a static PipelineRun projection without durable/hash-chained persistence.
+- [x] Add a visible mobile navigation scroll affordance and repair long-token table wrapping at 390×844.
+- [x] Pass Yarn Classic 1.22.22 frozen install and full `yarn verify` (40 files / 382 tests, 0 production vulnerabilities, optimized build).
+- [x] Pass 538/538 headless admin/public assertions, capture and inspect 58 screenshots at desktop/tablet/mobile, and prove 8/8 public screenshots have zero changed pixels.
+- [ ] Product Owner authorizes `Approve CP fail-closed hotfix Preview only`; then create one immutable Preview for the containment candidate and verify it before any separate Production decision.
+- [ ] Complete exact Apliiq mapping observation, sample approval/order/delivery, current Shopify release fingerprints, truthful media bindings, release transitions, controlled order, fulfillment/tracking, post-sale, analytics, real admin identity/RBAC, durable event store, and connector controls. None is complete or implied by the local admin.
+
 ## v1.2.2 design-system release candidate
 
 - [x] Create `codex/cp-v1-2-2-design-system-release` from clean `e3dc7c2` without touching the separate `/Users/edv/Documents/cp` checkout.
