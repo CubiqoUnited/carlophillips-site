@@ -1,7 +1,7 @@
 # Current Status
 
 Updated: 2026-08-14
-Branch: published PR #9 branch `codex/cp-v1-2-2-design-system-release`; final correction binding pending
+Branch: CI/CD candidate `codex/cp-cicd-bootstrap`, based on canonical `main` at `cd1cd771`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Production authority closure — 2026-08-14
@@ -12,7 +12,17 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Repository CI now defines frozen Yarn install, lint, tests, production dependency audit, build, and retained test evidence for pull requests and `main` pushes. GitHub branch-protection enforcement remains external and must be verified read-only.
 - One `main` branch remains production intent; temporary PR branches create Vercel Preview staging. A READY Preview or mergeable PR is evidence, not approval.
 - Checkout remains present but denied by default. Git tags identify code milestones; Product Release Records independently govern product truth and release authority.
-- This work changes no Vercel/GitHub/Shopify setting, does not merge or deploy, and does not assert production readiness.
+- This authority-closure work does not itself assert production readiness; external account and live-commerce gates remain evidence-bound.
+
+## Canonical v1.2.2 merge and CI/CD bootstrap — 2026-08-14
+
+- PR #9 merged successfully into canonical `main` as `cd1cd771fdd6d22e49d772acf8850599e2dad692`. Its parents are exact prior `main` `9b153bf1` and reviewed head `f82733ca`; the immutable replacement receipt is `https://github.com/CubiqoUnited/carlophillips-site/pull/9#issuecomment-5291120282`.
+- The reviewed replacement Preview remains `dpl_5GTRSMYWSodpHrCYoEvnB9DGGiZa`, READY and bound to exact head `f82733ca`. The merge created no Vercel deployment because the project has no Git link or configured production branch.
+- Production remains unchanged on READY deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`, sourced from approved artifact `bb9568f`, with the CARLOPHILLIPS apex and `www` aliases. No Shopify, POD, domain, catalog, order, billing, or Production action followed the merge.
+- The separate unmerged `codex/cp-cicd-bootstrap` candidate adds read-only Yarn verification plus manual, receipt-bound Vercel release-candidate and approval-gated Production-promotion workflows. The reviewed artifact is built with Production commerce semantics and staged with `--prod --skip-domain`; deterministic checks prohibit every domain alias until the exact-artifact promotion gate runs. A Preview-semantics artifact is never promoted unchanged.
+- The Vercel credential is scoped only to individual Vercel CLI capture/mutation steps inside the protected GitHub `Production` environment; checkout, install, tests, application build, receipt verification, and route smoke steps do not receive it. Organization/project IDs are protected environment variables rather than secrets. Production promotion remains disabled and fail-closed until the environment has a required reviewer and `CP_PRODUCTION_PROMOTION_ENABLED=true` is configured after the first green CI run. This automation candidate has not deployed or changed GitHub rules, environments, secrets, Vercel, Shopify, or Production, and it does not describe or change the currently served `bb9568f` UI.
+- Corrected workflow policy and executable receipt/rollback fixtures pass 22/22 focused checks. Full Yarn Classic verification passes 37 test files / 364 tests, zero-warning lint, zero production vulnerabilities across 55 audited packages, and the optimized 13-route build. All three workflow YAML files and both verifier scripts parse, the changed-file secret scan is clean, and package/lock/runtime/API/public/Shopify/provider source remains unchanged.
+- Headless desktop 1440×1000 and mobile 390×844 baseline/candidate captures are byte-identical. All four checks return HTTP 200 with 2/2 decoded images, no overlay or overflow, and zero console/page/request failures. Evidence is retained under `test_reports/cp-cicd-bootstrap-2026-08-14/`; the two disposable QA servers are stopped.
 
 ## Local verified candidate `v1.2.2` — 2026-08-14
 
@@ -25,7 +35,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Saved `bb9568f` comparison confirms identical viewport and inset-overlay geometry, exact approved copy/hierarchy/assets, and visually preserved composition. Near-zero overlay deltas and low animated-hero deltas are recorded; product-frame pixel variance is limited to normal runway timing plus the required 11→12 correction in the saved local evidence.
 - The final live-Production matrix passes 222/222 exact role checks across desktop, compact, and mobile for facts, commerce body, actions, cards, PDP form/disclosure coordinates, Information, and Editorial typography/geometry. Forty-eight screenshots form 24 same-dimension pairs; Sushma accepts documented animation/lazy-load pixel variance after decoded media, exact DOM geometry, route health, and representative review pass.
 - The final UAT follow-up preserves Production's route-specific canvas roles through dedicated tokens: shop/bag `rgb(2, 2, 2)` and both PDP states `rgb(0, 0, 0)` match at all three required widths. Presentation-only media sanitization preserves truthful AI-assisted meaning while removing provider names from candidate accessible names. The 21-capture route matrix is saved under `test_reports/cp-v1.2.2-uat-correction-2026-08-14/`; final live-provider proof remains gated on the commit-bound manual Preview.
-- PR #8 merged the first v1.2.2 candidate to canonical `main`; its independent parity review remained NO-GO and it was not promoted to Production. PR #9 subsequently published the responsive correction and a manually deployed Preview, but Malti UAT retained NO-GO after finding the commerce-canvas and accessible-media-copy deltas now addressed by this follow-up. The automatic GitHub Vercel `FAILURE` is a fork-policy signal, not runtime evidence. Final release remains gated on a manual Preview explicitly metadata-bound to the resulting Git commit plus independent UAT and integration GO. Production remains unchanged on approved artifact `bb9568f`; no Shopify write, catalog/order mutation, domain change, or billing action occurred.
+- PR #8 merged the first v1.2.2 candidate to canonical `main`; its independent parity review remained NO-GO and it was not promoted to Production. PR #9 then delivered the final responsive/UAT correction, replacement metadata-bound Preview, independent UAT GO, and Integration GO before merging as `cd1cd771`. The automatic GitHub Vercel `FAILURE` remains documented fork-policy evidence only. Production remains unchanged on approved artifact `bb9568f`; promotion is a separate Product Owner-approved action.
 
 ## Product Owner priority: physical Hoodie sample first — 2026-08-09
 

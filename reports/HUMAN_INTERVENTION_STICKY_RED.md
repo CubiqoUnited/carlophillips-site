@@ -39,7 +39,7 @@ Updated: 2026-08-14
 
 1. Boss nominates one human Platform/Security owner and one Account/Billing owner in the active CARLOPHILLIPS task.
 2. The business/legal content owner reviews the technical drafts at `/privacy`, `/terms`, and `/cookie-policy`, supplies the missing seller/contact/retention/processor/order/returns language, and signals `CP policy content approved` only after the exact text is accepted.
-3. An authorized GitHub administrator opens repository Settings → Branches/Rulesets for `CubiqoUnited/carlophillips-site`, requires the `Quality` check and pull-request review on `main`, and signals `CP main protection enabled`. Do not change the production branch or merge a pull request as part of this action.
+3. An authorized GitHub administrator opens repository Settings → Branches/Rulesets for `CubiqoUnited/carlophillips-site`, requires the current green CI check and pull-request review on `main`, and signals `CP main protection enabled`. The authenticated Codex account `avloy07-eng` received GitHub API `403 Must have push access` on 2026-08-14 and cannot perform this administrator action.
 4. An authorized account owner performs the read-only RBAC, 2FA/recovery, billing-alert and spend-ceiling review for the verified Vercel project, GitHub repository, Shopify account and selected POD provider, then signals `CP account audit complete`. Do not buy, upgrade, rotate credentials, or change configuration without separate approval.
 5. After the current branch is integrated with PR #9 and a new immutable Vercel Preview exists, Boss approves a manual screen-reader/keyboard walkthrough and signals `CP Preview ready for manual accessibility review`.
 
@@ -58,4 +58,32 @@ Updated: 2026-08-14
 
 ## Completion signal and resume point
 
-Use the exact signals above. Sushma then records the evidence, integrates the selected candidate on a temporary branch, runs the complete CI-equivalent and Preview QA, and returns a go/no-go brief. No signal by itself authorizes merge, Production promotion, tracking enablement, Shopify publication, checkout, purchase, or billing changes.
+Use the exact signals above. Sushma then records the evidence, integrates the selected candidate on a temporary branch, runs the complete CI-equivalent and Preview QA, and returns a go/no-go brief. No signal by itself authorizes tracking enablement, Shopify publication, checkout, purchase, or billing changes.
+
+---
+
+# HUMAN INTERVENTION REQUIRED — ENABLE CI/CD PROTECTION AFTER FIRST GREEN RUN
+
+Added: 2026-08-14
+
+Status: **WAIT FOR THE CI/CD PULL REQUEST AND ITS FIRST GREEN `CI / Verify` RUN.** Do not configure Production enablement before that evidence exists.
+
+## Exact safe order
+
+1. Review the separate CI/CD pull request from `codex/cp-cicd-bootstrap` and confirm `CI / Verify` is green.
+2. In GitHub repository rulesets, protect `main`: require pull requests, at least one approval, required status `CI / Verify`, and block force-push and deletion. Do not require the stale Vercel fork-policy status.
+3. In GitHub Environments → `Production`, add at least one required reviewer. Disable administrator bypass if repository policy permits.
+4. In `Production`, add `VERCEL_TOKEN` as an environment secret. Add `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` as environment variables. Do not share or print any credential value.
+5. Only after the reviewer rule is visible, add `CP_PRODUCTION_PROMOTION_ENABLED=true` as a `Production` environment variable.
+6. Return to the active Codex task and signal `CI/CD protection configured`. Do not dispatch the release-candidate workflow without approval to create that exact no-domain Vercel candidate. Do not dispatch Production promotion without the candidate receipt's exact deployment ID, SHA, release, and `productionBeforeDeploymentId`, review of that exact candidate, and a separate Product Owner release decision.
+
+## Cost and risk
+
+- GitHub/Vercel configuration has no intended charge, but Vercel use remains subject to the account plan.
+- A wrong secret scope can expose deployment authority; keep `VERCEL_TOKEN` only in the protected `Production` environment and never place it in pull-request jobs or repository files.
+- A required status configured before its first check exists can deadlock merges. That is why the green run comes first.
+- The Production workflow automatically rolls back after a failed post-promotion gate, but workflows do not replace Product Owner approval or live-release supervision.
+
+## Resume point
+
+After `CI/CD protection configured`, verify the ruleset, environment reviewer, variable names, and secret name read-only. Do not reveal values. A release candidate must be a staged Production build with no CARLOPHILLIPS domain aliases. Production remains unchanged until a separately approved promotion dispatch.

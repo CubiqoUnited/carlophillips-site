@@ -25,6 +25,7 @@ memory/
 test_result.md
 
 # Local tool metadata
+.github/
 .emergent/
 .vscode/
 .idea/
