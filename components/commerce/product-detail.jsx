@@ -179,7 +179,7 @@ function VariantPresentation({ presentation }) {
 
 export function CommerceProductUnavailable({ decision }) {
   return (
-    <main id="main-content" className="cp-commerce-page">
+    <main id="main-content" className="cp-commerce-page cp-product-detail-page">
       <StorefrontHeader fixed navigationAriaLabel="Product navigation" />
       <section className="cp-product-unavailable cp-section">
         <div className="cp-shell-medium cp-shell-flush">
@@ -220,7 +220,7 @@ export function CommerceProductDetail({
   ];
 
   return (
-    <main id="main-content" className="cp-commerce-page">
+    <main id="main-content" className="cp-commerce-page cp-product-detail-page">
       <StorefrontHeader fixed navigationAriaLabel="Product navigation" />
       <section className="cp-commerce-detail">
         <div className="cp-commerce-media-column">

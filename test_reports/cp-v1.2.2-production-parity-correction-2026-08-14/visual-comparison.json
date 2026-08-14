@@ -1,0 +1,488 @@
+{
+  "schemaVersion": "cp.production-visual-comparison.v1",
+  "baseline": "https://www.carlophillips.com",
+  "candidateMethod": "PR #9 head 55604ac DOM with local worktree CSS injected ephemerally",
+  "sameDimensions": true,
+  "comparisons": [
+    {
+      "state": "compact-bag",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/compact-bag.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/compact-bag.png",
+      "meanAbsoluteError": 0.00012,
+      "normalizedRms": 0.001878,
+      "changedPixelPercentOver4": 0.266,
+      "differenceBoundingBox": [
+        48,
+        28,
+        510,
+        405
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-bag-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-bag-side-by-side.png"
+    },
+    {
+      "state": "compact-home-hero",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/compact-home-hero.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/compact-home-hero.png",
+      "meanAbsoluteError": 0.000354,
+      "normalizedRms": 0.001651,
+      "changedPixelPercentOver4": 0.0602,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        486
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-home-hero-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-home-hero-side-by-side.png"
+    },
+    {
+      "state": "compact-home-one",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/compact-home-one.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/compact-home-one.png",
+      "meanAbsoluteError": 0.018589,
+      "normalizedRms": 0.078215,
+      "changedPixelPercentOver4": 8.8682,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        486
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-home-one-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-home-one-side-by-side.png"
+    },
+    {
+      "state": "compact-home-overlay",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/compact-home-overlay.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/compact-home-overlay.png",
+      "meanAbsoluteError": 0.000884,
+      "normalizedRms": 0.014585,
+      "changedPixelPercentOver4": 0.3241,
+      "differenceBoundingBox": [
+        9,
+        0,
+        584,
+        486
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-home-overlay-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-home-overlay-side-by-side.png"
+    },
+    {
+      "state": "compact-pdp-editorial",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/compact-pdp-editorial.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/compact-pdp-editorial.png",
+      "meanAbsoluteError": 0.057207,
+      "normalizedRms": 0.166157,
+      "changedPixelPercentOver4": 27.9881,
+      "differenceBoundingBox": [
+        0,
+        26,
+        584,
+        486
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-pdp-editorial-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-pdp-editorial-side-by-side.png"
+    },
+    {
+      "state": "compact-pdp-information",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/compact-pdp-information.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/compact-pdp-information.png",
+      "meanAbsoluteError": 0.061565,
+      "normalizedRms": 0.13468,
+      "changedPixelPercentOver4": 63.3724,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        486
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-pdp-information-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-pdp-information-side-by-side.png"
+    },
+    {
+      "state": "compact-pdp",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/compact-pdp.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/compact-pdp.png",
+      "meanAbsoluteError": 0.001191,
+      "normalizedRms": 0.024522,
+      "changedPixelPercentOver4": 0.3633,
+      "differenceBoundingBox": [
+        32,
+        26,
+        562,
+        37
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-pdp-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-pdp-side-by-side.png"
+    },
+    {
+      "state": "compact-shop",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/compact-shop.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/compact-shop.png",
+      "meanAbsoluteError": 0.022933,
+      "normalizedRms": 0.11925,
+      "changedPixelPercentOver4": 8.3731,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        445
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-shop-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/compact-shop-side-by-side.png"
+    },
+    {
+      "state": "desktop-bag",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/desktop-bag.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/desktop-bag.png",
+      "meanAbsoluteError": 0.000753,
+      "normalizedRms": 0.014299,
+      "changedPixelPercentOver4": 0.4465,
+      "differenceBoundingBox": [
+        88,
+        28,
+        1338,
+        753
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-bag-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-bag-side-by-side.png"
+    },
+    {
+      "state": "desktop-home-hero",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/desktop-home-hero.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/desktop-home-hero.png",
+      "meanAbsoluteError": 0.000395,
+      "normalizedRms": 0.001368,
+      "changedPixelPercentOver4": 0.0208,
+      "differenceBoundingBox": [
+        0,
+        0,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-home-hero-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-home-hero-side-by-side.png"
+    },
+    {
+      "state": "desktop-home-one",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/desktop-home-one.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/desktop-home-one.png",
+      "meanAbsoluteError": 0.028208,
+      "normalizedRms": 0.075064,
+      "changedPixelPercentOver4": 36.8291,
+      "differenceBoundingBox": [
+        0,
+        0,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-home-one-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-home-one-side-by-side.png"
+    },
+    {
+      "state": "desktop-home-overlay",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/desktop-home-overlay.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/desktop-home-overlay.png",
+      "meanAbsoluteError": 0.000211,
+      "normalizedRms": 0.006634,
+      "changedPixelPercentOver4": 0.0645,
+      "differenceBoundingBox": [
+        0,
+        0,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-home-overlay-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-home-overlay-side-by-side.png"
+    },
+    {
+      "state": "desktop-pdp-editorial",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/desktop-pdp-editorial.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/desktop-pdp-editorial.png",
+      "meanAbsoluteError": 0.044227,
+      "normalizedRms": 0.181962,
+      "changedPixelPercentOver4": 5.3834,
+      "differenceBoundingBox": [
+        0,
+        34,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-pdp-editorial-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-pdp-editorial-side-by-side.png"
+    },
+    {
+      "state": "desktop-pdp-information",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/desktop-pdp-information.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/desktop-pdp-information.png",
+      "meanAbsoluteError": 0.016576,
+      "normalizedRms": 0.076841,
+      "changedPixelPercentOver4": 14.1035,
+      "differenceBoundingBox": [
+        0,
+        34,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-pdp-information-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-pdp-information-side-by-side.png"
+    },
+    {
+      "state": "desktop-pdp",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/desktop-pdp.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/desktop-pdp.png",
+      "meanAbsoluteError": 0.004711,
+      "normalizedRms": 0.026326,
+      "changedPixelPercentOver4": 0.8929,
+      "differenceBoundingBox": [
+        0,
+        34,
+        1440,
+        1000
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-pdp-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-pdp-side-by-side.png"
+    },
+    {
+      "state": "desktop-shop",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/desktop-shop.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/desktop-shop.png",
+      "meanAbsoluteError": 0.000144,
+      "normalizedRms": 0.003646,
+      "changedPixelPercentOver4": 0.1782,
+      "differenceBoundingBox": [
+        289,
+        334,
+        1223,
+        842
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-shop-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/desktop-shop-side-by-side.png"
+    },
+    {
+      "state": "mobile-bag",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/mobile-bag.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/mobile-bag.png",
+      "meanAbsoluteError": 0.002612,
+      "normalizedRms": 0.02656,
+      "changedPixelPercentOver4": 1.529,
+      "differenceBoundingBox": [
+        47,
+        28,
+        339,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-bag-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-bag-side-by-side.png"
+    },
+    {
+      "state": "mobile-home-hero",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/mobile-home-hero.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/mobile-home-hero.png",
+      "meanAbsoluteError": 0.000379,
+      "normalizedRms": 0.00162,
+      "changedPixelPercentOver4": 0.052,
+      "differenceBoundingBox": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-home-hero-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-home-hero-side-by-side.png"
+    },
+    {
+      "state": "mobile-home-one",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/mobile-home-one.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/mobile-home-one.png",
+      "meanAbsoluteError": 0.04978,
+      "normalizedRms": 0.105542,
+      "changedPixelPercentOver4": 52.7579,
+      "differenceBoundingBox": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-home-one-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-home-one-side-by-side.png"
+    },
+    {
+      "state": "mobile-home-overlay",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/mobile-home-overlay.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/mobile-home-overlay.png",
+      "meanAbsoluteError": 0.000733,
+      "normalizedRms": 0.014027,
+      "changedPixelPercentOver4": 0.2816,
+      "differenceBoundingBox": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-home-overlay-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-home-overlay-side-by-side.png"
+    },
+    {
+      "state": "mobile-pdp-editorial",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/mobile-pdp-editorial.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/mobile-pdp-editorial.png",
+      "meanAbsoluteError": 0.114619,
+      "normalizedRms": 0.258551,
+      "changedPixelPercentOver4": 34.2317,
+      "differenceBoundingBox": [
+        0,
+        26,
+        390,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-pdp-editorial-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-pdp-editorial-side-by-side.png"
+    },
+    {
+      "state": "mobile-pdp-information",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/mobile-pdp-information.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/mobile-pdp-information.png",
+      "meanAbsoluteError": 0.046271,
+      "normalizedRms": 0.122714,
+      "changedPixelPercentOver4": 59.2988,
+      "differenceBoundingBox": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-pdp-information-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-pdp-information-side-by-side.png"
+    },
+    {
+      "state": "mobile-pdp",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/mobile-pdp.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/mobile-pdp.png",
+      "meanAbsoluteError": 0.001178,
+      "normalizedRms": 0.024053,
+      "changedPixelPercentOver4": 0.3643,
+      "differenceBoundingBox": [
+        0,
+        26,
+        390,
+        425
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-pdp-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-pdp-side-by-side.png"
+    },
+    {
+      "state": "mobile-shop",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/production/mobile-shop.png",
+      "candidate": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/screenshots/candidate/mobile-shop.png",
+      "meanAbsoluteError": 0.000185,
+      "normalizedRms": 0.006082,
+      "changedPixelPercentOver4": 0.1376,
+      "differenceBoundingBox": [
+        44,
+        656,
+        244,
+        748
+      ],
+      "diff": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-shop-diff.png",
+      "sideBySide": "test_reports/cp-v1.2.2-production-parity-correction-2026-08-14/comparisons/mobile-shop-side-by-side.png"
+    }
+  ]
+}

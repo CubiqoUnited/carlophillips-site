@@ -363,9 +363,10 @@
     min-height: var(--cp-component-action-min-height);
     align-items: var(--cp-semantic-layout-align-center);
     justify-content: var(--cp-semantic-layout-justify-center);
-    padding-inline: var(--cp-semantic-space-6);
-    font-size: var(--cp-semantic-font-size-label);
-    letter-spacing: var(--cp-semantic-font-tracking-action);
+    padding-inline: var(--cp-component-action-inline-padding);
+    font-size: var(--cp-component-action-font-size);
+    line-height: var(--cp-component-action-line-height);
+    letter-spacing: var(--cp-component-action-letter-spacing);
     text-transform: var(--cp-semantic-layout-text-transform-label);
     border-radius: var(--cp-component-action-radius);
     transition:
@@ -598,6 +599,10 @@
     overflow: var(--cp-semantic-layout-overflow-hidden);
   }
 
+  .cp-product-runway {
+    scroll-margin-top: var(--cp-component-product-runway-scroll-margin);
+  }
+
   .cp-campaign-content,
   .cp-product-layout {
     position: var(--cp-semantic-layout-position-relative);
@@ -690,7 +695,7 @@
     background: var(--cp-semantic-color-glass-soft);
     padding: var(--cp-semantic-space-product-fact-block-start) var(--cp-semantic-space-product-fact-inline-end) var(--cp-semantic-space-product-fact-block-end) var(--cp-semantic-space-product-fact-inline-start);
     color: var(--cp-semantic-color-copy);
-    font-size: var(--cp-semantic-font-size-label-small);
+    font-size: var(--cp-component-product-fact-font-size);
     letter-spacing: var(--cp-semantic-font-tracking-fact);
     text-transform: var(--cp-semantic-layout-text-transform-label);
     backdrop-filter: blur(var(--cp-semantic-effect-blur-soft));
@@ -1079,8 +1084,12 @@
   /* Shared commerce presentation. */
   .cp-commerce-page {
     min-height: var(--cp-semantic-size-viewport-height-legacy);
-    background: var(--cp-semantic-color-canvas-deep);
+    background: var(--cp-component-commerce-page-background);
     color: var(--cp-semantic-color-ink);
+  }
+
+  .cp-product-detail-page {
+    background: var(--cp-component-product-detail-page-background);
   }
 
   .cp-commerce-header {
@@ -1092,7 +1101,7 @@
     position: var(--cp-semantic-layout-position-fixed);
     inset: var(--cp-semantic-layout-inset-top);
     z-index: var(--cp-component-header-layer);
-    height: var(--cp-semantic-size-header);
+    height: var(--cp-component-commerce-header-outer-height);
     padding-block: var(--cp-semantic-space-none);
     background: var(--cp-semantic-color-header-commerce);
     backdrop-filter: blur(var(--cp-semantic-effect-blur-strong));
@@ -1105,7 +1114,7 @@
   }
 
   .cp-commerce-header-fixed .cp-commerce-header-inner {
-    height: var(--cp-semantic-size-full);
+    height: var(--cp-component-commerce-header-inner-height);
   }
 
   .cp-commerce-brand {
@@ -1163,7 +1172,7 @@
   .cp-commerce-title {
     font-size: var(--cp-semantic-font-size-commerce);
     font-weight: var(--cp-semantic-font-weight-light);
-    line-height: var(--cp-semantic-font-line-height-solid);
+    line-height: var(--cp-component-commerce-title-line-height);
     letter-spacing: var(--cp-semantic-font-tracking-section);
   }
 
@@ -1250,9 +1259,18 @@
     padding: var(--cp-component-card-copy-padding);
   }
 
+  .cp-card-copy > .cp-label-small {
+    font-size: var(--cp-component-card-label-font-size);
+    line-height: var(--cp-component-card-label-line-height);
+  }
+
   .cp-card-title,
   .cp-card-price {
     margin-top: var(--cp-semantic-space-5);
+  }
+
+  .cp-card-title {
+    letter-spacing: var(--cp-component-card-title-letter-spacing);
   }
 
   .cp-card-price {
@@ -1260,8 +1278,10 @@
   }
 
   .cp-card-action {
-    min-height: var(--cp-semantic-size-category);
+    height: var(--cp-component-card-action-height);
+    min-height: var(--cp-component-card-action-height);
     margin-top: var(--cp-component-card-action-margin);
+    padding-inline: var(--cp-component-card-action-inline-padding);
   }
 
   .cp-shell-flush {
@@ -1298,6 +1318,7 @@
     gap: var(--cp-semantic-space-6);
     padding-top: var(--cp-semantic-space-7);
     font-size: var(--cp-semantic-font-size-control);
+    line-height: var(--cp-component-bag-definition-line-height);
   }
 
   .cp-definition-value {
@@ -1316,9 +1337,10 @@
     letter-spacing: var(--cp-semantic-font-tracking-concept);
   }
 
-  .cp-bag-description {
+  .cp-commerce-page .cp-bag-description {
     max-width: var(--cp-semantic-size-copy-medium);
     margin-top: var(--cp-semantic-space-8);
+    line-height: var(--cp-component-bag-description-line-height);
   }
 
   .cp-bag-actions {
@@ -1442,13 +1464,18 @@
     margin-bottom: var(--cp-semantic-space-8);
   }
 
-  .cp-editorial-title {
-    max-width: var(--cp-semantic-size-copy-display);
+  .cp-commerce-page .cp-editorial-title {
+    max-width: var(--cp-component-editorial-title-max-width);
+    font-size: var(--cp-component-editorial-title-size);
+    line-height: var(--cp-component-editorial-title-line-height);
+    letter-spacing: var(--cp-component-editorial-title-letter-spacing);
   }
 
   .cp-editorial-copy {
     max-width: var(--cp-semantic-size-copy-medium);
     margin-top: var(--cp-semantic-space-10);
+    font-size: var(--cp-component-editorial-copy-font-size);
+    line-height: var(--cp-component-editorial-copy-line-height);
   }
 
   .cp-editorial-scrim {
@@ -1620,19 +1647,23 @@
     margin-bottom: var(--cp-semantic-space-7);
   }
 
-  .cp-product-detail-title {
+  .cp-commerce-page .cp-product-detail-title {
     max-width: var(--cp-semantic-size-copy-max);
+    font-size: var(--cp-component-product-detail-title-size);
+    line-height: var(--cp-component-product-detail-title-line-height);
   }
 
   .cp-product-detail-price {
     margin-top: var(--cp-semantic-space-7);
     font-size: var(--cp-semantic-font-size-price);
     font-weight: var(--cp-semantic-font-weight-light);
+    line-height: var(--cp-component-product-detail-price-line-height);
   }
 
   .cp-product-detail-description {
     max-width: var(--cp-semantic-size-copy-compact);
     margin-top: var(--cp-semantic-space-8);
+    line-height: var(--cp-component-commerce-body-line-height);
   }
 
   .cp-color-label {
@@ -1672,6 +1703,7 @@
 
   .cp-information-section {
     border-bottom: var(--cp-semantic-border-rule);
+    padding-block: var(--cp-component-information-section-padding);
   }
 
   .cp-commerce-information-grid {
@@ -1684,15 +1716,21 @@
     max-width: var(--cp-semantic-size-copy-max);
   }
 
+  .cp-commerce-page .cp-information-title {
+    font-size: var(--cp-component-information-title-size);
+    line-height: var(--cp-component-information-title-line-height);
+    letter-spacing: var(--cp-component-information-title-letter-spacing);
+  }
+
   .cp-information-copy-column {
     display: var(--cp-semantic-layout-display-grid);
     gap: var(--cp-semantic-space-12);
   }
 
   .cp-information-copy {
-    font-size: var(--cp-semantic-font-size-emphasis);
+    font-size: var(--cp-component-information-copy-font-size);
     font-weight: var(--cp-semantic-font-weight-light);
-    line-height: var(--cp-semantic-font-line-height-relaxed);
+    line-height: var(--cp-component-information-copy-line-height);
   }
 
   .cp-information-facts {
@@ -1727,6 +1765,7 @@
   .cp-checkout-label {
     display: var(--cp-semantic-layout-display-block);
     margin-bottom: var(--cp-semantic-space-4);
+    letter-spacing: var(--cp-component-checkout-label-letter-spacing);
   }
 
   .cp-checkout-action {
@@ -1742,7 +1781,7 @@
   .cp-checkout-explanation {
     margin-top: var(--cp-semantic-space-4);
     font-size: var(--cp-semantic-font-size-wordmark);
-    line-height: var(--cp-semantic-font-line-height-relaxed);
+    line-height: var(--cp-component-checkout-explanation-line-height);
   }
 
   .cp-editorial-scrim {
