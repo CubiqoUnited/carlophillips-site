@@ -5,6 +5,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'apps/web/src'),
+      '@repo/product-pipeline': resolve(
+        __dirname,
+        'packages/product-pipeline/src/index.ts'
+      ),
     },
   },
   esbuild: {

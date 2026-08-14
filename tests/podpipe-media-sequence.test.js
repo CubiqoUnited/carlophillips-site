@@ -19,15 +19,28 @@ const expectedOrder = [
   'fulfillment-care-returns',
 ];
 
+const releaseBinding = {
+  releaseId: 'cp-signature-hoodie-2026-001',
+  handle: 'carlophillips-signature-hoodie',
+  variantFingerprint: `sha256:${'a'.repeat(64)}`,
+  commerceFactsFingerprint: `sha256:${'b'.repeat(64)}`,
+  observationFingerprint: `sha256:${'c'.repeat(64)}`,
+};
+
 const commerce = {
-  title: 'Signature Hoodie',
-  price: 128,
-  currency: 'USD',
-  availableForSale: false,
-  sizes: ['XS', 'S'],
-  sizeGuide: null,
-  bagAllowed: false,
-  checkoutAllowed: false,
+  approvalStatus: 'reviewed',
+  sourceAuthority: 'reviewed-shopify-observation',
+  binding: releaseBinding,
+  data: {
+    title: 'Signature Hoodie',
+    price: 128,
+    currency: 'USD',
+    availableForSale: false,
+    sizes: ['XS', 'S'],
+    sizeGuide: null,
+    bagAllowed: false,
+    checkoutAllowed: false,
+  },
 };
 
 function approvedMedia(overrides) {
@@ -84,6 +97,7 @@ describe('official PODPIPE product display sequence', () => {
           motionRole: 'film',
         }),
       ],
+      releaseBinding,
       commerce,
       model3dApplicable: true,
     });

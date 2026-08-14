@@ -62,6 +62,9 @@ export interface ProductViewModel {
   media: ViewerMediaItem[];
   mediaReview: MediaReview | null;
   details: string[] | string[][];
+  variantFingerprint?: string;
+  commerceFactsFingerprint?: string;
+  observationFingerprint?: string;
 }
 
 export interface ReleaseDecision {
@@ -140,7 +143,15 @@ export interface ProductReleaseEvidence {
   releaseRecord: {
     releaseId: string;
     state: ReleaseState;
-    shopify: { handle: string };
+    shopify: {
+      handle: string;
+      variantFingerprint?: string | null;
+      variantFingerprintStatus?: string;
+      commerceFactsFingerprint?: string | null;
+      commerceFactsFingerprintStatus?: string;
+      observationFingerprint?: string | null;
+      observationFingerprintStatus?: string;
+    };
   };
   mediaManifest: {
     releaseId: string;

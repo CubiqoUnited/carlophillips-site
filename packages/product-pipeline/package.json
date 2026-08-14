@@ -1,0 +1,21 @@
+{
+  "name": "@repo/product-pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pure product, PODPIPE, release, media, and control-plane domain contracts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./admin": "./src/admin-control-plane.ts",
+    "./delivery": "./src/delivery.ts",
+    "./display": "./src/display.ts",
+    "./media": "./src/media.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

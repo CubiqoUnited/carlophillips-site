@@ -9,6 +9,8 @@
       "@/*": ["./apps/web/src/*"],
       "@repo/design-system": ["./packages/design-system/index.ts"],
       "@repo/design-system/*": ["./packages/design-system/*"],
+      "@repo/product-pipeline": ["./packages/product-pipeline/src/index.ts"],
+      "@repo/product-pipeline/*": ["./packages/product-pipeline/src/*"],
       "@repo/shopify": ["./packages/shopify"],
       "@repo/utils": ["./packages/utils/src/index.ts"]
     },

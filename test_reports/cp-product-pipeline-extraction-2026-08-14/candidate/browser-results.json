@@ -1,0 +1,160 @@
+{
+  "generatedAt": "2026-08-14T21:16:19.316Z",
+  "checks": [
+    {
+      "name": "home-mobile-390x844",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 435,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "headings": [
+        "At theedge of life.",
+        "ONE"
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "home-compact-584x486",
+      "route": "/",
+      "viewport": {
+        "width": 584,
+        "height": 486
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 435,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "headings": [
+        "At theedge of life.",
+        "ONE"
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "home-tablet-768x1024",
+      "route": "/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 444,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "headings": [
+        "At theedge of life.",
+        "ONE"
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "home-desktop-1440x1000",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/",
+      "title": "CARLOPHILLIPS | Signature Series",
+      "bodyTextLength": 444,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "headings": [
+        "At theedge of life.",
+        "ONE"
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "product-mobile-390x844",
+      "route": "/product/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/product/carlophillips-signature-hoodie",
+      "title": "Product Review | CARLOPHILLIPS",
+      "bodyTextLength": 1767,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "headings": [
+        "CARLOPHILLIPS Signature Hoodie",
+        "Runway / campaign opening",
+        "Product front and back",
+        "On-body editorial",
+        "Signature embroidery",
+        "Material and construction",
+        "Product film and motion preview",
+        "Customer-controlled 360°"
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    {
+      "name": "product-desktop-1440x1000",
+      "route": "/product/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "url": "http://127.0.0.1:3100/product/carlophillips-signature-hoodie",
+      "title": "Product Review | CARLOPHILLIPS",
+      "bodyTextLength": 1767,
+      "overflow": 0,
+      "overlay": false,
+      "brokenImages": [],
+      "checkoutCopy": false,
+      "headings": [
+        "CARLOPHILLIPS Signature Hoodie",
+        "Runway / campaign opening",
+        "Product front and back",
+        "On-body editorial",
+        "Signature embroidery",
+        "Material and construction",
+        "Product film and motion preview",
+        "Customer-controlled 360°"
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": []
+    }
+  ],
+  "checkout": {
+    "status": 409,
+    "body": "{\"error\":\"PRODUCT_RELEASE_NOT_RELEASED\"}",
+    "location": null
+  }
+}

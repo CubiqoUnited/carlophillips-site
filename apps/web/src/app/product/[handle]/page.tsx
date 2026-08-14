@@ -16,7 +16,7 @@ import {
 import { loadShopifyProduct } from '@/lib/providers/shopify/storefront-product-adapter';
 import { getProductReleaseEvidence } from '@/lib/releases/product-release-registry';
 import { getApprovedCampaignAsset } from '@/lib/media/campaign-registry';
-import { projectPodpipeSequence } from '@/lib/media/sequences/podpipe';
+import { projectPodpipeSequence } from '@repo/product-pipeline';
 import type {
   CartActivationSummary,
   CommerceEnvironment,
@@ -105,9 +105,34 @@ export default async function ProductPage({
     return <CommerceProductUnavailable decision={decision} />;
   }
 
-  const reviewedCommerce =
-    decision.source === 'shopify'
+  const releaseShopify = releaseEvidence?.releaseRecord.shopify;
+  const releaseBinding =
+    decision.source === 'shopify' &&
+    releaseEvidence &&
+    releaseShopify?.variantFingerprintStatus === 'observed' &&
+    releaseShopify.commerceFactsFingerprintStatus === 'reviewed' &&
+    releaseShopify.observationFingerprintStatus === 'reviewed' &&
+    typeof releaseShopify.variantFingerprint === 'string' &&
+    typeof releaseShopify.commerceFactsFingerprint === 'string' &&
+    typeof releaseShopify.observationFingerprint === 'string' &&
+    product.variantFingerprint === releaseShopify.variantFingerprint &&
+    product.commerceFactsFingerprint ===
+      releaseShopify.commerceFactsFingerprint &&
+    product.observationFingerprint === releaseShopify.observationFingerprint
       ? {
+          releaseId: releaseEvidence.releaseRecord.releaseId,
+          handle,
+          variantFingerprint: releaseShopify.variantFingerprint,
+          commerceFactsFingerprint: releaseShopify.commerceFactsFingerprint,
+          observationFingerprint: releaseShopify.observationFingerprint,
+        }
+      : null;
+  const reviewedCommerce = releaseBinding
+    ? {
+        approvalStatus: 'reviewed' as const,
+        sourceAuthority: 'reviewed-shopify-observation' as const,
+        binding: releaseBinding,
+        data: {
           title: product.title,
           price: product.price,
           currency: product.currency,
@@ -124,14 +149,16 @@ export default async function ProductPage({
           sizeGuide: null,
           bagAllowed: Boolean(cartActivation?.cartAllowed),
           checkoutAllowed: false,
-        }
-      : null;
+        },
+      }
+    : null;
   const model3dRequirement = releaseEvidence?.mediaManifest?.requirements?.find(
     (requirement) => requirement.modality === 'model-3d-ar'
   );
   const podpipeSequence = projectPodpipeSequence({
     campaign: getApprovedCampaignAsset('at-edge-of-life-lofoten-runway-hero'),
     media: product.media,
+    releaseBinding,
     commerce: reviewedCommerce,
     fulfillment: null,
     model3dApplicable: model3dRequirement?.status !== 'infeasible-approved',

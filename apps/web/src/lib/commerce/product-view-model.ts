@@ -120,5 +120,8 @@ export function toProductViewModel(
     media: buildMediaViewerProjection({ media, title }),
     mediaReview: product.mediaReview || null,
     details: product.details || [],
+    variantFingerprint: product.variantFingerprint,
+    commerceFactsFingerprint: product.commerceFactsFingerprint,
+    observationFingerprint: product.observationFingerprint,
   };
 }

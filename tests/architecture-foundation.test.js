@@ -130,7 +130,7 @@ describe('final architecture acceptance', () => {
     expect(workflow).toContain('yarn install --frozen-lockfile');
     expect(workflow).toContain('yarn typecheck');
     expect(workflow).toContain('yarn stylelint');
-    expect(preCommit).toContain('yarn lint-staged');
-    expect(commitMessage).toContain('yarn commitlint');
+    expect(preCommit).toContain('node_modules/.bin/lint-staged');
+    expect(commitMessage).toContain('node_modules/.bin/commitlint');
   });
 });

@@ -1,10 +1,27 @@
 import type { ViewerMediaItem } from '../media/types';
+import type {
+  Blocker,
+  MediaAsset,
+  MediaManifest,
+  MediaRequirement,
+  ReleaseEvidence,
+  ReleaseRecord,
+  ReleaseState,
+} from '@repo/product-pipeline';
+
+export type {
+  Blocker,
+  MediaAsset,
+  MediaManifest,
+  MediaRequirement,
+  ReleaseEvidence,
+  ReleaseRecord,
+  ReleaseState,
+} from '@repo/product-pipeline';
 
 export type CommerceEnvironment = 'local' | 'preview' | 'production';
 export type CommerceMode = 'fixture' | 'shopify';
 export type CommerceSource = CommerceMode | 'unavailable';
-export type ReleaseState =
-  'draft' | 'staged' | 'approved' | 'released' | 'withdrawn';
 
 export interface SelectedOption {
   name: string;
@@ -138,112 +155,6 @@ export interface ReleaseDecision {
   commerceAllowed: boolean;
   reason: string;
   product: RuntimeProduct | null;
-}
-
-export interface MediaAsset {
-  assetId: string;
-  kind: string;
-  approvalStatus?: string;
-  exactProductMatch?: string;
-  rightsStatus?: string;
-  publicPath?: string;
-  alt?: string;
-  modalities?: string[];
-  onBodyPose?: string;
-  constructionDetail?: string;
-  motionRole?: string;
-  fallbackAssetId?: string;
-  quality?: { status?: string; evidence?: string };
-  source?: { type?: string };
-  storefrontBinding?: {
-    adapter?: string;
-    referenceHash?: string;
-    evidence?: string;
-  };
-  spinEvidence?: {
-    sourceType?: string;
-    frameCount?: number;
-    rotationTestEvidence?: string;
-  };
-  modelEvidence?: {
-    formats?: string[];
-    loadTestEvidence?: string;
-    arClaimed?: boolean;
-    arTestEvidence?: string;
-  };
-  presentation?: Record<string, unknown>;
-  [key: string]: unknown;
-}
-
-export interface MediaRequirement {
-  modality: string;
-  requirement: string;
-  status: string;
-  assetIds: string[];
-  infeasibilityBlocker?: { approvalStatus?: string };
-}
-
-export interface MediaManifest {
-  releaseId: string;
-  requirements: MediaRequirement[];
-  assets: MediaAsset[];
-  [key: string]: unknown;
-}
-
-export interface ReleaseRecord {
-  releaseId: string;
-  state: ReleaseState;
-  shopify: {
-    handle: string;
-    variantFingerprint?: string;
-    variantFingerprintStatus?: string;
-    commerceFactsFingerprint?: string;
-    commerceFactsFingerprintStatus?: string;
-    observationFingerprint?: string;
-    observationFingerprintStatus?: string;
-    observationReviewEvidence?: string;
-    [key: string]: unknown;
-  };
-  fulfillmentMappings: Array<{
-    variantFingerprintStatus?: string;
-    variantFingerprint?: string | null;
-  }>;
-  candidate: {
-    gitCommit?: string | null;
-    buildEvidence?: string | null;
-    stagingEvidence?: string | null;
-    responsiveEvidence?: string | null;
-    performanceEvidence?: string | null;
-    tokenEvidence?: string | null;
-  };
-  rollback: {
-    strategy?: string | null;
-    planEvidence?: string | null;
-    previousReleaseId?: string | null;
-    verificationEvidence?: string | null;
-  };
-  physicalSample?: {
-    status?: string;
-    sampleReference?: string | null;
-    evidence?: string | null;
-    fit?: string;
-    colour?: string;
-    artworkPlacement?: string;
-    finish?: string;
-  } | null;
-  approvals: Record<'product' | 'media' | 'fulfillment', { status: string }>;
-  [key: string]: unknown;
-}
-
-export interface ReleaseEvidence {
-  releaseRecord: ReleaseRecord;
-  mediaManifest: MediaManifest;
-}
-
-export interface Blocker {
-  code: string;
-  humanAction: string;
-  resumePoint: string;
 }
 
 export interface CapabilityEntry {
