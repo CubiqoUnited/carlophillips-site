@@ -1,9 +1,9 @@
 {
   "schemaVersion": "cp.admin-visual-qa.v1",
-  "capturedAt": "2026-08-14T17:34:55.197Z",
+  "capturedAt": "2026-08-14T17:39:11.484Z",
   "baseUrl": "http://localhost:3100",
-  "gitCommit": "d07507df33047b478929b909a637f7b85a7c531a",
-  "candidateState": "working-tree",
+  "gitCommit": "1ea82ef581b65377c50e503d8ea68b8953eda2bc",
+  "candidateState": "clean-commit",
   "browser": "Playwright Chromium headless",
   "visibility": "background; no focus or foreground window",
   "viewports": [

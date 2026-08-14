@@ -2,7 +2,7 @@
 
 Date: 2026-08-14
 Branch: `codex/cp-e2e-admin-control-plane`
-Source state: working candidate based on `d07507d`; exact clean commit binding follows the implementation commit
+Source state: exact clean implementation commit `1ea82ef581b65377c50e503d8ea68b8953eda2bc`
 Environment: local only; no GitHub, Vercel, Shopify, POD, payment, order, or Production mutation
 
 ## Outcome
