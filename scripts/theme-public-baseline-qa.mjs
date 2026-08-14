@@ -7,6 +7,8 @@ import sharp from 'sharp';
 
 const baselineUrl = process.env.CP_QA_BASELINE_URL;
 const candidateUrl = process.env.CP_QA_CANDIDATE_URL;
+const baselineCommit = process.env.CP_QA_BASELINE_COMMIT || 'f566ef7';
+const candidateState = process.env.CP_QA_CANDIDATE_STATE || 'working-tree';
 const reportRoot = path.resolve(
   process.env.CP_QA_REPORT_DIR || 'test_reports/cp-admin-theme-tokens-2026-08-14'
 );
@@ -19,7 +21,7 @@ const viewports = [
   { id: 'desktop-1440x1000', width: 1440, height: 1000 },
   { id: 'mobile-390x844', width: 390, height: 844 },
 ];
-const baselineRoot = path.join(reportRoot, 'baseline-f566ef7');
+const baselineRoot = path.join(reportRoot, `baseline-${baselineCommit.replaceAll(/[^a-zA-Z0-9._-]/g, '-')}`);
 const candidateRoot = path.join(reportRoot, 'comparison-candidate');
 await fs.mkdir(baselineRoot, { recursive: true });
 await fs.mkdir(candidateRoot, { recursive: true });
@@ -160,8 +162,8 @@ const browser = await chromium.launch({ headless: true });
 let baseline;
 let candidate;
 try {
-  baseline = await captureSurface(browser, 'f566ef7', baselineUrl, baselineRoot);
-  candidate = await captureSurface(browser, 'working-tree', candidateUrl, candidateRoot);
+  baseline = await captureSurface(browser, baselineCommit, baselineUrl, baselineRoot);
+  candidate = await captureSurface(browser, candidateState, candidateUrl, candidateRoot);
 } finally {
   await browser.close();
 }
@@ -209,8 +211,8 @@ const report = {
   capturedAt: new Date().toISOString(),
   browser: 'Playwright Chromium headless',
   visibility: 'background; no focus or foreground window',
-  baseline: { commit: 'f566ef7', url: baselineUrl },
-  candidate: { state: 'working-tree', url: candidateUrl },
+  baseline: { commit: baselineCommit, url: baselineUrl },
+  candidate: { state: candidateState, url: candidateUrl },
   viewports,
   routes,
   passed,

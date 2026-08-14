@@ -6,7 +6,7 @@ Updated: 2026-08-14
 
 The live Signature Hoodie PDP was independently observed showing `Continue to checkout` while the canonical Product Release Record is Draft, required fingerprints and approvals are missing, rollback verification is null, and the Media Registry has zero storefront bindings. A historical single-product launch file bypassed the canonical release and media gates.
 
-The tested candidate on branch `codex/cp-e2e-admin-control-plane` removes that authority path, denies checkout before any Shopify read or cart mutation, and requires an independent `checkoutAllowed` decision before the PDP can render a checkout form. This local change does not alter Production.
+The tested candidate on branch `codex/cp-e2e-admin-control-plane` (source commit `05d3d72`) removes that authority path, denies checkout before any Shopify read or cart mutation, and requires an independent `checkoutAllowed` decision before the PDP can render a checkout form. It also contains the local Product Owner-only Theme proposal screen. Source QA passes 39 files / 374 tests and the integrated browser matrix passes 459/459 checks. This local change does not alter Production.
 
 ## Exact human action
 
