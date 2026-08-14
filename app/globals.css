@@ -1781,6 +1781,7 @@
   }
 
   .cp-commerce-explanation {
+    color: var(--cp-component-commerce-explanation-color);
     margin-top: var(--cp-semantic-space-4);
     font-size: var(--cp-semantic-font-size-wordmark);
     line-height: var(--cp-semantic-font-line-height-relaxed);
