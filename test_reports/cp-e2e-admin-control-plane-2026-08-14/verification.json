@@ -1,0 +1,2218 @@
+{
+  "schemaVersion": "cp.admin-visual-qa.v1",
+  "capturedAt": "2026-08-14T16:43:18.526Z",
+  "baseUrl": "http://127.0.0.1:3100",
+  "gitCommit": "c79d40f33231a6daf95854c21b5a1428245cb6c2",
+  "candidateState": "working-tree",
+  "browser": "Playwright Chromium headless",
+  "visibility": "background; no focus or foreground window",
+  "viewports": [
+    {
+      "id": "desktop-1440x1000",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "id": "tablet-1024x768",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "id": "mobile-390x844",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "route": "/admin"
+    },
+    {
+      "id": "drops",
+      "route": "/admin/drops"
+    },
+    {
+      "id": "runs",
+      "route": "/admin/runs"
+    },
+    {
+      "id": "products",
+      "route": "/admin/products"
+    },
+    {
+      "id": "media",
+      "route": "/admin/media"
+    },
+    {
+      "id": "releases",
+      "route": "/admin/releases"
+    },
+    {
+      "id": "approvals",
+      "route": "/admin/approvals"
+    },
+    {
+      "id": "publication",
+      "route": "/admin/publication"
+    },
+    {
+      "id": "orders",
+      "route": "/admin/orders"
+    },
+    {
+      "id": "post-sale",
+      "route": "/admin/post-sale"
+    },
+    {
+      "id": "analytics",
+      "route": "/admin/analytics"
+    },
+    {
+      "id": "capabilities",
+      "route": "/admin/capabilities"
+    },
+    {
+      "id": "audit",
+      "route": "/admin/audit"
+    }
+  ],
+  "comparisons": [
+    "comparisons/admin-overview-responsive.png",
+    "comparisons/admin-sections-desktop-contact-sheet.png"
+  ],
+  "publicRoutes": [
+    "/",
+    "/shop",
+    "/products/carlophillips-signature-hoodie",
+    "/bag"
+  ],
+  "passed": true,
+  "findingCount": 344,
+  "failures": [],
+  "findings": [
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/drops",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/drops",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/runs",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/runs",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/products",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/products",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/media",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/media",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/releases",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/releases",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/approvals",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/approvals",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/publication",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/publication",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/orders",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/orders",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/post-sale",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/post-sale",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/analytics",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/analytics",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/capabilities",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/capabilities",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/audit",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "route": "/admin/audit",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Admin route matrix emits no console errors.",
+      "viewport": "desktop-1440x1000",
+      "consoleErrors": []
+    },
+    {
+      "passed": true,
+      "message": "Admin route matrix has no failed requests.",
+      "viewport": "desktop-1440x1000",
+      "requestFailures": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/drops",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/drops",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/runs",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/runs",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/products",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/products",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/media",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/media",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/releases",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/releases",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/approvals",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/approvals",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/publication",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/publication",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/orders",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/orders",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/post-sale",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/post-sale",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/analytics",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/analytics",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/capabilities",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/capabilities",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/audit",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "tablet-1024x768",
+      "route": "/admin/audit",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Admin route matrix emits no console errors.",
+      "viewport": "tablet-1024x768",
+      "consoleErrors": []
+    },
+    {
+      "passed": true,
+      "message": "Admin route matrix has no failed requests.",
+      "viewport": "tablet-1024x768",
+      "requestFailures": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/drops",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/drops"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/drops",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/runs",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/runs"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/runs",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/products",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/products"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/products",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/media",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/media"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/media",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/releases",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/releases"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/releases",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/approvals",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/approvals"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/approvals",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/publication",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/publication"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/publication",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/orders",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/orders"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/orders",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/post-sale",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/post-sale"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/post-sale",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/analytics",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/analytics"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/analytics",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/capabilities",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/capabilities"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/capabilities",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Authorized admin route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/audit",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Admin metadata is noindex.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no forms.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Read-only admin contains no buttons.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no horizontal viewport overflow.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes no raw Shopify or POD reference.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route exposes a labelled active navigation state.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/audit"
+    },
+    {
+      "passed": true,
+      "message": "Admin route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "route": "/admin/audit",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Admin route matrix emits no console errors.",
+      "viewport": "mobile-390x844",
+      "consoleErrors": []
+    },
+    {
+      "passed": true,
+      "message": "Admin route matrix has no failed requests.",
+      "viewport": "mobile-390x844",
+      "requestFailures": []
+    },
+    {
+      "passed": true,
+      "message": "Unauthenticated admin request is indistinguishable from a missing page.",
+      "status": 404
+    },
+    {
+      "passed": true,
+      "message": "Denied response exposes no operational vocabulary."
+    },
+    {
+      "passed": true,
+      "message": "Public regression route returns HTTP 200.",
+      "route": "/",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Public regression route has no horizontal overflow.",
+      "route": "/"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route contains no admin navigation.",
+      "route": "/"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route exposes no provider name or raw provider reference.",
+      "route": "/"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route has no broken decoded images.",
+      "route": "/",
+      "brokenImages": []
+    },
+    {
+      "passed": true,
+      "message": "Public regression route returns HTTP 200.",
+      "route": "/shop",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Public regression route has no horizontal overflow.",
+      "route": "/shop"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route contains no admin navigation.",
+      "route": "/shop"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route exposes no provider name or raw provider reference.",
+      "route": "/shop"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route has no broken decoded images.",
+      "route": "/shop",
+      "brokenImages": []
+    },
+    {
+      "passed": true,
+      "message": "Public regression route returns HTTP 200.",
+      "route": "/products/carlophillips-signature-hoodie",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Public regression route has no horizontal overflow.",
+      "route": "/products/carlophillips-signature-hoodie"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route contains no admin navigation.",
+      "route": "/products/carlophillips-signature-hoodie"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route exposes no provider name or raw provider reference.",
+      "route": "/products/carlophillips-signature-hoodie"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route has no broken decoded images.",
+      "route": "/products/carlophillips-signature-hoodie",
+      "brokenImages": []
+    },
+    {
+      "passed": true,
+      "message": "Public regression route returns HTTP 200.",
+      "route": "/bag",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Public regression route has no horizontal overflow.",
+      "route": "/bag"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route contains no admin navigation.",
+      "route": "/bag"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route exposes no provider name or raw provider reference.",
+      "route": "/bag"
+    },
+    {
+      "passed": true,
+      "message": "Public regression route has no broken decoded images.",
+      "route": "/bag",
+      "brokenImages": []
+    },
+    {
+      "passed": true,
+      "message": "Public regression route matrix emits no console errors.",
+      "consoleErrors": []
+    },
+    {
+      "passed": true,
+      "message": "Public regression route matrix has no failed requests.",
+      "requestFailures": []
+    },
+    {
+      "passed": true,
+      "message": "Checkout endpoint denies the canonical Draft release.",
+      "status": 409
+    },
+    {
+      "passed": true,
+      "message": "Checkout denial names the canonical release-state gate.",
+      "error": "PRODUCT_RELEASE_NOT_RELEASED"
+    }
+  ]
+}

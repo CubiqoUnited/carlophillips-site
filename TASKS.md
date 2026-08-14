@@ -416,7 +416,7 @@
 - [x] Add explicit capability entries for payment/order, fulfillment, tracking, support, returns/refunds, reviews, analytics, admin identity/audit, webhooks, and durable execution.
 - [x] Implement the local-only read-only `/admin` control plane across all required information areas with server access enforcement, noindex, sanitization, and no mutation UI.
 - [x] Pass focused and full source checks: zero-warning lint, 38 files / 363 tests, whitespace validation, and optimized build.
-- [ ] Capture and inspect authorized/denied admin plus public-regression evidence at 1440×1000, 1024×768, and 390×844; record console, network, overflow, accessibility, raw-ID, and checkout-denial results.
+- [x] Capture and inspect authorized/denied admin plus public-regression evidence at 1440×1000, 1024×768, and 390×844; 344/344 checks cover console, network, decoded media, overflow, accessibility, provider/raw-ID leakage, and canonical Draft checkout denial.
 - [ ] Bind the final candidate commit and evidence report after reconciling any independently completed architecture task without touching its dirty worktree.
 - [ ] Product Owner authorizes a new immutable fail-closed Preview; no Preview deployment is implied by this local task.
 - [ ] Product Owner reviews exact Preview containment evidence and separately authorizes or rejects Production containment.
