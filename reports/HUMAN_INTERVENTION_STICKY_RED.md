@@ -103,3 +103,31 @@ Updated: 2026-08-14
 ## Completion signal and resume point
 
 Use the exact signals above. Sushma then records the evidence, integrates the selected candidate on a temporary branch, runs the complete CI-equivalent and Preview QA, and returns a go/no-go brief. No signal by itself authorizes merge, Production promotion, tracking enablement, Shopify publication, checkout, purchase, or billing changes.
+
+---
+
+# HUMAN INTERVENTION REQUIRED — ENABLE CI/CD PROTECTION AFTER FIRST GREEN RUN
+
+Added: 2026-08-14
+
+Status: **PR #10 is merged and the first `CI / Verify` run on `main` was reported green. Repository/environment protection must still be verified and configured before Production workflow enablement.**
+
+## Exact safe order
+
+1. Verify PR #10 is merged as `cd5c64d24481311b2ca195768e2250ed28eff2c6` and the `CI / Verify` run on that exact `main` commit is green.
+2. In GitHub repository rulesets, protect `main`: require pull requests, at least one approval, required status `CI / Verify`, and block force-push and deletion. Do not require the stale Vercel fork-policy status.
+3. In GitHub Environments → `Production`, add at least one required reviewer. Disable administrator bypass if repository policy permits.
+4. In `Production`, add `VERCEL_TOKEN` as an environment secret. Add `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` as environment variables. Do not share or print any credential value.
+5. Only after the reviewer rule is visible, add `CP_PRODUCTION_PROMOTION_ENABLED=true` as a `Production` environment variable.
+6. Return to the active Codex task and signal `CI/CD protection configured`. Do not dispatch the release-candidate workflow without approval to create that exact no-domain Vercel candidate. Do not dispatch Production promotion without the candidate receipt's exact deployment ID, SHA, release, and `productionBeforeDeploymentId`, review of that exact candidate, and a separate Product Owner release decision.
+
+## Cost and risk
+
+- GitHub/Vercel configuration has no intended charge, but Vercel use remains subject to the account plan.
+- A wrong secret scope can expose deployment authority; keep `VERCEL_TOKEN` only in the protected `Production` environment and never place it in pull-request jobs or repository files.
+- A required status configured before its first check exists can deadlock merges. That is why the green run comes first.
+- The Production workflow automatically rolls back after a failed post-promotion gate, but workflows do not replace Product Owner approval or live-release supervision.
+
+## Resume point
+
+After `CI/CD protection configured`, verify the ruleset, environment reviewer, variable names, and secret name read-only. Do not reveal values. A release candidate must be a staged Production build with no CARLOPHILLIPS domain aliases. Production remains unchanged until a separately approved promotion dispatch.

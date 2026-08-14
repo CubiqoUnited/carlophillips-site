@@ -29,6 +29,7 @@ describe('tooling and supported-runtime policy', () => {
     const ignored = readFileSync('.vercelignore', 'utf8');
 
     for (const path of [
+      '.github/',
       '.env.*',
       '.git/',
       '.vercel/',

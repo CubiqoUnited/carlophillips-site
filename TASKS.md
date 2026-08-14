@@ -73,9 +73,22 @@
 - [x] Publish the corrected follow-up as PR #9 after PR #8 merged the superseded candidate without Production promotion.
 - [x] Correct the measured Production parity roles through dedicated tokens and pass 222/222 live-Production geometry checks plus the complete interaction/media matrix; retain the subsequent manual Preview UAT NO-GO evidence for its commerce background and accessible media copy.
 - [x] Correct the final UAT deltas through dedicated deep-canvas/base and black/PDP component tokens plus provider-neutral AI-assisted accessible-media presentation; pass the 18-route desktop/compact/mobile health/background matrix and save 21 screenshots with nine same-dimension comparisons.
-- [ ] Publish a new manual Preview explicitly metadata-bound to the final correction commit; treat the automatic fork-policy Vercel `FAILURE` as non-runtime evidence.
-- [ ] Receive independent desktop/compact/mobile UAT and integration GO for that exact commit-bound Preview.
-- [ ] Product Owner merges the exact reviewed PR to canonical `main`; then promote that exact artifact, verify both live aliases, and retain the recorded rollback anchor.
+- [x] Publish replacement manual Preview `dpl_5GTRSMYWSodpHrCYoEvnB9DGGiZa`, explicitly metadata-bound to final head `f82733ca`; treat the automatic fork-policy Vercel `FAILURE` as non-runtime evidence.
+- [x] Receive independent desktop/compact/mobile UAT GO and Integration GO for that exact commit-bound Preview.
+- [x] Merge the exact reviewed PR #9 to canonical `main` as `cd1cd771`, with parents `9b153bf1` and `f82733ca`; verify that merging created no Vercel deployment.
+- [ ] Promote an approved artifact only through the separately authorized release path; verify both live aliases and retain the recorded rollback anchor.
+
+## CI/CD bootstrap after PR #9
+
+- [x] Create isolated `codex/cp-cicd-bootstrap` from canonical `main` at `cd1cd771` without touching the dirty primary checkout or display branch.
+- [x] Add `CI / Verify` for pull requests and pushes to `main` using read-only permissions, Node.js 24, Yarn Classic 1.22.22, frozen install, concurrency cancellation, and `yarn verify`.
+- [x] Add a protected manual Vercel release-candidate workflow with pinned CLI, canonical-main binding, Production commerce semantics, checkout disabled, `--prod --skip-domain`, immutable metadata, live-domain non-assignment proof, route/PDP smoke checks, and retained receipts.
+- [x] Add manual Production promotion with required-reviewer and enable-variable gates, shared candidate/promotion concurrency, exact candidate/main/reviewed-anchor verification, no Production environment pull, no build or redeploy command, same-deployment identity proof, fail-closed route/PDP checks, and deterministic rollback reconciliation for ambiguous post-attempt failure.
+- [x] Scope the Vercel credential only to Vercel CLI steps in the protected `Production` environment; use protected environment variables for organization/project IDs, expose no deployment authority to pull-request CI, and remove pulled candidate environment data before artifact upload.
+- [x] Re-run 22/22 focused policy and executable receipt/rollback checks, all three workflow YAML parses, both verifier scripts, full `yarn verify` (37 files / 364 tests, zero vulnerabilities, 13-route build), secret/diff audits, and confirm byte-identical desktop/mobile visual evidence; stop the two disposable QA servers.
+- [ ] Push the automation branch and open a separate draft PR; receive Aarti architecture GO and the first green `CI / Verify` run.
+- [ ] After green CI, configure the `main` ruleset requiring PRs, one approval, `CI / Verify`, and blocked force-push/deletion; do not require the stale Vercel fork-policy status.
+- [ ] Add a required reviewer, `VERCEL_TOKEN` secret, and `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` variables to GitHub `Production`, then set `CP_PRODUCTION_PROMOTION_ENABLED=true`. Workflows alone grant no release authority.
 
 ## Version milestones
 
