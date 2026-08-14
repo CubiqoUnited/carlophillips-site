@@ -11,16 +11,17 @@ import readiness from '../config/end-to-end-capability-map.json';
 import adminCommandSchema from '../contracts/admin-command.schema.json';
 import operationalEventSchema from '../contracts/operational-event.schema.json';
 import readinessSchema from '../contracts/end-to-end-capability-map.schema.json';
-import { evaluateAdminAccess } from '../lib/admin/access-policy';
+import { evaluateAdminAccess, resolveAdminRuntimeSurface } from '../lib/admin/access-policy';
 import { adminSections, deriveAdminControlPlane } from '../lib/admin/control-plane';
 
 const validToken = 'cp-local-review-token-is-at-least-32-characters';
+const validOwnerToken = 'cp-product-owner-token-is-distinct-and-at-least-32-characters';
 const ajv = new Ajv2020({ allErrors: true });
 addFormats(ajv);
 
 describe('local read-only admin access', () => {
   it('denies absent, disabled, short-token, malformed, and external requests', () => {
-    const base = { authorization: `Bearer ${validToken}`, expectedToken: validToken, reviewEnabled: true, runtimeSurface: 'local' };
+    const base = { authorization: `Bearer ${validToken}`, expectedToken: validToken, expectedProductOwnerToken: validOwnerToken, reviewEnabled: true, runtimeSurface: 'local' };
     expect(evaluateAdminAccess({ ...base, authorization: null }).allowed).toBe(false);
     expect(evaluateAdminAccess({ ...base, reviewEnabled: false }).allowed).toBe(false);
     expect(evaluateAdminAccess({ ...base, expectedToken: 'short' }).allowed).toBe(false);
@@ -30,9 +31,22 @@ describe('local read-only admin access', () => {
   });
 
   it('allows only the exact configured local bearer token', () => {
-    expect(evaluateAdminAccess({ authorization: `Bearer ${validToken}`, expectedToken: validToken, reviewEnabled: true, runtimeSurface: 'local' }))
-      .toEqual({ allowed: true, reason: 'local_read_only_review' });
-    expect(evaluateAdminAccess({ authorization: `Bearer ${validToken}x`, expectedToken: validToken, reviewEnabled: true, runtimeSurface: 'local' }).allowed).toBe(false);
+    const base = { expectedToken: validToken, expectedProductOwnerToken: validOwnerToken, reviewEnabled: true, runtimeSurface: 'local' };
+    expect(evaluateAdminAccess({ ...base, authorization: `Bearer ${validToken}` }))
+      .toEqual({ allowed: true, reason: 'local_read_only_review', role: 'reviewer' });
+    expect(evaluateAdminAccess({ ...base, authorization: `Bearer ${validToken}x` }).allowed).toBe(false);
+  });
+
+  it('requires a distinct Product Owner credential and denies every non-local surface', () => {
+    const base = { authorization: `Bearer ${validOwnerToken}`, expectedToken: validToken, expectedProductOwnerToken: validOwnerToken, reviewEnabled: true, runtimeSurface: 'local', requiredRole: 'product_owner' };
+    expect(evaluateAdminAccess(base)).toEqual({ allowed: true, reason: 'local_product_owner_review', role: 'product_owner' });
+    expect(evaluateAdminAccess({ ...base, authorization: `Bearer ${validToken}` })).toMatchObject({ allowed: false, reason: 'product_owner_required' });
+    expect(evaluateAdminAccess({ ...base, expectedProductOwnerToken: validToken })).toMatchObject({ allowed: false, reason: 'role_tokens_must_be_distinct' });
+    for (const runtimeSurface of ['vercel-preview', 'vercel-production', 'commerce-preview', 'commerce-production', 'commerce-unconfigured']) {
+      expect(evaluateAdminAccess({ ...base, runtimeSurface }).allowed, runtimeSurface).toBe(false);
+    }
+    expect(resolveAdminRuntimeSurface({ vercelEnvironment: null, commerceEnvironment: 'production' })).toBe('commerce-production');
+    expect(resolveAdminRuntimeSurface({ vercelEnvironment: 'preview', commerceEnvironment: 'local' })).toBe('vercel-preview');
   });
 });
 
@@ -41,7 +55,7 @@ describe('admin operational projection', () => {
 
   it('covers the complete protected information architecture', () => {
     expect(adminSections.map(section => section.id)).toEqual([
-      'overview', 'drops', 'runs', 'products', 'media', 'releases', 'approvals', 'publication', 'orders', 'post-sale', 'analytics', 'capabilities', 'audit',
+      'overview', 'theme', 'drops', 'runs', 'products', 'media', 'releases', 'approvals', 'publication', 'orders', 'post-sale', 'analytics', 'capabilities', 'audit',
     ]);
   });
 
@@ -114,6 +128,7 @@ describe('admin operational projection', () => {
     const route = readFileSync('app/admin/[[...section]]/page.js', 'utf8');
     const layout = readFileSync('app/admin/layout.js', 'utf8');
     const component = readFileSync('components/admin/control-plane.jsx', 'utf8');
+    const editor = readFileSync('components/admin/theme-editor.jsx', 'utf8');
     const customerSources = [
       'app/page.js',
       'components/storefront/home-storefront.jsx',
@@ -124,6 +139,12 @@ describe('admin operational projection', () => {
     expect(route.indexOf('requireLocalAdminAccess')).toBeLessThan(route.indexOf('loadAdminControlPlane'));
     expect(layout).toContain('index: false');
     expect(component).not.toMatch(/<button|<form|onClick|action=/);
+    expect(component).toContain("section.id !== 'theme' || viewerRole === 'product_owner'");
+    expect(route).toContain("activeSection === 'theme' ? 'product_owner' : null");
+    expect(editor).toContain('Exactly four token values. No layout changes.');
+    expect(editor).toContain('Save branch proposal');
+    expect(editor).toContain('local, uncommitted repository proposal');
+    expect(editor).toContain('THEME_REVISION_STALE');
     expect(customerSources).not.toContain('/admin');
   });
 });

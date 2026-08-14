@@ -6,10 +6,12 @@ Visible baseline: approved production artifact `bb9568f`. The binding compositio
 
 ## Authority and dependency
 
-`app/design-tokens.css` is the sole canonical raw-value source for active CARLOPHILLIPS presentation decisions. The dependency is strict and one-way:
+`theme.json` is the sole Product Owner-editable source for accent colour, corner radius, base spacing, and base text weight. Its validated server-rendered CSS bridge supplies those primitives (and the spacing scale derived from base spacing) before `app/design-tokens.css` maps them into the established semantic and component tiers. `app/design-tokens.css` remains the authority for every other active CARLOPHILLIPS presentation decision. The dependency is strict and one-way:
 
 ```text
---cp-primitive-*
+ theme.json controlled values
+   -> --cp-primitive-* controlled roots/derived spacing
+ --cp-primitive-* static values
   -> --cp-semantic-*
     -> --cp-component-*
       -> app/globals.css cp-* rules
@@ -18,7 +20,9 @@ Visible baseline: approved production artifact `bb9568f`. The binding compositio
 
 The naming grammar is `--cp-[tier]-[category]-[concept]-[variant]-[state]`. Every token is lowercase kebab-case under `--cp-*`. Primitive declarations contain raw values and no token references. Semantic declarations reference primitives only. Component declarations reference semantics only. Active CSS may consume semantic or component roles, never primitives.
 
-Active JSX uses `cp-*` classes only. Inline styles, arbitrary utility values, literal `sizes`/responsive-media contracts, icon stroke props, raw visual colours, and raw CSS dimensions or motion values are prohibited by deterministic tests.
+Active JSX uses `cp-*` classes only. Inline styles, arbitrary utility values, literal `sizes`/responsive-media contracts, icon stroke props, raw visual colours, and raw CSS dimensions or motion values are prohibited by deterministic tests. The only dynamic style object is the contained Theme-screen proposal preview; it receives validated proposed values and cannot change page structure.
+
+Tailwind and its configuration were deliberately removed as dormant v1.2.2 tooling. The current storefront has no active Tailwind surface. Any future Tailwind adapter must read the same root `theme.json`; it may not introduce a second theme value source.
 
 ## Domain coverage
 
@@ -82,7 +86,7 @@ The Production-parity harness compares the exact PR #9 Preview DOM plus the loca
 
 ## Governance
 
-- A raw visual value added outside `app/design-tokens.css` is a release blocker unless it is an unavoidable serializer literal added to `runtime-contract.js`, documented here, and mechanically bound back to CSS.
+- A raw visual value added outside `theme.json` or `app/design-tokens.css` is a release blocker unless it is an unavoidable serializer literal added to `runtime-contract.js`, documented here, and mechanically bound back to CSS.
 - Token changes require naming, direction, closure, reachability, representative propagation, full tests/build, and screenshot comparison.
 - Customer composition changes require Product Owner approval and a new visual baseline; a token refactor alone must preserve the current approved pixels and behavior.
 - Removed scaffold is recoverable through Git and recorded in `docs/cleanup-manifest-v1.2.2.md`.

@@ -88,16 +88,20 @@ NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true
 
 This exposes a labeled, disabled review page. It does not fetch the Hoodie from Shopify and does not authorize publication or checkout.
 
-### Local read-only control plane
+### Local control plane
 
-The protected `/admin` prototype reads only sanitized committed artifacts. It is absent from public navigation, emits `noindex`, contains no mutation controls, and hard-denies every Vercel environment. Use a random local token of at least 32 characters in an ignored `.env.local`:
+The protected `/admin` prototype reads sanitized committed artifacts. It is absent from public navigation, emits `noindex`, and hard-denies every Vercel environment. All operational screens remain read-only. The Product Owner-only Theme screen is the sole bounded exception: it may atomically save exactly four validated values to root `theme.json` on a local `codex/*` branch. That save is an uncommitted repository proposal only; it creates no commit, PR, Preview, merge, publication, or Production change.
+
+Use distinct random local tokens of at least 32 characters in an ignored `.env.local`:
 
 ```bash
 CP_ADMIN_REVIEW_ENABLED=true
 CP_ADMIN_REVIEW_TOKEN=replace-with-a-random-local-token-at-least-32-characters
+CP_ADMIN_PRODUCT_OWNER_TOKEN=replace-with-a-different-random-local-token-at-least-32-characters
+CP_ADMIN_THEME_WRITES_ENABLED=false
 ```
 
-Send `Authorization: Bearer <token>` from a local test client. This prototype is not remote admin authentication, RBAC, durable persistence, or publication authority.
+Send `Authorization: Bearer <token>` from a local test client. General reviewers cannot see or open Theme. Theme writes additionally require `CP_ADMIN_THEME_WRITES_ENABLED=true`, same-origin POST, `NEXT_PUBLIC_COMMERCE_ENVIRONMENT=local`, and a temporary `codex/*` branch. This prototype is not remote authentication, durable RBAC/persistence, GitHub PR automation, deployment, or publication authority.
 
 ## Quality gates
 
@@ -135,6 +139,8 @@ Copy `.env.example` and supply values only in ignored local files or the appropr
 | `CORS_ORIGINS` | Exact comma-separated HTTP(S) origins allowed to call `/api` cross-origin; wildcards and paths are rejected |
 | `CP_ADMIN_REVIEW_ENABLED` | Enables the local-only read-only `/admin` review surface; every Vercel environment is denied |
 | `CP_ADMIN_REVIEW_TOKEN` | Server-only local bearer token with a minimum length of 32 characters; never use `NEXT_PUBLIC_` |
+| `CP_ADMIN_PRODUCT_OWNER_TOKEN` | Distinct server-only Product Owner bearer credential required to read or write Theme |
+| `CP_ADMIN_THEME_WRITES_ENABLED` | Explicit local feature-branch gate for atomic `theme.json` proposals; grants no commit/deploy authority |
 
 ## Response security
 
@@ -146,7 +152,7 @@ Storefront pages deny third-party framing with both `X-Frame-Options: DENY` and 
 app/                 routes; home, product, catalog, and bag/cart have dedicated server boundaries
 components/storefront/ VOLLBAK-aligned home receiving minimized server truth
 components/commerce/ reusable, non-buyable product/catalog and truthful bag presentation
-components/admin/    local-only read-only operational projection
+components/admin/    local operational projection plus Product Owner-only Theme proposal UI
 contracts/           machine-readable truth, observation, review, and release schemas
 config/end-to-end-capability-map.json readiness index; never overrides canonical truth artifacts
 releases/            evidence-bound release records and media manifests
@@ -156,6 +162,7 @@ lib/providers/       server-only provider adapters
 lib/shopify/         pure response normalization and read-only Storefront queries
 lib/orchestration/   creation jobs, PipelineRun state, capability policy
 lib/admin/           local access policy and sanitized server read model
+lib/theme/           exact four-token contract, CSS bridge, and local branch proposal boundary
 lib/releases/        non-mutating release-transition policy and exact blockers
 runs/                durable local simulations and blocker/resume evidence
 tests/               automated fitness and commerce-contract tests

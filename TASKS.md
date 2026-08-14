@@ -423,3 +423,14 @@
 - [ ] Verify Apliiq mapping and one physical sample through the sticky handoff; no spend is authorized yet.
 - [ ] Select identity/RBAC, durable event/read-model storage, connector owners, privacy/retention, cost, and incident boundaries before remote admin or mutations.
 - [ ] Run one separately approved controlled order through payment, POD receipt, fulfillment, shipment, tracking, support, return/refund, and review eligibility before claiming end-to-end readiness.
+
+# Product Owner-only Theme token proposals
+
+- [x] Keep the feature isolated on temporary branch `codex/cp-admin-theme-tokens`; do not merge, push, deploy, publish, or touch Production.
+- [x] Add root `theme.json` as the exact four-value authority for accent colour, corner radius, base spacing, and base text weight.
+- [x] Bind active semantic/component styling and the derived spacing scale to `theme.json`; keep the intentionally removed Tailwind surface absent.
+- [x] Restrict Theme read/write to a distinct server-only Product Owner credential and hide the navigation/direct route from reviewers.
+- [x] Enforce same-origin, local/Vercel/commerce-environment, explicit-write, `codex/*` branch, exact-schema, contrast, atomic-write, and stale-revision gates.
+- [x] Make the screen state exactly-four/no-layout scope, current/proposed values, local uncommitted proposal semantics, and the mandatory PR → Preview → review → merge path.
+- [x] Pass full lint/test/audit/build QA and capture inspected desktop/mobile Theme plus unchanged public storefront comparisons under `test_reports/`.
+- [x] Commit the verified scoped candidate and report the exact SHA; no push or deployment.

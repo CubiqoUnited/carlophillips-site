@@ -32,6 +32,14 @@ No fallback mock product or local-only cart may masquerade as a successful bound
 - Shopify-native image, video, external-video, and 3D records are rendered when real approved assets exist; each production candidate must satisfy its approved media matrix before release.
 - Spin/360, AR, try-on, on-model, campaign, and product-film claims stay absent until their source assets and rights are verified.
 
+## Admin Theme requirements
+
+- Theme editing is Product Owner-only and changes exactly four values: accent colour, corner radius, base spacing, and base text weight.
+- The sole editable authority is root `theme.json`; storefront semantic/component CSS must derive those values from it. The screen must never expose layout, component, section, page-structure, commerce, or release controls.
+- Accent proposals must preserve at least 4.5:1 contrast against both canonical dark canvases, and status meaning must never rely on accent colour alone.
+- A save is a same-origin, local-only, atomic, optimistic-revision-checked, uncommitted `codex/*` branch proposal. QA, commit, pull request, immutable Vercel Preview, Product Owner review, merge, and Production approval remain separate gates.
+- General review credentials cannot discover or read the Theme route. Vercel and non-local commerce environments deny Theme reads/writes; no theme action may write Production directly.
+
 ## Release gates
 
 - Products are hidden by default.

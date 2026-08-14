@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { adminSections, statusLabel } from '@/lib/admin/control-plane';
+import { ThemeEditor } from './theme-editor';
 import styles from '@/app/admin/admin.module.css';
 
 function Status({ value }) {
@@ -93,8 +94,17 @@ function Rows({ columns, rows, empty = 'No records in this read-only projection.
   );
 }
 
-function SectionView({ section, model }) {
+function SectionView({ section, model, themeModel }) {
   if (section === 'overview') return <Overview model={model} />;
+  if (section === 'theme') {
+    return (
+      <ThemeEditor
+        initialTheme={themeModel.theme}
+        initialFingerprint={themeModel.fingerprint}
+        workflow={themeModel.workflow}
+      />
+    );
+  }
   if (section === 'runs') return <Rows columns={[
     { key: 'capability', label: 'Work item' },
     { key: 'lane', label: 'Lane' },
@@ -143,18 +153,22 @@ function SectionView({ section, model }) {
   return <BlockerCards blockers={blockers} />;
 }
 
-export function AdminControlPlane({ activeSection, model }) {
+export function AdminControlPlane({ activeSection, model, themeModel, viewerRole }) {
   const definition = adminSections.find(section => section.id === activeSection);
+  const visibleSections = adminSections.filter(
+    section => section.id !== 'theme' || viewerRole === 'product_owner'
+  );
+  const isTheme = activeSection === 'theme';
   return (
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
         <div className={styles.brand}>
           <span>CARLOPHILLIPS</span>
           <strong>Control plane</strong>
-          <small>Local read-only review</small>
+          <small>{viewerRole === 'product_owner' ? 'Product Owner workspace' : 'Local read-only review'}</small>
         </div>
         <nav aria-label="Admin sections">
-          {adminSections.map(section => (
+          {visibleSections.map(section => (
             <Link key={section.id} href={section.id === 'overview' ? '/admin' : `/admin/${section.id}`} prefetch={false} aria-current={section.id === activeSection ? 'page' : undefined}>
               {section.label}
             </Link>
@@ -164,14 +178,14 @@ export function AdminControlPlane({ activeSection, model }) {
       <main id="main-content" className={styles.main}>
         <header className={styles.header}>
           <div>
-            <span className={styles.eyebrow}>Non-authoritative operational projection</span>
+            <span className={styles.eyebrow}>{isTheme ? 'Local repository token proposal' : 'Non-authoritative operational projection'}</span>
             <h1>{definition.label}</h1>
             <p>{definition.description}</p>
           </div>
-          <Status value={model.release.state} />
+          {isTheme ? <Status value="branch_proposal" /> : <Status value={model.release.state} />}
         </header>
-        <div className={styles.warning} role="status"><span aria-hidden="true">!</span><p>{model.meta.warning}</p></div>
-        <SectionView section={activeSection} model={model} />
+        <div className={styles.warning} role="status"><span aria-hidden="true">!</span><p>{isTheme ? 'Local repo proposal only. Production is unchanged; QA, pull request, Preview, review, and merge remain separate.' : model.meta.warning}</p></div>
+        <SectionView section={activeSection} model={model} themeModel={themeModel} />
       </main>
     </div>
   );

@@ -466,13 +466,13 @@
   }
 
   .cp-action-outline:hover {
-    border-color: var(--cp-semantic-color-ink);
-    background: var(--cp-semantic-color-ink);
+    border-color: var(--cp-component-action-accent-background);
+    background: var(--cp-component-action-accent-background);
     color: var(--cp-semantic-color-canvas);
   }
 
   .cp-action-solid {
-    background: var(--cp-semantic-color-ink);
+    background: var(--cp-component-action-accent-background);
     color: var(--cp-semantic-color-canvas);
   }
 

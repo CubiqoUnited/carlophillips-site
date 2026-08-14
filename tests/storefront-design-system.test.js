@@ -3,6 +3,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import postcss from 'postcss';
 import { describe, expect, it } from 'vitest';
 import { designSystemRuntimeContract } from '../lib/design-system/runtime-contract.js';
+import theme from '../theme.json';
+import { buildThemeCss } from '../lib/theme/theme-css.js';
 
 const tokenPath = 'app/design-tokens.css';
 const globalPath = 'app/globals.css';
@@ -24,6 +26,13 @@ function parseCss(file) {
   return postcss.parse(readFileSync(file, 'utf8'), { from: file });
 }
 
+function parseTokenAuthority() {
+  return postcss.parse(
+    `${buildThemeCss(theme)}\n${readFileSync(tokenPath, 'utf8')}`,
+    { from: tokenPath }
+  );
+}
+
 function references(value) {
   return [...value.matchAll(/var\((--cp-[a-z0-9-]+)/g)].map(match => match[1]);
 }
@@ -36,7 +45,7 @@ function declarations(root) {
 
 function tokenValues() {
   const values = new Map();
-  for (const declaration of declarations(parseCss(tokenPath))) {
+  for (const declaration of declarations(parseTokenAuthority())) {
     if (!values.has(declaration.prop)) values.set(declaration.prop, []);
     values.get(declaration.prop).push(declaration.value);
   }
@@ -74,7 +83,7 @@ function classLiterals(source) {
 
 describe('storefront design system', () => {
   it('enforces lowercase kebab-case names and strict primitive to semantic to component direction', () => {
-    const root = parseCss(tokenPath);
+    const root = parseTokenAuthority();
     const values = tokenValues();
 
     expect(values.size).toBeGreaterThan(100);
@@ -180,7 +189,7 @@ describe('storefront design system', () => {
     expect(globalMedia).toEqual(['(prefers-reduced-motion: reduce)']);
 
     const tokenMedia = [];
-    parseCss(tokenPath).walkAtRules('media', rule => tokenMedia.push(rule.params));
+    parseTokenAuthority().walkAtRules('media', rule => tokenMedia.push(rule.params));
     expect(tokenMedia).toEqual([
       '(min-width: 40rem)',
       '(min-width: 48rem)',
