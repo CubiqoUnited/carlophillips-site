@@ -42,6 +42,18 @@
 - [ ] Product Owner selects exact Shopify topics/shop, secret owner/storage/rotation, privacy/retention policy, durable database/queue, payload sanitizer, retry/dead-letter rules, and incident owner before any listener or subscription is created.
 - [ ] Implement and verify the authorized durable quarantine inbox/outbox and an explicit sanitized lifecycle bridge; never route a verified raw payload directly into the lifecycle reducer.
 
+## Current local P3: admin command authorization boundary
+
+- [x] Add a sanitized command-decision contract bound to the canonical reviewed command fingerprint without actor subject or target reference disclosure.
+- [x] Require exact authenticated identity, actor/role match, least-privilege capability/operation/environment/side-effect/target grant, and short command TTL.
+- [x] Require exact target/environment binding, non-empty unique evidence, capability registry operation/state, required approval records, and fresh connector evidence for any non-local operation.
+- [x] Require a fresh command-bound idempotency claim and ready command-bound audit decision; reject unavailable, replayed, conflicting, expired, or mismatched evidence.
+- [x] Enforce spend ceilings, rollback for write/publish/Production mutation, and Product Owner role for Production mutation.
+- [x] Prove malformed, pending, expired, premature, overlong, identity/RBAC, capability, approval, connector, target, evidence, idempotency, audit, cost, rollback, and Production-owner denials without invoking a connector.
+- [ ] Pass and bind full Yarn, browser, screenshot-inspection, and public zero-delta QA to an exact clean implementation commit.
+- [ ] Product Owner selects identity provider, initial users/roles/grants, session policy, durable database/idempotency/audit/outbox, retention/privacy, connector scopes, retry/dead-letter rules, spend ceilings, and incident owner before any remote admin or executor is wired.
+- [ ] Implement one authorized connector command at a time behind the policy and durable attempted/denied/approved/executed/failed/reconciled/rolled-back events; keep every unimplemented domain read-only.
+
 ## v1.2.2 design-system release candidate
 
 - [x] Create `codex/cp-v1-2-2-design-system-release` from clean `e3dc7c2` without touching the separate `/Users/edv/Documents/cp` checkout.

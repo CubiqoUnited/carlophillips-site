@@ -341,6 +341,20 @@
       "blocker": null
     },
     {
+      "capability": "admin-command-authorizer",
+      "selectedAdapter": "cp-admin-command-policy",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "observedAt": "2026-08-14",
+      "evidenceRef": "tests/admin-command-policy.test.js",
+      "allowedOperations": ["evaluate-reviewed-command"],
+      "requiresApproval": [],
+      "costGate": "pure local policy evaluation only; no identity provider, durable idempotency claim, append-only audit, connector invocation, external mutation, or Production authority",
+      "draftSafety": "requires exact identity, role grant, target/environment binding, capability, approvals, idempotency, audit, connector, cost, rollback, and Product Owner gates before returning a sanitized authorization decision",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
       "capability": "append-only-operational-audit",
       "selectedAdapter": null,
       "accessState": "unavailable",

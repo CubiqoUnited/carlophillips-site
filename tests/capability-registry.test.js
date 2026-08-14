@@ -126,6 +126,18 @@ describe('capability registry policy', () => {
     });
   });
 
+  it('registers only a local admin command policy, not a connector executor', () => {
+    expect(discoverCapability(
+      getCapabilityRegistry(),
+      'admin-command-authorizer',
+      'evaluate-reviewed-command'
+    )).toMatchObject({
+      status: 'ready',
+      callableSurface: 'local',
+      operationalAuthority: 'local_only',
+    });
+  });
+
   it('keeps OTP-gated app workers registered but non-callable', () => {
     const registry = getCapabilityRegistry();
     for (const [capability, operation] of [

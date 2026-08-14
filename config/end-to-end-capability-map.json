@@ -197,11 +197,15 @@
       "group": "operations",
       "status": "partial",
       "owner": "Platform/security and operations owner",
-      "evidenceRefs": ["app/admin/[[...section]]/page.js"],
+      "evidenceRefs": [
+        "app/admin/[[...section]]/page.js",
+        "contracts/admin-command-decision.schema.json",
+        "tests/admin-command-policy.test.js"
+      ],
       "blocker": {
         "code": "LOCAL_READ_ONLY_PROTOTYPE_ONLY",
         "humanAction": "Select an identity provider, durable database/event store, initial users, least-privilege roles, retention, and incident owner before any remote access or mutation.",
-        "resumePoint": "Replace the local review token with real identity/RBAC and append-only persistence; add idempotent reviewed commands one connector at a time."
+        "resumePoint": "Replace the local review token with real identity/RBAC, durable idempotency and append-only persistence; feed the locally verified command policy exact durable decisions, then add one authorized connector/executor at a time."
       }
     }
   ]

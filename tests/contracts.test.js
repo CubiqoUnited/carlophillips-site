@@ -19,6 +19,7 @@ import releaseDecisionSchema from '../contracts/release-decision.schema.json';
 import releaseTransitionDecisionSchema from '../contracts/release-transition-decision.schema.json';
 import orderLifecycleEventSchema from '../contracts/order-lifecycle-event.schema.json';
 import providerWebhookVerificationSchema from '../contracts/provider-webhook-verification.schema.json';
+import adminCommandDecisionSchema from '../contracts/admin-command-decision.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
@@ -618,5 +619,32 @@ describe('truth contracts', () => {
     expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('payload');
     expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('shop');
     expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('webhookId');
+  });
+
+  it('validates a sanitized admin command decision without connector or upstream authority claims', () => {
+    const decision = {
+      schemaVersion: 'cp.admin-command-decision.v1',
+      policyVersion: 'cp.admin-command-policy.v1',
+      commandFingerprint: `sha256:${'a'.repeat(64)}`,
+      decision: 'denied',
+      reasonCodes: ['IDENTITY_NOT_AUTHENTICATED'],
+      capability: 'admin-command-authorizer',
+      operation: 'evaluate-reviewed-command',
+      environment: 'local',
+      targetFingerprint: `sha256:${'b'.repeat(64)}`,
+      actorRole: 'reviewer',
+      sideEffectKind: 'none',
+      expiresAt: '2026-08-14T16:05:00Z',
+      commandExecutionAuthorized: false,
+      connectorInvocationPerformed: false,
+      externalMutationPerformed: false,
+      releaseAuthority: false,
+      checkoutAuthority: false,
+      refundAuthority: false,
+      publicationAuthority: false,
+    };
+    expect(ajv.validate(adminCommandDecisionSchema, decision), ajv.errorsText()).toBe(true);
+    expect(adminCommandDecisionSchema.properties).not.toHaveProperty('actorSubject');
+    expect(adminCommandDecisionSchema.properties).not.toHaveProperty('targetReference');
   });
 });
