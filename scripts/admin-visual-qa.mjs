@@ -4,6 +4,7 @@ import process from 'node:process';
 import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
+import sharp from 'sharp';
 
 const baseUrl = process.env.CP_QA_BASE_URL || 'http://127.0.0.1:3100';
 const token = process.env.CP_ADMIN_REVIEW_TOKEN;
@@ -37,6 +38,7 @@ const findings = [];
 const failures = [];
 
 await fs.mkdir(screenshotRoot, { recursive: true });
+await fs.mkdir(path.join(reportRoot, 'comparisons'), { recursive: true });
 
 function check(condition, message, context = {}) {
   findings.push({ passed: Boolean(condition), message, ...context });
@@ -115,9 +117,11 @@ try {
     const publicState = await publicPage.evaluate(() => ({
       overflow: document.documentElement.scrollWidth > window.innerWidth + 1,
       adminLinks: [...document.querySelectorAll('a')].filter(link => link.getAttribute('href')?.startsWith('/admin')).length,
+      bodyText: document.body.innerText,
     }));
     check(!publicState.overflow, 'Public regression route has no horizontal overflow.', { route });
     check(publicState.adminLinks === 0, 'Public regression route contains no admin navigation.', { route });
+    check(!/(gid:\/\/shopify|shopify|modelize|apliiq|9432704909549|5958463)/i.test(publicState.bodyText), 'Public regression route exposes no provider name or raw provider reference.', { route });
     await publicPage.screenshot({ path: path.join(screenshotRoot, `public-${route === '/' ? 'home' : route.slice(1).replaceAll('/', '-')}.png`), fullPage: false });
   }
   check(publicConsoleErrors.length === 0, 'Public regression route matrix emits no console errors.', { consoleErrors: publicConsoleErrors });
@@ -137,6 +141,69 @@ try {
   await browser.close();
 }
 
+async function labelledThumbnail(file, label, width, height) {
+  const image = await sharp(file)
+    .resize({ width, height: height - 32, fit: 'contain', position: 'top', background: '#050505' })
+    .png()
+    .toBuffer();
+  const safeLabel = label.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  const labelImage = Buffer.from(`<svg width="${width}" height="32" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#111111"/><text x="12" y="21" fill="#f1f0ec" font-family="Arial, sans-serif" font-size="12">${safeLabel}</text></svg>`);
+  return sharp({ create: { width, height, channels: 3, background: '#050505' } })
+    .composite([{ input: image, top: 0, left: 0 }, { input: labelImage, top: height - 32, left: 0 }])
+    .png()
+    .toBuffer();
+}
+
+const responsiveWidth = 360;
+const responsiveHeight = 820;
+const responsiveInputs = await Promise.all(viewports.map(async viewport => ({
+  input: await labelledThumbnail(
+    path.join(screenshotRoot, `${viewport.id}-overview.png`),
+    viewport.id,
+    responsiveWidth,
+    responsiveHeight,
+  ),
+})));
+await sharp({
+  create: {
+    width: responsiveWidth * responsiveInputs.length,
+    height: responsiveHeight,
+    channels: 3,
+    background: '#020202',
+  },
+})
+  .composite(responsiveInputs.map((input, index) => ({ ...input, top: 0, left: index * responsiveWidth })))
+  .png()
+  .toFile(path.join(reportRoot, 'comparisons', 'admin-overview-responsive.png'));
+
+const gridWidth = 300;
+const gridHeight = 250;
+const gridColumns = 4;
+const gridRows = Math.ceil(sections.length / gridColumns);
+const gridInputs = await Promise.all(sections.map(async ([section]) => ({
+  input: await labelledThumbnail(
+    path.join(screenshotRoot, `desktop-1440x1000-${section}.png`),
+    section,
+    gridWidth,
+    gridHeight,
+  ),
+})));
+await sharp({
+  create: {
+    width: gridWidth * gridColumns,
+    height: gridHeight * gridRows,
+    channels: 3,
+    background: '#020202',
+  },
+})
+  .composite(gridInputs.map((input, index) => ({
+    ...input,
+    top: Math.floor(index / gridColumns) * gridHeight,
+    left: (index % gridColumns) * gridWidth,
+  })))
+  .png()
+  .toFile(path.join(reportRoot, 'comparisons', 'admin-sections-desktop-contact-sheet.png'));
+
 let gitCommit = null;
 try {
   gitCommit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
@@ -154,6 +221,7 @@ const report = {
   visibility: 'background; no focus or foreground window',
   viewports,
   sections: sections.map(([id, route]) => ({ id, route })),
+  comparisons: ['comparisons/admin-overview-responsive.png', 'comparisons/admin-sections-desktop-contact-sheet.png'],
   publicRoutes,
   passed: failures.length === 0,
   findingCount: findings.length,
