@@ -2,7 +2,7 @@
 
 Date: 2026-08-14
 Branch: `codex/cp-e2e-admin-control-plane`
-Source state: working candidate based on evidence-binding commit `e44cbee`; exact clean commit binding follows
+Source state: exact clean implementation commit `0a4485a65540c89304f5a91b0db8ef4aa11d2fa8`
 Environment: local pure contracts/reducer only; no provider ingress, customer data, payment, order, refund, connector, or Production mutation
 
 ## Outcome
@@ -45,7 +45,7 @@ The exception matrix covers exact replay, conflicting replay, hash tamper, stale
 
 ## Headless browser and visual verification
 
-Final working-candidate result: 538/538 findings passed, 0 failures, 58 screenshots.
+Final clean-commit result: 538/538 findings passed, 0 failures, 58 screenshots.
 
 The same protected admin/public matrix covers 14 reviewer sections plus Product Owner Theme, denied states, same/cross-origin API behavior, Draft checkout denial, Axe, keyboard navigation, mobile navigation reachability, overflow, raw-reference/provider leakage, console/network health, and decoded public media.
 
