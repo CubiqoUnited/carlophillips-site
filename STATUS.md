@@ -1,8 +1,19 @@
 # Current Status
 
-Updated: 2026-08-09
-Branch: temporary correction branch `codex/cp-runway-wording-design-system`, based on `origin/main` at `d874e20`
+Updated: 2026-08-14
+Branch: temporary local branch `codex/cp-v1-2-2-design-system-release`, based on clean `e3dc7c2`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Local verified candidate `v1.2.2` — 2026-08-14
+
+- v1.2.2 corrects and expands v1.2.1 while restoring the approved `bb9568f` visible contract: Lofoten `At the edge of life`, persistent header/navigation, lower-left `ONE`, the four approved tags, `Explore media / 12 views`, and the inset truthful viewer. The superseded three-label/11-view/upper-positioned experiment is excluded.
+- `app/design-tokens.css` is the sole CSS design authority with 781 reachable lowercase kebab-case tokens and strict Primitive → Semantic → Component direction. Active CSS has zero raw declarations or primitive references. The one runtime serializer mirror is mechanically bound back to CSS breakpoints, colours, geometry, image sizing, scrolling, metadata, and Open Graph values.
+- Active customer JSX has no source inline styles, raw visual literals, arbitrary utilities, literal responsive image contracts, icon stroke props, or non-`cp-*` classes. Deterministic checks cover naming, direction, domain coverage, reference closure, reachability, propagation, production content/layout, runtime mirrors, and cleanup.
+- Exhaustive reference analysis removed 48 unused generic UI components plus scaffold-only hooks/helper/config and dormant Tailwind generation. All 53 deleted paths and dependency removals are recoverable through Git and recorded in `docs/cleanup-manifest-v1.2.2.md`; no user assets, release truth, or evidence were deleted.
+- Full Yarn Classic verification passes: frozen install; zero-warning lint; 35 test files / 340 tests; zero production vulnerabilities across 55 audited packages; successful 13-route optimized build; clean whitespace and secret scans; zero unused runtime dependencies, duplicate active code, dormant CP selectors, or removed-path references; 26 public visual assets decode with no failure.
+- Headless/background Chrome captured 18 required screenshots at 1440×1000, 584×486, and 390×844 for hero, `ONE`, overlay, shop, PDP, and bag. All routes return 200 with zero overflow, provider leakage, errors, failed requests, or broken media. All 12 viewer assets decode; Escape, arrows, focus containment/return, touch swipe, scroll lock, and reduced motion pass.
+- Saved `bb9568f` comparison confirms identical viewport and inset-overlay geometry, exact approved copy/hierarchy/assets, and visually preserved composition. Near-zero overlay deltas and low animated-hero deltas are recorded; product-frame pixel variance is limited to normal runway timing plus the required 11→12 correction in the saved local evidence.
+- Candidate is ready for Sushma's local/Preview review checkpoint. No push, pull request, Preview/Production deployment, merge, domain change, Shopify write, catalog/order mutation, or billing action occurred.
 
 ## Product Owner priority: physical Hoodie sample first — 2026-08-09
 

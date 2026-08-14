@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDown, ArrowLeft, ArrowRight, Expand, Menu, ShoppingBag, X } from 'lucide-react';
 import { SIGNATURE_HOODIE_SHOWCASE_MEDIA } from '../../lib/media/signature-hoodie-showcase.js';
+import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
 
 const fallbackSummary = {
   status: 'denied',
@@ -32,9 +33,9 @@ const signatureRunwayFrames = [
 ];
 
 const signatureRunwayFrameClasses = [
-  'runway-frame-primary',
-  'runway-frame-secondary',
-  'runway-frame-tertiary',
+  'cp-runway-frame-primary',
+  'cp-runway-frame-secondary',
+  'cp-runway-frame-tertiary',
 ];
 
 const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
@@ -47,9 +48,10 @@ const campaignHero = {
 const signatureHomepagePresentation = {
   displayName: 'ONE',
   facts: [
-    { label: 'Color', value: 'Black' },
-    { label: 'Material', value: 'Structured fleece' },
-    { label: 'Feel', value: 'Heavyweight, soft interior' },
+    'Black',
+    'XS–5XL',
+    'Heavyweight fleece',
+    'CP embroidery',
   ],
 };
 
@@ -99,17 +101,21 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
     };
   }, [open]);
 
-  if (!open || media.length === 0) return null;
-
   const motionIndex = media.findIndex(item => item.gifHref || item.type === 'video');
 
-  const moveTo = nextIndex => {
+  const moveTo = useCallback(nextIndex => {
     const index = Math.max(0, Math.min(nextIndex, media.length - 1));
     const track = trackRef.current;
     if (!track) return;
-    track.scrollTo({ left: index * track.clientWidth, behavior: 'smooth' });
+    const reducedMotion = window.matchMedia(designSystemRuntimeContract.media.reducedMotion).matches;
+    track.scrollTo({
+      left: index * track.clientWidth,
+      behavior: reducedMotion
+        ? designSystemRuntimeContract.behavior.instantScroll
+        : designSystemRuntimeContract.behavior.smoothScroll,
+    });
     setActiveIndex(index);
-  };
+  }, [media.length]);
 
   const handleScroll = event => {
     const track = event.currentTarget;
@@ -118,11 +124,35 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
     setActiveIndex(current => current === index ? current : index);
   };
 
-  const handleKeyDown = event => {
-    if (event.key === 'Escape') onClose();
-    if (event.key === 'ArrowLeft') moveTo(activeIndex - 1);
-    if (event.key === 'ArrowRight') moveTo(activeIndex + 1);
-  };
+  useEffect(() => {
+    if (!open) return undefined;
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') onClose();
+      if (event.key === 'ArrowLeft') moveTo(activeIndex - 1);
+      if (event.key === 'ArrowRight') moveTo(activeIndex + 1);
+      if (event.key !== 'Tab') return;
+
+      const dialog = dialogRef.current;
+      const focusable = [...(dialog?.querySelectorAll('button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])') || [])];
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!dialog.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeIndex, moveTo, onClose, open]);
+
+  if (!open || media.length === 0) return null;
 
   return (
     <section
@@ -132,14 +162,13 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
       aria-modal="true"
       aria-labelledby="product-media-title"
       tabIndex={-1}
-      onKeyDown={handleKeyDown}
-      className="cp-media-dialog fixed inset-0 flex items-center justify-center"
+      className="cp-media-dialog"
       data-product-media-overlay="open"
     >
-      <div className="cp-media-panel relative overflow-hidden">
-        <header className="cp-media-dialog-header absolute inset-x-0 top-0 flex h-[var(--cp-header-height)] items-center justify-between px-[var(--cp-page-gutter)]">
-          <div className="flex items-center gap-4">
-            <p className="cp-eyebrow hidden sm:block">Signature Series / Media</p>
+      <div className="cp-media-panel">
+        <header className="cp-media-dialog-header">
+          <div className="cp-media-header-group">
+            <p className="cp-eyebrow cp-media-title-eyebrow">Signature Series / Media</p>
             {motionIndex >= 0 && (
               <button
                 type="button"
@@ -150,14 +179,14 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
                 Motion study
               </button>
             )}
-            <h2 id="product-media-title" className="sr-only">{title} media viewer</h2>
+            <h2 id="product-media-title" className="cp-visually-hidden">{title} media viewer</h2>
           </div>
-          <div className="flex items-center gap-5">
+          <div className="cp-media-header-group cp-media-header-status">
             <p className="cp-eyebrow" aria-live="polite">
               {String(activeIndex + 1).padStart(2, '0')} / {String(media.length).padStart(2, '0')}
             </p>
             <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close product media viewer">
-              <X className="h-5 w-5" strokeWidth={1.2} />
+              <X className="cp-icon cp-icon-medium" />
             </button>
           </div>
         </header>
@@ -165,21 +194,21 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
         <div
           ref={trackRef}
           onScroll={handleScroll}
-          className="cp-media-track scrollbar-hide flex h-full w-full overflow-x-auto"
+          className="cp-media-track cp-scrollbar-hide"
           aria-label={`${title} media`}
         >
           {media.map((item, index) => {
             const source = item.src || item.url;
             const previewSource = item.previewUrl || source;
             return (
-              <figure key={`${source}-${index}`} className="cp-media-slide relative h-full min-w-full snap-center">
+              <figure key={`${source}-${index}`} className="cp-media-slide">
                 {item.type === 'video' ? (
                   <video
                     controls
                     preload="metadata"
                     poster={previewSource}
                     src={source}
-                    className="h-full w-full object-contain"
+                    className="cp-media-asset cp-media-fit-contain"
                   />
                 ) : (
                   <Image
@@ -187,38 +216,38 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
                     alt={item.alt}
                     fill
                     priority={index === 0}
-                    sizes="90vw"
+                    sizes={designSystemRuntimeContract.imageSizes.galleryAsset}
                     unoptimized={item.unoptimized}
-                    className={`${item.fit || 'object-contain'} ${item.position || 'object-center'} p-0 sm:p-8`}
+                    className={`cp-media-asset cp-media-asset-image ${item.fit || 'cp-media-fit-contain'} ${item.position || 'cp-media-position-center'}`}
                   />
                 )}
-                <figcaption className="cp-media-caption absolute inset-x-0 bottom-0 z-10 flex flex-col items-start justify-end gap-2 px-[var(--cp-page-gutter)] py-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+                <figcaption className="cp-media-caption">
                   <span>{item.label}</span>
-                  <span className="text-right">{item.disclosure}</span>
+                  <span className="cp-text-align-end">{item.disclosure}</span>
                 </figcaption>
               </figure>
             );
           })}
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 justify-between px-3 sm:px-8">
+        <div className="cp-media-navigation">
           <button
             type="button"
             onClick={() => moveTo(activeIndex - 1)}
             disabled={activeIndex === 0}
-            className="cp-media-arrow pointer-events-auto"
+            className="cp-media-arrow"
             aria-label="Previous product image"
           >
-            <ArrowLeft className="h-5 w-5" strokeWidth={1.2} />
+            <ArrowLeft className="cp-icon cp-icon-medium" />
           </button>
           <button
             type="button"
             onClick={() => moveTo(activeIndex + 1)}
             disabled={activeIndex === media.length - 1}
-            className="cp-media-arrow pointer-events-auto"
+            className="cp-media-arrow"
             aria-label="Next product image"
           >
-            <ArrowRight className="h-5 w-5" strokeWidth={1.2} />
+            <ArrowRight className="cp-icon cp-icon-medium" />
           </button>
         </div>
       </div>
@@ -228,26 +257,26 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
 
 function Navigation({ onMenu }) {
   return (
-      <header className="cp-site-header fixed inset-x-0 top-0 backdrop-blur-md">
-        <div className="cp-page-shell grid h-[var(--cp-header-height)] grid-cols-3 items-center">
+      <header className="cp-site-header">
+        <div className="cp-site-header-inner cp-page-shell">
           <button
             type="button"
             onClick={onMenu}
-            className="cp-nav-action inline-flex w-fit items-center gap-3"
+            className="cp-nav-action cp-nav-action-start"
             aria-label="Open navigation"
           >
-            <Menu className="h-4 w-4" strokeWidth={1.3} />
-            <span className="hidden sm:inline">Menu</span>
+            <Menu className="cp-icon cp-icon-small" />
+            <span className="cp-nav-label">Menu</span>
           </button>
-          <Link href="/" className="cp-wordmark justify-self-center">
+          <Link href="/" className="cp-wordmark">
             CARLOPHILLIPS
           </Link>
           <Link
             href="/bag"
-            className="cp-nav-action inline-flex items-center gap-3 justify-self-end"
+            className="cp-nav-action cp-nav-action-end"
           >
-            <span className="hidden sm:inline">Bag</span>
-            <ShoppingBag className="h-4 w-4" strokeWidth={1.3} />
+            <span className="cp-nav-label">Bag</span>
+            <ShoppingBag className="cp-icon cp-icon-small" />
           </Link>
         </div>
       </header>
@@ -256,8 +285,8 @@ function Navigation({ onMenu }) {
 
 function MenuOverlay({ onClose }) {
   return (
-    <aside className="cp-menu-overlay fixed inset-0" aria-label="Site navigation">
-      <div className="cp-menu-bar flex items-center justify-between">
+    <aside className="cp-menu-overlay" aria-label="Site navigation">
+      <div className="cp-menu-bar">
         <span className="cp-menu-title">CARLOPHILLIPS</span>
         <button
           type="button"
@@ -265,10 +294,10 @@ function MenuOverlay({ onClose }) {
           className="cp-menu-close"
           aria-label="Close navigation"
         >
-          <X className="h-5 w-5" strokeWidth={1.3} />
+          <X className="cp-icon cp-icon-medium" />
         </button>
       </div>
-      <nav className="cp-menu-links grid gap-4" aria-label="Main menu">
+      <nav className="cp-menu-links" aria-label="Main menu">
         <Link onClick={onClose} href="/">Home</Link>
         <Link onClick={onClose} href="/shop">Shop</Link>
         <Link onClick={onClose} href="/collections">Collections</Link>
@@ -281,7 +310,7 @@ function MenuOverlay({ onClose }) {
 function CampaignHero() {
   return (
     <section
-      className="storefront-panel cp-viewport-panel relative overflow-hidden"
+      className="cp-storefront-panel cp-viewport-panel cp-campaign"
       aria-label="CARLOPHILLIPS runway campaign"
     >
       <Image
@@ -289,31 +318,31 @@ function CampaignHero() {
         alt={campaignHero.alt}
         fill
         priority
-        sizes="100vw"
-        className="cp-campaign-image object-cover"
+        sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+        className="cp-campaign-image"
       />
-      <div className="cp-campaign-scrim absolute inset-0" aria-hidden="true" />
+      <div className="cp-campaign-scrim" aria-hidden="true" />
 
-      <div className="cp-page-shell relative z-10 flex min-h-[var(--cp-viewport-height)] flex-col justify-end pb-[var(--cp-panel-bottom)] pt-[calc(var(--cp-header-height)+3rem)]">
-        <div className="max-w-4xl">
-          <p className="cp-eyebrow mb-5">
+      <div className="cp-campaign-content cp-page-shell">
+        <div className="cp-campaign-copy">
+          <p className="cp-eyebrow cp-space-after-label">
             CARLOPHILLIPS / At the edge of life
           </p>
-          <h1 className="cp-display max-w-5xl">
+          <h1 className="cp-display">
             At the<br />edge of life.
           </h1>
-          <p className="cp-eyebrow mt-7">
+          <p className="cp-eyebrow cp-space-before-caption">
             Runway 001 / Lofoten
           </p>
         </div>
         <a
           href="#signature-runway"
-          className="cp-scroll-cue mt-10"
+          className="cp-scroll-cue"
           aria-label="Scroll down to discover the Signature Hoodie"
         >
           <span className="cp-scroll-cue-label">Scroll and explore</span>
           <span className="cp-scroll-cue-control" aria-hidden="true">
-            <ArrowDown className="cp-scroll-arrow h-5 w-5" strokeWidth={1.2} />
+            <ArrowDown className="cp-scroll-arrow cp-icon cp-icon-medium" />
           </span>
         </a>
       </div>
@@ -337,18 +366,18 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
   return (
     <section
       id="signature-runway"
-      className="storefront-panel cp-viewport-panel relative scroll-mt-[var(--cp-header-height)] overflow-hidden"
+      className="cp-storefront-panel cp-viewport-panel cp-product-runway"
       aria-label="Signature Hoodie runway"
     >
-      <figure className="cp-surface-panel absolute inset-0 overflow-hidden">
+      <figure className="cp-runway-media cp-surface-panel">
         {runwayReady ? (
           <>
             <Image
               src={signatureRunwayFrames[0].src}
               alt=""
               fill
-              sizes="100vw"
-              className="scale-110 object-cover object-center opacity-25 blur-2xl"
+              sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+              className="cp-runway-backdrop"
               aria-hidden="true"
             />
             {signatureRunwayFrames.map((frame, index) => (
@@ -357,8 +386,8 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
                 src={frame.src}
                 alt={frame.alt}
                 fill
-                sizes="100vw"
-                className={`runway-frame ${signatureRunwayFrameClasses[index]} object-contain object-center`}
+                sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+                className={`cp-runway-frame ${signatureRunwayFrameClasses[index]}`}
               />
             ))}
           </>
@@ -367,21 +396,21 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
               src={heroMedia.url}
               alt={heroMedia.alt}
               fill
-              sizes="(min-width: 1024px) 58vw, 100vw"
-              className="object-cover object-center"
+              sizes={designSystemRuntimeContract.imageSizes.productPanel}
+              className="cp-media-fit-cover cp-media-position-center"
             />
         ) : (
             <Image
               src="/brand-boards/carlophillips-drop-board.png"
               alt="Archived CARLOPHILLIPS visual-system reference board"
               fill
-              sizes="(min-width: 1024px) 58vw, 100vw"
-              className="object-contain object-center opacity-75"
+              sizes={designSystemRuntimeContract.imageSizes.productPanel}
+              className="cp-runway-fallback"
             />
         )}
-        <div className="cp-product-scrim absolute inset-0" aria-hidden="true" />
+        <div className="cp-product-scrim" aria-hidden="true" />
         {!summary.commerceAllowed && (
-          <figcaption className="cp-disclosure absolute bottom-5 right-5 px-3 py-2">
+          <figcaption className="cp-disclosure">
             {runwayReady ? 'Private product preview' : heroMedia ? heroMedia.label : 'Collection preview'}
           </figcaption>
         )}
@@ -398,8 +427,8 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           className="cp-product-media-button cp-product-media-button-corner"
         >
           <span>Explore media</span>
-          <Expand className="cp-product-media-expand h-4 w-4" strokeWidth={1.2} aria-hidden="true" />
-          <span className="text-right">{String(galleryCount).padStart(2, '0')} views</span>
+          <Expand className="cp-product-media-expand cp-icon cp-icon-small" aria-hidden="true" />
+          <span className="cp-text-align-end">{String(galleryCount).padStart(2, '0')} views</span>
         </button>
       ) : (
         <Link
@@ -407,29 +436,24 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           className="cp-product-media-button cp-product-media-button-corner"
         >
           <span>Explore the collection</span>
-          <ArrowRight className="col-start-3 h-4 w-4 justify-self-end" strokeWidth={1.2} />
+          <ArrowRight className="cp-product-media-fallback-icon cp-icon cp-icon-small" />
         </Link>
       )}
 
-      <div className="cp-product-layout cp-page-shell relative z-10 flex min-h-[var(--cp-viewport-height)] flex-col">
-        <div className="cp-product-copy max-w-2xl">
-          <p className="cp-eyebrow mb-5">
+      <div className="cp-product-layout cp-page-shell">
+        <div className="cp-product-copy">
+          <p className="cp-eyebrow cp-space-after-label">
             {runwayReady ? 'Signature Series / 001' : 'CARLOPHILLIPS / 001'}
           </p>
           <h2 className="cp-product-title">
             {runwayReady ? signatureHomepagePresentation.displayName : 'Form. Function.'}
           </h2>
-          <p className="cp-product-review mt-5">
+          <p className="cp-product-review cp-space-before-review">
             {runwayReady ? productDescription : 'A considered study in form, material and everyday utility.'}
           </p>
           {runwayReady && (
-            <ul className="cp-product-facts mt-6" aria-label="Product attributes">
-              {signatureHomepagePresentation.facts.map(fact => (
-                <li key={fact.label}>
-                  <span className="cp-product-fact-label">{fact.label}</span>
-                  <span className="cp-product-fact-value">{fact.value}</span>
-                </li>
-              ))}
+            <ul className="cp-product-facts cp-space-before-facts" aria-label="Product highlights">
+              {signatureHomepagePresentation.facts.map(fact => <li key={fact}>{fact}</li>)}
             </ul>
           )}
         </div>
@@ -445,21 +469,21 @@ function CategoryRail({ summary }) {
     : null;
 
   return (
-    <nav className="cp-category-rail sticky top-16 z-30 overflow-hidden lg:top-20" aria-label="Product categories">
-      <div className="scrollbar-hide cp-page-shell flex h-14 items-center gap-8 overflow-x-auto lg:h-16">
+    <nav className="cp-category-rail" aria-label="Product categories">
+      <div className="cp-scrollbar-hide cp-category-list cp-page-shell">
         {activeProduct ? (
           <Link
             href={activeProduct.href}
             aria-current="page"
-            className="cp-category-item cp-category-item-active flex shrink-0 items-center"
+            className="cp-category-item cp-category-item-active"
           >
             Hoodies
           </Link>
         ) : (
-          <span aria-disabled="true" className="cp-category-item shrink-0">Hoodies</span>
+          <span aria-disabled="true" className="cp-category-item">Hoodies</span>
         )}
         {categoryTabs.map(category => (
-          <span key={category} aria-disabled="true" className="cp-category-item shrink-0">
+          <span key={category} aria-disabled="true" className="cp-category-item">
             {category}
           </span>
         ))}
@@ -471,9 +495,9 @@ function CategoryRail({ summary }) {
 function Footer() {
   return (
     <footer className="cp-footer">
-      <div className="cp-footer-inner flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="cp-footer-inner">
         <span>CARLOPHILLIPS</span>
-        <nav className="flex gap-6" aria-label="Footer">
+        <nav className="cp-footer-nav" aria-label="Footer">
           <Link href="/shop">Shop</Link>
           <Link href="/collections">Collections</Link>
           <Link href="/bag">Bag</Link>
@@ -497,7 +521,7 @@ export default function HomeStorefront({ catalogSummary }) {
   }, [mediaOpen]);
 
   return (
-    <main id="main-content" className="cp-site min-h-screen">
+    <main id="main-content" className="cp-site">
       <div inert={mediaOpen ? true : undefined}>
         <Navigation onMenu={() => setMenuOpen(true)} />
         {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}

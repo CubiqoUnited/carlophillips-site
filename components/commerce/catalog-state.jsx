@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { StorefrontHeader } from '../storefront/storefront-header';
+import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
 
 function countLabel(count, singular, plural = `${singular}s`) {
   return `${count} ${count === 1 ? singular : plural}`;
@@ -58,27 +59,27 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
       className="cp-commerce-page"
     >
       <StorefrontHeader pageLabel={pageLabel} navigationAriaLabel="Catalog navigation" />
-      <section className="cp-commerce-hero storefront-panel">
-        <div className="cp-catalog-hero-layout cp-shell-wide grid gap-12 px-0 lg:items-end">
+      <section className="cp-commerce-hero cp-storefront-panel">
+        <div className="cp-catalog-hero-layout cp-shell-wide">
           <div>
             <p className="cp-label">{liveCollection ? 'Signature Series / 001' : copy.eyebrow}</p>
-            <h1 className="cp-commerce-title mt-7 max-w-5xl">
+            <h1 className="cp-commerce-title cp-catalog-title">
               {liveCollection ? 'The Collection' : available ? countLabel(decision.visibleCount, 'preview piece') : 'Coming soon.'}
             </h1>
-            <p className="cp-body-large mt-8 max-w-3xl">
+            <p className="cp-body-large cp-catalog-intro">
               {liveCollection ? 'One essential. Considered in every detail and available through secure checkout.' : copy.body}
             </p>
           </div>
-          {!liveCollection && <dl className="cp-grid-rule grid grid-cols-2 text-sm">
+          {!liveCollection && <dl className="cp-grid-rule cp-catalog-stats">
             {[
               ['Candidate records', decision.candidateCount],
               ['Visible here', decision.visibleCount],
               ['Withheld', decision.excludedCount],
               ['Purchasing', decision.commerceAllowed ? 'Secure checkout' : 'Disabled'],
             ].map(([label, value]) => (
-              <div key={label} className="cp-stat-cell sm:p-7">
+              <div key={label} className="cp-stat-cell">
                 <dt className="cp-label-small">{label}</dt>
-                <dd className="cp-text-copy mt-3">{value}</dd>
+                <dd className="cp-text-copy cp-stat-value">{value}</dd>
               </div>
             ))}
           </dl>}
@@ -86,30 +87,30 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
       </section>
 
       {available ? (
-        <section aria-label="Available products" className="cp-section storefront-panel">
-          <div className={`cp-shell-wide cp-grid-rule cp-catalog-grid grid px-0 ${liveCollection && decision.products.length === 1 ? 'cp-catalog-grid-featured' : 'cp-catalog-grid-standard md:grid-cols-2 xl:grid-cols-3'}`}>
+        <section aria-label="Available products" className="cp-section cp-storefront-panel">
+          <div className={`cp-shell-wide cp-grid-rule cp-catalog-grid ${liveCollection && decision.products.length === 1 ? 'cp-catalog-grid-featured' : 'cp-catalog-grid-standard'}`}>
             {decision.products.map(product => (
-              <article key={product.handle} className={`cp-surface-canvas ${liveCollection && decision.products.length === 1 ? 'contents' : 'cp-catalog-card flex flex-col'}`}>
-                <div className="cp-catalog-card-media cp-card-media relative flex items-center justify-center">
+              <article key={product.handle} className={`cp-surface-canvas ${liveCollection && decision.products.length === 1 ? 'cp-contents' : 'cp-catalog-card'}`}>
+                <div className="cp-catalog-card-media cp-card-media">
                   {product.media[0]?.url ? (
                     <Image
                       src={product.media[0].url}
                       alt={product.media[0].alt}
                       fill
-                      sizes={liveCollection ? '(min-width: 1024px) 68vw, 100vw' : '(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw'}
-                      className="object-contain p-8 sm:p-12"
+                      sizes={liveCollection ? designSystemRuntimeContract.imageSizes.catalogFeatured : designSystemRuntimeContract.imageSizes.catalogStandard}
+                      className="cp-catalog-product-image"
                     />
                   ) : (
-                    <span className="cp-text-subtle px-8 text-center text-sm">Approved catalog media unavailable</span>
+                    <span className="cp-text-subtle cp-catalog-media-empty">Approved catalog media unavailable</span>
                   )}
                 </div>
-                <div className="cp-card-copy flex flex-1 flex-col justify-center border-t p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-12">
+                <div className="cp-card-copy">
                   <p className="cp-label-small">{liveCollection ? 'Edition 001' : decision.source === 'fixture' ? 'Local presentation fixture' : 'Product review'}</p>
-                  <h2 className="cp-heading-product mt-5">{product.title}</h2>
-                  <p className="cp-text-soft mt-5 text-base">{formatPrice(product)}</p>
+                  <h2 className="cp-heading-product cp-card-title">{product.title}</h2>
+                  <p className="cp-text-soft cp-card-price">{formatPrice(product)}</p>
                   <Link
                     href={`/products/${product.handle}`}
-                    className="cp-action cp-action-outline mt-10 min-h-14 lg:mt-14"
+                    className="cp-action cp-action-outline cp-card-action"
                   >
                     {product.commerceAllowed ? 'View product' : 'Preview product'}
                   </Link>
@@ -120,10 +121,10 @@ export function CommerceCatalogState({ decision, pageLabel = 'Collection' }) {
         </section>
       ) : (
         <section className="cp-section">
-          <div className="cp-shell-wide px-0">
+          <div className="cp-shell-wide cp-shell-flush">
             <div className="cp-empty-state">
               <p className="cp-label-small">CARLOPHILLIPS</p>
-              <p className="cp-text-copy mt-6 max-w-3xl text-xl font-light leading-relaxed">
+              <p className="cp-text-copy cp-empty-copy">
                 The next release is being prepared. Return soon.
               </p>
             </div>

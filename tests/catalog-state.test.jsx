@@ -21,7 +21,7 @@ describe('catalog presentation', () => {
         title: 'Visible fixture',
         price: 20,
         currency: 'USD',
-        sourceLabel: 'Local fixture review — not Shopify live data',
+        sourceLabel: 'Local fixture review — not live store data',
         media: [],
       }],
     }} />);

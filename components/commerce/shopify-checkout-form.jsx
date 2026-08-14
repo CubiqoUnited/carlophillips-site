@@ -22,9 +22,9 @@ export default function ShopifyCheckoutForm({ handle, presentation }) {
   if (!available.length) return null;
 
   return (
-    <form method="post" action="/api/checkout" className="cp-variant-list mt-10 pt-7">
+    <form method="post" action="/api/checkout" className="cp-variant-list cp-variant-section">
       <input type="hidden" name="handle" value={handle} />
-      <label htmlFor="hoodie-variant" className="cp-label mb-4 block">Select size</label>
+      <label htmlFor="hoodie-variant" className="cp-label cp-checkout-label">Select size</label>
       <select id="hoodie-variant" name="referenceHash" value={referenceHash} onChange={event => setReferenceHash(event.target.value)} className="cp-checkout-select">
         {available.map(item => (
           <option key={item.referenceHash} value={item.referenceHash}>
@@ -33,10 +33,10 @@ export default function ShopifyCheckoutForm({ handle, presentation }) {
         ))}
       </select>
       <input type="hidden" name="quantity" value="1" />
-      <button type="submit" disabled={!selected} className="cp-action cp-action-solid mt-4 h-14 w-full disabled:opacity-40">
+      <button type="submit" disabled={!selected} className="cp-action cp-action-solid cp-checkout-action">
         Continue to checkout — {selected ? money(selected.price.amount, selected.price.currency) : ''}
       </button>
-      <p className="cp-text-subtle mt-4 text-xs leading-relaxed">Review delivery and payment before confirming your order. No order is placed until you complete checkout.</p>
+      <p className="cp-text-subtle cp-checkout-explanation">Review delivery and payment before confirming your order. No order is placed until you complete checkout.</p>
     </form>
   );
 }

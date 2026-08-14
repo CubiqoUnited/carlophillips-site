@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "cp.asset-audit.v1",
+  "date": "2026-08-14",
+  "decodedAssets": 26,
+  "failures": [],
+  "assets": [
+    {
+      "path": "public/brand-boards/carlo-system-board.png",
+      "format": "PNG",
+      "width": 292,
+      "height": 556,
+      "frames": 1
+    },
+    {
+      "path": "public/brand-boards/carlophillips-drop-board.png",
+      "format": "PNG",
+      "width": 282,
+      "height": 584,
+      "frames": 1
+    },
+    {
+      "path": "public/brand-boards/identity-board.png",
+      "format": "PNG",
+      "width": 836,
+      "height": 476,
+      "frames": 1
+    },
+    {
+      "path": "public/brand-boards/love-carlo-board.png",
+      "format": "PNG",
+      "width": 628,
+      "height": 1354,
+      "frames": 1
+    },
+    {
+      "path": "public/campaigns/draft-pod/edge-of-life-runway-desktop-v1.jpg",
+      "format": "JPEG",
+      "width": 1535,
+      "height": 1024,
+      "frames": 1
+    },
+    {
+      "path": "public/campaigns/draft-pod/edge-of-life-runway-desktop-v1.png",
+      "format": "PNG",
+      "width": 1535,
+      "height": 1024,
+      "frames": 1
+    },
+    {
+      "path": "public/campaigns/draft-pod/edge-of-life-runway-mobile-v1.jpg",
+      "format": "JPEG",
+      "width": 819,
+      "height": 1024,
+      "frames": 1
+    },
+    {
+      "path": "public/campaigns/draft-pod/edge-of-life-runway-mobile-v1.png",
+      "format": "PNG",
+      "width": 819,
+      "height": 1024,
+      "frames": 1
+    },
+    {
+      "path": "public/campaigns/draft-pod/signature-hoodie-desktop-v1.jpg",
+      "format": "JPEG",
+      "width": 1672,
+      "height": 941,
+      "frames": 1
+    },
+    {
+      "path": "public/campaigns/draft-pod/signature-hoodie-desktop-v1.png",
+      "format": "PNG",
+      "width": 1672,
+      "height": 941,
+      "frames": 1
+    },
+    {
+      "path": "public/campaigns/lofoten-runway-hero.jpg",
+      "format": "JPEG",
+      "width": 1672,
+      "height": 941,
+      "frames": 1
+    },
+    {
+      "path": "public/campaigns/lofoten-runway-hero.png",
+      "format": "PNG",
+      "width": 1536,
+      "height": 1024,
+      "frames": 1
+    },
+    {
+      "path": "public/icon.svg",
+      "format": "SVG",
+      "xmlValid": true
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png",
+      "format": "PNG",
+      "width": 1122,
+      "height": 1402,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png",
+      "format": "PNG",
+      "width": 1126,
+      "height": 1397,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png",
+      "format": "PNG",
+      "width": 1024,
+      "height": 1536,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif",
+      "format": "GIF",
+      "width": 360,
+      "height": 450,
+      "frames": 20
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.webp",
+      "format": "WEBP",
+      "width": 540,
+      "height": 675,
+      "frames": 20
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg",
+      "format": "JPEG",
+      "width": 896,
+      "height": 1200,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/moda/model-front-full.jpg",
+      "format": "JPEG",
+      "width": 1792,
+      "height": 2400,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/moda/model-seated.jpg",
+      "format": "JPEG",
+      "width": 896,
+      "height": 1200,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/moda/model-side-profile.jpg",
+      "format": "JPEG",
+      "width": 864,
+      "height": 1184,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/moda/model-three-quarter.jpg",
+      "format": "JPEG",
+      "width": 864,
+      "height": 1184,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/moda/product-flat-lay.jpg",
+      "format": "JPEG",
+      "width": 864,
+      "height": 1184,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/modelize/editorial-01.jpg",
+      "format": "JPEG",
+      "width": 928,
+      "height": 1152,
+      "frames": 1
+    },
+    {
+      "path": "public/products/signature-hoodie/candidates/modelize/editorial-02.jpg",
+      "format": "JPEG",
+      "width": 928,
+      "height": 1152,
+      "frames": 1
+    }
+  ]
+}

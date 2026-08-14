@@ -23,7 +23,7 @@ function decision(overrides = {}) {
       title: 'CARLOPHILLIPS Signature Hoodie',
       description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built with structured fleece and a soft interior.',
       details: ['Everyday core layer.'],
-      sourceLabel: 'Local fixture review — not Shopify live data',
+      sourceLabel: 'Local fixture review — not live store data',
       commerceAllowed: false,
       media: [{
         type: 'image',

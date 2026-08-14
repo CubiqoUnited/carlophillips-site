@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "cp.repository-audit.v1",
+  "date": "2026-08-14",
+  "inventory": {
+    "trackedAndCandidateFiles": 583,
+    "activeCodeFiles": 61,
+    "deletedPaths": 53,
+    "deletedUiScaffoldFiles": 48
+  },
+  "designTokens": {
+    "total": 781,
+    "primitive": 352,
+    "semantic": 355,
+    "component": 74
+  },
+  "dependencies": {
+    "runtimeCount": 5,
+    "usage": {
+      "lucide-react": [
+        "components/storefront/home-storefront.jsx"
+      ],
+      "next": [
+        "app/api/[[...path]]/route.js",
+        "app/api/checkout/route.js",
+        "app/concept-preview/page.js",
+        "app/opengraph-image.js",
+        "components/commerce/bag-state.jsx",
+        "components/commerce/catalog-state.jsx",
+        "components/commerce/product-detail.jsx",
+        "components/storefront/home-storefront.jsx",
+        "components/storefront/storefront-header.jsx"
+      ],
+      "react": [
+        "components/commerce/bag-state.jsx",
+        "components/commerce/catalog-boundary.jsx",
+        "components/commerce/catalog-state.jsx",
+        "components/commerce/product-detail.jsx",
+        "components/commerce/shopify-checkout-form.jsx",
+        "components/storefront/home-storefront.jsx",
+        "components/storefront/storefront-header.jsx"
+      ],
+      "react-dom": [
+        "framework runtime peer required by Next.js and React"
+      ],
+      "server-only": [
+        "lib/commerce/cart-activation-server.js",
+        "lib/commerce/catalog-server.js",
+        "lib/commerce/product-page-server.js",
+        "lib/commerce/shopify-checkout-server.js",
+        "lib/commerce/variant-resolution-server.js",
+        "lib/providers/shopify/storefront-product-adapter.js"
+      ]
+    },
+    "unusedRuntimeDependencies": []
+  },
+  "cleanup": {
+    "removedReferences": [],
+    "exactDuplicateCode": []
+  },
+  "secrets": {
+    "scannedFiles": 583,
+    "strongPatternMatchCount": 0,
+    "matchesRedactedToFileAndKind": [],
+    "trackedEnvironmentFiles": [
+      ".env.example"
+    ]
+  }
+}

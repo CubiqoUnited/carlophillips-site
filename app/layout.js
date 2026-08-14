@@ -1,4 +1,5 @@
 import './globals.css';
+import { designSystemRuntimeContract } from '@/lib/design-system/runtime-contract';
 
 // SEO and Metadata Configuration
 const siteConfig = {
@@ -42,8 +43,8 @@ export const metadata = {
     images: [
       {
         url: '/opengraph-image',
-        width: 1200,
-        height: 630,
+        width: designSystemRuntimeContract.openGraph.size.width,
+        height: designSystemRuntimeContract.openGraph.size.height,
         alt: `${siteConfig.name} - ${siteConfig.tagline}`,
       },
     ],
@@ -98,13 +99,13 @@ export const metadata = {
 
 // Viewport Configuration
 export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
+  width: designSystemRuntimeContract.viewport.width,
+  initialScale: designSystemRuntimeContract.viewport.initialScale,
+  maximumScale: designSystemRuntimeContract.viewport.maximumScale,
+  userScalable: designSystemRuntimeContract.viewport.userScalable,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#000000' },
-    { media: '(prefers-color-scheme: dark)', color: '#000000' },
+    { media: designSystemRuntimeContract.media.lightScheme, color: designSystemRuntimeContract.theme.canvas },
+    { media: designSystemRuntimeContract.media.darkScheme, color: designSystemRuntimeContract.theme.canvas },
   ],
 };
 
@@ -139,7 +140,7 @@ const websiteJsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       <head>
         {/* JSON-LD Structured Data */}
         <script
@@ -147,11 +148,11 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationJsonLd, websiteJsonLd]) }}
         />
       </head>
-      <body className="min-h-screen antialiased">
+      <body>
         {/* Skip to main content for accessibility */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:outline-none"
+          className="cp-visually-hidden cp-skip-link"
         >
           Skip to main content
         </a>

@@ -19,20 +19,43 @@ const availableSummary = {
     title: 'CARLOPHILLIPS Signature Hoodie',
     description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.',
     href: '/products/carlophillips-signature-hoodie',
-    sourceLabel: 'Local fixture review — not Shopify live data',
+    sourceLabel: 'Local fixture review — not live store data',
     commerceAllowed: false,
     heroMedia: {
       url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
       alt: 'Signature Hoodie front candidate',
       label: 'Modelize product portrait · generated candidate · approval pending',
     },
-    media: [{
-      type: 'image',
-      url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
-      previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
-      alt: 'Signature Hoodie front candidate',
-      label: 'Product front',
-    }],
+    media: [
+      {
+        type: 'image',
+        url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+        previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+        alt: 'Signature Hoodie front candidate',
+        label: 'Product front',
+      },
+      {
+        type: 'image',
+        url: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
+        previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
+        alt: 'Signature Hoodie editorial candidate',
+        label: 'Product editorial',
+      },
+      {
+        type: 'image',
+        url: 'https://cdn.shopify.com/s/files/recorded-signature-hoodie-front.jpg',
+        previewUrl: 'https://cdn.shopify.com/s/files/recorded-signature-hoodie-front.jpg',
+        alt: 'Recorded Signature Hoodie front candidate',
+        label: 'Recorded product front',
+      },
+      {
+        type: 'image',
+        url: '/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png',
+        previewUrl: '/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png',
+        alt: 'AI-assisted Signature Hoodie back flat-lay hypothesis',
+        label: 'Back flat-lay hypothesis',
+      },
+    ],
   },
 };
 
@@ -47,7 +70,7 @@ describe('home release composition', () => {
       primaryProduct: null,
     }} />);
     expect(available).toContain('Explore media');
-    expect(available).toContain('09 views');
+    expect(available).toContain('12 views');
     expect(available).toContain('data-media-trigger="signature-hoodie"');
     expect(available).toContain('aria-haspopup="dialog"');
     expect(available).toContain('aria-controls="product-media-overlay"');
@@ -114,11 +137,10 @@ describe('home release composition', () => {
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
     expect(html).not.toContain('Built as a premium core layer');
-    expect(html).toContain('aria-label="Product attributes"');
-    expect(html).toContain('>Color</span><span class="cp-product-fact-value">Black</span>');
-    expect(html).toContain('>Material</span><span class="cp-product-fact-value">Structured fleece</span>');
-    expect(html).toContain('>Feel</span><span class="cp-product-fact-value">Heavyweight, soft interior</span>');
-    expect(html).not.toContain('>XS–5XL</span>');
+    expect(html).toContain('aria-label="Product highlights"');
+    expect(html).toContain('<li>Black</li><li>XS–5XL</li><li>Heavyweight fleece</li><li>CP embroidery</li>');
+    expect(html).not.toContain('aria-label="Product attributes"');
+    expect(html).not.toContain('Structured fleece');
     expect(html).toContain('cp-product-layout');
     expect(html).toContain('lucide-expand');
     expect(html).not.toContain('lucide-arrow-right h-4 w-4');
@@ -163,7 +185,7 @@ describe('home release composition', () => {
       disclosure: 'Product view',
     });
     expect(localMedia.some(item => item.src.includes('model-front-full.jpg'))).toBe(true);
-    expect(productionMedia).toHaveLength(1);
+    expect(productionMedia).toHaveLength(4);
     expect(productionMedia[0].src).toContain('editorial-02.jpg');
   });
 
@@ -205,7 +227,7 @@ describe('home release composition', () => {
     expect(openHtml).toContain('aria-label="Previous product image"');
     expect(openHtml).toContain('aria-label="Next product image"');
     expect(openHtml).toContain('aria-label="Close product media viewer"');
-    expect(openHtml).toContain('01 / 09');
+    expect(openHtml).toContain('01 / 12');
     expect(openHtml).toContain('cp-media-track');
     expect(openHtml).toContain('cp-media-panel');
     expect(openHtml).toContain('aria-label="Jump to motion study"');

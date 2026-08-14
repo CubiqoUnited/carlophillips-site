@@ -1,5 +1,19 @@
 # Delivery Tasks
 
+## v1.2.2 design-system release candidate
+
+- [x] Create `codex/cp-v1-2-2-design-system-release` from clean `e3dc7c2` without touching the separate `/Users/edv/Documents/cp` checkout.
+- [x] Restore and bind the exact `bb9568f` customer contract: approved Lofoten opener, header/navigation, lower-left `ONE`, four tags, 12-view action, and inset truthful viewer.
+- [x] Promote `app/design-tokens.css` as the sole CSS raw-value authority with strict lowercase kebab-case Primitive → Semantic → Component dependency.
+- [x] Add one documented runtime serializer mirror and mechanically match its breakpoints, image sizing, theme, viewport, Open Graph, and motion behavior to CSS primitives.
+- [x] Enforce naming, tier direction, domain coverage, reference closure/reachability, zero raw declarations, no source inline styles/arbitrary utilities, representative propagation, production content/media/layout, and cleanup boundaries in deterministic tests.
+- [x] Exhaustively prove and recoverably remove the unreferenced `components/ui/` scaffold, scaffold-only hooks/helper/config, dormant Tailwind generation, and direct dependencies; preserve every asset, release record, report, and ambiguous file.
+- [x] Update design-system guidance, v1.2.2 release notes, cleanup manifest, status/tasks, private package marker, and QA evidence.
+- [x] Pass Yarn 1.22.22 frozen install, lint, 340 tests, zero-vulnerability production audit, optimized build, secret scan, dependency/reference/duplicate/dormant-code audit, and all-public-asset decode.
+- [x] Capture and inspect 18 local screenshots across 1440×1000, 584×486, and 390×844 for hero, `ONE`, overlay, shop, PDP, and bag; traverse/decode all 12 views and prove focus, Escape, arrows, swipe, scroll lock, reduced motion, zero overflow/errors/broken media/provider leakage.
+- [x] Compare the candidate with saved `bb9568f` evidence and record exact geometry/content acceptance plus animation-timing pixel variance.
+- [ ] Sushma reviews the committed local candidate and separately authorizes any push, Preview deployment, PR, merge, or Production action.
+
 ## Version milestones
 
 - [x] Read and visually inspect all 18 pages of `Recovered-Design-System-Guidance.docx` before changing the v1.2 design-system boundary.

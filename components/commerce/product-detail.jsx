@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SIGNATURE_HOODIE_SHOWCASE_MEDIA } from '../../lib/media/signature-hoodie-showcase.js';
+import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
 import ShopifyCheckoutForm from './shopify-checkout-form';
 import { StorefrontHeader } from '../storefront/storefront-header';
 
@@ -29,12 +30,12 @@ function ProductMedia({ item, featured }) {
   const frameClass = featured ? 'cp-product-media-featured' : 'cp-product-media-portrait';
 
   if (item.type === 'video' && item.url) {
-    return <video controls preload="metadata" poster={item.previewUrl} className={`${frameClass} h-full w-full object-contain`} src={item.url} />;
+    return <video controls preload="metadata" poster={item.previewUrl} className={`${frameClass} cp-product-media-asset cp-media-fit-contain`} src={item.url} />;
   }
 
   if (item.type === 'external_video' && item.url) {
     return (
-      <div className={`${frameClass} flex items-center justify-center p-8 text-center`}>
+      <div className={`${frameClass} cp-product-media-message`}>
         <a href={item.url} rel="noreferrer" target="_blank" className="cp-action cp-action-outline">
           Open approved external video
         </a>
@@ -44,28 +45,28 @@ function ProductMedia({ item, featured }) {
 
   if (item.type === 'model_3d') {
     return (
-      <div className={`${frameClass} cp-text-soft flex items-center justify-center p-8 text-center text-sm`}>
+      <div className={`${frameClass} cp-text-soft cp-product-media-message`}>
         A verified interactive 3D renderer is not active. Static fallback only.
       </div>
     );
   }
 
   return item.url ? (
-    <div className={`${frameClass} relative`}>
-      <Image src={item.url} alt={item.alt} fill sizes="(min-width: 1024px) 52vw, 100vw" className="object-contain object-center p-8 sm:p-12" />
+    <div className={`${frameClass} cp-product-media-frame`}>
+      <Image src={item.url} alt={item.alt} fill sizes={designSystemRuntimeContract.imageSizes.productDetail} className="cp-product-media-image" />
     </div>
   ) : (
-    <div className={`${frameClass} cp-text-muted flex items-center justify-center p-8 text-sm`}>Media unavailable</div>
+    <div className={`${frameClass} cp-text-muted cp-product-media-message`}>Media unavailable</div>
   );
 }
 
 function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
   if (media.length === 0) {
     return (
-      <div className="cp-product-gallery-empty cp-surface-raised cp-text-muted flex flex-col items-center justify-center gap-4 p-10 text-center text-sm">
+      <div className="cp-product-gallery-empty cp-surface-raised cp-text-muted">
         <p>No approved product media was returned by the selected source.</p>
         {mediaReview && (
-          <p data-media-review={mediaReview.status} className="cp-label-small max-w-xl font-mono">
+          <p data-media-review={mediaReview.status} className="cp-label-small cp-product-media-review">
             Media review incomplete — missing: {mediaReview.missingModalities.join(', ') || 'approved fallback'}
           </p>
         )}
@@ -75,18 +76,18 @@ function ProductGallery({ media, mediaReview = null, customerFacing = false }) {
 
   return (
     <div>
-      <div className="cp-product-gallery-grid cp-grid-rule grid lg:grid-cols-2">
+      <div className="cp-product-gallery-grid cp-grid-rule">
         {media.map((item, index) => (
-          <figure key={item.id} className={index === 0 ? 'cp-card-media-featured lg:col-span-2' : 'cp-card-media'}>
+          <figure key={item.id} className={index === 0 ? 'cp-card-media-featured cp-product-gallery-featured' : 'cp-card-media'}>
             <ProductMedia item={item} featured={index === 0} />
-            <figcaption className="cp-label-small cp-surface-canvas cp-rule border-t px-5 py-4">
+            <figcaption className="cp-label-small cp-surface-canvas cp-product-gallery-caption">
               {customerFacing ? `View ${String(index + 1).padStart(2, '0')}` : item.label}
             </figcaption>
           </figure>
         ))}
       </div>
       {mediaReview?.status === 'incomplete' && (
-        <p data-media-review="incomplete" className="cp-label-small cp-surface-canvas cp-rule border-t px-5 py-4 font-mono">
+        <p data-media-review="incomplete" className="cp-label-small cp-surface-canvas cp-product-gallery-caption cp-product-media-review">
           Private media review incomplete — missing: {mediaReview.missingModalities.join(', ') || 'approved fallback'}
         </p>
       )}
@@ -99,13 +100,13 @@ function EditorialStudy({ environment, handle }) {
 
   return (
     <section data-editorial-study="ai-assisted-preview" aria-labelledby="editorial-study-title">
-      <div className="cp-editorial-intro cp-rule storefront-panel flex items-end border-b px-[var(--cp-page-gutter)] py-16 lg:py-24">
-        <div className="cp-shell-wide px-0">
-          <p className="cp-label mb-8">Digital editorial study / 01</p>
-          <h2 id="editorial-study-title" className="cp-heading-section max-w-6xl">
+      <div className="cp-editorial-intro cp-storefront-panel">
+        <div className="cp-shell-wide cp-shell-flush">
+          <p className="cp-label cp-editorial-eyebrow">Digital editorial study / 01</p>
+          <h2 id="editorial-study-title" className="cp-heading-section cp-editorial-title">
             A study in weight, form and restraint.
           </h2>
-          <p className="cp-body mt-10 max-w-2xl">
+          <p className="cp-body cp-editorial-copy">
             Digital campaign studies created from the Signature Hoodie reference images. Confirm construction, fit and fabric against the approved product views above; the back view is a visualisation, not a photographed garment.
           </p>
         </div>
@@ -114,23 +115,23 @@ function EditorialStudy({ environment, handle }) {
         <figure
           key={study.src}
           data-motion-study={study.gifHref ? 'still-derived' : undefined}
-          className="cp-editorial-study-frame cp-concept-card cp-rule storefront-panel relative overflow-hidden border-b"
+          className="cp-editorial-study-frame cp-concept-card cp-storefront-panel"
         >
           <Image
             src={study.src}
             alt={study.alt}
             fill
-            sizes="100vw"
+            sizes={designSystemRuntimeContract.imageSizes.fullViewport}
             unoptimized={study.unoptimized}
-            className={`${study.fit || 'object-cover'} ${study.position}`}
+            className={`${study.fit || 'cp-media-fit-cover'} ${study.position}`}
           />
-          <div className="cp-editorial-scrim absolute inset-0" />
-          <figcaption className="cp-label cp-text-copy absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 px-[var(--cp-page-gutter)] py-7 lg:py-10">
+          <div className="cp-editorial-scrim" />
+          <figcaption className="cp-label cp-text-copy cp-editorial-caption">
             <span>Signature Hoodie / {study.label} {String(index + 1).padStart(2, '0')}</span>
             {study.gifHref ? (
-              <a href={study.gifHref} className="cp-text-soft text-right underline underline-offset-4">GIF format</a>
+              <a href={study.gifHref} className="cp-text-soft cp-editorial-link">GIF format</a>
             ) : (
-              <span className="cp-text-muted text-right">{study.disclosure || 'AI-assisted preview'}</span>
+              <span className="cp-text-muted cp-text-align-end">{study.disclosure || 'AI-assisted preview'}</span>
             )}
           </figcaption>
         </figure>
@@ -143,29 +144,29 @@ function VariantPresentation({ presentation }) {
   if (!presentation?.combinations?.length) return null;
 
   return (
-    <div className="cp-variant-list mt-10 pt-7" data-variant-presentation="review-only">
-      <div className="mb-4 flex items-center justify-between gap-4">
+    <div className="cp-variant-list cp-variant-section" data-variant-presentation="review-only">
+      <div className="cp-variant-heading">
         <p className="cp-label-small">Observed variant combinations</p>
         <p className="cp-label-small cp-text-faint">Selection disabled</p>
       </div>
-      <div className="grid gap-2">
+      <div className="cp-variant-options">
         {presentation.combinations.map(combination => (
           <button
             key={combination.referenceHash}
             type="button"
             disabled
             data-variant-available={combination.availableForSale}
-            className="cp-variant-item grid min-h-16 items-center gap-5 px-4 py-3 text-left disabled:cursor-not-allowed"
+            className="cp-variant-item"
           >
             <span>
-              <span className="cp-text-copy block text-xs">{combination.title}</span>
-              <span className="cp-label-small mt-1 block">
+              <span className="cp-text-copy cp-variant-title">{combination.title}</span>
+              <span className="cp-label-small cp-variant-detail">
                 {combination.selectedOptions.map(option => `${option.name}: ${option.value}`).join(' · ')}
               </span>
             </span>
-            <span className="cp-label-small cp-text-muted text-right">
+            <span className="cp-label-small cp-text-muted cp-text-align-end">
               {formatPrice(Number(combination.price.amount), combination.price.currency)}
-              <span className="cp-text-subtle mt-1 block">
+              <span className="cp-text-subtle cp-variant-detail">
                 {combination.availableForSale ? 'Available in source' : 'Unavailable in source'}
               </span>
             </span>
@@ -180,14 +181,14 @@ export function CommerceProductUnavailable({ decision }) {
   return (
     <main id="main-content" className="cp-commerce-page">
       <StorefrontHeader fixed navigationAriaLabel="Product navigation" />
-      <section className="cp-section flex min-h-screen items-center pt-28">
-        <div className="cp-shell-medium px-0">
-          <p className="cp-label mb-8">CARLOPHILLIPS</p>
-          <h1 className="cp-heading-section max-w-5xl">This piece is currently unavailable.</h1>
-          <p className="cp-body-large mt-10 max-w-2xl">
+      <section className="cp-product-unavailable cp-section">
+        <div className="cp-shell-medium cp-shell-flush">
+          <p className="cp-label cp-editorial-eyebrow">CARLOPHILLIPS</p>
+          <h1 className="cp-heading-section cp-product-unavailable-title">This piece is currently unavailable.</h1>
+          <p className="cp-body-large cp-product-unavailable-copy">
             Return to the collection to see what is available now.
           </p>
-          <Link href="/shop" data-unavailable-reason="unavailable" className="cp-action cp-action-outline mt-10">
+          <Link href="/shop" data-unavailable-reason="unavailable" className="cp-action cp-action-outline cp-product-unavailable-action">
             Return to collection
           </Link>
         </div>
@@ -221,16 +222,16 @@ export function CommerceProductDetail({
   return (
     <main id="main-content" className="cp-commerce-page">
       <StorefrontHeader fixed navigationAriaLabel="Product navigation" />
-      <section className="cp-commerce-detail grid border-b">
-        <div className="cp-commerce-detail border-b lg:border-b-0 lg:border-r">
+      <section className="cp-commerce-detail">
+        <div className="cp-commerce-media-column">
           <ProductGallery media={product.media} mediaReview={product.mediaReview} customerFacing={liveProduct} />
         </div>
-        <div className="flex items-start px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
-          <div className="w-full max-w-3xl lg:sticky lg:top-32">
-            <p className="cp-label mb-7">{liveProduct ? 'Signature Series / 001' : product.sourceLabel}</p>
-            <h1 className="cp-heading-product max-w-3xl">{product.title}</h1>
-            <p className="cp-text-copy mt-7 text-2xl font-light">{formatPrice(product.price, product.currency)}</p>
-            <p className="cp-body-large mt-8 max-w-xl">{product.description || 'Product details are currently unavailable.'}</p>
+        <div className="cp-product-detail-copy-column">
+          <div className="cp-product-detail-copy">
+            <p className="cp-label cp-product-detail-eyebrow">{liveProduct ? 'Signature Series / 001' : product.sourceLabel}</p>
+            <h1 className="cp-heading-product cp-product-detail-title">{product.title}</h1>
+            <p className="cp-text-copy cp-product-detail-price">{formatPrice(product.price, product.currency)}</p>
+            <p className="cp-body-large cp-product-detail-description">{product.description || 'Product details are currently unavailable.'}</p>
 
             {cartActivation?.cartAllowed ? (
               <ShopifyCheckoutForm handle={product.handle} presentation={product.variantPresentation} />
@@ -239,17 +240,17 @@ export function CommerceProductDetail({
             )}
 
             {product.colors.length > 0 && (
-              <div className="cp-variant-list mt-10 pt-7">
-                <p className="cp-label-small mb-3">Colors observed</p>
-                <p className="cp-text-copy text-sm">{product.colors.join(', ')}</p>
+              <div className="cp-variant-list cp-variant-section">
+                <p className="cp-label-small cp-color-label">Colors observed</p>
+                <p className="cp-text-copy cp-control-copy">{product.colors.join(', ')}</p>
               </div>
             )}
 
             {product.sizes.length > 0 && (
-              <div className="mt-9">
-                <p className="cp-label-small mb-4">Sizes observed</p>
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-                  {product.sizes.map(size => <button key={size} type="button" disabled className="cp-choice-disabled h-12 text-xs">{size}</button>)}
+              <div className="cp-size-section">
+                <p className="cp-label-small cp-size-label">Sizes observed</p>
+                <div className="cp-size-grid">
+                  {product.sizes.map(size => <button key={size} type="button" disabled className="cp-choice-disabled">{size}</button>)}
                 </div>
               </div>
             )}
@@ -259,34 +260,34 @@ export function CommerceProductDetail({
                 type="button"
                 disabled
                 data-cart-activation={cartActivation?.status || 'unavailable'}
-                className="cp-action cp-action-outline mt-8 h-14 w-full opacity-60"
+                className="cp-action cp-action-outline cp-purchasing-disabled"
               >
                 Purchasing disabled
               </button>
             )}
-            {!liveProduct && <p className="cp-text-subtle mt-4 text-xs leading-relaxed">{product.commerceExplanation}</p>}
+            {!liveProduct && <p className="cp-text-subtle cp-commerce-explanation">{product.commerceExplanation}</p>}
           </div>
         </div>
       </section>
 
-      <section className="cp-section cp-rule storefront-panel border-b">
-        <div className="cp-commerce-information-grid cp-shell-wide grid gap-14 px-0">
+      <section className="cp-information-section cp-section cp-storefront-panel">
+        <div className="cp-commerce-information-grid cp-shell-wide cp-shell-flush">
           <div>
-            <p className="cp-label mb-8">{liveProduct ? 'The piece' : 'Product information'}</p>
-            <h2 className="cp-heading-section max-w-3xl">{liveProduct ? 'Made to be lived in.' : product.truthHeading}</h2>
+            <p className="cp-label cp-editorial-eyebrow">{liveProduct ? 'The piece' : 'Product information'}</p>
+            <h2 className="cp-heading-section cp-information-title">{liveProduct ? 'Made to be lived in.' : product.truthHeading}</h2>
           </div>
-          <div className="space-y-12">
-            <p className="cp-text-soft max-w-3xl text-xl font-light leading-relaxed">{liveProduct ? product.description : product.story}</p>
-            <div className="cp-grid-rule grid sm:grid-cols-2">
+          <div className="cp-information-copy-column">
+            <p className="cp-text-soft cp-information-copy">{liveProduct ? product.description : product.story}</p>
+            <div className="cp-grid-rule cp-information-facts">
               {(liveProduct ? [
                 ['Colour', titleCase(product.variantPresentation?.combinations?.[0]?.selectedOptions?.find(option => option.name.toLowerCase() === 'color')?.value || 'Black')],
                 ['Sizes', liveSizes.join(' / ') || 'See selector'],
                 ['Availability', product.availableForSale ? 'Available' : 'Unavailable'],
                 ['Checkout', 'Secure encrypted checkout'],
               ] : facts).map(([label, value]) => (
-                <div key={label} className="cp-card-panel min-h-32 p-6">
-                  <p className="cp-label-small mb-6">{label}</p>
-                  <p className="cp-text-strong text-base font-light">{value}</p>
+                <div key={label} className="cp-card-panel cp-information-fact">
+                  <p className="cp-label-small cp-information-fact-label">{label}</p>
+                  <p className="cp-text-strong cp-information-fact-value">{value}</p>
                 </div>
               ))}
             </div>

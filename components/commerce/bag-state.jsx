@@ -37,33 +37,33 @@ export function CommerceBagState({ decision }) {
     >
       <StorefrontHeader pageLabel="Bag" navigationAriaLabel="Bag navigation" />
 
-      <section className="cp-bag-section cp-section flex items-center">
-        <div className="cp-bag-layout cp-shell-medium cp-grid-rule grid px-0">
-          <aside className="cp-bag-panel flex flex-col justify-between">
+      <section className="cp-bag-section cp-section">
+        <div className="cp-bag-layout cp-shell-medium cp-grid-rule">
+          <aside className="cp-bag-panel">
             <p className="cp-label">Commerce truth</p>
-            <dl className="cp-definition-list grid gap-6 pt-7 text-sm">
+            <dl className="cp-definition-list cp-bag-definition-list">
               <div>
                 <dt className="cp-label-small">Environment</dt>
-                <dd className="cp-text-copy mt-2">{decision.environment}</dd>
+                <dd className="cp-text-copy cp-definition-value">{decision.environment}</dd>
               </div>
               <div>
                 <dt className="cp-label-small">Source</dt>
-                <dd className="cp-text-copy mt-2">{decision.source === 'fixture' ? 'Local preview' : decision.source === 'shopify' ? 'Store' : 'Unavailable'}</dd>
+                <dd className="cp-text-copy cp-definition-value">{decision.source === 'fixture' ? 'Local preview' : decision.source === 'shopify' ? 'Store' : 'Unavailable'}</dd>
               </div>
               <div>
                 <dt className="cp-label-small">Checkout</dt>
-                <dd className="cp-text-copy mt-2">{decision.checkoutAllowed ? 'Eligible' : 'Disabled'}</dd>
+                <dd className="cp-text-copy cp-definition-value">{decision.checkoutAllowed ? 'Eligible' : 'Disabled'}</dd>
               </div>
             </dl>
           </aside>
 
-          <div className="cp-bag-copy flex flex-col justify-center">
+          <div className="cp-bag-copy">
             <p className="cp-label">{copy.eyebrow}</p>
-            <h1 className="cp-heading-section mt-8 max-w-4xl">
+            <h1 className="cp-heading-section cp-bag-title">
               {copy.title}
             </h1>
-            <p className="cp-body-large mt-8 max-w-2xl">{copy.body}</p>
-            <div className="mt-10 flex flex-wrap gap-3">
+            <p className="cp-body-large cp-bag-description">{copy.body}</p>
+            <div className="cp-bag-actions">
               <Link
                 href="/collections"
                 className="cp-action cp-action-outline"
