@@ -1,6 +1,6 @@
 {
   "schemaVersion": "cp.public-screenshot-comparison.v1",
-  "comparedAt": "2026-08-14T18:09:18.498Z",
+  "comparedAt": "2026-08-14T18:11:18.772Z",
   "baselineRoot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-shopify-webhook-verifier-2026-08-14/screenshots",
   "candidateRoot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-admin-command-policy-2026-08-14/screenshots",
   "fileCount": 8,

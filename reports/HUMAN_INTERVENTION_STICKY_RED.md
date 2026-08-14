@@ -12,7 +12,7 @@ A subsequent local-only lifecycle core at exact clean implementation commit `0a4
 
 A further local-only Shopify webhook verifier at exact clean implementation commit `f6b6ee0` validates exact-body HMAC, allowlisted shop/topic, trigger-time/replay bounds, and fingerprint-only quarantine evidence. It still has no registered webhook, authorized secret, durable replay store, payload sanitizer, inbox/outbox, lifecycle mutation, or external call. It does not reduce the intervention or authorize connecting Shopify.
 
-A local admin command policy additionally proves fail-closed authorization decisions, but it has no real identity/RBAC, durable idempotency/audit, approval service, connector evidence, executor, or external mutation. It does not make the admin operational, reduce this intervention, or authorize any Shopify/Vercel/GitHub/provider action.
+A local admin command policy at exact clean implementation commit `216cb9d` additionally proves fail-closed authorization decisions, but it has no real identity/RBAC, durable idempotency/audit, approval service, connector evidence, executor, or external mutation. It does not make the admin operational, reduce this intervention, or authorize any Shopify/Vercel/GitHub/provider action.
 
 ## Exact human action
 

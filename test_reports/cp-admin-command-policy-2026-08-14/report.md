@@ -2,12 +2,12 @@
 
 Date: 2026-08-14
 Branch: `codex/cp-e2e-admin-control-plane`
-Source state: working tree based on `b92f58f`; exact clean implementation commit binding follows
+Source state: exact clean implementation commit `216cb9d86c6324821ccdbc55babdc6fb739e917b`
 Environment: local pure policy evaluation only; no real identity/RBAC, durable idempotency/audit, approval service, connector decision, executor, external mutation, or Production action
 
 ## Outcome
 
-The local authorization policy passes its working-tree QA. It does **not** make the admin operational or prove any connector action.
+The local authorization policy passes exact-clean-commit QA. It does **not** make the admin operational or prove any connector action.
 
 Implemented locally:
 
@@ -34,6 +34,7 @@ Explicitly absent:
 ## Deterministic verification
 
 - Yarn Classic: 1.22.22
+- Frozen install: passed
 - Full `yarn verify`: passed
 - Lint: zero warnings
 - Tests: 43 files / 426 tests passed
@@ -44,7 +45,7 @@ Explicitly absent:
 
 ## Headless browser and visual verification
 
-Working-tree result: 538/538 findings passed, 0 failures, 58 screenshots.
+Final clean-commit result: 538/538 findings passed, 0 failures, 58 screenshots.
 
 The protected admin/public matrix covers all reviewer sections plus Product Owner Theme, denied states, same/cross-origin API behavior, Draft checkout denial, Axe, keyboard navigation, mobile navigation reachability, overflow, raw-reference/provider leakage, console/network health, and decoded public media.
 

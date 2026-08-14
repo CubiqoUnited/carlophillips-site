@@ -50,7 +50,7 @@
 - [x] Require a fresh command-bound idempotency claim and ready command-bound audit decision; reject unavailable, replayed, conflicting, expired, or mismatched evidence.
 - [x] Enforce spend ceilings, rollback for write/publish/Production mutation, and Product Owner role for Production mutation.
 - [x] Prove malformed, pending, expired, premature, overlong, identity/RBAC, capability, approval, connector, target, evidence, idempotency, audit, cost, rollback, and Production-owner denials without invoking a connector.
-- [ ] Pass and bind full Yarn, browser, screenshot-inspection, and public zero-delta QA to an exact clean implementation commit.
+- [x] Pass and bind full Yarn (43 files / 426 tests), 538/538 browser assertions, 58 screenshot inspections, and 8/8 public zero-delta QA to exact clean implementation commit `216cb9d`.
 - [ ] Product Owner selects identity provider, initial users/roles/grants, session policy, durable database/idempotency/audit/outbox, retention/privacy, connector scopes, retry/dead-letter rules, spend ceilings, and incident owner before any remote admin or executor is wired.
 - [ ] Implement one authorized connector command at a time behind the policy and durable attempted/denied/approved/executed/failed/reconciled/rolled-back events; keep every unimplemented domain read-only.
 
