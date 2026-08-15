@@ -3,11 +3,12 @@
   "$id": "https://carlophillips.com/contracts/capability-registry.schema.json",
   "title": "CapabilityRegistry v1",
   "type": "object",
-  "required": ["schemaVersion", "observedAt", "source", "canonicalOwners", "capabilities"],
+  "required": ["schemaVersion", "observedAt", "source", "evidenceBoundary", "canonicalOwners", "capabilities"],
   "properties": {
     "schemaVersion": { "const": "cp.capability-registry.v1" },
     "observedAt": { "type": "string", "format": "date" },
     "source": { "type": "string", "minLength": 1 },
+    "evidenceBoundary": { "type": "string", "minLength": 1 },
     "canonicalOwners": { "type": "object", "minProperties": 4 },
     "capabilities": {
       "type": "array",
@@ -18,11 +19,12 @@
         "properties": {
           "capability": { "type": "string", "pattern": "^[a-z0-9-]+$" },
           "selectedAdapter": { "type": ["string", "null"] },
-          "accessState": { "enum": ["local_verified", "read_only_verified", "write_test_verified", "unverified", "human_required", "unavailable"] },
+          "accessState": { "enum": ["local_verified", "read_only_verified", "write_test_verified", "write_verified", "unverified", "human_required", "unavailable"] },
           "callableSurface": { "enum": ["local", "shopify_storefront", "shopify_admin", "shopify_flow", "app_api", "authenticated_browser", "human_only", "unverified", "unavailable"] },
+          "observedAt": { "type": ["string", "null"], "format": "date" },
           "evidenceRef": { "type": ["string", "null"], "minLength": 1 },
           "allowedOperations": { "type": "array", "items": { "type": "string", "pattern": "^[a-z0-9-]+$" } },
-          "requiresApproval": { "type": "array", "items": { "enum": ["spend", "credits", "sample", "publish", "production"] } },
+          "requiresApproval": { "type": "array", "uniqueItems": true, "items": { "enum": ["spend", "credits", "sample", "publish", "production", "identity", "privacy", "payment", "order", "refund", "connector", "activation"] } },
           "costGate": { "type": "string", "minLength": 1 },
           "draftSafety": { "type": "string", "minLength": 1 },
           "alternatives": { "type": "array", "items": { "type": "string", "minLength": 1 } },

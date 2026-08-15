@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/order-lifecycle-event.schema.json",
+  "title": "CARLOPHILLIPS sanitized order lifecycle event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "eventId",
+    "idempotencyKey",
+    "sequence",
+    "aggregateReferenceHash",
+    "binding",
+    "eventType",
+    "source",
+    "occurredAt",
+    "recordedAt",
+    "authority",
+    "details",
+    "dataClassification",
+    "previousEventHash",
+    "eventHash"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.order-lifecycle-event.v1" },
+    "eventId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,127}$" },
+    "idempotencyKey": { "type": "string", "pattern": "^[a-z0-9][a-z0-9:._-]{7,255}$" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "aggregateReferenceHash": { "$ref": "#/$defs/fingerprint" },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["releaseId", "releaseFingerprint", "variantFingerprint", "environment"],
+      "properties": {
+        "releaseId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,127}$" },
+        "releaseFingerprint": { "$ref": "#/$defs/fingerprint" },
+        "variantFingerprint": { "$ref": "#/$defs/fingerprint" },
+        "environment": { "enum": ["preview", "production"] }
+      }
+    },
+    "eventType": {
+      "enum": [
+        "payment-authorized",
+        "payment-failed",
+        "order-accepted",
+        "order-cancelled",
+        "pod-handoff-accepted",
+        "pod-handoff-rejected",
+        "production-started",
+        "shipment-dispatched",
+        "shipment-delayed",
+        "delivered",
+        "support-opened",
+        "support-resolved",
+        "return-requested",
+        "return-approved",
+        "return-rejected",
+        "return-received",
+        "refund-issued-partial",
+        "refund-issued-full",
+        "review-eligible",
+        "reconciled",
+        "reconciliation-variance"
+      ]
+    },
+    "source": {
+      "enum": ["commerce-gateway", "fulfillment-gateway", "carrier-gateway", "support-gateway", "reconciliation-engine", "operator"]
+    },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "recordedAt": { "type": "string", "format": "date-time" },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["releaseState", "approvalFingerprints", "checkoutAuthorizationFingerprint", "refundAuthorizationFingerprint"],
+      "properties": {
+        "releaseState": { "enum": ["draft", "staged", "approved", "released"] },
+        "approvalFingerprints": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/fingerprint" }
+        },
+        "checkoutAuthorizationFingerprint": {
+          "oneOf": [{ "$ref": "#/$defs/fingerprint" }, { "type": "null" }]
+        },
+        "refundAuthorizationFingerprint": {
+          "oneOf": [{ "$ref": "#/$defs/fingerprint" }, { "type": "null" }]
+        }
+      }
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reasonCode": { "type": "string", "pattern": "^[A-Z0-9_]{3,96}$" },
+        "amount": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["amount", "currency"],
+          "properties": {
+            "amount": { "type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{2})$" },
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+          }
+        },
+        "trackingReferenceHash": { "$ref": "#/$defs/fingerprint" },
+        "supportCaseReferenceHash": { "$ref": "#/$defs/fingerprint" },
+        "varianceType": { "enum": ["amount", "status", "fulfillment", "refund", "missing-event", "duplicate-event"] }
+      }
+    },
+    "dataClassification": { "const": "sanitized_operational" },
+    "previousEventHash": {
+      "oneOf": [{ "$ref": "#/$defs/fingerprint" }, { "type": "null" }]
+    },
+    "eventHash": { "$ref": "#/$defs/fingerprint" }
+  },
+  "$defs": {
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

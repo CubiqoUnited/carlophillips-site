@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "cp.end-to-end-capability-map.v1",
+  "updatedAt": "2026-08-14",
+  "authorityMode": "readiness-index-only",
+  "overallStatus": "not_end_to_end_ready",
+  "canonicalTruth": {
+    "release": "releases/cp-signature-hoodie-2026-001/release.json",
+    "media": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
+    "orchestration": "runs/cp-hoodie-local-sim-001/run.json",
+    "integrations": "config/capability-registry.json"
+  },
+  "invariants": [
+    "This index never overrides its canonical source artifacts.",
+    "A successful local contract or historical observation is not production authority.",
+    "No stage may infer a later stage as complete.",
+    "External reads, writes, spend, publication, and Production promotion remain separately approval-gated."
+  ],
+  "stages": [
+    {
+      "id": "trigger",
+      "label": "Designer or trend trigger",
+      "group": "creation",
+      "status": "partial",
+      "owner": "Product and orchestration owner",
+      "evidenceRefs": [
+        "runs/cp-hoodie-designer-contract-sim-002/run.json",
+        "runs/cp-hoodie-trend-contract-sim-003/run.json"
+      ],
+      "blocker": {
+        "code": "DURABLE_EXECUTOR_NOT_IMPLEMENTED",
+        "humanAction": "Approve the runtime, event-store, queue, cost, and external-access boundary before live scheduling or research is enabled.",
+        "resumePoint": "Implement one authorized durable executor and prove both entry modes converge on the same PipelineRun without publication authority."
+      }
+    },
+    {
+      "id": "pod-mapping",
+      "label": "POD mapping",
+      "group": "product",
+      "status": "human_required",
+      "owner": "Product/POD owner",
+      "evidenceRefs": [
+        "releases/cp-signature-hoodie-2026-001/release.json",
+        "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/final-apliiq-assets-rerun-report.md"
+      ],
+      "blocker": {
+        "code": "PROVIDER_VARIANT_FINGERPRINT_UNBOUND",
+        "humanAction": "Use the confirmed Apliiq access and captured saved-product, IND4000, black, and front-embroidery facts only to reconcile every provider variant and SKU; do not order, sample, sync, or enable fulfillment.",
+        "resumePoint": "Bind a complete one-to-one provider variant/SKU fingerprint to all nine reviewed Shopify variants and the Draft release; access and saved-product facts alone are not fulfillment or release authority."
+      }
+    },
+    {
+      "id": "physical-sample",
+      "label": "Physical sample",
+      "group": "product",
+      "status": "human_required",
+      "owner": "Product Owner",
+      "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
+      "blocker": {
+        "code": "SAMPLE_NOT_ORDERED_OR_APPROVED",
+        "humanAction": "Approve the exact item, size, destination, displayed total cost, and risk before any sample order.",
+        "resumePoint": "Receive and inspect fit, colour, placement, and finish; bind the signed sample evidence to this release."
+      }
+    },
+    {
+      "id": "shopify-observation",
+      "label": "Shopify product truth",
+      "group": "commerce",
+      "status": "human_required",
+      "owner": "Commerce/release owner",
+      "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
+      "blocker": {
+        "code": "CURRENT_OBSERVATION_NOT_RELEASE_BOUND",
+        "humanAction": "Authorize a read-only Shopify observation for the exact Hoodie; do not change catalog, channel, price, inventory, or order data.",
+        "resumePoint": "Review and apply separate identity, commerce-facts, variant, and audit fingerprints to the Draft Product Release Record."
+      }
+    },
+    {
+      "id": "media",
+      "label": "Media capture and approval",
+      "group": "media",
+      "status": "human_required",
+      "owner": "Media reviewer and Product Owner",
+      "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/media-manifest.json"],
+      "blocker": {
+        "code": "PHYSICAL_MEDIA_AND_APPROVALS_MISSING",
+        "humanAction": "Complete the approved physical-sample capture and separately approve provenance, rights, accuracy, quality, and any spend.",
+        "resumePoint": "Register and hash-bind the required truthful assets; waive an infeasible optional modality only with recorded evidence."
+      }
+    },
+    {
+      "id": "showcase",
+      "label": "Private showcase",
+      "group": "display",
+      "status": "blocked",
+      "owner": "Experience and release owner",
+      "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
+      "blocker": {
+        "code": "RELEASE_NOT_STAGED",
+        "humanAction": "No action is safe until product, Shopify, fulfillment, media, candidate-build, staging, and rollback evidence are complete.",
+        "resumePoint": "Advance the Product Release Record from Draft to Staged through the canonical transition evaluator, then review the immutable Preview."
+      }
+    },
+    {
+      "id": "publication",
+      "label": "Publication and display",
+      "group": "release",
+      "status": "blocked",
+      "owner": "Product Owner and release owner",
+      "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
+      "blocker": {
+        "code": "CANONICAL_RELEASE_IS_DRAFT",
+        "humanAction": "Do not merge, promote Production, publish Shopify, or enable a sales channel from historical launch claims.",
+        "resumePoint": "Complete Draft to Staged to Approved to Released in order, with immutable Preview, approval, ACTIVE Shopify observation, and verified rollback evidence."
+      }
+    },
+    {
+      "id": "cart-checkout",
+      "label": "Cart and checkout",
+      "group": "sale",
+      "status": "blocked",
+      "owner": "Commerce/release owner",
+      "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
+      "blocker": {
+        "code": "CHECKOUT_AUTHORITY_NOT_RELEASE_BOUND",
+        "humanAction": "Keep cart and checkout disabled while the canonical release is Draft.",
+        "resumePoint": "After Released, prove current variant resolution and a separately approved server-only cart/checkout activation for the exact fingerprint and environment."
+      }
+    },
+    {
+      "id": "payment-order",
+      "label": "Payment and order",
+      "group": "sale",
+      "status": "human_required",
+      "owner": "Product Owner and commerce operator",
+      "evidenceRefs": [
+        "contracts/order-lifecycle-event.schema.json",
+        "tests/order-lifecycle.test.js",
+        "contracts/provider-webhook-verification.schema.json",
+        "tests/shopify-webhook-verifier.test.js"
+      ],
+      "blocker": {
+        "code": "CONTROLLED_ORDER_NOT_AUTHORIZED",
+        "humanAction": "After all release gates pass, approve one exact controlled order, payment exposure, shipping destination, tax, total, and refund boundary.",
+        "resumePoint": "Place exactly one controlled order and bind sanitized payment, order, shipping, tax, and refund evidence without exposing customer data."
+      }
+    },
+    {
+      "id": "fulfillment-tracking",
+      "label": "POD fulfillment and tracking",
+      "group": "post-sale",
+      "status": "blocked",
+      "owner": "Fulfillment operator",
+      "evidenceRefs": [
+        "contracts/order-lifecycle-event.schema.json",
+        "tests/order-lifecycle.test.js",
+        "contracts/provider-webhook-verification.schema.json",
+        "tests/shopify-webhook-verifier.test.js"
+      ],
+      "blocker": {
+        "code": "NO_CONTROLLED_ORDER_LIFECYCLE",
+        "humanAction": "Do not infer fulfillment from installed-app or product-mapping evidence.",
+        "resumePoint": "Observe the approved order exactly once through POD receipt, production, shipment, carrier tracking, delivery, exceptions, and reconciliation."
+      }
+    },
+    {
+      "id": "support-returns-reviews",
+      "label": "Support, returns, refunds, reviews",
+      "group": "post-sale",
+      "status": "human_required",
+      "owner": "Support and operations owner",
+      "evidenceRefs": [
+        "config/capability-registry.json",
+        "contracts/order-lifecycle-event.schema.json",
+        "tests/order-lifecycle.test.js",
+        "contracts/provider-webhook-verification.schema.json",
+        "tests/shopify-webhook-verifier.test.js"
+      ],
+      "blocker": {
+        "code": "POST_SALE_OWNERS_UNSELECTED",
+        "humanAction": "Approve one accountable owner, privacy/retention policy, access scope, service level, and cost boundary for each post-sale capability.",
+        "resumePoint": "Exercise support, return/refund, and review-eligibility journeys against the controlled order and reconcile every terminal state to Shopify."
+      }
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics and reconciliation",
+      "group": "learning",
+      "status": "blocked",
+      "owner": "Analytics/privacy owner",
+      "evidenceRefs": ["config/production-authorities.json"],
+      "blocker": {
+        "code": "ANALYTICS_PROVIDER_AND_RETENTION_UNAPPROVED",
+        "humanAction": "Approve the provider, event dictionary, consent basis, retention, access roles, cost, and kill switch.",
+        "resumePoint": "Instrument environment-labelled funnel and operational events, then reconcile revenue, refunds, returns, and fulfillment to Shopify rather than client events."
+      }
+    },
+    {
+      "id": "admin-control-plane",
+      "label": "Admin control plane",
+      "group": "operations",
+      "status": "partial",
+      "owner": "Platform/security and operations owner",
+      "evidenceRefs": [
+        "app/admin/[[...section]]/page.js",
+        "contracts/admin-command-decision.schema.json",
+        "tests/admin-command-policy.test.js"
+      ],
+      "blocker": {
+        "code": "LOCAL_READ_ONLY_PROTOTYPE_ONLY",
+        "humanAction": "Select an identity provider, durable database/event store, initial users, least-privilege roles, retention, and incident owner before any remote access or mutation.",
+        "resumePoint": "Replace the local review token with real identity/RBAC, durable idempotency and append-only persistence; feed the locally verified command policy exact durable decisions, then add one authorized connector/executor at a time."
+      }
+    }
+  ]
+}

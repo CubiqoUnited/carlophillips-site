@@ -122,21 +122,19 @@ describe('product view model', () => {
     expect(JSON.stringify(model)).not.toContain('Outer pending release story');
   });
 
-  it('labels the approved single-product launch as live commerce', () => {
+  it('does not synthesize a live-commerce presentation from an ad hoc reason', () => {
     const model = toProductViewModel({
       source: 'shopify',
       environment: 'production',
       commerceAllowed: true,
-      reason: 'SINGLE_PRODUCT_COMMERCE_LAUNCH_APPROVED',
+      reason: 'AD_HOC_COMMERCE_APPROVAL',
       product: { id: 'hoodie', title: 'Live Hoodie', price: 128, currency: 'USD', availableForSale: true, variantPresentation, media: [] },
     });
     expect(model).toMatchObject({
-      sourceLabel: 'Live product',
-      truthHeading: 'Current product facts.',
-      commerceExplanation: 'Variant selection and secure checkout are active for this product.',
+      sourceLabel: 'Commerce source — release state unavailable',
+      truthHeading: 'Release state unavailable.',
+      commerceExplanation: 'Purchasing remains disabled because the release context is unavailable.',
     });
-    expect(JSON.stringify(model)).not.toContain('disabled');
-    expect(JSON.stringify(model)).not.toContain('unavailable');
   });
 
   it('returns null for an unavailable decision', () => {

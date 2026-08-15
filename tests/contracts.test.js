@@ -17,6 +17,9 @@ import mediaAssetSchema from '../contracts/media-asset.schema.json';
 import productReleaseSchema from '../contracts/product-release.schema.json';
 import releaseDecisionSchema from '../contracts/release-decision.schema.json';
 import releaseTransitionDecisionSchema from '../contracts/release-transition-decision.schema.json';
+import orderLifecycleEventSchema from '../contracts/order-lifecycle-event.schema.json';
+import providerWebhookVerificationSchema from '../contracts/provider-webhook-verification.schema.json';
+import adminCommandDecisionSchema from '../contracts/admin-command-decision.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
@@ -319,38 +322,34 @@ describe('truth contracts', () => {
   });
 
   it('validates a pending release record without claiming approval', () => {
-    expect(validateProductRelease({
-      schemaVersion: 'cp.product-release.v1',
-      releaseId: 'cp-test-product-2026-001',
-      state: 'draft',
-      shopify: {
-        productReference: 'sanitized-test-product',
-        handle: 'test-product',
-        statusObserved: 'DRAFT',
-        observedAt: '2026-07-22T22:00:00Z',
-        variantFingerprint: `sha256:${'a'.repeat(64)}`,
-        variantFingerprintStatus: 'observed',
-        commerceFactsFingerprint: `sha256:${'b'.repeat(64)}`,
-        commerceFactsFingerprintStatus: 'reviewed',
-        observationFingerprint: `sha256:${'c'.repeat(64)}`,
-        observationFingerprintStatus: 'reviewed',
-        observationReviewEvidence: 'approval/product-observation-001',
-      },
-      fulfillmentMappings: [],
-      mediaManifest: 'fixtures/test-media-manifest.json',
-      approvals: {
-        product: { status: 'pending', owner: 'Product Owner' },
-        media: { status: 'pending', owner: 'Product Owner/designee' },
-        fulfillment: { status: 'pending', owner: 'Product Owner/designee' },
-      },
-      candidate: { gitCommit: null, buildEvidence: null, stagingEvidence: null },
-      rollback: {
-        strategy: null,
-        planEvidence: null,
-        verificationEvidence: null,
-        previousReleaseId: null,
-      },
-    })).toBe(true);
+    const record = createCompleteReleaseRecord('draft');
+    record.fulfillmentMappings = [];
+    record.physicalSample = {
+      status: 'not_ordered',
+      providerMappingFingerprint: null,
+      sampleFingerprint: null,
+      evidence: null,
+      approvalEvidence: null,
+      inspection: { fit: 'pending', colour: 'pending', artworkPlacement: 'pending', finish: 'pending' },
+    };
+    record.mediaManifestFingerprint = null;
+    for (const approval of Object.values(record.approvals)) {
+      approval.status = 'pending';
+      approval.evidence = null;
+    }
+    record.candidate = {
+      gitCommit: null,
+      buildEvidence: null,
+      stagingEvidence: null,
+      releaseEvidenceFingerprint: null,
+    };
+    record.rollback = {
+      strategy: null,
+      planEvidence: null,
+      verificationEvidence: null,
+      previousReleaseId: null,
+    };
+    expect(validateProductRelease(record)).toBe(true);
   });
 
   it('validates an explicit unavailable release decision', () => {
@@ -437,6 +436,7 @@ describe('truth contracts', () => {
 
   it.each([
     ['missing fulfillment mapping', record => { record.fulfillmentMappings = []; }],
+    ['unapproved physical sample', record => { record.physicalSample.status = 'not_ordered'; }],
     ['pending product approval', record => { record.approvals.product.status = 'pending'; }],
     ['pending media approval', record => { record.approvals.media.status = 'pending'; }],
     ['pending fulfillment approval', record => { record.approvals.fulfillment.status = 'pending'; }],
@@ -464,6 +464,7 @@ describe('truth contracts', () => {
   it('rejects a Released record without ACTIVE and verified rollback observations', () => {
     const record = createCompleteReleaseRecord('released');
     record.shopify.statusObserved = 'DRAFT';
+    record.shopify.productionObservation = null;
     record.rollback.verificationEvidence = null;
     expect(validateProductRelease(record)).toBe(false);
   });
@@ -545,15 +546,103 @@ describe('truth contracts', () => {
     expect(validateProductCreationJob(invalid)).toBe(false);
   });
 
-  it('validates the evidence-labeled capability registry with the proven cart surface', () => {
+  it('validates the evidence-labeled capability registry without treating a cart test as authority', () => {
     expect(validateCapabilityRegistry(capabilityRegistry)).toBe(true);
     const cartCapability = capabilityRegistry.capabilities.find(item => item.capability === 'shopify-storefront-cart');
     expect(cartCapability).toMatchObject({
       accessState: 'write_test_verified',
       callableSurface: 'shopify_storefront',
-      allowedOperations: ['cart-write'],
+      observedAt: '2026-08-04',
+      allowedOperations: ['cart-write-test'],
       evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
-      blocker: null,
+      requiresApproval: ['activation', 'production', 'order'],
+      blocker: { code: 'CART_ACTIVATION_AUTHORITY_REQUIRED' },
     });
+  });
+
+  it('validates the PII-safe, release-bound order lifecycle event contract', () => {
+    const lifecycleEvent = {
+      schemaVersion: 'cp.order-lifecycle-event.v1',
+      eventId: 'evt-lifecycle-001',
+      idempotencyKey: 'lifecycle:001:payment-authorized',
+      sequence: 1,
+      aggregateReferenceHash: `sha256:${'a'.repeat(64)}`,
+      binding: {
+        releaseId: 'cp-signature-hoodie-2026-001',
+        releaseFingerprint: `sha256:${'b'.repeat(64)}`,
+        variantFingerprint: `sha256:${'c'.repeat(64)}`,
+        environment: 'production',
+      },
+      eventType: 'payment-authorized',
+      source: 'commerce-gateway',
+      occurredAt: '2026-08-14T16:00:00Z',
+      recordedAt: '2026-08-14T16:00:01Z',
+      authority: {
+        releaseState: 'released',
+        approvalFingerprints: [`sha256:${'d'.repeat(64)}`],
+        checkoutAuthorizationFingerprint: `sha256:${'e'.repeat(64)}`,
+        refundAuthorizationFingerprint: null,
+      },
+      details: { amount: { amount: '128.00', currency: 'USD' } },
+      dataClassification: 'sanitized_operational',
+      previousEventHash: null,
+      eventHash: `sha256:${'f'.repeat(64)}`,
+    };
+    expect(ajv.validate(orderLifecycleEventSchema, lifecycleEvent), ajv.errorsText()).toBe(true);
+    expect(Object.keys(orderLifecycleEventSchema.properties.details.properties))
+      .not.toEqual(expect.arrayContaining(['name', 'email', 'address', 'phone', 'customer', 'orderId']));
+  });
+
+  it('validates a fingerprint-only webhook verification decision with zero mutation authority', () => {
+    const verification = {
+      schemaVersion: 'cp.provider-webhook-verification.v1',
+      status: 'verified',
+      provider: 'shopify',
+      authority: 'observation_only',
+      topic: 'orders/updated',
+      shopFingerprint: `sha256:${'a'.repeat(64)}`,
+      deliveryFingerprint: `sha256:${'b'.repeat(64)}`,
+      payloadFingerprint: `sha256:${'c'.repeat(64)}`,
+      payloadBytes: 128,
+      triggeredAt: '2026-08-14T15:59:30Z',
+      observedAt: '2026-08-14T16:00:00Z',
+      rawPayloadReturned: false,
+      lifecycleMutationAuthorized: false,
+      releaseAuthority: false,
+      checkoutAuthority: false,
+      refundAuthority: false,
+      publicationAuthority: false,
+    };
+    expect(ajv.validate(providerWebhookVerificationSchema, verification), ajv.errorsText()).toBe(true);
+    expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('payload');
+    expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('shop');
+    expect(providerWebhookVerificationSchema.properties).not.toHaveProperty('webhookId');
+  });
+
+  it('validates a sanitized admin command decision without connector or upstream authority claims', () => {
+    const decision = {
+      schemaVersion: 'cp.admin-command-decision.v1',
+      policyVersion: 'cp.admin-command-policy.v1',
+      commandFingerprint: `sha256:${'a'.repeat(64)}`,
+      decision: 'denied',
+      reasonCodes: ['IDENTITY_NOT_AUTHENTICATED'],
+      capability: 'admin-command-authorizer',
+      operation: 'evaluate-reviewed-command',
+      environment: 'local',
+      targetFingerprint: `sha256:${'b'.repeat(64)}`,
+      actorRole: 'reviewer',
+      sideEffectKind: 'none',
+      expiresAt: '2026-08-14T16:05:00Z',
+      commandExecutionAuthorized: false,
+      connectorInvocationPerformed: false,
+      externalMutationPerformed: false,
+      releaseAuthority: false,
+      checkoutAuthority: false,
+      refundAuthority: false,
+      publicationAuthority: false,
+    };
+    expect(ajv.validate(adminCommandDecisionSchema, decision), ajv.errorsText()).toBe(true);
+    expect(adminCommandDecisionSchema.properties).not.toHaveProperty('actorSubject');
+    expect(adminCommandDecisionSchema.properties).not.toHaveProperty('targetReference');
   });
 });

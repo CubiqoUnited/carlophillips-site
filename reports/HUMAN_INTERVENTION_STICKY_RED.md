@@ -1,3 +1,108 @@
+# HUMAN INTERVENTION REQUIRED — PRODUCT OWNER ADMIN SIGN-IN
+
+Updated: 2026-08-14
+
+## What is blocked
+
+The Theme screen is implemented and locally verified, but the admin portal deliberately denies every Vercel Preview and Production request. The verified Vercel project has no remote identity provider or Product Owner identity configuration. Deploying the current code would therefore leave `/admin/theme` inaccessible, and replacing that boundary with a shared bearer token would not establish a named Product Owner identity.
+
+## Exact human action
+
+1. Manually open Vercel Dashboard → team **aditya's projects** → project **carlophillips-site** (`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`) → Integrations/Marketplace → Clerk. Do not use the duplicate same-named project under the Cubiqo Vercel team.
+2. Install Clerk only for this project and only on a no-cost plan. If Vercel or Clerk requests payment, an upgrade, broader team access, or access to another project, stop and report the exact price and permission request instead of accepting it.
+3. In Clerk Dashboard, set sign-up mode to **Restricted**, create or invite only the Product Owner account, enable MFA for that account, and keep public sign-up disabled. Do not paste Clerk secret keys into Codex or commit them; the Marketplace integration should provision encrypted environment variables.
+4. Copy the Product Owner's non-secret immutable Clerk user ID (format `user_...`) from Clerk Dashboard → Users.
+5. Signal completion in the active CARLOPHILLIPS task as: `CP Clerk Product Owner ready: user_...`.
+
+Do not ask Codex to foreground either dashboard. Boss must open these screens manually unless Boss explicitly approves that exact visible action.
+
+## Cost and risk
+
+- The intended setup uses Clerk's no-cost tier, but pricing and plan limits are external and may change. No paid plan or charge is authorized by this handoff.
+- Installing the integration creates an external authentication application and encrypted Vercel environment variables for the selected project.
+- Public sign-up, email/domain-wide allowlisting, a mutable email-only authorization check, or installing into the duplicate Vercel project could expose the private admin surface.
+
+## Resume point
+
+After the exact completion signal, Sushma resumes from the immutable integration candidate, binds the supplied Clerk user ID to the Product Owner allowlist, verifies unauthenticated/wrong-user/Product Owner access and CSRF/origin behavior in a real Vercel Preview, and returns the Preview evidence before merge and exact-artifact Production promotion.
+
+---
+
+# HUMAN INTERVENTION REQUIRED — CANONICAL GITHUB DELIVERY AUTHORITY
+
+Updated: 2026-08-14
+
+## What is blocked
+
+The canonical integration candidate is locally verified, but the authenticated GitHub identity `avloy07-eng` has `pull=true` and `push=false` on `CubiqoUnited/carlophillips-site`. The protected Preview workflow intentionally rejects fork-owned code, so a fork pull request alone cannot receive protected Vercel credentials or become canonical `main`.
+
+## Exact human action
+
+1. Manually open GitHub → `CubiqoUnited/carlophillips-site` → Settings → Collaborators/Teams and grant `avloy07-eng` the minimum repository role that permits pushing a temporary `codex/*` branch and updating its pull request. Do not grant organization administration.
+2. Configure the `Preview` and `Production` environments and `main` ruleset exactly as recorded later in this file: required reviewers, `CI / Verify`, blocked force-push/deletion, and environment-scoped Vercel secret/variable names only.
+3. Signal completion in the active CARLOPHILLIPS task as: `CP canonical GitHub delivery ready`.
+
+If permission cannot be granted, a current repository maintainer must push the exact candidate commit to a same-repository `codex/*` branch and own the protected PR/merge. Do not copy files manually or merge the fork branch without preserving the exact SHA and checks.
+
+## Cost and risk
+
+- No charge is intended.
+- Repository write access can alter source and workflows. Keep branch protection and required review enabled; do not grant admin or bypass rights.
+
+## Resume point
+
+Sushma rechecks permissions read-only, pushes the exact candidate, opens/updates the canonical PR, runs `CI / Verify`, and only then dispatches the protected immutable Preview after Clerk provisioning is complete.
+
+---
+
+# HUMAN INTERVENTION REQUIRED — CONTAIN LIVE CHECKOUT AUTHORITY DEFECT
+
+Updated: 2026-08-14
+
+## What is blocked
+
+The current superseding candidate is exact commit `ee5ebaece14fe75356461bce3e02292b55d29ef6`. Its frozen verification passes 44 files / 468 tests, and exact headless QA passes 689/689 findings with 68 screenshots and eight byte-identical public comparisons. Boss has requested staging and Production delivery, but the request does not bypass the missing canonical GitHub write path, Clerk Product Owner provisioning, protected Preview evidence, or safe candidate/fallback receipts.
+
+The live Signature Hoodie PDP was independently observed showing `Continue to checkout` while the canonical Product Release Record is Draft, required fingerprints and approvals are missing, rollback verification is null, and the Media Registry has zero storefront bindings. A historical single-product launch file bypassed the canonical release and media gates.
+
+The tested candidate on branch `codex/cp-e2e-admin-control-plane`, exact clean implementation commit `1ea82ef`, removes that authority path, denies checkout before any Shopify read or cart mutation, and requires an independent `checkoutAllowed` decision before the PDP can render a checkout form. It also contains the local Product Owner-only Theme proposal screen and an Evidence Health reconciliation view. Historical cart proof is now `cart-write-test` evidence-only; it cannot satisfy operational `cart-write`. Source QA passes 40 files / 382 tests and the integrated browser matrix passes 538/538 checks with 58 screenshots and an 8/8 exact zero-pixel public comparison. This local change does not alter Production.
+
+A subsequent local-only lifecycle core at exact clean implementation commit `0a4485a` validates and projects sanitized payment-to-post-sale events, but it has no webhook listener, provider credential, durable database, customer data, connector, payment/order/refund authority, or external mutation. It does not reduce any human action below and does not make the live funnel ready.
+
+A further local-only Shopify webhook verifier at exact clean implementation commit `f6b6ee0` validates exact-body HMAC, allowlisted shop/topic, trigger-time/replay bounds, and fingerprint-only quarantine evidence. It still has no registered webhook, authorized secret, durable replay store, payload sanitizer, inbox/outbox, lifecycle mutation, or external call. It does not reduce the intervention or authorize connecting Shopify.
+
+A local admin command policy at exact clean implementation commit `216cb9d` additionally proves fail-closed authorization decisions, but it has no real identity/RBAC, durable idempotency/audit, approval service, connector evidence, executor, or external mutation. It does not make the admin operational, reduce this intervention, or authorize any Shopify/Vercel/GitHub/provider action.
+
+The protected Commands portal at exact clean implementation commit `25cf7e9` makes those unavailable gates visible but adds no control, command, endpoint, or authority. It does not reduce the intervention or authorize external access.
+
+Exact clean implementation commit `98a23f2` also hardens canonical release proof: physical-sample inspection, provider mapping, observation review, media manifest, build/staging/rollback evidence, exact approval targets, and a fresh post-approval Production observation now have immutable release/candidate/fingerprint gates. Provider-specific capability blockers and the Admin's release/system labels are corrected. Exact-commit QA passes 43 files / 433 tests, 669/669 headless findings, 61 screenshots, and eight exact zero-pixel public comparisons. This creates no missing external evidence and does not reduce the Preview or Production approval steps below.
+
+Fresh read-only Vercel and HTTP checks on 2026-08-14 confirm that the latest READY Preview is still commit `f82733c`, READY Production is still commit `bb9568f`, and the live Hoodie PDP still contains `action="/api/checkout"` plus `Continue to checkout`. The containment defect therefore remains live.
+
+The corrected local CI/CD path now requires a separate immutable Preview and a paired no-alias staged Production candidate plus distinct same-SHA/same-release safe fallback. The captured current Production deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH` is a drift anchor only. It is not verified safe and must never be selected as a rollback target. No workflow was dispatched and Production is unchanged.
+
+## Exact human action
+
+1. Boss decides whether to authorize a fail-closed hotfix deployment from a new immutable reviewed candidate. Any staged Production candidate must be accompanied by a distinct same-SHA/same-release no-alias safe fallback that independently passes receipt and smoke verification.
+2. If authorizing the hotfix, signal exactly: `Approve CP fail-closed hotfix Preview only`. Sushma may then prepare and verify a Vercel Preview; this signal does not authorize merge or Production.
+3. After exact Preview QA visibly proves no checkout CTA, no unbound media, and no Shopify mutation, Boss may separately signal: `Approve CP fail-closed Production containment`.
+4. Before any Production promotion, Sushma must return receipt proof for both the distinct staged candidate and distinct safe fallback, plus proof that Production still matches the captured drift anchor. If recovery is needed after an attempted promotion, only that verified safe fallback may be promoted.
+
+Do not open Shopify, GitHub settings, Vercel, or any browser screen for Codex. If a visible screen is later necessary, Boss must manually open it or explicitly approve that exact visible action first.
+
+## Cost and risk
+
+- A Preview deployment should not change the live site, but account/build usage may apply.
+- Production containment changes customer purchase availability and therefore needs explicit Product Owner approval.
+- An unverified rollback could restore the same bypass or older defects. The current Production drift anchor is not a recovery artifact; only the distinct verified safe fallback may be promoted after an attempted-promotion failure.
+- No Shopify catalog, channel, order, payment, fulfillment, or billing change is authorized.
+
+## Resume point
+
+Resume from the isolated branch by creating one immutable candidate commit, verifying Local and exact Preview at 1440×1000, 1024×768, and 390×844, and binding the results to the Product Release Record. Production remains a separate approval.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — SIGNATURE HOODIE SAMPLE FIRST
 
 Updated: 2026-08-09
@@ -8,11 +113,11 @@ The first remaining physical-media gate is one exact Signature Hoodie sample. Do
 
 ## Exact action and safe order
 
-1. Complete the newest Apliiq password-reset link and sign in to the existing Apliiq account without accepting a plan, charge, or configuration change.
-2. Signal `Apliiq open` in the active Codex task.
-3. Codex resumes with a read-only check of the existing Hoodie product, blank, decoration placement, artwork, and Shopify variant mapping. A reported `IND4000` resemblance is not sufficient to place an order.
-4. After the exact item is verified, Codex reports the one-sample item, selected size, shipping destination requirement, total price, and any risk. The Product Owner must approve that exact order and total before checkout.
-5. After delivery, capture the sample in one consolidated session: front, back, both profiles, both three-quarter views, on-body fit, walking/turning video, 24–36 evenly spaced spin angles, embroidery macro, outer fleece, inner fleece, hood/drawcord, pocket/seams, cuffs, and hem.
+1. Treat authenticated Apliiq access and saved product `5958463` as already evidenced read-only: blank `IND4000`, black, front embroidery, and the retained artwork. This grants no order, fulfillment, or release authority.
+2. Record the exact provider variant/SKU mapping fingerprint for the Hoodie without changing configuration, accepting a plan, or placing an order; then signal `Apliiq variant mapping captured` in the active Codex task.
+3. Codex binds that exact fingerprint to the release evidence and checks it against the intended Shopify variant mapping. Saved-product resemblance alone is not sufficient to place an order.
+4. After the exact item and mapping are verified, Codex reports the one-sample item, selected size, shipping destination requirement, total price, and any risk. The Product Owner must approve that exact order and total before checkout.
+5. After delivery, capture and inspect the sample in one consolidated session: front, back, both profiles, both three-quarter views, on-body fit, walking/turning video, 24–36 evenly spaced spin angles, embroidery macro, outer fleece, inner fleece, hood/drawcord, pocket/seams, cuffs, and hem.
 
 ## Cost and risk
 
@@ -23,7 +128,7 @@ The first remaining physical-media gate is one exact Signature Hoodie sample. Do
 
 ## Resume points
 
-- After provider sign-in: `Apliiq open` → inspect the mapping read-only.
+- After exact mapping capture: `Apliiq variant mapping captured` → bind and verify the provider/Shopify variant fingerprint read-only.
 - After exact sample quote: Product Owner approves or rejects the named item and exact total.
 - After delivery/capture: `Hoodie sample media uploaded` → ingest, curate, produce the genuine spin/video/3D derivatives, verify desktop/mobile, and stage in Vercel Preview before any separate Production decision.
 
@@ -39,7 +144,7 @@ Updated: 2026-08-14
 
 1. Boss nominates one human Platform/Security owner and one Account/Billing owner in the active CARLOPHILLIPS task.
 2. The business/legal content owner reviews the technical drafts at `/privacy`, `/terms`, and `/cookie-policy`, supplies the missing seller/contact/retention/processor/order/returns language, and signals `CP policy content approved` only after the exact text is accepted.
-3. An authorized GitHub administrator opens repository Settings → Branches/Rulesets for `CubiqoUnited/carlophillips-site`, requires the current green CI check and pull-request review on `main`, and signals `CP main protection enabled`. The authenticated Codex account `avloy07-eng` received GitHub API `403 Must have push access` on 2026-08-14 and cannot perform this administrator action.
+3. An authorized GitHub administrator opens repository Settings → Branches/Rulesets for `CubiqoUnited/carlophillips-site`, requires the exact `CI / Verify` check and pull-request review on `main`, and signals `CP main protection enabled`. The authenticated Codex account `avloy07-eng` has pull-only access and received GitHub API `403 Must have push access`; it cannot perform this administrator action. Do not change the Production branch or merge a pull request as part of this configuration action.
 4. An authorized account owner performs the read-only RBAC, 2FA/recovery, billing-alert and spend-ceiling review for the verified Vercel project, GitHub repository, Shopify account and selected POD provider, then signals `CP account audit complete`. Do not buy, upgrade, rotate credentials, or change configuration without separate approval.
 5. After the current branch is integrated with PR #9 and a new immutable Vercel Preview exists, Boss approves a manual screen-reader/keyboard walkthrough and signals `CP Preview ready for manual accessibility review`.
 
@@ -58,7 +163,7 @@ Updated: 2026-08-14
 
 ## Completion signal and resume point
 
-Use the exact signals above. Sushma then records the evidence, integrates the selected candidate on a temporary branch, runs the complete CI-equivalent and Preview QA, and returns a go/no-go brief. No signal by itself authorizes tracking enablement, Shopify publication, checkout, purchase, or billing changes.
+Use the exact signals above. Sushma then records the evidence, integrates the selected candidate on a temporary branch, runs the complete CI-equivalent and Preview QA, and returns a go/no-go brief. No signal by itself authorizes merge, Production promotion, tracking enablement, Shopify publication, checkout, purchase, or billing changes.
 
 ---
 
@@ -66,24 +171,25 @@ Use the exact signals above. Sushma then records the evidence, integrates the se
 
 Added: 2026-08-14
 
-Status: **WAIT FOR THE CI/CD PULL REQUEST AND ITS FIRST GREEN `CI / Verify` RUN.** Do not configure Production enablement before that evidence exists.
+Status: **PR #10 is merged and the first `CI / Verify` run on `main` was reported green. Repository/environment protection must still be verified and configured before Production workflow enablement.**
 
 ## Exact safe order
 
-1. Review the separate CI/CD pull request from `codex/cp-cicd-bootstrap` and confirm `CI / Verify` is green.
+1. Verify PR #10 is merged as `cd5c64d24481311b2ca195768e2250ed28eff2c6` and the `CI / Verify` run on that exact `main` commit is green.
 2. In GitHub repository rulesets, protect `main`: require pull requests, at least one approval, required status `CI / Verify`, and block force-push and deletion. Do not require the stale Vercel fork-policy status.
-3. In GitHub Environments → `Production`, add at least one required reviewer. Disable administrator bypass if repository policy permits.
-4. In `Production`, add `VERCEL_TOKEN` as an environment secret. Add `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` as environment variables. Do not share or print any credential value.
-5. Only after the reviewer rule is visible, add `CP_PRODUCTION_PROMOTION_ENABLED=true` as a `Production` environment variable.
-6. Return to the active Codex task and signal `CI/CD protection configured`. Do not dispatch the release-candidate workflow without approval to create that exact no-domain Vercel candidate. Do not dispatch Production promotion without the candidate receipt's exact deployment ID, SHA, release, and `productionBeforeDeploymentId`, review of that exact candidate, and a separate Product Owner release decision.
+3. In GitHub Environments → `Preview`, add at least one required reviewer. Add `VERCEL_TOKEN` as an environment secret and `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` as environment variables. This environment is only for exact-PR-head Preview deployments with Preview semantics and no Production alias.
+4. In GitHub Environments → `Production`, add at least one required reviewer. Disable administrator bypass if repository policy permits.
+5. In `Production`, add `VERCEL_TOKEN` as an environment secret. Add `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` as environment variables. Do not share or print any credential value.
+6. Only after the reviewer rule is visible, add `CP_PRODUCTION_PROMOTION_ENABLED=true` as a `Production` environment variable.
+7. Return to the active Codex task and signal `CI/CD protection configured`. Do not dispatch Preview or release-candidate workflows without approval for those exact immutable artifacts. Do not dispatch Production promotion without the pair receipt's exact candidate ID, safe-fallback ID, SHA, release, and `productionBeforeDeploymentId`, review of both artifacts, and a separate Product Owner release decision.
 
 ## Cost and risk
 
 - GitHub/Vercel configuration has no intended charge, but Vercel use remains subject to the account plan.
-- A wrong secret scope can expose deployment authority; keep `VERCEL_TOKEN` only in the protected `Production` environment and never place it in pull-request jobs or repository files.
+- A wrong secret scope can expose deployment authority; keep `VERCEL_TOKEN` only in the protected `Preview` and `Production` environments and never place it in pull-request jobs or repository files.
 - A required status configured before its first check exists can deadlock merges. That is why the green run comes first.
-- The Production workflow automatically rolls back after a failed post-promotion gate, but workflows do not replace Product Owner approval or live-release supervision.
+- After an attempted-promotion failure, the Production workflow promotes only the separately verified safe fallback. It never promotes the captured current Production drift anchor. Workflows do not replace Product Owner approval or live-release supervision.
 
 ## Resume point
 
-After `CI/CD protection configured`, verify the ruleset, environment reviewer, variable names, and secret name read-only. Do not reveal values. A release candidate must be a staged Production build with no CARLOPHILLIPS domain aliases. Production remains unchanged until a separately approved promotion dispatch.
+After `CI/CD protection configured`, verify the ruleset plus both environment reviewer/variable/secret-name configurations read-only. Do not reveal values. A release-candidate run must create distinct same-SHA/same-release `staged-production` and `safe-fallback` deployments with no CARLOPHILLIPS domain aliases. Production remains unchanged until a separately approved promotion dispatch.

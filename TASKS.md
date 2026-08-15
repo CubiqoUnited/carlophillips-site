@@ -1,5 +1,60 @@
 # Delivery Tasks
 
+## Current local P0: evidence reconciliation and authority separation
+
+- [x] Re-engage Sushma, Aarti, Richa, Pushpa, and Malti for independent architecture, completion, funnel, operational, and QA audits.
+- [x] Reconcile the current fail-closed branch against `origin/main`, live Production observations, the 13-stage capability map, and divergent architecture commit `1f3fc46`; do not merge the destructive monorepo rewrite.
+- [x] Preserve historical PipelineRun evidence while classifying current, historical, stale, superseded, conflicting, and missing evidence deterministically against an explicit date.
+- [x] Mark the old Shopify authentication blocker superseded by later technical evidence without treating that later evidence as current operating authority.
+- [x] Restrict the historical no-order cart proof to `cart-write-test`; keep operational `cart-write`, checkout, payment, and order blocked until exact release-bound activation evidence exists.
+- [x] Add Evidence Health to the protected local admin and expose source status, freshness, technical access, operating authority, and blocking dependency without evidence paths or raw provider identifiers.
+- [x] Replace implied Orders/Post-sale/Analytics operations with truthful canonical empty states and relabel Audit History as a static PipelineRun projection without durable/hash-chained persistence.
+- [x] Add a visible mobile navigation scroll affordance and repair long-token table wrapping at 390×844.
+- [x] Pass Yarn Classic 1.22.22 frozen install and full `yarn verify` (40 files / 382 tests, 0 production vulnerabilities, optimized build).
+- [x] Pass 538/538 headless admin/public assertions, capture and inspect 58 screenshots at desktop/tablet/mobile, and prove 8/8 public screenshots have zero changed pixels.
+- [ ] Product Owner authorizes `Approve CP fail-closed hotfix Preview only`; then create one immutable Preview for the containment candidate and verify it before any separate Production decision.
+- [ ] Complete exact Apliiq mapping observation, sample approval/order/delivery, current Shopify release fingerprints, truthful media bindings, release transitions, controlled order, fulfillment/tracking, post-sale, analytics, real admin identity/RBAC, durable event store, and connector controls. None is complete or implied by the local admin.
+
+## Current local P1: sale-to-post-sale lifecycle core
+
+- [x] Define one provider-neutral, sanitized lifecycle event contract for payment/order, POD/production, shipment, support, return/refund, review, and reconciliation transitions.
+- [x] Bind every event to opaque aggregate identity plus exact release, variant fingerprint, and environment; reject cross-binding events.
+- [x] Enforce deterministic event hashing, previous-hash chaining, monotonic sequence/timestamps, exact idempotency replay, conflicting replay rejection, and event-ID reuse rejection.
+- [x] Reject PII, raw order/provider/tracking/support identifiers, unknown fields, malformed money, and unbounded reason/details payloads.
+- [x] Require Released/Production/checkout/controlled-order fingerprints before payment/order state and separate refund approval fingerprints before refund state.
+- [x] Prove happy path plus payment failure, POD rejection, shipment delay, open/resolved support, return/partial/full refund, review gates, and reconciliation variance.
+- [x] Prohibit lifecycle events that claim to approve release, checkout, refund authority, or publication.
+- [x] Drive truthful empty and sanitized populated Admin projections from the pure reducer; keep the canonical screen empty because no controlled order exists.
+- [x] Register only the local reducer/projection capability; keep signed provider webhook ingress, durable persistence, connectors, customer data, and all external mutations unavailable.
+- [x] Pass full Yarn verification (41 files / 400 tests), 538/538 headless assertions, 58 desktop/tablet/mobile screenshots, and 8/8 exact zero-pixel public comparisons.
+- [ ] After exact external approvals, configure the local verifier for the approved shop/topics/secret boundary and implement a durable quarantine inbox/outbox without weakening the provider-neutral reducer.
+- [ ] Exercise one approved controlled order through payment, POD, delivery, support, return/refund, review eligibility, and reconciliation before changing any readiness stage from blocked/human-required.
+
+## Current local P2: signed Shopify webhook verification boundary
+
+- [x] Verify Shopify HMAC-SHA256 against the exact raw body with timing-safe comparison and no payload parsing before signature acceptance.
+- [x] Require allowlisted shop/topic, delivery identity, provider trigger time, bounded replay/future windows, valid JSON, and a configurable one-megabyte maximum body.
+- [x] Return only provider/topic plus shop, delivery, and payload fingerprints; exclude payload, raw shop/delivery identity, customer data, and every lifecycle/release/checkout/refund/publication authority.
+- [x] Inject replay-claim storage and fail closed for replay or store failure without inventing durable persistence.
+- [x] Register the verifier as local-only; keep the webhook inbox unavailable and every end-to-end order/post-sale stage blocked or human-required.
+- [x] Pass exact-clean-commit full verification (42 files / 412 tests), 538/538 headless assertions, 58 desktop/tablet/mobile screenshots, and 8/8 exact zero-pixel public comparisons at `f6b6ee0`.
+- [x] Bind the complete test/build/browser matrix and offscreen inspection to the exact implementation commit without claiming provider ingress.
+- [ ] Product Owner selects exact Shopify topics/shop, secret owner/storage/rotation, privacy/retention policy, durable database/queue, payload sanitizer, retry/dead-letter rules, and incident owner before any listener or subscription is created.
+- [ ] Implement and verify the authorized durable quarantine inbox/outbox and an explicit sanitized lifecycle bridge; never route a verified raw payload directly into the lifecycle reducer.
+
+## Current local P3: admin command authorization boundary
+
+- [x] Add a sanitized command-decision contract bound to the canonical reviewed command fingerprint without actor subject or target reference disclosure.
+- [x] Require exact authenticated identity, actor/role match, least-privilege capability/operation/environment/side-effect/target grant, and short command TTL.
+- [x] Require exact target/environment binding, non-empty unique evidence, capability registry operation/state, required approval records, and fresh connector evidence for any non-local operation.
+- [x] Require a fresh command-bound idempotency claim and ready command-bound audit decision; reject unavailable, replayed, conflicting, expired, or mismatched evidence.
+- [x] Enforce spend ceilings, rollback for write/publish/Production mutation, and Product Owner role for Production mutation.
+- [x] Prove malformed, pending, expired, premature, overlong, identity/RBAC, capability, approval, connector, target, evidence, idempotency, audit, cost, rollback, and Production-owner denials without invoking a connector.
+- [x] Pass and bind full Yarn (43 files / 426 tests), 538/538 browser assertions, 58 screenshot inspections, and 8/8 public zero-delta QA to exact clean implementation commit `216cb9d`.
+- [x] Add a dedicated protected Commands section with the canonical empty queue and all missing execution dependencies; expose no form, button, endpoint, actor/target data, or synthetic command.
+- [x] Bind the expanded 15-reviewer-section plus Product Owner Theme matrix to exact clean commit `25cf7e9`: 43 files / 427 tests, 567/567 browser assertions, 61 inspected screenshots, and 8/8 zero-pixel public comparisons.
+- [ ] Product Owner selects identity provider, initial users/roles/grants, session policy, durable database/idempotency/audit/outbox, retention/privacy, connector scopes, retry/dead-letter rules, spend ceilings, and incident owner before any remote admin or executor is wired.
+- [ ] Implement one authorized connector command at a time behind the policy and durable attempted/denied/approved/executed/failed/reconciled/rolled-back events; keep every unimplemented domain read-only.
 ## Repository discipline reconciliation
 
 - [x] Reconcile the proposed headless-commerce monorepo tree against the actual CARLOPHILLIPS architecture and saved `podpipe` note.
@@ -33,13 +88,16 @@
 
 - [x] Create isolated `codex/cp-cicd-bootstrap` from canonical `main` at `cd1cd771` without touching the dirty primary checkout or display branch.
 - [x] Add `CI / Verify` for pull requests and pushes to `main` using read-only permissions, Node.js 24, Yarn Classic 1.22.22, frozen install, concurrency cancellation, and `yarn verify`.
-- [x] Add a protected manual Vercel release-candidate workflow with pinned CLI, canonical-main binding, Production commerce semantics, checkout disabled, `--prod --skip-domain`, immutable metadata, live-domain non-assignment proof, route/PDP smoke checks, and retained receipts.
-- [x] Add manual Production promotion with required-reviewer and enable-variable gates, shared candidate/promotion concurrency, exact candidate/main/reviewed-anchor verification, no Production environment pull, no build or redeploy command, same-deployment identity proof, fail-closed route/PDP checks, and deterministic rollback reconciliation for ambiguous post-attempt failure.
-- [x] Scope the Vercel credential only to Vercel CLI steps in the protected `Production` environment; use protected environment variables for organization/project IDs, expose no deployment authority to pull-request CI, and remove pulled candidate environment data before artifact upload.
-- [x] Re-run 22/22 focused policy and executable receipt/rollback checks, all three workflow YAML parses, both verifier scripts, full `yarn verify` (37 files / 364 tests, zero vulnerabilities, 13-route build), secret/diff audits, and confirm byte-identical desktop/mobile visual evidence; stop the two disposable QA servers.
+- [x] Add a protected manual immutable Vercel Preview workflow bound to the exact same-repository PR head SHA with Preview semantics, checkout disabled, no production aliases/promotion, protected-route smoke checks, and retained receipts.
+- [x] Add a protected manual Vercel release-candidate workflow with pinned CLI, canonical-main binding, Production commerce semantics, checkout disabled, one prebuilt output deployed twice as distinct no-alias `staged-production` and `safe-fallback` artifacts, live Production drift proof, route/PDP smoke checks, and retained pair receipts.
+- [x] Add manual Production promotion with required-reviewer and enable-variable gates, shared candidate/promotion concurrency, exact candidate/fallback/main/reviewed-anchor verification, no Production environment pull, no build or redeploy command, exact promoted-source identity proof, fail-closed route/PDP checks, and deterministic promotion of only the verified safe fallback after any attempted-promotion failure.
+- [x] Make the captured current Production deployment a compare-and-swap drift anchor only; it is never a rollback target, including the currently observed `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`.
+- [x] Scope the Vercel credential only to Vercel CLI steps in the protected `Preview` and `Production` environments; use protected environment variables for organization/project IDs, expose no deployment authority to pull-request CI, and remove pulled environment data before artifact upload.
+- [x] Add deterministic workflow/receipt tests for artifact roles, distinct deployment identities, exact SHA/release bindings, metadata and alias tampering, provider-recorded promotion identity, fallback identity, and rejection of the unsafe current-Production anchor as recovery.
+- [x] Parse all four corrected workflow YAML files and executable scripts, pass focused policy fixtures, frozen Yarn 1.22.22 install, full `yarn verify` (44 files / 468 tests), secret/diff audits, and exact integrated headless QA (689/689 findings, 68 screenshots, eight byte-identical public comparisons).
 - [ ] Push the automation branch and open a separate draft PR; receive Aarti architecture GO and the first green `CI / Verify` run.
 - [ ] After green CI, configure the `main` ruleset requiring PRs, one approval, `CI / Verify`, and blocked force-push/deletion; do not require the stale Vercel fork-policy status.
-- [ ] Add a required reviewer, `VERCEL_TOKEN` secret, and `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` variables to GitHub `Production`, then set `CP_PRODUCTION_PROMOTION_ENABLED=true`. Workflows alone grant no release authority.
+- [ ] Add required reviewers plus scoped `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` configuration to GitHub `Preview` and `Production`, then set `CP_PRODUCTION_PROMOTION_ENABLED=true` only in `Production`. Workflows alone grant no release authority.
 
 ## Version milestones
 
@@ -285,7 +343,8 @@
 
 - [x] Select the minimum stack: Apliiq, Modelize, one spin candidate, native Shopify Headless, Flow, and the existing CP Next.js storefront.
 - [x] Record the 33-app live inventory, duplicate groups, callable surfaces, permissions/billing boundaries, screenshots, and exact blockers.
-- [ ] Product Owner signs in to the existing Apliiq account; then observe the Hoodie product/design/variant mapping read-only.
+- [x] Verify authenticated read-only Apliiq access and saved product facts for product `5958463`: blank `IND4000`, black, front embroidery, and the retained artwork; this observation grants no mapping, sample, fulfillment, or release authority.
+- [ ] Bind the exact provider variant/SKU fingerprint for the Hoodie mapping read-only, then order and inspect one exact physical sample only after separate Product Owner price approval.
 - [x] Prove the existing native Headless public credential and required product/checkouts scopes with a secret-free live HTTP 200 query.
 - [ ] Produce a sanitized Storefront Hoodie observation after an explicit controlled publication/channel decision; the current Draft is correctly withheld and must not be made Active implicitly.
 - [x] Export the existing completed Modelize job read-only; retain two usable generated candidates for labeled local review and quarantine the artifacted third image.
@@ -408,7 +467,8 @@
 
 - [x] Restore Vercel deployment access and verify Preview plus production desktop/mobile routes.
 - [x] Complete Shopify authentication and the read-only Admin/app capability audit without accepting charges.
-- [ ] Complete the separate Apliiq sign-in handoff, then inspect the exact Hoodie mapping read-only.
+- [x] Complete the separate Apliiq sign-in handoff and retain the read-only saved-product observation.
+- [ ] Bind the exact Apliiq provider variant/SKU fingerprint and verify one physical sample; keep ordering, fulfillment, and release authority blocked meanwhile.
 - [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
 - [ ] Keep Shopify writes, product activation, test orders, paid app actions, and fulfillment activation separately evidenced and fail-closed until tested.
 # Production authority closure (2026-08-14)
@@ -420,6 +480,56 @@
 - [x] Clarify checkout present-but-denied, Git tag and Product Release Record responsibilities, crawl posture and minimal analytics boundaries.
 - [ ] Sushma completes cross-functional review of Pushpa and Malti deliverables and the exact PR #9 candidate.
 - [ ] Product Owner assigns human Platform/Security and Account/Billing owners.
-- [ ] Authorized GitHub owner makes the Quality check required on `main`; verify this read-only before release.
+- [ ] Authorized GitHub owner makes the exact `CI / Verify` check required on `main`; verify this read-only before release.
 - [ ] Run exact-commit Vercel Preview acceptance and capture evidence; no production alias or promotion.
 - [ ] Product Owner explicitly approves or rejects merge and Production only after all applicable gates pass.
+# Current closure: canonical authority, end-to-end readiness, and protected admin
+
+- [x] Reconcile every identifiable CP Codex task plus Git, GitHub, Vercel, PRD, architecture, status, tasks, release, media, run, and capability evidence.
+- [x] Run independent Sushma/Aarti/Richa/Pushpa/Malti architecture, security, evidence, product, funnel, UX, admin, and QA audits.
+- [x] Identify the live P0 where a historical single-product launch bypasses the Draft Product Release Record and empty Media Registry bindings.
+- [x] Remove the ad-hoc launch config/policy and every synthetic Released/cart/media authority path in the isolated candidate.
+- [x] Make `/api/checkout` perform no Shopify read or cart mutation until canonical Released evidence and a separate release-bound checkout authorization exist.
+- [x] Require both `cartAllowed` and independent `checkoutAllowed` before rendering any checkout form.
+- [x] Add one non-authoritative machine-readable end-to-end readiness index with owners, evidence counts, exact human actions, and resume points.
+- [x] Add reviewed admin-command and hash-chained operational-event contract foundations.
+- [x] Add explicit capability entries for payment/order, fulfillment, tracking, support, returns/refunds, reviews, analytics, admin identity/audit, webhooks, and durable execution.
+- [x] Implement the local-only read-only `/admin` control plane across all required information areas with server access enforcement, noindex, sanitization, and no mutation UI.
+- [x] Pass final integrated source checks: zero-warning lint, 39 files / 374 tests, zero production vulnerabilities, and optimized build.
+- [x] Capture and inspect reviewer/Product Owner/denied admin plus public-regression evidence at 1440×1000, 1024×768, and 390×844; 459/459 checks cover console, network, decoded media, overflow, accessibility, provider/raw-ID leakage, Theme authorization/API boundaries, and canonical Draft checkout denial.
+- [x] Bind the tested integrated candidate at `05d3d72` and its evidence report without touching the unrelated dirty worktree.
+- [x] Audit independent architecture commit `1f3fc46`; record why its 312-file, nine-commits-behind monorepo rewrite cannot be directly merged without deleting/conflicting with current admin, Theme, release, and PR #9 parity work.
+- [x] Resolve the `1f3fc46` port decision: reject its destructive 1,072-file direct comparison and unsafe raw webhook/PODPIPE authority; selectively implement the higher-priority canonical release-proof bindings without removing the current Admin, Theme, routes, or fail-closed authority.
+- [x] Require immutable release/candidate/fingerprint descriptors for observation review, build, staging, rollback, sample, and Production capability evidence.
+- [x] Require an exact provider-mapped physical sample with verified fit, colour, artwork placement, finish, and approval evidence before Approved.
+- [x] Bind product, media, and fulfillment approvals to the complete release-evidence fingerprint and reject altered manifests, tampered evidence, and cross-release/cross-candidate reuse.
+- [x] Require a fresh post-approval Production ACTIVE observation with matching reviewed variant identity and commerce facts before Released.
+- [x] Reconcile obsolete Shopify-login capability blockers and make Admin state explicit as `Release: Draft` plus `System: Not end-to-end ready`.
+- [x] Pass 43 files / 433 tests, zero-vulnerability audit, optimized build, 669/669 headless checks, 61 screenshots, inspected desktop/mobile release views, and 8/8 exact zero-pixel public comparisons.
+- [ ] Product Owner authorizes a new immutable fail-closed Preview; no Preview deployment is implied by this local task.
+- [ ] Product Owner reviews exact Preview containment evidence and separately authorizes or rejects Production containment.
+- [ ] Verify Apliiq mapping and one physical sample through the sticky handoff; no spend is authorized yet.
+- [ ] Select identity/RBAC, durable event/read-model storage, connector owners, privacy/retention, cost, and incident boundaries before remote admin or mutations.
+- [ ] Run one separately approved controlled order through payment, POD receipt, fulfillment, shipment, tracking, support, return/refund, and review eligibility before claiming end-to-end readiness.
+
+# Product Owner-only Theme token proposals
+
+- [x] Keep the feature isolated on temporary branch `codex/cp-admin-theme-tokens`; do not merge, push, deploy, publish, or touch Production.
+- [x] Add root `theme.json` as the exact four-value authority for accent colour, corner radius, base spacing, and base text weight.
+- [x] Bind active semantic/component styling and the derived spacing scale to `theme.json`; keep the intentionally removed Tailwind surface absent.
+- [x] Restrict Theme read/write to a distinct server-only Product Owner credential and hide the navigation/direct route from reviewers.
+- [x] Enforce same-origin, local/Vercel/commerce-environment, explicit-write, `codex/*` branch, exact-schema, contrast, atomic-write, and stale-revision gates.
+- [x] Make the screen state exactly-four/no-layout scope, current/proposed values, local uncommitted proposal semantics, and the mandatory PR → Preview → review → merge path.
+- [x] Pass full lint/test/audit/build QA and capture inspected desktop/mobile Theme plus unchanged public storefront comparisons under `test_reports/`.
+- [x] Commit the verified scoped candidate and report the exact SHA; no push or deployment.
+
+# Remote Product Owner admin identity
+
+- [x] Add a fail-closed Clerk adapter limited to `/admin/*` and `/api/admin/*`, preserving local reviewer/Product Owner RBAC and public-route isolation.
+- [x] Authorize Vercel Preview/Production only for the exact configured immutable Clerk Product Owner subject; reject incomplete configuration, absent sessions, other users, and non-Vercel remote surfaces.
+- [x] Add a restricted `/admin/sign-in` entry point that is absent unless all provider and owner-identity configuration is valid.
+- [x] Pass full lint/test/audit/build and desktop/tablet/mobile local RBAC shell QA, plus identical-fixture public parity against `f737716`.
+- [ ] Product Owner installs Clerk only into the verified Vercel project on a no-cost plan, enables restricted sign-up/MFA, and returns the non-secret immutable `user_...` ID.
+- [ ] Sushma integrates the isolated auth commit into the canonical candidate and verifies real unauthenticated, wrong-user, Product Owner, expired-session, and origin/CSRF behavior in an immutable Vercel Preview.
+- [ ] Implement and review a least-privilege GitHub adapter that may update only root `theme.json` on a temporary `codex/*` branch and open a draft PR; remote saves stay disabled until then.
+- [ ] Merge and Production promotion remain blocked until required GitHub checks/protection, exact Preview evidence, rollback, and Product Owner approval are all recorded.

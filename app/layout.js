@@ -2,6 +2,7 @@ import './globals.css';
 import { designSystemRuntimeContract } from '@/lib/design-system/runtime-contract';
 import { ConsentPreferences } from '@/components/privacy/consent-preferences';
 import { SitePoliciesFooter } from '@/components/storefront/site-policies-footer';
+import { ThemeStyle } from '@/components/theme/theme-style';
 import { siteConfig } from '@/lib/site/site-config';
 
 // SEO and Metadata Configuration
@@ -126,6 +127,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <ThemeStyle />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"

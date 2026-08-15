@@ -1,6 +1,6 @@
 # Repository layout and discipline decision
 
-Status: accepted for the current single-storefront phase  
+Status: accepted for the current single-storefront phase
 Date: 2026-08-14
 
 ## Decision
@@ -20,7 +20,7 @@ The repository currently has one Next.js deployable, one Yarn Classic lockfile, 
 | Media approval and viewer input | `lib/media/`, Media Registry bindings, Product Release Records, and the release-aware view model | Keep. `podpipe` describes the reusable process and customer sequence; it is not a new package or permission to publish candidate media. |
 | Product/POD release authority | `releases/`, `lib/releases/`, and versioned Product Release Records | Keep separate from Git tags, UI state, Shopify observations, and media tooling. |
 | Production-system governance | `config/production-authorities.json` and `docs/production-closure-brief.md` | Keep as the operating registry for the 12 production authority areas. |
-| CI and repository commands | `package.json`, `yarn.lock`, and `.github/workflows/quality.yml` | Keep Yarn Classic 1.22.22. Do not add pnpm/npm lockfiles or workspace configuration. |
+| CI and repository commands | `package.json`, `yarn.lock`, and `.github/workflows/ci.yml` | Keep Yarn Classic 1.22.22. Do not add pnpm/npm lockfiles or workspace configuration. |
 
 ## Adopted controls
 

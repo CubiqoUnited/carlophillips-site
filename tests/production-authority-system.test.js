@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const registry = JSON.parse(fs.readFileSync('config/production-authorities.json', 'utf8'));
-const workflow = fs.readFileSync('.github/workflows/quality.yml', 'utf8');
+const workflow = fs.readFileSync('.github/workflows/ci.yml', 'utf8');
 
 describe('production authority system', () => {
   it('defines each of the 12 non-overlapping authority areas with a complete operating contract', () => {
@@ -39,10 +39,12 @@ describe('production authority system', () => {
 
   it('runs all repository quality gates for pull requests and main pushes', () => {
     expect(workflow).toContain('pull_request:');
-    expect(workflow).toContain('branches: [main]');
-    for (const command of ['yarn install --frozen-lockfile', 'yarn lint', 'yarn test', 'yarn audit:prod', 'yarn build', 'yarn test:a11y']) {
+    expect(workflow).toContain('branches:\n      - main');
+    expect(workflow).toContain('node-version: 24');
+    for (const command of ['yarn install --frozen-lockfile', 'yarn verify', 'yarn test:a11y']) {
       expect(workflow).toContain(command);
     }
     expect(workflow).toContain('mkdir -p test_reports/ci');
+    expect(workflow).toContain('name: Verify');
   });
 });

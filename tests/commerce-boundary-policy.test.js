@@ -71,14 +71,17 @@ describe('active commerce boundary policy', () => {
       .toContain('variantResolverDecision = null');
   });
 
-  it('contains the approved cart mutation and raw references inside a server-only boundary', () => {
+  it('keeps checkout server-only and fail-closed without a Shopify mutation surface', () => {
     const serverEntry = readFileSync('lib/commerce/shopify-checkout-server.js', 'utf8');
     const route = readFileSync('app/api/checkout/route.js', 'utf8');
     const form = readFileSync('components/commerce/shopify-checkout-form.jsx', 'utf8');
 
     expect(serverEntry).toContain("import 'server-only'");
-    expect(serverEntry).toContain('cartCreate');
+    expect(serverEntry).not.toContain('cartCreate');
+    expect(serverEntry).toContain('PRODUCT_RELEASE_NOT_RELEASED');
+    expect(serverEntry).toContain('CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION');
     expect(serverEntry).not.toContain('console.');
+    expect(route).toContain('getProductReleaseEvidence');
     expect(route).not.toContain('SHOPIFY_STOREFRONT_TOKEN');
     expect(route).not.toContain('merchandiseId');
     expect(form).not.toContain('gid://');

@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import hoodieManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
-import { evaluateProductReleaseTransition } from '../lib/releases/product-release-transition';
+import {
+  evaluateProductReleaseTransition,
+  fingerprintReleaseApprovalTarget,
+  fingerprintReleaseArtifact,
+} from '../lib/releases/product-release-transition';
 import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
@@ -68,15 +72,18 @@ describe('Product Release Record transitions', () => {
   it('allows a complete immutable candidate to enter private staging without claiming media approval', () => {
     const record = createCompleteReleaseRecord('draft');
     record.approvals.media.status = 'pending';
+    record.approvals.media.evidence = null;
     const manifest = createCompleteMediaManifest();
     manifest.requirements[0].status = 'candidate';
+    record.mediaManifestFingerprint = fingerprintReleaseArtifact(manifest);
+    record.candidate.releaseEvidenceFingerprint = fingerprintReleaseApprovalTarget(record);
 
     const decision = evaluateProductReleaseTransition({
       record,
       manifest,
       targetState: 'staged',
     });
-    expect(decision.allowed).toBe(true);
+    expect(decision.allowed, JSON.stringify(decision.blockers)).toBe(true);
     expect(decision.blockers).toEqual([]);
     expect(decision.candidate).toMatchObject({ state: 'staged' });
     expect(record.state).toBe('draft');
@@ -117,6 +124,72 @@ describe('Product Release Record transitions', () => {
     });
   });
 
+  it('denies approval without an exact inspected and approved physical sample', () => {
+    const record = createCompleteReleaseRecord('staged');
+    record.physicalSample.status = 'not_ordered';
+    record.physicalSample.providerMappingFingerprint = null;
+    record.physicalSample.sampleFingerprint = null;
+    record.physicalSample.evidence = null;
+    record.physicalSample.approvalEvidence = null;
+    for (const check of Object.keys(record.physicalSample.inspection)) {
+      record.physicalSample.inspection[check] = 'pending';
+    }
+
+    const decision = evaluateProductReleaseTransition({
+      record,
+      manifest: createCompleteMediaManifest(),
+      targetState: 'approved',
+    });
+    expect(decision.allowed).toBe(false);
+    expect(blockerCodes(decision)).toContain('PHYSICAL_SAMPLE_APPROVAL_REQUIRED');
+  });
+
+  it('denies tampered and cross-release candidate evidence bindings', () => {
+    const tampered = createCompleteReleaseRecord('draft');
+    tampered.candidate.buildEvidence.fingerprint = `sha256:${'0'.repeat(64)}`;
+    expect(blockerCodes(evaluateProductReleaseTransition({
+      record: tampered,
+      manifest: createCompleteMediaManifest(),
+      targetState: 'staged',
+    }))).toContain('RELEASE_EVIDENCE_FINGERPRINT_MISMATCH');
+
+    const crossRelease = createCompleteReleaseRecord('draft');
+    crossRelease.candidate.stagingEvidence.releaseId = 'cp-other-release-2026-001';
+    expect(blockerCodes(evaluateProductReleaseTransition({
+      record: crossRelease,
+      manifest: createCompleteMediaManifest(),
+      targetState: 'staged',
+    }))).toContain('STAGING_EVIDENCE_BINDING_INVALID');
+
+    const record = createCompleteReleaseRecord('draft');
+    const changedManifest = createCompleteMediaManifest();
+    changedManifest.assets[0].alt = 'Tampered after release binding';
+    expect(blockerCodes(evaluateProductReleaseTransition({
+      record,
+      manifest: changedManifest,
+      targetState: 'staged',
+    }))).toContain('MEDIA_MANIFEST_FINGERPRINT_MISMATCH');
+  });
+
+  it('fingerprints equivalent evidence objects independently of key insertion order', () => {
+    const manifest = createCompleteMediaManifest();
+    const reordered = Object.fromEntries(Object.entries(manifest).reverse());
+    reordered.assets = manifest.assets.map(asset => Object.fromEntries(Object.entries(asset).reverse()));
+    expect(fingerprintReleaseArtifact(reordered)).toBe(fingerprintReleaseArtifact(manifest));
+  });
+
+  it('denies cross-candidate approval evidence even when its status says approved', () => {
+    const record = createCompleteReleaseRecord('staged');
+    record.approvals.product.evidence.candidateCommit = '1234567';
+    const decision = evaluateProductReleaseTransition({
+      record,
+      manifest: createCompleteMediaManifest(),
+      targetState: 'approved',
+    });
+    expect(decision.allowed).toBe(false);
+    expect(blockerCodes(decision)).toContain('PRODUCT_APPROVAL_BINDING_INVALID');
+  });
+
   it('denies release without an ACTIVE observation and verified rollback', () => {
     const decision = evaluateProductReleaseTransition({
       record: createCompleteReleaseRecord('approved'),
@@ -132,18 +205,43 @@ describe('Product Release Record transitions', () => {
 
   it('allows Approved → Released only after active and rollback observations', () => {
     const record = createCompleteReleaseRecord('approved');
-    record.shopify.statusObserved = 'ACTIVE';
-    record.rollback.verificationEvidence = 'test_reports/candidate/rollback-verification.json';
+    const releasedEvidence = createCompleteReleaseRecord('released');
+    record.shopify.statusObserved = releasedEvidence.shopify.statusObserved;
+    record.shopify.productionObservation = releasedEvidence.shopify.productionObservation;
+    record.shopify.productionObservation.variantFingerprint = record.shopify.variantFingerprint;
+    record.shopify.productionObservation.commerceFactsFingerprint = record.shopify.commerceFactsFingerprint;
+    record.shopify.productionObservation.reviewedObservationFingerprint = record.shopify.observationFingerprint;
+    record.rollback.verificationEvidence = releasedEvidence.rollback.verificationEvidence;
     const decision = evaluateProductReleaseTransition({
       record,
       manifest: createCompleteMediaManifest(),
       targetState: 'released',
     });
-    expect(decision.allowed).toBe(true);
+    expect(decision.allowed, JSON.stringify(decision.blockers)).toBe(true);
     expect(decision.candidate).toMatchObject({
       state: 'released',
       shopify: { statusObserved: 'ACTIVE' },
     });
+  });
+
+  it('denies stale or changed Production observations', () => {
+    const stale = createCompleteReleaseRecord('released');
+    stale.state = 'approved';
+    stale.shopify.productionObservation.observedAt = '2026-07-22T00:05:00Z';
+    expect(blockerCodes(evaluateProductReleaseTransition({
+      record: stale,
+      manifest: createCompleteMediaManifest(),
+      targetState: 'released',
+    }))).toContain('PRODUCTION_OBSERVATION_STALE');
+
+    const changed = createCompleteReleaseRecord('released');
+    changed.state = 'approved';
+    changed.shopify.productionObservation.commerceFactsFingerprint = `sha256:${'0'.repeat(64)}`;
+    expect(blockerCodes(evaluateProductReleaseTransition({
+      record: changed,
+      manifest: createCompleteMediaManifest(),
+      targetState: 'released',
+    }))).toContain('PRODUCTION_OBSERVATION_BINDING_MISMATCH');
   });
 
   it('records withdrawal only after rollback or withdrawal evidence exists', () => {

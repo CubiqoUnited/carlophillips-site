@@ -203,7 +203,12 @@ export function CommerceProductDetail({
   cartActivation = null,
   environment = null,
 }) {
-  const liveProduct = Boolean(cartActivation?.cartAllowed && product.commerceAllowed);
+  const checkoutAvailable = Boolean(
+    cartActivation?.cartAllowed
+    && cartActivation?.checkoutAllowed
+    && product.commerceAllowed
+  );
+  const liveProduct = checkoutAvailable;
   const liveSizes = product.variantPresentation?.combinations
     ?.map(item => item.selectedOptions.find(option => option.name.toLowerCase() === 'size')?.value)
     .filter(Boolean)
@@ -233,7 +238,7 @@ export function CommerceProductDetail({
             <p className="cp-text-copy cp-product-detail-price">{formatPrice(product.price, product.currency)}</p>
             <p className="cp-body-large cp-product-detail-description">{product.description || 'Product details are currently unavailable.'}</p>
 
-            {cartActivation?.cartAllowed ? (
+            {checkoutAvailable ? (
               <ShopifyCheckoutForm handle={product.handle} presentation={product.variantPresentation} />
             ) : (
               <VariantPresentation presentation={product.variantPresentation} />
@@ -255,7 +260,7 @@ export function CommerceProductDetail({
               </div>
             )}
 
-            {!cartActivation?.cartAllowed && (
+            {!checkoutAvailable && (
               <button
                 type="button"
                 disabled

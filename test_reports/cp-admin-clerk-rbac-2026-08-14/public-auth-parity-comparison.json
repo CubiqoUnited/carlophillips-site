@@ -1,0 +1,956 @@
+{
+  "schemaVersion": "cp.theme-public-baseline-qa.v1",
+  "capturedAt": "2026-08-14T20:56:37.910Z",
+  "browser": "Playwright Chromium headless",
+  "visibility": "background; no focus or foreground window",
+  "baseline": {
+    "commit": "f737716",
+    "url": "http://localhost:3142",
+    "governedHeadBridgeCount": 1
+  },
+  "candidate": {
+    "state": "clerk-auth-working-tree",
+    "url": "http://localhost:3141",
+    "governedHeadBridgeCount": 1
+  },
+  "viewports": [
+    {
+      "id": "desktop-1440x1000",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "id": "mobile-390x844",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "routes": [
+    "/",
+    "/shop",
+    "/products/carlophillips-signature-hoodie",
+    "/bag"
+  ],
+  "passed": true,
+  "diagnosticFailures": [],
+  "comparisons": [
+    {
+      "viewport": "desktop-1440x1000",
+      "route": "/",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 1440,
+        "height": 1000,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "desktop-1440x1000",
+      "route": "/shop",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 1440,
+        "height": 1000,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "desktop-1440x1000",
+      "route": "/products/carlophillips-signature-hoodie",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 1440,
+        "height": 1000,
+        "meanAbsoluteChannelDifference": 0.01320138888888889,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "desktop-1440x1000",
+      "route": "/bag",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 1440,
+        "height": 1000,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "mobile-390x844",
+      "route": "/",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 390,
+        "height": 844,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "mobile-390x844",
+      "route": "/shop",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 390,
+        "height": 844,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "mobile-390x844",
+      "route": "/products/carlophillips-signature-hoodie",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 390,
+        "height": 844,
+        "meanAbsoluteChannelDifference": 0.04696398914408393,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "mobile-390x844",
+      "route": "/bag",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 390,
+        "height": 844,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    }
+  ],
+  "captures": {
+    "baseline": [
+      {
+        "label": "f737716",
+        "viewport": "desktop-1440x1000",
+        "route": "/",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/baseline-f737716/desktop-1440x1000-home.png",
+        "treeHash": "2f28152f8a79b10fd2251a687497e03407758836c1c651ae1c149c36dd4c91ef",
+        "textHash": "beffbce6122db16d048d2bd06f1ed1672273894eb17be07c60b045112fd2d374",
+        "elementCount": 92,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 81
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 2161.5
+          },
+          "h1": {
+            "x": 48,
+            "y": 593.88,
+            "width": 896,
+            "height": 174.75
+          },
+          "footer": {
+            "x": 0,
+            "y": 2067,
+            "width": 1440,
+            "height": 94.5
+          }
+        }
+      },
+      {
+        "label": "f737716",
+        "viewport": "desktop-1440x1000",
+        "route": "/shop",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/baseline-f737716/desktop-1440x1000-shop.png",
+        "treeHash": "bb3a367e4dd8817eabe4ac9c78e3b1b24d4e2933418b73f3384ffdff099d926f",
+        "textHash": "cced4d7c14f8573811af4224a34a8105675e954cade6ddc5229a3307f798dc5b",
+        "elementCount": 52,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": -65,
+            "width": 1440,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": -65,
+            "width": 1440,
+            "height": 1838.5
+          },
+          "h1": {
+            "x": 48,
+            "y": 155,
+            "width": 874.8,
+            "height": 128
+          },
+          "footer": {
+            "x": 0,
+            "y": 1773.5,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "f737716",
+        "viewport": "desktop-1440x1000",
+        "route": "/products/carlophillips-signature-hoodie",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/baseline-f737716/desktop-1440x1000-products-carlophillips-signature-hoodie.png",
+        "treeHash": "084a3a03f1128060e65543d6c62782b1a0c9d67f94db6298bf43744841b3456d",
+        "textHash": "bd88f0b93e81f418b5faac1c790983e0163aa9355c63f232636bfab3f1adb0d5",
+        "elementCount": 89,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 81
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 2410.33
+          },
+          "h1": {
+            "x": 825.59,
+            "y": 187,
+            "width": 566.41,
+            "height": 144
+          },
+          "footer": {
+            "x": 0,
+            "y": 2410.33,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "f737716",
+        "viewport": "desktop-1440x1000",
+        "route": "/bag",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/baseline-f737716/desktop-1440x1000-bag.png",
+        "treeHash": "74b040678274333fb039d99481aa8f01c8783b7c31d039cf00e8f3630d1c482d",
+        "textHash": "505a503689ec15599a04461b52ef13733a93a798e9f8fd9aa5aea49726681446",
+        "elementCount": 44,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1000
+          },
+          "h1": {
+            "x": 596.47,
+            "y": 364.5,
+            "width": 731.53,
+            "height": 192
+          },
+          "footer": {
+            "x": 0,
+            "y": 1000,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "f737716",
+        "viewport": "desktop-1440x1000",
+        "consoleErrors": [],
+        "requestFailures": []
+      },
+      {
+        "label": "f737716",
+        "viewport": "mobile-390x844",
+        "route": "/",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/baseline-f737716/mobile-390x844-home.png",
+        "treeHash": "2f28152f8a79b10fd2251a687497e03407758836c1c651ae1c149c36dd4c91ef",
+        "textHash": "e1d152e8a3f5d28f4ef548d340a8ec89532c84b4776c7596e0cfc226a1871e09",
+        "elementCount": 92,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1879
+          },
+          "h1": {
+            "x": 20,
+            "y": 523.69,
+            "width": 350,
+            "height": 104.94
+          },
+          "footer": {
+            "x": 0,
+            "y": 1747,
+            "width": 390,
+            "height": 132
+          }
+        }
+      },
+      {
+        "label": "f737716",
+        "viewport": "mobile-390x844",
+        "route": "/shop",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/baseline-f737716/mobile-390x844-shop.png",
+        "treeHash": "bb3a367e4dd8817eabe4ac9c78e3b1b24d4e2933418b73f3384ffdff099d926f",
+        "textHash": "cced4d7c14f8573811af4224a34a8105675e954cade6ddc5229a3307f798dc5b",
+        "elementCount": 52,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": -65,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": -65,
+            "width": 390,
+            "height": 1560.77
+          },
+          "h1": {
+            "x": 20,
+            "y": 123,
+            "width": 350,
+            "height": 54
+          },
+          "footer": {
+            "x": 0,
+            "y": 1495.77,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "f737716",
+        "viewport": "mobile-390x844",
+        "route": "/products/carlophillips-signature-hoodie",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/baseline-f737716/mobile-390x844-products-carlophillips-signature-hoodie.png",
+        "treeHash": "084a3a03f1128060e65543d6c62782b1a0c9d67f94db6298bf43744841b3456d",
+        "textHash": "bd88f0b93e81f418b5faac1c790983e0163aa9355c63f232636bfab3f1adb0d5",
+        "elementCount": 89,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 4125.22
+          },
+          "h1": {
+            "x": 20,
+            "y": 2200.5,
+            "width": 350,
+            "height": 70.53
+          },
+          "footer": {
+            "x": 0,
+            "y": 4125.22,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "f737716",
+        "viewport": "mobile-390x844",
+        "route": "/bag",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/baseline-f737716/mobile-390x844-bag.png",
+        "treeHash": "74b040678274333fb039d99481aa8f01c8783b7c31d039cf00e8f3630d1c482d",
+        "textHash": "505a503689ec15599a04461b52ef13733a93a798e9f8fd9aa5aea49726681446",
+        "elementCount": 44,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1058
+          },
+          "h1": {
+            "x": 48,
+            "y": 534.83,
+            "width": 294,
+            "height": 135.33
+          },
+          "footer": {
+            "x": 0,
+            "y": 1058,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "f737716",
+        "viewport": "mobile-390x844",
+        "consoleErrors": [],
+        "requestFailures": []
+      }
+    ],
+    "candidate": [
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "desktop-1440x1000",
+        "route": "/",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/clerk-auth-candidate/desktop-1440x1000-home.png",
+        "treeHash": "2f28152f8a79b10fd2251a687497e03407758836c1c651ae1c149c36dd4c91ef",
+        "textHash": "beffbce6122db16d048d2bd06f1ed1672273894eb17be07c60b045112fd2d374",
+        "elementCount": 92,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 81
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 2161.5
+          },
+          "h1": {
+            "x": 48,
+            "y": 593.88,
+            "width": 896,
+            "height": 174.75
+          },
+          "footer": {
+            "x": 0,
+            "y": 2067,
+            "width": 1440,
+            "height": 94.5
+          }
+        }
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "desktop-1440x1000",
+        "route": "/shop",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/clerk-auth-candidate/desktop-1440x1000-shop.png",
+        "treeHash": "bb3a367e4dd8817eabe4ac9c78e3b1b24d4e2933418b73f3384ffdff099d926f",
+        "textHash": "cced4d7c14f8573811af4224a34a8105675e954cade6ddc5229a3307f798dc5b",
+        "elementCount": 52,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": -65,
+            "width": 1440,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": -65,
+            "width": 1440,
+            "height": 1838.5
+          },
+          "h1": {
+            "x": 48,
+            "y": 155,
+            "width": 874.8,
+            "height": 128
+          },
+          "footer": {
+            "x": 0,
+            "y": 1773.5,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "desktop-1440x1000",
+        "route": "/products/carlophillips-signature-hoodie",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/clerk-auth-candidate/desktop-1440x1000-products-carlophillips-signature-hoodie.png",
+        "treeHash": "084a3a03f1128060e65543d6c62782b1a0c9d67f94db6298bf43744841b3456d",
+        "textHash": "bd88f0b93e81f418b5faac1c790983e0163aa9355c63f232636bfab3f1adb0d5",
+        "elementCount": 89,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 81
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 2410.33
+          },
+          "h1": {
+            "x": 825.59,
+            "y": 187,
+            "width": 566.41,
+            "height": 144
+          },
+          "footer": {
+            "x": 0,
+            "y": 2410.33,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "desktop-1440x1000",
+        "route": "/bag",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/clerk-auth-candidate/desktop-1440x1000-bag.png",
+        "treeHash": "74b040678274333fb039d99481aa8f01c8783b7c31d039cf00e8f3630d1c482d",
+        "textHash": "505a503689ec15599a04461b52ef13733a93a798e9f8fd9aa5aea49726681446",
+        "elementCount": 44,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1000
+          },
+          "h1": {
+            "x": 596.47,
+            "y": 364.5,
+            "width": 731.53,
+            "height": 192
+          },
+          "footer": {
+            "x": 0,
+            "y": 1000,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "desktop-1440x1000",
+        "consoleErrors": [],
+        "requestFailures": []
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "mobile-390x844",
+        "route": "/",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/clerk-auth-candidate/mobile-390x844-home.png",
+        "treeHash": "2f28152f8a79b10fd2251a687497e03407758836c1c651ae1c149c36dd4c91ef",
+        "textHash": "e1d152e8a3f5d28f4ef548d340a8ec89532c84b4776c7596e0cfc226a1871e09",
+        "elementCount": 92,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1879
+          },
+          "h1": {
+            "x": 20,
+            "y": 523.69,
+            "width": 350,
+            "height": 104.94
+          },
+          "footer": {
+            "x": 0,
+            "y": 1747,
+            "width": 390,
+            "height": 132
+          }
+        }
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "mobile-390x844",
+        "route": "/shop",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/clerk-auth-candidate/mobile-390x844-shop.png",
+        "treeHash": "bb3a367e4dd8817eabe4ac9c78e3b1b24d4e2933418b73f3384ffdff099d926f",
+        "textHash": "cced4d7c14f8573811af4224a34a8105675e954cade6ddc5229a3307f798dc5b",
+        "elementCount": 52,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": -65,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": -65,
+            "width": 390,
+            "height": 1560.77
+          },
+          "h1": {
+            "x": 20,
+            "y": 123,
+            "width": 350,
+            "height": 54
+          },
+          "footer": {
+            "x": 0,
+            "y": 1495.77,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "mobile-390x844",
+        "route": "/products/carlophillips-signature-hoodie",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/clerk-auth-candidate/mobile-390x844-products-carlophillips-signature-hoodie.png",
+        "treeHash": "084a3a03f1128060e65543d6c62782b1a0c9d67f94db6298bf43744841b3456d",
+        "textHash": "bd88f0b93e81f418b5faac1c790983e0163aa9355c63f232636bfab3f1adb0d5",
+        "elementCount": 89,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 4125.22
+          },
+          "h1": {
+            "x": 20,
+            "y": 2200.5,
+            "width": 350,
+            "height": 70.53
+          },
+          "footer": {
+            "x": 0,
+            "y": 4125.22,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "mobile-390x844",
+        "route": "/bag",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane/test_reports/cp-admin-clerk-rbac-2026-08-14/clerk-auth-candidate/mobile-390x844-bag.png",
+        "treeHash": "74b040678274333fb039d99481aa8f01c8783b7c31d039cf00e8f3630d1c482d",
+        "textHash": "505a503689ec15599a04461b52ef13733a93a798e9f8fd9aa5aea49726681446",
+        "elementCount": 44,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1058
+          },
+          "h1": {
+            "x": 48,
+            "y": 534.83,
+            "width": 294,
+            "height": 135.33
+          },
+          "footer": {
+            "x": 0,
+            "y": 1058,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "clerk-auth-working-tree",
+        "viewport": "mobile-390x844",
+        "consoleErrors": [],
+        "requestFailures": []
+      }
+    ]
+  }
+}

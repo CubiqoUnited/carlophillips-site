@@ -41,3 +41,33 @@ jobs:
 
       - name: Verify repository
         run: yarn verify
+
+      - name: Install headless accessibility browser
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run accessibility and privacy network audit
+        env:
+          CP_A11Y_OUTPUT_DIR: test_reports/ci/accessibility
+        run: |
+          mkdir -p test_reports/ci
+          yarn start > /tmp/cp-next-start.log 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:3000/ > /dev/null && break
+            if [ "$attempt" -eq 30 ]; then
+              cat /tmp/cp-next-start.log
+              exit 1
+            fi
+            sleep 1
+          done
+          yarn test:a11y
+
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-evidence-${{ github.sha }}
+          path: test_reports/ci/
+          if-no-files-found: warn
+          retention-days: 30

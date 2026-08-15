@@ -5,11 +5,13 @@ import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
 
 const ci = readFileSync('.github/workflows/ci.yml', 'utf8');
+const preview = readFileSync('.github/workflows/vercel-preview.yml', 'utf8');
 const candidate = readFileSync('.github/workflows/vercel-release-candidate.yml', 'utf8');
 const production = readFileSync('.github/workflows/vercel-production.yml', 'utf8');
 const verifier = readFileSync('.github/scripts/verify-vercel-receipt.mjs', 'utf8');
+const fallbackSelector = readFileSync('.github/scripts/select-vercel-safe-fallback.mjs', 'utf8');
 const verifierPath = join(process.cwd(), '.github/scripts/verify-vercel-receipt.mjs');
-const rollbackVerifierPath = join(process.cwd(), '.github/scripts/reconcile-vercel-rollback.mjs');
+const fallbackSelectorPath = join(process.cwd(), '.github/scripts/select-vercel-safe-fallback.mjs');
 const testSha = 'a'.repeat(40);
 
 function writeJson(directory, name, value) {
@@ -18,49 +20,94 @@ function writeJson(directory, name, value) {
   return path;
 }
 
-function candidateFixtures(directory, overrides = {}) {
-  const inspect = {
-    id: 'dpl_candidate',
-    url: 'cp-candidate.vercel.app',
-    target: 'production',
-    readyState: 'READY',
-    aliases: [],
-    ...overrides.inspect,
-  };
-  const metadata = {
-    cpGitCommitSha: testSha,
-    cpRelease: 'v-test',
-    cpArtifactKind: 'staged-production',
-    cpBuildEnvironment: 'production',
-    cpCheckoutEnabled: 'false',
-    ...overrides.metadata,
-  };
-  const listed = {
-    id: inspect.id,
-    url: inspect.url,
-    target: 'production',
-    state: 'READY',
-    meta: metadata,
-    ...overrides.listed,
-  };
-  const productionBefore = {
+function productionAnchor(overrides = {}) {
+  return {
     id: 'dpl_old',
     url: 'cp-old.vercel.app',
     target: 'production',
     readyState: 'READY',
     aliases: ['carlophillips.com', 'www.carlophillips.com'],
-    ...overrides.productionBefore,
+    ...overrides,
   };
-  const productionAfter = {
-    ...productionBefore,
-    ...overrides.productionAfter,
-  };
+}
 
+function artifactMetadata(role, overrides = {}) {
+  const contract = role === 'candidate'
+    ? { kind: 'staged-production', environment: 'production' }
+    : role === 'fallback'
+      ? { kind: 'safe-fallback', environment: 'production' }
+      : { kind: 'immutable-preview', environment: 'preview' };
   return {
-    inspect: writeJson(directory, 'candidate-inspect.json', inspect),
-    list: writeJson(directory, 'candidate-list.json', { deployments: [listed] }),
-    before: writeJson(directory, 'production-before.json', productionBefore),
-    after: writeJson(directory, 'production-after.json', productionAfter),
+    cpGitCommitSha: testSha,
+    cpRelease: 'v-test',
+    cpArtifactKind: contract.kind,
+    cpBuildEnvironment: contract.environment,
+    cpCheckoutEnabled: 'false',
+    ...(role === 'preview' ? { cpPullRequest: '42' } : {}),
+    ...overrides,
+  };
+}
+
+function artifact(role, overrides = {}) {
+  const defaults = role === 'candidate'
+    ? { id: 'dpl_candidate', url: 'cp-candidate.vercel.app', target: 'production' }
+    : role === 'fallback'
+      ? { id: 'dpl_fallback', url: 'cp-fallback.vercel.app', target: 'production' }
+      : { id: 'dpl_preview', url: 'cp-preview.vercel.app', target: null };
+  return {
+    ...defaults,
+    readyState: 'READY',
+    aliases: [],
+    ...overrides,
+  };
+}
+
+function listedArtifact(inspect, role, overrides = {}) {
+  return {
+    id: inspect.id,
+    url: inspect.url,
+    target: inspect.target,
+    state: 'READY',
+    aliases: [],
+    meta: artifactMetadata(role),
+    ...overrides,
+  };
+}
+
+function releasePairFixtures(directory, overrides = {}) {
+  const candidateInspect = artifact('candidate', overrides.candidateInspect);
+  const fallbackInspect = artifact('fallback', overrides.fallbackInspect);
+  const candidateListed = listedArtifact(candidateInspect, 'candidate', {
+    ...overrides.candidateListed,
+    meta: artifactMetadata('candidate', overrides.candidateMetadata),
+  });
+  const fallbackListed = listedArtifact(fallbackInspect, 'fallback', {
+    ...overrides.fallbackListed,
+    meta: artifactMetadata('fallback', overrides.fallbackMetadata),
+  });
+  const beforeValue = productionAnchor(overrides.productionBefore);
+  const afterValue = { ...beforeValue, ...overrides.productionAfter };
+  return {
+    candidateInspect: writeJson(directory, 'candidate-inspect.json', candidateInspect),
+    fallbackInspect: writeJson(directory, 'fallback-inspect.json', fallbackInspect),
+    deploymentList: writeJson(directory, 'deployment-list.json', { deployments: [candidateListed, fallbackListed] }),
+    before: writeJson(directory, 'production-before.json', beforeValue),
+    after: writeJson(directory, 'production-after.json', afterValue),
+  };
+}
+
+function previewFixtures(directory, overrides = {}) {
+  const inspect = artifact('preview', overrides.inspect);
+  const listed = listedArtifact(inspect, 'preview', {
+    ...overrides.listed,
+    meta: artifactMetadata('preview', overrides.metadata),
+  });
+  const beforeValue = productionAnchor(overrides.productionBefore);
+  return {
+    inspect: writeJson(directory, 'preview-inspect.json', inspect),
+    deploymentList: writeJson(directory, 'preview-list.json', { deployments: [listed] }),
+    before: writeJson(directory, 'production-before-preview.json', beforeValue),
+    after: writeJson(directory, 'production-after-preview.json', { ...beforeValue, ...overrides.productionAfter }),
   };
 }
 
@@ -79,136 +126,182 @@ function workflowStep(workflow, name) {
   return workflow.slice(start, next === -1 ? workflow.length : next);
 }
 
-function candidateArguments(fixtures, output, expectedProductionAnchor = null) {
+function pairArguments(fixtures, output, expectedProductionAnchor = null) {
   const values = [
-    'candidate',
-    '--candidate-inspect', fixtures.inspect,
-    '--candidate-list', fixtures.list,
+    'candidate-pair',
+    '--candidate-inspect', fixtures.candidateInspect,
+    '--fallback-inspect', fixtures.fallbackInspect,
+    '--deployment-list', fixtures.deploymentList,
     '--production-before', fixtures.before,
     '--production-after', fixtures.after,
     '--expected-sha', testSha,
     '--expected-release', 'v-test',
     '--output', output,
   ];
-  if (expectedProductionAnchor) {
-    values.push('--expected-production-anchor', expectedProductionAnchor);
-  }
+  if (expectedProductionAnchor) values.push('--expected-production-anchor', expectedProductionAnchor);
   return values;
 }
 
+function promotionFiles(directory, role, overrides = {}) {
+  const sourceId = role === 'candidate' ? 'dpl_candidate' : 'dpl_fallback';
+  const sourceKind = role === 'candidate' ? 'staged-production' : 'safe-fallback';
+  const productionId = overrides.productionId || `dpl_promoted${role}`;
+  const productionUrl = overrides.productionUrl || `cp-promoted-${role}.vercel.app`;
+  const metadata = {
+    cpGitCommitSha: testSha,
+    cpRelease: 'v-test',
+    cpArtifactKind: sourceKind,
+    cpBuildEnvironment: 'production',
+    cpCheckoutEnabled: 'false',
+    action: 'promote',
+    originalDeploymentId: sourceId,
+    ...overrides.metadata,
+  };
+  const inspect = {
+    id: productionId,
+    url: productionUrl,
+    target: 'production',
+    readyState: 'READY',
+    aliases: ['carlophillips.com', 'www.carlophillips.com'],
+    ...overrides.inspect,
+  };
+  const listed = {
+    id: inspect.id,
+    url: inspect.url,
+    target: 'production',
+    state: 'READY',
+    meta: metadata,
+    ...overrides.listed,
+  };
+  return {
+    after: writeJson(directory, `production-${role}.json`, inspect),
+    list: writeJson(directory, `production-${role}-list.json`, { deployments: [listed] }),
+  };
+}
+
 describe('CI/CD policy', () => {
-  it('keeps verification independent, read-only, Yarn Classic, and cancellable', () => {
+  it('keeps one verification authority read-only, Node 24, accessible, and cancellable', () => {
     expect(ci).toContain('pull_request:');
     expect(ci).toContain('branches:\n      - main');
     expect(ci).toContain('contents: read');
     expect(ci).toContain('cancel-in-progress: true');
     expect(ci).toContain('node-version: 24');
-    expect(ci).toContain('cache: yarn');
     expect(ci).toContain('yarn@1.22.22');
     expect(ci).toContain('yarn install --frozen-lockfile');
     expect(ci).toContain('run: yarn verify');
+    expect(ci).toContain('yarn test:a11y');
+    expect(ci).toContain('name: ci-evidence-${{ github.sha }}');
     expect(ci).not.toContain('pull_request_target');
     expect(ci).not.toMatch(/npm\s+(ci|install)|pnpm/);
+    expect(() => readFileSync('.github/workflows/quality.yml', 'utf8')).toThrow();
   });
 
-  it('stages a protected Production-semantics candidate without assigning domains', () => {
+  it('deploys only an exact same-repository PR head through the protected Preview environment', () => {
+    expect(preview).toContain('workflow_dispatch:');
+    expect(preview).toContain('environment: Preview');
+    expect(preview).toContain('pull-requests: read');
+    expect(preview).toContain("pullRequest.head?.repo?.full_name !== process.env.GITHUB_REPOSITORY");
+    expect(preview).toContain("pullRequest.base?.ref !== 'main'");
+    expect(preview).toContain('test "$EXPECTED_SHA" = "$GITHUB_SHA"');
+    expect(preview).toContain('NEXT_PUBLIC_COMMERCE_ENVIRONMENT: preview');
+    expect(preview).toContain('SHOPIFY_CART_UI_ENABLED: "false"');
+    expect(preview).toContain('vercel pull --yes --environment=preview');
+    expect(preview).toContain('run: vercel build');
+    expect(preview).toContain('vercel deploy --prebuilt --archive=tgz --skip-domain');
+    expect(preview).toContain('--meta cpArtifactKind=immutable-preview');
+    expect(preview).toContain('--meta cpBuildEnvironment=preview');
+    expect(preview).toContain('--meta cpCheckoutEnabled=false');
+    expect(preview).toContain('verify-vercel-receipt.mjs preview');
+    expect(preview).toContain('vercel curl');
+    expect(preview).not.toContain('vercel promote');
+    expect(preview).not.toMatch(/vercel\s+(?:build|deploy)[^\n]*--prod(?:\s|$)/);
+    expect(preview).not.toContain('pull_request_target');
+    expect(workflowStep(preview, 'Verify repository before Preview')).not.toContain('VERCEL_TOKEN');
+    expect(workflowStep(preview, 'Verify immutable Preview receipt without deployment credential')).not.toContain('VERCEL_TOKEN');
+  });
+
+  it('stages a distinct same-SHA Production candidate and safe fallback without aliases', () => {
     expect(candidate).toContain('workflow_dispatch:');
-    expect(candidate).toContain('group: vercel-production-release');
     expect(candidate).toContain('environment: Production');
-    expect(candidate).not.toContain('pull_request:');
-    expect(candidate).not.toContain('pull_request_target');
     expect(candidate).toContain('NEXT_PUBLIC_COMMERCE_ENVIRONMENT: production');
     expect(candidate).toContain('SHOPIFY_CART_UI_ENABLED: "false"');
-    expect(candidate).toContain('VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}');
-    expect(candidate).toContain('VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}');
-    expect(candidate).toContain('VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}');
-    expect(candidate.match(/    env:\n((?:      .*\n)+)/)?.[1]).not.toContain('VERCEL_TOKEN');
-    expect(candidate).toContain("rule.type === 'required_reviewers'");
-    expect(candidate).toContain('vercel pull --yes --environment=production');
     expect(candidate).toContain('vercel build --prod');
-    expect(candidate).toContain('vercel deploy --prebuilt --archive=tgz --prod --skip-domain');
+    expect(candidate.match(/vercel deploy --prebuilt --archive=tgz --prod --skip-domain/g)).toHaveLength(2);
     expect(candidate).toContain('--meta cpArtifactKind=staged-production');
-    expect(candidate).toContain('--meta cpBuildEnvironment=production');
-    expect(candidate).toContain('--meta cpCheckoutEnabled=false');
-    expect(candidate).toContain('Verify staged candidate receipt without deployment credential');
-    expect(candidate).toContain("fs.rmSync('.vercel', { recursive: true, force: true })");
-    expect(candidate.indexOf("fs.rmSync('.vercel'")).toBeLessThan(candidate.indexOf('uses: actions/upload-artifact@v4'));
+    expect(candidate).toContain('--meta cpArtifactKind=safe-fallback');
+    expect(candidate.match(/--meta cpBuildEnvironment=production/g)).toHaveLength(2);
+    expect(candidate.match(/--meta cpCheckoutEnabled=false/g)).toHaveLength(2);
+    expect(candidate).toContain('verify-vercel-receipt.mjs candidate-pair');
+    expect(candidate).toContain('candidate-release-pair-receipt.json');
+    expect(candidate).toContain('fallback-pdp.html');
+    expect(candidate).not.toMatch(/vercel\s+(promote|rollback)/);
     expect(workflowStep(candidate, 'Verify repository before deployment')).not.toContain('VERCEL_TOKEN');
     expect(workflowStep(candidate, 'Build fail-closed Production artifact')).not.toContain('VERCEL_TOKEN');
-    expect(workflowStep(candidate, 'Verify staged candidate receipt without deployment credential')).not.toContain('VERCEL_TOKEN');
-    expect(candidate).not.toMatch(/vercel\s+promote/);
+    expect(workflowStep(candidate, 'Verify staged candidate and safe fallback without deployment credential')).not.toContain('VERCEL_TOKEN');
   });
 
-  it('keeps Production manual, reviewer-gated, metadata-bound, and rebuild-free', () => {
-    expect(production).toContain('workflow_dispatch:');
-    expect(production).toContain('group: vercel-production-release');
-    expect(production).toContain('name: Production');
-    expect(production).toContain('actions: read');
-    expect(production).toContain('CP_PRODUCTION_PROMOTION_ENABLED');
-    expect(production).toContain('VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}');
-    expect(production.match(/    env:\n((?:      .*\n)+)/)?.[1]).not.toContain('VERCEL_TOKEN');
-    expect(production).toContain("rule.type === 'required_reviewers'");
-    expect(production).toContain('test "$EXPECTED_SHA" = "$GITHUB_SHA"');
+  it('promotes only the reviewed candidate and recovers only to the reviewed safe fallback', () => {
+    expect(production).toContain('safe_fallback_deployment:');
     expect(production).toContain('expected_production_anchor:');
-    expect(production).toContain('--expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR"');
+    expect(production).toContain('test "$CANDIDATE_DEPLOYMENT" != "$SAFE_FALLBACK_DEPLOYMENT"');
+    expect(production).toContain('verify-vercel-receipt.mjs candidate-pair');
     expect(production).toContain('vercel promote "$CANDIDATE_DEPLOYMENT"');
-    expect(production).toContain("fs.writeFileSync('.vercel/project.json'");
-    expect(production).not.toContain('vercel pull');
-    expect(production).toContain('continue-on-error: true');
-    expect(production).toContain('production-immediate-before.json');
-    expect(production).toContain('Reject rollback-anchor drift before promotion');
-    expect(production).toContain('echo "attempted=true" >> "$GITHUB_OUTPUT"');
-    expect(production).toContain("steps.promotion.outputs.attempted == 'true'");
-    expect(production).toContain('PROMOTION_OUTCOME: ${{ steps.promotion.outcome }}');
-    expect(production).toContain('test "$PROMOTION_OUTCOME" = "success"');
-    expect(production).toContain('Verify selected candidate without deployment credential');
-    expect(production).toContain('Verify Production promotion identity without deployment credential');
-    expect(production).toContain('reconcile-vercel-rollback.mjs plan');
-    expect(production).toContain('reconcile-vercel-rollback.mjs verify');
-    expect(workflowStep(production, 'Verify selected candidate without deployment credential')).not.toContain('VERCEL_TOKEN');
-    expect(workflowStep(production, 'Verify Production promotion identity without deployment credential')).not.toContain('VERCEL_TOKEN');
-    expect(production).toContain('Capture live Production for rollback planning');
-    expect(production).toContain('vercel rollback "$ROLLBACK_DEPLOYMENT_ID" --yes');
-    expect(production).toContain("html.includes('Selection disabled')");
-    expect(production).toContain("html.includes('Purchasing disabled')");
-    expect(production).toContain("html.includes('Continue to checkout')");
+    expect(production).toContain('select-vercel-safe-fallback.mjs');
+    expect(production).toContain('steps.fallback-plan.outputs.safe_fallback_deployment_id');
+    expect(production).toContain('vercel promote "$SAFE_FALLBACK_DEPLOYMENT_ID"');
+    expect(production).toContain('verify-vercel-receipt.mjs fallback-production');
+    expect(production).toContain('production-safe-fallback-receipt.json');
+    expect(production).not.toContain('reconcile-vercel-rollback.mjs');
+    expect(production).not.toMatch(/vercel\s+rollback/);
+    expect(workflowStep(production, 'Verify selected release pair without deployment credential')).not.toContain('VERCEL_TOKEN');
+    expect(workflowStep(production, 'Verify Production candidate identity without deployment credential')).not.toContain('VERCEL_TOKEN');
+    expect(workflowStep(production, 'Verify exact safe-fallback identity without deployment credential')).not.toContain('VERCEL_TOKEN');
     expect(production).not.toMatch(/vercel\s+(build|deploy)/);
     expect(production).not.toContain('pull_request_target');
-    expect(production).not.toMatch(/npm\s+(ci|install)|pnpm/);
   });
 
-  it('encodes exact staged-candidate and same-artifact promotion invariants', () => {
+  it('encodes artifact role, distinctness, promotion-source, and unsafe-anchor invariants', () => {
     for (const requirement of [
-      "inspect.target === 'production'",
-      "listed.target === 'production'",
-      "metadata?.cpArtifactKind === 'staged-production'",
-      "metadata?.cpBuildEnvironment === 'production'",
-      "metadata?.cpCheckoutEnabled === 'false'",
-      'aliases.length === 0',
-      'productionAfter.id === productionBefore.id',
-      'productionBefore.id === expectedProductionAnchor',
-      'productionAfter.id === candidateInspect.id',
-    ]) {
-      expect(verifier).toContain(requirement);
-    }
+      "artifactKind: 'immutable-preview'",
+      "artifactKind: 'staged-production'",
+      "artifactKind: 'safe-fallback'",
+      'candidate.inspect.id !== fallback.inspect.id',
+      'fallback.inspect.id !== anchor.id',
+      "listed?.meta?.action === 'promote'",
+      'promotedFrom === source.inspect.id',
+    ]) expect(verifier).toContain(requirement);
+    expect(fallbackSelector).toContain('safeFallback.id !== productionAnchor.id');
+    expect(fallbackSelector).toContain('safe_fallback_deployment_id=${safeFallback.id}');
+    expect(fallbackSelector).not.toContain('safe_fallback_deployment_id=${productionAnchor.id}');
   });
 
-  it('executes a valid staged-candidate receipt fixture', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'cp-cicd-candidate-'));
+  it('executes a valid immutable Preview receipt fixture', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-preview-'));
     try {
-      const fixtures = candidateFixtures(directory);
+      const fixtures = previewFixtures(directory);
       const output = join(directory, 'receipt.json');
-      const result = runVerifier(candidateArguments(fixtures, output));
+      const result = runVerifier([
+        'preview',
+        '--preview-inspect', fixtures.inspect,
+        '--deployment-list', fixtures.deploymentList,
+        '--production-before', fixtures.before,
+        '--production-after', fixtures.after,
+        '--expected-sha', testSha,
+        '--expected-release', 'v-test',
+        '--expected-pull-request', '42',
+        '--output', output,
+      ]);
       expect(result.status, result.stderr).toBe(0);
       expect(JSON.parse(readFileSync(output, 'utf8'))).toMatchObject({
-        deploymentId: 'dpl_candidate',
-        gitCommitSha: testSha,
-        artifactKind: 'staged-production',
-        buildEnvironment: 'production',
+        deploymentId: 'dpl_preview',
+        target: 'preview',
+        pullRequest: 42,
+        artifactKind: 'immutable-preview',
+        buildEnvironment: 'preview',
         checkoutEnabled: false,
         productionDomainsAssigned: false,
         productionBeforeDeploymentId: 'dpl_old',
-        productionAfterStagingDeploymentId: 'dpl_old',
+        productionAfterPreviewDeploymentId: 'dpl_old',
       });
     } finally {
       rmSync(directory, { recursive: true, force: true });
@@ -216,136 +309,185 @@ describe('CI/CD policy', () => {
   });
 
   it.each([
-    ['Preview target', { inspect: { target: 'preview' } }],
+    ['Production target', { inspect: { target: 'production' } }],
     ['wrong SHA', { metadata: { cpGitCommitSha: 'b'.repeat(40) } }],
-    ['wrong release', { metadata: { cpRelease: 'wrong' } }],
-    ['missing checkout marker', { metadata: { cpCheckoutEnabled: 'true' } }],
-    ['Preview build semantics', { metadata: { cpBuildEnvironment: 'preview' } }],
-    ['wrong artifact kind', { metadata: { cpArtifactKind: 'preview' } }],
-    ['Production alias leakage', { inspect: { aliases: ['www.carlophillips.com'] } }],
-    ['already-current candidate', { productionBefore: { id: 'dpl_candidate' }, productionAfter: { id: 'dpl_candidate' } }],
+    ['wrong pull request', { metadata: { cpPullRequest: '41' } }],
+    ['wrong role', { metadata: { cpArtifactKind: 'staged-production' } }],
+    ['wrong environment', { metadata: { cpBuildEnvironment: 'production' } }],
+    ['checkout enabled', { metadata: { cpCheckoutEnabled: 'true' } }],
+    ['alias leakage', { inspect: { aliases: ['preview.example.com'] } }],
+    ['Production drift', { productionAfter: { id: 'dpl_other' } }],
+  ])('rejects immutable Preview tampering: %s', (_label, overrides) => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-preview-invalid-'));
+    try {
+      const fixtures = previewFixtures(directory, overrides);
+      const result = runVerifier([
+        'preview', '--preview-inspect', fixtures.inspect,
+        '--deployment-list', fixtures.deploymentList,
+        '--production-before', fixtures.before,
+        '--production-after', fixtures.after,
+        '--expected-sha', testSha,
+        '--expected-release', 'v-test',
+        '--expected-pull-request', '42',
+        '--output', join(directory, 'receipt.json'),
+      ]);
+      expect(result.status).not.toBe(0);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it('executes a valid distinct candidate and safe-fallback receipt fixture', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-release-pair-'));
+    try {
+      const fixtures = releasePairFixtures(directory);
+      const output = join(directory, 'receipt.json');
+      const result = runVerifier(pairArguments(fixtures, output));
+      expect(result.status, result.stderr).toBe(0);
+      expect(JSON.parse(readFileSync(output, 'utf8'))).toMatchObject({
+        candidateDeploymentId: 'dpl_candidate',
+        candidateArtifactKind: 'staged-production',
+        safeFallbackDeploymentId: 'dpl_fallback',
+        safeFallbackArtifactKind: 'safe-fallback',
+        deploymentsDistinct: true,
+        checkoutEnabled: false,
+        productionBeforeDeploymentId: 'dpl_old',
+      });
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ['candidate wrong role', { candidateMetadata: { cpArtifactKind: 'safe-fallback' } }],
+    ['fallback wrong role', { fallbackMetadata: { cpArtifactKind: 'staged-production' } }],
+    ['fallback wrong SHA', { fallbackMetadata: { cpGitCommitSha: 'b'.repeat(40) } }],
+    ['fallback wrong release', { fallbackMetadata: { cpRelease: 'wrong' } }],
+    ['fallback wrong environment', { fallbackMetadata: { cpBuildEnvironment: 'preview' } }],
+    ['fallback checkout enabled', { fallbackMetadata: { cpCheckoutEnabled: 'true' } }],
+    ['candidate alias leakage', { candidateInspect: { aliases: ['www.carlophillips.com'] } }],
+    ['fallback alias leakage', { fallbackInspect: { aliases: ['www.carlophillips.com'] } }],
+    ['same deployment ID', { fallbackInspect: { id: 'dpl_candidate' } }],
+    ['same immutable URL', { fallbackInspect: { url: 'cp-candidate.vercel.app' } }],
+    ['unsafe anchor used as fallback', { fallbackInspect: { id: 'dpl_old' } }],
     ['concurrent Production change', { productionAfter: { id: 'dpl_other' } }],
-    ['Production alias drift', { productionAfter: { aliases: ['www.carlophillips.com'] } }],
-  ])('rejects a candidate receipt with %s', (_label, overrides) => {
-    const directory = mkdtempSync(join(tmpdir(), 'cp-cicd-candidate-invalid-'));
+  ])('rejects release-pair tampering: %s', (_label, overrides) => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-pair-invalid-'));
     try {
-      const fixtures = candidateFixtures(directory, overrides);
-      const result = runVerifier(candidateArguments(fixtures, join(directory, 'receipt.json')));
+      const fixtures = releasePairFixtures(directory, overrides);
+      const result = runVerifier(pairArguments(fixtures, join(directory, 'receipt.json')));
       expect(result.status).not.toBe(0);
     } finally {
       rmSync(directory, { recursive: true, force: true });
     }
   });
 
-  it('rejects a candidate whose current Production differs from the reviewed receipt anchor', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'cp-cicd-anchor-invalid-'));
+  it('rejects a release pair whose live Production differs from the reviewed drift anchor', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-anchor-invalid-'));
     try {
-      const fixtures = candidateFixtures(directory);
-      const result = runVerifier(candidateArguments(
-        fixtures,
-        join(directory, 'receipt.json'),
-        'dpl_wrong',
-      ));
+      const fixtures = releasePairFixtures(directory);
+      const result = runVerifier(pairArguments(fixtures, join(directory, 'receipt.json'), 'dpl_wrong'));
       expect(result.status).not.toBe(0);
     } finally {
       rmSync(directory, { recursive: true, force: true });
     }
   });
 
-  it('accepts exact same-artifact promotion and rejects identity substitution', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'cp-cicd-production-'));
+  it('accepts provider-recorded exact candidate promotion and rejects source substitution', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-production-'));
     try {
-      const fixtures = candidateFixtures(directory);
-      const productionAfterValue = id => ({
-        id,
-        url: id === 'dpl_candidate' ? 'cp-candidate.vercel.app' : 'cp-other.vercel.app',
-        target: 'production',
-        readyState: 'READY',
-        aliases: ['carlophillips.com', 'www.carlophillips.com'],
-      });
-      const productionListValue = id => ({
-        deployments: [{
-          id,
-          url: id === 'dpl_candidate' ? 'cp-candidate.vercel.app' : 'cp-other.vercel.app',
-          target: 'production',
-          state: 'READY',
-          meta: {
-            cpGitCommitSha: testSha,
-            cpRelease: 'v-test',
-            cpArtifactKind: 'staged-production',
-            cpBuildEnvironment: 'production',
-            cpCheckoutEnabled: 'false',
-          },
-        }],
-      });
-      const run = id => {
-        const productionAfter = writeJson(directory, 'production-promoted.json', productionAfterValue(id));
-        const productionList = writeJson(directory, 'production-list.json', productionListValue(id));
+      const fixtures = releasePairFixtures(directory);
+      const run = overrides => {
+        const promoted = promotionFiles(directory, 'candidate', overrides);
         return runVerifier([
           'production',
-          '--candidate-inspect', fixtures.inspect,
-          '--candidate-list', fixtures.list,
+          '--candidate-inspect', fixtures.candidateInspect,
+          '--fallback-inspect', fixtures.fallbackInspect,
+          '--deployment-list', fixtures.deploymentList,
           '--production-before', fixtures.before,
-          '--production-after', productionAfter,
-          '--production-list', productionList,
+          '--production-after', promoted.after,
+          '--production-list', promoted.list,
           '--expected-production-anchor', 'dpl_old',
           '--expected-sha', testSha,
           '--expected-release', 'v-test',
           '--output', join(directory, 'production-receipt.json'),
         ]);
       };
-
-      expect(run('dpl_candidate').status).toBe(0);
-      expect(run('dpl_other').status).not.toBe(0);
+      expect(run().status).toBe(0);
+      expect(run({ metadata: { originalDeploymentId: 'dpl_other' } }).status).not.toBe(0);
+      expect(run({ metadata: { action: 'deploy' } }).status).not.toBe(0);
+      expect(run({ metadata: { cpArtifactKind: 'safe-fallback' } }).status).not.toBe(0);
     } finally {
       rmSync(directory, { recursive: true, force: true });
     }
   });
 
-  it('executes rollback planning and reconciliation fixtures', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'cp-cicd-rollback-'));
+  it('accepts only the exact verified safe fallback after a failed candidate promotion', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-safe-fallback-'));
     try {
-      const before = writeJson(directory, 'before.json', {
-        id: 'dpl_old', target: 'production', readyState: 'READY',
-      });
-      const unchanged = writeJson(directory, 'unchanged.json', {
-        id: 'dpl_old', target: 'production', readyState: 'READY',
-        aliases: ['carlophillips.com', 'www.carlophillips.com'],
-      });
-      const changed = writeJson(directory, 'changed.json', {
-        id: 'dpl_candidate', target: 'production', readyState: 'READY',
-      });
-      const missingAlias = writeJson(directory, 'missing-alias.json', {
-        id: 'dpl_old', target: 'production', readyState: 'READY', aliases: ['www.carlophillips.com'],
+      const fixtures = releasePairFixtures(directory);
+      const run = overrides => {
+        const promoted = promotionFiles(directory, 'fallback', overrides);
+        return runVerifier([
+          'fallback-production',
+          '--candidate-inspect', fixtures.candidateInspect,
+          '--fallback-inspect', fixtures.fallbackInspect,
+          '--deployment-list', fixtures.deploymentList,
+          '--production-before', fixtures.before,
+          '--production-after', promoted.after,
+          '--production-list', promoted.list,
+          '--expected-production-anchor', 'dpl_old',
+          '--expected-sha', testSha,
+          '--expected-release', 'v-test',
+          '--output', join(directory, 'fallback-receipt.json'),
+        ]);
+      };
+      expect(run().status).toBe(0);
+      expect(run({ metadata: { originalDeploymentId: 'dpl_old' } }).status).not.toBe(0);
+      expect(run({ metadata: { cpArtifactKind: 'staged-production' } }).status).not.toBe(0);
+      expect(run({ metadata: { cpGitCommitSha: 'b'.repeat(40) } }).status).not.toBe(0);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it('selects the verified safe fallback and never the current unsafe Production anchor', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-fallback-selector-'));
+    try {
+      const anchor = writeJson(directory, 'anchor.json', productionAnchor());
+      const fallback = writeJson(directory, 'fallback.json', artifact('fallback'));
+      const current = writeJson(directory, 'current.json', {
+        id: 'dpl_candidate', target: 'production', readyState: 'READY', aliases: ['carlophillips.com', 'www.carlophillips.com'],
       });
       const githubOutput = join(directory, 'github-output.txt');
-      const plan = current => {
-        const output = join(directory, `plan-${current === changed ? 'changed' : 'unchanged'}.json`);
-        const result = spawnSync(process.execPath, [
-          rollbackVerifierPath,
-          'plan',
-          '--production-before', before,
-          '--production-current', current,
-          '--github-output', githubOutput,
-          '--output', output,
-        ], { encoding: 'utf8' });
-        return { result, receipt: result.status === 0 ? JSON.parse(readFileSync(output, 'utf8')) : null };
-      };
-
-      expect(plan(unchanged)).toMatchObject({ result: { status: 0 }, receipt: { rollbackRequired: false } });
-      expect(plan(changed)).toMatchObject({ result: { status: 0 }, receipt: { rollbackRequired: true } });
-
-      const verify = after => spawnSync(process.execPath, [
-        rollbackVerifierPath,
-        'verify',
-        '--production-before', before,
-        '--production-after', after,
-        '--output', join(directory, 'rollback-receipt.json'),
+      const receipt = join(directory, 'plan.json');
+      const result = spawnSync(process.execPath, [
+        fallbackSelectorPath,
+        '--production-anchor', anchor,
+        '--safe-fallback', fallback,
+        '--production-current', current,
+        '--github-output', githubOutput,
+        '--output', receipt,
       ], { encoding: 'utf8' });
+      expect(result.status, result.stderr).toBe(0);
+      expect(JSON.parse(readFileSync(receipt, 'utf8'))).toMatchObject({
+        productionAnchorDeploymentId: 'dpl_old',
+        safeFallbackDeploymentId: 'dpl_fallback',
+        recoveryRequired: true,
+      });
+      expect(readFileSync(githubOutput, 'utf8')).toContain('safe_fallback_deployment_id=dpl_fallback');
+      expect(readFileSync(githubOutput, 'utf8')).not.toContain('safe_fallback_deployment_id=dpl_old');
 
-      expect(verify(unchanged).status).toBe(0);
-      expect(verify(changed).status).not.toBe(0);
-      expect(verify(missingAlias).status).not.toBe(0);
+      const unsafeFallback = writeJson(directory, 'unsafe-fallback.json', artifact('fallback', { id: 'dpl_old' }));
+      const rejected = spawnSync(process.execPath, [
+        fallbackSelectorPath,
+        '--production-anchor', anchor,
+        '--safe-fallback', unsafeFallback,
+        '--production-current', current,
+        '--github-output', join(directory, 'rejected-output.txt'),
+        '--output', join(directory, 'rejected.json'),
+      ], { encoding: 'utf8' });
+      expect(rejected.status).not.toBe(0);
     } finally {
       rmSync(directory, { recursive: true, force: true });
     }

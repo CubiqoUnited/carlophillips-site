@@ -5,6 +5,10 @@ import {
 } from '../lib/commerce/media-visibility-policy.js';
 import { resolveProductSource } from '../lib/commerce/release-policy.js';
 import {
+  fingerprintReleaseApprovalTarget,
+  fingerprintReleaseArtifact,
+} from '../lib/releases/product-release-transition.js';
+import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
   createObservedShopifyProduct,
@@ -236,11 +240,14 @@ describe('release-bound storefront media', () => {
     frontAsset.approvalStatus = 'pending';
     const shopifyProduct = createObservedShopifyProduct('test-product', 'preview');
     shopifyProduct.media = [observedMedia('front-image')];
+    const releaseRecord = createCompleteReleaseRecord('staged');
+    releaseRecord.mediaManifestFingerprint = fingerprintReleaseArtifact(manifest);
+    releaseRecord.candidate.releaseEvidenceFingerprint = fingerprintReleaseApprovalTarget(releaseRecord);
 
     const decision = resolveProductSource({
       environment: 'preview',
       shopifyProduct,
-      releaseRecord: createCompleteReleaseRecord('staged'),
+      releaseRecord,
       mediaManifest: manifest,
     });
 
