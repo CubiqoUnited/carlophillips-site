@@ -48,6 +48,7 @@ const campaignHero = {
 
 const signatureHomepagePresentation = {
   displayName: 'ONE',
+  description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery.',
   facts: [
     'Black',
     'XS–5XL',
@@ -55,6 +56,12 @@ const signatureHomepagePresentation = {
     'CP embroidery',
   ],
 };
+
+export function isPreviewRunwayReference(summary) {
+  return summary?.environment === 'preview'
+    && summary?.visibleCount === 0
+    && summary?.commerceAllowed === false;
+}
 
 function firstSentence(value, fallback) {
   const sentence = value?.trim().match(/^[^.!?]+[.!?]?/)?.[0];
@@ -316,7 +323,9 @@ function MenuOverlay({ onClose }) {
 
   useEffect(() => {
     const dialog = dialogRef.current;
+    const bodyHadMenuClass = document.body.classList.contains('cp-site-menu-open');
     const releaseDocumentScroll = lockDocumentScroll();
+    document.body.classList.add('cp-site-menu-open');
     const focusDialog = window.requestAnimationFrame(() => {
       dialog?.querySelector(dialogFocusableSelector)?.focus();
     });
@@ -335,6 +344,7 @@ function MenuOverlay({ onClose }) {
     return () => {
       window.cancelAnimationFrame(focusDialog);
       window.removeEventListener('keydown', handleKeyDown);
+      if (!bodyHadMenuClass) document.body.classList.remove('cp-site-menu-open');
       releaseDocumentScroll();
     };
   }, [onClose]);
@@ -417,12 +427,14 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
   const product = summary.primaryProduct;
   const signatureVisible = summary.visibleCount > 0
     && product?.href === '/products/carlophillips-signature-hoodie';
-  const runwayReady = signatureVisible
+  const releaseRunwayReady = signatureVisible
     && (summary.commerceAllowed || summary.environment !== 'production');
-  const galleryReady = runwayReady && galleryCount > 0;
+  const previewReferenceReady = isPreviewRunwayReference(summary);
+  const runwayVisualReady = releaseRunwayReady || previewReferenceReady;
+  const galleryReady = releaseRunwayReady && galleryCount > 0;
   const productDescription = firstSentence(
     product?.description,
-    'Product description is currently unavailable.'
+    signatureHomepagePresentation.description
   );
 
   return (
@@ -432,7 +444,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
       aria-label="Signature Hoodie runway"
     >
       <figure className="cp-runway-media cp-surface-panel">
-        {runwayReady ? (
+        {runwayVisualReady ? (
           <>
             <Image
               src={signatureRunwayFrames[0].src}
@@ -473,7 +485,11 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
         <div className="cp-product-scrim" aria-hidden="true" />
         {!summary.commerceAllowed && (
           <figcaption className="cp-disclosure">
-            {runwayReady ? 'Private product preview' : heroMedia ? heroMedia.label : 'Collection preview'}
+            {previewReferenceReady
+              ? 'Production visual reference · Preview only'
+              : releaseRunwayReady
+                ? 'Private product preview'
+                : heroMedia ? heroMedia.label : 'Collection preview'}
           </figcaption>
         )}
       </figure>
@@ -492,6 +508,16 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           <Expand className="cp-product-media-expand cp-icon cp-icon-small" aria-hidden="true" />
           <span className="cp-text-align-end">{String(galleryCount).padStart(2, '0')} views</span>
         </button>
+      ) : previewReferenceReady ? (
+        <div
+          aria-label="Production visual reference; product links and commerce are withheld in Preview"
+          className="cp-product-media-button cp-product-media-button-corner"
+          data-preview-reference="signature-hoodie"
+        >
+          <span>Production reference</span>
+          <span aria-hidden="true">—</span>
+          <span className="cp-text-align-end">Commerce withheld</span>
+        </div>
       ) : (
         <Link
           href="/shop"
@@ -505,15 +531,15 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
       <div className="cp-product-layout cp-page-shell">
         <div className="cp-product-copy">
           <p className="cp-eyebrow cp-space-after-label">
-            {runwayReady ? 'Signature Series / 001' : 'CARLOPHILLIPS / 001'}
+            {runwayVisualReady ? 'Signature Series / 001' : 'CARLOPHILLIPS / 001'}
           </p>
           <h2 className="cp-product-title">
-            {runwayReady ? signatureHomepagePresentation.displayName : 'Form. Function.'}
+            {runwayVisualReady ? signatureHomepagePresentation.displayName : 'Form. Function.'}
           </h2>
           <p className="cp-product-review cp-space-before-review">
-            {runwayReady ? productDescription : 'A considered study in form, material and everyday utility.'}
+            {runwayVisualReady ? productDescription : 'A considered study in form, material and everyday utility.'}
           </p>
-          {runwayReady && (
+          {runwayVisualReady && (
             <ul className="cp-product-facts cp-space-before-facts" aria-label="Product highlights">
               {signatureHomepagePresentation.facts.map(fact => <li key={fact}>{fact}</li>)}
             </ul>

@@ -326,6 +326,19 @@
 
   .cp-consent-title { font-weight: var(--cp-semantic-font-weight-bold-relative); }
 
+  body.cp-site-menu-open .cp-consent,
+  body.cp-site-menu-open .cp-cookie-trigger {
+    display: var(--cp-semantic-layout-display-none);
+  }
+
+  body:has(.cp-consent) .cp-campaign-content {
+    padding-bottom: calc(
+      var(--cp-semantic-space-panel-bottom)
+      + var(--cp-semantic-space-32)
+      + var(--cp-semantic-space-24)
+    );
+  }
+
   .cp-cookie-trigger {
     position: var(--cp-semantic-layout-position-fixed);
     right: var(--cp-semantic-space-4);

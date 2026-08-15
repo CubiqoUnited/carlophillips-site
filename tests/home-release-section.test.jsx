@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import HomeStorefront, {
   buildHomeGalleryMedia,
+  isPreviewRunwayReference,
   ProductMediaOverlay,
 } from '../components/storefront/home-storefront.jsx';
 
@@ -174,6 +175,33 @@ describe('home release composition', () => {
     expect(html).not.toContain('Signature Series / Runway 001');
     expect(html).not.toContain('aria-current="page"');
     expect(html).toContain('aria-disabled="true"');
+  });
+
+  it('restores the Production Hoodie runway as a Preview-only visual reference without commerce authority', () => {
+    const previewDenied = {
+      ...availableSummary,
+      environment: 'preview',
+      status: 'denied',
+      visibleCount: 0,
+      excludedCount: 1,
+      commerceAllowed: false,
+      primaryProduct: null,
+    };
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={previewDenied} />);
+
+    expect(isPreviewRunwayReference(previewDenied)).toBe(true);
+    expect(isPreviewRunwayReference({ ...previewDenied, environment: 'production' })).toBe(false);
+    expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
+    expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-three-quarter.jpg');
+    expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-side-profile.jpg');
+    expect(html).toContain('Production visual reference · Preview only');
+    expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
+    expect(html).toContain('data-preview-reference="signature-hoodie"');
+    expect(html).toContain('Commerce withheld');
+    expect(html).not.toContain('data-media-trigger="signature-hoodie"');
+    expect(html).not.toContain('href="/products/carlophillips-signature-hoodie"');
+    expect(html).not.toContain('aria-current="page"');
+    expect(buildHomeGalleryMedia(previewDenied)).toEqual([]);
   });
 
   it('builds a swipe gallery from eligible media without exposing preview studies in production', () => {

@@ -421,10 +421,14 @@ describe('storefront design system', () => {
     expect(home).toContain('role="dialog"');
     expect(home).toContain('aria-modal="true"');
     expect(home).toContain("classList.add('cp-scroll-locked')");
+    expect(home).toContain("document.body.classList.add('cp-site-menu-open')");
+    expect(home).toContain("document.body.classList.remove('cp-site-menu-open')");
     expect(home).toContain("addEventListener('wheel', preventScroll, { passive: false })");
     expect(home).toContain("removeEventListener('wheel', preventScroll)");
     expect(home).toContain('moveDialogFocus(event, dialog)');
     expect(styles).toContain('html.cp-scroll-locked');
+    expect(styles).toContain('body.cp-site-menu-open .cp-consent');
+    expect(styles).toContain('body:has(.cp-consent) .cp-campaign-content');
     expect(home).toContain("event.key === 'Escape'");
     expect(home).toContain('menuButtonRef.current?.focus()');
     expect(home).toContain('inert={menuOpen || mediaOpen ? true : undefined}');

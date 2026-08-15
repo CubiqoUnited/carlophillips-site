@@ -205,7 +205,7 @@
   --cp-primitive-layer-control: 20;
   --cp-primitive-layer-category: 30;
   --cp-primitive-layer-header: 40;
-  --cp-primitive-layer-menu: 50;
+  --cp-primitive-layer-menu: 80;
   --cp-primitive-layer-dialog: 70;
 
   --cp-primitive-duration-standard: 240ms;
