@@ -63,11 +63,12 @@ describe('storefront route policy', () => {
     expect(layout).toContain('follow: publicIndexingEnabled');
   });
 
-  it('keeps draft campaign studies out of Vercel artifacts and routes', () => {
+  it('keeps draft campaign studies out of public artifacts and routes', () => {
     const ignore = readFileSync('.vercelignore', 'utf8');
-    const concept = readFileSync('app/concept-preview/page.js', 'utf8');
     expect(ignore).toContain('public/campaigns/draft-pod/');
-    expect(concept).toContain("if (['preview', 'production'].includes(process.env.VERCEL_ENV)) notFound()");
+    expect(existsSync('app/concept-preview/page.js')).toBe(false);
+    expect(existsSync('public/campaigns/draft-pod')).toBe(false);
+    expect(existsSync('docs/archive/draft-pod/edge-of-life-runway-desktop-v1.jpg')).toBe(true);
   });
 
   it('renders one home footer with policy links and keeps saved consent controls in flow', () => {

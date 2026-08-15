@@ -942,7 +942,7 @@
   }
 
   .cp-media-title-eyebrow {
-    display: var(--cp-component-concept-header-label-display);
+    display: var(--cp-component-media-title-eyebrow-display);
   }
 
   .cp-media-jump {
@@ -1044,10 +1044,6 @@
 
   .cp-media-position-center {
     object-position: var(--cp-semantic-media-position-center);
-  }
-
-  .cp-media-position-concept-feature {
-    object-position: var(--cp-semantic-media-position-concept-feature);
   }
 
   .cp-media-navigation {
@@ -1459,10 +1455,6 @@
     grid-template-columns: var(--cp-component-information-grid-template);
   }
 
-  .cp-concept-story-layout {
-    grid-template-columns: var(--cp-component-concept-story-grid-template);
-  }
-
   .cp-product-gallery-grid {
     min-height: var(--cp-component-product-gallery-min-height);
   }
@@ -1606,6 +1598,7 @@
 
   .cp-catalog-card {
     min-height: var(--cp-semantic-size-card-catalog);
+    border-radius: var(--cp-component-card-radius);
   }
 
   .cp-catalog-card-media {
@@ -1890,214 +1883,6 @@
     background: var(--cp-semantic-effect-scrim-card);
   }
 
-  /* Private concept route: same tokens, editorial type role. */
-  .cp-concept-page {
-    min-height: var(--cp-semantic-size-viewport-height-legacy);
-    background: var(--cp-semantic-color-panel);
-    color: var(--cp-semantic-color-ink);
-  }
-
-  .cp-concept-header {
-    position: var(--cp-semantic-layout-position-fixed);
-    inset: var(--cp-semantic-layout-inset-top);
-    z-index: var(--cp-component-header-layer);
-    border-bottom: var(--cp-semantic-border-rule);
-    background: var(--cp-semantic-color-concept-header);
-    backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
-  }
-
-  .cp-concept-header-inner,
-  .cp-concept-header-actions {
-    display: var(--cp-semantic-layout-display-flex);
-    align-items: var(--cp-semantic-layout-align-center);
-  }
-
-  .cp-concept-header-inner {
-    height: var(--cp-semantic-size-header);
-    justify-content: var(--cp-semantic-layout-justify-between);
-  }
-
-  .cp-concept-header-actions {
-    gap: var(--cp-semantic-space-5);
-  }
-
-  .cp-concept-header-label {
-    display: var(--cp-component-concept-header-label-display);
-  }
-
-  .cp-concept-current-link {
-    min-height: var(--cp-semantic-layout-size-zero);
-    padding: var(--cp-semantic-space-2) var(--cp-semantic-space-4);
-  }
-
-  .cp-concept-wordmark,
-  .cp-concept-title {
-    font-family: var(--cp-semantic-font-family-editorial);
-  }
-
-  .cp-concept-wordmark {
-    font-size: var(--cp-semantic-font-size-concept-wordmark);
-    letter-spacing: var(--cp-semantic-font-tracking-concept-wordmark);
-  }
-
-  .cp-concept-hero {
-    position: var(--cp-semantic-layout-position-relative);
-    overflow: var(--cp-semantic-layout-overflow-hidden);
-    min-height: var(--cp-semantic-size-viewport-height);
-  }
-
-  .cp-concept-hero-scrim {
-    position: var(--cp-semantic-layout-position-absolute);
-    inset: var(--cp-semantic-layout-inset-full);
-    background: var(--cp-semantic-effect-scrim-concept);
-  }
-
-  .cp-concept-hero-content {
-    position: var(--cp-semantic-layout-position-relative);
-    z-index: var(--cp-semantic-layer-content);
-    display: var(--cp-semantic-layout-display-flex);
-    min-height: var(--cp-semantic-size-viewport-height);
-    flex-direction: var(--cp-semantic-layout-direction-column);
-    justify-content: var(--cp-semantic-layout-justify-end);
-    padding-top: var(--cp-semantic-space-28);
-    padding-bottom: var(--cp-semantic-space-12);
-  }
-
-  .cp-concept-hero-copy {
-    max-width: var(--cp-semantic-size-copy-max);
-  }
-
-  .cp-concept-hero-actions {
-    display: var(--cp-semantic-layout-display-flex);
-    flex-wrap: var(--cp-semantic-layout-flex-wrap);
-    align-items: var(--cp-semantic-layout-align-center);
-    gap: var(--cp-semantic-space-4);
-    margin-top: var(--cp-semantic-space-8);
-  }
-
-  .cp-concept-title {
-    font-size: var(--cp-semantic-font-size-concept);
-    font-weight: var(--cp-semantic-font-weight-regular);
-    line-height: var(--cp-semantic-font-line-height-display);
-    letter-spacing: var(--cp-semantic-font-tracking-concept);
-  }
-
-  .cp-concept-section-title {
-    font-family: var(--cp-semantic-font-family-editorial);
-    font-size: var(--cp-semantic-font-size-concept-section);
-    letter-spacing: var(--cp-semantic-font-tracking-concept-section);
-  }
-
-  .cp-concept-card {
-    border-radius: var(--cp-component-card-radius);
-    background: var(--cp-semantic-color-panel-strong);
-  }
-
-  .cp-concept-card-media {
-    position: var(--cp-semantic-layout-position-relative);
-    overflow: var(--cp-semantic-layout-overflow-hidden);
-    aspect-ratio: var(--cp-semantic-ratio-product-portrait);
-  }
-
-  .cp-concept-collection {
-    padding-block: var(--cp-semantic-space-20) var(--cp-semantic-space-32);
-  }
-
-  .cp-concept-section-header {
-    display: var(--cp-semantic-layout-display-flex);
-    flex-direction: var(--cp-component-concept-section-header-direction);
-    align-items: var(--cp-component-concept-section-header-align);
-    justify-content: var(--cp-component-concept-section-header-justify);
-    gap: var(--cp-semantic-space-4);
-    margin-bottom: var(--cp-semantic-space-10);
-    border-bottom: var(--cp-semantic-border-rule);
-    padding-bottom: var(--cp-semantic-space-8);
-  }
-
-  .cp-concept-section-eyebrow {
-    margin-bottom: var(--cp-semantic-space-3);
-  }
-
-  .cp-concept-section-copy {
-    max-width: var(--cp-semantic-size-copy-compact);
-    font-size: var(--cp-semantic-font-size-control);
-    line-height: var(--cp-semantic-font-line-height-body);
-  }
-
-  .cp-concept-grid {
-    display: var(--cp-semantic-layout-display-grid);
-    grid-template-columns: var(--cp-component-concept-grid-template);
-    gap: var(--cp-semantic-space-5);
-  }
-
-  .cp-concept-card-copy {
-    position: var(--cp-semantic-layout-position-absolute);
-    inset: var(--cp-semantic-layout-inset-bottom);
-    padding: var(--cp-component-concept-card-padding);
-  }
-
-  .cp-concept-card-eyebrow {
-    margin-bottom: var(--cp-semantic-space-2);
-  }
-
-  .cp-concept-card-detail {
-    margin-top: var(--cp-semantic-space-2);
-  }
-
-  .cp-concept-card-title {
-    font-size: var(--cp-semantic-font-size-card-title);
-  }
-
-  .cp-concept-story-title {
-    font-size: var(--cp-semantic-font-size-concept-story);
-    line-height: var(--cp-semantic-font-line-height-section);
-  }
-
-  .cp-concept-card img {
-    transition: transform var(--cp-semantic-duration-image) var(--cp-semantic-easing-standard);
-  }
-
-  .cp-concept-card:hover img {
-    transform: scale(var(--cp-semantic-media-scale-concept-hover));
-  }
-
-  .cp-concept-story {
-    border-block: var(--cp-semantic-border-rule);
-    background: var(--cp-semantic-color-panel-subtle);
-  }
-
-  .cp-concept-story-copy {
-    max-width: var(--cp-semantic-size-copy-compact);
-    border-left: var(--cp-semantic-border-rule-strong);
-    padding-left: var(--cp-semantic-space-6);
-    font-size: var(--cp-semantic-font-size-control);
-    line-height: var(--cp-semantic-font-line-height-body);
-  }
-
-  .cp-concept-story-layout {
-    display: var(--cp-semantic-layout-display-grid);
-    align-items: var(--cp-semantic-layout-align-end);
-    gap: var(--cp-semantic-space-10);
-    padding-block: var(--cp-semantic-space-20) var(--cp-semantic-space-28);
-  }
-
-  .cp-concept-story-heading {
-    max-width: var(--cp-semantic-size-copy-campaign);
-  }
-
-  .cp-concept-story-eyebrow {
-    margin-bottom: var(--cp-semantic-space-4);
-  }
-
-  .cp-concept-footer {
-    display: var(--cp-semantic-layout-display-flex);
-    flex-direction: var(--cp-component-footer-direction);
-    align-items: var(--cp-component-footer-align);
-    justify-content: var(--cp-component-footer-justify);
-    gap: var(--cp-semantic-space-4);
-    padding-block: var(--cp-semantic-space-10);
-  }
-
   /* Hide scrollbar for product carousels */
   .cp-scrollbar-hide {
     -ms-overflow-style: var(--cp-semantic-layout-scrollbar-none);
@@ -2168,8 +1953,7 @@ a:focus-visible {
     opacity: var(--cp-semantic-opacity-full);
   }
 
-  img,
-  .cp-concept-card img {
+  img {
     transition: var(--cp-semantic-layout-animation-none);
   }
 }

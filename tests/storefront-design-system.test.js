@@ -10,7 +10,6 @@ const tokenPath = 'app/design-tokens.css';
 const globalPath = 'app/globals.css';
 const activeCustomerFiles = [
   'app/layout.js',
-  'app/concept-preview/page.js',
   'components/storefront/home-storefront.jsx',
   'components/storefront/storefront-header.jsx',
   'components/storefront/site-policies-footer.jsx',
