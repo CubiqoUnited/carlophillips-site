@@ -549,36 +549,6 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
   );
 }
 
-function CategoryRail({ summary }) {
-  const activeProduct = summary.visibleCount > 0
-    && summary.primaryProduct?.href === '/products/carlophillips-signature-hoodie'
-    ? summary.primaryProduct
-    : null;
-
-  return (
-    <nav className="cp-category-rail" aria-label="Product categories">
-      <div className="cp-scrollbar-hide cp-category-list cp-page-shell" tabIndex="0" aria-label="Collection categories">
-        {activeProduct ? (
-          <Link
-            href={activeProduct.href}
-            aria-current="page"
-            className="cp-category-item cp-category-item-active"
-          >
-            Hoodies
-          </Link>
-        ) : (
-          <span aria-disabled="true" className="cp-category-item">Hoodies</span>
-        )}
-        {productCategories.slice(1).map(category => (
-          <span key={category.label} aria-disabled="true" className="cp-category-item">
-            {category.label}
-          </span>
-        ))}
-      </div>
-    </nav>
-  );
-}
-
 function Footer() {
   return (
     <footer className="cp-footer">
@@ -632,7 +602,6 @@ export default function HomeStorefront({ catalogSummary }) {
           onOpenGallery={() => setMediaOpen(true)}
           summary={summary}
         />
-        <CategoryRail summary={summary} />
         <Footer />
       </div>
       {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}

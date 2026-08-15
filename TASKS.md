@@ -542,4 +542,6 @@
 - [x] De-emphasize Hoodie copy only through semantic/component design tokens.
 - [x] Add an executable `yarn lint` design-system gate for raw colours, shapes, visual properties, spacing, typography, and inline styles.
 - [x] Pass full source verification, three-width functional/visual QA, WCAG audits, and screenshot comparison.
+- [x] Reduce the merchandise-menu type scale, increase `ONE` by 2 px, reduce its description by 1 px, and remove the duplicate post-Hoodie category rail exclusively through the token/component system.
+- [x] Re-run 44-file/475-test verification and three-width, 21-route background QA; compare six prior/current menu and Hoodie screenshots.
 - [ ] Push the exact verified candidate, obtain exact-head CI and immutable Preview evidence, then merge and promote only the accepted main artifact with rollback proven.

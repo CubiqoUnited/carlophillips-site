@@ -92,15 +92,15 @@ describe('home release composition', () => {
     expect(unavailable).not.toContain('data-media-trigger="signature-hoodie"');
   });
 
-  it('places the brand campaign before the gated Hoodie runway and category rail', () => {
+  it('places the brand campaign before the gated Hoodie runway without duplicating menu categories', () => {
     const html = renderToStaticMarkup(<HomeStorefront catalogSummary={availableSummary} />);
     const campaignIndex = html.indexOf('aria-label="CARLOPHILLIPS runway campaign"');
     const productIndex = html.indexOf('aria-label="Signature Hoodie runway"');
-    const categoriesIndex = html.indexOf('aria-label="Product categories"');
 
     expect(campaignIndex).toBeGreaterThan(-1);
     expect(productIndex).toBeGreaterThan(campaignIndex);
-    expect(categoriesIndex).toBeGreaterThan(productIndex);
+    expect(html).not.toContain('aria-label="Product categories"');
+    expect(html).not.toContain('aria-label="Collection categories"');
     expect(html).toContain('href="#signature-runway"');
     expect(html).toContain('aria-label="Scroll down to discover the Signature Hoodie"');
     expect(html).toContain('id="signature-runway"');
@@ -148,12 +148,6 @@ describe('home release composition', () => {
     expect(html).not.toContain('lucide-arrow-right h-4 w-4');
     expect(html).not.toContain('Available now / Black / XS–5XL');
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
-    expect(html).toContain('aria-current="page"');
-    expect(html).toContain('>Hoodies</a>');
-    expect(html).toContain('aria-disabled="true"');
-    expect(html).toContain('>Shirts</span>');
-    expect(html).toContain('>T-Shirts</span>');
-    expect(html).toContain('>Trousers</span>');
     expect(html).not.toContain('release gate');
     expect(html).not.toContain('Current collection');
     expect(html).not.toContain('Candidates</span>');
@@ -165,7 +159,7 @@ describe('home release composition', () => {
     expect(html).toContain('href="/cookie-policy"');
   });
 
-  it('keeps runway product media and active categories behind product visibility eligibility', () => {
+  it('keeps runway product media behind product visibility eligibility', () => {
     const html = renderToStaticMarkup(<HomeStorefront catalogSummary={{
       ...availableSummary,
       status: 'denied',
@@ -177,8 +171,7 @@ describe('home release composition', () => {
     expect(html).not.toContain('/products/signature-hoodie/candidates/moda/');
     expect(html).toContain('%2Fcampaigns%2Flofoten-runway-hero.png');
     expect(html).not.toContain('Signature Series / Runway 001');
-    expect(html).not.toContain('aria-current="page"');
-    expect(html).toContain('aria-disabled="true"');
+    expect(html).not.toContain('aria-label="Product categories"');
   });
 
   it('restores the Production Hoodie runway as a Preview-only visual reference without commerce authority', () => {

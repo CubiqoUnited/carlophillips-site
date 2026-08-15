@@ -554,3 +554,11 @@ Resume point: execute only the specifically approved action, capture evidence wi
 - Hoodie copy is de-emphasized exclusively through semantic/component tokens. `yarn lint` now runs a dedicated design-system gate that rejects raw colours, visual properties, spacing, radius, typography, and non-token inline styling across active app/component sources.
 - Full verification passes: 44/44 files and 475/475 tests, zero production vulnerabilities across 67 audited packages, and an optimized Next.js 15.5.21 build. Background headless QA passes 21/21 route/viewport checks plus 14/14 WCAG route/viewport audits. Nine exact-dimension screenshot comparisons document only the requested consent, menu, label, and copy-emphasis changes under `test_reports/cp-ui-token-cleanup-2026-08-15/`.
 - The Product Owner Theme read path and remote fail-closed write boundary remain healthy. The GitHub proposal adapter is not connected: no reviewed runtime GitHub App can yet create the restricted `codex/*` branch, single-file `theme.json` commit, and draft PR. Remote Save therefore remains disabled and creates no commit, PR, merge, or publication.
+
+### Product Owner visual refinement — 2026-08-16
+
+- The merchandise-menu scale is reduced through its primitive typography token; `ONE` is increased by 2 px and its description reduced by 1 px through primitive → semantic → component token bindings.
+- The duplicated category rail below the Hoodie runway is removed because those destinations now live in the hamburger menu. Its component CSS and newly dormant tokens are removed rather than hidden.
+- Full verification remains green at 44/44 files and 475/475 tests, zero production vulnerabilities across 67 audited packages, and a successful Next.js 15.5.21 build.
+- Background QA passes 3/3 viewports and 21/21 route checks with exact menu labels, no clipping or overflow, decoded Hoodie media, restored keyboard focus, and zero console/request failures. Six prior/current screenshot pairs are retained under `test_reports/cp-chapter-one-closure-2026-08-16/`.
+- Purchasing is the required final customer state, but is not activated by these visual changes. The Hoodie remains Draft and cart/checkout/payment still require the release-bound Shopify, variant, fulfillment, controlled-order, and Product Owner activation evidence already listed in the commerce gates.
