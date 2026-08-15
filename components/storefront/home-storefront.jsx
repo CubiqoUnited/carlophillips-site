@@ -38,7 +38,14 @@ const signatureRunwayFrameClasses = [
   'cp-runway-frame-tertiary',
 ];
 
-const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
+const productCategories = [
+  { label: 'Hoodies', href: '/products/carlophillips-signature-hoodie' },
+  { label: 'T-Shirts', href: '/shop?category=t-shirts' },
+  { label: 'Shirts', href: '/shop?category=shirts' },
+  { label: 'Outerwear', href: '/shop?category=outerwear' },
+  { label: 'Trousers', href: '/shop?category=trousers' },
+  { label: 'Accessories', href: '/shop?category=accessories' },
+];
 const dialogFocusableSelector = 'button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])';
 
 const campaignHero = {
@@ -323,9 +330,7 @@ function MenuOverlay({ onClose }) {
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    const bodyHadMenuClass = document.body.classList.contains('cp-site-menu-open');
     const releaseDocumentScroll = lockDocumentScroll();
-    document.body.classList.add('cp-site-menu-open');
     const focusDialog = window.requestAnimationFrame(() => {
       dialog?.querySelector(dialogFocusableSelector)?.focus();
     });
@@ -344,7 +349,6 @@ function MenuOverlay({ onClose }) {
     return () => {
       window.cancelAnimationFrame(focusDialog);
       window.removeEventListener('keydown', handleKeyDown);
-      if (!bodyHadMenuClass) document.body.classList.remove('cp-site-menu-open');
       releaseDocumentScroll();
     };
   }, [onClose]);
@@ -370,10 +374,11 @@ function MenuOverlay({ onClose }) {
         </button>
       </div>
       <nav className="cp-menu-links" aria-label="Main menu">
-        <Link onClick={onClose} href="/">Home</Link>
-        <Link onClick={onClose} href="/shop">Shop</Link>
-        <Link onClick={onClose} href="/collections">Collections</Link>
-        <Link onClick={onClose} href="/bag">Bag</Link>
+        {productCategories.map(category => (
+          <Link key={category.label} onClick={onClose} href={category.href}>
+            {category.label}
+          </Link>
+        ))}
       </nav>
     </aside>
   );
@@ -485,7 +490,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
             />
         )}
         <div className="cp-product-scrim" aria-hidden="true" />
-        {!summary.commerceAllowed && (
+        {!summary.commerceAllowed && !previewReferenceReady && (
           <figcaption className="cp-disclosure">
             {previewReferenceReady
               ? 'Production visual reference · Preview only'
@@ -511,15 +516,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           <span className="cp-text-align-end">{String(galleryCount).padStart(2, '0')} views</span>
         </button>
       ) : previewReferenceReady ? (
-        <div
-          aria-label="Production visual reference; product links and commerce are withheld in Preview"
-          className="cp-product-media-button cp-product-media-button-corner"
-          data-preview-reference="signature-hoodie"
-        >
-          <span>Production reference</span>
-          <span aria-hidden="true">—</span>
-          <span className="cp-text-align-end">Commerce withheld</span>
-        </div>
+        null
       ) : (
         <Link
           href="/shop"
@@ -572,9 +569,9 @@ function CategoryRail({ summary }) {
         ) : (
           <span aria-disabled="true" className="cp-category-item">Hoodies</span>
         )}
-        {categoryTabs.map(category => (
-          <span key={category} aria-disabled="true" className="cp-category-item">
-            {category}
+        {productCategories.slice(1).map(category => (
+          <span key={category.label} aria-disabled="true" className="cp-category-item">
+            {category.label}
           </span>
         ))}
       </div>

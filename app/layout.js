@@ -1,6 +1,5 @@
 import './globals.css';
 import { designSystemRuntimeContract } from '@/lib/design-system/runtime-contract';
-import { ConsentPreferences } from '@/components/privacy/consent-preferences';
 import { SitePoliciesFooter } from '@/components/storefront/site-policies-footer';
 import { ThemeStyle } from '@/components/theme/theme-style';
 import { publicIndexingEnabled, siteConfig } from '@/lib/site/site-config';
@@ -145,7 +144,6 @@ export default function RootLayout({ children }) {
         
         {children}
         <SitePoliciesFooter />
-        <ConsentPreferences />
       </body>
     </html>
   );

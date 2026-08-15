@@ -194,6 +194,9 @@ describe('canonical theme token governance', () => {
   });
 
   it('extends hardcoded-value enforcement across every active app and component source', () => {
+    const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
+    expect(packageJson.scripts.lint).toContain('lint:design-system');
+    expect(readFileSync('scripts/lint-design-system.mjs', 'utf8')).toContain('Design-system lint failed');
     const files = [...sourceFiles('app'), ...sourceFiles('components')]
       .filter(file => !['app/design-tokens.css', 'app/opengraph-image.js'].includes(file));
     const violations = [];

@@ -533,3 +533,13 @@
 - [ ] Sushma integrates the isolated auth commit into the canonical candidate and verifies real unauthenticated, wrong-user, Product Owner, expired-session, and origin/CSRF behavior in an immutable Vercel Preview.
 - [ ] Implement and review a least-privilege GitHub adapter that may update only root `theme.json` on a temporary `codex/*` branch and open a draft PR; remote saves stay disabled until then.
 - [ ] Merge and Production promotion remain blocked until required GitHub checks/protection, exact Preview evidence, rollback, and Product Owner approval are all recorded.
+
+# Token-governed storefront cleanup and release
+
+- [x] Remove the optional-analytics consent UI while keeping analytics disconnected and public policy copy technically accurate.
+- [x] Replace generic hamburger destinations with industry-standard merchandise categories.
+- [x] Remove internal Preview/commerce labels without weakening product, gallery, cart, or checkout gates.
+- [x] De-emphasize Hoodie copy only through semantic/component design tokens.
+- [x] Add an executable `yarn lint` design-system gate for raw colours, shapes, visual properties, spacing, typography, and inline styles.
+- [x] Pass full source verification, three-width functional/visual QA, WCAG audits, and screenshot comparison.
+- [ ] Push the exact verified candidate, obtain exact-head CI and immutable Preview evidence, then merge and promote only the accepted main artifact with rollback proven.

@@ -152,7 +152,8 @@ describe('home release composition', () => {
     expect(html).toContain('>Hoodies</a>');
     expect(html).toContain('aria-disabled="true"');
     expect(html).toContain('>Shirts</span>');
-    expect(html).toContain('>Bottoms</span>');
+    expect(html).toContain('>T-Shirts</span>');
+    expect(html).toContain('>Trousers</span>');
     expect(html).not.toContain('release gate');
     expect(html).not.toContain('Current collection');
     expect(html).not.toContain('Candidates</span>');
@@ -197,10 +198,10 @@ describe('home release composition', () => {
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-three-quarter.jpg');
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-side-profile.jpg');
-    expect(html).toContain('Production visual reference · Preview only');
+    expect(html).not.toContain('Production visual reference · Preview only');
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
-    expect(html).toContain('data-preview-reference="signature-hoodie"');
-    expect(html).toContain('Commerce withheld');
+    expect(html).not.toContain('data-preview-reference="signature-hoodie"');
+    expect(html).not.toContain('Commerce withheld');
     expect(html).not.toContain('data-media-trigger="signature-hoodie"');
     expect(html).not.toContain('href="/products/carlophillips-signature-hoodie"');
     expect(html).not.toContain('aria-current="page"');

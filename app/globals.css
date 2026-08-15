@@ -265,16 +265,13 @@
     font-size: var(--cp-semantic-font-size-small);
   }
 
-  .cp-policy-footer nav,
-  .cp-consent-actions {
+  .cp-policy-footer nav {
     display: var(--cp-semantic-layout-display-flex);
     flex-wrap: var(--cp-semantic-layout-flex-wrap);
     gap: var(--cp-semantic-space-4);
   }
 
-  .cp-policy-footer a,
-  .cp-cookie-trigger,
-  .cp-consent button {
+  .cp-policy-footer a {
     text-decoration: var(--cp-semantic-layout-text-decoration-link);
     text-underline-offset: var(--cp-semantic-space-1);
   }
@@ -303,51 +300,6 @@
     margin-bottom: var(--cp-semantic-space-8);
     padding: var(--cp-semantic-space-4);
     border: var(--cp-semantic-size-hairline) solid var(--cp-semantic-color-rule);
-  }
-
-  .cp-consent {
-    position: var(--cp-semantic-layout-position-fixed);
-    z-index: var(--cp-semantic-layer-dialog);
-    right: var(--cp-semantic-space-4);
-    bottom: var(--cp-semantic-space-4);
-    left: var(--cp-semantic-space-4);
-    display: var(--cp-semantic-layout-display-flex);
-    align-items: var(--cp-semantic-layout-align-stretch);
-    flex-direction: var(--cp-semantic-layout-direction-column);
-    justify-content: var(--cp-semantic-layout-justify-between);
-    gap: var(--cp-semantic-space-6);
-    max-width: var(--cp-semantic-size-content-medium);
-    margin: var(--cp-semantic-layout-margin-auto);
-    padding: var(--cp-semantic-space-5);
-    border: var(--cp-semantic-size-hairline) solid var(--cp-semantic-color-rule);
-    background: var(--cp-semantic-color-canvas);
-    box-shadow: var(--cp-semantic-effect-shadow-dialog);
-  }
-
-  .cp-consent-title { font-weight: var(--cp-semantic-font-weight-bold-relative); }
-
-  body.cp-site-menu-open .cp-consent,
-  body.cp-site-menu-open .cp-cookie-trigger {
-    display: var(--cp-semantic-layout-display-none);
-  }
-
-  body:has(.cp-consent) .cp-campaign-content {
-    padding-bottom: calc(
-      var(--cp-semantic-space-panel-bottom)
-      + var(--cp-semantic-space-32)
-      + var(--cp-semantic-space-24)
-    );
-  }
-
-  .cp-cookie-trigger {
-    display: var(--cp-semantic-layout-display-block);
-    width: var(--cp-semantic-size-full);
-    padding: var(--cp-semantic-space-2) var(--cp-semantic-space-3);
-    background: var(--cp-semantic-color-canvas);
-    border-top: var(--cp-semantic-border-rule);
-    border-right: var(--cp-semantic-border-none);
-    border-bottom: var(--cp-semantic-border-none);
-    border-left: var(--cp-semantic-border-none);
   }
 
 }
@@ -758,6 +710,7 @@
     max-width: var(--cp-semantic-size-copy-medium);
     text-shadow: var(--cp-semantic-effect-shadow-copy);
     transform: translateY(var(--cp-component-product-copy-offset));
+    opacity: var(--cp-component-product-copy-opacity);
   }
 
   .cp-product-title {
@@ -775,8 +728,8 @@
     overflow: var(--cp-semantic-layout-overflow-hidden);
     -webkit-box-orient: var(--cp-semantic-layout-box-orient-vertical);
     -webkit-line-clamp: var(--cp-semantic-layout-line-clamp-product);
-    color: var(--cp-semantic-color-copy-strong);
-    font-size: var(--cp-semantic-font-size-body-large);
+    color: var(--cp-component-product-review-color);
+    font-size: var(--cp-component-product-review-size);
     line-height: var(--cp-semantic-font-line-height-body);
     text-align: var(--cp-semantic-layout-text-align-start);
     text-wrap: var(--cp-semantic-layout-text-wrap-pretty);
@@ -790,10 +743,10 @@
   }
 
   .cp-product-facts li {
-    border: var(--cp-semantic-border-rule-strong);
-    background: var(--cp-semantic-color-glass-soft);
+    border: var(--cp-component-product-fact-border);
+    background: var(--cp-component-product-fact-background);
     padding: var(--cp-semantic-space-product-fact-block-start) var(--cp-semantic-space-product-fact-inline-end) var(--cp-semantic-space-product-fact-block-end) var(--cp-semantic-space-product-fact-inline-start);
-    color: var(--cp-semantic-color-copy);
+    color: var(--cp-component-product-fact-color);
     font-size: var(--cp-component-product-fact-font-size);
     letter-spacing: var(--cp-semantic-font-tracking-fact);
     text-transform: var(--cp-semantic-layout-text-transform-label);

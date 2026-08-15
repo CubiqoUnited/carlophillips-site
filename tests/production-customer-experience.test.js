@@ -29,12 +29,9 @@ describe('production customer experience authority', () => {
     for (const route of ['privacy', 'terms', 'cookie-policy']) expect(existsSync(`app/${route}/page.js`)).toBe(true);
   });
 
-  it('requires both owner approval and visitor consent before analytics loads', () => {
-    const source = readFileSync('components/privacy/consent-preferences.jsx', 'utf8');
-    expect(source).toContain("NEXT_PUBLIC_ANALYTICS_APPROVED === 'true'");
-    expect(source).toContain('canLoadAnalytics');
-    expect(source).toContain('analyticsReady');
-    expect(source).toContain('onLoad');
+  it('keeps optional analytics disconnected from the public application', () => {
+    expect(existsSync('components/privacy/consent-preferences.jsx')).toBe(false);
+    expect(readFileSync('app/layout.js', 'utf8')).not.toContain('analytics');
   });
 
   it('validates GA IDs and stays silent before every independent gate passes', () => {

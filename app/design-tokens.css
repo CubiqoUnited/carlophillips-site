@@ -59,7 +59,6 @@
   --cp-primitive-font-size-display: clamp(4rem, 16vw, 8.5rem);
   --cp-primitive-font-size-open-graph-title: 8.25rem;
   --cp-primitive-font-size-display-desktop: min(7.4vw, 8.5rem);
-  --cp-primitive-font-size-title: clamp(4rem, 10vw, 7rem);
   --cp-primitive-font-size-menu: clamp(3rem, 7vw, 6rem);
   --cp-primitive-font-line-height-display: 0.82;
   --cp-primitive-font-line-height-title: 0.85;
@@ -166,6 +165,7 @@
   --cp-primitive-radius-full: 9999px;
   --cp-primitive-border-width-hairline: 1px;
   --cp-primitive-border-style-default: solid;
+  --cp-primitive-border-style-emphasis: dashed;
   --cp-primitive-border-style-none: none;
   --cp-primitive-icon-stroke-width: 1.2;
 
@@ -292,6 +292,7 @@
   --cp-primitive-layout-text-align-center: center;
   --cp-primitive-layout-text-align-end: right;
   --cp-primitive-layout-text-transform-label: uppercase;
+  --cp-primitive-layout-text-transform-capitalize: capitalize;
   --cp-primitive-layout-text-wrap-pretty: pretty;
   --cp-primitive-layout-text-decoration-link: underline;
   --cp-primitive-layout-text-decoration-abbreviation: underline dotted;
@@ -411,7 +412,6 @@
   --cp-semantic-font-size-commerce: var(--cp-primitive-font-size-commerce);
   --cp-semantic-font-size-display: var(--cp-primitive-font-size-display);
   --cp-semantic-font-size-open-graph-title: var(--cp-primitive-font-size-open-graph-title);
-  --cp-semantic-font-size-title: var(--cp-primitive-font-size-title);
   --cp-semantic-font-size-menu: var(--cp-primitive-font-size-menu);
   --cp-semantic-font-size-emphasis: var(--cp-primitive-font-size-125);
   --cp-semantic-font-size-price: var(--cp-primitive-font-size-150);
@@ -580,6 +580,7 @@
   --cp-semantic-radius-round: var(--cp-primitive-radius-full);
   --cp-semantic-border-rule: var(--cp-primitive-border-width-hairline) var(--cp-primitive-border-style-default) rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-010));
   --cp-semantic-border-style-default: var(--cp-primitive-border-style-default);
+  --cp-semantic-border-style-emphasis: var(--cp-primitive-border-style-emphasis);
   --cp-semantic-border-rule-strong: var(--cp-primitive-border-width-hairline) var(--cp-primitive-border-style-default) rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-025));
   --cp-semantic-border-none: var(--cp-primitive-border-style-none);
   --cp-semantic-border-focus: var(--cp-primitive-border-width-hairline) var(--cp-primitive-border-style-default) color-mix(in srgb, var(--cp-primitive-color-accent) 55%, var(--cp-primitive-color-transparent));
@@ -602,6 +603,7 @@
   --cp-semantic-opacity-purchasing-disabled: var(--cp-primitive-opacity-060);
   --cp-semantic-opacity-checkout-disabled: var(--cp-primitive-opacity-038);
   --cp-semantic-opacity-open-graph-status: var(--cp-primitive-opacity-062);
+  --cp-semantic-opacity-product-copy: var(--cp-primitive-opacity-068);
 
   --cp-semantic-duration-standard: var(--cp-primitive-duration-standard);
   --cp-semantic-duration-campaign: var(--cp-primitive-duration-campaign);
@@ -680,6 +682,7 @@
   --cp-semantic-layout-text-align-center: var(--cp-primitive-layout-text-align-center);
   --cp-semantic-layout-text-align-end: var(--cp-primitive-layout-text-align-end);
   --cp-semantic-layout-text-transform-label: var(--cp-primitive-layout-text-transform-label);
+  --cp-semantic-layout-text-transform-capitalize: var(--cp-primitive-layout-text-transform-capitalize);
   --cp-semantic-layout-text-wrap-pretty: var(--cp-primitive-layout-text-wrap-pretty);
   --cp-semantic-layout-text-decoration-link: var(--cp-primitive-layout-text-decoration-link);
   --cp-semantic-layout-text-decoration-abbreviation: var(--cp-primitive-layout-text-decoration-abbreviation);
@@ -756,8 +759,14 @@
   --cp-component-dialog-radius: var(--cp-semantic-radius-dialog);
   --cp-component-scroll-control-radius: var(--cp-semantic-radius-round);
   --cp-component-product-title-color: var(--cp-semantic-color-copy-soft);
-  --cp-component-product-title-size: var(--cp-semantic-font-size-title);
+  --cp-component-product-title-size: var(--cp-semantic-font-size-product);
   --cp-component-product-fact-font-size: var(--cp-semantic-font-size-product-fact);
+  --cp-component-product-copy-opacity: var(--cp-semantic-opacity-product-copy);
+  --cp-component-product-review-color: var(--cp-semantic-color-copy);
+  --cp-component-product-review-size: var(--cp-semantic-font-size-body);
+  --cp-component-product-fact-color: var(--cp-semantic-color-muted);
+  --cp-component-product-fact-border: var(--cp-semantic-border-rule);
+  --cp-component-product-fact-background: var(--cp-semantic-color-transparent);
   --cp-component-media-control-size: var(--cp-semantic-size-control);
   --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-disabled);
   --cp-component-header-layer: var(--cp-semantic-layer-header);

@@ -71,15 +71,16 @@ describe('storefront route policy', () => {
     expect(existsSync('docs/archive/draft-pod/edge-of-life-runway-desktop-v1.jpg')).toBe(true);
   });
 
-  it('renders one home footer with policy links and keeps saved consent controls in flow', () => {
+  it('renders one home footer with policy links and keeps optional analytics UI absent', () => {
     const home = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
     const policies = readFileSync('components/storefront/site-policies-footer.jsx', 'utf8');
-    const styles = readFileSync('app/globals.css', 'utf8');
+    const layout = readFileSync('app/layout.js', 'utf8');
     expect(home).toContain('<Link href="/privacy">Privacy</Link>');
     expect(home).toContain('<Link href="/terms">Terms</Link>');
     expect(home).toContain('<Link href="/cookie-policy">Cookies</Link>');
     expect(policies).toContain("if (pathname === '/') return null");
-    expect(styles.match(/\.cp-cookie-trigger\s*\{([\s\S]*?)\}/)?.[1]).not.toContain('position:');
+    expect(layout).not.toContain('ConsentPreferences');
+    expect(existsSync('components/privacy/consent-preferences.jsx')).toBe(false);
   });
 
   it('uses route metadata for the canonical shop and collections surfaces', () => {
