@@ -450,6 +450,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
               src={signatureRunwayFrames[0].src}
               alt=""
               fill
+              priority
               sizes={designSystemRuntimeContract.imageSizes.fullViewport}
               className="cp-runway-backdrop"
               aria-hidden="true"
@@ -460,6 +461,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
                 src={frame.src}
                 alt={frame.alt}
                 fill
+                priority={index === 0}
                 sizes={designSystemRuntimeContract.imageSizes.fullViewport}
                 className={`cp-runway-frame ${signatureRunwayFrameClasses[index]}`}
               />
@@ -589,6 +591,9 @@ function Footer() {
           <Link href="/shop">Shop</Link>
           <Link href="/collections">Collections</Link>
           <Link href="/bag">Bag</Link>
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms</Link>
+          <Link href="/cookie-policy">Cookies</Link>
         </nav>
       </div>
     </footer>

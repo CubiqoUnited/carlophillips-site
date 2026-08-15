@@ -3,7 +3,7 @@ import { designSystemRuntimeContract } from '@/lib/design-system/runtime-contrac
 import { ConsentPreferences } from '@/components/privacy/consent-preferences';
 import { SitePoliciesFooter } from '@/components/storefront/site-policies-footer';
 import { ThemeStyle } from '@/components/theme/theme-style';
-import { siteConfig } from '@/lib/site/site-config';
+import { publicIndexingEnabled, siteConfig } from '@/lib/site/site-config';
 
 // SEO and Metadata Configuration
 const metadataConfig = {
@@ -57,11 +57,11 @@ export const metadata = {
   
   // Robots
   robots: {
-    index: true,
-    follow: true,
+    index: publicIndexingEnabled,
+    follow: publicIndexingEnabled,
     googleBot: {
-      index: true,
-      follow: true,
+      index: publicIndexingEnabled,
+      follow: publicIndexingEnabled,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,

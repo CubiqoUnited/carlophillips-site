@@ -159,6 +159,9 @@ describe('home release composition', () => {
     expect(html).not.toContain('Withheld</span>');
     expect(html.toLowerCase()).not.toContain('shopify');
     expect(html).toContain('cp-product-media-button-corner');
+    expect(html).toContain('href="/privacy"');
+    expect(html).toContain('href="/terms"');
+    expect(html).toContain('href="/cookie-policy"');
   });
 
   it('keeps runway product media and active categories behind product visibility eligibility', () => {

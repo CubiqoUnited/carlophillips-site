@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { designSystemRuntimeContract } from '@/lib/design-system/runtime-contract';
 
 export const metadata = {
@@ -32,6 +33,8 @@ const studies = [
 ];
 
 export default function ConceptPreviewPage() {
+  if (['preview', 'production'].includes(process.env.VERCEL_ENV)) notFound();
+
   return (
     <main className="cp-concept-page">
       <div className="cp-concept-header">
