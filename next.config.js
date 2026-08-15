@@ -25,6 +25,9 @@ function securityHeaders() {
 
 const nextConfig = {
   output: 'standalone',
+  outputFileTracingIncludes: {
+    '/*': ['./theme.json'],
+  },
   poweredByHeader: false,
   images: {
     unoptimized: true,
