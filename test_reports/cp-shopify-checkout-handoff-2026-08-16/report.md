@@ -44,6 +44,23 @@ Screenshots:
 
 Both screenshots were visually inspected. They show the expected product layout and explicit disabled purchasing state with no checkout control.
 
+## Immutable Preview QA
+
+- Commit: `7a27b9392006140672d7864e01182c269447589f`
+- Deployment: `dpl_De5vhpmRvkamJRc7grjYNG4yki2d`
+- URL: `https://carlophillips-site-j5vipkisj-adityas-projects-261b17a9.vercel.app`
+- Target/state: Preview / READY
+- Production aliases: none
+- Public routes: 8/8 return HTTP 200 (`/`, `/shop`, `/collections`, Hoodie PDP, `/bag`, `/privacy`, `/terms`, `/cookie-policy`).
+- Checkout denial: same-origin POST returns HTTP 409 `PRODUCT_RELEASE_NOT_RELEASED` before Shopify cart creation.
+- Desktop/mobile Hoodie PDP: HTTP 200, no checkout form, no overflow, no runtime overlay, and zero console/page errors.
+- Visual result: the Preview truthfully renders “This piece is currently unavailable” because the canonical record is Draft. It does not misrepresent the product as purchasable.
+
+Remote screenshots:
+
+- `screenshots/desktop-preview-draft-denial.png`
+- `screenshots/mobile-preview-draft-denial.png`
+
 ## Remaining release blocker
 
 The canonical Hoodie record is Draft and lacks the external evidence listed in `reports/HUMAN_INTERVENTION_STICKY_RED.md`. The existing cart capability is `write_test_verified` / `cart-write-test`, not operational `cart-write`. Preview and Production kill switches remain off. These conditions must not be bypassed.
