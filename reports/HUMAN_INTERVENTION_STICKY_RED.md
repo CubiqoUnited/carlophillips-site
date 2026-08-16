@@ -1,3 +1,42 @@
+# HUMAN INTERVENTION REQUIRED — COMPLETE THE SIGNATURE HOODIE RELEASE BEFORE CUSTOMER PAYMENT
+
+Updated: 2026-08-16
+
+## What is complete
+
+The isolated checkout candidate now implements the server-only Shopify hosted-checkout handoff requested by the Product Owner. It accepts only an opaque reviewed variant hash, re-reads current Shopify facts on the server, rejects stale or unavailable variants, creates a Shopify cart, and redirects only to an exact configured HTTPS Shopify checkout host. Same-origin POST enforcement, separate cart/checkout Product Owner approvals, environment kill switches, and foreign-host denial are covered by tests.
+
+Source QA passes design-system lint, zero-warning code lint, 46 test files / 491 tests, and the optimized Next.js build. Headless desktop 1440×1000 and mobile 390×844 checks return HTTP 200 with no console errors, runtime overlay, or overflow. The current Draft product correctly shows `Purchasing disabled` and emits no checkout form.
+
+## What is blocked
+
+Customer payment is **not live**. The canonical record `releases/cp-signature-hoodie-2026-001/release.json` still says Draft. It lacks current reviewed Shopify fingerprints, exact Apliiq variant mapping, an approved delivered physical sample and inspection, complete approved release-bound media, immutable candidate/build/staging/rollback evidence, final product/media/fulfillment approvals, and a fresh post-approval ACTIVE Production observation. The cart capability remains `write_test_verified` with only `cart-write-test`; it is not operational `cart-write` authority. The Preview and Production environment switches remain off.
+
+## Exact human action
+
+1. Complete and review the exact Apliiq mapping and one physical Hoodie sample following the existing `SIGNATURE HOODIE SAMPLE FIRST` section below. Any sample purchase requires a separate exact item, destination, and total-price approval.
+2. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
+3. Let Codex capture a fresh read-only Shopify observation and reconcile its product, variant, price, availability, and ACTIVE status to the release record. This is read-only and creates no order.
+4. Review the resulting immutable Staging candidate and approve the product, media, and fulfillment evidence for that exact candidate.
+5. Only after those checks pass, authorize a no-order live cart proof. Codex may then upgrade the capability from test-only to operational, enable `SHOPIFY_CART_UI_ENABLED` and `SHOPIFY_CHECKOUT_ENABLED` in the approved environment, and verify the hosted checkout page without submitting payment.
+6. Signal the first resume point as: `Apliiq variant mapping captured`.
+
+Do not paste Shopify tokens, payment details, customer data, or provider IDs into chat. Do not enable the two Vercel checkout switches manually while the Product Release Record remains Draft.
+
+Read-only Vercel inspection confirms `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_TOKEN`, and `SHOPIFY_CART_UI_ENABLED` already exist by name for Preview and Production. `SHOPIFY_CHECKOUT_ENABLED` and `SHOPIFY_CHECKOUT_HOSTS` are not yet provisioned. Add them only after the release/capability gates pass: the first is the checkout kill switch; the second is the exact comma-separated checkout-host allowlist (for example `www.carlophillips.com`).
+
+## Cost and risk
+
+- Code work and read-only observation have no intended purchase cost.
+- The physical sample, shipping, tax, and any provider plan are separate costs and require exact approval before purchase.
+- Enabling checkout before the release record passes could sell a stale, unverified, or incorrectly fulfilled variant. The candidate therefore remains fail-closed.
+
+## Resume point
+
+After `Apliiq variant mapping captured`, bind and verify the provider mapping, present the one-sample cost approval, and continue the Draft → Staged → Approved → Released sequence. Do not deploy customer charging until the exact release and operational cart evidence pass.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — PRODUCT OWNER ADMIN SIGN-IN
 
 Updated: 2026-08-14

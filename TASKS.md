@@ -1,5 +1,18 @@
 # Delivery Tasks
 
+## Current local P0: release-bound Shopify hosted checkout
+
+- [x] Implement server-only Shopify cart creation and hosted-checkout redirect without exposing raw product or variant references.
+- [x] Require a complete Released record, release-bound media, fresh matching Shopify variant/facts fingerprints, available reviewed variant, verified capabilities, exact Product Owner cart and checkout approvals, and independent environment switches.
+- [x] Require exact same-origin POST requests and exact HTTPS checkout-host allowlisting.
+- [x] Render checkout controls only from the complete sanitized server decision; keep Draft/local UI purchase-disabled.
+- [x] Pass design-system lint, zero-warning ESLint, 46 test files / 491 tests, optimized build, and desktop/mobile fail-closed screenshot QA.
+- [ ] Capture exact Apliiq variant/SKU mapping and obtain separately approved delivered physical sample evidence.
+- [ ] Complete truthful release-bound media and product/media/fulfillment approvals.
+- [ ] Bind fresh Shopify and immutable Staging/build/rollback evidence, then advance Draft → Staged → Approved → Released.
+- [ ] Run a newly authorized no-order live cart/checkout proof, upgrade cart capability to operational `cart-write`, and enable Preview switches only after the exact release passes.
+- [ ] Obtain separate approval before any merge, Production switch, real payment, order, or fulfillment action.
+
 ## Current local P0: evidence reconciliation and authority separation
 
 - [x] Re-engage Sushma, Aarti, Richa, Pushpa, and Malti for independent architecture, completion, funnel, operational, and QA audits.

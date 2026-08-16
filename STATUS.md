@@ -1,8 +1,16 @@
 # Current Status
 
-Updated: 2026-08-14
+Updated: 2026-08-16
 Branch: integrated candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `1291e54`; pushed to the authorized fork and opened as canonical draft PR #12; no Preview, merge to `main`, or Production change
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Release-bound Shopify hosted-checkout handoff — 2026-08-16
+
+- An isolated candidate restores the Shopify Storefront `cartCreate` handoff without restoring the superseded single-product bypass. The server requires a complete Released Product Release Record and Media Registry, exact current Shopify fingerprints, an available reviewed variant selected by opaque hash, verified product-read and operational cart-write capabilities, exact Product Owner cart/checkout approvals, and separate environment kill switches.
+- The checkout POST now requires an exact same-origin `Origin` header. The server accepts only HTTPS checkout URLs on the configured Shopify store or explicit `SHOPIFY_CHECKOUT_HOSTS` allowlist, and never returns raw variant IDs.
+- The PDP renders the size selector and hosted-checkout call to action only when both cart and checkout decisions are true. Draft/local states remain visibly purchase-disabled.
+- Verification passes design-system lint, zero-warning ESLint, 46 test files / 491 tests, and the optimized Next.js build. Headless desktop/mobile Draft-denial QA is HTTP 200 with no form, console error, runtime overlay, or overflow; screenshots and report are under `test_reports/cp-shopify-checkout-handoff-2026-08-16/`.
+- Customer payment remains blocked: the canonical Hoodie release is Draft and the cart capability is still historical test evidence only. No Shopify call, cart, checkout, payment, order, Vercel environment change, deployment, merge, or Production mutation occurred.
 
 ## Canonical consolidation candidate — 2026-08-14
 

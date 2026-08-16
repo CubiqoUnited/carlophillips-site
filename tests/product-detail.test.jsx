@@ -174,6 +174,31 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('gid://');
   });
 
+  it('renders the hosted checkout handoff only from the complete server authorization summary', () => {
+    const product = toProductViewModel({
+      source: 'shopify',
+      environment: 'production',
+      commerceAllowed: false,
+      reason: 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED',
+      product: {
+        id: 'hoodie', handle: 'approved-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
+        description: 'Current product description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
+        variantPresentation, media: [],
+      },
+    });
+    const html = renderToStaticMarkup(<CommerceProductDetail
+      releaseReason="RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED"
+      cartActivation={{ status: 'eligible', cartAllowed: true, checkoutAllowed: true }}
+      product={product}
+    />);
+
+    expect(html).toContain('Continue to checkout');
+    expect(html).toContain('action="/api/checkout"');
+    expect(html).toContain('Review delivery and payment before confirming your order');
+    expect(html).not.toContain('gid://');
+    expect(html).not.toContain('Purchasing disabled');
+  });
+
   it('renders an honest unavailable state without product content', () => {
     const html = renderToStaticMarkup(<CommerceProductUnavailable decision={{ reason: 'SHOPIFY_REQUEST_FAILED' }} />);
     expect(html).toContain('class="cp-commerce-page cp-product-detail-page"');

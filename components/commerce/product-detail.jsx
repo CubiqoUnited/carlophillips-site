@@ -206,7 +206,6 @@ export function CommerceProductDetail({
   const checkoutAvailable = Boolean(
     cartActivation?.cartAllowed
     && cartActivation?.checkoutAllowed
-    && product.commerceAllowed
   );
   const liveProduct = checkoutAvailable;
   const liveSizes = product.variantPresentation?.combinations
