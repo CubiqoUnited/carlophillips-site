@@ -53,11 +53,13 @@ describe('Signature Hoodie homepage media coverage', () => {
     expect(gallery.find(item => item.gifHref)).toMatchObject({
       label: 'Still-derived motion loop',
       gifHref: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif',
+      posterSrc: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp',
     });
     for (const item of gallery) {
       expect(existsSync(`public${item.src}`), item.src).toBe(true);
     }
     expect(existsSync(`public${gallery.find(item => item.gifHref).gifHref}`)).toBe(true);
+    expect(existsSync(`public${gallery.find(item => item.gifHref).posterSrc}`)).toBe(true);
   });
 
   it('excludes the quarantined back hypothesis and superseded built-in front study', () => {

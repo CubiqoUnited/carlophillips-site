@@ -168,21 +168,25 @@ export function buildHomeGalleryMedia(summary) {
 
 export function ProductMediaOverlay({ media, open, onClose, title }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [motionPlaying, setMotionPlaying] = useState(false);
   const dialogRef = useRef(null);
   const trackRef = useRef(null);
+  const motionNavigationPendingRef = useRef(false);
+
+  const motionIndex = media.findIndex(item => item.gifHref || item.type === 'video');
 
   useEffect(() => {
     if (!open) return undefined;
     const releaseDocumentScroll = lockDocumentScroll();
     setActiveIndex(0);
+    setMotionPlaying(false);
+    motionNavigationPendingRef.current = false;
     requestAnimationFrame(() => {
       trackRef.current?.scrollTo({ left: 0 });
       dialogRef.current?.querySelector(dialogFocusableSelector)?.focus();
     });
     return releaseDocumentScroll;
   }, [open]);
-
-  const motionIndex = media.findIndex(item => item.gifHref || item.type === 'video');
 
   const moveTo = useCallback(nextIndex => {
     const index = Math.max(0, Math.min(nextIndex, media.length - 1));
@@ -195,14 +199,27 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
         ? designSystemRuntimeContract.behavior.instantScroll
         : designSystemRuntimeContract.behavior.smoothScroll,
     });
+    if (index !== motionIndex && !motionNavigationPendingRef.current) setMotionPlaying(false);
     setActiveIndex(index);
-  }, [media.length]);
+  }, [media.length, motionIndex]);
 
   const handleScroll = event => {
     const track = event.currentTarget;
     if (!track.clientWidth) return;
     const index = Math.round(track.scrollLeft / track.clientWidth);
+    if (index === motionIndex) motionNavigationPendingRef.current = false;
+    else if (!motionNavigationPendingRef.current) setMotionPlaying(false);
     setActiveIndex(current => current === index ? current : index);
+  };
+
+  const handleMotionControl = () => {
+    if (activeIndex !== motionIndex) {
+      motionNavigationPendingRef.current = true;
+      setMotionPlaying(true);
+      moveTo(motionIndex);
+      return;
+    }
+    setMotionPlaying(current => !current);
   };
 
   useEffect(() => {
@@ -249,11 +266,16 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
             {motionIndex >= 0 && (
               <button
                 type="button"
-                onClick={() => moveTo(motionIndex)}
+                onClick={handleMotionControl}
                 className="cp-media-jump"
-                aria-label="Jump to motion study"
+                aria-label={activeIndex === motionIndex
+                  ? motionPlaying ? 'Pause motion study' : 'Play motion study'
+                  : 'Jump to motion study'}
+                aria-pressed={activeIndex === motionIndex && motionPlaying}
               >
-                Motion study
+                {activeIndex === motionIndex
+                  ? motionPlaying ? 'Pause motion' : 'Play motion'
+                  : 'Motion study'}
               </button>
             )}
             <h2 id="product-media-title" className="cp-visually-hidden">{title} media viewer</h2>
@@ -277,6 +299,10 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
           {media.map((item, index) => {
             const source = item.src || item.url;
             const previewSource = item.previewUrl || source;
+            const isStillDerivedMotion = Boolean(item.gifHref);
+            const displayedImageSource = isStillDerivedMotion
+              ? motionPlaying && activeIndex === index ? item.gifHref : item.posterSrc || previewSource
+              : item.type === 'image' ? source : previewSource;
             return (
               <figure key={`${source}-${index}`} className="cp-media-slide">
                 {item.type === 'video' ? (
@@ -289,7 +315,7 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
                   />
                 ) : (
                   <Image
-                    src={item.type === 'image' ? source : previewSource}
+                    src={displayedImageSource}
                     alt={item.alt}
                     fill
                     priority={index === 0}
@@ -298,10 +324,12 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
                     className={`cp-media-asset cp-media-asset-image ${item.fit || 'cp-media-fit-contain'} ${item.position || 'cp-media-position-center'}`}
                   />
                 )}
-                <figcaption className="cp-media-caption">
-                  <span>{item.label}</span>
-                  <span className="cp-text-align-end">{item.disclosure}</span>
-                </figcaption>
+                {!isStillDerivedMotion && (
+                  <figcaption className="cp-media-caption">
+                    <span>{item.label}</span>
+                    <span className="cp-text-align-end">{item.disclosure}</span>
+                  </figcaption>
+                )}
               </figure>
             );
           })}

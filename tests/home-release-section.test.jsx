@@ -265,7 +265,11 @@ describe('home release composition', () => {
     expect(openHtml).toContain('cp-media-track');
     expect(openHtml).toContain('cp-media-panel');
     expect(openHtml).toContain('aria-label="Jump to motion study"');
+    expect(openHtml).toContain('aria-pressed="false"');
     expect(openHtml).toContain('>Motion study</button>');
+    expect(openHtml).toContain('still-derived-motion-study-poster.webp');
+    expect(openHtml).not.toContain('Still-derived motion loop');
+    expect(openHtml).not.toContain('AI-assisted still-derived motion');
     expect(openHtml).not.toContain('href="/products/');
     expect(closedHtml).toBe('');
   });

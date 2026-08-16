@@ -571,3 +571,10 @@ Resume point: execute only the specifically approved action, capture evidence wi
 - The wide-screen runway asset is lowered through responsive motion tokens to match the supplied model crop while tablet and mobile retain their fitted composition. Reduced-motion rendering uses the same canonical position.
 - Full verification is green: zero-warning design-system/ESLint checks, 44/44 files and 475/475 tests, zero production dependency vulnerabilities across 67 packages, and a successful Next.js 15.5.21 build.
 - Background headless QA passes 3 viewports × 7 public routes with exact structured facts, expected 96 px desktop title geometry, decoded media, no overflow/clipping, restored keyboard focus, and no console or request failures. Accepted screenshots are under `test_reports/cp-runway-reference-correction-accepted-v2-2026-08-16/`.
+
+### Product Owner Motion Study controls — 2026-08-16
+
+- The media viewer's existing Motion Study component now has deterministic Jump → Pause → Play behavior. A jump survives the token-governed smooth-scroll transition; navigating away stops playback.
+- Pausing swaps the animated asset for its canonical first-frame poster, and the requested motion-slide footer caption is omitted while the registry retains its provenance metadata.
+- Design-system lint, 44 files / 475 tests, zero production dependency vulnerabilities across 67 packages, and the optimized Next.js build pass.
+- Background headless QA passes the three transitions at desktop, tablet, and mobile widths with no overflow, console errors, or request failures. Playing and paused screenshots are retained under `test_reports/cp-media-motion-controls-2026-08-16/`.
