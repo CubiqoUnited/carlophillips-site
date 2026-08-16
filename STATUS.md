@@ -4,6 +4,14 @@ Updated: 2026-08-16
 Branch: integrated candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `1291e54`; pushed to the authorized fork and opened as canonical draft PR #12; no Preview, merge to `main`, or Production change
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Live Shopify and Apliiq commerce reconciliation — 2026-08-16
+
+- Authenticated read-only inspection corrects the stale Hoodie provider status: Shopify currently shows `CARLOPHILLIPS Signature Hoodie` as **Active**, not Draft, on Online Store and Carlophillips Headless. It has nine Black variants (XS–5XL), a USD 128–134 range, four media assets, and Apliiq as vendor.
+- All nine Hoodie variants are selected in the `Apliiq Print On Demand` shipping profile, with Apliiq Dropship Fulfillment and US shipping rates configured. Australia, Canada, and the United Kingdom have rates but still show Shopify Market warnings.
+- Apliiq shows the `carlophillips` Shopify store connected, a fulfillment payment method present, and the matching IND4000 saved design. It shows zero orders in 2026 and no first-production mock approval.
+- Shopify Payments is configured but remains in **test mode**, so real payments are not accepted. The Product Release Record remains Draft because exact Storefront and provider variant/SKU fingerprints, a delivered/approved physical sample, release-bound media, approvals, and post-approval Production evidence remain missing.
+- Evidence is under `test_reports/cp-live-commerce-readiness-2026-08-16/`. The earlier Draft and current Active Shopify screenshots were visually compared. No catalog, channel, payment, order, fulfillment, Vercel, deployment, alias, merge, or Production mutation occurred.
+
 ## Release-bound Shopify hosted-checkout handoff — 2026-08-16
 
 - An isolated candidate restores the Shopify Storefront `cartCreate` handoff without restoring the superseded single-product bypass. The server requires a complete Released Product Release Record and Media Registry, exact current Shopify fingerprints, an available reviewed variant selected by opaque hash, verified product-read and operational cart-write capabilities, exact Product Owner cart/checkout approvals, and separate environment kill switches.

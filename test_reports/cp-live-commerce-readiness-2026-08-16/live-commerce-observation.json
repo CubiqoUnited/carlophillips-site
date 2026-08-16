@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "cp.live-commerce-observation.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "observedAt": "2026-08-16T19:40:44Z",
+  "mode": "authenticated-read-only-browser-audit",
+  "shopify": {
+    "product": {
+      "reference": "9432704909549",
+      "handle": "carlophillips-signature-hoodie",
+      "title": "CARLOPHILLIPS Signature Hoodie",
+      "status": "ACTIVE",
+      "vendor": "Apliiq",
+      "productType": "hoodie",
+      "category": "Hoodies in Clothing Tops",
+      "salesChannels": [
+        "Online Store",
+        "Carlophillips Headless"
+      ],
+      "variantCount": 9,
+      "color": "black",
+      "sizes": [
+        "xs",
+        "s",
+        "m",
+        "l",
+        "xl",
+        "xxl",
+        "xxxl",
+        "4xl",
+        "5xl"
+      ],
+      "priceRangeUsd": {
+        "minimum": 128,
+        "maximum": 134
+      },
+      "inventoryTracked": false,
+      "mediaCount": 4,
+      "recentSales": "none-in-last-90-days"
+    },
+    "payments": {
+      "provider": "Shopify Payments",
+      "mode": "test",
+      "acceptingRealPayments": false,
+      "twoStepAuthenticationRequiredForBankChanges": true
+    },
+    "shipping": {
+      "profile": "Apliiq Print On Demand",
+      "fulfillmentLocation": "Apliiq Dropship Fulfillment",
+      "assignedProductCount": 9,
+      "signatureHoodieAssigned": true,
+      "assignedVariantCount": 9,
+      "zoneCount": 5,
+      "unitedStatesRatesConfigured": true,
+      "marketWarnings": [
+        "Australia",
+        "Canada",
+        "United Kingdom"
+      ]
+    }
+  },
+  "apliiq": {
+    "shopifyStoreConnected": true,
+    "storeName": "carlophillips",
+    "fulfillmentPaymentMethodPresent": true,
+    "providerProductReference": "5958463",
+    "blank": "IND4000",
+    "brand": "Independent Trading Co",
+    "shopifyColor": "black",
+    "savedDesignColorsObserved": [
+      "black",
+      "Bone"
+    ],
+    "sizeCount": 9,
+    "sizeRange": "xs-5xl",
+    "artworkCount": 1,
+    "ordersIn2026": 0,
+    "awaitingApprovals": 0,
+    "firstProductionApprovalCompleted": false
+  },
+  "limits": {
+    "shopifyStorefrontFingerprintCaptured": false,
+    "providerVariantSkuFingerprintCaptured": false,
+    "physicalSampleOrdered": false,
+    "customerChargeAttempted": false,
+    "catalogMutation": false,
+    "paymentMutation": false,
+    "fulfillmentMutation": false,
+    "productionMutation": false
+  }
+}

@@ -1,4 +1,4 @@
-# HUMAN INTERVENTION REQUIRED — COMPLETE THE SIGNATURE HOODIE RELEASE BEFORE CUSTOMER PAYMENT
+# HUMAN INTERVENTION REQUIRED — FINISH FIRST-PRODUCTION PROOF AND REAL-PAYMENT ACTIVATION
 
 Updated: 2026-08-16
 
@@ -8,18 +8,21 @@ The isolated checkout candidate now implements the server-only Shopify hosted-ch
 
 Source QA passes design-system lint, zero-warning code lint, 46 test files / 491 tests, and the optimized Next.js build. Headless desktop 1440×1000 and mobile 390×844 checks return HTTP 200 with no console errors, runtime overlay, or overflow. The current Draft product correctly shows `Purchasing disabled` and emits no checkout form.
 
+The 2026-08-16 authenticated read-only account audit also proves that the external product itself is no longer a Shopify Draft. It is Active on Online Store and Carlophillips Headless, has nine Black variants from XS through 5XL at USD 128–134, and all nine variants are assigned to Apliiq Dropship Fulfillment. Apliiq shows the Shopify store connected and a fulfillment payment method present.
+
 ## What is blocked
 
-Customer payment is **not live**. The canonical record `releases/cp-signature-hoodie-2026-001/release.json` still says Draft. It lacks current reviewed Shopify fingerprints, exact Apliiq variant mapping, an approved delivered physical sample and inspection, complete approved release-bound media, immutable candidate/build/staging/rollback evidence, final product/media/fulfillment approvals, and a fresh post-approval ACTIVE Production observation. The cart capability remains `write_test_verified` with only `cart-write-test`; it is not operational `cart-write` authority. The Preview and Production environment switches remain off.
+Customer payment is **not live**. Shopify Payments is explicitly in test mode. Apliiq shows zero orders in 2026 and no first-production mock approval. The canonical record `releases/cp-signature-hoodie-2026-001/release.json` remains in the Draft release state even though its stale external-status field is corrected to `ACTIVE`. It still lacks current reviewed Shopify fingerprints, exact Apliiq variant/SKU mapping, an approved delivered physical sample and inspection, complete approved release-bound media, immutable candidate/build/staging/rollback evidence, final product/media/fulfillment approvals, and a fresh post-approval ACTIVE Production observation. The cart capability remains `write_test_verified` with only `cart-write-test`; it is not operational `cart-write` authority. The Preview and Production environment switches remain off.
 
 ## Exact human action
 
-1. Complete and review the exact Apliiq mapping and one physical Hoodie sample following the existing `SIGNATURE HOODIE SAMPLE FIRST` section below. Any sample purchase requires a separate exact item, destination, and total-price approval.
-2. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
-3. Let Codex capture a fresh read-only Shopify observation and reconcile its product, variant, price, availability, and ACTIVE status to the release record. This is read-only and creates no order.
-4. Review the resulting immutable Staging candidate and approve the product, media, and fulfillment evidence for that exact candidate.
-5. Only after those checks pass, authorize a no-order live cart proof. Codex may then upgrade the capability from test-only to operational, enable `SHOPIFY_CART_UI_ENABLED` and `SHOPIFY_CHECKOUT_ENABLED` in the approved environment, and verify the hosted checkout page without submitting payment.
-6. Signal the first resume point as: `Apliiq variant mapping captured`.
+1. Capture and review the exact Apliiq per-variant/SKU mapping for the nine Black Hoodie variants. The saved product and shipping-profile assignment are verified, but they are not the exact mapping fingerprint.
+2. Quote one physical Hoodie sample following the existing `SIGNATURE HOODIE SAMPLE FIRST` section below. The Product Owner must choose the sample size and shipping destination, then separately approve the exact item, shipping, tax, and total before any purchase.
+3. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
+4. Let Codex capture a fresh sanitized Shopify Storefront observation inside an approved protected runtime. The local Vercel Preview pull exposed the required variable names but returned empty sensitive values, so no fingerprint was invented or bypassed.
+5. Review the resulting immutable Staging candidate and approve the product, media, and fulfillment evidence for that exact candidate.
+6. Keep Shopify Payments in test mode while the hosted-checkout staging proof is verified. Turning off test mode, enabling `SHOPIFY_CHECKOUT_ENABLED`, and accepting real customer charges require the final Released evidence and a separate Production authorization.
+7. Signal the first resume point as: `Apliiq variant mapping captured`.
 
 Do not paste Shopify tokens, payment details, customer data, or provider IDs into chat. Do not enable the two Vercel checkout switches manually while the Product Release Record remains Draft.
 
