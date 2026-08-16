@@ -16,13 +16,14 @@ Customer payment is **not live**. Shopify Payments is explicitly in test mode. A
 
 ## Exact human action
 
-1. Capture and review the exact Apliiq per-variant/SKU mapping for the nine Black Hoodie variants. The saved product and shipping-profile assignment are verified, but they are not the exact mapping fingerprint.
-2. Quote one physical Hoodie sample following the existing `SIGNATURE HOODIE SAMPLE FIRST` section below. The Product Owner must choose the sample size and shipping destination, then separately approve the exact item, shipping, tax, and total before any purchase.
-3. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
-4. Let Codex capture a fresh sanitized Shopify Storefront observation inside an approved protected runtime. The local Vercel Preview pull exposed the required variable names but returned empty sensitive values, so no fingerprint was invented or bypassed.
-5. Review the resulting immutable Staging candidate and approve the product, media, and fulfillment evidence for that exact candidate.
-6. Keep Shopify Payments in test mode while the hosted-checkout staging proof is verified. Turning off test mode, enabling `SHOPIFY_CHECKOUT_ENABLED`, and accepting real customer charges require the final Released evidence and a separate Production authorization.
-7. Signal the first resume point as: `Apliiq variant mapping captured`.
+1. In the already-open Shopify Payments management screen, the Product Owner must select **Turn on two-step** and complete Shopify's private authentication setup. Do not send recovery codes, one-time codes, passkeys, or phone details to Codex. This security step does not itself enable real payments.
+2. Capture and review the exact Apliiq per-variant/SKU mapping for the nine Black Hoodie variants. The saved product and shipping-profile assignment are verified, but they are not the exact mapping fingerprint.
+3. Quote one physical Hoodie sample following the existing `SIGNATURE HOODIE SAMPLE FIRST` section below. The Product Owner must choose the sample size and shipping destination, then separately approve the exact item, shipping, tax, and total before any purchase.
+4. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
+5. Let Codex capture a fresh sanitized Shopify Storefront observation inside an approved protected runtime. The local Vercel Preview pull exposed the required variable names but returned empty sensitive values, so no fingerprint was invented or bypassed.
+6. Review the resulting immutable Staging candidate and approve the product, media, and fulfillment evidence for that exact candidate.
+7. Keep Shopify Payments in test mode while the hosted-checkout staging proof is verified. Turning off test mode, enabling `SHOPIFY_CHECKOUT_ENABLED`, and accepting real customer charges require the final Released evidence and a separate Production authorization.
+8. Signal the first resume point as: `Shopify two-step enabled` after the security setup; signal `Apliiq variant mapping captured` after the mapping evidence is ready.
 
 Do not paste Shopify tokens, payment details, customer data, or provider IDs into chat. Do not enable the two Vercel checkout switches manually while the Product Release Record remains Draft.
 

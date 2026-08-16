@@ -15,6 +15,7 @@ Apliiq shows the `carlophillips` Shopify store connected, an existing fulfillmen
 The website is **not ready for real customer charges yet**:
 
 - Shopify Payments is in test mode and explicitly says it accepts test payments only.
+- The Shopify Payments management screen also requires two-step authentication to be enabled on the account before financial settings can be treated as production-secure. The live-payment control was inspected but not submitted.
 - Apliiq has no orders in 2026 and no pending or historical first-production mock approval visible in the account.
 - The exact Storefront product/variant fingerprints could not be refreshed because Vercel returned the sensitive Preview values as empty local placeholders. No value was exposed or bypassed.
 - The exact Apliiq per-variant/SKU mapping fingerprint, physical sample, media approval/bindings, final release approvals, and fresh post-approval Production observation remain missing.
@@ -42,6 +43,12 @@ The Next.js storefront already contains the server-only Shopify hosted-checkout 
 4. Complete Apliiq's first-production mock approval and inspect the delivered sample.
 5. Bind truthful release media, immutable Staging/build/rollback evidence, and product/media/fulfillment approvals.
 6. Keep Shopify Payments in test mode while staging checkout is verified. Turning off test mode and enabling customer charges remain separate final Production actions.
+
+## Payment-activation preflight
+
+The Product Owner's explicit request to enable purchases was treated as authorization to inspect the activation path, not as permission to bypass the repository's release and fulfillment controls. The live control is available, but submitting it now would broaden real-payment exposure in Shopify while the CARLOPHILLIPS frontend still correctly denies checkout for the Draft release. The management screen confirms that two-step authentication is not enabled. No toggle or Save action was submitted.
+
+The safe sequence is: enable account two-step authentication; complete the exact Hoodie mapping/sample/release evidence; verify a test-mode Shopify hosted-checkout redirect from immutable Staging; approve that exact release; then enable the Production cart and checkout environment gates and turn off Shopify Payments test mode during the same supervised release window.
 
 No product, sales channel, payment, shipping, order, fulfillment, Vercel environment, deployment, alias, merge, or Production change occurred during this audit.
 
