@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "cp.fulfillment-variant-mapping.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "observedAt": "2026-08-16T22:39:29Z",
+  "source": "authenticated Shopify Admin and connected Apliiq store",
+  "shopifyProductReference": "9432704909549",
+  "shopifyHandle": "carlophillips-signature-hoodie",
+  "adapter": "apliiq",
+  "providerProductId": "5958463",
+  "storeConnection": {
+    "storeName": "carlophillips",
+    "storeType": "Shopify",
+    "status": "connected"
+  },
+  "variants": [
+    { "color": "black", "size": "xs", "sku": "APQ-5958463S5A1", "price": "128.00", "currency": "USD" },
+    { "color": "black", "size": "s", "sku": "APQ-5958463S6A1", "price": "128.00", "currency": "USD" },
+    { "color": "black", "size": "m", "sku": "APQ-5958463S7A1", "price": "128.00", "currency": "USD" },
+    { "color": "black", "size": "l", "sku": "APQ-5958463S8A1", "price": "128.00", "currency": "USD" },
+    { "color": "black", "size": "xl", "sku": "APQ-5958463S1A1", "price": "128.00", "currency": "USD" },
+    { "color": "black", "size": "xxl", "sku": "APQ-5958463S2A1", "price": "130.00", "currency": "USD" },
+    { "color": "black", "size": "xxxl", "sku": "APQ-5958463S21A1", "price": "132.00", "currency": "USD" },
+    { "color": "black", "size": "4xl", "sku": "APQ-5958463S61A1", "price": "133.00", "currency": "USD" },
+    { "color": "black", "size": "5xl", "sku": "APQ-5958463S62A1", "price": "134.00", "currency": "USD" }
+  ],
+  "review": {
+    "status": "observed",
+    "owner": "Product Owner",
+    "evidence": "Codex task cp-end-to-end-commerce; authenticated read-only inspection"
+  }
+}

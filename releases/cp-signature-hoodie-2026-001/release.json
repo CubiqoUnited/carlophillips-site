@@ -23,13 +23,13 @@
       "providerProductId": "5958463",
       "variantFingerprint": null,
       "variantFingerprintStatus": "missing",
-      "mappingFingerprint": null,
-      "mappingFingerprintStatus": "missing"
+      "mappingFingerprint": "sha256:96d38c684032ce80945d3c8c601668ab645aea086a28421669e39ab337104e12",
+      "mappingFingerprintStatus": "reviewed"
     }
   ],
   "physicalSample": {
     "status": "not_ordered",
-    "providerMappingFingerprint": null,
+    "providerMappingFingerprint": "sha256:96d38c684032ce80945d3c8c601668ab645aea086a28421669e39ab337104e12",
     "sampleFingerprint": null,
     "evidence": null,
     "approvalEvidence": null,

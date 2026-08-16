@@ -8,8 +8,10 @@
 - [x] Render checkout controls only from the complete sanitized server decision; keep Draft/local UI purchase-disabled.
 - [x] Pass design-system lint, zero-warning ESLint, 46 test files / 491 tests, optimized build, and desktop/mobile fail-closed screenshot QA.
 - [x] Reconcile live Shopify/Apliiq account truth read-only: Hoodie Active on Online Store + Headless, nine Black variants assigned to Apliiq shipping, store/payment method connected, Shopify Payments test-only, and no Apliiq 2026 order or first-production approval.
-- [ ] Capture exact Apliiq variant/SKU mapping and obtain separately approved delivered physical sample evidence.
+- [x] Capture and fingerprint the exact nine-size Apliiq variant/SKU mapping without ordering or exposing raw Storefront variant references.
+- [ ] Obtain separately approved delivered physical sample evidence.
 - [ ] Capture a sanitized Shopify Storefront observation from a protected runtime with usable sensitive variables; the local Vercel Preview pull returned empty sensitive values and no bypass was attempted.
+- [x] Add a Product Owner-only private/no-store Staging endpoint that generates that sanitized observation without returning provider credentials or raw variant IDs.
 - [ ] Complete truthful release-bound media and product/media/fulfillment approvals.
 - [ ] Bind fresh Shopify and immutable Staging/build/rollback evidence, then advance Draft → Staged → Approved → Released.
 - [ ] Run a newly authorized no-order live cart/checkout proof, upgrade cart capability to operational `cart-write`, and enable Preview switches only after the exact release passes.

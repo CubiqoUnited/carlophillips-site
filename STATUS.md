@@ -1,6 +1,6 @@
 # Current Status
 
-Updated: 2026-08-16
+Updated: 2026-08-17
 Branch: integrated candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `1291e54`; pushed to the authorized fork and opened as canonical draft PR #12; no Preview, merge to `main`, or Production change
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
@@ -11,6 +11,14 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Apliiq shows the `carlophillips` Shopify store connected, a fulfillment payment method present, and the matching IND4000 saved design. It shows zero orders in 2026 and no first-production mock approval.
 - Shopify Payments is configured but remains in **test mode**, so real payments are not accepted. The Product Release Record remains Draft because exact Storefront and provider variant/SKU fingerprints, a delivered/approved physical sample, release-bound media, approvals, and post-approval Production evidence remain missing.
 - Evidence is under `test_reports/cp-live-commerce-readiness-2026-08-16/`. The earlier Draft and current Active Shopify screenshots were visually compared. No catalog, channel, payment, order, fulfillment, Vercel, deployment, alias, merge, or Production mutation occurred.
+
+## End-to-end commerce activation progress — 2026-08-17
+
+- Shopify two-step authentication setup is now reflected by the authenticated Payments management URL. Shopify Payments intentionally remains in test mode while the controlled checkout is proven.
+- Authenticated Shopify Admin observation captures the complete nine-size Black Hoodie mapping: SKUs `APQ-5958463S5A1`, `S6A1`, `S7A1`, `S8A1`, `S1A1`, `S2A1`, `S21A1`, `S61A1`, and `S62A1`, priced USD 128–134. Apliiq's delayed stores table confirms the `carlophillips` Shopify connection.
+- Sanitized mapping evidence is retained at `evidence/shopify/cp-signature-hoodie-apliiq-mapping-2026-08-17.json` and bound to the Draft release as `sha256:96d38c684032ce80945d3c8c601668ab645aea086a28421669e39ab337104e12`. No raw Storefront variant references are committed.
+- A new Product Owner-only, private/no-store `/api/admin/commerce-observation` endpoint produces the canonical sanitized Shopify observation inside protected Staging, where the existing encrypted Storefront credential is usable. Anonymous/wrong-role, provider-failure, and raw-record leakage paths fail closed.
+- Local verification passes design-system lint, zero-warning ESLint, 47 test files / 494 tests, and the optimized Next.js build. No Shopify/Apliiq write, checkout, payment, order, deployment, merge, or Production change occurred.
 
 ## Release-bound Shopify hosted-checkout handoff — 2026-08-16
 
