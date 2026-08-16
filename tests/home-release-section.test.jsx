@@ -195,10 +195,15 @@ describe('home release composition', () => {
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
     expect(html).not.toContain('data-preview-reference="signature-hoodie"');
     expect(html).not.toContain('Commerce withheld');
-    expect(html).not.toContain('data-media-trigger="signature-hoodie"');
+    expect(html).toContain('data-media-trigger="signature-hoodie"');
+    expect(html).toContain('Explore media');
+    expect(html).toContain('12 views');
     expect(html).not.toContain('href="/products/carlophillips-signature-hoodie"');
     expect(html).not.toContain('aria-current="page"');
-    expect(buildHomeGalleryMedia(previewDenied)).toEqual([]);
+    expect(html).not.toContain('>Hoodies</a>');
+    expect(html).not.toContain('>T-Shirts</a>');
+    expect(buildHomeGalleryMedia(previewDenied)).toHaveLength(12);
+    expect(buildHomeGalleryMedia(previewDenied).every(item => item.type === 'image')).toBe(true);
   });
 
   it('builds a swipe gallery from eligible media without exposing preview studies in production', () => {

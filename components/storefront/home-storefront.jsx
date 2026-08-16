@@ -38,6 +38,42 @@ const signatureRunwayFrameClasses = [
   'cp-runway-frame-tertiary',
 ];
 
+const signaturePreviewReferenceMedia = [
+  ...SIGNATURE_HOODIE_SHOWCASE_MEDIA,
+  {
+    src: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
+    alt: 'Editorial visualisation of the CARLOPHILLIPS Signature Hoodie in a dark studio setting',
+    label: 'Editorial study / one',
+    fit: 'cp-media-fit-contain',
+    position: 'cp-media-position-center',
+    disclosure: 'AI-assisted preview',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+    alt: 'Full-length editorial visualisation of the CARLOPHILLIPS Signature Hoodie',
+    label: 'Editorial study / two',
+    fit: 'cp-media-fit-contain',
+    position: 'cp-media-position-center',
+    disclosure: 'AI-assisted preview',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png',
+    alt: 'Front on-model visual study of the CARLOPHILLIPS Signature Hoodie',
+    label: 'On-body / front study',
+    fit: 'cp-media-fit-contain',
+    position: 'cp-media-position-center',
+    disclosure: 'AI-assisted preview',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png',
+    alt: 'Back flat-lay hypothesis of the CARLOPHILLIPS Signature Hoodie',
+    label: 'Back flat-lay study',
+    fit: 'cp-media-fit-contain',
+    position: 'cp-media-position-center',
+    disclosure: 'Unverified back visualisation',
+  },
+];
+
 const productCategories = [
   { label: 'Hoodies', href: '/products/carlophillips-signature-hoodie' },
   { label: 'T-Shirts', href: '/shop?category=t-shirts' },
@@ -106,6 +142,10 @@ function moveDialogFocus(event, dialog) {
 }
 
 export function buildHomeGalleryMedia(summary) {
+  if (isPreviewRunwayReference(summary)) {
+    return signaturePreviewReferenceMedia.map(item => ({ ...item, type: 'image' }));
+  }
+
   const product = summary?.primaryProduct;
   const signatureVisible = summary?.visibleCount > 0
     && product?.href === '/products/carlophillips-signature-hoodie';
@@ -436,7 +476,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
     && (summary.commerceAllowed || summary.environment !== 'production');
   const previewReferenceReady = isPreviewRunwayReference(summary);
   const runwayVisualReady = releaseRunwayReady || previewReferenceReady;
-  const galleryReady = releaseRunwayReady && galleryCount > 0;
+  const galleryReady = (releaseRunwayReady || previewReferenceReady) && galleryCount > 0;
   const productDescription = firstSentence(
     product?.description,
     signatureHomepagePresentation.description

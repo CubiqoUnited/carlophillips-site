@@ -61,7 +61,7 @@
   --cp-primitive-font-size-display-desktop: min(7.4vw, 8.5rem);
   --cp-primitive-font-size-menu: clamp(2rem, 4.25vw, 4.25rem);
   --cp-primitive-font-size-adjustment-1: 0.0625rem;
-  --cp-primitive-font-size-adjustment-2: 0.125rem;
+  --cp-primitive-font-size-adjustment-4: 0.25rem;
   --cp-primitive-font-line-height-display: 0.82;
   --cp-primitive-font-line-height-title: 0.85;
   --cp-primitive-font-line-height-section: 0.9;
@@ -412,7 +412,7 @@
   --cp-semantic-font-size-open-graph-title: var(--cp-primitive-font-size-open-graph-title);
   --cp-semantic-font-size-menu: var(--cp-primitive-font-size-menu);
   --cp-semantic-font-size-adjustment-description: var(--cp-primitive-font-size-adjustment-1);
-  --cp-semantic-font-size-adjustment-product-title: var(--cp-primitive-font-size-adjustment-2);
+  --cp-semantic-font-size-adjustment-product-title: var(--cp-primitive-font-size-adjustment-4);
   --cp-semantic-font-size-emphasis: var(--cp-primitive-font-size-125);
   --cp-semantic-font-size-price: var(--cp-primitive-font-size-150);
   --cp-semantic-font-size-card-title: var(--cp-primitive-font-size-187);
