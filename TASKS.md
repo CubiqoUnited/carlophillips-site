@@ -545,4 +545,6 @@
 - [x] Reduce the merchandise-menu type scale, increase `ONE` by 2 px, reduce its description by 1 px, and remove the duplicate post-Hoodie category rail exclusively through the token/component system.
 - [x] Apply the Product Owner follow-up: increase `ONE` by another 2 px, restore the disclosed twelve-view Preview media explorer, and assert category links exist only in the hamburger dialog.
 - [x] Re-run 44-file/475-test verification and three-width, 21-route background QA; compare six prior/current menu and Hoodie screenshots.
+- [x] Match the Product Owner's 1440×1000 Hoodie editorial reference through canonical design-system tokens and structured product-fact components; retain responsive tablet/mobile composition.
+- [x] Re-run the complete source gate and three-width, seven-route background visual/functional QA for the reference correction.
 - [ ] Push the exact verified candidate, obtain exact-head CI and immutable Preview evidence, then merge and promote only the accepted main artifact with rollback proven.

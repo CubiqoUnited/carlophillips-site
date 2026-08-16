@@ -702,7 +702,8 @@
   }
 
   .cp-product-layout {
-    justify-content: var(--cp-semantic-layout-justify-end);
+    justify-content: var(--cp-component-product-layout-justify);
+    padding-top: var(--cp-component-product-layout-padding-top);
   }
 
   .cp-product-copy {
@@ -743,14 +744,27 @@
   }
 
   .cp-product-facts li {
+    display: var(--cp-semantic-layout-display-flex);
+    width: var(--cp-semantic-layout-width-fit-content);
+    min-width: var(--cp-component-product-fact-min-width);
+    align-items: var(--cp-semantic-layout-align-center);
+    gap: var(--cp-semantic-space-4);
     border: var(--cp-component-product-fact-border);
     background: var(--cp-component-product-fact-background);
     padding: var(--cp-semantic-space-product-fact-block-start) var(--cp-semantic-space-product-fact-inline-end) var(--cp-semantic-space-product-fact-block-end) var(--cp-semantic-space-product-fact-inline-start);
-    color: var(--cp-component-product-fact-color);
     font-size: var(--cp-component-product-fact-font-size);
     letter-spacing: var(--cp-semantic-font-tracking-fact);
     text-transform: var(--cp-semantic-layout-text-transform-label);
     backdrop-filter: blur(var(--cp-semantic-effect-blur-soft));
+    white-space: var(--cp-semantic-layout-white-space-nowrap);
+  }
+
+  .cp-product-fact-label {
+    color: var(--cp-component-product-fact-label-color);
+  }
+
+  .cp-product-fact-value {
+    color: var(--cp-component-product-fact-value-color);
   }
 
   .cp-space-before-review {
@@ -759,6 +773,18 @@
 
   .cp-space-before-facts {
     margin-top: var(--cp-semantic-space-6);
+  }
+
+  .cp-product-copy .cp-space-after-label {
+    margin-bottom: var(--cp-component-product-label-gap);
+  }
+
+  .cp-product-copy .cp-space-before-review {
+    margin-top: var(--cp-component-product-review-gap);
+  }
+
+  .cp-product-copy .cp-space-before-facts {
+    margin-top: var(--cp-component-product-facts-gap);
   }
 
   .cp-product-media-button {
@@ -788,7 +814,7 @@
 
   .cp-product-media-button-corner {
     position: var(--cp-semantic-layout-position-absolute);
-    top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-4));
+    top: var(--cp-component-product-media-control-top);
     right: var(--cp-semantic-space-page-gutter);
     z-index: var(--cp-component-control-layer);
     display: var(--cp-semantic-layout-display-grid);
@@ -830,7 +856,7 @@
     object-position: var(--cp-semantic-media-position-center);
     opacity: var(--cp-semantic-opacity-runway-backdrop);
     filter: blur(var(--cp-semantic-effect-blur-runway));
-    transform: scale(var(--cp-semantic-media-scale-runway-backdrop));
+    transform: var(--cp-semantic-motion-runway-backdrop);
   }
 
   .cp-runway-fallback {
@@ -1865,7 +1891,7 @@ a:focus-visible {
   .cp-runway-frame {
     animation: var(--cp-semantic-layout-animation-none);
     opacity: var(--cp-semantic-opacity-none);
-    transform: var(--cp-semantic-layout-transform-none);
+    transform: var(--cp-semantic-motion-runway-start);
   }
 
   .cp-runway-frame-primary {

@@ -410,7 +410,7 @@ describe('storefront design system', () => {
       .digest('hex');
 
     expect(digest).toBe('2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338');
-    for (const copy of ['At the edge of life', "displayName: 'ONE'", "'Black'", "'XS–5XL'", "'Heavyweight fleece'", "'CP embroidery'"]) {
+    for (const copy of ['At the edge of life', "displayName: 'ONE'", "label: 'Color'", "value: 'Black'", "label: 'Material'", "value: 'Structured fleece'", "label: 'Feel'", "value: 'Heavyweight, soft interior'"]) {
       expect(home).toContain(copy);
     }
     expect(home).toContain('cp-product-layout cp-page-shell');
@@ -435,7 +435,6 @@ describe('storefront design system', () => {
     expect(styles).toContain('transform: translateY(var(--cp-component-product-copy-offset))');
     expect(styles).toContain('padding: var(--cp-semantic-space-media-panel-inset)');
     expect(home).not.toContain('Product attributes');
-    expect(home).not.toContain('Structured fleece');
     expect(home).not.toContain('11 views');
   });
 

@@ -53,14 +53,13 @@
   --cp-primitive-font-size-450: 4.5rem;
   --cp-primitive-font-size-600: 6rem;
   --cp-primitive-font-size-800: 8rem;
-  --cp-primitive-font-size-product: clamp(2.5rem, 5vw, 4.5rem);
+  --cp-primitive-font-size-product: clamp(2.5rem, 6.4vw, 5.75rem);
   --cp-primitive-font-size-section: clamp(3.25rem, 8vw, 8rem);
   --cp-primitive-font-size-commerce: clamp(3.75rem, 9vw, 8rem);
   --cp-primitive-font-size-display: clamp(4rem, 16vw, 8.5rem);
   --cp-primitive-font-size-open-graph-title: 8.25rem;
   --cp-primitive-font-size-display-desktop: min(7.4vw, 8.5rem);
   --cp-primitive-font-size-menu: clamp(2rem, 4.25vw, 4.25rem);
-  --cp-primitive-font-size-adjustment-1: 0.0625rem;
   --cp-primitive-font-size-adjustment-4: 0.25rem;
   --cp-primitive-font-line-height-display: 0.82;
   --cp-primitive-font-line-height-title: 0.85;
@@ -124,7 +123,7 @@
   --cp-primitive-size-copy-campaign: 56rem;
   --cp-primitive-size-copy-display: 64rem;
   --cp-primitive-size-copy-editorial: 72rem;
-  --cp-primitive-size-copy-product: clamp(14rem, 36vw, 27rem);
+  --cp-primitive-size-copy-product: clamp(14rem, 36vw, 25.5rem);
   --cp-primitive-size-media-panel-width: 80rem;
   --cp-primitive-size-media-panel-height: 56rem;
   --cp-primitive-size-media-button-width: 29rem;
@@ -135,6 +134,7 @@
   --cp-primitive-size-choice: 3rem;
   --cp-primitive-size-action-wide: 3.5rem;
   --cp-primitive-size-information-fact: 8rem;
+  --cp-primitive-size-product-fact-min: 12rem;
   --cp-primitive-size-product-title-width: 5ch;
   --cp-primitive-size-scrollbar: 0.375rem;
   --cp-primitive-size-visually-hidden: 1px;
@@ -254,6 +254,7 @@
   --cp-primitive-layout-align-end: flex-end;
   --cp-primitive-layout-align-stretch: stretch;
   --cp-primitive-layout-justify-between: space-between;
+  --cp-primitive-layout-justify-start: flex-start;
   --cp-primitive-layout-justify-center: center;
   --cp-primitive-layout-justify-end: flex-end;
   --cp-primitive-layout-justify-self-center: center;
@@ -299,7 +300,6 @@
   --cp-primitive-layout-object-fit-cover: cover;
   --cp-primitive-layout-object-fit-contain: contain;
   --cp-primitive-layout-will-change-transform: transform;
-  --cp-primitive-layout-transform-none: none;
   --cp-primitive-layout-animation-none: none;
   --cp-primitive-layout-box-orient-vertical: vertical;
   --cp-primitive-layout-font-smoothing-webkit: antialiased;
@@ -342,13 +342,16 @@
   --cp-primitive-media-transform-origin-campaign: 62% 48%;
   --cp-primitive-media-position-navigation: 50%;
   --cp-primitive-media-translate-navigation: -50%;
-  --cp-primitive-media-scale-runway-backdrop: 1.1;
   --cp-primitive-motion-scroll-rest: translateY(0);
   --cp-primitive-motion-scroll-active: translateY(0.35rem);
   --cp-primitive-motion-campaign-start: scale(1.015) translate3d(0, 0, 0);
   --cp-primitive-motion-campaign-end: scale(1.075) translate3d(-0.7%, 0.4%, 0);
   --cp-primitive-motion-runway-start: scale(1.01);
   --cp-primitive-motion-runway-end: scale(1.035);
+  --cp-primitive-motion-runway-backdrop: scale(1.1);
+  --cp-primitive-motion-runway-wide-start: translate3d(0, 5rem, 0) scale(1.01);
+  --cp-primitive-motion-runway-wide-end: translate3d(0, 5rem, 0) scale(1.035);
+  --cp-primitive-motion-runway-wide-backdrop: translate3d(0, 5rem, 0) scale(1.1);
 
   /* Tier 2: semantics. Every value references Tier 1 only. */
   --cp-semantic-color-canvas: var(--cp-primitive-color-neutral-000);
@@ -411,7 +414,6 @@
   --cp-semantic-font-size-display: var(--cp-primitive-font-size-display);
   --cp-semantic-font-size-open-graph-title: var(--cp-primitive-font-size-open-graph-title);
   --cp-semantic-font-size-menu: var(--cp-primitive-font-size-menu);
-  --cp-semantic-font-size-adjustment-description: var(--cp-primitive-font-size-adjustment-1);
   --cp-semantic-font-size-adjustment-product-title: var(--cp-primitive-font-size-adjustment-4);
   --cp-semantic-font-size-emphasis: var(--cp-primitive-font-size-125);
   --cp-semantic-font-size-price: var(--cp-primitive-font-size-150);
@@ -550,6 +552,7 @@
   --cp-semantic-size-choice: var(--cp-primitive-size-choice);
   --cp-semantic-size-action-wide: var(--cp-primitive-size-action-wide);
   --cp-semantic-size-information-fact: var(--cp-primitive-size-information-fact);
+  --cp-semantic-size-product-fact-min: var(--cp-primitive-size-product-fact-min);
   --cp-semantic-size-product-title-width: var(--cp-primitive-size-product-title-width);
   --cp-semantic-size-scrollbar: var(--cp-primitive-size-scrollbar);
   --cp-semantic-size-visually-hidden: var(--cp-primitive-size-visually-hidden);
@@ -602,7 +605,7 @@
   --cp-semantic-opacity-purchasing-disabled: var(--cp-primitive-opacity-060);
   --cp-semantic-opacity-checkout-disabled: var(--cp-primitive-opacity-038);
   --cp-semantic-opacity-open-graph-status: var(--cp-primitive-opacity-062);
-  --cp-semantic-opacity-product-copy: var(--cp-primitive-opacity-068);
+  --cp-semantic-opacity-product-copy: var(--cp-primitive-opacity-100);
 
   --cp-semantic-duration-standard: var(--cp-primitive-duration-standard);
   --cp-semantic-duration-campaign: var(--cp-primitive-duration-campaign);
@@ -643,6 +646,7 @@
   --cp-semantic-layout-align-end: var(--cp-primitive-layout-align-end);
   --cp-semantic-layout-align-stretch: var(--cp-primitive-layout-align-stretch);
   --cp-semantic-layout-justify-between: var(--cp-primitive-layout-justify-between);
+  --cp-semantic-layout-justify-start: var(--cp-primitive-layout-justify-start);
   --cp-semantic-layout-justify-center: var(--cp-primitive-layout-justify-center);
   --cp-semantic-layout-justify-end: var(--cp-primitive-layout-justify-end);
   --cp-semantic-layout-justify-self-center: var(--cp-primitive-layout-justify-self-center);
@@ -688,7 +692,6 @@
   --cp-semantic-layout-object-fit-cover: var(--cp-primitive-layout-object-fit-cover);
   --cp-semantic-layout-object-fit-contain: var(--cp-primitive-layout-object-fit-contain);
   --cp-semantic-layout-will-change-transform: var(--cp-primitive-layout-will-change-transform);
-  --cp-semantic-layout-transform-none: var(--cp-primitive-layout-transform-none);
   --cp-semantic-layout-animation-none: var(--cp-primitive-layout-animation-none);
   --cp-semantic-layout-box-orient-vertical: var(--cp-primitive-layout-box-orient-vertical);
   --cp-semantic-layout-font-smoothing-webkit: var(--cp-primitive-layout-font-smoothing-webkit);
@@ -731,13 +734,13 @@
   --cp-semantic-media-transform-origin-campaign: var(--cp-primitive-media-transform-origin-campaign);
   --cp-semantic-media-position-navigation: var(--cp-primitive-media-position-navigation);
   --cp-semantic-media-translate-navigation: var(--cp-primitive-media-translate-navigation);
-  --cp-semantic-media-scale-runway-backdrop: var(--cp-primitive-media-scale-runway-backdrop);
   --cp-semantic-motion-scroll-rest: var(--cp-primitive-motion-scroll-rest);
   --cp-semantic-motion-scroll-active: var(--cp-primitive-motion-scroll-active);
   --cp-semantic-motion-campaign-start: var(--cp-primitive-motion-campaign-start);
   --cp-semantic-motion-campaign-end: var(--cp-primitive-motion-campaign-end);
   --cp-semantic-motion-runway-start: var(--cp-primitive-motion-runway-start);
   --cp-semantic-motion-runway-end: var(--cp-primitive-motion-runway-end);
+  --cp-semantic-motion-runway-backdrop: var(--cp-primitive-motion-runway-backdrop);
   --cp-semantic-runtime-image-gallery-width: var(--cp-primitive-runtime-image-gallery-width);
   --cp-semantic-runtime-image-product-panel-width: var(--cp-primitive-runtime-image-product-panel-width);
   --cp-semantic-runtime-image-product-detail-width: var(--cp-primitive-runtime-image-product-detail-width);
@@ -756,15 +759,17 @@
   --cp-component-card-radius: var(--cp-semantic-radius-card);
   --cp-component-dialog-radius: var(--cp-semantic-radius-dialog);
   --cp-component-scroll-control-radius: var(--cp-semantic-radius-round);
-  --cp-component-product-title-color: var(--cp-semantic-color-copy-soft);
+  --cp-component-product-title-color: var(--cp-semantic-color-copy);
   --cp-component-product-title-size: calc(var(--cp-semantic-font-size-product) + var(--cp-semantic-font-size-adjustment-product-title));
   --cp-component-product-fact-font-size: var(--cp-semantic-font-size-product-fact);
   --cp-component-product-copy-opacity: var(--cp-semantic-opacity-product-copy);
-  --cp-component-product-review-color: var(--cp-semantic-color-copy);
-  --cp-component-product-review-size: calc(var(--cp-semantic-font-size-body) - var(--cp-semantic-font-size-adjustment-description));
-  --cp-component-product-fact-color: var(--cp-semantic-color-muted);
-  --cp-component-product-fact-border: var(--cp-semantic-border-rule);
+  --cp-component-product-review-color: var(--cp-semantic-color-copy-strong);
+  --cp-component-product-review-size: var(--cp-semantic-font-size-body-large);
+  --cp-component-product-fact-label-color: var(--cp-semantic-color-muted);
+  --cp-component-product-fact-value-color: var(--cp-semantic-color-copy-soft);
+  --cp-component-product-fact-border: var(--cp-semantic-border-rule-strong);
   --cp-component-product-fact-background: var(--cp-semantic-color-transparent);
+  --cp-component-product-fact-min-width: var(--cp-semantic-size-product-fact-min);
   --cp-component-media-control-size: var(--cp-semantic-size-control);
   --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-disabled);
   --cp-component-header-layer: var(--cp-semantic-layer-header);
@@ -800,6 +805,12 @@
   --cp-component-bag-definition-line-height: var(--cp-semantic-font-line-height-control);
   --cp-component-bag-description-line-height: var(--cp-semantic-font-line-height-commerce-body-mobile);
   --cp-component-product-copy-offset: var(--cp-semantic-space-negative-8);
+  --cp-component-product-layout-justify: var(--cp-semantic-layout-justify-end);
+  --cp-component-product-layout-padding-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-12));
+  --cp-component-product-media-control-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-4));
+  --cp-component-product-label-gap: var(--cp-semantic-space-7);
+  --cp-component-product-review-gap: var(--cp-semantic-space-8);
+  --cp-component-product-facts-gap: var(--cp-semantic-space-5);
   --cp-component-icon-stroke-width: var(--cp-semantic-icon-stroke-width);
   --cp-component-catalog-hero-align: var(--cp-semantic-layout-align-stretch);
   --cp-component-catalog-standard-grid-template: var(--cp-semantic-layout-grid-single);
@@ -952,6 +963,10 @@
     --cp-component-product-media-border-right: var(--cp-semantic-border-rule);
     --cp-component-product-copy-position: var(--cp-semantic-layout-position-sticky);
     --cp-component-product-copy-top: var(--cp-semantic-space-32);
+    --cp-component-product-copy-offset: var(--cp-semantic-space-none);
+    --cp-component-product-layout-justify: var(--cp-semantic-layout-justify-start);
+    --cp-component-product-layout-padding-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-20));
+    --cp-component-product-media-control-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-24));
   }
 }
 
@@ -960,6 +975,9 @@
     --cp-component-catalog-standard-grid-template: var(--cp-semantic-layout-grid-three);
     --cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-wide);
     --cp-component-editorial-title-size: var(--cp-semantic-font-size-editorial-title-wide);
+    --cp-semantic-motion-runway-start: var(--cp-primitive-motion-runway-wide-start);
+    --cp-semantic-motion-runway-end: var(--cp-primitive-motion-runway-wide-end);
+    --cp-semantic-motion-runway-backdrop: var(--cp-primitive-motion-runway-wide-backdrop);
   }
 }
 

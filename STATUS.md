@@ -563,3 +563,11 @@ Resume point: execute only the specifically approved action, capture evidence wi
 - Full verification remains green at 44/44 files and 475/475 tests, zero production vulnerabilities across 67 audited packages, and a successful Next.js 15.5.21 build.
 - Background QA passes 3/3 viewports and 21/21 route checks with exact menu labels, no clipping or overflow, decoded Hoodie media, restored keyboard focus, and zero console/request failures. Six prior/current screenshot pairs are retained under `test_reports/cp-chapter-one-closure-2026-08-16/`.
 - Purchasing is the required final customer state, but is not activated by these visual changes. The Hoodie remains Draft and cart/checkout/payment still require the release-bound Shopify, variant, fulfillment, controlled-order, and Product Owner activation evidence already listed in the commerce gates.
+
+### Product Owner Hoodie editorial-reference correction — 2026-08-16
+
+- The supplied 1440×1000 reference is now the Hoodie runway composition target: the product caption begins at the upper-left editorial grid, `ONE` uses a 96 px wide-screen token, descriptive copy uses the brighter 18.4 px body token, and the media explorer aligns at the upper right.
+- Flat feature chips are replaced by structured design-system fact components: `Color / Black`, `Material / Structured fleece`, and `Feel / Heavyweight, soft interior`. Layout, typography, colour, border, spacing, and wide-screen media position all resolve through primitive → semantic → component tokens; no page-level visual value was hardcoded.
+- The wide-screen runway asset is lowered through responsive motion tokens to match the supplied model crop while tablet and mobile retain their fitted composition. Reduced-motion rendering uses the same canonical position.
+- Full verification is green: zero-warning design-system/ESLint checks, 44/44 files and 475/475 tests, zero production dependency vulnerabilities across 67 packages, and a successful Next.js 15.5.21 build.
+- Background headless QA passes 3 viewports × 7 public routes with exact structured facts, expected 96 px desktop title geometry, decoded media, no overflow/clipping, restored keyboard focus, and no console or request failures. Accepted screenshots are under `test_reports/cp-runway-reference-correction-accepted-v2-2026-08-16/`.

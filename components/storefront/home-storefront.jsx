@@ -93,10 +93,9 @@ const signatureHomepagePresentation = {
   displayName: 'ONE',
   description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery.',
   facts: [
-    'Black',
-    'XS–5XL',
-    'Heavyweight fleece',
-    'CP embroidery',
+    { label: 'Color', value: 'Black' },
+    { label: 'Material', value: 'Structured fleece' },
+    { label: 'Feel', value: 'Heavyweight, soft interior' },
   ],
 };
 
@@ -580,7 +579,12 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           </p>
           {runwayVisualReady && (
             <ul className="cp-product-facts cp-space-before-facts" aria-label="Product highlights">
-              {signatureHomepagePresentation.facts.map(fact => <li key={fact}>{fact}</li>)}
+              {signatureHomepagePresentation.facts.map(fact => (
+                <li key={fact.label}>
+                  <span className="cp-product-fact-label">{fact.label}</span>
+                  <span className="cp-product-fact-value">{fact.value}</span>
+                </li>
+              ))}
             </ul>
           )}
         </div>
