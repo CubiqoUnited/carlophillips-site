@@ -1,8 +1,17 @@
 # Current Status
 
 Updated: 2026-08-17
-Branch: integrated candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `1291e54`; pushed to the authorized fork and opened as canonical draft PR #12; no Preview, merge to `main`, or Production change
+Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; based on the integrated candidate and currently includes local evidence commit `6f30124`; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Production payment activation audit — 2026-08-17
+
+- The Product Owner authorized the goal of enabling real customer payments in Production. Shopify Payments was switched out of test mode and the setting persisted, proving the gateway can technically accept live payments.
+- The current live Hoodie page created a Shopify cart for Black / XS at USD $128 and reached hosted checkout, where Shop Pay, PayPal, Google Pay, card, and additional methods were offered. No payment details were entered and no real order was placed.
+- This exposed a release-authority mismatch: the live Production deployment is the older checkout path and can reach Shopify while the canonical Hoodie Product Release Record remains Draft. It does not enforce the newer physical-sample, release-bound media, approval, immutable-candidate, and rollback gates.
+- Shopify Payments was immediately returned to test mode and confirmed that no real transactions will be processed. Production is therefore fail-closed at payment while the mismatch is repaired.
+- Real activation remains blocked by the unapproved physical sample, incomplete Shopify observation/release fingerprints, incomplete approved media, missing product/media/fulfillment approvals, missing immutable Production/rollback evidence, cart capability that is only test-verified, and the unreviewed/unmerged candidate.
+- Evidence and screenshots are under `test_reports/cp-production-commerce-activation-2026-08-17/`. No catalog, sales-channel, fulfillment, merge, Vercel deployment, Production alias, real payment, or real order mutation occurred.
 
 ## Live Shopify and Apliiq commerce reconciliation — 2026-08-16
 

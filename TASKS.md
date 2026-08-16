@@ -1,5 +1,19 @@
 # Delivery Tasks
 
+## Current Production payment activation
+
+- [x] Verify that Shopify Payments can leave test mode and that the setting persists.
+- [x] Verify that the existing live Product page can create a Shopify cart and reach hosted checkout with the expected Black / XS item and USD $128 merchandise price.
+- [x] Confirm live hosted payment methods without entering card details or placing a real order.
+- [x] Detect and document that the legacy Production checkout bypasses the canonical Draft Product Release Record.
+- [x] Restore Shopify Payments test mode immediately so no real customer can be charged during remediation.
+- [ ] Obtain exact Product Owner approval for the quoted physical sample spend; order, receive, and inspect the Hoodie sample.
+- [ ] Bind fresh Shopify identity/facts/variant observations and exact approved Media Registry assets to the Product Release Record.
+- [ ] Record Product Owner product, media, and fulfillment approvals and advance the record through Draft, Staged, Approved, and Released without bypasses.
+- [ ] Merge the reviewed release-bound candidate to `main`, build immutable Production and rollback artifacts, and pass desktop/mobile checkout, console/network, and rollback QA.
+- [ ] Promote only the approved exact artifact, confirm current Product and variant truth, then turn Shopify Payments test mode off as the final activation action.
+- [ ] Prove settlement and POD handoff with one separately authorized exact-value real order before claiming end-to-end Production commerce readiness.
+
 ## Current local P0: release-bound Shopify hosted checkout
 
 - [x] Implement server-only Shopify cart creation and hosted-checkout redirect without exposing raw product or variant references.
