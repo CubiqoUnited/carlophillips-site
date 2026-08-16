@@ -603,3 +603,11 @@ Resume point: execute only the specifically approved action, capture evidence wi
 - Pausing swaps the animated asset for its canonical first-frame poster, and the requested motion-slide footer caption is omitted while the registry retains its provenance metadata.
 - Design-system lint, 44 files / 475 tests, zero production dependency vulnerabilities across 67 packages, and the optimized Next.js build pass.
 - Background headless QA passes the three transitions at desktop, tablet, and mobile widths with no overflow, console errors, or request failures. Playing and paused screenshots are retained under `test_reports/cp-media-motion-controls-2026-08-16/`.
+
+### Shopify test checkout and Apliiq handoff — 2026-08-17
+
+- Product Owner approval was consumed for exactly one Shopify Payments test-mode order.
+- Shopify order #1002 proves hosted checkout → test payment → Paid/Unfulfilled order creation for the Signature Hoodie `black / xs`, SKU `APQ-5958463S5A1`, total USD $136.20.
+- Apliiq received store order 1002 in Pending orders while automatic processing was off. The matching pending fulfillment was removed before manufacturing or a fulfillment-card charge.
+- Sanitized facts and screenshots are retained under `test_reports/cp-end-to-end-commerce-2026-08-17/`. Apliiq's final screenshot timed out at the vendor page; its rendered post-removal text was verified and records that no unprocessed orders remain.
+- This proves the controlled test path only. Live customer payments, Production checkout activation, paid fulfillment, tracking, delivery, support, returns/refunds, and Product Release Record release remain fail-closed and unproven.

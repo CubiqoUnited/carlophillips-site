@@ -487,7 +487,7 @@
 - [x] Complete the separate Apliiq sign-in handoff and retain the read-only saved-product observation.
 - [ ] Bind the exact Apliiq provider variant/SKU fingerprint and verify one physical sample; keep ordering, fulfillment, and release authority blocked meanwhile.
 - [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
-- [ ] Keep Shopify writes, product activation, test orders, paid app actions, and fulfillment activation separately evidenced and fail-closed until tested.
+- [x] Evidence one Product Owner-approved Shopify Payments test order through hosted checkout, Paid Shopify order creation, Apliiq manual ingestion, and removal before manufacturing; retain live payments, Production checkout, paid fulfillment, and release as separate fail-closed gates.
 # Production authority closure (2026-08-14)
 
 - [x] Define all 12 production authorities with source, consumers, owner, validation, gate, failure mode and rollback.
