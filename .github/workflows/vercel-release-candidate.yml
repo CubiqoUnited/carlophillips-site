@@ -11,6 +11,11 @@ on:
         description: Release identifier recorded in deployment metadata
         required: true
         type: string
+      checkout_enabled:
+        description: Stage a release-bound checkout candidate; the safe fallback always remains disabled
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   actions: read
@@ -31,7 +36,8 @@ jobs:
       VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
       NEXT_PUBLIC_COMMERCE_ENVIRONMENT: production
       COMMERCE_DATA_MODE: shopify
-      SHOPIFY_CART_UI_ENABLED: "false"
+      SHOPIFY_CART_UI_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}
+      SHOPIFY_CHECKOUT_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}
 
     steps:
       - name: Enforce protected candidate environment
@@ -66,7 +72,8 @@ jobs:
           test -n "$VERCEL_ORG_ID"
           test -n "$VERCEL_PROJECT_ID"
           test "$NEXT_PUBLIC_COMMERCE_ENVIRONMENT" = "production"
-          test "$SHOPIFY_CART_UI_ENABLED" = "false"
+          [[ "$SHOPIFY_CART_UI_ENABLED" =~ ^(true|false)$ ]]
+          test "$SHOPIFY_CHECKOUT_ENABLED" = "$SHOPIFY_CART_UI_ENABLED"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -87,6 +94,15 @@ jobs:
       - name: Verify repository before deployment
         run: yarn verify
 
+      - name: Verify exact release before enabling Production checkout
+        if: ${{ inputs.checkout_enabled }}
+        env:
+          RELEASE: ${{ inputs.release }}
+        run: >-
+          node scripts/verify-production-commerce-release.mjs
+          --release "$RELEASE"
+          --expected-sha "$GITHUB_SHA"
+
       - name: Install pinned Vercel CLI
         run: |
           yarn global add vercel@56.1.0
@@ -106,7 +122,7 @@ jobs:
           vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN"
           > production-before.json
 
-      - name: Build fail-closed Production artifact
+      - name: Build exact Production artifact
         run: vercel build --prod
 
       - name: Stage exact Production candidate without assigning domains
@@ -118,14 +134,15 @@ jobs:
           deployment_url="$(vercel deploy --prebuilt --archive=tgz --prod --skip-domain --token="$VERCEL_TOKEN" \
             --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=production \
             --env COMMERCE_DATA_MODE=shopify \
-            --env SHOPIFY_CART_UI_ENABLED=false \
+            --env SHOPIFY_CART_UI_ENABLED="$SHOPIFY_CART_UI_ENABLED" \
+            --env SHOPIFY_CHECKOUT_ENABLED="$SHOPIFY_CHECKOUT_ENABLED" \
             --meta gitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitRef="$GITHUB_REF_NAME" \
             --meta cpRelease="$RELEASE" \
             --meta cpArtifactKind=staged-production \
             --meta cpBuildEnvironment=production \
-            --meta cpCheckoutEnabled=false \
+            --meta cpCheckoutEnabled="$SHOPIFY_CHECKOUT_ENABLED" \
             --meta cpWorkflowRun="$GITHUB_RUN_ID" \
             --meta cpWorkflowAttempt="$GITHUB_RUN_ATTEMPT")"
           echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
@@ -140,6 +157,7 @@ jobs:
             --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=production \
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED=false \
+            --env SHOPIFY_CHECKOUT_ENABLED=false \
             --meta gitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitRef="$GITHUB_REF_NAME" \
@@ -174,9 +192,10 @@ jobs:
             --production-after production-after-staging.json \
             --expected-sha "$GITHUB_SHA" \
             --expected-release "$RELEASE" \
+            --expected-candidate-checkout "$SHOPIFY_CHECKOUT_ENABLED" \
             --output candidate-release-pair-receipt.json
 
-      - name: Run fail-closed staged pair route smoke test
+      - name: Run release-aware staged pair route smoke test
         env:
           CANDIDATE_URL: ${{ steps.candidate.outputs.url }}
           FALLBACK_URL: ${{ steps.fallback.outputs.url }}
@@ -191,13 +210,19 @@ jobs:
             ARTIFACT="$artifact" node - <<'NODE'
           const fs = require('node:fs');
           const artifact = process.env.ARTIFACT;
+          const checkoutEnabled = artifact === 'candidate' && process.env.SHOPIFY_CHECKOUT_ENABLED === 'true';
           const html = fs.readFileSync(`${artifact}-pdp.html`, 'utf8');
-          if (!html.includes('Selection disabled')) throw new Error(`${artifact} PDP is missing the disabled-selection proof.`);
-          if (!html.includes('Purchasing disabled')) throw new Error(`${artifact} PDP is missing the fail-closed purchasing proof.`);
-          if (html.includes('Continue to checkout')) throw new Error(`${artifact} PDP unexpectedly exposes checkout continuation.`);
-          if (html.includes('action="/api/checkout"')) throw new Error(`${artifact} PDP unexpectedly exposes the checkout endpoint.`);
-          if (/<form\b[^>]*>[\s\S]*?type=["']submit["']/i.test(html)) {
-            throw new Error(`${artifact} PDP unexpectedly exposes an enabled submit form.`);
+          if (checkoutEnabled) {
+            if (!html.includes('Continue to checkout')) throw new Error('Candidate PDP is missing checkout continuation.');
+            if (!html.includes('action="/api/checkout"')) throw new Error('Candidate PDP is missing the checkout endpoint.');
+          } else {
+            if (!html.includes('Selection disabled')) throw new Error(`${artifact} PDP is missing the disabled-selection proof.`);
+            if (!html.includes('Purchasing disabled')) throw new Error(`${artifact} PDP is missing the fail-closed purchasing proof.`);
+            if (html.includes('Continue to checkout')) throw new Error(`${artifact} PDP unexpectedly exposes checkout continuation.`);
+            if (html.includes('action="/api/checkout"')) throw new Error(`${artifact} PDP unexpectedly exposes the checkout endpoint.`);
+            if (/<form\b[^>]*>[\s\S]*?type=["']submit["']/i.test(html)) {
+              throw new Error(`${artifact} PDP unexpectedly exposes an enabled submit form.`);
+            }
           }
           NODE
           done
@@ -220,7 +245,8 @@ jobs:
             echo "- Safe fallback: $FALLBACK_URL"
             echo "- Commit: $GITHUB_SHA"
             echo "- Production domains assigned: no"
-            echo "- Commerce: fail-closed"
+            echo "- Candidate checkout enabled: $SHOPIFY_CHECKOUT_ENABLED"
+            echo "- Safe fallback checkout enabled: false"
             echo "- Receipt artifact: candidate-release-pair-receipt"
           } >> "$GITHUB_STEP_SUMMARY"
 

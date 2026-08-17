@@ -502,6 +502,11 @@
 - [ ] Bind the exact Apliiq provider variant/SKU fingerprint and verify one physical sample; keep ordering, fulfillment, and release authority blocked meanwhile.
 - [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
 - [x] Evidence one Product Owner-approved Shopify Payments test order through hosted checkout, Paid Shopify order creation, Apliiq manual ingestion, and removal before manufacturing; retain live payments, Production checkout, paid fulfillment, and release as separate fail-closed gates.
+- [x] Add a release-bound enabled-checkout mode to the staged Vercel candidate/Production promotion path while preserving a distinct same-SHA fail-closed fallback.
+- [x] Re-verify the exact release, full SHA, operational cart capability, and Product Owner Production cart/checkout approvals immediately before candidate build and Production promotion.
+- [x] Bind candidate/fallback checkout state into deployment receipts and reject receipt, environment, and route-behavior drift.
+- [ ] Order and inspect the exact physical Hoodie sample; bind the approved sample, fulfillment mapping, Shopify observations, media, approvals, and rollback evidence before moving the Product Release Record to Released.
+- [ ] Reauthenticate the canonical GitHub delivery session, publish the exact reviewed temporary branch, and run protected CI/Preview without merging or promoting Production.
 # Production authority closure (2026-08-14)
 
 - [x] Define all 12 production authorities with source, consumers, owner, validation, gate, failure mode and rollback.

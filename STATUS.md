@@ -620,3 +620,13 @@ Resume point: execute only the specifically approved action, capture evidence wi
 - Apliiq received store order 1002 in Pending orders while automatic processing was off. The matching pending fulfillment was removed before manufacturing or a fulfillment-card charge.
 - Sanitized facts and screenshots are retained under `test_reports/cp-end-to-end-commerce-2026-08-17/`. Apliiq's final screenshot timed out at the vendor page; its rendered post-removal text was verified and records that no unprocessed orders remain.
 - This proves the controlled test path only. Live customer payments, Production checkout activation, paid fulfillment, tracking, delivery, support, returns/refunds, and Product Release Record release remain fail-closed and unproven.
+
+### Release-bound Production checkout pipeline — 2026-08-17
+
+- The Vercel release-candidate and Production workflows now have an explicit, reviewed checkout mode. An enabled candidate is permitted only when the exact full commit SHA has a `Released` Product Release Record, complete release evidence, operational `cart-write` capability, and matching Product Owner Production cart/checkout approvals.
+- The same workflows continue to build a distinct fail-closed fallback. Candidate and fallback receipts bind their separate checkout states; the fallback can never enable checkout.
+- Production promotion re-runs the release preflight and rejects candidate-receipt tampering, stale SHA/release bindings, and enabled-checkout drift. Route smoke checks require a checkout form only for a reviewed enabled candidate and require the fallback to remain visibly disabled.
+- The current Signature Hoodie correctly fails preflight: it remains Draft and still lacks the physical-sample, fulfillment, Shopify fingerprint, media, approval, current Production observation, rollback, and operational-cart evidence required for release.
+- Full verification passes: design-system and ESLint checks, 48/48 files and 501/501 tests, zero production dependency vulnerabilities across 67 packages, and the optimized Next.js 15.5.21 build.
+- Background production-mode browser QA passes at 1440×1000 and 390×844: HTTP 200, visible purchasing denial, zero checkout controls, no overflow/runtime overlay/console/page errors. Screenshot comparison against the prior accepted fail-closed baseline shows only sub-threshold rendering variance (0.029% desktop; 0.065% mobile).
+- No branch push, PR update, merge, Vercel deployment, Shopify mutation, real payment, order, or fulfillment occurred. Real charging remains off.

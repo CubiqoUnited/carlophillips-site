@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        }
+      },
+      "httpStatus": 200,
+      "purchasingDisabled": true,
+      "checkoutForms": 0,
+      "overflow": false,
+      "runtimeOverlays": 0,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "visualComparison": {
+        "baseline": "../cp-shopify-checkout-handoff-2026-08-16/screenshots/desktop-draft-denial.png",
+        "candidate": "screenshots/desktop-draft-denial.png",
+        "dimensionsMatch": true,
+        "changedPixels": 112884,
+        "materiallyChangedPixels": 1040,
+        "materialChangeRatio": 0.0002931096681096681
+      }
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "httpStatus": 200,
+      "purchasingDisabled": true,
+      "checkoutForms": 0,
+      "overflow": false,
+      "runtimeOverlays": 0,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "visualComparison": {
+        "baseline": "../cp-shopify-checkout-handoff-2026-08-16/screenshots/mobile-draft-denial.png",
+        "candidate": "screenshots/mobile-draft-denial.png",
+        "dimensionsMatch": true,
+        "changedPixels": 31187,
+        "materiallyChangedPixels": 1053,
+        "materialChangeRatio": 0.0006509161041465766
+      }
+    }
+  ]
+}

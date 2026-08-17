@@ -84,20 +84,40 @@ function requireTarget(deployment, expected, subject) {
   requireValue(deployment.target === expected, `${subject} is not a ${expected} deployment.`);
 }
 
-function verifyMetadata(metadata, expectedSha, expectedRelease, role, subject, expectedPullRequest = null) {
+function verifyMetadata(
+  metadata,
+  expectedSha,
+  expectedRelease,
+  role,
+  subject,
+  expectedPullRequest = null,
+  expectedCheckoutEnabled = false,
+) {
   const contract = ARTIFACTS[role];
   requireValue(contract, `Unknown artifact role ${role}.`);
   requireValue(metadataSha(metadata) === expectedSha, `${subject} metadata SHA does not match the selected source.`);
   requireValue(metadata?.cpRelease === expectedRelease, `${subject} release metadata does not match the requested release.`);
   requireValue(metadata?.cpArtifactKind === contract.artifactKind, `${subject} has the wrong artifact role.`);
   requireValue(metadata?.cpBuildEnvironment === contract.buildEnvironment, `${subject} has the wrong build environment.`);
-  requireValue(metadata?.cpCheckoutEnabled === 'false', `${subject} lacks the required fail-closed checkout marker.`);
+  requireValue(
+    metadata?.cpCheckoutEnabled === String(expectedCheckoutEnabled),
+    `${subject} checkout marker does not match the reviewed release mode.`,
+  );
   if (role === 'preview') {
     requireValue(String(metadata?.cpPullRequest || '') === String(expectedPullRequest || ''), `${subject} pull-request metadata does not match.`);
   }
 }
 
-function verifyArtifact({ inspect, list, expectedSha, expectedRelease, role, subject, expectedPullRequest = null }) {
+function verifyArtifact({
+  inspect,
+  list,
+  expectedSha,
+  expectedRelease,
+  role,
+  subject,
+  expectedPullRequest = null,
+  expectedCheckoutEnabled = false,
+}) {
   const contract = ARTIFACTS[role];
   requireValue(DEPLOYMENT_ID.test(inspect?.id || ''), `${subject} lacks a valid deployment ID.`);
   requireValue(Boolean(deploymentUrl(inspect?.url)), `${subject} lacks an immutable deployment URL.`);
@@ -109,7 +129,15 @@ function verifyArtifact({ inspect, list, expectedSha, expectedRelease, role, sub
   requireValue((listed.readyState || listed.state) === 'READY', `Listed ${subject} is not READY.`);
   requireTarget(listed, contract.target, `Listed ${subject}`);
   requireNoAliases(listed, `Listed ${subject}`);
-  verifyMetadata(listed.meta, expectedSha, expectedRelease, role, subject, expectedPullRequest);
+  verifyMetadata(
+    listed.meta,
+    expectedSha,
+    expectedRelease,
+    role,
+    subject,
+    expectedPullRequest,
+    expectedCheckoutEnabled,
+  );
   return { inspect, listed };
 }
 
@@ -144,6 +172,7 @@ function verifyCandidatePair({
   expectedSha,
   expectedRelease,
   expectedProductionAnchor = null,
+  expectedCandidateCheckout = false,
 }) {
   const candidate = verifyArtifact({
     inspect: candidateInspect,
@@ -152,6 +181,7 @@ function verifyCandidatePair({
     expectedRelease,
     role: 'candidate',
     subject: 'Staged Production candidate',
+    expectedCheckoutEnabled: expectedCandidateCheckout,
   });
   const fallback = verifyArtifact({
     inspect: fallbackInspect,
@@ -180,7 +210,15 @@ function promotionSourceId(deployment, listed) {
     || null;
 }
 
-function verifyPromotedProduction({ productionAfter, productionList, source, role, expectedSha, expectedRelease }) {
+function verifyPromotedProduction({
+  productionAfter,
+  productionList,
+  source,
+  role,
+  expectedSha,
+  expectedRelease,
+  expectedCheckoutEnabled = false,
+}) {
   const subject = role === 'candidate' ? 'Promoted Production candidate' : 'Promoted safe fallback';
   requireValue(DEPLOYMENT_ID.test(productionAfter?.id || ''), `${subject} lacks a valid deployment ID.`);
   requireValue(productionAfter.readyState === 'READY', `${subject} is not READY.`);
@@ -193,7 +231,15 @@ function verifyPromotedProduction({ productionAfter, productionList, source, rol
   const listed = findListedDeployment(productionList, productionAfter, subject);
   requireValue((listed.readyState || listed.state) === 'READY', `Listed ${subject} is not READY.`);
   requireValue(listed.target === 'production', `Listed ${subject} is not Production-targeted.`);
-  verifyMetadata(listed.meta, expectedSha, expectedRelease, role, subject);
+  verifyMetadata(
+    listed.meta,
+    expectedSha,
+    expectedRelease,
+    role,
+    subject,
+    null,
+    expectedCheckoutEnabled,
+  );
 
   const directIdentity = productionAfter.id === source.inspect.id;
   const promotedFrom = promotionSourceId(productionAfter, listed);
@@ -207,9 +253,12 @@ const { mode, options } = parseArguments(process.argv.slice(2));
 const expectedSha = options['expected-sha'];
 const expectedRelease = options['expected-release'];
 const expectedProductionAnchor = options['expected-production-anchor'] || null;
+const expectedCandidateCheckoutValue = options['expected-candidate-checkout'] || 'false';
 requireValue(/^[0-9a-f]{40}$/.test(expectedSha || ''), 'Expected SHA must be a full lowercase commit SHA.');
 requireValue(/^[A-Za-z0-9._-]+$/.test(expectedRelease || ''), 'Expected release is invalid.');
+requireValue(/^(true|false)$/.test(expectedCandidateCheckoutValue), 'Expected candidate checkout marker must be true or false.');
 requireValue(Boolean(options.output), 'Output receipt path is required.');
+const expectedCandidateCheckout = expectedCandidateCheckoutValue === 'true';
 
 if (mode === 'preview') {
   const expectedPullRequest = options['expected-pull-request'];
@@ -253,6 +302,7 @@ if (mode === 'preview') {
     expectedSha,
     expectedRelease,
     expectedProductionAnchor,
+    expectedCandidateCheckout,
   });
 
   writeFileSync(options.output, `${JSON.stringify({
@@ -266,7 +316,8 @@ if (mode === 'preview') {
     safeFallbackDeploymentUrl: pair.fallback.inspect.url,
     safeFallbackArtifactKind: ARTIFACTS.fallback.artifactKind,
     buildEnvironment: 'production',
-    checkoutEnabled: false,
+    checkoutEnabled: expectedCandidateCheckout,
+    safeFallbackCheckoutEnabled: false,
     deploymentsDistinct: true,
     productionDomainsAssigned: false,
     productionBeforeDeploymentId: pair.anchor.id,
@@ -284,6 +335,7 @@ if (mode === 'preview') {
     expectedSha,
     expectedRelease,
     expectedProductionAnchor,
+    expectedCandidateCheckout,
   });
   const productionAfter = readJson(options['production-after']);
   const role = mode === 'production' ? 'candidate' : 'fallback';
@@ -295,6 +347,7 @@ if (mode === 'preview') {
     role,
     expectedSha,
     expectedRelease,
+    expectedCheckoutEnabled: role === 'candidate' ? expectedCandidateCheckout : false,
   });
 
   writeFileSync(options.output, `${JSON.stringify({
@@ -309,7 +362,7 @@ if (mode === 'preview') {
     promotedFromDeploymentId: promoted.promotedFrom,
     productionUrl: productionAfter.url,
     exactArtifactPromoted: true,
-    checkoutEnabled: false,
+    checkoutEnabled: role === 'candidate' ? expectedCandidateCheckout : false,
   }, null, 2)}\n`);
 } else {
   throw new Error(`Unknown verification mode: ${mode || '<missing>'}`);
