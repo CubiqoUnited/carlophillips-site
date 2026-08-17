@@ -2,6 +2,14 @@
 
 Updated: 2026-08-17
 
+## Current shortest path — verified 2026-08-17
+
+1. **Apliiq must restore the sample cart.** The authenticated saved design and S/M/L mapping are correct, but the purchase control still does not create a quote/cart and no support reply has arrived. Once it works, prepare exactly one Medium sample and obtain Product Owner approval for the final item + digitization + shipping + tax total before purchase.
+2. **The delivered sample must be inspected.** Fit, colour, artwork placement, and finish require real evidence. Shopify being Active and checkout working cannot substitute for this physical fulfillment proof.
+3. **A canonical repository administrator must restore the release guardrails.** PR #14 is mergeable and `CI / Verify` is green at `e38837d7667f8925193f7e490ad32f3f15c90823`, but the repository has no active `main` ruleset and GitHub environments `Preview` and `Production` have no required reviewers. The connected Codex identity is pull-only and cannot configure or merge them.
+4. **Do not promote the current live deployment as the candidate or rollback.** `www.carlophillips.com` is on historical feature-branch commit `bb9568f`; it is healthy in the observed runtime sample but is only the captured drift anchor.
+5. After sample/media/product/fulfillment approval, capture the fresh Shopify Production observation, verify a distinct Production candidate and safe fallback, merge the exact reviewed PR through protected `main`, then turn off Shopify Payments test mode as the final activation action. Run one separately approved exact-value real order to prove payment settlement, Apliiq acceptance, tracking, and customer email before declaring Production commerce complete.
+
 ## What is complete
 
 The isolated checkout candidate now implements the server-only Shopify hosted-checkout handoff requested by the Product Owner. It accepts only an opaque reviewed variant hash, re-reads current Shopify facts on the server, rejects stale or unavailable variants, creates a Shopify cart, and redirects only to an exact configured HTTPS Shopify checkout host. Same-origin POST enforcement, separate cart/checkout Product Owner approvals, environment kill switches, and foreign-host denial are covered by tests.

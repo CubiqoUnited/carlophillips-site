@@ -1,8 +1,16 @@
 # Current Status
 
 Updated: 2026-08-17
-Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; exact pushed evidence head `9754a6c` plus the approved local Production-preflight correction; no merge to `main` or Production deployment
+Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; exact pushed evidence head `e38837d`; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Live deployment and release-guardrail reconciliation — 2026-08-17
+
+- Read-only Vercel inspection binds both public domains to READY Production deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`, source commit `bb9568f46bd60b587f3fc16b82513ae5ea220026` on historical feature branch `codex/cp-runway-wording-design-system`. It is a live drift anchor, not the current reviewed commerce candidate and not an approved rollback artifact.
+- That exact Production deployment shows only successful observed runtime statuses (seven HTTP 200 and one HTTP 303 in the available seven-day deployment-scoped sample). The project-level Clerk and `theme.json` runtime error clusters belong to discarded older Preview deployments, not this Production deployment.
+- PR #14 is open, mergeable, and currently points to exact head `e38837d7667f8925193f7e490ad32f3f15c90823`. `CI / Verify` passes; the separate Vercel GitHub status fails because the linked deployment account is blocked, not because source verification failed.
+- The canonical repository currently has zero active rulesets. GitHub environments `Preview` and `Production` exist but have no protection rules or required reviewers, and administrator bypass is enabled. The connected `avloy07-eng` identity has pull-only access (`push=false`, `admin=false`) and cannot repair these controls, merge PR #14, or dispatch protected release operations.
+- A fresh authenticated Apliiq retry still exposes the saved Black IND4000 design and exact S/M/L SKUs, but its visible bulk-purchase control does not open a quote/cart. No human support reply was found. No sample cart, order, payment, fulfillment request, deployment, alias, merge, or Production mutation occurred.
 
 ## Evidence-only descendant Production preflight — 2026-08-17
 
