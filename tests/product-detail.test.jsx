@@ -14,7 +14,7 @@ const variantPresentation = {
   optionNames: ['Color', 'Size'],
   combinations: [
     {
-      referenceHash: `sha256:${'b'.repeat(64)}`,
+      referenceHash: 'sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3',
       title: 'Black / M',
       selectedOptions: [
         { name: 'Color', value: 'Black' },
@@ -24,13 +24,23 @@ const variantPresentation = {
       price: { amount: '128.00', currency: 'USD' },
     },
     {
-      referenceHash: `sha256:${'c'.repeat(64)}`,
+      referenceHash: 'sha256:0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d',
       title: 'Black / L',
       selectedOptions: [
         { name: 'Color', value: 'Black' },
         { name: 'Size', value: 'L' },
       ],
       availableForSale: false,
+      price: { amount: '128.00', currency: 'USD' },
+    },
+    {
+      referenceHash: 'sha256:bca824ce1a2583241b1785b1b655d7dd161c0dc18cdb56f05c528b2d2905e581',
+      title: 'Black / S',
+      selectedOptions: [
+        { name: 'Color', value: 'Black' },
+        { name: 'Size', value: 'S' },
+      ],
+      availableForSale: true,
       price: { amount: '128.00', currency: 'USD' },
     },
   ],
@@ -107,7 +117,7 @@ describe('commerce product presentation', () => {
     expect(html).not.toContain('Add to cart');
     expect(html).not.toContain('Checkout');
     const controls = html.match(/<button\b[^>]*>/g) || [];
-    expect(controls.length).toBe(3);
+    expect(controls.length).toBe(4);
     expect(controls.every(control => control.includes('disabled=""'))).toBe(true);
   });
 
@@ -154,7 +164,7 @@ describe('commerce product presentation', () => {
       commerceAllowed: true,
       reason: 'AD_HOC_COMMERCE_APPROVAL',
       product: {
-        id: 'hoodie', handle: 'approved-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
+        id: 'hoodie', handle: 'carlophillips-signature-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
         description: 'Current product description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
         variantPresentation, media: [],
       },
@@ -181,7 +191,7 @@ describe('commerce product presentation', () => {
       commerceAllowed: false,
       reason: 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED',
       product: {
-        id: 'hoodie', handle: 'approved-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
+        id: 'hoodie', handle: 'carlophillips-signature-hoodie', title: 'Live Hoodie', price: 128, currency: 'USD',
         description: 'Current product description', availableForSale: true, vendor: 'Provider', productType: 'Hoodie',
         variantPresentation, media: [],
       },

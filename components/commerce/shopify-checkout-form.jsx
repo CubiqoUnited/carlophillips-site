@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import productOffer from '../../config/shopify-product-offer.json';
+import { applyProductOffer } from '../../lib/commerce/product-offer-policy.js';
 
 function money(amount, currency) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency, maximumFractionDigits: 0 }).format(Number(amount));
@@ -13,7 +15,11 @@ function sizeFor(item) {
 }
 
 export default function ShopifyCheckoutForm({ handle, presentation }) {
-  const available = presentation.combinations
+  const offeredPresentation = applyProductOffer(presentation, productOffer, {
+    releaseId: productOffer.releaseId,
+    handle,
+  });
+  const available = (offeredPresentation?.combinations || [])
     .filter(item => item.availableForSale)
     .slice()
     .sort((left, right) => (SIZE_ORDER.get(sizeFor(left).toUpperCase()) ?? 999) - (SIZE_ORDER.get(sizeFor(right).toUpperCase()) ?? 999));

@@ -73,6 +73,14 @@ function approvedOptions(overrides = {}) {
     storeDomain: 'example.myshopify.com',
     storefrontToken: 'test-token',
     capabilityRegistry: readyCapabilityRegistry(),
+    productOfferConfig: {
+      schemaVersion: 'cp.shopify-product-offer.v1',
+      releaseId: releaseRecord.releaseId,
+      handle: releaseRecord.shopify.handle,
+      allowedSizes: ['M'],
+      allowedReferenceHashes: [referenceHash],
+      evidence: 'Test-scoped reviewed product offer',
+    },
     loadProductImpl: vi.fn(async () => currentProduct(releaseRecord)),
     fetchImpl: vi.fn(async () => ({
       ok: true,
@@ -122,6 +130,14 @@ describe('release-bound Shopify checkout handoff', () => {
     expect(result).toEqual({ ok: false, reason: 'PRODUCT_RELEASE_NOT_RELEASED' });
     expect(loadProductImpl).not.toHaveBeenCalled();
     expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('rejects a variant outside the reviewed customer offer before Shopify access', async () => {
+    const options = approvedOptions({ referenceHash: `sha256:${'f'.repeat(64)}` });
+    const result = await createApprovedHoodieCheckout(options);
+    expect(result).toEqual({ ok: false, reason: 'VARIANT_OUTSIDE_APPROVED_OFFER' });
+    expect(options.loadProductImpl).not.toHaveBeenCalled();
+    expect(options.fetchImpl).not.toHaveBeenCalled();
   });
 
   it.each([
