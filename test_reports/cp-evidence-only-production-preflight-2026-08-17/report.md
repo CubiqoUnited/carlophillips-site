@@ -38,4 +38,12 @@ This local comparison is UI-regression evidence only. It is not represented as a
 
 ## External-state result
 
-No workflow was dispatched. No PR was merged. No Vercel deployment or alias changed. No Shopify/Apliiq catalog, cart, checkout, payment, order, fulfillment or billing mutation occurred.
+PR #14 was updated to exact source commit `d713f8449487f2c6cd342976499ab283c66bf779`; repository `CI / Verify` run `31992593410` passed, including accessibility/privacy network audit.
+
+A clean detached checkout of that exact commit produced immutable Preview deployment `dpl_DfPkQ7XVYWMQs4GK2JUDmQYn8N5f` at `https://carlophillips-site-q2jxpnkvz-adityas-projects-261b17a9.vercel.app`. Vercel reports target `preview`, state `READY`, no aliases, no `gitDirty` marker, `cpArtifactKind=immutable-preview`, `cpBuildEnvironment=preview`, `cpCheckoutEnabled=false`, release `cp-signature-hoodie-2026-001`, and PR `14`.
+
+Protected runtime checks returned HTTP 200 for `/`, `/shop`, `/collections`, the Hoodie PDP, `/bag`, `/privacy`, `/terms`, and `/cookie-policy`. A syntactically valid offered S/M/L selection returned HTTP 409 `PRODUCT_RELEASE_NOT_RELEASED`; no checkout redirect or Shopify cart was created. Production remained exact deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`.
+
+An earlier upload from a working directory containing an untracked dependency link was marked `gitDirty=1`. It was quarantined, never accepted, had no aliases, and was permanently removed from Vercel after the clean Preview passed. It can be recreated from source but is not retained evidence.
+
+No protected release-candidate/Production workflow was dispatched. No PR was merged. No Production deployment or alias changed. No Shopify/Apliiq catalog, cart, checkout, payment, order, fulfillment or billing mutation occurred.
