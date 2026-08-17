@@ -1,0 +1,41 @@
+{
+  "observedAt": "2026-08-17",
+  "mode": "authenticated-controlled-browser-quote-attempt",
+  "savedDesign": "5958463",
+  "configuration": {
+    "garment": "Independent Trading Co IND4000",
+    "color": "black",
+    "decoration": "front embroidery",
+    "decorationSize": "2in x 2in",
+    "estimatedStitches": 648,
+    "sampleSize": "M",
+    "quantity": 1,
+    "mediumStockObservedMinimum": 5700
+  },
+  "partialQuoteUsd": {
+    "estimatedUnit": 39.45,
+    "possibleFirstOrderDigitization": 11.0,
+    "shipping": null,
+    "tax": null,
+    "total": null,
+    "priceFinal": false
+  },
+  "cartAttempts": [
+    {
+      "viewport": "normal-narrow",
+      "result": "provider-response-parse-failure",
+      "browserError": "Unexpected token '<': HTML response received where JSON was expected"
+    },
+    {
+      "viewport": "1280x900-clean-reload",
+      "result": "provider-response-parse-failure",
+      "browserError": "Unexpected token '<': HTML response received where JSON was expected"
+    }
+  ],
+  "cartItemCountAfterAttempts": 0,
+  "orderCreated": false,
+  "chargeCreated": false,
+  "addressSubmitted": false,
+  "result": "blocked-at-apliiq-cart-endpoint",
+  "externalMutations": []
+}
