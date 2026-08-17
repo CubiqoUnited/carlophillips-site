@@ -1,8 +1,16 @@
 # Current Status
 
 Updated: 2026-08-17
-Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; based on the integrated candidate and currently includes local evidence commit `6f30124`; no merge to `main` or Production deployment
+Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; exact pushed evidence head `9754a6c` plus the approved local Production-preflight correction; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Evidence-only descendant Production preflight — 2026-08-17
+
+- The Product Owner explicitly approved replacing the impossible self-referential exact-SHA rule with a Git-verified evidence-only descendant rule.
+- The selected `main` SHA must still equal checked-out `HEAD`. The reviewed candidate must exist and be its actual Git ancestor. Full history is fetched in both protected Production workflows.
+- Endpoint differences are accepted only for an explicit release/evidence, status-document, QA-report and release-test allowlist. Storefront, component, checkout, media manifest/assets, workflow, script, configuration, theme and symlink changes are denied.
+- Focused policy verification passes 59/59 assertions. Full verification passes design-system lint, zero-warning ESLint, 51/51 files and 532/532 tests, zero vulnerabilities across 67 audited production packages, and the optimized build. Coverage includes non-ancestor, missing-commit, wrong-HEAD, malformed/path-escape, symlink, app/component/checkout/media/config/workflow/script and mismatched-envelope denials.
+- The real `4ee088c` → `9754a6c` history is accepted as evidence-only. Production preflight still denies checkout for the nine remaining release/sample/approval/media/Production-observation/rollback/cart-capability gates. No workflow was dispatched and no external state changed.
 
 ## Production payment activation audit — 2026-08-17
 

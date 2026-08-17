@@ -10,6 +10,7 @@ const candidate = readFileSync('.github/workflows/vercel-release-candidate.yml',
 const production = readFileSync('.github/workflows/vercel-production.yml', 'utf8');
 const verifier = readFileSync('.github/scripts/verify-vercel-receipt.mjs', 'utf8');
 const fallbackSelector = readFileSync('.github/scripts/select-vercel-safe-fallback.mjs', 'utf8');
+const productionCommerceVerifier = readFileSync('scripts/verify-production-commerce-release.mjs', 'utf8');
 const verifierPath = join(process.cwd(), '.github/scripts/verify-vercel-receipt.mjs');
 const fallbackSelectorPath = join(process.cwd(), '.github/scripts/select-vercel-safe-fallback.mjs');
 const testSha = 'a'.repeat(40);
@@ -224,6 +225,7 @@ describe('CI/CD policy', () => {
   it('stages a distinct same-SHA Production candidate and safe fallback without aliases', () => {
     expect(candidate).toContain('workflow_dispatch:');
     expect(candidate).toContain('environment: Production');
+    expect(candidate).toContain('fetch-depth: 0');
     expect(candidate).toContain('NEXT_PUBLIC_COMMERCE_ENVIRONMENT: production');
     expect(candidate).toContain('checkout_enabled:');
     expect(candidate).toContain("SHOPIFY_CART_UI_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}");
@@ -246,10 +248,19 @@ describe('CI/CD policy', () => {
     expect(workflowStep(candidate, 'Verify staged candidate and safe fallback without deployment credential')).not.toContain('VERCEL_TOKEN');
   });
 
+  it('verifies evidence-only ancestry from full Git history without rename or symlink ambiguity', () => {
+    expect(candidate).toContain('fetch-depth: 0');
+    expect(production).toContain('fetch-depth: 0');
+    expect(productionCommerceVerifier).toContain("['merge-base', '--is-ancestor', candidateSha, expectedSha]");
+    expect(productionCommerceVerifier).toContain("['diff', '--no-renames', '--name-only'");
+    expect(productionCommerceVerifier).toContain("['ls-tree', '-rz', expectedSha, '--', ...changedPaths]");
+  });
+
   it('promotes only the reviewed candidate and recovers only to the reviewed safe fallback', () => {
     expect(production).toContain('safe_fallback_deployment:');
     expect(production).toContain('expected_production_anchor:');
     expect(production).toContain('expected_candidate_checkout:');
+    expect(production).toContain('fetch-depth: 0');
     expect(production).toContain('verify-production-commerce-release.mjs');
     expect(production).toContain('--expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT"');
     expect(production).toContain('test "$CANDIDATE_DEPLOYMENT" != "$SAFE_FALLBACK_DEPLOYMENT"');

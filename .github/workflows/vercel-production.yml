@@ -71,6 +71,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
 
       - name: Validate immutable release-pair inputs
         env:

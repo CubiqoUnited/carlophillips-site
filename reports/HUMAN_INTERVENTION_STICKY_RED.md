@@ -6,7 +6,7 @@ Updated: 2026-08-17
 
 The isolated checkout candidate now implements the server-only Shopify hosted-checkout handoff requested by the Product Owner. It accepts only an opaque reviewed variant hash, re-reads current Shopify facts on the server, rejects stale or unavailable variants, creates a Shopify cart, and redirects only to an exact configured HTTPS Shopify checkout host. Same-origin POST enforcement, separate cart/checkout Product Owner approvals, environment kill switches, and foreign-host denial are covered by tests.
 
-Source QA passes design-system lint, zero-warning code lint, 50 test files / 511 tests, zero production-dependency vulnerabilities, and the optimized Next.js build. Headless desktop 1440×1000 and mobile 390×844 evidence for the immutable candidate returns HTTP 200 with no console errors, runtime overlay, or overflow. The protected Preview returns HTTP 409 `PRODUCT_RELEASE_NOT_RELEASED` for checkout and creates no Shopify cart.
+Source QA passes design-system lint, zero-warning code lint, 51 test files / 532 tests, zero production-dependency vulnerabilities, and the optimized Next.js build. Headless desktop 1440×1000 and mobile 390×844 evidence for the immutable candidate returns HTTP 200 with no console errors, runtime overlay, or overflow. The protected Preview returns HTTP 409 `PRODUCT_RELEASE_NOT_RELEASED` for checkout and creates no Shopify cart.
 
 The 2026-08-16 authenticated read-only account audit also proves that the external product itself is no longer a Shopify Draft. It is Active on Online Store and Carlophillips Headless, has nine Black variants from XS through 5XL at USD 128–134, and all nine variants are assigned to Apliiq Dropship Fulfillment. Apliiq shows the Shopify store connected and a fulfillment payment method present.
 
@@ -16,7 +16,7 @@ On 2026-08-17 the Product Owner approved exact Shopify observation `sha256:143a8
 
 Customer payment is **not live**. Shopify Payments is explicitly in test mode. Apliiq shows zero orders in 2026 and no first-production mock approval. The Staged release still lacks an approved delivered physical sample and inspection, final product/media/fulfillment approvals, the complete required release-bound media matrix, a fresh post-approval ACTIVE Production observation, verified rollback execution, and operational `cart-write` authority. The cart capability remains `write_test_verified` with only `cart-write-test`; it is not operational `cart-write` authority. The Preview and Production checkout switches remain off.
 
-The Production preflight workflow also contains a structural self-reference: it currently requires `release.json` to contain the exact commit SHA of the commit that contains that same file. No Git commit can satisfy that equation. The safe proposed correction is limited to a Git-verified evidence-only descendant of the reviewed candidate, with application, component, checkout, media and configuration changes forbidden. That workflow policy change has **not** been made because it needs explicit Product Owner approval.
+The Product Owner approved the Production-preflight correction on 2026-08-17. The local implementation accepts a later selected `main` SHA only when Git proves that the reviewed candidate is its ancestor and every endpoint difference is confined to the explicit evidence-only allowlist. Storefront, component, checkout, media manifest/assets, workflow, script, configuration, theme, malformed-path and symlink changes remain forbidden. This correction is not yet merged or deployed and must become a freshly reviewed immutable candidate before use.
 
 ## Exact human action
 
@@ -27,7 +27,7 @@ The Production preflight workflow also contains a structural self-reference: it 
 5. After the remaining evidence and approvals are complete, let Codex capture a fresh sanitized ACTIVE Shopify Production observation inside an approved protected runtime. The reviewed Staging observation is already bound; the Production observation must be newer than the final approvals.
 6. Review the immutable Staging candidate and separately approve the product, media, and fulfillment evidence for that exact candidate.
 7. Keep Shopify Payments in test mode while the hosted-checkout staging proof is verified. Turning off test mode, enabling `SHOPIFY_CHECKOUT_ENABLED`, and accepting real customer charges require the final Released evidence and a separate Production authorization.
-8. Explicitly approve or reject the narrow preflight correction with: `Approve evidence-only descendant Production preflight` after reviewing the self-reference explanation above. This does not approve a merge, deployment, payment, order or Production release.
+8. Review the fresh immutable Preview for the approved preflight correction after PR CI passes. Preview approval does not approve merge, payment, order or Production release.
 9. Signal the first external resume point as: `Shopify two-step enabled` after the security setup; then provide the exact Medium sample quote total for separate purchase approval.
 
 Do not paste Shopify tokens, payment details, customer data, or provider IDs into chat. Do not enable the two Vercel checkout switches manually while the Product Release Record remains Staged.

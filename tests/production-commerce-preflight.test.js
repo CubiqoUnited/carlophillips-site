@@ -11,6 +11,21 @@ import {
 } from './fixtures/release-fixtures.js';
 
 const expectedSha = 'a'.repeat(40);
+const descendantSha = 'c'.repeat(40);
+
+function evidenceOnlyRelationship(candidateSha = expectedSha, selectedSha = descendantSha) {
+  return {
+    schemaVersion: 'cp.evidence-only-descendant.v1',
+    ready: true,
+    mode: 'evidence_only_descendant',
+    candidateSha,
+    expectedSha: selectedSha,
+    changedPaths: ['releases/cp-release-fixture/release.json'],
+    forbiddenPaths: [],
+    symlinkPaths: [],
+    blockers: [],
+  };
+}
 
 function registry(accessState = 'write_verified', allowedOperations = ['cart-write']) {
   return {
@@ -83,25 +98,89 @@ describe('Production commerce preflight', () => {
     expect(decision.safeFallbackCheckoutEnabled).toBe(false);
     expect(decision.blockers.map(item => item.code)).toEqual(expect.arrayContaining([
       'PRODUCT_RELEASE_NOT_RELEASED',
-      'RELEASE_CANDIDATE_SHA_MISMATCH',
+      'RELEASE_CANDIDATE_SOURCE_NOT_EQUIVALENT',
       'PHYSICAL_SAMPLE_APPROVAL_REQUIRED',
       'SHOPIFY_CART_CAPABILITY_NOT_READY',
     ]));
   });
 
-  it('requires the exact immutable candidate SHA before release evaluation can pass', () => {
+  it('rejects a different selected SHA without verified evidence-only ancestry', () => {
     const record = completeEvidence();
-    record.candidate.gitCommit = 'b'.repeat(40);
     const decision = evaluateProductionCommercePreflight({
       releaseRecord: record,
       mediaManifest,
-      expectedSha,
+      expectedSha: descendantSha,
       capabilityRegistry: registry(),
       cartAuthorization,
       checkoutAuthorization,
     });
     expect(decision.ready).toBe(false);
-    expect(decision.blockers.map(item => item.code)).toContain('RELEASE_CANDIDATE_SHA_MISMATCH');
+    expect(decision.blockers.map(item => item.code)).toContain('RELEASE_CANDIDATE_SOURCE_NOT_EQUIVALENT');
+  });
+
+  it('accepts a complete Released record through a verified evidence-only descendant', () => {
+    const record = completeEvidence();
+    const authorizations = authorizationsFor(record);
+    const decision = evaluateProductionCommercePreflight({
+      releaseRecord: record,
+      mediaManifest: createCompleteMediaManifest(),
+      expectedSha: descendantSha,
+      sourceRelationship: evidenceOnlyRelationship(),
+      capabilityRegistry: registry(),
+      cartAuthorization: authorizations.cart,
+      checkoutAuthorization: authorizations.checkout,
+    });
+    expect(decision).toMatchObject({
+      ready: true,
+      checkoutEnabled: true,
+      candidateSha: expectedSha,
+      expectedSha: descendantSha,
+      sourceMode: 'evidence_only_descendant',
+      blockers: [],
+    });
+  });
+
+  it('rejects mismatched or denied descendant evidence', () => {
+    const record = completeEvidence();
+    const authorizations = authorizationsFor(record);
+    for (const sourceRelationship of [
+      { ...evidenceOnlyRelationship(), ready: false, mode: 'denied' },
+      { ...evidenceOnlyRelationship(), candidateSha: 'b'.repeat(40) },
+      { ...evidenceOnlyRelationship(), expectedSha: 'd'.repeat(40) },
+    ]) {
+      const decision = evaluateProductionCommercePreflight({
+        releaseRecord: record,
+        mediaManifest: createCompleteMediaManifest(),
+        expectedSha: descendantSha,
+        sourceRelationship,
+        capabilityRegistry: registry(),
+        cartAuthorization: authorizations.cart,
+        checkoutAuthorization: authorizations.checkout,
+      });
+      expect(decision.ready).toBe(false);
+      expect(decision.blockers.map(item => item.code)).toContain('RELEASE_CANDIDATE_SOURCE_NOT_EQUIVALENT');
+    }
+  });
+
+  it('rejects an invalid Git envelope even when the candidate SHA is exact', () => {
+    const record = completeEvidence();
+    const authorizations = authorizationsFor(record);
+    const decision = evaluateProductionCommercePreflight({
+      releaseRecord: record,
+      mediaManifest: createCompleteMediaManifest(),
+      expectedSha,
+      sourceRelationship: {
+        ...evidenceOnlyRelationship(expectedSha, expectedSha),
+        ready: false,
+        mode: 'denied',
+        blockers: ['EXPECTED_SHA_IS_NOT_HEAD'],
+      },
+      capabilityRegistry: registry(),
+      cartAuthorization: authorizations.cart,
+      checkoutAuthorization: authorizations.checkout,
+    });
+    expect(decision.ready).toBe(false);
+    expect(decision.blockers.map(item => item.code)).toContain('SOURCE_RELATIONSHIP_INVALID');
   });
 
   it('allows only a complete Released record with operational cart evidence', () => {

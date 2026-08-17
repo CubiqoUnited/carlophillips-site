@@ -7,6 +7,7 @@
 - [x] Confirm live hosted payment methods without entering card details or placing a real order.
 - [x] Detect and document that the legacy Production checkout bypasses the canonical Draft Product Release Record.
 - [x] Restore Shopify Payments test mode immediately so no real customer can be charged during remediation.
+- [x] Replace the impossible self-referential candidate-SHA preflight with a Git-verified evidence-only descendant policy that denies storefront, checkout, component, media, workflow, script, configuration, malformed-path and symlink changes.
 - [ ] Obtain exact Product Owner approval for the quoted physical sample spend; order, receive, and inspect the Hoodie sample.
 - [ ] Bind fresh Shopify identity/facts/variant observations and exact approved Media Registry assets to the Product Release Record.
 - [ ] Record Product Owner product, media, and fulfillment approvals and advance the record through Draft, Staged, Approved, and Released without bypasses.
