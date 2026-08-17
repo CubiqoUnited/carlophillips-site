@@ -2,10 +2,16 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import HomeStorefront, {
+  BagDrawer,
   buildHomeGalleryMedia,
   isPreviewRunwayReference,
+  OrderTray,
   ProductMediaOverlay,
+  SizeFitDrawer,
 } from '../components/storefront/home-storefront.jsx';
+import { offeredVariants } from '../components/commerce/shopify-checkout-form.jsx';
+import observation from '../releases/cp-signature-hoodie-2026-001/shopify-product-observation.json';
+import { createVariantPresentation } from '../lib/commerce/variant-presentation-policy.js';
 
 const availableSummary = {
   schemaVersion: 'cp.home-catalog-summary.v1',
@@ -70,8 +76,8 @@ describe('home release composition', () => {
       excludedCount: 1,
       primaryProduct: null,
     }} />);
-    expect(available).toContain('Explore media');
-    expect(available).toContain('12 views');
+    expect(available).toContain('View gallery');
+    expect(available).toContain('>12</span>');
     expect(available).toContain('data-media-trigger="signature-hoodie"');
     expect(available).toContain('aria-haspopup="dialog"');
     expect(available).toContain('aria-controls="product-media-overlay"');
@@ -134,7 +140,7 @@ describe('home release composition', () => {
       commerceAllowed: true,
       primaryProduct: { ...availableSummary.primaryProduct, commerceAllowed: true },
     }} />);
-    expect(html).toContain('Explore media');
+    expect(html).toContain('View gallery');
     expect(html).toContain('Signature Series');
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
@@ -156,7 +162,7 @@ describe('home release composition', () => {
     expect(html).not.toContain('Candidates</span>');
     expect(html).not.toContain('Withheld</span>');
     expect(html.toLowerCase()).not.toContain('shopify');
-    expect(html).toContain('cp-product-media-button-corner');
+    expect(html).toContain('cp-product-actions-corner');
     expect(html).toContain('href="/privacy"');
     expect(html).toContain('href="/terms"');
     expect(html).toContain('href="/cookie-policy"');
@@ -199,8 +205,8 @@ describe('home release composition', () => {
     expect(html).not.toContain('data-preview-reference="signature-hoodie"');
     expect(html).not.toContain('Commerce withheld');
     expect(html).toContain('data-media-trigger="signature-hoodie"');
-    expect(html).toContain('Explore media');
-    expect(html).toContain('12 views');
+    expect(html).toContain('View gallery');
+    expect(html).toContain('>12</span>');
     expect(html).not.toContain('href="/products/carlophillips-signature-hoodie"');
     expect(html).not.toContain('aria-current="page"');
     expect(html).not.toContain('>Hoodies</a>');
@@ -272,5 +278,41 @@ describe('home release composition', () => {
     expect(openHtml).not.toContain('AI-assisted still-derived motion');
     expect(openHtml).not.toContain('href="/products/');
     expect(closedHtml).toBe('');
+  });
+
+  it('renders the released S/M/L order, fit and bag interactions through the secure checkout endpoint', () => {
+    const presentation = createVariantPresentation(observation);
+    const variants = offeredVariants('carlophillips-signature-hoodie', presentation);
+    const selected = variants[0];
+    const orderHtml = renderToStaticMarkup(<OrderTray
+      handle="carlophillips-signature-hoodie"
+      onAddToBag={() => {}}
+      onClose={() => {}}
+      onOpenSizeFit={() => {}}
+      onSelect={() => {}}
+      open
+      priceLabel="$128"
+      selectedHash={selected.referenceHash}
+      variants={variants}
+    />);
+    const fitHtml = renderToStaticMarkup(<SizeFitDrawer onClose={() => {}} open />);
+    const bagHtml = renderToStaticMarkup(<BagDrawer
+      handle="carlophillips-signature-hoodie"
+      item={selected}
+      onClose={() => {}}
+      onContinue={() => {}}
+      open
+    />);
+
+    expect(variants.map(item => item.selectedOptions.find(option => option.name.toLowerCase() === 'size').value.toUpperCase())).toEqual(['S', 'M', 'L']);
+    expect(orderHtml).toContain('Add to bag');
+    expect(orderHtml).toContain('Buy now — $128');
+    expect(orderHtml).toContain('action="/api/checkout"');
+    expect(orderHtml).toContain(`value="${selected.referenceHash}"`);
+    expect(fitHtml).toContain('Garment measurements');
+    expect(fitHtml).toContain('How to measure');
+    expect(bagHtml).toContain('Your bag');
+    expect(bagHtml).toContain('Checkout — $128');
+    expect(bagHtml).toContain('Continue shopping');
   });
 });

@@ -214,6 +214,35 @@ The previously requested runway-motion file remains optional and secondary to th
 
 ---
 
+# HUMAN INTERVENTION REQUIRED — TWO GENUINE HOODIE MOTION FEEDS
+
+Updated: 2026-08-17
+
+## What is ready
+
+The storefront now has a token-governed, accessible motion/gallery/purchase shell that can consume approved Shopify video media. It pauses by visibility, page state, reduced-motion preference and user choice. The gallery and purchase flow are fully implemented and locally verified.
+
+## Exact human action
+
+Provide or approve two genuine, silent, 6–8 second Hoodie video files:
+
+1. a professional runway walk; and
+2. minimal movements, gestures and styling.
+
+The physical Hoodie must remain visually accurate to the approved product. Upload the files to the approved product-media intake/Shopify product media, record rights/quality approval, and signal: `Two Hoodie motion feeds uploaded and approved`.
+
+## Cost and risk
+
+- Existing approved footage can be used without new generation spend.
+- Any external generation, studio booking, model usage, editing subscription or media-app credit requires approval for the exact provider, access, price and side effects before work begins.
+- Do not label the current Moda still sequence or still-derived GIF as genuine filmed product motion.
+
+## Resume point
+
+After the exact signal, bind both video assets to the Media Registry and current Product Release Record, verify the Shopify-derived storefront payload, then repeat desktop/tablet/mobile motion, reduced-motion, gallery, console/network and screenshot QA in an immutable Vercel Preview. Production remains a separate reviewed promotion.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — PRODUCTION AUTHORITY CLOSURE
 
 Updated: 2026-08-14

@@ -74,12 +74,16 @@ describe('home catalog summary', () => {
     expect(summary.message).toContain('local non-commerce fixture');
     expect(Object.keys(summary.primaryProduct).sort()).toEqual([
       'commerceAllowed',
+      'currency',
       'description',
+      'handle',
       'heroMedia',
       'href',
       'media',
+      'price',
       'sourceLabel',
       'title',
+      'variantPresentation',
     ]);
     expect(JSON.stringify(summary)).not.toContain('raw-media-id-must-not-pass');
     expect(JSON.stringify(summary)).not.toContain('Modelize');

@@ -28,7 +28,8 @@ describe('storefront route policy', () => {
     expect(source).not.toContain('signature-hoodie-preview');
     expect(source).not.toContain('loadShopifyProduct');
     expect(source).not.toContain('SHOPIFY_');
-    expect(source).not.toContain('Add to bag');
+    expect(source).toContain('Add to bag');
+    expect(source).toContain('action="/api/checkout"');
     expect(source).toContain('/campaigns/lofoten-runway-hero.png');
     expect(source).toContain('At the<br />edge of life.');
     expect(source).toContain('Collection preview');

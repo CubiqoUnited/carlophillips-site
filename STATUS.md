@@ -4,6 +4,13 @@ Updated: 2026-08-17
 Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; exact checkout implementation ancestor `81a1c7e`; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Product motion/gallery/purchase experience — 2026-08-17
+
+- The current commerce handoff now includes the complete post-hero interaction shell: visibility-aware motion with explicit pause/play, a manual twelve-view gallery with optional five-second autoplay/progress, Shopify-price Order entry, exact S/M/L order tray, Size & Fit drawer, Add-to-Bag confirmation, quantity/subtotal, and the existing secure `/api/checkout` handoff.
+- All visual values route through canonical primitive → semantic → component tokens; the hardcoded-value lint remains enforced.
+- Local headless QA passed at 1440×1000, 1024×768 and 390×844 with fifteen inspected screenshots, autoplay timing, S/M/L and $128 assertions, no overflow, and zero console/network failures. The complete source gate also passed: design-system lint, zero-warning ESLint, 53/53 files and 549/549 tests, zero vulnerabilities across 67 production packages, and optimized build. Evidence is under `test_reports/cp-product-motion-experience-2026-08-17/`.
+- The renderer is ready for approved Shopify video media, but the two requested genuine motion feeds (runway walk and minimal gestures/styling) are not present in the approved Media Registry. The sticky human handoff records the exact upload/approval signal. No paid generation, merge, Preview/Production deployment, checkout submission, order or Shopify mutation occurred.
+
 ## Shopify Payments live activation — 2026-08-17
 
 - The Product Owner explicitly authorized real Production payments. Shopify Payments test mode was turned off and the setting persisted.

@@ -3,9 +3,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, Expand, Menu, ShoppingBag, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, Check, Expand, Menu, Minus, Pause, Play, Plus, Ruler, ShoppingBag, X } from 'lucide-react';
 import { SIGNATURE_HOODIE_SHOWCASE_MEDIA } from '../../lib/media/signature-hoodie-showcase.js';
 import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
+import { money, offeredVariants, sizeFor } from '../commerce/shopify-checkout-form.jsx';
 
 const fallbackSummary = {
   status: 'denied',
@@ -83,6 +84,7 @@ const productCategories = [
   { label: 'Accessories', href: '/shop?category=accessories' },
 ];
 const dialogFocusableSelector = 'button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])';
+const motionPreferenceKey = 'cp-signature-motion-paused';
 
 const campaignHero = {
   src: '/campaigns/lofoten-runway-hero.png',
@@ -140,6 +142,30 @@ function moveDialogFocus(event, dialog) {
   focusable[nextIndex].focus();
 }
 
+function useDialogLifecycle({ open, onClose, dialogRef, trapFocus = true }) {
+  useEffect(() => {
+    if (!open) return undefined;
+    const releaseDocumentScroll = lockDocumentScroll();
+    const focusDialog = window.requestAnimationFrame(() => {
+      if (trapFocus) dialogRef.current?.querySelector(dialogFocusableSelector)?.focus();
+    });
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+      if (trapFocus && event.key === 'Tab') moveDialogFocus(event, dialogRef.current);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusDialog);
+      window.removeEventListener('keydown', handleKeyDown);
+      releaseDocumentScroll();
+    };
+  }, [dialogRef, onClose, open, trapFocus]);
+}
+
 export function buildHomeGalleryMedia(summary) {
   if (isPreviewRunwayReference(summary)) {
     return signaturePreviewReferenceMedia.map(item => ({ ...item, type: 'image' }));
@@ -166,23 +192,26 @@ export function buildHomeGalleryMedia(summary) {
   return [...uniqueMedia.values()];
 }
 
-export function ProductMediaOverlay({ media, open, onClose, title }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+export function ProductMediaOverlay({ activeIndex = 0, interactive = true, media, onActiveIndex = () => {}, onClose, onOrder = null, open, priceLabel = '', title }) {
   const [motionPlaying, setMotionPlaying] = useState(false);
+  const [autoPlaying, setAutoPlaying] = useState(false);
+  const [autoSuspended, setAutoSuspended] = useState(false);
   const dialogRef = useRef(null);
   const trackRef = useRef(null);
   const motionNavigationPendingRef = useRef(false);
+  const activeIndexRef = useRef(activeIndex);
+  activeIndexRef.current = activeIndex;
 
   const motionIndex = media.findIndex(item => item.gifHref || item.type === 'video');
 
   useEffect(() => {
     if (!open) return undefined;
     const releaseDocumentScroll = lockDocumentScroll();
-    setActiveIndex(0);
     setMotionPlaying(false);
+    setAutoPlaying(false);
     motionNavigationPendingRef.current = false;
     requestAnimationFrame(() => {
-      trackRef.current?.scrollTo({ left: 0 });
+      trackRef.current?.scrollTo({ left: activeIndexRef.current * (trackRef.current?.clientWidth || 0) });
       dialogRef.current?.querySelector(dialogFocusableSelector)?.focus();
     });
     return releaseDocumentScroll;
@@ -200,8 +229,8 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
         : designSystemRuntimeContract.behavior.smoothScroll,
     });
     if (index !== motionIndex && !motionNavigationPendingRef.current) setMotionPlaying(false);
-    setActiveIndex(index);
-  }, [media.length, motionIndex]);
+    onActiveIndex(index);
+  }, [media.length, motionIndex, onActiveIndex]);
 
   const handleScroll = event => {
     const track = event.currentTarget;
@@ -209,8 +238,28 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
     const index = Math.round(track.scrollLeft / track.clientWidth);
     if (index === motionIndex) motionNavigationPendingRef.current = false;
     else if (!motionNavigationPendingRef.current) setMotionPlaying(false);
-    setActiveIndex(current => current === index ? current : index);
+    if (activeIndex !== index) onActiveIndex(index);
   };
+
+  const handleManualMove = useCallback(nextIndex => {
+    setAutoPlaying(false);
+    moveTo(nextIndex);
+  }, [moveTo]);
+
+  useEffect(() => {
+    if (!open || !interactive || !autoPlaying || autoSuspended || media.length < 2) return undefined;
+    const interval = window.setInterval(() => {
+      moveTo((activeIndex + 1) % media.length);
+    }, designSystemRuntimeContract.behavior.galleryAutoplayMs);
+    return () => window.clearInterval(interval);
+  }, [activeIndex, autoPlaying, autoSuspended, interactive, media.length, moveTo, open]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const handleVisibility = () => setAutoSuspended(document.hidden);
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [open]);
 
   const handleMotionControl = () => {
     if (activeIndex !== motionIndex) {
@@ -223,7 +272,7 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
   };
 
   useEffect(() => {
-    if (!open) return undefined;
+    if (!open || !interactive) return undefined;
     const handleKeyDown = event => {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -232,19 +281,19 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
       }
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        moveTo(activeIndex - 1);
+        handleManualMove(activeIndex - 1);
         return;
       }
       if (event.key === 'ArrowRight') {
         event.preventDefault();
-        moveTo(activeIndex + 1);
+        handleManualMove(activeIndex + 1);
         return;
       }
       if (event.key === 'Tab') moveDialogFocus(event, dialogRef.current);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIndex, moveTo, onClose, open]);
+  }, [activeIndex, handleManualMove, interactive, onClose, open]);
 
   if (!open || media.length === 0) return null;
 
@@ -258,6 +307,7 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
       tabIndex={-1}
       className="cp-media-dialog"
       data-product-media-overlay="open"
+      inert={interactive ? undefined : true}
     >
       <div className="cp-media-panel">
         <header className="cp-media-dialog-header">
@@ -281,9 +331,19 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
             <h2 id="product-media-title" className="cp-visually-hidden">{title} media viewer</h2>
           </div>
           <div className="cp-media-header-group cp-media-header-status">
+            <button
+              type="button"
+              className="cp-media-auto-control"
+              onClick={() => setAutoPlaying(current => !current)}
+              aria-pressed={autoPlaying}
+            >
+              {autoPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
+              <span>{autoPlaying ? 'Pause auto' : 'Play auto'}</span>
+            </button>
             <p className="cp-eyebrow" aria-live="polite">
               {String(activeIndex + 1).padStart(2, '0')} / {String(media.length).padStart(2, '0')}
             </p>
+            {onOrder && <button type="button" onClick={onOrder} className="cp-media-order-action">Order — {priceLabel}</button>}
             <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close product media viewer">
               <X className="cp-icon cp-icon-medium" />
             </button>
@@ -293,6 +353,12 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
         <div
           ref={trackRef}
           onScroll={handleScroll}
+          onMouseEnter={() => setAutoSuspended(true)}
+          onMouseLeave={() => setAutoSuspended(false)}
+          onFocusCapture={() => setAutoSuspended(true)}
+          onBlurCapture={event => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setAutoSuspended(false);
+          }}
           className="cp-media-track cp-scrollbar-hide"
           aria-label={`${title} media`}
         >
@@ -335,10 +401,19 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
           })}
         </div>
 
+        {autoPlaying && (
+          <div className="cp-media-auto-progress" data-auto-suspended={autoSuspended} aria-label="Automatic gallery advances every five seconds">
+            <span>Auto · 5 sec</span>
+            <span className="cp-media-auto-progress-track" aria-hidden="true">
+              <span key={activeIndex} className={autoSuspended ? 'cp-media-auto-progress-fill cp-motion-paused' : 'cp-media-auto-progress-fill'} />
+            </span>
+          </div>
+        )}
+
         <div className="cp-media-navigation">
           <button
             type="button"
-            onClick={() => moveTo(activeIndex - 1)}
+            onClick={() => handleManualMove(activeIndex - 1)}
             disabled={activeIndex === 0}
             className="cp-media-arrow"
             aria-label="Previous product image"
@@ -347,7 +422,7 @@ export function ProductMediaOverlay({ media, open, onClose, title }) {
           </button>
           <button
             type="button"
-            onClick={() => moveTo(activeIndex + 1)}
+            onClick={() => handleManualMove(activeIndex + 1)}
             disabled={activeIndex === media.length - 1}
             className="cp-media-arrow"
             aria-label="Next product image"
@@ -494,7 +569,13 @@ function CampaignHero() {
   );
 }
 
-function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summary }) {
+function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motionSuspended, onOpenGallery, onOpenOrder, priceLabel, purchaseReady, summary }) {
+  const sectionRef = useRef(null);
+  const motionVideoRef = useRef(null);
+  const [inMotionRange, setInMotionRange] = useState(false);
+  const [pageActive, setPageActive] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(true);
+  const [userPaused, setUserPaused] = useState(true);
   const heroMedia = summary.primaryProduct?.heroMedia || null;
   const product = summary.primaryProduct;
   const signatureVisible = summary.visibleCount > 0
@@ -508,11 +589,65 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
     product?.description,
     signatureHomepagePresentation.description
   );
+  const motionPlaying = runwayVisualReady
+    && inMotionRange
+    && pageActive
+    && !reducedMotion
+    && !userPaused
+    && !motionSuspended;
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(designSystemRuntimeContract.media.reducedMotion);
+    const savedPaused = window.sessionStorage.getItem(motionPreferenceKey) === 'true';
+    setReducedMotion(mediaQuery.matches);
+    setUserPaused(mediaQuery.matches || savedPaused);
+    const handlePreference = event => {
+      setReducedMotion(event.matches);
+      if (event.matches) setUserPaused(true);
+    };
+    mediaQuery.addEventListener('change', handlePreference);
+    return () => mediaQuery.removeEventListener('change', handlePreference);
+  }, []);
+
+  useEffect(() => {
+    const video = motionVideoRef.current;
+    if (!video) return;
+    if (motionPlaying) video.play().catch(() => setUserPaused(true));
+    else video.pause();
+  }, [motionPlaying]);
+
+  useEffect(() => {
+    const target = sectionRef.current;
+    if (!target) return undefined;
+    const observer = new IntersectionObserver(
+      entries => setInMotionRange(entries[0]?.intersectionRatio >= 0.6),
+      { threshold: [0, 0.6, 1] }
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleVisibility = () => setPageActive(!document.hidden);
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, []);
+
+  const toggleMotion = () => {
+    setUserPaused(current => {
+      const next = !current;
+      window.sessionStorage.setItem(motionPreferenceKey, String(next));
+      return next;
+    });
+  };
 
   return (
     <section
+      ref={sectionRef}
       id="signature-runway"
-      className="cp-storefront-panel cp-viewport-panel cp-product-runway"
+      className={motionPlaying
+        ? 'cp-storefront-panel cp-viewport-panel cp-product-runway'
+        : 'cp-storefront-panel cp-viewport-panel cp-product-runway cp-runway-motion-paused'}
       aria-label="Signature Hoodie runway"
     >
       <figure className="cp-runway-media cp-surface-panel">
@@ -527,17 +662,39 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
               className="cp-runway-backdrop"
               aria-hidden="true"
             />
-            {signatureRunwayFrames.map((frame, index) => (
-              <Image
-                key={frame.src}
-                src={frame.src}
-                alt={frame.alt}
-                fill
-                priority={index === 0}
-                sizes={designSystemRuntimeContract.imageSizes.fullViewport}
-                className={`cp-runway-frame ${signatureRunwayFrameClasses[index]}`}
+            {motionAsset?.type === 'video' ? (
+              <video
+                ref={motionVideoRef}
+                src={motionAsset.src || motionAsset.url}
+                poster={motionAsset.previewUrl}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="cp-runway-live-motion"
+                aria-label={motionAsset.alt}
               />
-            ))}
+            ) : motionAsset?.gifHref ? (
+              <Image
+                src={motionPlaying ? motionAsset.gifHref : motionAsset.posterSrc || motionAsset.src}
+                alt={motionAsset.alt}
+                fill
+                priority
+                unoptimized
+                sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+                className="cp-runway-live-motion"
+              />
+            ) : signatureRunwayFrames.map((frame, index) => (
+                <Image
+                  key={frame.src}
+                  src={frame.src}
+                  alt={frame.alt}
+                  fill
+                  priority={index === 0}
+                  sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+                  className={`cp-runway-frame ${signatureRunwayFrameClasses[index]}`}
+                />
+              ))}
           </>
         ) : heroMedia ? (
             <Image
@@ -569,19 +726,26 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
       </figure>
 
       {galleryReady ? (
-        <button
-          ref={galleryButtonRef}
-          type="button"
-          onClick={onOpenGallery}
-          aria-haspopup="dialog"
-          aria-controls="product-media-overlay"
-          data-media-trigger="signature-hoodie"
-          className="cp-product-media-button cp-product-media-button-corner"
-        >
-          <span>Explore media</span>
-          <Expand className="cp-product-media-expand cp-icon cp-icon-small" aria-hidden="true" />
-          <span className="cp-text-align-end">{String(galleryCount).padStart(2, '0')} views</span>
-        </button>
+        <div className="cp-product-actions-corner">
+          {purchaseReady && (
+            <button type="button" onClick={onOpenOrder} className="cp-product-order-button">
+              Order — {priceLabel}
+            </button>
+          )}
+          <button
+            ref={galleryButtonRef}
+            type="button"
+            onClick={onOpenGallery}
+            aria-haspopup="dialog"
+            aria-controls="product-media-overlay"
+            data-media-trigger="signature-hoodie"
+            className="cp-product-media-button"
+          >
+            <span>View gallery</span>
+            <Expand className="cp-product-media-expand cp-icon cp-icon-small" aria-hidden="true" />
+            <span className="cp-text-align-end">{String(galleryCount).padStart(2, '0')}</span>
+          </button>
+        </div>
       ) : previewReferenceReady ? (
         null
       ) : (
@@ -592,6 +756,21 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           <span>Explore the collection</span>
           <ArrowRight className="cp-product-media-fallback-icon cp-icon cp-icon-small" />
         </Link>
+      )}
+
+      {runwayVisualReady && (
+        <div className="cp-motion-control-group">
+          <span className="cp-motion-status" aria-live="polite">
+            Motion study · {motionPlaying ? 'playing' : 'paused'}
+          </span>
+          <button type="button" className="cp-motion-control" onClick={toggleMotion} aria-pressed={!motionPlaying}>
+            {motionPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
+            <span>{motionPlaying ? 'Pause motion' : 'Play motion'}</span>
+          </button>
+          <span className={motionPlaying ? 'cp-motion-timeline' : 'cp-motion-timeline cp-motion-paused'} aria-hidden="true">
+            <span />
+          </span>
+        </div>
       )}
 
       <div className="cp-product-layout cp-page-shell">
@@ -617,7 +796,142 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, onOpenGallery, summ
           )}
         </div>
       </div>
+      {purchaseReady && (
+        <div className="cp-mobile-purchase-bar">
+          <button type="button" onClick={onOpenOrder}>Select size</button>
+          <button type="button" onClick={onOpenOrder}>Order now — {priceLabel}</button>
+        </div>
+      )}
     </section>
+  );
+}
+
+function SizeChoices({ onSelect, selectedHash, variants }) {
+  return (
+    <div className="cp-home-size-grid" role="radiogroup" aria-label="Choose size">
+      {variants.map(variant => (
+        <button
+          key={variant.referenceHash}
+          type="button"
+          role="radio"
+          aria-checked={selectedHash === variant.referenceHash}
+          className={selectedHash === variant.referenceHash ? 'cp-home-size-choice cp-home-size-choice-selected' : 'cp-home-size-choice'}
+          onClick={() => onSelect(variant.referenceHash)}
+        >
+          {sizeFor(variant).toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function SizeFitDrawer({ onClose, open }) {
+  const dialogRef = useRef(null);
+  useDialogLifecycle({ open, onClose, dialogRef });
+  if (!open) return null;
+  return (
+    <aside ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="size-fit-title" className="cp-side-drawer cp-size-fit-drawer">
+      <header className="cp-drawer-header">
+        <div>
+          <p className="cp-eyebrow">Fit guide</p>
+          <h2 id="size-fit-title" className="cp-drawer-title">Size &amp; Fit</h2>
+        </div>
+        <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close size and fit guide"><X className="cp-icon cp-icon-medium" /></button>
+      </header>
+      <div className="cp-drawer-body">
+        <p className="cp-fit-heading">Regular fit</p>
+        <p className="cp-fit-copy">Designed with room through the chest and body. Choose your usual size for the intended structured silhouette.</p>
+        <div className="cp-fit-sizes" aria-label="Offered sizes"><span>S</span><span>M</span><span>L</span></div>
+        <details className="cp-fit-detail" open>
+          <summary>Garment measurements <Plus className="cp-icon cp-icon-small" /><Minus className="cp-icon cp-icon-small" /></summary>
+          <p>Compare a favourite hoodie laid flat. Measure chest from underarm to underarm and length from shoulder to hem.</p>
+        </details>
+        <details className="cp-fit-detail">
+          <summary>How to measure <Plus className="cp-icon cp-icon-small" /><Minus className="cp-icon cp-icon-small" /></summary>
+          <p>Keep the tape level and relaxed. If you are between sizes, size up for a looser fit.</p>
+        </details>
+      </div>
+    </aside>
+  );
+}
+
+export function OrderTray({ handle, interactive = true, onAddToBag, onClose, onOpenSizeFit, open, onSelect, priceLabel, selectedHash, variants }) {
+  const dialogRef = useRef(null);
+  useDialogLifecycle({ open: open && interactive, onClose, dialogRef, trapFocus: interactive });
+  const selected = variants.find(item => item.referenceHash === selectedHash) || null;
+  if (!open) return null;
+  return (
+    <aside ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="order-tray-title" className="cp-side-drawer cp-order-tray" inert={interactive ? undefined : true}>
+      <header className="cp-drawer-header">
+        <div>
+          <p className="cp-eyebrow">Signature Series / 001</p>
+          <h2 id="order-tray-title" className="cp-drawer-title">ONE</h2>
+        </div>
+        <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close order panel"><X className="cp-icon cp-icon-medium" /></button>
+      </header>
+      <div className="cp-drawer-body cp-order-body">
+        <p className="cp-order-price">{priceLabel}</p>
+        <p className="cp-order-copy">Heavyweight black pullover hoodie with restrained CP chest embroidery.</p>
+        <div className="cp-order-size-heading">
+          <span>Select size</span>
+          <button type="button" onClick={onOpenSizeFit}><Ruler className="cp-icon cp-icon-small" /> Size &amp; Fit</button>
+        </div>
+        <SizeChoices variants={variants} selectedHash={selectedHash} onSelect={onSelect} />
+        <div className="cp-order-actions">
+          <button type="button" disabled={!selected} className="cp-order-secondary" onClick={() => onAddToBag(selected)}>Add to bag</button>
+          <form method="post" action="/api/checkout">
+            <input type="hidden" name="handle" value={handle} />
+            <input type="hidden" name="referenceHash" value={selectedHash} />
+            <input type="hidden" name="quantity" value="1" />
+            <button type="submit" disabled={!selected} className="cp-order-primary">Buy now — {priceLabel}</button>
+          </form>
+        </div>
+        <p className="cp-order-note">Delivery and payment are reviewed in Shopify’s secure checkout before an order is placed.</p>
+      </div>
+    </aside>
+  );
+}
+
+export function BagDrawer({ handle, item, onClose, onContinue, open }) {
+  const dialogRef = useRef(null);
+  const [quantity, setQuantity] = useState(1);
+  useDialogLifecycle({ open, onClose, dialogRef });
+  useEffect(() => {
+    if (open) setQuantity(1);
+  }, [open]);
+  if (!open || !item) return null;
+  return (
+    <aside ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="bag-drawer-title" className="cp-side-drawer cp-bag-drawer">
+      <header className="cp-drawer-header">
+        <div>
+          <p className="cp-eyebrow"><Check className="cp-icon cp-icon-small" /> Added</p>
+          <h2 id="bag-drawer-title" className="cp-drawer-title">Your bag</h2>
+        </div>
+        <button type="button" onClick={onClose} className="cp-media-icon-button" aria-label="Close bag"><X className="cp-icon cp-icon-medium" /></button>
+      </header>
+      <div className="cp-drawer-body cp-bag-drawer-body">
+        <div className="cp-bag-line-item">
+          <Image src={signatureRunwayFrames[0].src} alt="Signature Hoodie in black" width={160} height={200} className="cp-bag-line-image" />
+          <div>
+            <p className="cp-bag-line-title">ONE</p>
+            <p className="cp-bag-line-meta">Black · {sizeFor(item).toUpperCase()}</p>
+            <div className="cp-quantity-control" aria-label="Quantity">
+              <button type="button" onClick={() => setQuantity(current => Math.max(1, current - 1))} aria-label="Decrease quantity"><Minus className="cp-icon cp-icon-small" /></button>
+              <span>{quantity}</span>
+              <button type="button" onClick={() => setQuantity(current => current + 1)} aria-label="Increase quantity"><Plus className="cp-icon cp-icon-small" /></button>
+            </div>
+          </div>
+        </div>
+        <div className="cp-bag-summary"><span>Subtotal</span><span>{money(Number(item.price.amount) * quantity, item.price.currency)}</span></div>
+        <form method="post" action="/api/checkout">
+          <input type="hidden" name="handle" value={handle} />
+          <input type="hidden" name="referenceHash" value={item.referenceHash} />
+          <input type="hidden" name="quantity" value={quantity} />
+          <button type="submit" className="cp-order-primary">Checkout — {money(Number(item.price.amount) * quantity, item.price.currency)}</button>
+        </form>
+        <button type="button" onClick={onContinue} className="cp-order-secondary">Continue shopping</button>
+      </div>
+    </aside>
   );
 }
 
@@ -642,12 +956,33 @@ function Footer() {
 export default function HomeStorefront({ catalogSummary }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
+  const [mediaIndex, setMediaIndex] = useState(0);
+  const [orderOpen, setOrderOpen] = useState(false);
+  const [sizeFitOpen, setSizeFitOpen] = useState(false);
+  const [bagItem, setBagItem] = useState(null);
+  const [selectedHash, setSelectedHash] = useState('');
   const menuButtonRef = useRef(null);
   const galleryButtonRef = useRef(null);
   const wasMenuOpenRef = useRef(false);
   const wasMediaOpenRef = useRef(false);
   const summary = catalogSummary || fallbackSummary;
   const galleryMedia = useMemo(() => buildHomeGalleryMedia(summary), [summary]);
+  const motionAsset = useMemo(
+    () => galleryMedia.find(item => item.type === 'video') || null,
+    [galleryMedia]
+  );
+  const variants = useMemo(() => offeredVariants(
+    summary.primaryProduct?.handle || '',
+    summary.primaryProduct?.variantPresentation
+  ), [summary.primaryProduct?.handle, summary.primaryProduct?.variantPresentation]);
+  const purchaseReady = Boolean(summary.commerceAllowed && variants.length > 0);
+  const priceLabel = Number(summary.primaryProduct?.price) > 0
+    ? money(summary.primaryProduct.price, summary.primaryProduct.currency || 'USD')
+    : variants[0] ? money(variants[0].price.amount, variants[0].price.currency) : 'Price unavailable';
+
+  useEffect(() => {
+    if (!selectedHash && variants[0]) setSelectedHash(variants[0].referenceHash);
+  }, [selectedHash, variants]);
 
   useEffect(() => {
     if (wasMenuOpenRef.current && !menuOpen) menuButtonRef.current?.focus();
@@ -661,7 +996,7 @@ export default function HomeStorefront({ catalogSummary }) {
 
   return (
     <main id="main-content" className="cp-site">
-      <div inert={menuOpen || mediaOpen ? true : undefined}>
+      <div inert={menuOpen || mediaOpen || orderOpen || Boolean(bagItem) ? true : undefined}>
         <Navigation
           menuButtonRef={menuButtonRef}
           menuOpen={menuOpen}
@@ -671,17 +1006,50 @@ export default function HomeStorefront({ catalogSummary }) {
         <ProductRunwayHero
           galleryButtonRef={galleryButtonRef}
           galleryCount={galleryMedia.length}
+          motionAsset={motionAsset}
+          motionSuspended={mediaOpen || orderOpen || Boolean(bagItem)}
           onOpenGallery={() => setMediaOpen(true)}
+          onOpenOrder={() => setOrderOpen(true)}
+          priceLabel={priceLabel}
+          purchaseReady={purchaseReady}
           summary={summary}
         />
         <Footer />
       </div>
       {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
       <ProductMediaOverlay
+        activeIndex={mediaIndex}
+        interactive={!orderOpen && !bagItem}
         media={galleryMedia}
+        onActiveIndex={setMediaIndex}
         onClose={() => setMediaOpen(false)}
+        onOrder={purchaseReady ? () => setOrderOpen(true) : null}
         open={mediaOpen}
+        priceLabel={priceLabel}
         title={summary.primaryProduct?.title || 'Signature Hoodie'}
+      />
+      <OrderTray
+        handle={summary.primaryProduct?.handle || 'carlophillips-signature-hoodie'}
+        interactive={!sizeFitOpen}
+        onAddToBag={item => {
+          setBagItem(item);
+          setOrderOpen(false);
+        }}
+        onClose={() => setOrderOpen(false)}
+        onOpenSizeFit={() => setSizeFitOpen(true)}
+        onSelect={setSelectedHash}
+        open={orderOpen}
+        priceLabel={priceLabel}
+        selectedHash={selectedHash}
+        variants={variants}
+      />
+      <SizeFitDrawer open={sizeFitOpen} onClose={() => setSizeFitOpen(false)} />
+      <BagDrawer
+        handle={summary.primaryProduct?.handle || 'carlophillips-signature-hoodie'}
+        item={bagItem}
+        onClose={() => setBagItem(null)}
+        onContinue={() => setBagItem(null)}
+        open={Boolean(bagItem)}
       />
     </main>
   );

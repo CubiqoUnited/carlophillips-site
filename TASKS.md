@@ -1,5 +1,16 @@
 # Delivery Tasks
 
+## Product motion/gallery/purchase experience
+
+- [x] Consolidate the previously verified motion controls with the current Shopify checkout handoff branch.
+- [x] Add viewport/page/gallery-aware motion pause, user pause memory and reduced-motion fallback.
+- [x] Add a manual twelve-view gallery with optional five-second autoplay, progress, hover/focus/manual-navigation suspension and persistent selected view.
+- [x] Add Shopify-price Order entry, exact S/M/L selector, Size & Fit drawer, Add-to-Bag confirmation, quantity/subtotal and secure checkout handoff without exposing raw variant IDs.
+- [x] Keep every new look-and-feel value in the canonical design-token/component authority and pass the existing hardcoded-value lint.
+- [x] Pass desktop/tablet/mobile interaction, console/network, overflow and screenshot QA with no checkout submission.
+- [ ] Ingest and approve two genuine Hoodie videos (runway walk; minimal movements/gestures/styling), bind them to the Media Registry/Product Release Record, and repeat immutable Preview QA.
+- [ ] Deploy only through the protected Staging/Production path after the current branch is reviewed and repository/environment protections are configured.
+
 ## Current Production payment activation
 
 - [x] Verify that Shopify Payments can leave test mode and that the setting persists.

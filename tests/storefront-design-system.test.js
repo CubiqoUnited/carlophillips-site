@@ -429,7 +429,7 @@ describe('storefront design system', () => {
     expect(readFileSync('app/layout.js', 'utf8')).not.toContain('ConsentPreferences');
     expect(home).toContain("event.key === 'Escape'");
     expect(home).toContain('menuButtonRef.current?.focus()');
-    expect(home).toContain('inert={menuOpen || mediaOpen ? true : undefined}');
+    expect(home).toContain('inert={menuOpen || mediaOpen || orderOpen || Boolean(bagItem) ? true : undefined}');
     expect(styles).toContain('.cp-product-layout');
     expect(styles).toContain('justify-content: var(--cp-semantic-layout-justify-end)');
     expect(styles).toContain('transform: translateY(var(--cp-component-product-copy-offset))');

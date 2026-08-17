@@ -131,6 +131,12 @@
   --cp-primitive-size-media-button-height: 3.5rem;
   --cp-primitive-size-media-button-corner-height: 3.25rem;
   --cp-primitive-size-media-caption-height: 4.5rem;
+  --cp-primitive-size-side-drawer-mobile: 100vw;
+  --cp-primitive-size-side-drawer-desktop: min(32rem, 32vw);
+  --cp-primitive-size-motion-progress: 11rem;
+  --cp-primitive-size-progress-track: 0.125rem;
+  --cp-primitive-size-mobile-purchase-bar: 4.25rem;
+  --cp-primitive-size-bag-thumbnail: 7rem;
   --cp-primitive-size-choice: 3rem;
   --cp-primitive-size-action-wide: 3.5rem;
   --cp-primitive-size-information-fact: 8rem;
@@ -199,11 +205,15 @@
   --cp-primitive-layer-header: 40;
   --cp-primitive-layer-menu: 80;
   --cp-primitive-layer-dialog: 70;
+  --cp-primitive-layer-drawer: 90;
+  --cp-primitive-layer-drawer-nested: 100;
 
   --cp-primitive-duration-standard: 240ms;
   --cp-primitive-duration-campaign: 18s;
   --cp-primitive-duration-runway: 15s;
   --cp-primitive-duration-scroll-prompt: 1.8s;
+  --cp-primitive-duration-gallery-auto: 5s;
+  --cp-primitive-duration-product-motion: 8s;
   --cp-primitive-delay-runway-first: 0s;
   --cp-primitive-delay-runway-second: -10s;
   --cp-primitive-delay-runway-third: -20s;
@@ -277,6 +287,9 @@
   --cp-primitive-layout-cursor-disabled: not-allowed;
   --cp-primitive-layout-cursor-action: pointer;
   --cp-primitive-layout-width-fit-content: fit-content;
+  --cp-primitive-layout-transform-origin-left: left center;
+  --cp-primitive-layout-animation-count-once: 1;
+  --cp-primitive-layout-animation-state-paused: paused;
   --cp-primitive-layout-white-space-nowrap: nowrap;
   --cp-primitive-layout-white-space-normal: normal;
   --cp-primitive-layout-clip-visually-hidden: rect(0, 0, 0, 0);
@@ -344,6 +357,8 @@
   --cp-primitive-media-translate-navigation: -50%;
   --cp-primitive-motion-scroll-rest: translateY(0);
   --cp-primitive-motion-scroll-active: translateY(0.35rem);
+  --cp-primitive-motion-progress-start: scaleX(0);
+  --cp-primitive-motion-progress-end: scaleX(1);
   --cp-primitive-motion-campaign-start: scale(1.015) translate3d(0, 0, 0);
   --cp-primitive-motion-campaign-end: scale(1.075) translate3d(-0.7%, 0.4%, 0);
   --cp-primitive-motion-runway-start: scale(1.01);
@@ -549,6 +564,12 @@
   --cp-semantic-size-media-button-height: var(--cp-primitive-size-media-button-height);
   --cp-semantic-size-media-button-corner-height: var(--cp-primitive-size-media-button-corner-height);
   --cp-semantic-size-media-caption-height: var(--cp-primitive-size-media-caption-height);
+  --cp-semantic-size-side-drawer-mobile: var(--cp-primitive-size-side-drawer-mobile);
+  --cp-semantic-size-side-drawer-desktop: var(--cp-primitive-size-side-drawer-desktop);
+  --cp-semantic-size-motion-progress: var(--cp-primitive-size-motion-progress);
+  --cp-semantic-size-progress-track: var(--cp-primitive-size-progress-track);
+  --cp-semantic-size-mobile-purchase-bar: var(--cp-primitive-size-mobile-purchase-bar);
+  --cp-semantic-size-bag-thumbnail: var(--cp-primitive-size-bag-thumbnail);
   --cp-semantic-size-choice: var(--cp-primitive-size-choice);
   --cp-semantic-size-action-wide: var(--cp-primitive-size-action-wide);
   --cp-semantic-size-information-fact: var(--cp-primitive-size-information-fact);
@@ -596,6 +617,8 @@
   --cp-semantic-layer-header: var(--cp-primitive-layer-header);
   --cp-semantic-layer-menu: var(--cp-primitive-layer-menu);
   --cp-semantic-layer-dialog: var(--cp-primitive-layer-dialog);
+  --cp-semantic-layer-drawer: var(--cp-primitive-layer-drawer);
+  --cp-semantic-layer-drawer-nested: var(--cp-primitive-layer-drawer-nested);
   --cp-semantic-opacity-disabled: var(--cp-primitive-opacity-018);
   --cp-semantic-opacity-none: var(--cp-primitive-opacity-000);
   --cp-semantic-opacity-full: var(--cp-primitive-opacity-100);
@@ -611,6 +634,8 @@
   --cp-semantic-duration-campaign: var(--cp-primitive-duration-campaign);
   --cp-semantic-duration-runway: var(--cp-primitive-duration-runway);
   --cp-semantic-duration-scroll-prompt: var(--cp-primitive-duration-scroll-prompt);
+  --cp-semantic-duration-gallery-auto: var(--cp-primitive-duration-gallery-auto);
+  --cp-semantic-duration-product-motion: var(--cp-primitive-duration-product-motion);
   --cp-semantic-delay-runway-first: var(--cp-primitive-delay-runway-first);
   --cp-semantic-delay-runway-second: var(--cp-primitive-delay-runway-second);
   --cp-semantic-delay-runway-third: var(--cp-primitive-delay-runway-third);
@@ -669,6 +694,9 @@
   --cp-semantic-layout-cursor-disabled: var(--cp-primitive-layout-cursor-disabled);
   --cp-semantic-layout-cursor-action: var(--cp-primitive-layout-cursor-action);
   --cp-semantic-layout-width-fit-content: var(--cp-primitive-layout-width-fit-content);
+  --cp-semantic-layout-transform-origin-left: var(--cp-primitive-layout-transform-origin-left);
+  --cp-semantic-layout-animation-count-once: var(--cp-primitive-layout-animation-count-once);
+  --cp-semantic-layout-animation-state-paused: var(--cp-primitive-layout-animation-state-paused);
   --cp-semantic-layout-white-space-nowrap: var(--cp-primitive-layout-white-space-nowrap);
   --cp-semantic-layout-white-space-normal: var(--cp-primitive-layout-white-space-normal);
   --cp-semantic-layout-clip-visually-hidden: var(--cp-primitive-layout-clip-visually-hidden);
@@ -736,6 +764,8 @@
   --cp-semantic-media-translate-navigation: var(--cp-primitive-media-translate-navigation);
   --cp-semantic-motion-scroll-rest: var(--cp-primitive-motion-scroll-rest);
   --cp-semantic-motion-scroll-active: var(--cp-primitive-motion-scroll-active);
+  --cp-semantic-motion-progress-start: var(--cp-primitive-motion-progress-start);
+  --cp-semantic-motion-progress-end: var(--cp-primitive-motion-progress-end);
   --cp-semantic-motion-campaign-start: var(--cp-primitive-motion-campaign-start);
   --cp-semantic-motion-campaign-end: var(--cp-primitive-motion-campaign-end);
   --cp-semantic-motion-runway-start: var(--cp-primitive-motion-runway-start);
@@ -788,6 +818,10 @@
   --cp-component-media-caption-gap: var(--cp-semantic-space-2);
   --cp-component-nav-label-display: var(--cp-semantic-layout-display-none);
   --cp-component-media-title-eyebrow-display: var(--cp-semantic-layout-display-none);
+  --cp-component-side-drawer-width: var(--cp-semantic-size-side-drawer-mobile);
+  --cp-component-mobile-purchase-display: var(--cp-semantic-layout-display-grid);
+  --cp-component-side-drawer-layer: var(--cp-semantic-layer-drawer);
+  --cp-component-nested-drawer-layer: var(--cp-semantic-layer-drawer-nested);
   --cp-component-footer-direction: var(--cp-semantic-layout-direction-column);
   --cp-component-footer-align: var(--cp-semantic-layout-align-start);
   --cp-component-footer-justify: var(--cp-semantic-layout-align-start);
@@ -967,6 +1001,8 @@
     --cp-component-product-layout-justify: var(--cp-semantic-layout-justify-start);
     --cp-component-product-layout-padding-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-20));
     --cp-component-product-media-control-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-24));
+    --cp-component-side-drawer-width: var(--cp-semantic-size-side-drawer-desktop);
+    --cp-component-mobile-purchase-display: var(--cp-semantic-layout-display-none);
   }
 }
 
@@ -996,4 +1032,9 @@
   0%, 30% { opacity: var(--cp-semantic-opacity-full); transform: var(--cp-semantic-motion-runway-start); }
   33%, 96% { opacity: var(--cp-semantic-opacity-none); transform: var(--cp-semantic-motion-runway-end); }
   100% { opacity: var(--cp-semantic-opacity-full); transform: var(--cp-semantic-motion-runway-start); }
+}
+
+@keyframes cp-progress-line {
+  from { transform: var(--cp-semantic-motion-progress-start); }
+  to { transform: var(--cp-semantic-motion-progress-end); }
 }
