@@ -33,7 +33,6 @@ import designerProductBrief from '../runs/cp-hoodie-designer-contract-sim-002/br
 import trendProductBrief from '../runs/cp-hoodie-trend-contract-sim-003/brief.json';
 import designerCreationRun from '../runs/cp-hoodie-designer-contract-sim-002/run.json';
 import trendCreationRun from '../runs/cp-hoodie-trend-contract-sim-003/run.json';
-import hoodieStagingReadiness from '../releases/cp-signature-hoodie-2026-001/staging-readiness.json';
 import { evaluateProductReleaseTransition, fingerprintReleaseArtifact } from '../lib/releases/product-release-transition';
 import {
   createCompleteMediaManifest,
@@ -388,10 +387,13 @@ describe('truth contracts', () => {
     })).toBe(false);
   });
 
-  it('validates the evidence-bound Draft Hoodie record', () => {
+  it('validates the evidence-bound Staged Hoodie record', () => {
     expect(validateProductRelease(hoodieRelease)).toBe(true);
-    expect(hoodieRelease.state).toBe('draft');
-    expect(hoodieRelease.shopify.variantFingerprintStatus).toBe('missing');
+    expect(hoodieRelease.state).toBe('staged');
+    expect(hoodieRelease.shopify.variantFingerprintStatus).toBe('observed');
+    expect(hoodieRelease.shopify.variantFingerprint).toBe(hoodieShopifyObservation.variantFingerprint);
+    expect(hoodieRelease.shopify.commerceFactsFingerprint).toBe(hoodieShopifyObservation.commerceFactsFingerprint);
+    expect(hoodieRelease.shopify.observationFingerprint).toBe(hoodieShopifyObservation.observationFingerprint);
     expect(hoodieRelease.fulfillmentMappings[0].variantFingerprintStatus).toBe('observed');
     expect(hoodieRelease.fulfillmentMappings[0].variantFingerprint).toBe(hoodieApliiqObservation.variantFingerprint);
     expect(hoodieRelease.fulfillmentMappings[0].mappingFingerprint).toBe(hoodieApliiqObservation.mappingFingerprint);
@@ -412,7 +414,7 @@ describe('truth contracts', () => {
     expect(Object.values(hoodieRelease.approvals).every(approval => approval.status === 'pending')).toBe(true);
   });
 
-  it('validates the fresh sanitized Shopify observation and keeps it pending exact Product Owner review', () => {
+  it('validates the fresh sanitized Shopify observation and its exact Product Owner review', () => {
     expect(validateProductObservation(hoodieShopifyObservation)).toBe(true);
     expect(validateProductObservationReview(hoodieShopifyObservationReview)).toBe(true);
     expect(hoodieShopifyObservation.product).toMatchObject({
@@ -425,10 +427,13 @@ describe('truth contracts', () => {
     });
     expect(hoodieShopifyObservation.variants).toHaveLength(9);
     expect(hoodieShopifyObservationReview).toMatchObject({
-      status: 'blocked',
-      authoritative: false,
+      status: 'accepted',
+      authoritative: true,
       observationFingerprint: hoodieShopifyObservation.observationFingerprint,
-      candidateReleasePatch: null,
+      candidateReleasePatch: expect.objectContaining({
+        observationFingerprint: hoodieShopifyObservation.observationFingerprint,
+        observationFingerprintStatus: 'reviewed',
+      }),
     });
     expect(JSON.stringify(hoodieShopifyObservation)).not.toMatch(/gid:\/\/|APQ-/);
   });
@@ -510,16 +515,16 @@ describe('truth contracts', () => {
     expect(validateProductRelease(record)).toBe(false);
   });
 
-  it('validates a denied transition decision for the incomplete Hoodie Draft', () => {
+  it('validates a denied approval decision for the Staged Hoodie', () => {
     const decision = evaluateProductReleaseTransition({
       record: hoodieRelease,
       manifest: hoodieMediaManifest,
-      targetState: 'staged',
+      targetState: 'approved',
     });
     expect(validateReleaseTransitionDecision(decision)).toBe(true);
-    expect(decision).toEqual(hoodieStagingReadiness);
     expect(decision.allowed).toBe(false);
     expect(decision.candidate).toBeNull();
+    expect(decision.blockers.map(item => item.code)).toContain('PHYSICAL_SAMPLE_APPROVAL_REQUIRED');
     expect(decision.blockers.every(item => item.humanAction && item.resumePoint)).toBe(true);
   });
 
