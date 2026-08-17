@@ -14,12 +14,15 @@
 - [x] Restore Shopify Payments test mode immediately so no real customer can be charged during remediation.
 - [x] Replace the impossible self-referential candidate-SHA preflight with a Git-verified evidence-only descendant policy that denies storefront, checkout, component, media, workflow, script, configuration, malformed-path and symlink changes.
 - [x] Reconcile the exact live Vercel Production deployment, current PR #14 head/checks, repository permissions, main rulesets, and Preview/Production reviewer gates read-only.
+- [x] With explicit Product Owner authorization, turn Shopify Payments test mode off and verify the persisted **Accepting payments** / **Receiving payouts** state.
+- [x] Verify live Production at desktop and mobile without customer data or order submission: Black / Medium, quantity one, USD $128, trusted Shopify checkout host, card fields, Shop Pay, and PayPal.
+- [x] Confirm that payouts are already routed to the configured Shopify Balance USD account; no separate Stripe-account connection is required.
 - [ ] A repository administrator enables a `main` ruleset requiring pull requests, one approval, `CI / Verify`, and blocked force-push/deletion, then adds required reviewers to both GitHub `Preview` and `Production` environments.
 - [ ] Obtain exact Product Owner approval for the quoted physical sample spend; order, receive, and inspect the Hoodie sample.
 - [ ] Bind fresh Shopify identity/facts/variant observations and exact approved Media Registry assets to the Product Release Record.
 - [ ] Record Product Owner product, media, and fulfillment approvals and advance the record through Draft, Staged, Approved, and Released without bypasses.
 - [ ] Merge the reviewed release-bound candidate to `main`, build immutable Production and rollback artifacts, and pass desktop/mobile checkout, console/network, and rollback QA.
-- [ ] Promote only the approved exact artifact, confirm current Product and variant truth, then turn Shopify Payments test mode off as the final activation action.
+- [ ] Promote only the approved exact release-bound artifact and confirm current Product and variant truth. Shopify Payments is already live by explicit Product Owner authorization; do not toggle it back to test mode during source deployment.
 - [ ] Prove settlement and POD handoff with one separately authorized exact-value real order before claiming end-to-end Production commerce readiness.
 
 ## Current local P0: release-bound Shopify hosted checkout

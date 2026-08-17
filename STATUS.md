@@ -1,14 +1,23 @@
 # Current Status
 
 Updated: 2026-08-17
-Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; exact pushed evidence head `e38837d`; no merge to `main` or Production deployment
+Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; exact checkout implementation ancestor `81a1c7e`; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Shopify Payments live activation — 2026-08-17
+
+- The Product Owner explicitly authorized real Production payments. Shopify Payments test mode was turned off and the setting persisted.
+- The authoritative Shopify Payments summary now states **Accepting payments** and **Receiving payouts**. Card methods, Shop Pay, PayPal, Google Pay, and the existing additional methods are exposed by Shopify Checkout.
+- Payouts are configured to the existing Shopify Balance USD account ending `4549`; no separate Stripe account connection is required for this Shopify Payments setup.
+- Live `www.carlophillips.com` was verified without customer data or an order: the Hoodie PDP selected Black / Medium at USD $128, created a Shopify cart, and redirected to the exact `carlophillips.myshopify.com` hosted checkout. The checkout showed one Medium Hoodie, quantity one, USD $128 subtotal/total before shipping, live card fields, Shop Pay, and PayPal.
+- Desktop and mobile checkout screenshots plus before/after Shopify Payments evidence are retained under `test_reports/cp-production-payments-live-2026-08-17/`. No customer data, real payment, order, fulfillment request, catalog change, merge, or Vercel deployment was made.
+- Payment acceptance is live on the historical Production deployment. PR #14's newer release-bound implementation is still not merged or deployed because its Vercel status is blocked by the linked deployment account and the canonical repository lacks the documented `main`/environment protections. This remains an engineering/release-governance risk, not a Shopify payment-gateway blocker.
 
 ## Live deployment and release-guardrail reconciliation — 2026-08-17
 
 - Read-only Vercel inspection binds both public domains to READY Production deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`, source commit `bb9568f46bd60b587f3fc16b82513ae5ea220026` on historical feature branch `codex/cp-runway-wording-design-system`. It is a live drift anchor, not the current reviewed commerce candidate and not an approved rollback artifact.
 - That exact Production deployment shows only successful observed runtime statuses (seven HTTP 200 and one HTTP 303 in the available seven-day deployment-scoped sample). The project-level Clerk and `theme.json` runtime error clusters belong to discarded older Preview deployments, not this Production deployment.
-- PR #14 is open, mergeable, and currently points to exact head `e38837d7667f8925193f7e490ad32f3f15c90823`. `CI / Verify` passes; the separate Vercel GitHub status fails because the linked deployment account is blocked, not because source verification failed.
+- PR #14 is open and mergeable and contains the exact checkout implementation ancestor `81a1c7e25efebde6b587ac7880a87cd5e45f93af`. `CI / Verify` passes for that implementation; the separate Vercel GitHub status fails because the linked deployment account is blocked, not because source verification failed.
 - The canonical repository currently has zero active rulesets. GitHub environments `Preview` and `Production` exist but have no protection rules or required reviewers, and administrator bypass is enabled. The connected `avloy07-eng` identity has pull-only access (`push=false`, `admin=false`) and cannot repair these controls, merge PR #14, or dispatch protected release operations.
 - The separate Apliiq bulk/sample cart remains broken, but it is no longer treated as a release dependency. Existing evidence already proves the real CARLOPHILLIPS → Shopify → Apliiq route: the live Medium cart reaches Shopify checkout and test order `#1002` reached Apliiq intake. The recurring provider-reply monitor was deleted. An isolated Product Owner-only controlled Medium checkout now uses that existing path without enabling public checkout or submitting payment/order automatically.
 
@@ -20,11 +29,11 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Focused policy verification passes 59/59 assertions. Full verification passes design-system lint, zero-warning ESLint, 51/51 files and 532/532 tests, zero vulnerabilities across 67 audited production packages, and the optimized build. Coverage includes non-ancestor, missing-commit, wrong-HEAD, malformed/path-escape, symlink, app/component/checkout/media/config/workflow/script and mismatched-envelope denials.
 - The real `4ee088c` → `9754a6c` history is accepted as evidence-only. Production preflight still denies checkout for the nine remaining release/sample/approval/media/Production-observation/rollback/cart-capability gates. No workflow was dispatched and no external state changed.
 
-## Current Medium cart observation — 2026-08-17
+## Earlier Medium cart observation — 2026-08-17
 
 - The live Production PDP created a Shopify cart for Black / Medium at USD $128 and redirected to the exact hosted checkout on `carlophillips.myshopify.com`.
 - The hosted summary showed one `CARLOPHILLIPS Signature Hoodie`, `black / m`, quantity one, subtotal USD $128. Shipping remained destination-dependent.
-- Shopify Payments management still states that only test payments are accepted; no contact, address, payment data, or order was submitted.
+- At the time of this earlier observation Shopify Payments still stated that only test payments were accepted. This was superseded later on 2026-08-17 by the Product Owner-authorized live activation recorded above.
 - The observation is retained under `test_reports/cp-production-medium-cart-2026-08-17/`. It does not reclassify operational capability or authorize checkout/Production activation. Screenshot capture is explicitly blocked by the active browser's Shopify Checkout CDP timeout; DOM verification passed.
 - Apliiq's separate one-Medium sample cart remains independently broken and is not part of the selected operating path. No physical sample order, fulfillment request, or charge exists.
 

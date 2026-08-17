@@ -2,13 +2,21 @@
 
 Updated: 2026-08-17
 
+## Superseding live-payment state — 2026-08-17
+
+The Product Owner explicitly authorized Production payment activation. Shopify Payments test mode is now **off**. Shopify's authoritative summary states **Accepting payments** and **Receiving payouts**, with payouts routed to the existing Shopify Balance USD account ending `4549`. A separate Stripe account is not required for this Shopify Payments configuration.
+
+Live `www.carlophillips.com` was then verified without customer data or order submission. The Production PDP selected one Black / Medium Hoodie at USD $128 and redirected to the trusted `carlophillips.myshopify.com` checkout. Shopify Checkout showed live card fields, Shop Pay, PayPal, one Medium item, and a USD $128 pre-shipping total at desktop and mobile widths. Evidence is under `test_reports/cp-production-payments-live-2026-08-17/`.
+
+This supersedes every older statement below that says Shopify Payments is still in test mode. Customer payment acceptance is live. What remains incomplete is the newer release-bound source rollout and one separately authorized real-order settlement/fulfillment proof. PR #14 remains unmerged and undeployed because the linked Vercel deployment account is blocked and the canonical repository protections/reviewers remain incomplete. Do not mistake that source-governance blocker for a Shopify payment-gateway blocker, and do not switch Shopify Payments back to test mode during remediation.
+
 ## Current shortest path — verified 2026-08-17
 
 1. **Use the existing storefront order path; do not depend on Apliiq's separate sample cart.** Shopify cart/checkout and test order `#1002` already prove the CARLOPHILLIPS → Shopify → Apliiq handoff. The isolated candidate adds a Product Owner-only action that prepares exactly one Medium Shopify checkout at the reviewed USD $128 item subtotal. It does not charge or submit an order. Before payment, the Product Owner must review and approve the exact shipping, tax, final total, and live-payment exposure shown by Shopify.
 2. **The delivered sample must be inspected.** Fit, colour, artwork placement, and finish require real evidence. Shopify being Active and checkout working cannot substitute for this physical fulfillment proof.
-3. **A canonical repository administrator must restore the release guardrails.** PR #14 is mergeable and `CI / Verify` is green at `e38837d7667f8925193f7e490ad32f3f15c90823`, but the repository has no active `main` ruleset and GitHub environments `Preview` and `Production` have no required reviewers. The connected Codex identity is pull-only and cannot configure or merge them.
+3. **A canonical repository administrator must restore the release guardrails.** PR #14 is mergeable and contains the green checkout implementation ancestor `81a1c7e25efebde6b587ac7880a87cd5e45f93af`, but the repository has no active `main` ruleset and GitHub environments `Preview` and `Production` have no required reviewers. The connected Codex identity is pull-only and cannot configure or merge them.
 4. **Do not promote the current live deployment as the candidate or rollback.** `www.carlophillips.com` is on historical feature-branch commit `bb9568f`; it is healthy in the observed runtime sample but is only the captured drift anchor.
-5. After sample/media/product/fulfillment approval, capture the fresh Shopify Production observation, verify a distinct Production candidate and safe fallback, merge the exact reviewed PR through protected `main`, then turn off Shopify Payments test mode as the final activation action. Run one separately approved exact-value real order to prove payment settlement, Apliiq acceptance, tracking, and customer email before declaring Production commerce complete.
+5. After sample/media/product/fulfillment approval, capture the fresh Shopify Production observation, verify a distinct Production candidate and safe fallback, and merge the exact reviewed PR through protected `main` without toggling Shopify Payments back to test mode. Run one separately approved exact-value real order to prove payment settlement, Apliiq acceptance, tracking, and customer email before declaring the entire commerce-and-fulfillment lifecycle complete.
 
 ## What is complete
 
@@ -34,7 +42,7 @@ On 2026-08-17 the Product Owner approved exact Shopify observation `sha256:143a8
 
 ## What is blocked
 
-Customer payment is **not live**. Shopify Payments is explicitly in test mode. The Staged release still lacks an approved delivered physical sample and inspection, final product/media/fulfillment approvals, the complete required release-bound media matrix, a fresh post-approval ACTIVE Production observation, verified rollback execution, and operational `cart-write` authority. The cart capability remains `write_test_verified` with only `cart-write-test`; it is not operational public `cart-write` authority. The Preview and Production public checkout switches remain off. The new controlled-order switch is separate and may prepare only one Product Owner Medium checkout; it cannot enable customer purchasing.
+Customer payment acceptance is now **live** on the historical Production storefront by explicit Product Owner authorization. The newer Staged release still lacks an approved delivered physical sample and inspection, final product/media/fulfillment approvals, the complete required release-bound media matrix, a fresh post-approval ACTIVE Production observation, verified rollback execution, and operational `cart-write` authority. The candidate cart capability remains `write_test_verified` with only `cart-write-test`; it is not yet the deployed public authority. The newer controlled-order switch is separate and remains undeployed.
 
 The Product Owner approved the Production-preflight correction on 2026-08-17. The implementation accepts a later selected `main` SHA only when Git proves that the reviewed candidate is its ancestor and every endpoint difference is confined to the explicit evidence-only allowlist. Storefront, component, checkout, media manifest/assets, workflow, script, configuration, theme, malformed-path and symlink changes remain forbidden. This correction is not merged or deployed to Production; its fresh immutable Preview must be reviewed before candidate binding.
 
@@ -42,13 +50,13 @@ Exact source commit `d713f8449487f2c6cd342976499ab283c66bf779` is pushed to PR #
 
 ## Exact human action
 
-1. Shopify Payments management currently shows the payout account and test mode without a visible two-step setup warning. Keep test mode on. If Shopify later prompts for two-step authentication during final activation, complete it privately and do not send recovery codes, one-time codes, passkeys, or phone details to Codex.
+1. Shopify Payments is live and payouts are configured. Do not turn test mode back on unless the Product Owner explicitly orders an emergency payment freeze. If Shopify later prompts for two-step authentication, complete it privately and do not send recovery codes, one-time codes, passkeys, or phone details to Codex.
 2. Preserve the captured Apliiq per-variant/SKU mapping and verify it against the Staged release. The initial public offer is S/M/L only; Shopify's other variants remain unchanged.
 3. After the controlled-order candidate is deployed to protected Staging and `SHOPIFY_CONTROLLED_ORDER_ENABLED=true` is provisioned there, sign in as the Product Owner, open `/admin/orders`, and choose **Open controlled Shopify checkout**. The server fixes the cart to one Medium and verifies the reviewed USD $128 item subtotal. Enter private contact/shipping/payment details only inside Shopify. Before pressing Shopify's final pay button, record and approve the exact shipping, tax, total, and live-payment exposure. Do not submit test order `#1002` for fulfillment: it is XS and uses a fake test destination.
 4. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
 5. After the remaining evidence and approvals are complete, let Codex capture a fresh sanitized ACTIVE Shopify Production observation inside an approved protected runtime. The reviewed Staging observation is already bound; the Production observation must be newer than the final approvals.
 6. Review the immutable Staging candidate and separately approve the product, media, and fulfillment evidence for that exact candidate.
-7. Keep Shopify Payments in test mode while the hosted-checkout staging proof is verified. Turning off test mode, enabling `SHOPIFY_CHECKOUT_ENABLED`, and accepting real customer charges require the final Released evidence and a separate Production authorization.
+7. Shopify Payments is already live by explicit Product Owner authorization. Keep the newer release-bound candidate fail-closed until its evidence passes, then deploy it without changing the live Shopify Payments setting.
 8. Review the fresh immutable Preview for the approved preflight correction after PR CI passes. Preview approval does not approve merge, payment, order or Production release.
 9. Signal `Controlled Medium Shopify checkout ready — total [AMOUNT]` after Shopify displays the final review total. This is the point for exact spend approval. Do not send credentials, address, payment data, or verification codes in chat.
 
