@@ -5,6 +5,7 @@
 - [x] Verify that Shopify Payments can leave test mode and that the setting persists.
 - [x] Verify that the existing live Product page can create a Shopify cart and reach hosted checkout with the expected Black / XS item and USD $128 merchandise price.
 - [x] Confirm live hosted payment methods without entering card details or placing a real order.
+- [x] Reverify the public-offer Black / Medium variant: create a reversible Shopify cart, reach the exact hosted checkout, and match product/size/quantity/USD $128 without customer data or order submission.
 - [x] Detect and document that the legacy Production checkout bypasses the canonical Draft Product Release Record.
 - [x] Restore Shopify Payments test mode immediately so no real customer can be charged during remediation.
 - [x] Replace the impossible self-referential candidate-SHA preflight with a Git-verified evidence-only descendant policy that denies storefront, checkout, component, media, workflow, script, configuration, malformed-path and symlink changes.
@@ -30,6 +31,8 @@
 - [ ] Complete truthful release-bound media and product/media/fulfillment approvals.
 - [ ] Bind fresh Shopify and immutable Staging/build/rollback evidence, then advance Draft → Staged → Approved → Released.
 - [ ] Run a newly authorized no-order live cart/checkout proof, upgrade cart capability to operational `cart-write`, and enable Preview switches only after the exact release passes.
+- [x] Capture a new no-order Black / Medium live cart/checkout observation without reclassifying the capability registry or weakening release gates.
+- [ ] After the full release evidence passes, decide and record whether the Medium observation plus protected-candidate proof is sufficient to upgrade the cart capability to operational `cart-write`.
 - [ ] Obtain separate approval before any merge, Production switch, real payment, order, or fulfillment action.
 
 ## Current local P0: evidence reconciliation and authority separation

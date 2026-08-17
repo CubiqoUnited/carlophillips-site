@@ -18,6 +18,10 @@ The Product Owner subsequently completed private Apliiq sign-in. The authenticat
 
 Apliiq did not create the quote cart. Two controlled Add to cart attempts—one in the normal browser viewport and one after a clean authenticated desktop-width reload—both caused Apliiq's own JavaScript to receive an HTML error document where JSON was expected (`Unexpected token '<'`). The cart remained empty after both attempts. No address, order, fulfillment request, or charge was submitted. This provider-side cart failure is now the first external boundary.
 
+The Product Owner approved the support reply address and message. Codex submitted the exact cart-error report to Apliiq Customer Service, escalated past the automated helper, and placed it in the offline human-support queue at 08:27 AM. Apliiq confirmed that it will reply by email. A fresh authenticated retry also found Apliiq's own purchase-header layer intercepting the visible one-unit sample option, so no new provider cart request was created. No password was accessed.
+
+Separately, the current Production storefront successfully created a Shopify cart for **Black / Medium** at USD $128 and redirected to `carlophillips.myshopify.com`. The hosted order summary matched one Medium Hoodie and exposed the configured payment methods. No contact, address, payment data, or order was submitted. This is additional technical observation evidence only; it does not reclassify the capability registry or authorize release/payment activation. Evidence: `test_reports/cp-production-medium-cart-2026-08-17/`.
+
 On 2026-08-17 the Product Owner approved exact Shopify observation `sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4`. That approval is bound to immutable candidate `4ee088cd39cfa9b967bde32893f0dc2a33325904`, and the canonical Product Release Record is formally **Staged**. The initial customer offer remains exactly Small, Medium and Large; the other observed Shopify sizes were not deleted or changed.
 
 ## What is blocked
@@ -30,15 +34,15 @@ Exact source commit `d713f8449487f2c6cd342976499ab283c66bf779` is pushed to PR #
 
 ## Exact human action
 
-1. In the already-open Shopify Payments management screen, the Product Owner must select **Turn on two-step** and complete Shopify's private authentication setup. Do not send recovery codes, one-time codes, passkeys, or phone details to Codex. This security step does not itself enable real payments.
+1. Shopify Payments management currently shows the payout account and test mode without a visible two-step setup warning. Keep test mode on. If Shopify later prompts for two-step authentication during final activation, complete it privately and do not send recovery codes, one-time codes, passkeys, or phone details to Codex.
 2. Preserve the captured Apliiq per-variant/SKU mapping and verify it against the Staged release. The initial public offer is S/M/L only; Shopify's other variants remain unchanged.
-3. Keep the authenticated Apliiq session available and resolve the saved-design Add to cart failure for design `5958463`. The intended cart is exactly one Medium sample. Do not submit Shopify test order `#1002` for fulfillment: it is XS and uses a fake test destination. After Apliiq successfully creates the cart, the Product Owner must enter the private shipping destination and separately approve the exact item, digitization, shipping, tax, and total before purchase.
+3. Wait for Apliiq's human support reply about saved design `5958463`, then signal `Apliiq support replied`. The intended cart remains exactly one Medium sample. Do not submit Shopify test order `#1002` for fulfillment: it is XS and uses a fake test destination. After Apliiq successfully creates the cart, the Product Owner must enter the private shipping destination and separately approve the exact item, digitization, shipping, tax, and total before purchase.
 4. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
 5. After the remaining evidence and approvals are complete, let Codex capture a fresh sanitized ACTIVE Shopify Production observation inside an approved protected runtime. The reviewed Staging observation is already bound; the Production observation must be newer than the final approvals.
 6. Review the immutable Staging candidate and separately approve the product, media, and fulfillment evidence for that exact candidate.
 7. Keep Shopify Payments in test mode while the hosted-checkout staging proof is verified. Turning off test mode, enabling `SHOPIFY_CHECKOUT_ENABLED`, and accepting real customer charges require the final Released evidence and a separate Production authorization.
 8. Review the fresh immutable Preview for the approved preflight correction after PR CI passes. Preview approval does not approve merge, payment, order or Production release.
-9. Signal the first external resume point as: `Approve sending Apliiq cart-error support message` if Codex may submit the prepared non-sensitive support request through Apliiq chat. Alternatively, manually add exactly one Medium saved design `5958463` to the cart and signal `Apliiq Medium cart created`. Do not send credentials, address, payment data, or verification codes in chat.
+9. If Apliiq restores the sample cart before replying, manually add exactly one Medium saved design `5958463` and signal `Apliiq Medium cart created`. Do not send credentials, address, payment data, or verification codes in chat.
 
 Do not paste Shopify tokens, payment details, customer data, or provider IDs into chat. Do not enable the two Vercel checkout switches manually while the Product Release Record remains Staged.
 

@@ -12,6 +12,14 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - Focused policy verification passes 59/59 assertions. Full verification passes design-system lint, zero-warning ESLint, 51/51 files and 532/532 tests, zero vulnerabilities across 67 audited production packages, and the optimized build. Coverage includes non-ancestor, missing-commit, wrong-HEAD, malformed/path-escape, symlink, app/component/checkout/media/config/workflow/script and mismatched-envelope denials.
 - The real `4ee088c` → `9754a6c` history is accepted as evidence-only. Production preflight still denies checkout for the nine remaining release/sample/approval/media/Production-observation/rollback/cart-capability gates. No workflow was dispatched and no external state changed.
 
+## Current Medium cart observation — 2026-08-17
+
+- The live Production PDP created a Shopify cart for Black / Medium at USD $128 and redirected to the exact hosted checkout on `carlophillips.myshopify.com`.
+- The hosted summary showed one `CARLOPHILLIPS Signature Hoodie`, `black / m`, quantity one, subtotal USD $128. Shipping remained destination-dependent.
+- Shopify Payments management still states that only test payments are accepted; no contact, address, payment data, or order was submitted.
+- The observation is retained under `test_reports/cp-production-medium-cart-2026-08-17/`. It does not reclassify operational capability or authorize checkout/Production activation. Screenshot capture is explicitly blocked by the active browser's Shopify Checkout CDP timeout; DOM verification passed.
+- Apliiq's one-Medium sample cart remains independently broken. The approved support request is in Apliiq's offline human-support queue; no provider cart, sample order, fulfillment request, or charge exists.
+
 ## Production payment activation audit — 2026-08-17
 
 - The Product Owner authorized the goal of enabling real customer payments in Production. Shopify Payments was switched out of test mode and the setting persisted, proving the gateway can technically accept live payments.
