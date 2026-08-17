@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "cp.candidate-build-evidence.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "candidateCommit": "acd2a0b80d3be24234c41827c35e669c6ad39742",
+  "recordedAt": "2026-08-17T00:22:25Z",
+  "sourceChecks": {
+    "designSystemLint": "passed",
+    "eslint": "passed_zero_warnings",
+    "tests": {
+      "status": "passed",
+      "files": 48,
+      "assertions": 501
+    },
+    "productionDependencyAudit": {
+      "status": "passed",
+      "vulnerabilities": 0,
+      "packages": 67,
+      "basis": "dependency graph unchanged from the full Yarn Classic verification recorded by the pipeline report"
+    },
+    "nextBuild": {
+      "status": "passed",
+      "version": "15.5.21"
+    }
+  },
+  "browserChecks": {
+    "status": "passed",
+    "route": "/products/carlophillips-signature-hoodie",
+    "viewports": ["1440x1000", "390x844"],
+    "purchasingDenied": true,
+    "checkoutControls": 0,
+    "overflow": false,
+    "runtimeErrors": 0,
+    "evidence": "test_reports/cp-production-commerce-pipeline-2026-08-17/browser-qa.json"
+  },
+  "report": "test_reports/cp-production-commerce-pipeline-2026-08-17/report.md",
+  "authority": "candidate_evidence_only_no_deployment_or_release"
+}

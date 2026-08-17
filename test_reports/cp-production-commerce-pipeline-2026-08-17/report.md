@@ -79,6 +79,30 @@ The authenticated saved design was re-observed after the pipeline commit without
 
 The observed dropship unit price was USD $50.45 before shipping and tax. This is not a final sample quote or purchase authority. No size, destination, shipping method, tax, or total was selected.
 
+## Fresh Shopify-native product observation
+
+A credential-free read-only request to Shopify's own public product JSON endpoint returned the current ACTIVE/published Hoodie facts. The server-only adapter normalized that primary response through the same canonical observation model used by the Storefront loader and discarded raw product/variant references after hashing.
+
+- Handle: `carlophillips-signature-hoodie`
+- Title: `CARLOPHILLIPS Signature Hoodie`
+- Vendor/type: Apliiq / hoodie
+- Currency and range: USD $128–$134
+- Variants: 9 black sizes, XS through 5XL, all currently available
+- Variant fingerprint: `sha256:f7e89925f1119c324cc159444a2c90d645e910555d471bfe77fba2440e348db1`
+- Commerce-facts fingerprint: `sha256:c055e02227f425e36a72b7899a804b17bd270e7d22dd18c9fa119dd3840a77ec`
+- Full observation fingerprint: `sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4`
+- Review state: pending exact Product Owner approval
+
+Evidence is stored at `releases/cp-signature-hoodie-2026-001/shopify-product-observation.json`; its schema and fingerprint integrity pass, and secret/raw IDs are absent. The blocked review decision at `shopify-observation-review.json` grants no publication or checkout authority.
+
+## Candidate evidence now bound
+
+Candidate source `acd2a0b80d3be24234c41827c35e669c6ad39742` now has exact local build/browser evidence, Media Registry manifest fingerprint `sha256:873a75f8c4a2068cbf1ac6e1a2f518d1da2957389f9015010fcdef211845ddd5`, and a matching candidate-specific rollback-plan binding. This closes the local candidate, manifest, build, and rollback-plan staging blockers without asserting remote staging.
+
+The remaining preflight blockers are exact Shopify observation approval/binding, immutable Staging evidence, the physical sample and three release approvals, incomplete real media coverage, a fresh post-approval Production observation, rollback verification, operational cart capability, and the final Released state.
+
+Post-capture verification passes design-system lint, zero-warning ESLint, 49/49 test files and 507/507 tests, plus the optimized Next.js 15.5.21 build. Package inputs did not change from the recorded zero-vulnerability production audit.
+
 ## Remaining human gates
 
 1. Order and physically inspect the exact Apliiq Hoodie sample as recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`.

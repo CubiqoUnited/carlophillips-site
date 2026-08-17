@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "cp.product-observation-review.v1",
+  "status": "blocked",
+  "authoritative": false,
+  "observationFingerprint": "sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4",
+  "blockers": [
+    {
+      "code": "PRODUCT_OBSERVATION_REVIEW_APPROVAL_REQUIRED",
+      "humanAction": "The Product Owner or named designee reviews this exact observation fingerprint.",
+      "resumePoint": "Record approval scoped to accept-shopify-product-observation with durable evidence."
+    }
+  ],
+  "candidateReleasePatch": null
+}

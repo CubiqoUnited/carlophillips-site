@@ -26,21 +26,6 @@
       "resumePoint": "Replace the loose, stale, or cross-candidate review reference before re-evaluating staging."
     },
     {
-      "code": "CANDIDATE_COMMIT_MISSING",
-      "humanAction": "Select an immutable candidate commit without merging or deploying it.",
-      "resumePoint": "Record the candidate Git commit in the Product Release Record, then re-evaluate staging."
-    },
-    {
-      "code": "MEDIA_MANIFEST_FINGERPRINT_MISSING",
-      "humanAction": "Fingerprint the exact release-bound Media Registry manifest for the immutable candidate.",
-      "resumePoint": "Record the manifest SHA-256 binding without changing any media approval, then re-evaluate staging."
-    },
-    {
-      "code": "BUILD_EVIDENCE_MISSING",
-      "humanAction": "Run the approved local quality/build gate for the immutable candidate.",
-      "resumePoint": "Bind the passing machine-readable build evidence fingerprint to this release and candidate commit, then re-evaluate staging."
-    },
-    {
       "code": "STAGING_EVIDENCE_MISSING",
       "humanAction": "Restore or select an authorized private staging surface and verify the candidate.",
       "resumePoint": "Bind desktop/mobile staging evidence to this release and candidate commit without promoting Production, then re-evaluate staging."

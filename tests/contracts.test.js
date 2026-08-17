@@ -22,6 +22,8 @@ import providerWebhookVerificationSchema from '../contracts/provider-webhook-ver
 import adminCommandDecisionSchema from '../contracts/admin-command-decision.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieApliiqObservation from '../releases/cp-signature-hoodie-2026-001/apliiq-variant-observation.json';
+import hoodieShopifyObservation from '../releases/cp-signature-hoodie-2026-001/shopify-product-observation.json';
+import hoodieShopifyObservationReview from '../releases/cp-signature-hoodie-2026-001/shopify-observation-review.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
 import capabilityRegistry from '../config/capability-registry.json';
@@ -408,6 +410,27 @@ describe('truth contracts', () => {
       decoration: hoodieApliiqObservation.decoration,
     })).toBe(hoodieApliiqObservation.mappingFingerprint);
     expect(Object.values(hoodieRelease.approvals).every(approval => approval.status === 'pending')).toBe(true);
+  });
+
+  it('validates the fresh sanitized Shopify observation and keeps it pending exact Product Owner review', () => {
+    expect(validateProductObservation(hoodieShopifyObservation)).toBe(true);
+    expect(validateProductObservationReview(hoodieShopifyObservationReview)).toBe(true);
+    expect(hoodieShopifyObservation.product).toMatchObject({
+      handle: hoodieRelease.shopify.handle,
+      title: 'CARLOPHILLIPS Signature Hoodie',
+      currency: 'USD',
+      minimumPrice: 128,
+      maximumPrice: 134,
+      availableForSale: true,
+    });
+    expect(hoodieShopifyObservation.variants).toHaveLength(9);
+    expect(hoodieShopifyObservationReview).toMatchObject({
+      status: 'blocked',
+      authoritative: false,
+      observationFingerprint: hoodieShopifyObservation.observationFingerprint,
+      candidateReleasePatch: null,
+    });
+    expect(JSON.stringify(hoodieShopifyObservation)).not.toMatch(/gid:\/\/|APQ-/);
   });
 
   it('validates every Hoodie media asset and keeps uncertain or artifacted assets quarantined', () => {

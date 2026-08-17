@@ -41,15 +41,21 @@
     }
   },
   "mediaManifest": "releases/cp-signature-hoodie-2026-001/media-manifest.json",
-  "mediaManifestFingerprint": null,
+  "mediaManifestFingerprint": "sha256:873a75f8c4a2068cbf1ac6e1a2f518d1da2957389f9015010fcdef211845ddd5",
   "approvals": {
     "product": { "status": "pending", "owner": "Product Owner", "evidence": null },
     "media": { "status": "pending", "owner": "Product Owner/designee", "evidence": null },
     "fulfillment": { "status": "pending", "owner": "Product Owner/designee", "evidence": null }
   },
   "candidate": {
-    "gitCommit": null,
-    "buildEvidence": null,
+    "gitCommit": "acd2a0b80d3be24234c41827c35e669c6ad39742",
+    "buildEvidence": {
+      "reference": "releases/cp-signature-hoodie-2026-001/candidate-build-evidence.json",
+      "fingerprint": "sha256:18a024809b9380006a996ef86bd74a0dec05044716d39bb0cd36d747f9e5e4da",
+      "releaseId": "cp-signature-hoodie-2026-001",
+      "candidateCommit": "acd2a0b80d3be24234c41827c35e669c6ad39742",
+      "recordedAt": "2026-08-17T00:22:25Z"
+    },
     "stagingEvidence": null,
     "releaseEvidenceFingerprint": null
   },
@@ -59,7 +65,7 @@
       "reference": "releases/cp-signature-hoodie-2026-001/rollback-plan.md",
       "fingerprint": "sha256:f209d9cf1fbebddb7d79da616d8aab3878f2667aed5469d362e9ea65544a1fbd",
       "releaseId": "cp-signature-hoodie-2026-001",
-      "candidateCommit": null,
+      "candidateCommit": "acd2a0b80d3be24234c41827c35e669c6ad39742",
       "recordedAt": "2026-07-22T00:00:00Z"
     },
     "verificationEvidence": null,

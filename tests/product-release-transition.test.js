@@ -28,11 +28,15 @@ describe('Product Release Record transitions', () => {
     expect(decision.candidate).toBeNull();
     expect(blockerCodes(decision)).toEqual(expect.arrayContaining([
       'SHOPIFY_VARIANT_FINGERPRINT_MISSING',
-      'CANDIDATE_COMMIT_MISSING',
-      'BUILD_EVIDENCE_MISSING',
       'STAGING_EVIDENCE_MISSING',
     ]));
-    expect(blockerCodes(decision)).not.toContain('FULFILLMENT_VARIANT_FINGERPRINT_MISSING');
+    expect(blockerCodes(decision)).not.toEqual(expect.arrayContaining([
+      'FULFILLMENT_VARIANT_FINGERPRINT_MISSING',
+      'CANDIDATE_COMMIT_MISSING',
+      'MEDIA_MANIFEST_FINGERPRINT_MISSING',
+      'BUILD_EVIDENCE_MISSING',
+      'ROLLBACK_PLAN_BINDING_INVALID',
+    ]));
     expect(hoodieRelease).toEqual(original);
   });
 

@@ -507,6 +507,9 @@
 - [x] Bind candidate/fallback checkout state into deployment receipts and reject receipt, environment, and route-behavior drift.
 - [ ] Order and inspect the exact physical Hoodie sample; bind the approved sample, fulfillment mapping, Shopify observations, media, approvals, and rollback evidence before moving the Product Release Record to Released.
 - [x] Capture and bind the authenticated read-only Apliiq IND4000 black variant/SKU and front-embroidery mapping without changing the design or placing an order.
+- [x] Capture and validate a fresh sanitized Shopify-native Hoodie observation with all nine variants and exact current price/copy facts; retain it as pending candidate evidence until exact Product Owner fingerprint approval.
+- [x] Bind the exact candidate commit, passing local build/browser evidence, Media Registry manifest fingerprint, and candidate-specific rollback plan without staging or Production mutation.
+- [ ] Obtain Product Owner approval for Shopify observation `sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4`, then apply its exact candidate release patch and regenerate the release-evidence fingerprint.
 - [ ] Reauthenticate the canonical GitHub delivery session, publish the exact reviewed temporary branch, and run protected CI/Preview without merging or promoting Production.
 # Production authority closure (2026-08-14)
 
