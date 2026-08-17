@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "cp.fulfillment-variant-observation.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "adapter": "apliiq",
+  "providerProductId": "5958463",
+  "sourceUrl": "https://www.apliiq.com/product/5958463/independent-heavyweight-pullover-hoodie",
+  "observedAt": "2026-08-17T00:12:30Z",
+  "blank": {
+    "brand": "Independent Trading Co",
+    "styleCode": "IND4000",
+    "productName": "independent heavyweight pullover hoodie"
+  },
+  "color": "black",
+  "decoration": {
+    "location": "Front",
+    "method": "embroidery",
+    "artworkName": "cp-mark-transparent-png",
+    "size": "2in X 2in",
+    "stitchEstimate": 648
+  },
+  "variants": [
+    { "size": "xs", "sku": "APQ-5958463S5A1" },
+    { "size": "s", "sku": "APQ-5958463S6A1" },
+    { "size": "m", "sku": "APQ-5958463S7A1" },
+    { "size": "l", "sku": "APQ-5958463S8A1" },
+    { "size": "xl", "sku": "APQ-5958463S1A1" },
+    { "size": "xxl", "sku": "APQ-5958463S2A1" },
+    { "size": "xxxl", "sku": "APQ-5958463S21A1" },
+    { "size": "4xl", "sku": "APQ-5958463S61A1" },
+    { "size": "5xl", "sku": "APQ-5958463S62A1" }
+  ],
+  "variantFingerprintBasis": ["adapter", "providerProductId", "variants"],
+  "variantFingerprint": "sha256:68360eae54cec035448ccc4077f9f5d34ef504c5b7be42bfd5cfeeb6afe93bb6",
+  "mappingFingerprintBasis": ["adapter", "providerProductId", "blank", "color", "decoration", "variants"],
+  "mappingFingerprint": "sha256:99aceb3be41fa2ad918715b2af091456119a6ef39109bb266a3b0bd373e62a56",
+  "pricingObservation": {
+    "currency": "USD",
+    "dropshipUnitPriceBeforeShippingAndTax": "50.45",
+    "bulkPriceDisplayedAsLowAs": "42.95",
+    "finalSampleQuote": null,
+    "status": "informational_not_purchase_authority"
+  }
+}

@@ -21,15 +21,15 @@
     {
       "adapter": "apliiq",
       "providerProductId": "5958463",
-      "variantFingerprint": null,
-      "variantFingerprintStatus": "missing",
-      "mappingFingerprint": "sha256:96d38c684032ce80945d3c8c601668ab645aea086a28421669e39ab337104e12",
+      "variantFingerprint": "sha256:68360eae54cec035448ccc4077f9f5d34ef504c5b7be42bfd5cfeeb6afe93bb6",
+      "variantFingerprintStatus": "observed",
+      "mappingFingerprint": "sha256:99aceb3be41fa2ad918715b2af091456119a6ef39109bb266a3b0bd373e62a56",
       "mappingFingerprintStatus": "reviewed"
     }
   ],
   "physicalSample": {
     "status": "not_ordered",
-    "providerMappingFingerprint": "sha256:96d38c684032ce80945d3c8c601668ab645aea086a28421669e39ab337104e12",
+    "providerMappingFingerprint": "sha256:99aceb3be41fa2ad918715b2af091456119a6ef39109bb266a3b0bd373e62a56",
     "sampleFingerprint": null,
     "evidence": null,
     "approvalEvidence": null,

@@ -28,7 +28,6 @@ The real `cp-signature-hoodie-2026-001` record was tested and denied. Its blocke
 - release state is Draft;
 - candidate SHA is not bound to this pipeline commit;
 - Shopify product, variant-identity, commerce-facts, and full-observation fingerprints are missing;
-- fulfillment variant fingerprint is missing;
 - physical sample is not ordered, delivered, inspected, or approved;
 - required media, product, fulfillment, candidate, staging, and rollback evidence/approvals are incomplete;
 - a fresh matching ACTIVE Production observation is missing;
@@ -73,6 +72,12 @@ Evidence:
 - Latest READY Preview observed at deployment `dpl_CR2pER7GwS6FZQQHaega8aGB79ig`, checkout metadata false.
 - Current READY Production observed at deployment `dpl_HkkbWDjJTMVjCZ4bMQ17txwZuwh8`, checkout metadata false.
 - The local GitHub CLI credential is expired, so this exact pipeline patch was not pushed or attached to PR #14.
+
+## Read-only Apliiq mapping observation
+
+The authenticated saved design was re-observed after the pipeline commit without changing or saving any provider data. It is provider product `5958463`, Independent Trading Co `IND4000`, black, front embroidery, 2 in × 2 in, 648 stitches. All nine size/SKU mappings from XS through 5XL were present and are now bound through the sanitized evidence file `releases/cp-signature-hoodie-2026-001/apliiq-variant-observation.json`.
+
+The observed dropship unit price was USD $50.45 before shipping and tax. This is not a final sample quote or purchase authority. No size, destination, shipping method, tax, or total was selected.
 
 ## Remaining human gates
 

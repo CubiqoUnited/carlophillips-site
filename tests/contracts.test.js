@@ -21,6 +21,7 @@ import orderLifecycleEventSchema from '../contracts/order-lifecycle-event.schema
 import providerWebhookVerificationSchema from '../contracts/provider-webhook-verification.schema.json';
 import adminCommandDecisionSchema from '../contracts/admin-command-decision.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
+import hoodieApliiqObservation from '../releases/cp-signature-hoodie-2026-001/apliiq-variant-observation.json';
 import hoodieMediaManifest from '../releases/cp-signature-hoodie-2026-001/media-manifest.json';
 import hoodiePipelineRun from '../runs/cp-hoodie-local-sim-001/run.json';
 import capabilityRegistry from '../config/capability-registry.json';
@@ -31,7 +32,7 @@ import trendProductBrief from '../runs/cp-hoodie-trend-contract-sim-003/brief.js
 import designerCreationRun from '../runs/cp-hoodie-designer-contract-sim-002/run.json';
 import trendCreationRun from '../runs/cp-hoodie-trend-contract-sim-003/run.json';
 import hoodieStagingReadiness from '../releases/cp-signature-hoodie-2026-001/staging-readiness.json';
-import { evaluateProductReleaseTransition } from '../lib/releases/product-release-transition';
+import { evaluateProductReleaseTransition, fingerprintReleaseArtifact } from '../lib/releases/product-release-transition';
 import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
@@ -389,6 +390,23 @@ describe('truth contracts', () => {
     expect(validateProductRelease(hoodieRelease)).toBe(true);
     expect(hoodieRelease.state).toBe('draft');
     expect(hoodieRelease.shopify.variantFingerprintStatus).toBe('missing');
+    expect(hoodieRelease.fulfillmentMappings[0].variantFingerprintStatus).toBe('observed');
+    expect(hoodieRelease.fulfillmentMappings[0].variantFingerprint).toBe(hoodieApliiqObservation.variantFingerprint);
+    expect(hoodieRelease.fulfillmentMappings[0].mappingFingerprint).toBe(hoodieApliiqObservation.mappingFingerprint);
+    expect(hoodieRelease.physicalSample.providerMappingFingerprint).toBe(hoodieApliiqObservation.mappingFingerprint);
+    expect(fingerprintReleaseArtifact({
+      adapter: hoodieApliiqObservation.adapter,
+      providerProductId: hoodieApliiqObservation.providerProductId,
+      variants: hoodieApliiqObservation.variants,
+    })).toBe(hoodieApliiqObservation.variantFingerprint);
+    expect(fingerprintReleaseArtifact({
+      adapter: hoodieApliiqObservation.adapter,
+      providerProductId: hoodieApliiqObservation.providerProductId,
+      variants: hoodieApliiqObservation.variants,
+      blank: hoodieApliiqObservation.blank,
+      color: hoodieApliiqObservation.color,
+      decoration: hoodieApliiqObservation.decoration,
+    })).toBe(hoodieApliiqObservation.mappingFingerprint);
     expect(Object.values(hoodieRelease.approvals).every(approval => approval.status === 'pending')).toBe(true);
   });
 
