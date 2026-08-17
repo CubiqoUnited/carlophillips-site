@@ -108,9 +108,9 @@
       "owner": "Product Owner and release owner",
       "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
       "blocker": {
-        "code": "CANONICAL_RELEASE_IS_DRAFT",
+        "code": "CANONICAL_RELEASE_NOT_RELEASED",
         "humanAction": "Do not merge, promote Production, publish Shopify, or enable a sales channel from historical launch claims.",
-        "resumePoint": "Complete Draft to Staged to Approved to Released in order, with immutable Preview, approval, ACTIVE Shopify observation, and verified rollback evidence."
+        "resumePoint": "Complete Staged to Approved to Released in order, with immutable Preview, approval, ACTIVE Shopify observation, and verified rollback evidence."
       }
     },
     {
@@ -122,7 +122,7 @@
       "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
       "blocker": {
         "code": "CHECKOUT_AUTHORITY_NOT_RELEASE_BOUND",
-        "humanAction": "Keep cart and checkout disabled while the canonical release is Draft.",
+        "humanAction": "Keep public customer cart and checkout disabled while the canonical release is Staged.",
         "resumePoint": "After Released, prove current variant resolution and a separately approved server-only cart/checkout activation for the exact fingerprint and environment."
       }
     },
@@ -140,8 +140,8 @@
       ],
       "blocker": {
         "code": "CONTROLLED_ORDER_NOT_AUTHORIZED",
-        "humanAction": "After all release gates pass, approve one exact controlled order, payment exposure, shipping destination, tax, total, and refund boundary.",
-        "resumePoint": "Place exactly one controlled order and bind sanitized payment, order, shipping, tax, and refund evidence without exposing customer data."
+        "humanAction": "Use the Product Owner-only controlled checkout to prepare exactly one Medium sample order; approve the exact shipping, tax, total, payment exposure, and refund boundary before paying.",
+        "resumePoint": "Place exactly one controlled Medium order through Shopify and bind sanitized payment, Apliiq intake, shipping, tax, and refund evidence without exposing customer data."
       }
     },
     {

@@ -6,6 +6,10 @@
 - [x] Verify that the existing live Product page can create a Shopify cart and reach hosted checkout with the expected Black / XS item and USD $128 merchandise price.
 - [x] Confirm live hosted payment methods without entering card details or placing a real order.
 - [x] Reverify the public-offer Black / Medium variant: create a reversible Shopify cart, reach the exact hosted checkout, and match product/size/quantity/USD $128 without customer data or order submission.
+- [x] Retire the broken Apliiq bulk/sample-cart route as a release dependency; remove the recurring support monitor and select the already-proven CARLOPHILLIPS → Shopify → Apliiq order path.
+- [x] Implement a Product Owner-only controlled Medium checkout that fixes size/quantity/subtotal on the server and cannot enable public purchasing or submit payment/order automatically.
+- [ ] Deploy the exact controlled-order candidate to protected Staging, enable only `SHOPIFY_CONTROLLED_ORDER_ENABLED`, and capture desktop/mobile Product Owner allow plus reviewer/anonymous denial evidence.
+- [ ] From protected Staging, prepare the exact Medium Shopify checkout and obtain separate approval for the displayed shipping, tax, final total, and live-payment exposure before payment.
 - [x] Detect and document that the legacy Production checkout bypasses the canonical Draft Product Release Record.
 - [x] Restore Shopify Payments test mode immediately so no real customer can be charged during remediation.
 - [x] Replace the impossible self-referential candidate-SHA preflight with a Git-verified evidence-only descendant policy that denies storefront, checkout, component, media, workflow, script, configuration, malformed-path and symlink changes.

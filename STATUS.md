@@ -10,7 +10,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - That exact Production deployment shows only successful observed runtime statuses (seven HTTP 200 and one HTTP 303 in the available seven-day deployment-scoped sample). The project-level Clerk and `theme.json` runtime error clusters belong to discarded older Preview deployments, not this Production deployment.
 - PR #14 is open, mergeable, and currently points to exact head `e38837d7667f8925193f7e490ad32f3f15c90823`. `CI / Verify` passes; the separate Vercel GitHub status fails because the linked deployment account is blocked, not because source verification failed.
 - The canonical repository currently has zero active rulesets. GitHub environments `Preview` and `Production` exist but have no protection rules or required reviewers, and administrator bypass is enabled. The connected `avloy07-eng` identity has pull-only access (`push=false`, `admin=false`) and cannot repair these controls, merge PR #14, or dispatch protected release operations.
-- A fresh authenticated Apliiq retry still exposes the saved Black IND4000 design and exact S/M/L SKUs, but `Stock available` remains stuck on `loading...` and the bulk-purchase handler does not open a quote/cart. No human support reply was found. A direct follow-up was sent to `cs@apliiq.com` with the exact one-Medium scope and no customer, address, payment, or credential data; a 30-minute task heartbeat now watches Gmail and resumes this task on reply. No sample cart, order, payment, fulfillment request, deployment, alias, merge, or Production mutation occurred.
+- The separate Apliiq bulk/sample cart remains broken, but it is no longer treated as a release dependency. Existing evidence already proves the real CARLOPHILLIPS → Shopify → Apliiq route: the live Medium cart reaches Shopify checkout and test order `#1002` reached Apliiq intake. The recurring provider-reply monitor was deleted. An isolated Product Owner-only controlled Medium checkout now uses that existing path without enabling public checkout or submitting payment/order automatically.
 
 ## Evidence-only descendant Production preflight — 2026-08-17
 
@@ -26,7 +26,16 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - The hosted summary showed one `CARLOPHILLIPS Signature Hoodie`, `black / m`, quantity one, subtotal USD $128. Shipping remained destination-dependent.
 - Shopify Payments management still states that only test payments are accepted; no contact, address, payment data, or order was submitted.
 - The observation is retained under `test_reports/cp-production-medium-cart-2026-08-17/`. It does not reclassify operational capability or authorize checkout/Production activation. Screenshot capture is explicitly blocked by the active browser's Shopify Checkout CDP timeout; DOM verification passed.
-- Apliiq's one-Medium sample cart remains independently broken. The approved support request is in Apliiq's offline human-support queue; no provider cart, sample order, fulfillment request, or charge exists.
+- Apliiq's separate one-Medium sample cart remains independently broken and is not part of the selected operating path. No physical sample order, fulfillment request, or charge exists.
+
+## Controlled Medium order through the existing Shopify path — 2026-08-17
+
+- The isolated candidate adds a Product Owner-only action under `/admin/orders`; reviewer and anonymous requests remain concealed.
+- It fixes selection to exactly one Medium, requires the reviewed Staged Shopify observation and Apliiq mapping, re-reads current Shopify identity/facts, verifies the reviewed USD $128 item subtotal before and after cart creation, and accepts only a trusted HTTPS Shopify checkout host.
+- Same-origin protection, expired/malformed authority, stale fingerprint, changed price, missing provider binding, missing capability, foreign checkout host, and environment kill-switch denials are covered by focused tests.
+- Full verification passes design-system lint, zero-warning code lint, 53/53 test files with 548/548 tests, and the optimized Next.js build. Headless desktop/mobile Product Owner/reviewer/anonymous QA passes 31/31 findings with no overflow, error overlay, console/request failure, or critical/serious accessibility violation; evidence is under `test_reports/cp-controlled-medium-checkout-2026-08-17/`.
+- The action prepares checkout only. It cannot submit customer/contact/address/payment data, charge, create an order, request fulfillment, enable public purchasing, merge, deploy, or mutate Production.
+- Apliiq support is no longer a blocker. The next operational step is a protected Staging deployment with `SHOPIFY_CONTROLLED_ORDER_ENABLED=true`, followed by Product Owner review of Shopify's exact shipping, tax, total, and payment exposure before any separately approved payment.
 
 ## Production payment activation audit — 2026-08-17
 

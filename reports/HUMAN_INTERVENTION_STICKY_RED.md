@@ -4,7 +4,7 @@ Updated: 2026-08-17
 
 ## Current shortest path — verified 2026-08-17
 
-1. **Apliiq must restore the sample cart.** The authenticated saved design and S/M/L mapping are correct, but `Stock available` remains stuck on `loading...` and the purchase handler still does not create a quote/cart. Codex sent a direct evidence-backed follow-up to `cs@apliiq.com` and created a 30-minute Gmail monitor on this task; Boss does not need to watch or relay the inbox. Once it works, prepare exactly one Medium sample and obtain Product Owner approval for the final item + digitization + shipping + tax total before purchase.
+1. **Use the existing storefront order path; do not depend on Apliiq's separate sample cart.** Shopify cart/checkout and test order `#1002` already prove the CARLOPHILLIPS → Shopify → Apliiq handoff. The isolated candidate adds a Product Owner-only action that prepares exactly one Medium Shopify checkout at the reviewed USD $128 item subtotal. It does not charge or submit an order. Before payment, the Product Owner must review and approve the exact shipping, tax, final total, and live-payment exposure shown by Shopify.
 2. **The delivered sample must be inspected.** Fit, colour, artwork placement, and finish require real evidence. Shopify being Active and checkout working cannot substitute for this physical fulfillment proof.
 3. **A canonical repository administrator must restore the release guardrails.** PR #14 is mergeable and `CI / Verify` is green at `e38837d7667f8925193f7e490ad32f3f15c90823`, but the repository has no active `main` ruleset and GitHub environments `Preview` and `Production` have no required reviewers. The connected Codex identity is pull-only and cannot configure or merge them.
 4. **Do not promote the current live deployment as the candidate or rollback.** `www.carlophillips.com` is on historical feature-branch commit `bb9568f`; it is healthy in the observed runtime sample but is only the captured drift anchor.
@@ -26,7 +26,7 @@ The Product Owner subsequently completed private Apliiq sign-in. The authenticat
 
 Apliiq did not create the quote cart. Two controlled Add to cart attempts—one in the normal browser viewport and one after a clean authenticated desktop-width reload—both caused Apliiq's own JavaScript to receive an HTML error document where JSON was expected (`Unexpected token '<'`). The cart remained empty after both attempts. No address, order, fulfillment request, or charge was submitted. This provider-side cart failure is now the first external boundary.
 
-The Product Owner approved the support reply address and message. Codex submitted the exact cart-error report to Apliiq Customer Service, escalated past the automated helper, and placed it in the offline human-support queue at 08:27 AM. Apliiq confirmed that it will reply by email. A fresh authenticated retry also found Apliiq's own purchase-header layer intercepting the visible one-unit sample option, so no new provider cart request was created. No password was accessed.
+The Product Owner approved the support reply address and message. Codex submitted the exact cart-error report to Apliiq Customer Service, but this route is now retired as a release dependency. The recurring inbox monitor was deleted. Any later provider reply is informational only; it does not block or authorize the controlled Shopify order.
 
 Separately, the current Production storefront successfully created a Shopify cart for **Black / Medium** at USD $128 and redirected to `carlophillips.myshopify.com`. The hosted order summary matched one Medium Hoodie and exposed the configured payment methods. No contact, address, payment data, or order was submitted. This is additional technical observation evidence only; it does not reclassify the capability registry or authorize release/payment activation. Evidence: `test_reports/cp-production-medium-cart-2026-08-17/`.
 
@@ -34,7 +34,7 @@ On 2026-08-17 the Product Owner approved exact Shopify observation `sha256:143a8
 
 ## What is blocked
 
-Customer payment is **not live**. Shopify Payments is explicitly in test mode. Apliiq shows zero orders in 2026 and no first-production mock approval. The Staged release still lacks an approved delivered physical sample and inspection, final product/media/fulfillment approvals, the complete required release-bound media matrix, a fresh post-approval ACTIVE Production observation, verified rollback execution, and operational `cart-write` authority. The cart capability remains `write_test_verified` with only `cart-write-test`; it is not operational `cart-write` authority. The Preview and Production checkout switches remain off.
+Customer payment is **not live**. Shopify Payments is explicitly in test mode. The Staged release still lacks an approved delivered physical sample and inspection, final product/media/fulfillment approvals, the complete required release-bound media matrix, a fresh post-approval ACTIVE Production observation, verified rollback execution, and operational `cart-write` authority. The cart capability remains `write_test_verified` with only `cart-write-test`; it is not operational public `cart-write` authority. The Preview and Production public checkout switches remain off. The new controlled-order switch is separate and may prepare only one Product Owner Medium checkout; it cannot enable customer purchasing.
 
 The Product Owner approved the Production-preflight correction on 2026-08-17. The implementation accepts a later selected `main` SHA only when Git proves that the reviewed candidate is its ancestor and every endpoint difference is confined to the explicit evidence-only allowlist. Storefront, component, checkout, media manifest/assets, workflow, script, configuration, theme, malformed-path and symlink changes remain forbidden. This correction is not merged or deployed to Production; its fresh immutable Preview must be reviewed before candidate binding.
 
@@ -44,17 +44,17 @@ Exact source commit `d713f8449487f2c6cd342976499ab283c66bf779` is pushed to PR #
 
 1. Shopify Payments management currently shows the payout account and test mode without a visible two-step setup warning. Keep test mode on. If Shopify later prompts for two-step authentication during final activation, complete it privately and do not send recovery codes, one-time codes, passkeys, or phone details to Codex.
 2. Preserve the captured Apliiq per-variant/SKU mapping and verify it against the Staged release. The initial public offer is S/M/L only; Shopify's other variants remain unchanged.
-3. Wait for Apliiq's human support reply about saved design `5958463`, then signal `Apliiq support replied`. The intended cart remains exactly one Medium sample. Do not submit Shopify test order `#1002` for fulfillment: it is XS and uses a fake test destination. After Apliiq successfully creates the cart, the Product Owner must enter the private shipping destination and separately approve the exact item, digitization, shipping, tax, and total before purchase.
+3. After the controlled-order candidate is deployed to protected Staging and `SHOPIFY_CONTROLLED_ORDER_ENABLED=true` is provisioned there, sign in as the Product Owner, open `/admin/orders`, and choose **Open controlled Shopify checkout**. The server fixes the cart to one Medium and verifies the reviewed USD $128 item subtotal. Enter private contact/shipping/payment details only inside Shopify. Before pressing Shopify's final pay button, record and approve the exact shipping, tax, total, and live-payment exposure. Do not submit test order `#1002` for fulfillment: it is XS and uses a fake test destination.
 4. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
 5. After the remaining evidence and approvals are complete, let Codex capture a fresh sanitized ACTIVE Shopify Production observation inside an approved protected runtime. The reviewed Staging observation is already bound; the Production observation must be newer than the final approvals.
 6. Review the immutable Staging candidate and separately approve the product, media, and fulfillment evidence for that exact candidate.
 7. Keep Shopify Payments in test mode while the hosted-checkout staging proof is verified. Turning off test mode, enabling `SHOPIFY_CHECKOUT_ENABLED`, and accepting real customer charges require the final Released evidence and a separate Production authorization.
 8. Review the fresh immutable Preview for the approved preflight correction after PR CI passes. Preview approval does not approve merge, payment, order or Production release.
-9. If Apliiq restores the sample cart before replying, manually add exactly one Medium saved design `5958463` and signal `Apliiq Medium cart created`. Do not send credentials, address, payment data, or verification codes in chat.
+9. Signal `Controlled Medium Shopify checkout ready — total [AMOUNT]` after Shopify displays the final review total. This is the point for exact spend approval. Do not send credentials, address, payment data, or verification codes in chat.
 
 Do not paste Shopify tokens, payment details, customer data, or provider IDs into chat. Do not enable the two Vercel checkout switches manually while the Product Release Record remains Staged.
 
-Read-only Vercel inspection confirms `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_TOKEN`, and `SHOPIFY_CART_UI_ENABLED` already exist by name for Preview and Production. `SHOPIFY_CHECKOUT_ENABLED` and `SHOPIFY_CHECKOUT_HOSTS` are not yet provisioned. Add them only after the release/capability gates pass: the first is the checkout kill switch; the second is the exact comma-separated checkout-host allowlist (for example `www.carlophillips.com`).
+Read-only Vercel inspection confirms `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_TOKEN`, and `SHOPIFY_CART_UI_ENABLED` already exist by name for Preview and Production. `SHOPIFY_CONTROLLED_ORDER_ENABLED`, `SHOPIFY_CHECKOUT_ENABLED`, and `SHOPIFY_CHECKOUT_HOSTS` are not yet provisioned. The first switch enables only the Product Owner controlled checkout in protected Staging; the public checkout switch stays off until the release/capability gates pass. The checkout-host allowlist is the exact comma-separated trusted host list (for example `www.carlophillips.com`).
 
 ## Cost and risk
 
@@ -64,7 +64,7 @@ Read-only Vercel inspection confirms `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT
 
 ## Resume point
 
-After the exact Medium sample quote is available, present the one-sample cost approval and continue the Staged → Approved → Released sequence. Do not deploy customer charging until the exact release and operational cart evidence pass.
+After the protected admin action reaches the exact Medium Shopify checkout, present the final one-order cost approval and continue the Staged → Approved → Released sequence. Do not enable public customer charging until the delivered sample, exact release, and operational cart evidence pass.
 
 ---
 

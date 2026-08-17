@@ -502,6 +502,55 @@
   opacity: var(--cp-semantic-opacity-disabled);
 }
 
+.controlledOrder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--cp-semantic-space-6);
+  margin-bottom: var(--cp-semantic-space-6);
+  padding: var(--cp-semantic-space-5);
+  border: var(--cp-semantic-border-rule-strong);
+  border-radius: var(--cp-component-action-radius);
+  background: var(--cp-semantic-color-panel-subtle);
+}
+
+.controlledOrder h2 {
+  margin-top: var(--cp-semantic-space-2);
+  color: var(--cp-semantic-color-copy-strong);
+  font-size: var(--cp-semantic-font-size-card-title);
+}
+
+.controlledOrder p,
+.controlledOrder small {
+  color: var(--cp-semantic-color-muted);
+}
+
+.controlledOrder p {
+  max-width: var(--cp-semantic-measure-copy);
+  margin-top: var(--cp-semantic-space-2);
+  line-height: var(--cp-semantic-font-line-height-relaxed);
+}
+
+.controlledOrder form {
+  display: grid;
+  gap: var(--cp-semantic-space-2);
+}
+
+.controlledOrder button {
+  min-height: var(--cp-semantic-size-touch-target);
+  padding-inline: var(--cp-semantic-space-4);
+  border-radius: var(--cp-component-action-radius);
+  background: var(--cp-component-action-accent-background);
+  color: var(--cp-semantic-color-canvas);
+  font-size: var(--cp-semantic-font-size-control);
+  font-weight: var(--cp-semantic-font-weight-regular);
+}
+
+.controlledOrder small {
+  font-size: var(--cp-semantic-font-size-label-small);
+  text-align: center;
+}
+
 .themeActions span {
   color: var(--cp-semantic-color-muted);
   font-family: var(--cp-semantic-font-family-mono);
@@ -637,6 +686,11 @@
 }
 
 @media (max-width: 46rem) {
+  .controlledOrder {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
   .shell {
     display: block;
   }

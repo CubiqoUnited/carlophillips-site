@@ -140,9 +140,29 @@ function Rows({ columns, rows, empty = 'No records in this read-only projection.
   );
 }
 
-function LifecycleView({ summary, blockers }) {
+function ControlledOrderAction() {
+  return (
+    <section className={styles.controlledOrder} aria-labelledby="controlled-order-title">
+      <div>
+        <span className={styles.eyebrow}>Product Owner controlled order</span>
+        <h2 id="controlled-order-title">Prepare one Medium checkout</h2>
+        <p>
+          Uses the existing CARLOPHILLIPS → Shopify → Apliiq route. Shopify will
+          show shipping, tax, and the final total before you decide whether to pay.
+        </p>
+      </div>
+      <form method="post" action="/api/admin/controlled-order">
+        <button type="submit">Open controlled Shopify checkout</button>
+        <small>No charge or order occurs by opening checkout.</small>
+      </form>
+    </section>
+  );
+}
+
+function LifecycleView({ summary, blockers, controlledOrder = false }) {
   return (
     <>
+      {controlledOrder ? <ControlledOrderAction /> : null}
       <article className={styles.emptyState}>
         <div className={styles.cardHeading}>
           <div><span className={styles.eyebrow}>Canonical empty state</span><h2>{summary.title}</h2></div>
@@ -214,7 +234,7 @@ function ReleasesView({ model }) {
       <section className={styles.section}>
         <div className={styles.sectionHeading}>
           <div><span className={styles.eyebrow}>Release dependencies</span><h2>Blocked transitions</h2></div>
-          <p>The current Draft cannot advance until its canonical stage blockers and immutable bindings both pass.</p>
+          <p>The current {statusLabel(model.release.state)} release cannot advance until its canonical stage blockers and immutable bindings both pass.</p>
         </div>
         <BlockerCards blockers={blockers} />
       </section>
@@ -222,7 +242,7 @@ function ReleasesView({ model }) {
   );
 }
 
-function SectionView({ section, model, themeModel }) {
+function SectionView({ section, model, themeModel, viewerRole }) {
   if (section === 'overview') return <Overview model={model} />;
   if (section === 'evidence') return <EvidenceHealth model={model} />;
   if (section === 'theme') {
@@ -288,7 +308,13 @@ function SectionView({ section, model, themeModel }) {
     const stage = model.stages.find(item => item.id === blocker.stageId);
     return groups.includes(stage?.group);
   });
-  if (section === 'orders') return <LifecycleView summary={model.lifecycle.orders} blockers={blockers} />;
+  if (section === 'orders') return (
+    <LifecycleView
+      summary={model.lifecycle.orders}
+      blockers={blockers}
+      controlledOrder={viewerRole === 'product_owner'}
+    />
+  );
   if (section === 'post-sale') return <LifecycleView summary={model.lifecycle.postSale} blockers={blockers} />;
   if (section === 'analytics') return <LifecycleView summary={model.lifecycle.analytics} blockers={blockers} />;
   return <BlockerCards blockers={blockers} />;
@@ -300,6 +326,16 @@ export function AdminControlPlane({ activeSection, model, themeModel, viewerRole
     section => section.id !== 'theme' || viewerRole === 'product_owner'
   );
   const isTheme = activeSection === 'theme';
+  const warning = isTheme
+    ? 'Local repo proposal only. Production is unchanged; QA, pull request, Preview, review, and merge remain separate.'
+    : activeSection === 'orders' && viewerRole === 'product_owner'
+      ? 'Preparing the controlled checkout creates one temporary Shopify cart. It cannot charge, submit an order, request fulfillment, or enable public purchasing.'
+      : model.meta.warning;
+  const headerEyebrow = isTheme
+    ? 'Local repository token proposal'
+    : activeSection === 'orders' && viewerRole === 'product_owner'
+      ? 'Restricted controlled-order preparation'
+      : 'Non-authoritative operational projection';
   return (
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
@@ -320,7 +356,7 @@ export function AdminControlPlane({ activeSection, model, themeModel, viewerRole
       <main id="main-content" className={styles.main}>
         <header className={styles.header}>
           <div>
-            <span className={styles.eyebrow}>{isTheme ? 'Local repository token proposal' : 'Non-authoritative operational projection'}</span>
+            <span className={styles.eyebrow}>{headerEyebrow}</span>
             <h1>{definition.label}</h1>
             <p>{definition.description}</p>
           </div>
@@ -331,8 +367,8 @@ export function AdminControlPlane({ activeSection, model, themeModel, viewerRole
             </div>
           )}
         </header>
-        <div className={styles.warning} role="status"><span aria-hidden="true">!</span><p>{isTheme ? 'Local repo proposal only. Production is unchanged; QA, pull request, Preview, review, and merge remain separate.' : model.meta.warning}</p></div>
-        <SectionView section={activeSection} model={model} themeModel={themeModel} />
+        <div className={styles.warning} role="status"><span aria-hidden="true">!</span><p>{warning}</p></div>
+        <SectionView section={activeSection} model={model} themeModel={themeModel} viewerRole={viewerRole} />
       </main>
     </div>
   );

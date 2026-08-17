@@ -261,7 +261,12 @@ describe('admin operational projection', () => {
     expect(route).toContain("dynamic = 'force-dynamic'");
     expect(route.indexOf('requireAdminAccess')).toBeLessThan(route.indexOf('loadAdminControlPlane'));
     expect(layout).toContain('index: false');
-    expect(component).not.toMatch(/<button|<form|onClick|action=/);
+    expect(component).not.toContain('onClick');
+    expect(component).toContain('controlledOrder={viewerRole === \'product_owner\'}');
+    expect(component).toContain('action="/api/admin/controlled-order"');
+    expect(component).toContain('No charge or order occurs by opening checkout.');
+    expect(component).toContain('creates one temporary Shopify cart');
+    expect(component).toContain('Restricted controlled-order preparation');
     expect(component).toContain("section.id !== 'theme' || viewerRole === 'product_owner'");
     expect(route).toContain("activeSection === 'theme' ? 'product_owner' : null");
     expect(editor).toContain('Exactly four token values. No layout changes.');

@@ -91,6 +91,24 @@ describe('active commerce boundary policy', () => {
     expect(form).not.toContain('variantId');
   });
 
+  it('keeps the controlled Medium checkout Product Owner-only and separate from public activation', () => {
+    const serverEntry = readFileSync('lib/commerce/shopify-checkout-server.js', 'utf8');
+    const route = readFileSync('app/api/admin/controlled-order/route.js', 'utf8');
+    const component = readFileSync('components/admin/control-plane.jsx', 'utf8');
+
+    expect(serverEntry).toContain('createControlledMediumCheckout');
+    expect(serverEntry).toContain('SHOPIFY_CONTROLLED_ORDER_ENABLED');
+    expect(serverEntry).toContain("['staged', 'approved']");
+    expect(serverEntry).toContain("option.value?.toLowerCase() === 'm'");
+    expect(route).toContain("requiredRole: 'product_owner'");
+    expect(route).toContain('ORIGIN_REJECTED');
+    expect(route).not.toContain('request.formData');
+    expect(route).not.toContain('SHOPIFY_STOREFRONT_TOKEN');
+    expect(route).not.toContain('merchandiseId');
+    expect(component).toContain('viewerRole === \'product_owner\'');
+    expect(component).toContain('No charge or order occurs by opening checkout.');
+  });
+
   it('keeps public API routes from exposing catalog audit or mutation surfaces', () => {
     const source = readFileSync('app/api/[[...path]]/route.js', 'utf8');
     expect(source).not.toContain('media-audit');
