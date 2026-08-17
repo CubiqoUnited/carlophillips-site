@@ -1,0 +1,46 @@
+{
+  "observedAt": "2026-08-17",
+  "mode": "authenticated-read-only-browser-audit",
+  "story": "CARLOPHILLIPS Headless checkout creates a Shopify order, Shopify accepts a test payment, and the order is routed to Apliiq without sending an invalid test order to production.",
+  "shopifyProduct": {
+    "status": "active",
+    "title": "CARLOPHILLIPS Signature Hoodie",
+    "color": "black",
+    "availableOfferSizesVerified": ["S", "M", "L"],
+    "totalObservedSizes": 9,
+    "inventoryPolicyObserved": "not-tracked"
+  },
+  "shopifyPayments": {
+    "mode": "test",
+    "acceptingRealPayments": false,
+    "payoutsEnabled": false
+  },
+  "testCheckout": {
+    "shopifyOrder": "#1002",
+    "channel": "Carlophillips Headless",
+    "testOrder": true,
+    "paymentStatus": "paid",
+    "fulfillmentStatus": "unfulfilled",
+    "variant": "black / xs",
+    "merchandiseUsd": 128.0,
+    "shippingUsd": 8.2,
+    "totalUsd": 136.2,
+    "confirmationEmailGenerated": true,
+    "fulfillmentProvider": "Apliiq Dropship Fulfillment",
+    "safeToSubmitForFulfillment": false,
+    "denialReason": "The Shopify test order uses an intentionally fake test destination and is not the approved Medium physical sample."
+  },
+  "apliiq": {
+    "savedDesign": "5958463",
+    "browserSession": "signed-out",
+    "mediumSampleQuoteAvailable": false,
+    "blockingInputs": [
+      "private Apliiq sign-in",
+      "private delivery destination",
+      "destination-dependent shipping and tax quote",
+      "exact Product Owner purchase approval"
+    ]
+  },
+  "result": "blocked-at-genuine-physical-sample-quote",
+  "externalMutations": []
+}

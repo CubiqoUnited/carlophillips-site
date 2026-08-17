@@ -10,6 +10,10 @@ Source QA passes design-system lint, zero-warning code lint, 51 test files / 532
 
 The 2026-08-16 authenticated read-only account audit also proves that the external product itself is no longer a Shopify Draft. It is Active on Online Store and Carlophillips Headless, has nine Black variants from XS through 5XL at USD 128–134, and all nine variants are assigned to Apliiq Dropship Fulfillment. Apliiq shows the Shopify store connected and a fulfillment payment method present.
 
+The 2026-08-17 continuation audit additionally proves that Shopify hosted checkout and test payment already work end to end. Shopify order `#1002` is explicitly labeled **Test order**, **Paid**, and **Unfulfilled**; it originated from Carlophillips Headless, charged USD $128.00 plus USD $8.20 shipping for a USD $136.20 test total, and generated the order-confirmation email. Shopify offers a fulfillment request to Apliiq, but that order uses Shopify's intentionally fake test destination and the XS variant. It must not be submitted to Apliiq or treated as physical-sample evidence.
+
+The same read-only audit reconfirms the Hoodie is Active, all nine Black sizes exist, S/M/L are present, and Shopify Payments remains explicitly in test mode with live payouts unavailable. The Apliiq browser session is currently signed out, so a genuine Medium sample quote cannot be calculated without the Product Owner privately signing in and entering the real delivery destination.
+
 On 2026-08-17 the Product Owner approved exact Shopify observation `sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4`. That approval is bound to immutable candidate `4ee088cd39cfa9b967bde32893f0dc2a33325904`, and the canonical Product Release Record is formally **Staged**. The initial customer offer remains exactly Small, Medium and Large; the other observed Shopify sizes were not deleted or changed.
 
 ## What is blocked
@@ -24,13 +28,13 @@ Exact source commit `d713f8449487f2c6cd342976499ab283c66bf779` is pushed to PR #
 
 1. In the already-open Shopify Payments management screen, the Product Owner must select **Turn on two-step** and complete Shopify's private authentication setup. Do not send recovery codes, one-time codes, passkeys, or phone details to Codex. This security step does not itself enable real payments.
 2. Preserve the captured Apliiq per-variant/SKU mapping and verify it against the Staged release. The initial public offer is S/M/L only; Shopify's other variants remain unchanged.
-3. Quote one Medium physical Hoodie sample following the existing `SIGNATURE HOODIE SAMPLE FIRST` section below. The Product Owner must enter the private shipping destination in Apliiq, then separately approve the exact item, shipping, tax, and total before any purchase.
+3. Manually sign in to Apliiq, reopen saved Hoodie design `5958463`, and quote one Medium physical Hoodie sample following the existing `SIGNATURE HOODIE SAMPLE FIRST` section below. The Product Owner must enter the private shipping destination in Apliiq, then separately approve the exact item, shipping, tax, and total before any purchase. Do not submit Shopify test order `#1002` for fulfillment: it is XS and uses a fake test destination.
 4. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
 5. After the remaining evidence and approvals are complete, let Codex capture a fresh sanitized ACTIVE Shopify Production observation inside an approved protected runtime. The reviewed Staging observation is already bound; the Production observation must be newer than the final approvals.
 6. Review the immutable Staging candidate and separately approve the product, media, and fulfillment evidence for that exact candidate.
 7. Keep Shopify Payments in test mode while the hosted-checkout staging proof is verified. Turning off test mode, enabling `SHOPIFY_CHECKOUT_ENABLED`, and accepting real customer charges require the final Released evidence and a separate Production authorization.
 8. Review the fresh immutable Preview for the approved preflight correction after PR CI passes. Preview approval does not approve merge, payment, order or Production release.
-9. Signal the first external resume point as: `Shopify two-step enabled` after the security setup; then provide the exact Medium sample quote total for separate purchase approval.
+9. Signal the first external resume point as: `Apliiq signed in and Medium sample quote open` after privately completing Apliiq sign-in and destination entry. Codex can then read the exact quote and present the separately required purchase approval without exposing the address or payment data.
 
 Do not paste Shopify tokens, payment details, customer data, or provider IDs into chat. Do not enable the two Vercel checkout switches manually while the Product Release Record remains Staged.
 
