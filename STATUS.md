@@ -7,7 +7,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 ## Shopify Payments live activation — 2026-08-17
 
 - The Product Owner explicitly authorized real Production payments. Shopify Payments test mode was turned off and the setting persisted.
-- The authoritative Shopify Payments summary now states **Accepting payments** and **Receiving payouts**. Card methods, Shop Pay, PayPal, Google Pay, and the existing additional methods are exposed by Shopify Checkout.
+- The authoritative Shopify Payments summary now states **Accepting payments** and **Receiving payouts**. Managed payment methods are enabled; Apple Pay, Google Pay, Shop Pay, PayPal Wallet, and the supported card methods are active. Amazon Pay is the wallet explicitly marked disabled.
 - Payouts are configured to the existing Shopify Balance USD account ending `4549`; no separate Stripe account connection is required for this Shopify Payments setup.
 - Live `www.carlophillips.com` was verified without customer data or an order: the Hoodie PDP selected Black / Medium at USD $128, created a Shopify cart, and redirected to the exact `carlophillips.myshopify.com` hosted checkout. The checkout showed one Medium Hoodie, quantity one, USD $128 subtotal/total before shipping, live card fields, Shop Pay, and PayPal.
 - Desktop and mobile checkout screenshots plus before/after Shopify Payments evidence are retained under `test_reports/cp-production-payments-live-2026-08-17/`. No customer data, real payment, order, fulfillment request, catalog change, merge, or Vercel deployment was made.

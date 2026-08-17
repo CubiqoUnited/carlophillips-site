@@ -12,6 +12,7 @@ Shopify Payments test mode was turned off with explicit Product Owner authorizat
 4. Verified redirect to the exact HTTPS `carlophillips.myshopify.com` checkout host.
 5. Verified one CARLOPHILLIPS Signature Hoodie, `black / m`, quantity one, USD $128 subtotal and pre-shipping total.
 6. Verified live card fields, Shop Pay, PayPal, and Shopify's secure checkout UI at desktop and mobile widths.
+7. Verified Shopify Admin → Payment methods → Online → Wallets lists Apple Pay without a disabled marker. Google Pay and PayPal Wallet are likewise active; Amazon Pay is explicitly marked disabled.
 
 No contact, address, card, or other customer data was entered. The final **Pay now** control was not used. No real payment, order, fulfillment request, catalog mutation, merge, or deployment occurred.
 
@@ -20,6 +21,7 @@ No contact, address, card, or other customer data was entered. The final **Pay n
 - `shopify-payments-payout-account.jpg`
 - `shopify-test-mode-before.jpg`
 - `shopify-test-mode-off.jpg`
+- `shopify-apple-pay-enabled.jpg`
 - `production-checkout-desktop.jpg`
 - `production-checkout-mobile.jpg`
 
