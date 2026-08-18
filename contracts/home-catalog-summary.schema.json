@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/home-catalog-summary.schema.json",
+  "title": "HomeCatalogSummary v1",
+  "type": "object",
+  "required": ["schemaVersion", "environment", "status", "candidateCount", "visibleCount", "excludedCount", "commerceAllowed", "message", "primaryProduct"],
+  "properties": {
+    "schemaVersion": { "const": "cp.home-catalog-summary.v1" },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "status": { "enum": ["available", "unavailable", "denied"] },
+    "candidateCount": { "type": "integer", "minimum": 0 },
+    "visibleCount": { "type": "integer", "minimum": 0 },
+    "excludedCount": { "type": "integer", "minimum": 0 },
+    "commerceAllowed": { "type": "boolean" },
+    "message": { "type": "string", "minLength": 1 },
+    "primaryProduct": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["title", "href", "sourceLabel", "commerceAllowed", "description", "heroMedia", "media"],
+          "properties": {
+            "handle": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+            "title": { "type": "string", "minLength": 1 },
+            "href": { "type": "string", "pattern": "^/products/[a-z0-9]+(?:-[a-z0-9]+)*$" },
+            "sourceLabel": { "type": "string", "minLength": 1 },
+            "commerceAllowed": { "type": "boolean" },
+            "description": { "type": "string" },
+            "price": { "type": "number", "minimum": 0 },
+            "currency": { "type": "string", "minLength": 3, "maxLength": 3 },
+            "variantPresentation": {
+              "oneOf": [
+                { "type": "null" },
+                { "type": "object" }
+              ]
+            },
+            "heroMedia": {
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "required": ["url", "alt", "label"],
+                  "properties": {
+                    "url": { "type": "string", "minLength": 1 },
+                    "alt": { "type": "string", "minLength": 1 },
+                    "label": { "type": "string", "minLength": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "media": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["type", "url", "previewUrl", "alt", "label"],
+                "properties": {
+                  "type": { "enum": ["image", "video", "external_video", "model_3d"] },
+                  "url": { "type": "string", "minLength": 1 },
+                  "previewUrl": { "type": "string", "minLength": 1 },
+                  "alt": { "type": "string", "minLength": 1 },
+                  "label": { "type": "string", "minLength": 1 }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "visibleCount": { "const": 0 } }, "required": ["visibleCount"] },
+      "then": { "properties": { "primaryProduct": { "type": "null" } } }
+    },
+    {
+      "if": { "properties": { "visibleCount": { "minimum": 1 } }, "required": ["visibleCount"] },
+      "then": { "properties": { "primaryProduct": { "type": "object" } } }
+    }
+  ],
+  "additionalProperties": false
+}

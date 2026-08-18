@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/catalog-decision.schema.json",
+  "title": "CatalogDecision v1",
+  "type": "object",
+  "required": ["schemaVersion", "environment", "status", "source", "candidateCount", "visibleCount", "excludedCount", "commerceAllowed", "reason", "excludedReasons", "products"],
+  "properties": {
+    "schemaVersion": { "const": "cp.catalog-decision.v1" },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "status": { "enum": ["available", "unavailable", "denied"] },
+    "source": { "enum": ["shopify", "fixture", "unavailable"] },
+    "candidateCount": { "type": "integer", "minimum": 0 },
+    "visibleCount": { "type": "integer", "minimum": 0 },
+    "excludedCount": { "type": "integer", "minimum": 0 },
+    "commerceAllowed": { "type": "boolean" },
+    "reason": { "type": "string", "minLength": 1 },
+    "excludedReasons": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "products": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "available" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "visibleCount": { "minimum": 1 },
+          "source": { "enum": ["shopify", "fixture"] }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["unavailable", "denied"] } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "source": { "const": "unavailable" },
+          "visibleCount": { "const": 0 },
+          "products": { "maxItems": 0 }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

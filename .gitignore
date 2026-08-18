@@ -55,3 +55,9 @@ Thumbs.db
 # Emergent
 .emergent/
 .env*
+!.env.example
+
+# Local recovered design/reference exports (preserved outside the application diff)
+/chat-images/
+/tmp/
+/tmp_make_chat_pdf.py

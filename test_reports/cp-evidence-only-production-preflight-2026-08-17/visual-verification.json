@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-08-17T03:48:46.047Z",
+  "baseUrl": "http://127.0.0.1:3143",
+  "route": "/products/carlophillips-signature-hoodie",
+  "results": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "httpStatus": 200,
+      "exactByteMatch": true,
+      "beforeSha256": "e2257d89e50ca15a23eddb31b6bd5eead5d612ffbd5bdb2d053c06e9f89ad4b8",
+      "afterSha256": "e2257d89e50ca15a23eddb31b6bd5eead5d612ffbd5bdb2d053c06e9f89ad4b8",
+      "unavailableBoundaryVisible": true,
+      "checkoutActionVisible": false,
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "httpStatus": 200,
+      "exactByteMatch": true,
+      "beforeSha256": "50865b14feade5cef44d76a3d658cbd18f6615f106e045bd2dbb6c78611a4a24",
+      "afterSha256": "50865b14feade5cef44d76a3d658cbd18f6615f106e045bd2dbb6c78611a4a24",
+      "unavailableBoundaryVisible": true,
+      "checkoutActionVisible": false,
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  ]
+}

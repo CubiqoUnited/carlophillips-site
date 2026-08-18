@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 14,
+  "observedAt": "2026-07-23",
+  "objective": "Define canonical sanitized Shopify Product Observation and review contracts that bind exact capability and approval evidence without mutating release truth.",
+  "observationContract": {
+    "schema": "cp.product-observation.v1",
+    "reviewSchema": "cp.product-observation-review.v1",
+    "rawShopifyIdsPersisted": false,
+    "variantReferencesHashed": true,
+    "localeIndependentCanonicalSort": true,
+    "variantFingerprintSemantics": [
+      "hashed variant reference",
+      "variant title",
+      "canonical selected options"
+    ],
+    "variantFingerprintExcludes": [
+      "price",
+      "availability",
+      "observation timestamp",
+      "capability evidence"
+    ],
+    "fullObservationFingerprintBinds": [
+      "schemaVersion",
+      "source",
+      "authority",
+      "environment",
+      "observedAt",
+      "capabilityEvidence",
+      "product facts",
+      "canonical variants",
+      "price",
+      "currency",
+      "availability"
+    ],
+    "reviewRecomputesVariantFingerprint": true,
+    "reviewRecomputesObservationFingerprint": true,
+    "emptyVariantsAccepted": false,
+    "missingRawReferenceAccepted": false,
+    "duplicateReferenceHashAccepted": false,
+    "invalidPriceOrCurrencyAccepted": false,
+    "inconsistentSummaryFactsAccepted": false
+  },
+  "authorityContract": {
+    "shopifyCandidateRequiresCapabilityEvidence": true,
+    "capabilityName": "shopify-storefront-product-read",
+    "capabilityMustBeReady": true,
+    "capabilityEvidenceMustExactlyMatch": true,
+    "approvalMustBindObservationFingerprint": true,
+    "approvalMustBindExpectedHandle": true,
+    "fixtureAuthoritative": false,
+    "simulationAuthoritative": false,
+    "reviewOutputAppliesReleasePatch": false,
+    "applyOperationImplemented": false,
+    "draftReleaseMutated": false
+  },
+  "commands": {
+    "focusedTests": {
+      "status": "passed",
+      "files": 6,
+      "tests": 74
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 28,
+      "tests": 204,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "performed": false,
+    "reason": "No route presentation or client interaction changed; the full build and existing Cycle 13 PDP/bag browser evidence cover the unchanged UI."
+  },
+  "knownWarnings": [
+    "Temporary PostCSS and sharp security resolutions remain outside Next.js 15.5.21 declared ranges.",
+    "Yarn/Corepack emits the existing url.parse deprecation warning.",
+    "The Open Graph edge route prevents static generation for that route.",
+    "Browserslist data is stale.",
+    "A normal shell-provided yarn executable remains absent; verification used the already-proven bundled Yarn 1.22.22 runtime."
+  ],
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false,
+    "categories": {
+      "governance": 5,
+      "packageReproducibility": 5,
+      "qualityAndSecurity": 5,
+      "gitStrategy": 4,
+      "environmentSeparation": 5,
+      "secretHandling": 5,
+      "architectureImplementation": 5,
+      "hoodieSequenceTruth": 5,
+      "localBrowserEvidence": 4,
+      "liveOperations": 1
+    }
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "releasePatchApplied": false,
+    "cartMutation": false,
+    "checkout": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

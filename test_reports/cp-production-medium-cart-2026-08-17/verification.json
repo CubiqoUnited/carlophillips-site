@@ -1,0 +1,40 @@
+{
+  "observedAt": "2026-08-17",
+  "mode": "authenticated-background-browser-verification",
+  "productionPdp": "https://www.carlophillips.com/products/carlophillips-signature-hoodie",
+  "selection": {
+    "product": "CARLOPHILLIPS Signature Hoodie",
+    "color": "black",
+    "size": "m",
+    "quantity": 1,
+    "currency": "USD",
+    "unitPrice": 128
+  },
+  "shopifyCart": {
+    "created": true,
+    "checkoutHost": "carlophillips.myshopify.com",
+    "checkoutSummaryMatched": true,
+    "shippingCalculated": false,
+    "customerDataEntered": false,
+    "paymentDataEntered": false,
+    "orderSubmitted": false
+  },
+  "shopifyPayments": {
+    "mode": "test",
+    "acceptingRealPayments": false,
+    "payoutAccountConfigured": true
+  },
+  "authority": {
+    "capabilityRegistryChanged": false,
+    "releaseAuthority": false,
+    "paymentAuthority": false,
+    "orderAuthority": false
+  },
+  "visualValidation": {
+    "screenshotCaptured": false,
+    "blocker": "Shopify Checkout Page.captureScreenshot timed out for both PNG and reduced-quality JPEG; targeted element capture is unsupported by the active in-app browser.",
+    "domAssertionsCaptured": true
+  },
+  "externalMutations": ["shopify_cart_created"],
+  "forbiddenMutationsObserved": []
+}

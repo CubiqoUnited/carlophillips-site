@@ -1,0 +1,432 @@
+{
+  "schemaVersion": "cp.capability-registry.v1",
+  "observedAt": "2026-08-04",
+  "source": "Reconciled live Shopify evidence, local contracts, Product Release Record, Media Registry, PipelineRun, and strict 2026-08-14 end-to-end gap audit; secrets, customer data, and raw provider references are excluded",
+  "evidenceBoundary": "Technical access evidence is historical observation only. It never grants release, publication, cart, checkout, payment, order, fulfillment, refund, or Production authority.",
+  "canonicalOwners": {
+    "releaseTruth": "Product Release Record",
+    "mediaTruth": "Media Registry",
+    "commerceTruth": "Shopify through Commerce Gateway",
+    "orchestrationTruth": "PipelineRun",
+    "orderTruth": "Shopify order observation",
+    "fulfillmentTruth": "Verified POD and carrier events reconciled to Shopify",
+    "operationalTruth": "Append-only operational event store"
+  },
+  "capabilities": [
+    {
+      "capability": "shopify-storefront-product-read",
+      "selectedAdapter": "shopify-storefront-product",
+      "accessState": "read_only_verified",
+      "callableSurface": "shopify_storefront",
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json",
+      "allowedOperations": ["product-read"],
+      "requiresApproval": [],
+      "costGate": "read-only Storefront observation; no write, cart, checkout, or order authority",
+      "draftSafety": "observation remains candidate evidence until fingerprint review and explicit acceptance",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
+      "capability": "shopify-storefront-cart",
+      "selectedAdapter": "shopify-storefront-cart",
+      "accessState": "write_test_verified",
+      "callableSurface": "shopify_storefront",
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-hoodie-production-activation-2026-08-04/report.md",
+      "allowedOperations": ["cart-write-test"],
+      "requiresApproval": ["activation", "production", "order"],
+      "costGate": "historical no-order technical test only; release-bound activation, checkout, payment, and order authority remain absent",
+      "draftSafety": "the no-order cart test is evidence-only and cannot activate customer cart UI or authorize a Shopify mutation",
+      "alternatives": [],
+      "blocker": {
+        "code": "CART_ACTIVATION_AUTHORITY_REQUIRED",
+        "humanAction": "Keep public customer cart and checkout disabled until the Staged Product Release Record becomes Released and current release-bound fingerprints and activation approval are complete.",
+        "resumePoint": "After Released, re-observe the exact product and variants, prove server-only resolution, record Product Owner activation approval for the exact environment, and enable the server gate separately."
+      }
+    },
+    {
+      "capability": "shopify-storefront-variant-resolver",
+      "selectedAdapter": "server-only-shopify-variant-resolver",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "evidenceRef": "tests/variant-resolution-policy.test.js",
+      "allowedOperations": ["resolve-reviewed-variant"],
+      "requiresApproval": [],
+      "costGate": "local readiness computation only; no Shopify write, cart, checkout, order, or raw-reference disclosure",
+      "draftSafety": "re-derives current read-only facts and emits only a sanitized readiness decision",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
+      "capability": "hoodie-fulfillment",
+      "selectedAdapter": "apliiq",
+      "accessState": "read_only_verified",
+      "callableSurface": "authenticated_browser",
+      "allowedOperations": ["read-saved-product-facts"],
+      "requiresApproval": ["sample", "spend"],
+      "costGate": "sample/order/fulfillment approval required",
+      "draftSafety": "saved-product observation only; no variant binding, sample, order, sync, fulfillment, publication, or release authority",
+      "alternatives": ["gelato", "customcat", "spreadconnect", "teelaunch"],
+      "observedAt": "2026-08-14",
+      "evidenceRef": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/final-apliiq-assets-rerun-report.md",
+      "blocker": {
+        "code": "APLIQ_VARIANT_MAPPING_FINGERPRINT_UNBOUND",
+        "humanAction": "Review the captured Apliiq saved-product, IND4000, black, and front-embroidery facts and authorize exact read-only reconciliation of every provider variant and SKU; do not order, sample, sync, or enable fulfillment.",
+        "resumePoint": "Bind the complete one-to-one provider variant/SKU fingerprint to the nine reviewed Shopify variants and the Draft release, then separately approve and inspect one physical sample before any fulfillment authority."
+      }
+    },
+    {
+      "capability": "spin-360",
+      "selectedAdapter": null,
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
+      "costGate": "plan/credit approval required",
+      "draftSafety": "exact-product bake-off and human QA required",
+      "alternatives": ["spin-studio", "zs-spin-view"],
+      "observedAt": "2026-08-08",
+      "evidenceRef": "test_reports/cp-media-expansion-2026-08-08/report.md",
+      "blocker": {
+        "code": "SPIN_SOURCE_AND_HEADLESS_PATH_UNPROVEN",
+        "humanAction": "Obtain or approve capture of 16–24 genuine angle images or a real GLB, and separately approve a no-charge headless export or API compatibility check; keep the theme embed disabled.",
+        "resumePoint": "Inspect an immutable exact-product spin output and prove a headless-safe delivery path before any activation, charge, or storefront binding."
+      }
+    },
+    {
+      "capability": "model-lifestyle-media",
+      "selectedAdapter": null,
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
+      "costGate": "credit/subscription approval required",
+      "draftSafety": "derived provenance and human media approval required",
+      "alternatives": ["modelize"],
+      "observedAt": "2026-08-08",
+      "evidenceRef": "test_reports/cp-media-expansion-2026-08-08/report.md",
+      "blocker": {
+        "code": "MODELIZE_CREDITS_EXHAUSTED_AND_MEDIA_APPROVALS_MISSING",
+        "humanAction": "Keep the two existing usable outputs as disclosed candidates and the artifacted output quarantined; approve any new plan or credits separately and obtain physical exact-product evidence before factual media approval.",
+        "resumePoint": "Bind only reviewed exact-product candidates to the Media Registry, with provenance and Preview-only limits, after explicit media approval."
+      }
+    },
+    {
+      "capability": "shopify-local-automation",
+      "selectedAdapter": "flow",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["publish"],
+      "costGate": "plan and activation approval required",
+      "draftSafety": "versioned Draft-safe flow only",
+      "alternatives": [],
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-shopify-audit-2026-08-04/audit-report.md",
+      "blocker": {
+        "code": "SHOPIFY_FLOW_INACTIVE_AND_ACTIVATION_UNAPPROVED",
+        "humanAction": "Review the existing inactive `CARLOPHILLIPS - POD Product Review Gate` steps and version read-only, then approve activation separately without granting publication authority.",
+        "resumePoint": "Bind the reviewed Flow version to the Draft-only release process, activate only after exact approval, and verify it cannot publish or bypass release gates."
+      }
+    },
+    {
+      "capability": "pod-bulk-workflow",
+      "selectedAdapter": "mydesigns",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend", "publish"],
+      "costGate": "credits, plan changes, generation, and publication require approval",
+      "draftSafety": "read-only audit first; any later job must remain Draft and release-record bound",
+      "alternatives": [],
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-shopify-audit-2026-08-04/audit-report.md",
+      "blocker": {
+        "code": "MYDESIGNS_PERMISSION_AND_SELECTION_UNAPPROVED",
+        "humanAction": "Keep MyDesigns inactive while Apliiq and the selected media tools cover the Hoodie POC; approve any new theme permission, provider change, or paid plan separately.",
+        "resumePoint": "Only if the selected stack fails, audit the exact MyDesigns permission, API, billing, and Draft-safe export boundary before selecting it."
+      }
+    },
+    {
+      "capability": "trend-research-input",
+      "selectedAdapter": "cs-trending-products-finder",
+      "accessState": "human_required",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
+      "costGate": "plan, credits, and paid data require approval",
+      "draftSafety": "research output is evidence input only and never automatic product or publish truth",
+      "alternatives": [],
+      "observedAt": "2026-08-04",
+      "evidenceRef": "test_reports/cp-shopify-audit-2026-08-04/audit-report.md",
+      "blocker": {
+        "code": "TREND_RESEARCH_SCOPE_AND_COST_UNAPPROVED",
+        "humanAction": "Approve the exact research source, date range, access boundary, credit or plan cost, and attribution requirements before any new trend extraction.",
+        "resumePoint": "Record a dated, attributed research-only input with freshness and confidence; it must remain inspiration evidence and cannot establish product, media, or publication truth."
+      }
+    },
+    {
+      "capability": "cross-lane-orchestration",
+      "selectedAdapter": "cp-pipeline-run",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "allowedOperations": ["simulate-run", "record-evidence", "isolate-blocker"],
+      "requiresApproval": ["spend", "credits", "sample", "publish", "production"],
+      "costGate": "no external action",
+      "draftSafety": "hard spend/publish/production gates",
+      "alternatives": ["codexautomation5"],
+      "blocker": null
+    },
+    {
+      "capability": "support-inbox",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["spend"],
+      "costGate": "privacy/subscription approval required",
+      "draftSafety": "one owner after escalation and transcript audit",
+      "alternatives": ["tidio", "messaging"],
+      "blocker": {
+        "code": "SUPPORT_OWNER_UNSELECTED",
+        "humanAction": "Approve a privacy, escalation, retention, and cost audit before selecting one support inbox.",
+        "resumePoint": "Classify Tidio and Messaging, select one owner, and keep the alternative inactive."
+      }
+    },
+    {
+      "capability": "shopify-checkout-authorization",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["production", "payment", "order"],
+      "costGate": "canonical Released record plus separate environment-scoped checkout authorization and controlled-order approval required",
+      "draftSafety": "the checkout endpoint performs no Shopify read or mutation while authority is absent",
+      "alternatives": [],
+      "blocker": {
+        "code": "CHECKOUT_AUTHORITY_NOT_RELEASE_BOUND",
+        "humanAction": "Keep public checkout disabled while the Product Release Record is Staged and the controlled order has not completed its evidence path.",
+        "resumePoint": "After Released, bind an explicit short-lived checkout authorization to the exact release, environment, fingerprints, rollback, and controlled-order evidence."
+      }
+    },
+    {
+      "capability": "shopify-payment-order",
+      "selectedAdapter": null,
+      "accessState": "human_required",
+      "callableSurface": "human_only",
+      "allowedOperations": [],
+      "requiresApproval": ["payment", "order", "production"],
+      "costGate": "one exact controlled order with approved item, shipping, tax, total, payment exposure, and refund boundary",
+      "draftSafety": "cart redirect evidence never implies payment or order readiness",
+      "alternatives": [],
+      "blocker": {
+        "code": "CONTROLLED_ORDER_NOT_AUTHORIZED",
+        "humanAction": "Use the Product Owner-only controlled checkout to prepare exactly one Medium sample order, then approve the exact shipping, tax, total, payment exposure, and refund boundary before paying.",
+        "resumePoint": "Complete the one controlled Medium order and bind sanitized payment, Apliiq intake, tax, shipping, cancellation, and refund evidence."
+      }
+    },
+    {
+      "capability": "order-observation-reconciliation",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["connector", "privacy"],
+      "costGate": "Shopify order-read scope, customer-data minimization, retention, and webhook or polling boundary require approval",
+      "draftSafety": "no customer or order data may enter committed fixtures or client responses",
+      "alternatives": ["shopify-webhooks", "shopify-admin-api-read-only"],
+      "blocker": {
+        "code": "ORDER_OBSERVATION_ADAPTER_UNSELECTED",
+        "humanAction": "Approve one least-privilege Shopify order-observation surface, data classification, retention, and reconciliation owner.",
+        "resumePoint": "Ingest the controlled order with signature/replay protection, redact customer data, and prove exactly-once reconciliation."
+      }
+    },
+    {
+      "capability": "pod-fulfillment-events",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["connector", "privacy", "production"],
+      "costGate": "provider API/webhook access and fulfillment side effects require exact approval",
+      "draftSafety": "provider association and mapping observations do not imply an order handoff",
+      "alternatives": ["apliiq-api", "apliiq-webhook", "shopify-fulfillment-observation"],
+      "blocker": {
+        "code": "FULFILLMENT_EVENT_SURFACE_UNVERIFIED",
+        "humanAction": "Approve read-only provider capability discovery and the customer-data boundary; do not enable automatic fulfillment.",
+        "resumePoint": "Observe the controlled order through POD receipt, production, shipment, exception, and Shopify reconciliation before enabling any write."
+      }
+    },
+    {
+      "capability": "shipment-tracking",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["connector", "privacy", "spend"],
+      "costGate": "one tracking owner, customer-data scope, notification policy, retention, and plan cost require approval",
+      "draftSafety": "installed-app inventory is not tracking evidence",
+      "alternatives": ["shopify-fulfillment-tracking", "aftership"],
+      "blocker": {
+        "code": "TRACKING_OWNER_UNSELECTED",
+        "humanAction": "Select and approve one tracking owner after privacy, access, notification, retention, and cost review.",
+        "resumePoint": "Reconcile carrier events for the controlled shipment and verify the customer tracking experience and exceptions."
+      }
+    },
+    {
+      "capability": "returns-refunds",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["refund", "privacy", "connector"],
+      "costGate": "policy owner, return address, refund authority, fraud boundary, retention, and connector scope require approval",
+      "draftSafety": "no automatic refund, label, or customer promise is permitted",
+      "alternatives": ["shopify-returns", "manual-reviewed-return"],
+      "blocker": {
+        "code": "RETURN_REFUND_WORKFLOW_UNDEFINED",
+        "humanAction": "Approve the business-owned return/refund policy and one accountable operator; technical implementation will preserve that approved content.",
+        "resumePoint": "Exercise request, review, receipt, disposition, refund, rejection, cancellation, and reconciliation against the controlled order."
+      }
+    },
+    {
+      "capability": "product-reviews",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["connector", "privacy", "spend"],
+      "costGate": "verified-purchase eligibility, moderation, retention, syndication, and plan cost require approval",
+      "draftSafety": "no review request or customer claim is generated without a reconciled delivered order",
+      "alternatives": ["loox", "manual-reviewed-feedback"],
+      "blocker": {
+        "code": "REVIEW_OWNER_UNSELECTED",
+        "humanAction": "Approve one review owner, verified-purchase rule, moderation policy, data retention, and cost boundary.",
+        "resumePoint": "Trigger eligibility only after reconciled delivery and verify request, moderation, display, deletion, and opt-out behavior."
+      }
+    },
+    {
+      "capability": "consent-analytics-reconciliation",
+      "selectedAdapter": null,
+      "accessState": "human_required",
+      "callableSurface": "human_only",
+      "allowedOperations": [],
+      "requiresApproval": ["privacy", "connector", "spend"],
+      "costGate": "provider, event dictionary, consent basis, retention, access, cost, and kill switch require approval",
+      "draftSafety": "optional analytics remains disabled without applicable consent and approval",
+      "alternatives": ["vercel-web-analytics", "google-analytics", "posthog"],
+      "blocker": {
+        "code": "ANALYTICS_GOVERNANCE_UNAPPROVED",
+        "humanAction": "Approve one provider and the exact event, consent, retention, access, cost, and kill-switch boundary.",
+        "resumePoint": "Instrument environment-labelled events and reconcile revenue, refunds, returns, and fulfillment to Shopify authoritative facts."
+      }
+    },
+    {
+      "capability": "admin-identity-rbac",
+      "selectedAdapter": null,
+      "accessState": "human_required",
+      "callableSurface": "human_only",
+      "allowedOperations": [],
+      "requiresApproval": ["identity", "privacy", "connector", "spend"],
+      "costGate": "identity provider, users, roles, session policy, step-up authentication, recovery, and plan cost require approval",
+      "draftSafety": "the current admin prototype is local-only, bearer-gated, read-only, noindex, and denied on every Vercel environment",
+      "alternatives": ["vercel-marketplace-identity-provider"],
+      "blocker": {
+        "code": "ADMIN_IDENTITY_PROVIDER_UNSELECTED",
+        "humanAction": "Select the identity provider, initial users, least-privilege roles, session lifetime, step-up policy, recovery, and incident owner.",
+        "resumePoint": "Replace the local review token with server-enforced identity and RBAC before any remote admin access."
+      }
+    },
+    {
+      "capability": "sale-post-sale-lifecycle-core",
+      "selectedAdapter": "cp-order-lifecycle",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "observedAt": "2026-08-14",
+      "evidenceRef": "tests/order-lifecycle.test.js",
+      "allowedOperations": ["validate-sanitized-event", "reduce-lifecycle", "project-sanitized-state"],
+      "requiresApproval": ["privacy", "connector", "payment", "order", "refund", "production"],
+      "costGate": "pure local validation and projection only; no provider ingress, customer data, external write, payment, order, refund, or notification",
+      "draftSafety": "strict binding, idempotency, sequence, hash-chain, transition, authority-fingerprint, and PII rejection gates; no event can approve a release or perform a side effect",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
+      "capability": "admin-command-authorizer",
+      "selectedAdapter": "cp-admin-command-policy",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "observedAt": "2026-08-14",
+      "evidenceRef": "tests/admin-command-policy.test.js",
+      "allowedOperations": ["evaluate-reviewed-command"],
+      "requiresApproval": [],
+      "costGate": "pure local policy evaluation only; no identity provider, durable idempotency claim, append-only audit, connector invocation, external mutation, or Production authority",
+      "draftSafety": "requires exact identity, role grant, target/environment binding, capability, approvals, idempotency, audit, connector, cost, rollback, and Product Owner gates before returning a sanitized authorization decision",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
+      "capability": "append-only-operational-audit",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["privacy", "connector", "spend"],
+      "costGate": "durable store, access roles, retention, export, backup, restore, immutability, and cost require approval",
+      "draftSafety": "the local screen projects sanitized committed events and cannot mutate or claim durable persistence",
+      "alternatives": ["postgres-append-only-events"],
+      "blocker": {
+        "code": "DURABLE_AUDIT_STORE_UNSELECTED",
+        "humanAction": "Approve the database/event store, data classification, retention, backup, access, and cost boundary.",
+        "resumePoint": "Persist hash-chained attempted, denied, approved, executed, failed, retried, reconciled, and rolled-back events with restore verification."
+      }
+    },
+    {
+      "capability": "shopify-webhook-verifier",
+      "selectedAdapter": "cp-shopify-webhook-verifier",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "observedAt": "2026-08-14",
+      "evidenceRef": "tests/shopify-webhook-verifier.test.js",
+      "allowedOperations": ["verify-signature-envelope", "derive-quarantine-fingerprints"],
+      "requiresApproval": ["privacy", "connector", "production"],
+      "costGate": "pure local verification only; no listener, registered subscription, provider secret, durable store, payload projection, lifecycle mutation, or external call",
+      "draftSafety": "validates exact raw bytes, HMAC, allowlisted shop/topic, delivery identity, timestamp window, and replay claim; returns fingerprints only with every authority false",
+      "alternatives": [],
+      "blocker": null
+    },
+    {
+      "capability": "provider-webhook-inbox",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["connector", "privacy", "production"],
+      "costGate": "provider credentials, network exposure, event retention, and incident response require approval",
+      "draftSafety": "no unsigned or replayed provider event can change product, release, order, or fulfillment state",
+      "alternatives": ["shopify-webhooks", "provider-polling-read-only"],
+      "blocker": {
+        "code": "WEBHOOK_INGRESS_AND_DURABILITY_NOT_IMPLEMENTED",
+        "humanAction": "Approve each provider event surface, subscription/topic/shop scope, secret owner, durable store, retention, data classification, and incident response boundary.",
+        "resumePoint": "Reuse the locally verified fingerprint-only signature boundary, then add authorized subscription, durable inbox/outbox, payload sanitization, retries, and dead-letter handling before lifecycle projection."
+      }
+    },
+    {
+      "capability": "durable-workflow-executor",
+      "selectedAdapter": null,
+      "accessState": "unavailable",
+      "callableSurface": "unavailable",
+      "allowedOperations": [],
+      "requiresApproval": ["connector", "spend", "credits", "publish", "production"],
+      "costGate": "runtime, queue, database, scheduler, secrets, retries, alerts, and external-call ceilings require approval",
+      "draftSafety": "existing runs remain simulations; schedules never grant external-call or publication authority",
+      "alternatives": ["durable-worker-and-queue"],
+      "blocker": {
+        "code": "DURABLE_EXECUTOR_NOT_IMPLEMENTED",
+        "humanAction": "Approve the runtime, queue, database, scheduling, secret, retry, alert, cost, and external-action boundary.",
+        "resumePoint": "Implement leased idempotent execution with reviewed command envelopes, transactional outbox, failure isolation, and human gates."
+      }
+    }
+  ]
+}

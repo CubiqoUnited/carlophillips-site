@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "cp.pipeline-run.v1",
+  "runId": "cp-hoodie-trend-contract-sim-003",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "mode": "trend-led",
+  "state": "in_progress_with_blockers",
+  "workItems": [
+    {
+      "workItemId": "external-input-refresh",
+      "lane": "orchestration",
+      "capability": "external-input-refresh",
+      "adapter": "capability-registry",
+      "status": "human_required",
+      "attempts": 0,
+      "evidence": ["local-contract-fixture:non-authoritative"],
+      "blocker": {
+        "code": "EXTERNAL_EXECUTION_APPROVAL_REQUIRED",
+        "humanAction": "Product Owner approves the exact external tool/source, access path, and any cost or credit boundary.",
+        "resumePoint": "Invoke only the approved adapter in candidate-only mode, record sanitized evidence, and leave all write/publish gates pending."
+      }
+    },
+    {
+      "workItemId": "verify-product-pod-truth",
+      "lane": "product-pod",
+      "capability": "product-and-fulfillment-evidence",
+      "adapter": "fulfillment-adapter",
+      "status": "pending",
+      "attempts": 0,
+      "evidence": [],
+      "blocker": null
+    },
+    {
+      "workItemId": "build-media-truth",
+      "lane": "media",
+      "capability": "provenance-bound-media-candidate",
+      "adapter": "cp-media-registry",
+      "status": "pending",
+      "attempts": 0,
+      "evidence": [],
+      "blocker": null
+    },
+    {
+      "workItemId": "stage-commerce-candidate",
+      "lane": "commerce-frontend",
+      "capability": "shopify-backed-draft-candidate",
+      "adapter": "shopify-commerce-gateway",
+      "status": "pending",
+      "attempts": 0,
+      "evidence": [],
+      "blocker": null
+    },
+    {
+      "workItemId": "assemble-release-evidence",
+      "lane": "orchestration",
+      "capability": "release-record-and-approval-gates",
+      "adapter": "cp-pipeline-run",
+      "status": "pending",
+      "attempts": 0,
+      "evidence": [],
+      "blocker": null
+    }
+  ],
+  "events": [],
+  "approvals": {
+    "externalExecution": { "status": "pending", "owner": "Product Owner" },
+    "spend": { "status": "pending", "owner": "Product Owner" },
+    "credits": { "status": "pending", "owner": "Product Owner" },
+    "sample": { "status": "pending", "owner": "Product Owner" },
+    "shopifyWrite": { "status": "pending", "owner": "Product Owner" },
+    "publish": { "status": "pending", "owner": "Product Owner" },
+    "production": { "status": "pending", "owner": "Product Owner" }
+  }
+}

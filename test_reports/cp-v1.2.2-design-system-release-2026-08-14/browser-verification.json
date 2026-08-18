@@ -1,0 +1,529 @@
+{
+  "schemaVersion": "cp.ui-verification.v1.2.2",
+  "date": "2026-08-14",
+  "method": "headless background Google Chrome via bundled Playwright (agent-browser launcher unavailable)",
+  "baseUrl": "http://127.0.0.1:3000",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "homeStatus": 200,
+      "heroText": "CARLOPHILLIPS / AT THE EDGE OF LIFE\n\nAt the\nedge of life.\n\nRUNWAY 001 / LOFOTEN\n\nSCROLL AND EXPLORE",
+      "heroAsset": "/campaigns/lofoten-runway-hero.png",
+      "headerVisible": true,
+      "homeHealth": {
+        "bodyTextLength": 419,
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "providerLeakage": false
+      },
+      "navigationMenu": {
+        "focusOutline": "solid",
+        "bodyOverflow": "hidden",
+        "backgroundInert": true,
+        "focusContained": true,
+        "reverseTabContained": true,
+        "focusReturned": true,
+        "semanticDialog": {
+          "role": "dialog",
+          "modal": "true",
+          "labelledBy": "site-menu-title"
+        }
+      },
+      "productText": "PRIVATE PRODUCT PREVIEW\nEXPLORE MEDIA\n12 VIEWS\n\nSIGNATURE SERIES / 001\n\nONE\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery.\n\nBLACK\nXS–5XL\nHEAVYWEIGHT FLEECE\nCP EMBROIDERY",
+      "productTags": [
+        "BLACK",
+        "XS–5XL",
+        "HEAVYWEIGHT FLEECE",
+        "CP EMBROIDERY"
+      ],
+      "viewCountText": "12 VIEWS",
+      "descriptionMetrics": {
+        "lines": 2,
+        "rect": {
+          "x": 48,
+          "y": 881.984375,
+          "width": 432,
+          "height": 55.21875,
+          "top": 881.984375,
+          "right": 480,
+          "bottom": 937.203125,
+          "left": 48
+        }
+      },
+      "copyRect": {
+        "x": 48,
+        "y": 733.296875,
+        "width": 432,
+        "height": 258.703125,
+        "top": 733.296875,
+        "right": 480,
+        "bottom": 992,
+        "left": 48
+      },
+      "overlayRect": {
+        "x": 80,
+        "y": 52,
+        "width": 1280,
+        "height": 896,
+        "top": 52,
+        "right": 1360,
+        "bottom": 948,
+        "left": 80
+      },
+      "overlayInset": true,
+      "bodyOverflow": "hidden",
+      "routes": [
+        {
+          "name": "shop",
+          "path": "/shop",
+          "status": 200,
+          "title": "Shop | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nSHOP\nBAG\n\nLOCAL NON-COMMERCE FIXTURE REVIEW\n\n1 preview piece\n\nThese cards are explicitly local layout fixtures. They are not live store data and cannot be purchased.\n\nCANDIDATE RECORDS\n1\nVISIBLE HERE\n1\nWITHHELD\n0\nPURCHASING\nDisabled\n\nLOCAL PRESENTATION FIXTURE\n\nCARLOPHILLIPS Signature Hoodie\n\n$128\n\nPREVIEW PRODUCT",
+          "health": {
+            "bodyTextLength": 350,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 1,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        },
+        {
+          "name": "pdp",
+          "path": "/products/carlophillips-signature-hoodie",
+          "status": 200,
+          "title": "Signature Hoodie | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nCOLLECTION\nBAG\nMODELIZE PRODUCT PORTRAIT · GENERATED CANDIDATE · APPROVAL PENDING\nMODELIZE EDITORIAL STILL · GENERATED CANDIDATE · APPROVAL PENDING\nRECORDED APLIIQ FRONT CANDIDATE — APPROVAL PENDING\nAI-ASSISTED BACK FLAT-LAY HYPOTHESIS · APPROVAL PENDING\n\nLOCAL PRESENTATION FIXTURE — NOT LIVE STORE DATA\n\nCARLOPHILLIPS Signature Hoodie\n\n$128\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured flee",
+          "health": {
+            "bodyTextLength": 1009,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 4,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        },
+        {
+          "name": "bag",
+          "path": "/bag",
+          "status": 200,
+          "title": "Bag | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nCOLLECTION\nBAG\n\nCOMMERCE TRUTH\n\nENVIRONMENT\nlocal\nSOURCE\nLocal preview\nCHECKOUT\nDisabled\n\nLOCAL NON-COMMERCE PREVIEW\n\nThe bag is intentionally inactive.\n\nThis local surface proves layout and failure policy only. No live cart, checkout, payment, or order exists.\n\nVIEW RELEASE STATE\nRETURN HOME",
+          "health": {
+            "bodyTextLength": 328,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 0,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        }
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "requestFailures": []
+    },
+    {
+      "name": "compact",
+      "width": 584,
+      "height": 486,
+      "homeStatus": 200,
+      "heroText": "CARLOPHILLIPS / AT THE EDGE OF LIFE\n\nAt the\nedge of life.\n\nRUNWAY 001 / LOFOTEN\n\nSCROLL AND EXPLORE",
+      "heroAsset": "/campaigns/lofoten-runway-hero.png",
+      "headerVisible": true,
+      "homeHealth": {
+        "bodyTextLength": 410,
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "providerLeakage": false
+      },
+      "navigationMenu": {
+        "focusOutline": "solid",
+        "bodyOverflow": "hidden",
+        "backgroundInert": true,
+        "focusContained": true,
+        "reverseTabContained": true,
+        "focusReturned": true,
+        "semanticDialog": {
+          "role": "dialog",
+          "modal": "true",
+          "labelledBy": "site-menu-title"
+        }
+      },
+      "productText": "PRIVATE PRODUCT PREVIEW\nEXPLORE MEDIA\n12 VIEWS\n\nSIGNATURE SERIES / 001\n\nONE\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery.\n\nBLACK\nXS–5XL\nHEAVYWEIGHT FLEECE\nCP EMBROIDERY",
+      "productTags": [
+        "BLACK",
+        "XS–5XL",
+        "HEAVYWEIGHT FLEECE",
+        "CP EMBROIDERY"
+      ],
+      "viewCountText": "12 VIEWS",
+      "descriptionMetrics": {
+        "lines": 3,
+        "rect": {
+          "x": 20,
+          "y": 278.9375,
+          "width": 224,
+          "height": 68.390625,
+          "top": 278.9375,
+          "right": 244,
+          "bottom": 347.328125,
+          "left": 20
+        }
+      },
+      "copyRect": {
+        "x": 20,
+        "y": 171.046875,
+        "width": 224,
+        "height": 307.046875,
+        "top": 171.046875,
+        "right": 244,
+        "bottom": 478.09375,
+        "left": 20
+      },
+      "overlayRect": {
+        "x": 23.359375,
+        "y": 23.359375,
+        "width": 537.265625,
+        "height": 439.265625,
+        "top": 23.359375,
+        "right": 560.625,
+        "bottom": 462.625,
+        "left": 23.359375
+      },
+      "overlayInset": true,
+      "bodyOverflow": "hidden",
+      "routes": [
+        {
+          "name": "shop",
+          "path": "/shop",
+          "status": 200,
+          "title": "Shop | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nSHOP\nBAG\n\nLOCAL NON-COMMERCE FIXTURE REVIEW\n\n1 preview piece\n\nThese cards are explicitly local layout fixtures. They are not live store data and cannot be purchased.\n\nCANDIDATE RECORDS\n1\nVISIBLE HERE\n1\nWITHHELD\n0\nPURCHASING\nDisabled\n\nLOCAL PRESENTATION FIXTURE\n\nCARLOPHILLIPS Signature Hoodie\n\n$128\n\nPREVIEW PRODUCT",
+          "health": {
+            "bodyTextLength": 350,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 1,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        },
+        {
+          "name": "pdp",
+          "path": "/products/carlophillips-signature-hoodie",
+          "status": 200,
+          "title": "Signature Hoodie | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nCOLLECTION\nBAG\nMODELIZE PRODUCT PORTRAIT · GENERATED CANDIDATE · APPROVAL PENDING\nMODELIZE EDITORIAL STILL · GENERATED CANDIDATE · APPROVAL PENDING\nRECORDED APLIIQ FRONT CANDIDATE — APPROVAL PENDING\nAI-ASSISTED BACK FLAT-LAY HYPOTHESIS · APPROVAL PENDING\n\nLOCAL PRESENTATION FIXTURE — NOT LIVE STORE DATA\n\nCARLOPHILLIPS Signature Hoodie\n\n$128\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured flee",
+          "health": {
+            "bodyTextLength": 1009,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 4,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        },
+        {
+          "name": "bag",
+          "path": "/bag",
+          "status": 200,
+          "title": "Bag | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nCOLLECTION\nBAG\n\nCOMMERCE TRUTH\n\nENVIRONMENT\nlocal\nSOURCE\nLocal preview\nCHECKOUT\nDisabled\n\nLOCAL NON-COMMERCE PREVIEW\n\nThe bag is intentionally inactive.\n\nThis local surface proves layout and failure policy only. No live cart, checkout, payment, or order exists.\n\nVIEW RELEASE STATE\nRETURN HOME",
+          "health": {
+            "bodyTextLength": 328,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 0,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        }
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "requestFailures": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "homeStatus": 200,
+      "heroText": "CARLOPHILLIPS / AT THE EDGE OF LIFE\n\nAt the\nedge of life.\n\nRUNWAY 001 / LOFOTEN\n\nSCROLL AND EXPLORE",
+      "heroAsset": "/campaigns/lofoten-runway-hero.png",
+      "headerVisible": true,
+      "homeHealth": {
+        "bodyTextLength": 410,
+        "frameworkOverlay": false,
+        "horizontalOverflow": false,
+        "providerLeakage": false
+      },
+      "navigationMenu": {
+        "focusOutline": "solid",
+        "bodyOverflow": "hidden",
+        "backgroundInert": true,
+        "focusContained": true,
+        "reverseTabContained": true,
+        "focusReturned": true,
+        "semanticDialog": {
+          "role": "dialog",
+          "modal": "true",
+          "labelledBy": "site-menu-title"
+        }
+      },
+      "productText": "PRIVATE PRODUCT PREVIEW\nEXPLORE MEDIA\n12 VIEWS\n\nSIGNATURE SERIES / 001\n\nONE\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery.\n\nBLACK\nXS–5XL\nHEAVYWEIGHT FLEECE\nCP EMBROIDERY",
+      "productTags": [
+        "BLACK",
+        "XS–5XL",
+        "HEAVYWEIGHT FLEECE",
+        "CP EMBROIDERY"
+      ],
+      "viewCountText": "12 VIEWS",
+      "descriptionMetrics": {
+        "lines": 3,
+        "rect": {
+          "x": 20,
+          "y": 636.84375,
+          "width": 224,
+          "height": 68.390625,
+          "top": 636.84375,
+          "right": 244,
+          "bottom": 705.234375,
+          "left": 20
+        }
+      },
+      "copyRect": {
+        "x": 20,
+        "y": 528.953125,
+        "width": 224,
+        "height": 307.046875,
+        "top": 528.953125,
+        "right": 244,
+        "bottom": 836,
+        "left": 20
+      },
+      "overlayRect": {
+        "x": 15.59375,
+        "y": 15.59375,
+        "width": 358.796875,
+        "height": 812.796875,
+        "top": 15.59375,
+        "right": 374.390625,
+        "bottom": 828.390625,
+        "left": 15.59375
+      },
+      "overlayInset": true,
+      "bodyOverflow": "hidden",
+      "routes": [
+        {
+          "name": "shop",
+          "path": "/shop",
+          "status": 200,
+          "title": "Shop | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nSHOP\nBAG\n\nLOCAL NON-COMMERCE FIXTURE REVIEW\n\n1 preview piece\n\nThese cards are explicitly local layout fixtures. They are not live store data and cannot be purchased.\n\nCANDIDATE RECORDS\n1\nVISIBLE HERE\n1\nWITHHELD\n0\nPURCHASING\nDisabled\n\nLOCAL PRESENTATION FIXTURE\n\nCARLOPHILLIPS Signature Hoodie\n\n$128\n\nPREVIEW PRODUCT",
+          "health": {
+            "bodyTextLength": 350,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 1,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        },
+        {
+          "name": "pdp",
+          "path": "/products/carlophillips-signature-hoodie",
+          "status": 200,
+          "title": "Signature Hoodie | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nCOLLECTION\nBAG\nMODELIZE PRODUCT PORTRAIT · GENERATED CANDIDATE · APPROVAL PENDING\nMODELIZE EDITORIAL STILL · GENERATED CANDIDATE · APPROVAL PENDING\nRECORDED APLIIQ FRONT CANDIDATE — APPROVAL PENDING\nAI-ASSISTED BACK FLAT-LAY HYPOTHESIS · APPROVAL PENDING\n\nLOCAL PRESENTATION FIXTURE — NOT LIVE STORE DATA\n\nCARLOPHILLIPS Signature Hoodie\n\n$128\n\nHeavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured flee",
+          "health": {
+            "bodyTextLength": 1009,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 4,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        },
+        {
+          "name": "bag",
+          "path": "/bag",
+          "status": 200,
+          "title": "Bag | CARLOPHILLIPS",
+          "text": "Skip to main content\nCARLOPHILLIPS\nCOLLECTION\nBAG\n\nCOMMERCE TRUTH\n\nENVIRONMENT\nlocal\nSOURCE\nLocal preview\nCHECKOUT\nDisabled\n\nLOCAL NON-COMMERCE PREVIEW\n\nThe bag is intentionally inactive.\n\nThis local surface proves layout and failure policy only. No live cart, checkout, payment, or order exists.\n\nVIEW RELEASE STATE\nRETURN HOME",
+          "health": {
+            "bodyTextLength": 328,
+            "frameworkOverlay": false,
+            "horizontalOverflow": false,
+            "providerLeakage": false
+          },
+          "media": {
+            "imageCount": 0,
+            "brokenImages": [],
+            "videoCount": 0,
+            "brokenVideos": []
+          }
+        }
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "requestFailures": []
+    }
+  ],
+  "gallery": {
+    "viewportName": "desktop",
+    "mediaCount": 12,
+    "decoded": [
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 928,
+        "height": 1152
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 928,
+        "height": 1152
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 524,
+        "height": 800
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 1792,
+        "height": 2400
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 864,
+        "height": 1184
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 1126,
+        "height": 1397
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 540,
+        "height": 675
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 896,
+        "height": 1200
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 864,
+        "height": 1184
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 896,
+        "height": 1200
+      },
+      {
+        "type": "image",
+        "decoded": true,
+        "width": 864,
+        "height": 1184
+      }
+    ],
+    "labels": [
+      "PRODUCT STILL",
+      "PRODUCT STILL",
+      "PRODUCT STILL",
+      "PRODUCT STILL",
+      "ON-BODY / FRONT",
+      "ON-BODY / THREE-QUARTER",
+      "MATERIAL / EMBROIDERY STUDY",
+      "STILL-DERIVED MOTION LOOP",
+      "ON-BODY / SEATED",
+      "ON-BODY / PROFILE",
+      "DIGITAL BACK-VIEW STUDY",
+      "PRODUCT-ALONE / FLAT LAY"
+    ],
+    "disclosures": [
+      "PRODUCT VIEW",
+      "PRODUCT VIEW",
+      "PRODUCT VIEW",
+      "PRODUCT VIEW",
+      "AI-ASSISTED PREVIEW",
+      "AI-ASSISTED PREVIEW",
+      "AI-ASSISTED PREVIEW",
+      "AI-ASSISTED STILL-DERIVED MOTION",
+      "AI-ASSISTED PREVIEW",
+      "AI-ASSISTED PREVIEW",
+      "UNVERIFIED BACK VISUALISATION",
+      "AI-ASSISTED PREVIEW"
+    ],
+    "focusOutline": "solid",
+    "focusContainedAfterTab": true,
+    "keyboardChangedIndex": true,
+    "focusReturned": true
+  },
+  "touchSwipe": {
+    "before": 0,
+    "after": 683,
+    "changed": true
+  },
+  "reducedMotion": {
+    "campaignAnimation": "none",
+    "scrollAnimation": "none",
+    "runwayAnimation": "none",
+    "imageTransition": "0s",
+    "htmlScrollBehavior": "auto"
+  }
+}

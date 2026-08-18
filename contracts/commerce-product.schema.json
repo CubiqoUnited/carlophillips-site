@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/commerce-product.schema.json",
+  "title": "CommerceProduct v1",
+  "type": "object",
+  "required": ["schemaVersion", "source", "environment", "fetchedAt", "product"],
+  "properties": {
+    "schemaVersion": { "const": "cp.commerce-product.v1" },
+    "source": { "enum": ["shopify", "fixture"] },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "fetchedAt": { "type": "string", "format": "date-time" },
+    "commerceMode": { "enum": ["commerce", "non-commerce"] },
+    "product": {
+      "type": "object",
+      "required": ["id", "handle", "title", "currency", "variants", "media"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "handle": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "variants": { "type": "array" },
+        "media": { "type": "array" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "source": { "const": "fixture" } }, "required": ["source"] },
+      "then": {
+        "properties": {
+          "environment": { "const": "local" },
+          "commerceMode": { "const": "non-commerce" }
+        },
+        "required": ["commerceMode"]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

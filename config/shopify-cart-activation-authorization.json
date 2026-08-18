@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "cp.shopify-cart-activation-authorization.v1",
+  "status": "approved",
+  "owner": "Product Owner",
+  "scope": "activate-customer-cart",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "handle": "carlophillips-signature-hoodie",
+  "environments": ["preview", "production"],
+  "evidence": "Codex task 2026-08-16: make the Shopify payments jump from our frontend and make the payments work",
+  "limitations": "Authorizes cart UI only after the Released record, current variant, verified cart capability, server-only resolver, and environment gates all pass."
+}

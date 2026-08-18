@@ -1,0 +1,63 @@
+{
+  "run_timestamp": "2026-07-12T01:40:00-04:00",
+  "apliiq_login_confirmed": true,
+  "saved_designs_accessible": true,
+  "store_connection": {
+    "confirmed": true,
+    "store_name": "carlophillips",
+    "store_type": "shopify",
+    "screenshot": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/screenshots/08-apliiq-stores-connection.png"
+  },
+  "saved_design_row": {
+    "visible": true,
+    "product_name": "independent heavyweight pullover hoodie",
+    "style_code_brand": "ind4000 / independent trading co",
+    "colors_visible": [
+      "black",
+      "Bone"
+    ],
+    "sizes_visible": "9 sizes (xs-5xl)",
+    "artwork_count_visible": 1,
+    "expanded_row_detail_visible": true,
+    "expanded_row_detail_observed": "color Bone; front embroidery 2 x 2 (cp-mark-transparent-png)",
+    "screenshot": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/media/apliiq-saved-designs-expanded-proof.png"
+  },
+  "black_product_record": {
+    "opened": true,
+    "url": "https://www.apliiq.com/product/5958463/independent-heavyweight-pullover-hoodie",
+    "apliiq_product_id": "5958463",
+    "title": "independent heavyweight pullover hoodie",
+    "target_color": "black",
+    "blank": "Independent Trading Co IND4000 heavyweight pullover hoodie",
+    "material": "70% cotton 30% poly",
+    "made_in": "China",
+    "gender": "mens",
+    "decoration": "front embroidery",
+    "artwork_name": "cp-mark-transparent-png",
+    "placement": "front",
+    "size": "2 in x 2 in",
+    "stitch_estimate": 648,
+    "screenshot": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/media/apliiq-5958463-black-product-page-proof.png"
+  },
+  "non_target_variant": {
+    "apliiq_product_id": "5958464",
+    "color": "Bone",
+    "status": "real Apliiq variant but rejected for the black Signature Hoodie"
+  },
+  "edit_view_opened": false,
+  "edit_view_blocker": "The saved-design row Edit action was visible but did not navigate/open reliably in the controllable browser. The black product record was opened directly instead and exposed the production facts and image URLs.",
+  "shopify_product": {
+    "id": "9432704909549",
+    "handle": "carlophillips-signature-hoodie",
+    "status_before_after": "Draft"
+  },
+  "safety": {
+    "created_new_product": false,
+    "published_live": false,
+    "made_active": false,
+    "marketing_sync_started": false,
+    "billing_approved": false,
+    "sample_order_or_fulfillment_charge": false,
+    "order_1001_touched": false
+  }
+}

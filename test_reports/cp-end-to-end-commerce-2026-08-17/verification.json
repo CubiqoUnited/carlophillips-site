@@ -1,0 +1,44 @@
+{
+  "run": "cp-end-to-end-commerce-2026-08-17",
+  "environment": "Shopify Payments test mode",
+  "shopify": {
+    "orderNumber": "1002",
+    "orderId": "gid://shopify/Order/7131809939693",
+    "confirmation": "FMDNGLXPQ",
+    "channel": "Carlophillips Headless",
+    "product": "CARLOPHILLIPS Signature Hoodie",
+    "variant": "black / xs",
+    "sku": "APQ-5958463S5A1",
+    "quantity": 1,
+    "subtotalUsd": 128.0,
+    "shippingUsd": 8.2,
+    "totalUsd": 136.2,
+    "payment": "Paid using Shopify Payments test card ending 4242",
+    "fulfillment": "Unfulfilled",
+    "realCharge": false
+  },
+  "apliiq": {
+    "storeOrderId": "1002",
+    "store": "carlophillips",
+    "ingestion": "pending orders/manual review",
+    "autoProcessing": false,
+    "observedFulfillmentCostUsd": 50.45,
+    "manufacturingStarted": false,
+    "fulfillmentCardCharged": false,
+    "cleanupAction": "remove from list",
+    "postCleanupText": "you don't have any unprocessed orders"
+  },
+  "evidence": {
+    "shopifyCheckoutScreenshot": "shopify-checkout-confirmation-1002.jpg",
+    "shopifyOrderScreenshot": "shopify-order-1002-test-paid-unfulfilled.jpg",
+    "apliiqBeforeScreenshot": "apliiq-pending-order-1002-before-removal.jpg",
+    "apliiqAfterScreenshot": null,
+    "apliiqAfterScreenshotBlocker": "The vendor page repeatedly timed out during CDP Page.captureScreenshot; post-removal state was verified from the rendered page text."
+  },
+  "truthBoundary": {
+    "testCheckoutProven": true,
+    "liveCustomerPaymentsEnabled": false,
+    "productionStorefrontCheckoutEnabled": false,
+    "productionReady": false
+  }
+}

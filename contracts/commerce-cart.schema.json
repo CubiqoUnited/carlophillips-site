@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/commerce-cart.schema.json",
+  "title": "CommerceCart v1",
+  "type": "object",
+  "required": ["schemaVersion", "source", "environment", "status", "cart"],
+  "properties": {
+    "schemaVersion": { "const": "cp.commerce-cart-envelope.v1" },
+    "source": { "enum": ["shopify", "fixture", "unavailable"] },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "status": { "enum": ["ready", "unavailable"] },
+    "reason": { "type": ["string", "null"] },
+    "cart": {
+      "type": ["object", "null"],
+      "properties": {
+        "schemaVersion": { "const": "cp.commerce-cart.v1" },
+        "source": { "enum": ["shopify", "fixture"] },
+        "id": { "type": ["string", "null"] },
+        "items": { "type": "array" },
+        "total": { "type": "number", "minimum": 0 },
+        "subtotal": { "type": "number", "minimum": 0 },
+        "totalQuantity": { "type": "integer", "minimum": 0 },
+        "checkoutUrl": { "type": "string" }
+      },
+      "required": ["schemaVersion", "source", "id", "items", "total", "subtotal", "totalQuantity", "checkoutUrl"],
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "source": { "const": "fixture" } }, "required": ["source"] },
+      "then": {
+        "properties": {
+          "environment": { "const": "local" },
+          "status": { "const": "ready" }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "source": { "const": "unavailable" } }, "required": ["source"] },
+      "then": {
+        "properties": {
+          "status": { "const": "unavailable" },
+          "cart": { "type": "null" }
+        },
+        "required": ["reason"]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

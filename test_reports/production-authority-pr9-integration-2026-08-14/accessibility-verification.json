@@ -1,0 +1,226 @@
+[
+  {
+    "route": "/",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "CARLOPHILLIPS | Signature Series",
+    "canonical": "https://www.carlophillips.com",
+    "robots": "index, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/shop",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Collection | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/shop",
+    "robots": "index, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/products/carlophillips-signature-hoodie",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Product preview | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/products/carlophillips-signature-hoodie",
+    "robots": "noindex, nofollow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/bag",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Bag | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/bag",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/privacy",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Privacy | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/privacy",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/terms",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Terms | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/terms",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/cookie-policy",
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Cookie policy | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/cookie-policy",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "CARLOPHILLIPS | Signature Series",
+    "canonical": "https://www.carlophillips.com",
+    "robots": "index, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/shop",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Collection | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/shop",
+    "robots": "index, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/products/carlophillips-signature-hoodie",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Product preview | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/products/carlophillips-signature-hoodie",
+    "robots": "noindex, nofollow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/bag",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Bag | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/bag",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/privacy",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Privacy | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/privacy",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/terms",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Terms | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/terms",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  },
+  {
+    "route": "/cookie-policy",
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Cookie policy | CARLOPHILLIPS",
+    "canonical": "https://www.carlophillips.com/cookie-policy",
+    "robots": "noindex, follow",
+    "consentButtons": [
+      "Reject optional analytics",
+      "Accept optional analytics"
+    ],
+    "analyticsRequests": [],
+    "horizontalOverflow": false,
+    "violations": [],
+    "consoleErrors": []
+  }
+]

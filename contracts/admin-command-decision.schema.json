@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/schemas/admin-command-decision.schema.json",
+  "title": "CARLOPHILLIPS admin command policy decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion", "policyVersion", "commandFingerprint", "decision", "reasonCodes",
+    "capability", "operation", "environment", "targetFingerprint", "actorRole",
+    "sideEffectKind", "expiresAt", "commandExecutionAuthorized",
+    "connectorInvocationPerformed", "externalMutationPerformed", "releaseAuthority",
+    "checkoutAuthority", "refundAuthority", "publicationAuthority"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.admin-command-decision.v1" },
+    "policyVersion": { "const": "cp.admin-command-policy.v1" },
+    "commandFingerprint": { "$ref": "#/$defs/fingerprint" },
+    "decision": { "enum": ["authorized", "denied"] },
+    "reasonCodes": {
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,95}$" }
+    },
+    "capability": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "operation": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "targetFingerprint": { "$ref": "#/$defs/fingerprint" },
+    "actorRole": { "enum": ["product_owner", "operator", "reviewer", "analyst", "support", "auditor"] },
+    "sideEffectKind": { "enum": ["none", "read", "write", "spend", "publish", "production"] },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "commandExecutionAuthorized": { "type": "boolean" },
+    "connectorInvocationPerformed": { "const": false },
+    "externalMutationPerformed": { "const": false },
+    "releaseAuthority": { "const": false },
+    "checkoutAuthority": { "const": false },
+    "refundAuthority": { "const": false },
+    "publicationAuthority": { "const": false }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "authorized" } } },
+      "then": {
+        "properties": {
+          "reasonCodes": { "type": "array", "maxItems": 0 },
+          "commandExecutionAuthorized": { "const": true }
+        }
+      },
+      "else": {
+        "properties": {
+          "reasonCodes": { "type": "array", "minItems": 1 },
+          "commandExecutionAuthorized": { "const": false }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 6,
+  "observedAt": "2026-07-22",
+  "responsePolicy": {
+    "pageHeaders": {
+      "xFrameOptions": "DENY",
+      "contentSecurityPolicy": "frame-ancestors 'none';",
+      "xContentTypeOptions": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=(), payment=(), browsing-topics=()",
+      "xPoweredByPresent": false,
+      "globalAccessControlAllowOriginPresent": false
+    },
+    "hsts": {
+      "productionOnly": true,
+      "liveProductionObserved": false
+    },
+    "cors": {
+      "configuredCrossOrigin": {
+        "origin": "https://preview.example.com",
+        "getStatus": 200,
+        "preflightStatus": 204,
+        "reflectedExactly": true
+      },
+      "sameOrigin": {
+        "origin": "http://localhost:3000",
+        "status": 200,
+        "crossOriginGrantPresent": false
+      },
+      "deniedCrossOrigin": {
+        "origin": "https://attacker.example",
+        "status": 403,
+        "crossOriginGrantPresent": false,
+        "code": "CORS_ORIGIN_DENIED"
+      }
+    }
+  },
+  "commands": {
+    "focusedSecurityTests": {
+      "status": "passed",
+      "tests": 10
+    },
+    "lint": {
+      "status": "passed",
+      "warnings": 0
+    },
+    "tests": {
+      "status": "passed",
+      "files": 18,
+      "tests": 95
+    },
+    "productionDependencyAudit": {
+      "status": "passed",
+      "advisories": 0,
+      "auditedPackages": 193
+    },
+    "build": {
+      "status": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    }
+  },
+  "browser": {
+    "home": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "contentLength": 1576,
+      "errorOverlays": 0,
+      "consoleOrPageErrors": 0,
+      "framingDenied": true
+    },
+    "hoodieDesktop": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "sourceLabels": 2,
+      "purchaseButtonDisabled": true,
+      "errorOverlays": 0,
+      "consoleOrPageErrors": 0
+    },
+    "hoodieMobile": {
+      "viewport": "390x844",
+      "status": 200,
+      "sourceLabels": 2,
+      "purchaseButtonDisabled": true,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "errorOverlays": 0,
+      "consoleOrPageErrors": 0
+    },
+    "bag": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "source": "fixture",
+      "checkout": "disabled",
+      "checkoutLinks": 0,
+      "errorOverlays": 0,
+      "consoleOrPageErrors": 0
+    }
+  },
+  "shopifyHandoff": {
+    "priorOtpTabPersistedAcrossContinuation": false,
+    "currentTab": "Shopify login",
+    "newOtpRequested": false,
+    "adminObserved": false
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyWrite": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

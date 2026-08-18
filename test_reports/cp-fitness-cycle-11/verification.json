@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 11,
+  "observedAt": "2026-07-22",
+  "objective": "Replace editorial shop/collection wrappers with a release-aware multi-product server catalog and record the Product Owner-observed Shopify app inventory without inferring capability.",
+  "catalog": {
+    "routes": ["/shop", "/collections"],
+    "sharedServerBoundary": true,
+    "candidateSource": "Product Release Record registry",
+    "perCandidateGatewayResolution": true,
+    "localFixturePolicy": "labeled-non-commerce-only",
+    "previewMinimumState": "staged",
+    "productionRequiredState": "released",
+    "commerceAllowed": false,
+    "deniedPayloadsDiscarded": true,
+    "countInvariants": {
+      "candidateEqualsVisiblePlusExcluded": true,
+      "productsLengthEqualsVisible": true,
+      "duplicateHandlesSuppressed": true,
+      "zeroCandidateCaseProven": true
+    },
+    "failureIsolation": {
+      "invalidHandleRejectedBeforeResolverOrAdapter": true,
+      "releaseEvidenceFailureIsolated": true,
+      "adapterFailureIsolated": true,
+      "normalizationFailureIsolated": true,
+      "oneBadCandidateRejectsEntireCatalog": false
+    },
+    "hoodieFirst": true,
+    "dormantCatalogActivated": false
+  },
+  "shopifyAppInventory": {
+    "source": "product-owner-observed",
+    "reportedInstalledCount": 30,
+    "schemaValidated": true,
+    "liveInstalledListVerified": false,
+    "allCallableSurfaces": "none-auth-blocked",
+    "reportedUsageFeeApps": [
+      "Tidio - Live Chat & Chatbots",
+      "Order Printer Pro"
+    ],
+    "connectorAuthorizationFindings": {
+      "CodexAutomation5": "unproven",
+      "Shopify CLI Connector App": "unproven",
+      "Carlophillips Headless": "unproven"
+    },
+    "nativeShopifyAccessDistinguishedFromThirdPartyPrivateAccess": true
+  },
+  "browserAuthenticationAudit": {
+    "managedBrowserResult": "login-required",
+    "continueWithGoogleVisible": true,
+    "accountSelected": false,
+    "otpRequested": false,
+    "adminReached": false,
+    "settingsOrPermissionsObserved": false,
+    "handoffTabPreserved": true,
+    "blockerCode": "SHOPIFY_AUTHENTICATED_SESSION_REQUIRED"
+  },
+  "commands": {
+    "focusedCycleTests": {
+      "status": "passed",
+      "files": 6,
+      "tests": 60
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 24,
+      "tests": 169,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "tool": "Playwright fallback because agent-browser CLI is unavailable",
+    "localShopDesktop": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "candidateCount": 1,
+      "visibleCount": 1,
+      "withheldCount": 0,
+      "fixtureLabelVisible": true,
+      "purchasingDisabled": true,
+      "productReviewLinkCount": 1,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "shop-desktop.png"
+    },
+    "localCollectionsMobile": {
+      "viewport": "390x844",
+      "status": 200,
+      "candidateCount": 1,
+      "visibleCount": 1,
+      "withheldCount": 0,
+      "fixtureLabelVisible": true,
+      "purchasingDisabled": true,
+      "productReviewLinkCount": 1,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "collections-mobile.png"
+    },
+    "catalogToPdp": {
+      "completed": true,
+      "sourceLabelVisible": true,
+      "purchasingDisabled": true,
+      "consoleOrPageErrors": 0
+    },
+    "previewEmptyDesktop": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "candidateCount": 1,
+      "visibleCount": 0,
+      "withheldCount": 1,
+      "productPayloadAbsent": true,
+      "productLinkCount": 0,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "credentialsUsed": false,
+      "screenshot": "preview-empty-desktop.png"
+    }
+  },
+  "knownWarnings": [
+    "Temporary PostCSS and sharp security resolutions remain outside Next.js 15.5.21 declared ranges.",
+    "Yarn/Corepack emits the existing url.parse deprecation warning.",
+    "The Open Graph edge route prevents static generation for that route.",
+    "Browserslist data is stale."
+  ],
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false,
+    "categories": {
+      "governance": 5,
+      "packageReproducibility": 5,
+      "qualityAndSecurity": 5,
+      "gitStrategy": 4,
+      "environmentSeparation": 5,
+      "secretHandling": 5,
+      "architectureImplementation": 5,
+      "hoodieSequenceTruth": 5,
+      "localBrowserEvidence": 4,
+      "liveOperations": 1
+    }
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyReadCompleted": false,
+    "shopifyWrite": false,
+    "appSettingChange": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

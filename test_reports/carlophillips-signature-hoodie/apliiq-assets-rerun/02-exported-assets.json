@@ -1,0 +1,140 @@
+{
+  "run_timestamp": "2026-07-12T01:40:00-04:00",
+  "assets_downloaded_or_captured": [
+    {
+      "file": "media/apliiq-5958463-black-front-original.jpg",
+      "source_url": "https://blob.apliiq.com/sitestorage/products/5958463_6399.jpg",
+      "source": "Apliiq black product record",
+      "product_id": "5958463",
+      "color": "black",
+      "image_id": "6399",
+      "width": 944,
+      "height": 1440,
+      "bytes": 563500,
+      "asset_type": "front product image",
+      "download_status": "downloaded"
+    },
+    {
+      "file": "media/apliiq-5958463-black-front-590x900.jpg",
+      "source_url": "https://blob.apliiq.com/sitestorage/resized-products/5958463_6399_590_900.jpg",
+      "source": "Apliiq resized black product image",
+      "product_id": "5958463",
+      "color": "black",
+      "image_id": "6399",
+      "width": 590,
+      "height": 900,
+      "bytes": 32237,
+      "asset_type": "front product image fallback",
+      "download_status": "downloaded"
+    },
+    {
+      "file": "media/apliiq-5958463-black-front-thumbnail.jpg",
+      "source_url": "https://blob.apliiq.com/sitestorage/resized-products/5958463_6399_224_342.jpg",
+      "source": "Apliiq saved-design row thumbnail",
+      "product_id": "5958463",
+      "color": "black",
+      "image_id": "6399",
+      "width": 224,
+      "height": 342,
+      "bytes": 8796,
+      "asset_type": "thumbnail",
+      "download_status": "previously downloaded"
+    },
+    {
+      "file": "media/apliiq-cp-artwork-original.png",
+      "source_url": "https://blob.apliiq.com/sitestorage/artwork/1192796/original/48bd94f3-ffdb-47ca-b179-ec04a3d21acc.png",
+      "source": "Apliiq uploaded artwork asset",
+      "product_id": "5958463",
+      "color": "n/a",
+      "width": 1600,
+      "height": 1600,
+      "bytes": 23919,
+      "asset_type": "CP artwork source",
+      "download_status": "downloaded"
+    },
+    {
+      "file": "media/apliiq-5958463-black-cp-detail-crop.jpg",
+      "source_url": "derived from media/apliiq-5958463-black-front-original.jpg",
+      "source": "Local crop from real Apliiq black front product image",
+      "product_id": "5958463",
+      "color": "black",
+      "width": 300,
+      "height": 300,
+      "bytes": 7881,
+      "asset_type": "CP logo/detail crop",
+      "download_status": "previously created"
+    },
+    {
+      "file": "media/apliiq-5958463-black-product-page-proof.png",
+      "source_url": "https://www.apliiq.com/product/5958463/independent-heavyweight-pullover-hoodie",
+      "source": "Browser screenshot of Apliiq black product record",
+      "product_id": "5958463",
+      "color": "black",
+      "width": 1338,
+      "height": 2025,
+      "bytes": 147638,
+      "asset_type": "proof screenshot",
+      "download_status": "captured"
+    },
+    {
+      "file": "media/apliiq-saved-designs-expanded-proof.png",
+      "source_url": "https://www.apliiq.com/design/",
+      "source": "Browser screenshot of saved design row",
+      "product_id": "5958463 / 5958464",
+      "color": "black / Bone",
+      "width": 1338,
+      "height": 1196,
+      "bytes": 88662,
+      "asset_type": "proof screenshot",
+      "download_status": "captured"
+    },
+    {
+      "file": "media/apliiq-5958464-bone-front-original-reference-rejected.jpg",
+      "source_url": "https://blob.apliiq.com/sitestorage/products/5958464_6399.jpg",
+      "source": "Apliiq Bone variant",
+      "product_id": "5958464",
+      "color": "Bone",
+      "image_id": "6399",
+      "width": 944,
+      "height": 1440,
+      "bytes": 966570,
+      "asset_type": "non-target color reference",
+      "download_status": "downloaded"
+    },
+    {
+      "file": "media/apliiq-5958464-bone-front-590x900-reference-rejected.jpg",
+      "source_url": "https://blob.apliiq.com/sitestorage/resized-products/5958464_6399_590_900.jpg",
+      "source": "Apliiq resized Bone variant",
+      "product_id": "5958464",
+      "color": "Bone",
+      "image_id": "6399",
+      "width": 590,
+      "height": 900,
+      "bytes": 51573,
+      "asset_type": "non-target color reference",
+      "download_status": "downloaded"
+    }
+  ],
+  "failed_or_unavailable_exports": [
+    {
+      "source_url": "https://www.apliiq.com/Image/Product/5958463/6399/590/900",
+      "status": "failed",
+      "reason": "Apliiq image proxy returned HTTP 429 during direct download. Equivalent blob asset was downloaded successfully."
+    }
+  ],
+  "asset_export_controls_found": {
+    "download_mockups": false,
+    "product_images_gallery": false,
+    "back_image": false,
+    "side_angle_image": false,
+    "embroidery_preview": false,
+    "proof_image": false,
+    "production_artwork_preview": false,
+    "print_file": false
+  },
+  "notes": [
+    "The black Apliiq product record confirmed front embroidery, CP artwork, size 2 in x 2 in, and 648 stitches.",
+    "Only one real black product image angle was exposed by Apliiq for this saved design.",
+    "No billing, sample order, fulfillment charge, publishing, product creation, or Shopify sync was triggered."
+  ]
+}

@@ -1,0 +1,954 @@
+{
+  "schemaVersion": "cp.theme-public-baseline-qa.v1",
+  "capturedAt": "2026-08-14T17:14:07.484Z",
+  "browser": "Playwright Chromium headless",
+  "visibility": "background; no focus or foreground window",
+  "baseline": {
+    "commit": "ade03e6",
+    "url": "http://localhost:3113"
+  },
+  "candidate": {
+    "state": "integrated-05d3d72",
+    "url": "http://localhost:3112"
+  },
+  "viewports": [
+    {
+      "id": "desktop-1440x1000",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "id": "mobile-390x844",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "routes": [
+    "/",
+    "/shop",
+    "/products/carlophillips-signature-hoodie",
+    "/bag"
+  ],
+  "passed": true,
+  "diagnosticFailures": [],
+  "comparisons": [
+    {
+      "viewport": "desktop-1440x1000",
+      "route": "/",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 1440,
+        "height": 1000,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "desktop-1440x1000",
+      "route": "/shop",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 1440,
+        "height": 1000,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "desktop-1440x1000",
+      "route": "/products/carlophillips-signature-hoodie",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 1440,
+        "height": 1000,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "desktop-1440x1000",
+      "route": "/bag",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 1440,
+        "height": 1000,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "mobile-390x844",
+      "route": "/",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 390,
+        "height": 844,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "mobile-390x844",
+      "route": "/shop",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 390,
+        "height": 844,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "mobile-390x844",
+      "route": "/products/carlophillips-signature-hoodie",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 390,
+        "height": 844,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    },
+    {
+      "viewport": "mobile-390x844",
+      "route": "/bag",
+      "statusEqual": true,
+      "structureHashEqual": true,
+      "textHashEqual": true,
+      "elementCountEqual": true,
+      "governedHeadBridgeExpected": true,
+      "bodyStyleEqual": true,
+      "rectanglesEqual": true,
+      "noOverflow": true,
+      "pixel": {
+        "sameDimensions": true,
+        "width": 390,
+        "height": 844,
+        "meanAbsoluteChannelDifference": 0,
+        "changedPixelPercentageAtThreshold8": 0
+      }
+    }
+  ],
+  "captures": {
+    "baseline": [
+      {
+        "label": "ade03e6",
+        "viewport": "desktop-1440x1000",
+        "route": "/",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/baseline-ade03e6/desktop-1440x1000-home.png",
+        "treeHash": "9a232c8cca079607dd06013d9dafcb705d641441a2b87d02065a5ea6ebf89356",
+        "textHash": "81838065734f5b37f511f9e29f763a9778170be3b2f76268e7a4977bd0b85d0c",
+        "elementCount": 77,
+        "governedHeadBridgeCount": 0,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 81
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 2161.5
+          },
+          "h1": {
+            "x": 48,
+            "y": 593.88,
+            "width": 896,
+            "height": 174.75
+          },
+          "footer": {
+            "x": 0,
+            "y": 2067,
+            "width": 1440,
+            "height": 94.5
+          }
+        }
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "desktop-1440x1000",
+        "route": "/shop",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/baseline-ade03e6/desktop-1440x1000-shop.png",
+        "treeHash": "4b3a3f0f2dcb97595bfc7df6257ce1fb63b2d00b46169ac54dcd7e3db3a1adef",
+        "textHash": "81b4af78f01ec90d48d3f06c26e99abd6d632f5ba423fe8264c52ea92b218061",
+        "elementCount": 47,
+        "governedHeadBridgeCount": 0,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": -65,
+            "width": 1440,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": -65,
+            "width": 1440,
+            "height": 1000
+          },
+          "h1": {
+            "x": 48,
+            "y": 155,
+            "width": 874.8,
+            "height": 128
+          },
+          "footer": {
+            "x": 0,
+            "y": 935,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "desktop-1440x1000",
+        "route": "/products/carlophillips-signature-hoodie",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/baseline-ade03e6/desktop-1440x1000-products-carlophillips-signature-hoodie.png",
+        "treeHash": "029356497a4c6e35ec2a999f164d4a199b8f3681df3c2e22aa3596b408eae7dc",
+        "textHash": "9ff34646073b5414b03a0bb8995ca8eae038ff98910fa4c57fb7b86212a43bf1",
+        "elementCount": 29,
+        "governedHeadBridgeCount": 0,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 81
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1000
+          },
+          "h1": {
+            "x": 48,
+            "y": 347.91,
+            "width": 1024,
+            "height": 192
+          },
+          "footer": {
+            "x": 0,
+            "y": 1000,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "desktop-1440x1000",
+        "route": "/bag",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/baseline-ade03e6/desktop-1440x1000-bag.png",
+        "treeHash": "74b040678274333fb039d99481aa8f01c8783b7c31d039cf00e8f3630d1c482d",
+        "textHash": "505a503689ec15599a04461b52ef13733a93a798e9f8fd9aa5aea49726681446",
+        "elementCount": 44,
+        "governedHeadBridgeCount": 0,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1000
+          },
+          "h1": {
+            "x": 596.47,
+            "y": 364.5,
+            "width": 731.53,
+            "height": 192
+          },
+          "footer": {
+            "x": 0,
+            "y": 1000,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "desktop-1440x1000",
+        "consoleErrors": [],
+        "requestFailures": []
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "mobile-390x844",
+        "route": "/",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/baseline-ade03e6/mobile-390x844-home.png",
+        "treeHash": "9a232c8cca079607dd06013d9dafcb705d641441a2b87d02065a5ea6ebf89356",
+        "textHash": "b98d35870f6d3ff93faa212e616aa76662ed13a4054ece42ec819389e3720b2f",
+        "elementCount": 77,
+        "governedHeadBridgeCount": 0,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1879
+          },
+          "h1": {
+            "x": 20,
+            "y": 523.69,
+            "width": 350,
+            "height": 104.94
+          },
+          "footer": {
+            "x": 0,
+            "y": 1747,
+            "width": 390,
+            "height": 132
+          }
+        }
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "mobile-390x844",
+        "route": "/shop",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/baseline-ade03e6/mobile-390x844-shop.png",
+        "treeHash": "4b3a3f0f2dcb97595bfc7df6257ce1fb63b2d00b46169ac54dcd7e3db3a1adef",
+        "textHash": "81b4af78f01ec90d48d3f06c26e99abd6d632f5ba423fe8264c52ea92b218061",
+        "elementCount": 47,
+        "governedHeadBridgeCount": 0,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": -65,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": -65,
+            "width": 390,
+            "height": 982
+          },
+          "h1": {
+            "x": 20,
+            "y": 123,
+            "width": 350,
+            "height": 54
+          },
+          "footer": {
+            "x": 0,
+            "y": 917,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "mobile-390x844",
+        "route": "/products/carlophillips-signature-hoodie",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/baseline-ade03e6/mobile-390x844-products-carlophillips-signature-hoodie.png",
+        "treeHash": "029356497a4c6e35ec2a999f164d4a199b8f3681df3c2e22aa3596b408eae7dc",
+        "textHash": "9ff34646073b5414b03a0bb8995ca8eae038ff98910fa4c57fb7b86212a43bf1",
+        "elementCount": 29,
+        "governedHeadBridgeCount": 0,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844
+          },
+          "h1": {
+            "x": 20,
+            "y": 326.39,
+            "width": 350,
+            "height": 90.22
+          },
+          "footer": {
+            "x": 0,
+            "y": 844,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "mobile-390x844",
+        "route": "/bag",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/baseline-ade03e6/mobile-390x844-bag.png",
+        "treeHash": "74b040678274333fb039d99481aa8f01c8783b7c31d039cf00e8f3630d1c482d",
+        "textHash": "505a503689ec15599a04461b52ef13733a93a798e9f8fd9aa5aea49726681446",
+        "elementCount": 44,
+        "governedHeadBridgeCount": 0,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1058
+          },
+          "h1": {
+            "x": 48,
+            "y": 534.83,
+            "width": 294,
+            "height": 135.33
+          },
+          "footer": {
+            "x": 0,
+            "y": 1058,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "ade03e6",
+        "viewport": "mobile-390x844",
+        "consoleErrors": [],
+        "requestFailures": []
+      }
+    ],
+    "candidate": [
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "desktop-1440x1000",
+        "route": "/",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/comparison-candidate/desktop-1440x1000-home.png",
+        "treeHash": "9a232c8cca079607dd06013d9dafcb705d641441a2b87d02065a5ea6ebf89356",
+        "textHash": "81838065734f5b37f511f9e29f763a9778170be3b2f76268e7a4977bd0b85d0c",
+        "elementCount": 77,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 81
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 2161.5
+          },
+          "h1": {
+            "x": 48,
+            "y": 593.88,
+            "width": 896,
+            "height": 174.75
+          },
+          "footer": {
+            "x": 0,
+            "y": 2067,
+            "width": 1440,
+            "height": 94.5
+          }
+        }
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "desktop-1440x1000",
+        "route": "/shop",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/comparison-candidate/desktop-1440x1000-shop.png",
+        "treeHash": "4b3a3f0f2dcb97595bfc7df6257ce1fb63b2d00b46169ac54dcd7e3db3a1adef",
+        "textHash": "81b4af78f01ec90d48d3f06c26e99abd6d632f5ba423fe8264c52ea92b218061",
+        "elementCount": 47,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": -65,
+            "width": 1440,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": -65,
+            "width": 1440,
+            "height": 1000
+          },
+          "h1": {
+            "x": 48,
+            "y": 155,
+            "width": 874.8,
+            "height": 128
+          },
+          "footer": {
+            "x": 0,
+            "y": 935,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "desktop-1440x1000",
+        "route": "/products/carlophillips-signature-hoodie",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/comparison-candidate/desktop-1440x1000-products-carlophillips-signature-hoodie.png",
+        "treeHash": "029356497a4c6e35ec2a999f164d4a199b8f3681df3c2e22aa3596b408eae7dc",
+        "textHash": "9ff34646073b5414b03a0bb8995ca8eae038ff98910fa4c57fb7b86212a43bf1",
+        "elementCount": 29,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 81
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1000
+          },
+          "h1": {
+            "x": 48,
+            "y": 347.91,
+            "width": 1024,
+            "height": 192
+          },
+          "footer": {
+            "x": 0,
+            "y": 1000,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "desktop-1440x1000",
+        "route": "/bag",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/comparison-candidate/desktop-1440x1000-bag.png",
+        "treeHash": "74b040678274333fb039d99481aa8f01c8783b7c31d039cf00e8f3630d1c482d",
+        "textHash": "505a503689ec15599a04461b52ef13733a93a798e9f8fd9aa5aea49726681446",
+        "elementCount": 44,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 1440,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1000
+          },
+          "h1": {
+            "x": 596.47,
+            "y": 364.5,
+            "width": 731.53,
+            "height": 192
+          },
+          "footer": {
+            "x": 0,
+            "y": 1000,
+            "width": 1440,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "desktop-1440x1000",
+        "consoleErrors": [],
+        "requestFailures": []
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "mobile-390x844",
+        "route": "/",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/comparison-candidate/mobile-390x844-home.png",
+        "treeHash": "9a232c8cca079607dd06013d9dafcb705d641441a2b87d02065a5ea6ebf89356",
+        "textHash": "b98d35870f6d3ff93faa212e616aa76662ed13a4054ece42ec819389e3720b2f",
+        "elementCount": 77,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1879
+          },
+          "h1": {
+            "x": 20,
+            "y": 523.69,
+            "width": 350,
+            "height": 104.94
+          },
+          "footer": {
+            "x": 0,
+            "y": 1747,
+            "width": 390,
+            "height": 132
+          }
+        }
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "mobile-390x844",
+        "route": "/shop",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/comparison-candidate/mobile-390x844-shop.png",
+        "treeHash": "4b3a3f0f2dcb97595bfc7df6257ce1fb63b2d00b46169ac54dcd7e3db3a1adef",
+        "textHash": "81b4af78f01ec90d48d3f06c26e99abd6d632f5ba423fe8264c52ea92b218061",
+        "elementCount": 47,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": -65,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": -65,
+            "width": 390,
+            "height": 982
+          },
+          "h1": {
+            "x": 20,
+            "y": 123,
+            "width": 350,
+            "height": 54
+          },
+          "footer": {
+            "x": 0,
+            "y": 917,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "mobile-390x844",
+        "route": "/products/carlophillips-signature-hoodie",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/comparison-candidate/mobile-390x844-products-carlophillips-signature-hoodie.png",
+        "treeHash": "029356497a4c6e35ec2a999f164d4a199b8f3681df3c2e22aa3596b408eae7dc",
+        "textHash": "9ff34646073b5414b03a0bb8995ca8eae038ff98910fa4c57fb7b86212a43bf1",
+        "elementCount": 29,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844
+          },
+          "h1": {
+            "x": 20,
+            "y": 326.39,
+            "width": 350,
+            "height": 90.22
+          },
+          "footer": {
+            "x": 0,
+            "y": 844,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "mobile-390x844",
+        "route": "/bag",
+        "status": 200,
+        "screenshot": "/Users/edv/.codex/worktrees/cp-e2e-admin-control-plane-qa/test_reports/cp-e2e-admin-theme-integrated-2026-08-14/comparison-candidate/mobile-390x844-bag.png",
+        "treeHash": "74b040678274333fb039d99481aa8f01c8783b7c31d039cf00e8f3630d1c482d",
+        "textHash": "505a503689ec15599a04461b52ef13733a93a798e9f8fd9aa5aea49726681446",
+        "elementCount": 44,
+        "governedHeadBridgeCount": 1,
+        "overflow": false,
+        "documentWidth": 390,
+        "bodyStyle": {
+          "backgroundColor": "rgb(0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "300"
+        },
+        "rectangles": {
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 65
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1058
+          },
+          "h1": {
+            "x": 48,
+            "y": 534.83,
+            "width": 294,
+            "height": 135.33
+          },
+          "footer": {
+            "x": 0,
+            "y": 1058,
+            "width": 390,
+            "height": 68.19
+          }
+        }
+      },
+      {
+        "label": "integrated-05d3d72",
+        "viewport": "mobile-390x844",
+        "consoleErrors": [],
+        "requestFailures": []
+      }
+    ]
+  }
+}

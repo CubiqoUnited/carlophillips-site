@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 12,
+  "observedAt": "2026-07-23",
+  "objective": "Bind home featured-product navigation and counts to the shared release-aware server catalog decision while keeping about/lookbook editorial-only.",
+  "homeComposition": {
+    "serverCatalogDecisionSharedWithShopAndCollections": true,
+    "clientFixtureImportRemoved": true,
+    "clientVisibilityFlagImportRemoved": true,
+    "summarySchema": "cp.home-catalog-summary.v1",
+    "summaryFieldsMinimized": true,
+    "candidateEqualsVisiblePlusExcluded": true,
+    "eligiblePrimaryProductReviewOnly": true,
+    "primaryProductCommerceAllowed": false,
+    "deniedDecisionProductPayloadAbsent": true,
+    "deniedDecisionPdpLinkAbsent": true,
+    "obsoleteClientCollectionAndPdpOwnersRemoved": true,
+    "hoodieFirst": true
+  },
+  "editorialIsolation": {
+    "aboutCatalogRead": false,
+    "lookbookCatalogRead": false,
+    "aboutShopifyAdapterImport": false,
+    "lookbookShopifyAdapterImport": false
+  },
+  "commands": {
+    "focusedHomeTests": {
+      "status": "passed",
+      "files": 5,
+      "tests": 23
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 27,
+      "tests": 179,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "tool": "Playwright fallback because agent-browser CLI is unavailable",
+    "localHomeDesktop": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "candidateCount": 1,
+      "visibleCount": 1,
+      "withheldCount": 0,
+      "localFixtureMessage": true,
+      "pdpLinkCount": 1,
+      "catalogLinkCount": 3,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "home-desktop.png"
+    },
+    "localHomeMobile": {
+      "viewport": "390x844",
+      "status": 200,
+      "candidateCount": 1,
+      "visibleCount": 1,
+      "withheldCount": 0,
+      "localFixtureMessage": true,
+      "pdpLinkCount": 1,
+      "catalogLinkCount": 3,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "home-mobile.png"
+    },
+    "linkedRoutes": {
+      "pdpSourceLabelVisible": true,
+      "pdpPurchasingDisabled": true,
+      "shopCandidateCount": 1,
+      "shopPdpLinkCount": 1,
+      "consoleOrPageErrors": 0
+    },
+    "aboutEditorial": {
+      "studioContentVisible": true,
+      "releaseRegistryAbsent": true,
+      "pdpLinkCount": 0,
+      "consoleOrPageErrors": 0
+    },
+    "previewHomeWithheld": {
+      "viewport": "1440x1000",
+      "status": 200,
+      "candidateCount": 1,
+      "visibleCount": 0,
+      "withheldCount": 1,
+      "pdpLinkCount": 0,
+      "productPayloadAbsent": true,
+      "catalogLinkAvailable": true,
+      "credentialsUsed": false,
+      "errorOverlay": false,
+      "consoleOrPageErrors": 0,
+      "horizontalOverflow": false,
+      "screenshot": "preview-home-withheld.png"
+    }
+  },
+  "knownWarnings": [
+    "Temporary PostCSS and sharp security resolutions remain outside Next.js 15.5.21 declared ranges.",
+    "Yarn/Corepack emits the existing url.parse deprecation warning.",
+    "The Open Graph edge route prevents static generation for that route.",
+    "Browserslist data is stale."
+  ],
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false,
+    "categories": {
+      "governance": 5,
+      "packageReproducibility": 5,
+      "qualityAndSecurity": 5,
+      "gitStrategy": 4,
+      "environmentSeparation": 5,
+      "secretHandling": 5,
+      "architectureImplementation": 5,
+      "hoodieSequenceTruth": 5,
+      "localBrowserEvidence": 4,
+      "liveOperations": 1
+    }
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

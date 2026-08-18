@@ -1,4 +1,10 @@
-# Carlophillips - Production-Ready Headless Storefront
+# Historical PRD — Superseded
+
+This file is preserved as historical context only. Its production-ready, MongoDB, mock-fallback, cart, checkout, and fulfillment claims do not describe the active runtime as of 2026-07-22. The binding current product definition is `/PRD.md`; implementation truth is recorded in `/STATUS.md` and `/ARCHITECTURE.md`.
+
+Do not use the setup, release, or operational instructions below without re-verifying them against current code and explicit Product Owner authority.
+
+# Carlophillips - Production-Ready Headless Storefront (historical text)
 
 ## Project Overview
 Premium luxury ecommerce website for Carlophillips - a modern **male-dominant, unisex, metrosexual** lifestyle brand. Built with a headless commerce architecture ready for Shopify integration.

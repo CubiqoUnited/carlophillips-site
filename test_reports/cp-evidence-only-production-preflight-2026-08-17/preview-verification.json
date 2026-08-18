@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "cp.immutable-preview-verification.v1",
+  "sourceCommit": "d713f8449487f2c6cd342976499ab283c66bf779",
+  "pullRequest": 14,
+  "ci": {
+    "workflow": "CI / Verify",
+    "runId": "31992593410",
+    "status": "passed"
+  },
+  "deployment": {
+    "id": "dpl_DfPkQ7XVYWMQs4GK2JUDmQYn8N5f",
+    "url": "https://carlophillips-site-q2jxpnkvz-adityas-projects-261b17a9.vercel.app",
+    "target": "preview",
+    "readyState": "READY",
+    "aliases": [],
+    "gitDirty": false,
+    "artifactKind": "immutable-preview",
+    "buildEnvironment": "preview",
+    "checkoutEnabled": false,
+    "releaseId": "cp-signature-hoodie-2026-001"
+  },
+  "routes": {
+    "/": 200,
+    "/shop": 200,
+    "/collections": 200,
+    "/products/carlophillips-signature-hoodie": 200,
+    "/bag": 200,
+    "/privacy": 200,
+    "/terms": 200,
+    "/cookie-policy": 200
+  },
+  "checkout": {
+    "selectionClass": "offered_s_m_l_reference",
+    "httpStatus": 409,
+    "error": "PRODUCT_RELEASE_NOT_RELEASED",
+    "redirectCreated": false,
+    "shopifyCartAuthorized": false
+  },
+  "production": {
+    "deploymentIdBefore": "dpl_2s61reh2JATSRMCYfXYHnFnXT2bH",
+    "deploymentIdAfter": "dpl_2s61reh2JATSRMCYfXYHnFnXT2bH",
+    "changed": false
+  },
+  "quarantinedDirtyPreview": {
+    "deploymentId": "dpl_QStMPCMyqgRMJNCC2iMoSakKAGex",
+    "aliases": [],
+    "accepted": false,
+    "removed": true
+  }
+}

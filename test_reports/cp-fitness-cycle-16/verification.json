@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 16,
+  "observedAt": "2026-07-23",
+  "objective": "Bind rendered Shopify media to approved current Media Registry assets while preserving partial Preview review and complete production requirements.",
+  "mediaBinding": {
+    "adapter": "shopify-storefront-media",
+    "persistedRawMediaId": false,
+    "persistedRawMediaUrl": false,
+    "fingerprintBinds": [
+      "sanitized media identity",
+      "media type",
+      "canonical asset URL",
+      "preview or fallback URL"
+    ],
+    "requiresEvidence": true,
+    "requiresExactProductMatch": true,
+    "requiresVerifiedRights": true,
+    "requiresApproval": true,
+    "requiresVerifiedQuality": true,
+    "duplicateBindingsAccepted": false
+  },
+  "runtimePolicy": {
+    "unapprovedExtraStripped": true,
+    "staleUrlStripped": true,
+    "typeMismatchStripped": true,
+    "rawIdReplacedByRegistryAssetId": true,
+    "altAndLabelRegistryOwned": true,
+    "partialPreviewAllowed": true,
+    "partialPreviewCommerceAllowed": false,
+    "partialPreviewStateExplicit": true,
+    "incompleteProductionAllowed": false,
+    "requiredFallbackCoverageEnforced": true,
+    "fakeSpinRendered": false
+  },
+  "commands": {
+    "focusedTests": {
+      "status": "passed",
+      "files": 9,
+      "tests": 108
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 30,
+      "tests": 231,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "status": "passed",
+    "desktopEvidence": "test_reports/cp-fitness-cycle-16/desktop-pdp.png",
+    "desktopViewport": "1440x1000",
+    "mobileEvidence": "test_reports/cp-fitness-cycle-16/mobile-pdp.png",
+    "mobileViewport": "390x844",
+    "pdpHttpStatus": 200,
+    "homeHttpStatus": 200,
+    "consoleWarningsOrErrors": 0,
+    "errorOverlay": false,
+    "horizontalOverflow": false,
+    "checkoutLinks": 0,
+    "purchasingDisabled": true,
+    "fixtureLabelVisible": true,
+    "partialShopifyMediaStateCoverage": "deterministic server and component tests"
+  },
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "mediaRegistryApplied": false,
+    "cartMutation": false,
+    "checkout": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

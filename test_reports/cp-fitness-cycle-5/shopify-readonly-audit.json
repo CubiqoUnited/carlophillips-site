@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "cp.shopify-readonly-audit.v1",
+  "observedAt": "2026-07-22",
+  "mode": "read-only",
+  "result": "human_required",
+  "entryPoint": "Shopify Admin in the existing in-app browser profile",
+  "observations": [
+    "No pre-existing browser tab was open to claim.",
+    "Shopify presented its login screen.",
+    "An existing Google account was available and selected without recording its address.",
+    "Shopify required a six-digit email verification code before Admin."
+  ],
+  "notObserved": [
+    "Shopify Admin",
+    "installed-app inventory",
+    "Storefront or cart configuration",
+    "Apliiq mapping",
+    "Modelize settings or credits",
+    "Spin Studio settings or billing",
+    "ZS-Spin-View settings or billing",
+    "MyDesigns settings or billing",
+    "Flow workflows or plan",
+    "CS Trending Products Finder settings or billing"
+  ],
+  "prohibitedActionsPreserved": [
+    "no secret or session-store inspection",
+    "no email-code capture",
+    "no resend",
+    "no billing acceptance",
+    "no Shopify write",
+    "no publish",
+    "no order or fulfillment",
+    "no customer or provider contact"
+  ],
+  "blocker": {
+    "code": "SHOPIFY_EMAIL_OTP_REQUIRED",
+    "humanAction": "Enter the one-time code in the preserved Shopify verification tab and click Verify; do not share or record the code.",
+    "resumePoint": "Begin at Shopify installed-app inventory, then inspect the named P0 app and Storefront/cart surfaces read-only."
+  }
+}

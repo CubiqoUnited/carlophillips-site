@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 18,
+  "observedAt": "2026-07-23",
+  "objective": "Bind exact canonical variant presentation to reviewed product/release facts while keeping cart mutation separately gated.",
+  "variantPresentation": {
+    "schemaVersion": "cp.variant-presentation.v1",
+    "integrityValidatedObservationRequired": true,
+    "rawShopifyOptionsCanonicalizedUpstream": true,
+    "canonicalOptionOrderPreserved": true,
+    "uniqueOptionDimensionsCaseInsensitive": true,
+    "exactDimensionSetPerCombination": true,
+    "uniqueCombinationSignatures": true,
+    "uniqueOpaqueReferenceHashes": true,
+    "currencyBoundToReviewedProduct": true,
+    "variantFingerprintBoundToCurrentAndRelease": true,
+    "selectionAllowed": false,
+    "cartAuthority": false,
+    "rawVariantMapAccepted": false
+  },
+  "cartActivation": {
+    "prerequisites": 8,
+    "reviewedVariantAndResolverSeparate": true,
+    "requiredCapability": "shopify-storefront-cart",
+    "requiredAdapter": "shopify-storefront-cart",
+    "requiredCallableSurface": "shopify_storefront",
+    "durableCapabilityEvidenceRequired": true,
+    "checkoutAllowed": false
+  },
+  "shopifyAccess": {
+    "poObservedInstalledApps": 30,
+    "poBrowserLoginReported": true,
+    "agentCallableCapabilityProven": false,
+    "minimumAccessModelRecorded": true,
+    "secretsRecorded": false
+  },
+  "commands": {
+    "focusedTests": {
+      "status": "passed",
+      "files": 10,
+      "tests": 155
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 31,
+      "tests": 276,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "status": "passed",
+    "agentBrowserExecutable": "unavailable",
+    "fallback": "in-app browser",
+    "viewportOverrideAvailable": false,
+    "desktopEvidence": "test_reports/cp-fitness-cycle-18/desktop-pdp.png",
+    "desktopDocumentViewport": "1274x720",
+    "desktopFullPageEvidence": "1274x1700",
+    "mobileEvidence": "test_reports/cp-fitness-cycle-18/mobile-pdp.png",
+    "mobileFrameViewport": "390x844",
+    "mobileHarness": {
+      "type": "temporary localhost-only reverse proxy and same-origin iframe",
+      "framingHeadersStrippedFromCopiedResponseOnly": true,
+      "applicationSecurityPolicyChanged": false,
+      "repositoryHarnessPresent": false,
+      "processStopped": true
+    },
+    "pdpHttpStatus": 200,
+    "collectionNavigation": "passed",
+    "homeNavigation": "passed",
+    "meaningfulContent": true,
+    "consoleErrorsObserved": 0,
+    "errorOverlay": false,
+    "horizontalOverflow": false,
+    "checkoutLinks": 0,
+    "addToCartActions": 0,
+    "purchasingDisabled": true,
+    "shopifyVariantUiCoverage": "deterministic component and policy tests"
+  },
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "releasePatchApplied": false,
+    "cartMutation": false,
+    "checkout": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

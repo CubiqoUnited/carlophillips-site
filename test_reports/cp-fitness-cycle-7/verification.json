@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 7,
+  "observedAt": "2026-07-22",
+  "objective": "Prove designer-led and trend-led creation modes converge on one fail-closed truth and approval core.",
+  "contracts": {
+    "productCreationJob": {
+      "schema": "contracts/product-creation-job.schema.json",
+      "designerArtifactValid": true,
+      "trendArtifactValid": true,
+      "candidateDisposition": "draft-only",
+      "previewFixtureRejected": true,
+      "productionFixtureRejected": true,
+      "trendAuthorityElevationRejected": true
+    },
+    "convergence": {
+      "sameProductReleaseRecord": true,
+      "sameMediaRegistry": true,
+      "sameCommerceGateway": true,
+      "samePipelineRunContract": true,
+      "distinctRunIds": true,
+      "modes": ["designer-led", "trend-led"]
+    },
+    "truthAuthority": {
+      "maySetProductTruth": false,
+      "mayApproveMedia": false,
+      "mayAuthorizeCommerce": false,
+      "mayPublish": false
+    },
+    "pipelineRuns": {
+      "states": ["in_progress_with_blockers", "in_progress_with_blockers"],
+      "safePendingWorkItemsPerRun": 4,
+      "humanRequiredWorkItemsPerRun": 1,
+      "globalBlocked": false,
+      "restrictedApprovals": [
+        "externalExecution",
+        "spend",
+        "credits",
+        "sample",
+        "shopifyWrite",
+        "publish",
+        "production"
+      ],
+      "allRestrictedApprovalsPending": true
+    }
+  },
+  "commands": {
+    "focusedContractTests": {
+      "status": "passed",
+      "files": 3,
+      "tests": 36
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 19,
+      "tests": 106,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "contradictionReview": {
+      "status": "passed",
+      "falseHoodieCatalogChoiceFound": false,
+      "approvedOrReleasedSimulationFound": false,
+      "callableAppAccessInvented": false
+    }
+  },
+  "toolingObservation": {
+    "directYarnOnPath": false,
+    "directCorepackOnPath": false,
+    "verifiedPackageManager": "yarn@1.22.22",
+    "executionPath": "bundled Node with cached pinned Yarn Classic CLI",
+    "mixedLockfileIntroduced": false
+  },
+  "knownWarnings": [
+    "Temporary PostCSS and sharp security resolutions remain outside Next.js 15.5.21 declared ranges.",
+    "Yarn/Corepack emits the existing url.parse deprecation warning.",
+    "The Open Graph edge route prevents static generation for that route."
+  ],
+  "fitnessScore": {
+    "score": 43,
+    "outOf": 50,
+    "productionReadinessClaim": false,
+    "categories": {
+      "governance": 5,
+      "packageReproducibility": 5,
+      "qualityAndSecurity": 5,
+      "gitStrategy": 4,
+      "environmentSeparation": 5,
+      "secretHandling": 5,
+      "architectureImplementation": 4,
+      "hoodieSequenceTruth": 5,
+      "localBrowserEvidence": 4,
+      "liveOperations": 1
+    }
+  },
+  "browser": {
+    "requiredForThisContractOnlyCycle": false,
+    "uiChanged": false
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyWrite": false,
+    "externalToolExecution": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

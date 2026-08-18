@@ -1,0 +1,184 @@
+{
+  "run_timestamp": "2026-07-12T01:40:00-04:00",
+  "accepted": [
+    {
+      "file": "media/apliiq-5958463-black-front-original.jpg",
+      "classification": [
+        "front",
+        "usable for staging",
+        "usable for production static front pending final brand approval"
+      ],
+      "resolution": "944x1440",
+      "logo_clarity": "clear",
+      "garment_accuracy": "correct black IND4000-style hoodie with CP front chest mark",
+      "watermark_or_template_text": false,
+      "crop_quality": "good",
+      "premium_quality": "acceptable as clean product cutout, not editorial/lifestyle",
+      "production_truthfulness": true,
+      "notes": "Real Apliiq-hosted asset for black product id 5958463."
+    },
+    {
+      "file": "media/apliiq-5958463-black-front-590x900.jpg",
+      "classification": [
+        "front",
+        "usable for staging fallback"
+      ],
+      "resolution": "590x900",
+      "logo_clarity": "clear enough",
+      "garment_accuracy": "correct black hoodie",
+      "watermark_or_template_text": false,
+      "crop_quality": "acceptable",
+      "premium_quality": "lower-resolution fallback only",
+      "production_truthfulness": true,
+      "notes": "Use the 944x1440 original first."
+    },
+    {
+      "file": "media/apliiq-cp-artwork-original.png",
+      "classification": [
+        "artwork source",
+        "production design source"
+      ],
+      "resolution": "1600x1600",
+      "logo_clarity": "clear",
+      "garment_accuracy": "not a garment image",
+      "watermark_or_template_text": false,
+      "crop_quality": "n/a",
+      "premium_quality": "usable as source artwork; not customer-facing product photography by itself",
+      "production_truthfulness": true,
+      "notes": "This is the uploaded CP artwork asset Apliiq applies to the hoodie."
+    },
+    {
+      "file": "media/apliiq-5958463-black-cp-detail-crop.jpg",
+      "classification": [
+        "detail",
+        "usable for staging"
+      ],
+      "resolution": "300x300",
+      "logo_clarity": "clear enough for staging",
+      "garment_accuracy": "derived from accepted black Apliiq front image",
+      "watermark_or_template_text": false,
+      "crop_quality": "acceptable",
+      "premium_quality": "not enough for final embroidery macro",
+      "production_truthfulness": true,
+      "notes": "Truthful CP/logo crop from real Apliiq front asset. It does not show actual embroidery thread/macro texture, so it is not a complete production detail asset."
+    },
+    {
+      "file": "media/apliiq-5958463-black-product-page-proof.png",
+      "classification": [
+        "proof",
+        "not product media"
+      ],
+      "resolution": "1338x2025",
+      "production_truthfulness": true,
+      "notes": "Proof screenshot confirming Apliiq record details: black, front embroidery, CP artwork, 2 in x 2 in, 648 stitches."
+    }
+  ],
+  "rejected": [
+    {
+      "file": "media/apliiq-5958463-black-front-thumbnail.jpg",
+      "classification": [
+        "thumbnail",
+        "reject"
+      ],
+      "reason": "Low-resolution duplicate thumbnail. Use the 944x1440 original instead."
+    },
+    {
+      "file": "media/apliiq-5958464-bone-front-original.jpg",
+      "classification": [
+        "front",
+        "reject for this product"
+      ],
+      "reason": "Real Apliiq asset, but it is Bone color, not the target minimal black Signature Hoodie."
+    },
+    {
+      "file": "media/apliiq-5958464-bone-front-thumbnail.jpg",
+      "classification": [
+        "thumbnail",
+        "reject"
+      ],
+      "reason": "Low-resolution thumbnail for the non-target Bone color."
+    },
+    {
+      "file": "media/apliiq-5958464-bone-front-original-reference-rejected.jpg",
+      "classification": [
+        "front",
+        "reject for this product"
+      ],
+      "reason": "Real Apliiq asset, but it is Bone color, not the black Signature Hoodie."
+    },
+    {
+      "file": "media/apliiq-5958464-bone-front-590x900-reference-rejected.jpg",
+      "classification": [
+        "front fallback",
+        "reject for this product"
+      ],
+      "reason": "Real Apliiq asset, but it is Bone color, not the black Signature Hoodie."
+    }
+  ],
+  "missing_after_qa": {
+    "back": {
+      "status": "missing",
+      "reason": "Apliiq exposed only front image id 6399 for the black record.",
+      "tool_checked": "Apliiq saved designs and black product record",
+      "input_missing": "Back/angle mockup export or multi-angle product image set",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Reopen Apliiq editor/mockup gallery manually or ask Apliiq support whether back/angle exports exist for this saved design."
+    },
+    "angle": {
+      "status": "missing",
+      "reason": "No side/angle image found in Apliiq exposed assets.",
+      "tool_checked": "Apliiq saved designs and black product record",
+      "input_missing": "Side/angle mockup export",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Use Apliiq editor/mockup export if accessible, or generate approved truthful media from the final product once available."
+    },
+    "embroidery_proof": {
+      "status": "partial",
+      "reason": "Apliiq confirms embroidery data and artwork; no thread/macro proof file was exposed.",
+      "tool_checked": "Apliiq black product record",
+      "input_missing": "Embroidery proof or real macro photo",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Export Apliiq embroidery proof if available after editor access, or order/photograph sample after approval."
+    },
+    "on_model": {
+      "status": "missing",
+      "reason": "Apliiq product record did not expose on-model/editorial imagery.",
+      "tool_checked": "Apliiq",
+      "input_missing": "Approved on-model generation or real photography",
+      "payment_or_credits_required": "not visible in Apliiq; Modelize free/credit limits must be checked before use",
+      "next_step": "Use Modelize or another approved model-media app only if free/safe, or shoot sample."
+    },
+    "lifestyle": {
+      "status": "missing",
+      "reason": "No campaign/lifestyle image found.",
+      "tool_checked": "Apliiq",
+      "input_missing": "Campaign media generation or real photography",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Create campaign image from approved real front/back/detail media after static media is complete."
+    },
+    "360_spin": {
+      "status": "missing",
+      "reason": "No multi-angle asset set exists.",
+      "tool_checked": "Apliiq",
+      "input_missing": "Angle set / spin frames",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Produce/export angle set, then use Spin Studio or ZS Spin View after permissions/plan checks."
+    },
+    "3d_ar_tryon": {
+      "status": "missing",
+      "reason": "No exact-product 3D/AR/try-on asset exists.",
+      "tool_checked": "Apliiq",
+      "input_missing": "3D model or try-on-ready product media",
+      "payment_or_credits_required": "not visible in Apliiq; likely app-specific if using Zakeke/Angle/LEVAR/try-on tools",
+      "next_step": "Evaluate 3D/AR app with explicit billing check after static media is complete."
+    },
+    "video": {
+      "status": "missing",
+      "reason": "No real video output found.",
+      "tool_checked": "Apliiq",
+      "input_missing": "Video app output or product shoot",
+      "payment_or_credits_required": "not visible",
+      "next_step": "Create short product video from approved real media or inspect a video app with billing approval held back."
+    }
+  }
+}

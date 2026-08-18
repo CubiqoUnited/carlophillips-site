@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/variant-resolution-decision.schema.json",
+  "title": "VariantResolutionDecision v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "environment",
+    "status",
+    "capability",
+    "adapter",
+    "callableSurface",
+    "productHandle",
+    "variantFingerprint",
+    "evidenceRef",
+    "productReadEvidenceRef",
+    "mappedVariantCount",
+    "mappingComplete",
+    "rawReferenceExposed",
+    "cartMutationAuthorized",
+    "checkoutAuthorized",
+    "blockers"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.variant-resolution-decision.v1" },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "status": { "enum": ["ready", "blocked"] },
+    "capability": { "const": "shopify-storefront-variant-resolver" },
+    "adapter": { "const": "server-only-shopify-variant-resolver" },
+    "callableSurface": { "const": "server_only" },
+    "productHandle": { "type": ["string", "null"] },
+    "variantFingerprint": {
+      "oneOf": [
+        { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "evidenceRef": { "type": ["string", "null"] },
+    "productReadEvidenceRef": { "type": ["string", "null"] },
+    "mappedVariantCount": { "type": "integer", "minimum": 0 },
+    "mappingComplete": { "type": "boolean" },
+    "rawReferenceExposed": { "const": false },
+    "cartMutationAuthorized": { "const": false },
+    "checkoutAuthorized": { "const": false },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "humanAction", "resumePoint"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "humanAction": { "type": "string", "minLength": 1 },
+          "resumePoint": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "ready" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "environment": { "enum": ["preview", "production"] },
+          "productHandle": { "type": "string", "minLength": 1 },
+          "variantFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "evidenceRef": { "type": "string", "minLength": 1 },
+          "productReadEvidenceRef": { "type": "string", "minLength": 1 },
+          "mappedVariantCount": { "type": "integer", "minimum": 1 },
+          "mappingComplete": { "const": true },
+          "blockers": { "type": "array", "maxItems": 0 }
+        }
+      },
+      "else": {
+        "properties": {
+          "evidenceRef": { "type": "null" },
+          "productReadEvidenceRef": { "type": "null" },
+          "mappedVariantCount": { "const": 0 },
+          "mappingComplete": { "const": false },
+          "blockers": { "type": "array", "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,376 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/product-release.schema.json",
+  "title": "ProductReleaseRecord v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "releaseId",
+    "state",
+    "shopify",
+    "fulfillmentMappings",
+    "physicalSample",
+    "mediaManifest",
+    "mediaManifestFingerprint",
+    "approvals",
+    "candidate",
+    "rollback"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.product-release.v1" },
+    "releaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
+    "state": { "enum": ["draft", "staged", "approved", "released", "withdrawn"] },
+    "shopify": {
+      "type": "object",
+      "required": [
+        "productReference",
+        "handle",
+        "statusObserved",
+        "observedAt",
+        "variantFingerprint",
+        "variantFingerprintStatus",
+        "commerceFactsFingerprint",
+        "commerceFactsFingerprintStatus",
+        "observationFingerprint",
+        "observationFingerprintStatus",
+        "observationReviewEvidence",
+        "observationReviewBinding",
+        "productionObservation"
+      ],
+      "properties": {
+        "productReference": { "type": "string", "minLength": 1 },
+        "handle": { "type": "string", "minLength": 1 },
+        "statusObserved": { "enum": ["DRAFT", "ACTIVE", "ARCHIVED", "UNKNOWN"] },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "variantFingerprint": { "$ref": "#/$defs/nullableFingerprint" },
+        "variantFingerprintStatus": { "enum": ["observed", "missing"] },
+        "commerceFactsFingerprint": { "$ref": "#/$defs/nullableFingerprint" },
+        "commerceFactsFingerprintStatus": { "enum": ["reviewed", "missing"] },
+        "observationFingerprint": { "$ref": "#/$defs/nullableFingerprint" },
+        "observationFingerprintStatus": { "enum": ["reviewed", "missing"] },
+        "observationReviewEvidence": { "type": ["string", "null"] },
+        "observationReviewBinding": { "$ref": "#/$defs/nullableEvidenceBinding" },
+        "productionObservation": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/productionObservation" }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "variantFingerprintStatus": { "const": "observed" } }, "required": ["variantFingerprintStatus"] },
+          "then": { "properties": { "variantFingerprint": { "$ref": "#/$defs/fingerprint" } } },
+          "else": { "properties": { "variantFingerprint": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "commerceFactsFingerprintStatus": { "const": "reviewed" } }, "required": ["commerceFactsFingerprintStatus"] },
+          "then": { "properties": { "commerceFactsFingerprint": { "$ref": "#/$defs/fingerprint" } } },
+          "else": { "properties": { "commerceFactsFingerprint": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "observationFingerprintStatus": { "const": "reviewed" } }, "required": ["observationFingerprintStatus"] },
+          "then": {
+            "properties": {
+              "observationFingerprint": { "$ref": "#/$defs/fingerprint" },
+              "observationReviewEvidence": { "type": "string", "minLength": 1 }
+            }
+          },
+          "else": {
+            "properties": {
+              "observationFingerprint": { "type": "null" },
+              "observationReviewEvidence": { "type": "null" }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "fulfillmentMappings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fulfillmentMapping" }
+    },
+    "physicalSample": { "$ref": "#/$defs/physicalSample" },
+    "mediaManifest": { "type": "string", "minLength": 1 },
+    "mediaManifestFingerprint": { "$ref": "#/$defs/nullableFingerprint" },
+    "approvals": {
+      "type": "object",
+      "required": ["product", "media", "fulfillment"],
+      "properties": {
+        "product": { "$ref": "#/$defs/approval" },
+        "media": { "$ref": "#/$defs/approval" },
+        "fulfillment": { "$ref": "#/$defs/approval" }
+      },
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "required": ["gitCommit", "buildEvidence", "stagingEvidence", "releaseEvidenceFingerprint"],
+      "properties": {
+        "gitCommit": { "type": ["string", "null"] },
+        "buildEvidence": { "$ref": "#/$defs/nullableEvidenceBinding" },
+        "stagingEvidence": { "$ref": "#/$defs/nullableEvidenceBinding" },
+        "releaseEvidenceFingerprint": { "$ref": "#/$defs/nullableFingerprint" }
+      },
+      "additionalProperties": false
+    },
+    "rollback": {
+      "type": "object",
+      "required": ["strategy", "planEvidence", "verificationEvidence", "previousReleaseId"],
+      "properties": {
+        "strategy": {
+          "oneOf": [
+            { "enum": ["withdraw-release", "restore-previous-release"] },
+            { "type": "null" }
+          ]
+        },
+        "planEvidence": { "$ref": "#/$defs/nullableEvidenceBinding" },
+        "verificationEvidence": { "$ref": "#/$defs/nullableEvidenceBinding" },
+        "previousReleaseId": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "strategy": { "const": "restore-previous-release" } }, "required": ["strategy"] },
+          "then": { "properties": { "previousReleaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" } } }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "state": { "enum": ["staged", "approved", "released"] } }, "required": ["state"] },
+      "then": {
+        "properties": {
+          "shopify": {
+            "type": "object",
+            "properties": {
+              "variantFingerprint": { "$ref": "#/$defs/fingerprint" },
+              "variantFingerprintStatus": { "const": "observed" },
+              "commerceFactsFingerprint": { "$ref": "#/$defs/fingerprint" },
+              "commerceFactsFingerprintStatus": { "const": "reviewed" },
+              "observationFingerprint": { "$ref": "#/$defs/fingerprint" },
+              "observationFingerprintStatus": { "const": "reviewed" },
+              "observationReviewEvidence": { "type": "string", "minLength": 1 },
+              "observationReviewBinding": { "$ref": "#/$defs/evidenceBinding" }
+            }
+          },
+          "fulfillmentMappings": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "allOf": [
+                { "$ref": "#/$defs/fulfillmentMapping" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "variantFingerprint": { "$ref": "#/$defs/fingerprint" },
+                    "variantFingerprintStatus": { "const": "observed" },
+                    "mappingFingerprint": { "$ref": "#/$defs/fingerprint" },
+                    "mappingFingerprintStatus": { "const": "reviewed" }
+                  }
+                }
+              ]
+            }
+          },
+          "mediaManifestFingerprint": { "$ref": "#/$defs/fingerprint" },
+          "candidate": {
+            "type": "object",
+            "properties": {
+              "gitCommit": { "type": "string", "pattern": "^[a-f0-9]{7,40}$" },
+              "buildEvidence": { "$ref": "#/$defs/evidenceBinding" },
+              "stagingEvidence": { "$ref": "#/$defs/evidenceBinding" },
+              "releaseEvidenceFingerprint": { "$ref": "#/$defs/fingerprint" }
+            }
+          },
+          "rollback": {
+            "type": "object",
+            "properties": {
+              "strategy": { "enum": ["withdraw-release", "restore-previous-release"] },
+              "planEvidence": { "$ref": "#/$defs/evidenceBinding" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "state": { "enum": ["approved", "released"] } }, "required": ["state"] },
+      "then": {
+        "properties": {
+          "physicalSample": {
+            "type": "object",
+            "properties": {
+              "status": { "const": "approved" },
+              "providerMappingFingerprint": { "$ref": "#/$defs/fingerprint" },
+              "sampleFingerprint": { "$ref": "#/$defs/fingerprint" },
+              "evidence": { "$ref": "#/$defs/evidenceBinding" },
+              "approvalEvidence": { "$ref": "#/$defs/evidenceBinding" },
+              "inspection": {
+                "type": "object",
+                "properties": {
+                  "fit": { "const": "verified" },
+                  "colour": { "const": "verified" },
+                  "artworkPlacement": { "const": "verified" },
+                  "finish": { "const": "verified" }
+                }
+              }
+            }
+          },
+          "approvals": {
+            "type": "object",
+            "properties": {
+              "product": { "type": "object", "properties": { "status": { "const": "approved" }, "evidence": { "$ref": "#/$defs/approvalEvidence" } } },
+              "media": { "type": "object", "properties": { "status": { "const": "approved" }, "evidence": { "$ref": "#/$defs/approvalEvidence" } } },
+              "fulfillment": { "type": "object", "properties": { "status": { "const": "approved" }, "evidence": { "$ref": "#/$defs/approvalEvidence" } } }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "state": { "const": "released" } }, "required": ["state"] },
+      "then": {
+        "properties": {
+          "shopify": {
+            "type": "object",
+            "properties": {
+              "statusObserved": { "const": "ACTIVE" },
+              "productionObservation": { "$ref": "#/$defs/productionObservation" }
+            }
+          },
+          "rollback": { "type": "object", "properties": { "verificationEvidence": { "$ref": "#/$defs/evidenceBinding" } } }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "nullableFingerprint": {
+      "oneOf": [
+        { "$ref": "#/$defs/fingerprint" },
+        { "type": "null" }
+      ]
+    },
+    "evidenceBinding": {
+      "type": "object",
+      "required": ["reference", "fingerprint", "releaseId", "candidateCommit", "recordedAt"],
+      "properties": {
+        "reference": { "type": "string", "minLength": 1 },
+        "fingerprint": { "$ref": "#/$defs/fingerprint" },
+        "releaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
+        "candidateCommit": { "type": ["string", "null"], "pattern": "^[a-f0-9]{7,40}$" },
+        "recordedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "nullableEvidenceBinding": {
+      "oneOf": [
+        { "$ref": "#/$defs/evidenceBinding" },
+        { "type": "null" }
+      ]
+    },
+    "approvalEvidence": {
+      "type": "object",
+      "required": ["reference", "fingerprint", "releaseId", "candidateCommit", "approvedTargetFingerprint", "approvedAt"],
+      "properties": {
+        "reference": { "type": "string", "minLength": 1 },
+        "fingerprint": { "$ref": "#/$defs/fingerprint" },
+        "releaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
+        "candidateCommit": { "type": "string", "pattern": "^[a-f0-9]{7,40}$" },
+        "approvedTargetFingerprint": { "$ref": "#/$defs/fingerprint" },
+        "approvedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "approval": {
+      "type": "object",
+      "required": ["status", "owner", "evidence"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "rejected"] },
+        "owner": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "oneOf": [
+            { "$ref": "#/$defs/approvalEvidence" },
+            { "type": "null" }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "approved" } }, "required": ["status"] },
+          "then": { "properties": { "evidence": { "$ref": "#/$defs/approvalEvidence" } } },
+          "else": { "properties": { "evidence": { "type": "null" } } }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "fulfillmentMapping": {
+      "type": "object",
+      "required": [
+        "adapter",
+        "providerProductId",
+        "variantFingerprint",
+        "variantFingerprintStatus",
+        "mappingFingerprint",
+        "mappingFingerprintStatus"
+      ],
+      "properties": {
+        "adapter": { "type": "string", "minLength": 1 },
+        "providerProductId": { "type": "string", "minLength": 1 },
+        "variantFingerprint": { "$ref": "#/$defs/nullableFingerprint" },
+        "variantFingerprintStatus": { "enum": ["observed", "missing"] },
+        "mappingFingerprint": { "$ref": "#/$defs/nullableFingerprint" },
+        "mappingFingerprintStatus": { "enum": ["reviewed", "missing"] }
+      },
+      "additionalProperties": false
+    },
+    "physicalSample": {
+      "type": "object",
+      "required": ["status", "providerMappingFingerprint", "sampleFingerprint", "evidence", "approvalEvidence", "inspection"],
+      "properties": {
+        "status": { "enum": ["not_ordered", "ordered", "received", "inspected", "approved", "rejected"] },
+        "providerMappingFingerprint": { "$ref": "#/$defs/nullableFingerprint" },
+        "sampleFingerprint": { "$ref": "#/$defs/nullableFingerprint" },
+        "evidence": { "$ref": "#/$defs/nullableEvidenceBinding" },
+        "approvalEvidence": { "$ref": "#/$defs/nullableEvidenceBinding" },
+        "inspection": {
+          "type": "object",
+          "required": ["fit", "colour", "artworkPlacement", "finish"],
+          "properties": {
+            "fit": { "enum": ["pending", "verified", "rejected"] },
+            "colour": { "enum": ["pending", "verified", "rejected"] },
+            "artworkPlacement": { "enum": ["pending", "verified", "rejected"] },
+            "finish": { "enum": ["pending", "verified", "rejected"] }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "productionObservation": {
+      "type": "object",
+      "required": [
+        "environment",
+        "statusObserved",
+        "observedAt",
+        "variantFingerprint",
+        "commerceFactsFingerprint",
+        "currentObservationFingerprint",
+        "reviewedObservationFingerprint",
+        "capabilityEvidence"
+      ],
+      "properties": {
+        "environment": { "const": "production" },
+        "statusObserved": { "const": "ACTIVE" },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "variantFingerprint": { "$ref": "#/$defs/fingerprint" },
+        "commerceFactsFingerprint": { "$ref": "#/$defs/fingerprint" },
+        "currentObservationFingerprint": { "$ref": "#/$defs/fingerprint" },
+        "reviewedObservationFingerprint": { "$ref": "#/$defs/fingerprint" },
+        "capabilityEvidence": { "$ref": "#/$defs/evidenceBinding" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "cp.browser-verification.v1",
+  "deploymentId": "dpl_GQYEQ89bJLpiYYkauWuQFvuRtno9",
+  "target": "preview",
+  "status": "READY",
+  "url": "https://carlophillips-site-da9l7ctw6-adityas-projects-261b17a9.vercel.app/products/carlophillips-signature-hoodie",
+  "checks": [
+    {
+      "viewport": "1280x720",
+      "httpStatus": 200,
+      "scrollWidth": 1280,
+      "studyCount": 1,
+      "studyImageCount": 4,
+      "studyImageDimensions": ["1024x1536", "1126x1397", "928x1152", "928x1152"],
+      "disclosurePresent": true,
+      "quarantinedAssetPresent": false,
+      "videoCount": 0,
+      "modelViewerCount": 0,
+      "consoleOrPageErrors": []
+    },
+    {
+      "viewport": "390x844",
+      "httpStatus": 200,
+      "scrollWidth": 390,
+      "studyCount": 1,
+      "studyImageCount": 4,
+      "studyImageDimensions": ["1024x1536", "1126x1397", "928x1152", "928x1152"],
+      "disclosurePresent": true,
+      "quarantinedAssetPresent": false,
+      "videoCount": 0,
+      "modelViewerCount": 0,
+      "consoleOrPageErrors": []
+    }
+  ],
+  "productionChanged": false
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-08-17",
+  "result": "NO_GO",
+  "shopifyPaymentsFinalMode": "test",
+  "realTransactionsFinalState": "disabled",
+  "productionCheckoutReachable": true,
+  "observedLine": {
+    "product": "CARLOPHILLIPS Signature Hoodie",
+    "color": "Black",
+    "size": "XS",
+    "quantity": 1,
+    "merchandiseAmount": "128.00",
+    "currency": "USD"
+  },
+  "observedPaymentMethods": [
+    "Shop Pay",
+    "PayPal",
+    "Google Pay",
+    "credit/debit card",
+    "additional hosted methods"
+  ],
+  "realPaymentSubmitted": false,
+  "realOrderCreated": false,
+  "fulfillmentTriggered": false,
+  "qa": {
+    "designSystemLint": "passed",
+    "eslint": "passed_zero_warnings",
+    "testFiles": "47/47",
+    "tests": "494/494",
+    "productionAuditVulnerabilities": 0,
+    "productionPackagesAudited": 67,
+    "nextBuild": "passed",
+    "screenshotsInspected": "4/4"
+  },
+  "externalMutations": {
+    "shopifyPaymentsTestMode": "temporarily disabled, then restored",
+    "catalog": "none",
+    "salesChannels": "none",
+    "github": "none",
+    "vercel": "none",
+    "production": "none"
+  },
+  "blockingReason": "LEGACY_PRODUCTION_CHECKOUT_BYPASSES_DRAFT_RELEASE_AUTHORITY"
+}

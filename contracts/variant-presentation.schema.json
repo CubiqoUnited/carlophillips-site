@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/variant-presentation.schema.json",
+  "title": "VariantPresentation v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "source",
+    "variantFingerprint",
+    "currency",
+    "selectionAllowed",
+    "cartAuthority",
+    "optionNames",
+    "combinations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.variant-presentation.v1" },
+    "source": { "const": "reviewed-product-observation" },
+    "variantFingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "selectionAllowed": { "const": false },
+    "cartAuthority": { "const": false },
+    "optionNames": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "combinations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "referenceHash",
+          "title",
+          "selectedOptions",
+          "availableForSale",
+          "price"
+        ],
+        "properties": {
+          "referenceHash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "title": { "type": "string", "minLength": 1 },
+          "selectedOptions": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "required": ["name", "value"],
+              "properties": {
+                "name": { "type": "string", "minLength": 1 },
+                "value": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            }
+          },
+          "availableForSale": { "type": "boolean" },
+          "price": {
+            "type": "object",
+            "required": ["amount", "currency"],
+            "properties": {
+              "amount": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)(?:\\.[0-9]+)?$"
+              },
+              "currency": {
+                "type": "string",
+                "pattern": "^[A-Z]{3}$"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

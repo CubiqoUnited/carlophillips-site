@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "cp.fitness-verification.v1",
+  "cycle": 19,
+  "observedAt": "2026-07-23",
+  "objective": "Prove server-contained variant-resolution readiness without exposing a raw reference or authorizing mutation.",
+  "variantResolution": {
+    "schemaVersion": "cp.variant-resolution-decision.v1",
+    "registryCapabilitySurface": "local",
+    "runtimeDecisionSurface": "server_only",
+    "serverOnlyReadinessEntry": true,
+    "cartActivationWired": false,
+    "freshObservationRederived": true,
+    "variantIdentityCompared": true,
+    "commerceFactsCompared": true,
+    "oneToOneMappingRequired": true,
+    "rawReferenceExposed": false,
+    "selectedMutationTargetReturned": false,
+    "cartMutationAuthorized": false,
+    "checkoutAuthorized": false
+  },
+  "publicBoundary": {
+    "legacyShopifyVariantsMapCreated": false,
+    "firstVariantShortcutCreated": false,
+    "publicRouteImportsResolver": false,
+    "publicSummaryContainsResolverPayload": false,
+    "logCallsInResolverPath": false
+  },
+  "commands": {
+    "focusedTests": {
+      "status": "passed",
+      "files": 6,
+      "tests": 98
+    },
+    "fullVerify": {
+      "status": "passed",
+      "lintWarnings": 0,
+      "testFiles": 32,
+      "tests": 308,
+      "productionAdvisories": 0,
+      "auditedPackages": 193,
+      "build": "passed",
+      "next": "15.5.21",
+      "routes": 13
+    },
+    "diffCheck": {
+      "status": "passed"
+    },
+    "secretScan": {
+      "status": "passed",
+      "scope": "added diff lines and untracked text artifacts"
+    }
+  },
+  "browser": {
+    "status": "not-required",
+    "reason": "No customer-visible route or component changed; Cycle 18 is the current desktop/mobile PDP regression."
+  },
+  "fitnessScore": {
+    "score": 44,
+    "outOf": 50,
+    "productionReadinessClaim": false
+  },
+  "productionActions": {
+    "deploy": false,
+    "shopifyRead": false,
+    "shopifyWrite": false,
+    "releasePatchApplied": false,
+    "rawVariantPersisted": false,
+    "cartMutation": false,
+    "checkout": false,
+    "publish": false,
+    "order": false,
+    "billingApproval": false,
+    "merge": false
+  }
+}

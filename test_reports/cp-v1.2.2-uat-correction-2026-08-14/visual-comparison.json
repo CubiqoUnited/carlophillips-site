@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "cp.v1.2.2-uat-correction-visual-comparison.v1",
+  "baseline": "https://www.carlophillips.com",
+  "candidateMethod": "local corrected build; content differences are expected where local fixtures replace live commerce truth",
+  "sameDimensions": true,
+  "comparisons": [
+    {
+      "state": "compact-bag",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "screenshots/production/compact-bag.png",
+      "candidate": "screenshots/candidate/compact-bag.png",
+      "meanAbsoluteError": 0.007431,
+      "normalizedRms": 0.047456,
+      "changedPixelPercentOver4": 6.3159,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        438
+      ],
+      "diff": "comparisons/compact-bag-diff.png",
+      "sideBySide": "comparisons/compact-bag-side-by-side.png"
+    },
+    {
+      "state": "compact-pdp",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "screenshots/production/compact-pdp.png",
+      "candidate": "screenshots/candidate/compact-pdp.png",
+      "meanAbsoluteError": 0.104459,
+      "normalizedRms": 0.169938,
+      "changedPixelPercentOver4": 91.4482,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        485
+      ],
+      "diff": "comparisons/compact-pdp-diff.png",
+      "sideBySide": "comparisons/compact-pdp-side-by-side.png"
+    },
+    {
+      "state": "compact-shop",
+      "dimensions": [
+        584,
+        486
+      ],
+      "production": "screenshots/production/compact-shop.png",
+      "candidate": "screenshots/candidate/compact-shop.png",
+      "meanAbsoluteError": 0.073923,
+      "normalizedRms": 0.217923,
+      "changedPixelPercentOver4": 29.9337,
+      "differenceBoundingBox": [
+        0,
+        0,
+        584,
+        486
+      ],
+      "diff": "comparisons/compact-shop-diff.png",
+      "sideBySide": "comparisons/compact-shop-side-by-side.png"
+    },
+    {
+      "state": "desktop-bag",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "screenshots/production/desktop-bag.png",
+      "candidate": "screenshots/candidate/desktop-bag.png",
+      "meanAbsoluteError": 0.000806,
+      "normalizedRms": 0.014929,
+      "changedPixelPercentOver4": 0.469,
+      "differenceBoundingBox": [
+        88,
+        28,
+        1338,
+        753
+      ],
+      "diff": "comparisons/desktop-bag-diff.png",
+      "sideBySide": "comparisons/desktop-bag-side-by-side.png"
+    },
+    {
+      "state": "desktop-pdp",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "screenshots/production/desktop-pdp.png",
+      "candidate": "screenshots/candidate/desktop-pdp.png",
+      "meanAbsoluteError": 0.214576,
+      "normalizedRms": 0.361923,
+      "changedPixelPercentOver4": 94.8417,
+      "differenceBoundingBox": [
+        0,
+        5,
+        1440,
+        1000
+      ],
+      "diff": "comparisons/desktop-pdp-diff.png",
+      "sideBySide": "comparisons/desktop-pdp-side-by-side.png"
+    },
+    {
+      "state": "desktop-shop",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "production": "screenshots/production/desktop-shop.png",
+      "candidate": "screenshots/candidate/desktop-shop.png",
+      "meanAbsoluteError": 0.104225,
+      "normalizedRms": 0.25598,
+      "changedPixelPercentOver4": 49.3689,
+      "differenceBoundingBox": [
+        0,
+        26,
+        1440,
+        1000
+      ],
+      "diff": "comparisons/desktop-shop-diff.png",
+      "sideBySide": "comparisons/desktop-shop-side-by-side.png"
+    },
+    {
+      "state": "mobile-bag",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "screenshots/production/mobile-bag.png",
+      "candidate": "screenshots/candidate/mobile-bag.png",
+      "meanAbsoluteError": 0.043536,
+      "normalizedRms": 0.178394,
+      "changedPixelPercentOver4": 11.4938,
+      "differenceBoundingBox": [
+        0,
+        0,
+        390,
+        844
+      ],
+      "diff": "comparisons/mobile-bag-diff.png",
+      "sideBySide": "comparisons/mobile-bag-side-by-side.png"
+    },
+    {
+      "state": "mobile-pdp",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "screenshots/production/mobile-pdp.png",
+      "candidate": "screenshots/candidate/mobile-pdp.png",
+      "meanAbsoluteError": 0.124034,
+      "normalizedRms": 0.189459,
+      "changedPixelPercentOver4": 87.4335,
+      "differenceBoundingBox": [
+        0,
+        26,
+        390,
+        844
+      ],
+      "diff": "comparisons/mobile-pdp-diff.png",
+      "sideBySide": "comparisons/mobile-pdp-side-by-side.png"
+    },
+    {
+      "state": "mobile-shop",
+      "dimensions": [
+        390,
+        844
+      ],
+      "production": "screenshots/production/mobile-shop.png",
+      "candidate": "screenshots/candidate/mobile-shop.png",
+      "meanAbsoluteError": 0.176604,
+      "normalizedRms": 0.366432,
+      "changedPixelPercentOver4": 55.5025,
+      "differenceBoundingBox": [
+        0,
+        59,
+        390,
+        844
+      ],
+      "diff": "comparisons/mobile-shop-diff.png",
+      "sideBySide": "comparisons/mobile-shop-side-by-side.png"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/product-creation-job.schema.json",
+  "title": "ProductCreationJob v2",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "jobId",
+    "environment",
+    "simulation",
+    "trigger",
+    "brief",
+    "idempotency",
+    "contractBindings",
+    "approvals"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.product-creation-job.v2" },
+    "jobId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "simulation": { "type": "boolean" },
+    "trigger": {
+      "type": "object",
+      "required": ["type", "requestedAt", "cadence", "schedule"],
+      "properties": {
+        "type": { "enum": ["on-demand", "scheduled"] },
+        "requestedAt": { "type": "string", "format": "date-time" },
+        "cadence": { "enum": ["on-demand", "daily", "weekly", "monthly", "custom"] },
+        "schedule": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": ["expression", "timezone"],
+              "properties": {
+                "expression": { "type": "string", "minLength": 1 },
+                "timezone": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            },
+            { "type": "null" }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "on-demand" } },
+            "required": ["type"]
+          },
+          "then": {
+            "properties": {
+              "cadence": { "const": "on-demand" },
+              "schedule": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "scheduled" } },
+            "required": ["type"]
+          },
+          "then": {
+            "properties": {
+              "cadence": { "enum": ["daily", "weekly", "monthly", "custom"] },
+              "schedule": { "type": "object" }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "brief": { "$ref": "product-brief.schema.json" },
+    "idempotency": {
+      "type": "object",
+      "required": ["key", "inputFingerprint", "duplicatePolicy"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^cp:[a-z0-9:-]+$" },
+        "inputFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "duplicatePolicy": { "const": "suppress" }
+      },
+      "additionalProperties": false
+    },
+    "contractBindings": {
+      "type": "object",
+      "required": ["productReleaseRecord", "mediaRegistry", "commerceGateway", "pipelineRunContract", "pipelineRunId"],
+      "properties": {
+        "productReleaseRecord": { "type": "string", "minLength": 1 },
+        "mediaRegistry": { "type": "string", "minLength": 1 },
+        "commerceGateway": { "const": "lib/commerce/product-gateway.js" },
+        "pipelineRunContract": { "const": "contracts/pipeline-run.schema.json" },
+        "pipelineRunId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" }
+      },
+      "additionalProperties": false
+    },
+    "approvals": {
+      "type": "object",
+      "required": ["externalExecution", "spend", "credits", "sample", "shopifyWrite", "publish", "production"],
+      "properties": {
+        "externalExecution": { "$ref": "#/$defs/approval" },
+        "spend": { "$ref": "#/$defs/approval" },
+        "credits": { "$ref": "#/$defs/approval" },
+        "sample": { "$ref": "#/$defs/approval" },
+        "shopifyWrite": { "$ref": "#/$defs/approval" },
+        "publish": { "$ref": "#/$defs/approval" },
+        "production": { "$ref": "#/$defs/approval" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "environment": { "enum": ["preview", "production"] } },
+        "required": ["environment"]
+      },
+      "then": {
+        "properties": {
+          "brief": {
+            "type": "object",
+            "properties": {
+              "inputEvidence": {
+                "not": {
+                  "type": "array",
+                  "contains": {
+                    "type": "object",
+                    "properties": { "sourceType": { "const": "fixture" } },
+                    "required": ["sourceType"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "approval": {
+      "type": "object",
+      "required": ["status", "owner"],
+      "properties": {
+        "status": { "const": "pending" },
+        "owner": { "const": "Product Owner" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,36 @@
+{
+  "run_timestamp": "2026-07-12T01:40:00-04:00",
+  "shopify_product_id": "9432704909549",
+  "shopify_handle": "carlophillips-signature-hoodie",
+  "media_update_attempted": false,
+  "media_updated": false,
+  "product_status_after": "Draft",
+  "reason_not_updated": "This pass was scoped to Apliiq login handoff and real asset export. Shopify media upload was not forced because no safe Admin API upload path is confirmed in this session and the browser file-upload path was not necessary for the export-only objective.",
+  "approved_assets_ready_for_upload": [
+    {
+      "file": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/media/apliiq-5958463-black-front-original.jpg",
+      "suggested_alt_text": "CARLOPHILLIPS Signature Hoodie front view"
+    },
+    {
+      "file": "test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/media/apliiq-5958463-black-cp-detail-crop.jpg",
+      "suggested_alt_text": "CARLOPHILLIPS Signature Hoodie CP embroidery detail"
+    }
+  ],
+  "not_uploaded": [
+    "media/apliiq-5958463-black-front-590x900.jpg",
+    "media/apliiq-5958463-black-front-thumbnail.jpg",
+    "media/apliiq-cp-artwork-original.png",
+    "media/apliiq-5958464-bone-front-original-reference-rejected.jpg",
+    "media/apliiq-5958464-bone-front-590x900-reference-rejected.jpg"
+  ],
+  "safety": {
+    "created_new_product": false,
+    "published_live": false,
+    "made_active": false,
+    "marketing_sync_started": false,
+    "billing_approved": false,
+    "sample_order_or_fulfillment_charge": false,
+    "order_1001_touched": false
+  },
+  "next_safe_upload_task": "Use a confirmed Shopify Admin API media upload path or a controlled Shopify UI upload step to attach only the accepted front image and detail crop to the Draft product, keeping status Draft."
+}

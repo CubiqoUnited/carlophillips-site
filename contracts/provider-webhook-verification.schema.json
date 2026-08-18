@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/provider-webhook-verification.schema.json",
+  "title": "CARLOPHILLIPS sanitized provider webhook verification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "status",
+    "provider",
+    "authority",
+    "topic",
+    "shopFingerprint",
+    "deliveryFingerprint",
+    "payloadFingerprint",
+    "payloadBytes",
+    "triggeredAt",
+    "observedAt",
+    "rawPayloadReturned",
+    "lifecycleMutationAuthorized",
+    "releaseAuthority",
+    "checkoutAuthority",
+    "refundAuthority",
+    "publicationAuthority"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.provider-webhook-verification.v1" },
+    "status": { "const": "verified" },
+    "provider": { "const": "shopify" },
+    "authority": { "const": "observation_only" },
+    "topic": { "type": "string", "pattern": "^[a-z0-9_-]+/[a-z0-9_-]+$" },
+    "shopFingerprint": { "$ref": "#/$defs/fingerprint" },
+    "deliveryFingerprint": { "$ref": "#/$defs/fingerprint" },
+    "payloadFingerprint": { "$ref": "#/$defs/fingerprint" },
+    "payloadBytes": { "type": "integer", "minimum": 2, "maximum": 1048576 },
+    "triggeredAt": { "type": "string", "format": "date-time" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "rawPayloadReturned": { "const": false },
+    "lifecycleMutationAuthorized": { "const": false },
+    "releaseAuthority": { "const": false },
+    "checkoutAuthority": { "const": false },
+    "refundAuthority": { "const": false },
+    "publicationAuthority": { "const": false }
+  },
+  "$defs": {
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}
