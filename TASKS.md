@@ -12,7 +12,8 @@
 - [x] Pass public desktop/tablet/mobile video, gallery, reduced-motion, accessibility, console/network, overflow and screenshot QA plus Product Owner Admin allow and reviewer/anonymous denial QA.
 - [ ] Complete live Order tray, bag, hosted Shopify checkout and payment UAT only after the canonical Hoodie Product Release Record is Approved/Released with product, media, fulfillment, fresh Production and rollback evidence. Do not fake this state or bypass the server gate.
 - [ ] Provision one selected Funnel 2 provider with approved credentials and exact per-run/monthly limits, then capture a sanitized read-only authentication receipt before enabling generation.
-- [ ] Deploy the exact verified commit to protected Staging and verify the permanent Staging URL, public analytics beacons and Admin Product Owner session without touching Production.
+- [x] Deploy exact commit `3d8cefd5` to the permanent protected Staging URL and verify public routes, final media, analytics hooks, Admin sign-in/anonymous concealment and unchanged Production.
+- [ ] Complete one manual authenticated Product Owner review of `/admin/media-generation` on permanent Staging; local Product Owner desktop/tablet/mobile RBAC UAT is already green.
 
 ## Product motion/gallery/purchase experience
 

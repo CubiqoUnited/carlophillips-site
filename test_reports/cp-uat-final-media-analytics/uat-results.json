@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cp.uat-final-media.v1",
-  "baseUrl": "http://127.0.0.1:3140",
-  "generatedAt": "2026-08-18T06:27:36.243Z",
+  "baseUrl": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app",
+  "generatedAt": "2026-08-18T06:50:36.208Z",
   "results": [
     {
       "viewport": {
@@ -19,7 +19,7 @@
         "muted": true,
         "loop": false,
         "paused": false,
-        "currentTime": 0.848722
+        "currentTime": 0.843389
       },
       "videoAdvanced": true,
       "stoppedAtEnd": true,
@@ -40,15 +40,15 @@
       "consoleErrors": [],
       "mediaResponses": [
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
           "status": 206
         },
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
           "status": 206
         },
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/fit-silhouette-final.mp4",
           "status": 206
         }
       ],
@@ -70,7 +70,7 @@
         "muted": true,
         "loop": false,
         "paused": false,
-        "currentTime": 0.893169
+        "currentTime": 0.786006
       },
       "videoAdvanced": true,
       "stoppedAtEnd": true,
@@ -91,15 +91,15 @@
       "consoleErrors": [],
       "mediaResponses": [
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
           "status": 206
         },
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
           "status": 206
         },
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/fit-silhouette-final.mp4",
           "status": 206
         }
       ],
@@ -121,7 +121,7 @@
         "muted": true,
         "loop": false,
         "paused": false,
-        "currentTime": 0.893625
+        "currentTime": 0.888529
       },
       "videoAdvanced": true,
       "stoppedAtEnd": true,
@@ -142,15 +142,15 @@
       "consoleErrors": [],
       "mediaResponses": [
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
           "status": 206
         },
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
           "status": 206
         },
         {
-          "url": "http://127.0.0.1:3140/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/fit-silhouette-final.mp4",
           "status": 206
         }
       ],

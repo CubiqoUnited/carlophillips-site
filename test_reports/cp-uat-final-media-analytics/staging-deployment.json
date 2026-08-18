@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "cp.staging-deployment-receipt.v1",
+  "recordedAt": "2026-08-18T06:59:00Z",
+  "sourceCommit": "3d8cefd5bb8a0df47a736e609c6cb8ccfa42fa92",
+  "deploymentId": "dpl_ApCs7WpJvTTbreH9qj4BaEaH6SQ8",
+  "deploymentUrl": "https://carlophillips-site-n1u41xii3-adityas-projects-261b17a9.vercel.app",
+  "permanentStagingUrl": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app",
+  "target": "preview",
+  "readyState": "READY",
+  "metadata": {
+    "artifactKind": "protected-staging",
+    "checkoutAuthority": "release-gated"
+  },
+  "verification": {
+    "desktopTabletMobile": "passed",
+    "videoContract": "passed",
+    "factualGalleryOpening": "passed",
+    "separateVideos": "passed",
+    "reducedMotion": "passed",
+    "consoleAndNetwork": "passed",
+    "publicAccessibilityRoutes": "14/14 passed",
+    "analyticsScriptResponses": "2/2 HTTP 200",
+    "adminAnalyticsExcluded": true,
+    "adminSignInHttp": 200,
+    "anonymousMediaGenerationHttp": 404,
+    "checkoutProbeHttp": 409,
+    "checkoutProbeReason": "PRODUCT_RELEASE_NOT_RELEASED"
+  },
+  "production": {
+    "changed": false,
+    "deploymentId": "dpl_2s61reh2JATSRMCYfXYHnFnXT2bH",
+    "aliases": [
+      "https://carlophillips.com",
+      "https://www.carlophillips.com"
+    ]
+  }
+}

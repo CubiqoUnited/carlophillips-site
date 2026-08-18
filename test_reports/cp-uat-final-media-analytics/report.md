@@ -5,6 +5,12 @@ Candidate branch: `codex/cp-uat-final-media-analytics`
 Base: exact `origin/staging` commit `ad3f690fc9f3493747d795ca224b3926ae9635ba`  
 Production changed: **No**
 
+Permanent Staging: `https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app`
+
+Deployment: `dpl_ApCs7WpJvTTbreH9qj4BaEaH6SQ8` (`READY`, target `preview`)
+
+Deployed source: `3d8cefd5bb8a0df47a736e609c6cb8ccfa42fa92`
+
 ## Decision
 
 **GO for protected Staging review of the media, Admin and analytics candidate. NO-GO for claiming released commerce or promoting Production.**
@@ -34,11 +40,11 @@ The two exact Product Owner-selected videos are implemented as final Staging med
 | Generate/regenerate/approve/publish do not mutate | PASS | Only read-only Compare is enabled; all mutating actions fail closed |
 | Requested provider connections represented | PASS | Nine-provider readiness registry shown in Admin |
 | Authenticated provider handshakes | BLOCKED | No supported credential/contract exists except a defined Runway API key boundary; no false connection claim |
-| Vercel Web Analytics + Speed Insights code | PASS | Public client hooks load when enabled; Admin route loads neither hook |
+| Vercel Web Analytics + Speed Insights | PASS | Permanent Staging public scripts and endpoints return HTTP 200; Admin route loads neither hook |
 | Shopify analytics responsibility | PASS | Shopify remains source for checkout/order/conversion/revenue/payout reporting |
 | Production payment lint | PASS | Primary Production candidate must set cart+checkout true; protected preflight and checkout-disabled fallback remain mandatory |
 | Live Order tray, bag and Shopify checkout | BLOCKED | Browser shows zero purchase controls; same-origin server probe returns 409 `PRODUCT_RELEASE_NOT_RELEASED` |
-| Staging deployment | PENDING | Must follow final clean commit and protected Staging deployment; this report does not claim deployment yet |
+| Staging deployment | PASS | Permanent alias points to READY Preview deployment `dpl_ApCs7WpJvTTbreH9qj4BaEaH6SQ8` |
 | Production deployment | NOT AUTHORIZED | Production remains unchanged |
 
 ## Browser results
@@ -48,7 +54,9 @@ The two exact Product Owner-selected videos are implemented as final Staging med
 - Gallery: factual image first, separate Runway and Fit selectors, both videos decoded and delivered with HTTP 206 range responses.
 - Accessibility: 14 public route/viewport combinations passed WCAG 2 A/AA/2.1 A/AA automated checks with no consent banner and no third-party marketing trackers.
 - Admin: Product Owner route passed at 1440×1000, 1024×768 and 390×844 with zero overflow/errors. Reviewer and anonymous direct access each returned concealed 404.
-- Observability: when enabled, public pages request Vercel Analytics and Speed Insights scripts; Admin requests neither.
+- Observability: permanent Staging public pages load both Vercel Analytics and Speed Insights scripts with HTTP 200 responses; Admin requests neither.
+- Remote Admin boundary: `/admin/sign-in` returns 200; anonymous `/admin/media-generation` returns concealed 404. Product Owner allow was verified locally at three widths; the final remote authenticated session remains a manual UAT item.
+- Checkout boundary: a same-origin permanent-Staging POST returns HTTP 409 `PRODUCT_RELEASE_NOT_RELEASED`; no Shopify cart was created.
 
 ## Complete source gate
 
@@ -93,3 +101,4 @@ The test order and hosted-checkout evidence prove that CARLOPHILLIPS → Shopify
 - Accessibility: `accessibility/accessibility-verification.json` and screenshots
 - Admin: `admin-media/verification.json` and screenshots
 - Human/provider activation record: `../../reports/HUMAN_INTERVENTION_STICKY_RED.md`
+- Deployment receipt: `staging-deployment.json`

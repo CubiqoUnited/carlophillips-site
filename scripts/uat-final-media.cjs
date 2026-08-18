@@ -121,6 +121,9 @@ async function main() {
         mediaResponses,
         failedRequests: failedRequests.filter(item => {
           if (item.url.includes('/_vercel/')) return false;
+          const isExpectedNextNavigationAbort = item.error === 'net::ERR_ABORTED'
+            && new URL(item.url).searchParams.has('_rsc');
+          if (isExpectedNextNavigationAbort) return false;
           const isExpectedCancelledMediaRead = item.error === 'net::ERR_ABORTED'
             && /\/media\/signature-hoodie\/videos\/.+\.mp4$/.test(new URL(item.url).pathname)
             && mediaResponses.some(response => response.url === item.url && [200, 206].includes(response.status));
