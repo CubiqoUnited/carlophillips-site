@@ -10,6 +10,7 @@ const candidate = readFileSync('.github/workflows/vercel-release-candidate.yml',
 const production = readFileSync('.github/workflows/vercel-production.yml', 'utf8');
 const verifier = readFileSync('.github/scripts/verify-vercel-receipt.mjs', 'utf8');
 const fallbackSelector = readFileSync('.github/scripts/select-vercel-safe-fallback.mjs', 'utf8');
+const productionCommerceVerifier = readFileSync('scripts/verify-production-commerce-release.mjs', 'utf8');
 const verifierPath = join(process.cwd(), '.github/scripts/verify-vercel-receipt.mjs');
 const fallbackSelectorPath = join(process.cwd(), '.github/scripts/select-vercel-safe-fallback.mjs');
 const testSha = 'a'.repeat(40);
@@ -126,7 +127,7 @@ function workflowStep(workflow, name) {
   return workflow.slice(start, next === -1 ? workflow.length : next);
 }
 
-function pairArguments(fixtures, output, expectedProductionAnchor = null) {
+function pairArguments(fixtures, output, expectedProductionAnchor = null, expectedCandidateCheckout = false) {
   const values = [
     'candidate-pair',
     '--candidate-inspect', fixtures.candidateInspect,
@@ -136,6 +137,7 @@ function pairArguments(fixtures, output, expectedProductionAnchor = null) {
     '--production-after', fixtures.after,
     '--expected-sha', testSha,
     '--expected-release', 'v-test',
+    '--expected-candidate-checkout', String(expectedCandidateCheckout),
     '--output', output,
   ];
   if (expectedProductionAnchor) values.push('--expected-production-anchor', expectedProductionAnchor);
@@ -223,26 +225,44 @@ describe('CI/CD policy', () => {
   it('stages a distinct same-SHA Production candidate and safe fallback without aliases', () => {
     expect(candidate).toContain('workflow_dispatch:');
     expect(candidate).toContain('environment: Production');
+    expect(candidate).toContain('fetch-depth: 0');
     expect(candidate).toContain('NEXT_PUBLIC_COMMERCE_ENVIRONMENT: production');
-    expect(candidate).toContain('SHOPIFY_CART_UI_ENABLED: "false"');
+    expect(candidate).toContain('checkout_enabled:');
+    expect(candidate).toContain("SHOPIFY_CART_UI_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}");
+    expect(candidate).toContain("SHOPIFY_CHECKOUT_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}");
+    expect(candidate).toContain('verify-production-commerce-release.mjs');
     expect(candidate).toContain('vercel build --prod');
     expect(candidate.match(/vercel deploy --prebuilt --archive=tgz --prod --skip-domain/g)).toHaveLength(2);
     expect(candidate).toContain('--meta cpArtifactKind=staged-production');
     expect(candidate).toContain('--meta cpArtifactKind=safe-fallback');
     expect(candidate.match(/--meta cpBuildEnvironment=production/g)).toHaveLength(2);
-    expect(candidate.match(/--meta cpCheckoutEnabled=false/g)).toHaveLength(2);
+    expect(candidate).toContain('--meta cpCheckoutEnabled="$SHOPIFY_CHECKOUT_ENABLED"');
+    expect(candidate).toContain('--meta cpCheckoutEnabled=false');
+    expect(candidate).toContain('--expected-candidate-checkout "$SHOPIFY_CHECKOUT_ENABLED"');
     expect(candidate).toContain('verify-vercel-receipt.mjs candidate-pair');
     expect(candidate).toContain('candidate-release-pair-receipt.json');
     expect(candidate).toContain('fallback-pdp.html');
     expect(candidate).not.toMatch(/vercel\s+(promote|rollback)/);
     expect(workflowStep(candidate, 'Verify repository before deployment')).not.toContain('VERCEL_TOKEN');
-    expect(workflowStep(candidate, 'Build fail-closed Production artifact')).not.toContain('VERCEL_TOKEN');
+    expect(workflowStep(candidate, 'Build exact Production artifact')).not.toContain('VERCEL_TOKEN');
     expect(workflowStep(candidate, 'Verify staged candidate and safe fallback without deployment credential')).not.toContain('VERCEL_TOKEN');
+  });
+
+  it('verifies evidence-only ancestry from full Git history without rename or symlink ambiguity', () => {
+    expect(candidate).toContain('fetch-depth: 0');
+    expect(production).toContain('fetch-depth: 0');
+    expect(productionCommerceVerifier).toContain("['merge-base', '--is-ancestor', candidateSha, expectedSha]");
+    expect(productionCommerceVerifier).toContain("['diff', '--no-renames', '--name-only'");
+    expect(productionCommerceVerifier).toContain("['ls-tree', '-rz', expectedSha, '--', ...changedPaths]");
   });
 
   it('promotes only the reviewed candidate and recovers only to the reviewed safe fallback', () => {
     expect(production).toContain('safe_fallback_deployment:');
     expect(production).toContain('expected_production_anchor:');
+    expect(production).toContain('expected_candidate_checkout:');
+    expect(production).toContain('fetch-depth: 0');
+    expect(production).toContain('verify-production-commerce-release.mjs');
+    expect(production).toContain('--expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT"');
     expect(production).toContain('test "$CANDIDATE_DEPLOYMENT" != "$SAFE_FALLBACK_DEPLOYMENT"');
     expect(production).toContain('verify-vercel-receipt.mjs candidate-pair');
     expect(production).toContain('vercel promote "$CANDIDATE_DEPLOYMENT"');
@@ -358,12 +378,39 @@ describe('CI/CD policy', () => {
     }
   });
 
+  it('accepts a checkout-enabled candidate only beside a fail-closed safe fallback', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-release-pair-enabled-'));
+    try {
+      const fixtures = releasePairFixtures(directory, {
+        candidateMetadata: { cpCheckoutEnabled: 'true' },
+      });
+      const output = join(directory, 'receipt.json');
+      const result = runVerifier(pairArguments(fixtures, output, null, true));
+      expect(result.status, result.stderr).toBe(0);
+      expect(JSON.parse(readFileSync(output, 'utf8'))).toMatchObject({
+        checkoutEnabled: true,
+        safeFallbackCheckoutEnabled: false,
+      });
+
+      const wrongExpectation = runVerifier(pairArguments(
+        fixtures,
+        join(directory, 'wrong-receipt.json'),
+        null,
+        false,
+      ));
+      expect(wrongExpectation.status).not.toBe(0);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
   it.each([
     ['candidate wrong role', { candidateMetadata: { cpArtifactKind: 'safe-fallback' } }],
     ['fallback wrong role', { fallbackMetadata: { cpArtifactKind: 'staged-production' } }],
     ['fallback wrong SHA', { fallbackMetadata: { cpGitCommitSha: 'b'.repeat(40) } }],
     ['fallback wrong release', { fallbackMetadata: { cpRelease: 'wrong' } }],
     ['fallback wrong environment', { fallbackMetadata: { cpBuildEnvironment: 'preview' } }],
+    ['unreviewed candidate checkout enabled', { candidateMetadata: { cpCheckoutEnabled: 'true' } }],
     ['fallback checkout enabled', { fallbackMetadata: { cpCheckoutEnabled: 'true' } }],
     ['candidate alias leakage', { candidateInspect: { aliases: ['www.carlophillips.com'] } }],
     ['fallback alias leakage', { fallbackInspect: { aliases: ['www.carlophillips.com'] } }],
@@ -417,6 +464,40 @@ describe('CI/CD policy', () => {
       expect(run({ metadata: { originalDeploymentId: 'dpl_other' } }).status).not.toBe(0);
       expect(run({ metadata: { action: 'deploy' } }).status).not.toBe(0);
       expect(run({ metadata: { cpArtifactKind: 'safe-fallback' } }).status).not.toBe(0);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it('preserves the reviewed checkout marker through exact candidate promotion', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-production-enabled-'));
+    try {
+      const fixtures = releasePairFixtures(directory, {
+        candidateMetadata: { cpCheckoutEnabled: 'true' },
+      });
+      const promoted = promotionFiles(directory, 'candidate', {
+        metadata: { cpCheckoutEnabled: 'true' },
+      });
+      const output = join(directory, 'production-enabled-receipt.json');
+      const result = runVerifier([
+        'production',
+        '--candidate-inspect', fixtures.candidateInspect,
+        '--fallback-inspect', fixtures.fallbackInspect,
+        '--deployment-list', fixtures.deploymentList,
+        '--production-before', fixtures.before,
+        '--production-after', promoted.after,
+        '--production-list', promoted.list,
+        '--expected-production-anchor', 'dpl_old',
+        '--expected-sha', testSha,
+        '--expected-release', 'v-test',
+        '--expected-candidate-checkout', 'true',
+        '--output', output,
+      ]);
+      expect(result.status, result.stderr).toBe(0);
+      expect(JSON.parse(readFileSync(output, 'utf8'))).toMatchObject({
+        artifactRole: 'staged-production',
+        checkoutEnabled: true,
+      });
     } finally {
       rmSync(directory, { recursive: true, force: true });
     }

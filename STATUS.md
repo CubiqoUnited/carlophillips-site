@@ -1,8 +1,104 @@
 # Current Status
 
-Updated: 2026-08-14
-Branch: integrated candidate `codex/cp-e2e-admin-control-plane`; includes canonical `main` at `1291e54`; pushed to the authorized fork and opened as canonical draft PR #12; no Preview, merge to `main`, or Production change
+Updated: 2026-08-18
+Branch: isolated Staging UAT candidate `codex/cp-uat-final-media-analytics` from exact `origin/staging` `ad3f690`; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Funnel 2, final Hoodie motion and analytics UAT — 2026-08-18
+
+- Funnel 1 remains the existing POD-to-publish path. Funnel 2 is a separate, Hoodie-scoped, feature-flagged `Media Generation` workspace inside the same Product Owner Admin portal; both reuse the same Product Release Record and Media Registry.
+- The Product Owner selected the two existing Hoodie MP4 files as the final Staging motion assets. The 7.79-second Runway edit removes the first two seconds, plays at 0.9×, autoplays muted only while the Hoodie panel is visible, stops at the end, and has pause/replay plus reduced-motion behavior. The 5.04-second Fit & Silhouette video is a separate, user-selected gallery item. Both retain the truthful `AI editorial` classification and are not physical sample evidence.
+- Public desktop/tablet/mobile headless UAT passes HTTP, responsive layout, byte-range video delivery, autoplay/stop/reduced-motion behavior, factual-image-first gallery behavior, separate video selection, console/network health, accessibility and screenshot capture. Admin Product Owner desktop/tablet/mobile review passes, while reviewer and anonymous direct access return concealed 404 responses.
+- The Admin connection-readiness registry covers Modelize, MODA, Sugata, TAYLA, Raspberry AI, ProductSpin AI, Instant 3D, Spacecheck and Runway. It does not falsely claim authenticated handshakes: provider credentials, supported API contracts and exact credit ceilings remain external activation gates.
+- Vercel Web Analytics and Speed Insights are integrated on public routes behind `NEXT_PUBLIC_VERCEL_OBSERVABILITY_ENABLED`; `/admin` is excluded and query/hash data is removed from page-event URLs. Shopify remains authoritative for checkout, orders, conversion, revenue, payouts and payment reporting.
+- Production-candidate lint now requires cart and checkout to be enabled for the primary candidate while preserving the separately verified checkout-disabled rollback artifact and all release/preflight/smoke gates.
+- Commerce UAT is **blocked, not failed or faked**: the canonical Hoodie release remains `staged`, so live Order, bag handoff and `/api/checkout` correctly deny with `PRODUCT_RELEASE_NOT_RELEASED`. The existing Shopify payment and test-order evidence proves the technical route, but it does not supply missing Product Release Record product/media/fulfillment approvals, a physical sample, fresh Production observation or rollback verification. Production is unchanged.
+- Permanent protected Staging is READY at `https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app`, pointing to Preview deployment `dpl_ApCs7WpJvTTbreH9qj4BaEaH6SQ8` from source commit `3d8cefd5bb8a0df47a736e609c6cb8ccfa42fa92`. The exact public desktop/tablet/mobile matrix is green. Public Vercel Analytics and Speed Insights hooks return HTTP 200; Admin loads neither. Remote `/admin/sign-in` returns 200 and anonymous `/admin/media-generation` returns concealed 404; final authenticated remote Product Owner review remains a manual session check.
+- Production remains exact deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH` on `carlophillips.com` and `www.carlophillips.com`; no Production alias or deployment changed.
+- Evidence is under `test_reports/cp-uat-final-media-analytics/`.
+
+## Product motion/gallery/purchase experience — 2026-08-17
+
+- The current commerce handoff now includes the complete post-hero interaction shell: visibility-aware motion with explicit pause/play, a manual twelve-view gallery with optional five-second autoplay/progress, Shopify-price Order entry, exact S/M/L order tray, Size & Fit drawer, Add-to-Bag confirmation, quantity/subtotal, and the existing secure `/api/checkout` handoff.
+- All visual values route through canonical primitive → semantic → component tokens; the hardcoded-value lint remains enforced.
+- Local headless QA passed at 1440×1000, 1024×768 and 390×844 with fifteen inspected screenshots, autoplay timing, S/M/L and $128 assertions, no overflow, and zero console/network failures. The complete source gate also passed: design-system lint, zero-warning ESLint, 53/53 files and 549/549 tests, zero vulnerabilities across 67 production packages, and optimized build. Evidence is under `test_reports/cp-product-motion-experience-2026-08-17/`.
+- The renderer is ready for approved Shopify video media, but the two requested genuine motion feeds (runway walk and minimal gestures/styling) are not present in the approved Media Registry. The sticky human handoff records the exact upload/approval signal. No paid generation, merge, Preview/Production deployment, checkout submission, order or Shopify mutation occurred.
+
+## Shopify Payments live activation — 2026-08-17
+
+- The Product Owner explicitly authorized real Production payments. Shopify Payments test mode was turned off and the setting persisted.
+- The authoritative Shopify Payments summary now states **Accepting payments** and **Receiving payouts**. Managed payment methods are enabled; Apple Pay, Google Pay, Shop Pay, PayPal Wallet, and the supported card methods are active. Amazon Pay is the wallet explicitly marked disabled.
+- Payouts are configured to the existing Shopify Balance USD account ending `4549`; no separate Stripe account connection is required for this Shopify Payments setup.
+- Live `www.carlophillips.com` was verified without customer data or an order: the Hoodie PDP selected Black / Medium at USD $128, created a Shopify cart, and redirected to the exact `carlophillips.myshopify.com` hosted checkout. The checkout showed one Medium Hoodie, quantity one, USD $128 subtotal/total before shipping, live card fields, Shop Pay, and PayPal.
+- Desktop and mobile checkout screenshots plus before/after Shopify Payments evidence are retained under `test_reports/cp-production-payments-live-2026-08-17/`. No customer data, real payment, order, fulfillment request, catalog change, merge, or Vercel deployment was made.
+- Payment acceptance is live on the historical Production deployment. PR #14's newer release-bound implementation is still not merged or deployed because its Vercel status is blocked by the linked deployment account and the canonical repository lacks the documented `main`/environment protections. This remains an engineering/release-governance risk, not a Shopify payment-gateway blocker.
+
+## Live deployment and release-guardrail reconciliation — 2026-08-17
+
+- Read-only Vercel inspection binds both public domains to READY Production deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`, source commit `bb9568f46bd60b587f3fc16b82513ae5ea220026` on historical feature branch `codex/cp-runway-wording-design-system`. It is a live drift anchor, not the current reviewed commerce candidate and not an approved rollback artifact.
+- That exact Production deployment shows only successful observed runtime statuses (seven HTTP 200 and one HTTP 303 in the available seven-day deployment-scoped sample). The project-level Clerk and `theme.json` runtime error clusters belong to discarded older Preview deployments, not this Production deployment.
+- PR #14 is open and mergeable and contains the exact checkout implementation ancestor `81a1c7e25efebde6b587ac7880a87cd5e45f93af`. `CI / Verify` passes for that implementation; the separate Vercel GitHub status fails because the linked deployment account is blocked, not because source verification failed.
+- The canonical repository currently has zero active rulesets. GitHub environments `Preview` and `Production` exist but have no protection rules or required reviewers, and administrator bypass is enabled. The connected `avloy07-eng` identity has pull-only access (`push=false`, `admin=false`) and cannot repair these controls, merge PR #14, or dispatch protected release operations.
+- The separate Apliiq bulk/sample cart remains broken, but it is no longer treated as a release dependency. Existing evidence already proves the real CARLOPHILLIPS → Shopify → Apliiq route: the live Medium cart reaches Shopify checkout and test order `#1002` reached Apliiq intake. The recurring provider-reply monitor was deleted. An isolated Product Owner-only controlled Medium checkout now uses that existing path without enabling public checkout or submitting payment/order automatically.
+
+## Evidence-only descendant Production preflight — 2026-08-17
+
+- The Product Owner explicitly approved replacing the impossible self-referential exact-SHA rule with a Git-verified evidence-only descendant rule.
+- The selected `main` SHA must still equal checked-out `HEAD`. The reviewed candidate must exist and be its actual Git ancestor. Full history is fetched in both protected Production workflows.
+- Endpoint differences are accepted only for an explicit release/evidence, status-document, QA-report and release-test allowlist. Storefront, component, checkout, media manifest/assets, workflow, script, configuration, theme and symlink changes are denied.
+- Focused policy verification passes 59/59 assertions. Full verification passes design-system lint, zero-warning ESLint, 51/51 files and 532/532 tests, zero vulnerabilities across 67 audited production packages, and the optimized build. Coverage includes non-ancestor, missing-commit, wrong-HEAD, malformed/path-escape, symlink, app/component/checkout/media/config/workflow/script and mismatched-envelope denials.
+- The real `4ee088c` → `9754a6c` history is accepted as evidence-only. Production preflight still denies checkout for the nine remaining release/sample/approval/media/Production-observation/rollback/cart-capability gates. No workflow was dispatched and no external state changed.
+
+## Earlier Medium cart observation — 2026-08-17
+
+- The live Production PDP created a Shopify cart for Black / Medium at USD $128 and redirected to the exact hosted checkout on `carlophillips.myshopify.com`.
+- The hosted summary showed one `CARLOPHILLIPS Signature Hoodie`, `black / m`, quantity one, subtotal USD $128. Shipping remained destination-dependent.
+- At the time of this earlier observation Shopify Payments still stated that only test payments were accepted. This was superseded later on 2026-08-17 by the Product Owner-authorized live activation recorded above.
+- The observation is retained under `test_reports/cp-production-medium-cart-2026-08-17/`. It does not reclassify operational capability or authorize checkout/Production activation. Screenshot capture is explicitly blocked by the active browser's Shopify Checkout CDP timeout; DOM verification passed.
+- Apliiq's separate one-Medium sample cart remains independently broken and is not part of the selected operating path. No physical sample order, fulfillment request, or charge exists.
+
+## Controlled Medium order through the existing Shopify path — 2026-08-17
+
+- The isolated candidate adds a Product Owner-only action under `/admin/orders`; reviewer and anonymous requests remain concealed.
+- It fixes selection to exactly one Medium, requires the reviewed Staged Shopify observation and Apliiq mapping, re-reads current Shopify identity/facts, verifies the reviewed USD $128 item subtotal before and after cart creation, and accepts only a trusted HTTPS Shopify checkout host.
+- Same-origin protection, expired/malformed authority, stale fingerprint, changed price, missing provider binding, missing capability, foreign checkout host, and environment kill-switch denials are covered by focused tests.
+- Full verification passes design-system lint, zero-warning code lint, 53/53 test files with 548/548 tests, and the optimized Next.js build. Headless desktop/mobile Product Owner/reviewer/anonymous QA passes 31/31 findings with no overflow, error overlay, console/request failure, or critical/serious accessibility violation; evidence is under `test_reports/cp-controlled-medium-checkout-2026-08-17/`.
+- The action prepares checkout only. It cannot submit customer/contact/address/payment data, charge, create an order, request fulfillment, enable public purchasing, merge, deploy, or mutate Production.
+- Apliiq support is no longer a blocker. The next operational step is a protected Staging deployment with `SHOPIFY_CONTROLLED_ORDER_ENABLED=true`, followed by Product Owner review of Shopify's exact shipping, tax, total, and payment exposure before any separately approved payment.
+
+## Production payment activation audit — 2026-08-17
+
+- The Product Owner authorized the goal of enabling real customer payments in Production. Shopify Payments was switched out of test mode and the setting persisted, proving the gateway can technically accept live payments.
+- The current live Hoodie page created a Shopify cart for Black / XS at USD $128 and reached hosted checkout, where Shop Pay, PayPal, Google Pay, card, and additional methods were offered. No payment details were entered and no real order was placed.
+- This exposed a release-authority mismatch: the live Production deployment is the older checkout path and can reach Shopify while the canonical Hoodie Product Release Record remains Draft. It does not enforce the newer physical-sample, release-bound media, approval, immutable-candidate, and rollback gates.
+- Shopify Payments was immediately returned to test mode and confirmed that no real transactions will be processed. Production is therefore fail-closed at payment while the mismatch is repaired.
+- Real activation remains blocked by the unapproved physical sample, incomplete Shopify observation/release fingerprints, incomplete approved media, missing product/media/fulfillment approvals, missing immutable Production/rollback evidence, cart capability that is only test-verified, and the unreviewed/unmerged candidate.
+- Evidence and screenshots are under `test_reports/cp-production-commerce-activation-2026-08-17/`. No catalog, sales-channel, fulfillment, merge, Vercel deployment, Production alias, real payment, or real order mutation occurred.
+
+## Live Shopify and Apliiq commerce reconciliation — 2026-08-16
+
+- Authenticated read-only inspection corrects the stale Hoodie provider status: Shopify currently shows `CARLOPHILLIPS Signature Hoodie` as **Active**, not Draft, on Online Store and Carlophillips Headless. It has nine Black variants (XS–5XL), a USD 128–134 range, four media assets, and Apliiq as vendor.
+- All nine Hoodie variants are selected in the `Apliiq Print On Demand` shipping profile, with Apliiq Dropship Fulfillment and US shipping rates configured. Australia, Canada, and the United Kingdom have rates but still show Shopify Market warnings.
+- Apliiq shows the `carlophillips` Shopify store connected, a fulfillment payment method present, and the matching IND4000 saved design. It shows zero orders in 2026 and no first-production mock approval.
+- Shopify Payments is configured but remains in **test mode**, so real payments are not accepted. The Product Release Record remains Draft because exact Storefront and provider variant/SKU fingerprints, a delivered/approved physical sample, release-bound media, approvals, and post-approval Production evidence remain missing.
+- Evidence is under `test_reports/cp-live-commerce-readiness-2026-08-16/`. The earlier Draft and current Active Shopify screenshots were visually compared. No catalog, channel, payment, order, fulfillment, Vercel, deployment, alias, merge, or Production mutation occurred.
+
+## End-to-end commerce activation progress — 2026-08-17
+
+- Shopify two-step authentication setup is now reflected by the authenticated Payments management URL. Shopify Payments intentionally remains in test mode while the controlled checkout is proven.
+- Authenticated Shopify Admin observation captures the complete nine-size Black Hoodie mapping: SKUs `APQ-5958463S5A1`, `S6A1`, `S7A1`, `S8A1`, `S1A1`, `S2A1`, `S21A1`, `S61A1`, and `S62A1`, priced USD 128–134. Apliiq's delayed stores table confirms the `carlophillips` Shopify connection.
+- Sanitized mapping evidence is retained at `evidence/shopify/cp-signature-hoodie-apliiq-mapping-2026-08-17.json` and bound to the Draft release as `sha256:96d38c684032ce80945d3c8c601668ab645aea086a28421669e39ab337104e12`. No raw Storefront variant references are committed.
+- A new Product Owner-only, private/no-store `/api/admin/commerce-observation` endpoint produces the canonical sanitized Shopify observation inside protected Staging, where the existing encrypted Storefront credential is usable. Anonymous/wrong-role, provider-failure, and raw-record leakage paths fail closed.
+- Local verification passes design-system lint, zero-warning ESLint, 47 test files / 494 tests, and the optimized Next.js build. No Shopify/Apliiq write, checkout, payment, order, deployment, merge, or Production change occurred.
+
+## Release-bound Shopify hosted-checkout handoff — 2026-08-16
+
+- An isolated candidate restores the Shopify Storefront `cartCreate` handoff without restoring the superseded single-product bypass. The server requires a complete Released Product Release Record and Media Registry, exact current Shopify fingerprints, an available reviewed variant selected by opaque hash, verified product-read and operational cart-write capabilities, exact Product Owner cart/checkout approvals, and separate environment kill switches.
+- The checkout POST now requires an exact same-origin `Origin` header. The server accepts only HTTPS checkout URLs on the configured Shopify store or explicit `SHOPIFY_CHECKOUT_HOSTS` allowlist, and never returns raw variant IDs.
+- The PDP renders the size selector and hosted-checkout call to action only when both cart and checkout decisions are true. Draft/local states remain visibly purchase-disabled.
+- Verification passes design-system lint, zero-warning ESLint, 46 test files / 491 tests, and the optimized Next.js build. Headless desktop/mobile Draft-denial QA is HTTP 200 with no form, console error, runtime overlay, or overflow; screenshots and report are under `test_reports/cp-shopify-checkout-handoff-2026-08-16/`.
+- Exact commit `7a27b9392006140672d7864e01182c269447589f` is pushed to the existing PR #14 head branch and required GitHub `Verify` succeeds. Immutable Preview `dpl_De5vhpmRvkamJRc7grjYNG4yki2d` is READY at `https://carlophillips-site-j5vipkisj-adityas-projects-261b17a9.vercel.app`, has no Production alias, passes 8/8 route checks, and returns `PRODUCT_RELEASE_NOT_RELEASED` for the checkout POST before any Shopify cart call.
+- Customer payment remains blocked: the canonical Hoodie release is Draft and the cart capability is still historical test evidence only. No Shopify call, cart, checkout, payment, order, Vercel environment change, deployment, merge, or Production mutation occurred.
 
 ## Canonical consolidation candidate — 2026-08-14
 
@@ -546,3 +642,67 @@ Resume point: execute only the specifically approved action, capture evidence wi
 - Full `yarn verify` passed with zero-warning lint, 43 files / 433 tests, zero production vulnerabilities across 55 packages, and a successful Next.js 15.5.21 build. Headless QA passed 669/669 findings with 61 screenshots; offscreen desktop/mobile inspection found no clipping or misleading control. Eight public desktop/mobile route captures are byte-identical to the prior baseline with zero changed pixels.
 - Fresh read-only Git/Vercel/HTTP evidence confirms `origin/main` at `cd1cd77`, the latest READY Preview at `f82733c`, and READY Production at `bb9568f`; neither contains this local containment branch. The live PDP still returns `action="/api/checkout"` and `Continue to checkout`, so Production remains NO-GO and the sticky containment handoff remains active.
 - Exact clean implementation commit `98a23f2` passed the same full source and browser gates; its machine-readable run is marked `exact-clean-commit`. Evidence: `test_reports/cp-release-binding-truth-2026-08-14/` and `test_reports/cp-live-authority-recheck-2026-08-14/report.md`. No external state changed.
+
+## Token-governed storefront cleanup candidate — 2026-08-15
+
+- The customer-facing optional-analytics prompt and its inactive component were removed; optional analytics remains disconnected and policy surfaces state that no analytics choice is requested or stored.
+- The menu now exposes merchandise categories only: Hoodies, T-Shirts, Shirts, Outerwear, Trousers, and Accessories. Preview-only production/commerce labels were removed without granting product-link, gallery, cart, or checkout authority.
+- Hoodie copy is de-emphasized exclusively through semantic/component tokens. `yarn lint` now runs a dedicated design-system gate that rejects raw colours, visual properties, spacing, radius, typography, and non-token inline styling across active app/component sources.
+- Full verification passes: 44/44 files and 475/475 tests, zero production vulnerabilities across 67 audited packages, and an optimized Next.js 15.5.21 build. Background headless QA passes 21/21 route/viewport checks plus 14/14 WCAG route/viewport audits. Nine exact-dimension screenshot comparisons document only the requested consent, menu, label, and copy-emphasis changes under `test_reports/cp-ui-token-cleanup-2026-08-15/`.
+- The Product Owner Theme read path and remote fail-closed write boundary remain healthy. The GitHub proposal adapter is not connected: no reviewed runtime GitHub App can yet create the restricted `codex/*` branch, single-file `theme.json` commit, and draft PR. Remote Save therefore remains disabled and creates no commit, PR, merge, or publication.
+
+### Product Owner visual refinement — 2026-08-16
+
+- The merchandise-menu scale is reduced through its primitive typography token; `ONE` is increased by 2 px and its description reduced by 1 px through primitive → semantic → component token bindings.
+- The duplicated category rail below the Hoodie runway is removed because those destinations now live in the hamburger menu. Its component CSS and newly dormant tokens are removed rather than hidden.
+- Product Owner follow-up increases `ONE` by another 2 px through the same semantic token and restores the existing twelve-asset Preview media explorer. The closed-page QA now explicitly rejects category links outside the hamburger dialog; every media slide retains its Preview disclosure and grants no commerce authority.
+- Full verification remains green at 44/44 files and 475/475 tests, zero production vulnerabilities across 67 audited packages, and a successful Next.js 15.5.21 build.
+- Background QA passes 3/3 viewports and 21/21 route checks with exact menu labels, no clipping or overflow, decoded Hoodie media, restored keyboard focus, and zero console/request failures. Six prior/current screenshot pairs are retained under `test_reports/cp-chapter-one-closure-2026-08-16/`.
+- Purchasing is the required final customer state, but is not activated by these visual changes. The Hoodie remains Draft and cart/checkout/payment still require the release-bound Shopify, variant, fulfillment, controlled-order, and Product Owner activation evidence already listed in the commerce gates.
+
+### Product Owner Hoodie editorial-reference correction — 2026-08-16
+
+- The supplied 1440×1000 reference is now the Hoodie runway composition target: the product caption begins at the upper-left editorial grid, `ONE` uses a 96 px wide-screen token, descriptive copy uses the brighter 18.4 px body token, and the media explorer aligns at the upper right.
+- Flat feature chips are replaced by structured design-system fact components: `Color / Black`, `Material / Structured fleece`, and `Feel / Heavyweight, soft interior`. Layout, typography, colour, border, spacing, and wide-screen media position all resolve through primitive → semantic → component tokens; no page-level visual value was hardcoded.
+- The wide-screen runway asset is lowered through responsive motion tokens to match the supplied model crop while tablet and mobile retain their fitted composition. Reduced-motion rendering uses the same canonical position.
+- Full verification is green: zero-warning design-system/ESLint checks, 44/44 files and 475/475 tests, zero production dependency vulnerabilities across 67 packages, and a successful Next.js 15.5.21 build.
+- Background headless QA passes 3 viewports × 7 public routes with exact structured facts, expected 96 px desktop title geometry, decoded media, no overflow/clipping, restored keyboard focus, and no console or request failures. Accepted screenshots are under `test_reports/cp-runway-reference-correction-accepted-v2-2026-08-16/`.
+
+### Product Owner Motion Study controls — 2026-08-16
+
+- The media viewer's existing Motion Study component now has deterministic Jump → Pause → Play behavior. A jump survives the token-governed smooth-scroll transition; navigating away stops playback.
+- Pausing swaps the animated asset for its canonical first-frame poster, and the requested motion-slide footer caption is omitted while the registry retains its provenance metadata.
+- Design-system lint, 44 files / 475 tests, zero production dependency vulnerabilities across 67 packages, and the optimized Next.js build pass.
+- Background headless QA passes the three transitions at desktop, tablet, and mobile widths with no overflow, console errors, or request failures. Playing and paused screenshots are retained under `test_reports/cp-media-motion-controls-2026-08-16/`.
+
+### Shopify test checkout and Apliiq handoff — 2026-08-17
+
+- Product Owner approval was consumed for exactly one Shopify Payments test-mode order.
+- Shopify order #1002 proves hosted checkout → test payment → Paid/Unfulfilled order creation for the Signature Hoodie `black / xs`, SKU `APQ-5958463S5A1`, total USD $136.20.
+- Apliiq received store order 1002 in Pending orders while automatic processing was off. The matching pending fulfillment was removed before manufacturing or a fulfillment-card charge.
+- Sanitized facts and screenshots are retained under `test_reports/cp-end-to-end-commerce-2026-08-17/`. Apliiq's final screenshot timed out at the vendor page; its rendered post-removal text was verified and records that no unprocessed orders remain.
+- This proves the controlled test path only. Live customer payments, Production checkout activation, paid fulfillment, tracking, delivery, support, returns/refunds, and Product Release Record release remain fail-closed and unproven.
+
+### Release-bound Production checkout pipeline — 2026-08-17
+
+- The Vercel release-candidate and Production workflows now have an explicit, reviewed checkout mode. An enabled candidate is permitted only when the exact full commit SHA has a `Released` Product Release Record, complete release evidence, operational `cart-write` capability, and matching Product Owner Production cart/checkout approvals.
+- The same workflows continue to build a distinct fail-closed fallback. Candidate and fallback receipts bind their separate checkout states; the fallback can never enable checkout.
+- Production promotion re-runs the release preflight and rejects candidate-receipt tampering, stale SHA/release bindings, and enabled-checkout drift. Route smoke checks require a checkout form only for a reviewed enabled candidate and require the fallback to remain visibly disabled.
+- The current Signature Hoodie correctly fails preflight: it remains Draft and still lacks the physical-sample, fulfillment, Shopify fingerprint, media, approval, current Production observation, rollback, and operational-cart evidence required for release.
+- Full verification passes: design-system and ESLint checks, 48/48 files and 501/501 tests, zero production dependency vulnerabilities across 67 packages, and the optimized Next.js 15.5.21 build.
+- Background production-mode browser QA passes at 1440×1000 and 390×844: HTTP 200, visible purchasing denial, zero checkout controls, no overflow/runtime overlay/console/page errors. Screenshot comparison against the prior accepted fail-closed baseline shows only sub-threshold rendering variance (0.029% desktop; 0.065% mobile).
+- No branch push, PR update, merge, Vercel deployment, Shopify mutation, real payment, order, or fulfillment occurred. Real charging remains off.
+
+### Feature-flagged Admin Media Generation candidate — 2026-08-18
+
+- A Product Owner-only `Media Generation` workspace is implemented inside the existing Admin control plane. It references the canonical Staged Signature Hoodie Product Release Record and its exact Media Registry, Shopify observation, provider mapping, and release-evidence fingerprints; it creates no parallel product truth.
+- `CP_ADMIN_MEDIA_GENERATION_ENABLED` defaults off and is hard-denied on Production surfaces. With the flag off, the route returns 404 and the existing navigation/funnel remains unchanged. Disabling the flag is the immediate rollback.
+- The workspace covers minimal POD inputs, an eight-dimension constraint profile, replaceable fashion/spin/3D/Runway provider lanes, Draft candidate truth classification, side-by-side review, QA notes, quarantine/approval/placement gates, and the complete agentic workflow. Only read-only comparison is currently available; generation, regeneration, quarantine, approval, placement, Shopify upload, publication, and release fail closed without durable authority.
+- The two existing Hoodie MP4s are represented only as sanitized local-evidence records: `Runway motion` and `Fit & silhouette`, both `AI editorial`, pending, unbound, and not physical proof. Their local paths/checksums are retained server-side and are not projected to the browser or copied into public/storefront storage.
+- The canonical media manifest and release record are unchanged. AI-assisted 360 and Approximate 3D remain separate truth classes and cannot satisfy physically verified spin/3D release evidence.
+- Verification passes: design-system/ESLint, 54 files / 556 tests, zero production vulnerabilities across 67 packages, and optimized Next.js build. Headless Product Owner QA passes desktop/tablet/mobile plus reviewer/anonymous denial with no overflow, framework overlay, console error, or failed request. With the flag off, accepted Staging and this candidate are byte-for-byte identical for homepage and Media Registry at desktop/mobile; the feature route returns 404.
+- Evidence: `test_reports/cp-admin-media-generation-2026-08-18/`. No paid provider, Shopify, storefront media, release, Production, or customer state changed.
+- A fresh authenticated, read-only Apliiq observation also bound all nine current IND4000 black Hoodie SKUs plus the exact front 2×2-inch, 648-stitch embroidery configuration to the release. The provider variant fingerprint is now observed and the reviewed full mapping fingerprint is refreshed; the physical sample remains `not_ordered`.
+- A fresh read-only Shopify-native product JSON observation now captures all nine available black variants, USD $128–$134 pricing, customer copy, vendor/type, and opaque identity/facts/full-observation fingerprints without retaining raw Shopify or provider references. It remains candidate evidence pending Product Owner approval of exact fingerprint `sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4`.
+- Candidate source `acd2a0b80d3be24234c41827c35e669c6ad39742`, its passing build/browser evidence, the exact Media Registry manifest fingerprint, and the release-specific rollback plan are now bound. Staging evidence is still absent because the exact candidate has not been pushed or deployed.
+- Post-capture verification of the observation adapter/evidence tooling passes design-system and zero-warning ESLint checks, 49/49 files and 507/507 tests, and the optimized Next.js 15.5.21 build; dependency inputs remain unchanged from the zero-vulnerability audit.

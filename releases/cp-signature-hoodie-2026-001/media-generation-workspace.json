@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "cp.media-generation-workspace.v1",
+  "workspaceId": "cp-signature-hoodie-media-generation-001",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "productHandle": "carlophillips-signature-hoodie",
+  "bindings": {
+    "mediaManifestFingerprint": "sha256:873a75f8c4a2068cbf1ac6e1a2f518d1da2957389f9015010fcdef211845ddd5",
+    "shopifyObservationFingerprint": "sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4",
+    "providerMappingFingerprint": "sha256:99aceb3be41fa2ad918715b2af091456119a6ef39109bb266a3b0bd373e62a56",
+    "releaseEvidenceFingerprint": "sha256:6d729f272531586b9b44eb30e2e81454f32cced4a253c22f6c78f5fa7766de4f"
+  },
+  "rollout": {
+    "flagName": "CP_ADMIN_MEDIA_GENERATION_ENABLED",
+    "defaultEnabled": false,
+    "mode": "review",
+    "productScoped": true,
+    "rollback": "disable-feature-flag"
+  },
+  "inputs": [
+    {
+      "inputId": "hoodie-factual-front",
+      "role": "factual-front",
+      "reference": "media-registry:hoodie-factual-front",
+      "fingerprint": null,
+      "status": "partial"
+    },
+    {
+      "inputId": "hoodie-garment-specification",
+      "role": "garment-specification",
+      "reference": "release:cp-signature-hoodie-2026-001#provider-mapping",
+      "fingerprint": null,
+      "status": "partial"
+    },
+    {
+      "inputId": "hoodie-variants",
+      "role": "variants",
+      "reference": "release:cp-signature-hoodie-2026-001#variants",
+      "fingerprint": "sha256:f7e89925f1119c324cc159444a2c90d645e910555d471bfe77fba2440e348db1",
+      "status": "available"
+    },
+    {
+      "inputId": "hoodie-artwork-placement",
+      "role": "artwork-placement",
+      "reference": "release:cp-signature-hoodie-2026-001#artwork-placement",
+      "fingerprint": null,
+      "status": "partial"
+    }
+  ],
+  "constraintProfile": {
+    "version": "cp.pod-media-constraints.v1",
+    "status": "incomplete",
+    "sourceInputIds": [
+      "hoodie-factual-front",
+      "hoodie-garment-specification",
+      "hoodie-variants",
+      "hoodie-artwork-placement"
+    ],
+    "checks": [
+      { "dimension": "fabric", "status": "pending", "requirement": "Exact provider fabric composition is not yet bound." },
+      { "dimension": "weight", "status": "pending", "requirement": "Exact provider garment weight is not yet bound." },
+      { "dimension": "fit", "status": "pending", "requirement": "Provider measurements and verified sample fit are not yet bound." },
+      { "dimension": "construction", "status": "pending", "requirement": "Hood, pocket, cuff, seam and hem construction require a complete source specification." },
+      { "dimension": "colour", "status": "known", "requirement": "Black only; no colour inversion or hue substitution." },
+      { "dimension": "decoration", "status": "known", "requirement": "Restrained CP chest embroidery; no additional graphics or trims." },
+      { "dimension": "logo", "status": "known", "requirement": "Preserve CP mark shape, orientation and colour." },
+      { "dimension": "artwork-placement", "status": "pending", "requirement": "Exact placement dimensions and tolerance require provider evidence." }
+    ]
+  },
+  "providers": [
+    {
+      "lane": "fashion-imagery",
+      "selected": "Modelize",
+      "alternatives": ["MODA", "Sugata", "TAYLA", "Raspberry AI"],
+      "access": "evidence-only",
+      "costApproval": "required"
+    },
+    {
+      "lane": "spin",
+      "selected": "ProductSpin AI",
+      "alternatives": [],
+      "access": "unconfigured",
+      "costApproval": "required"
+    },
+    {
+      "lane": "model-3d",
+      "selected": null,
+      "alternatives": ["Instant 3D", "Spacecheck"],
+      "access": "unconfigured",
+      "costApproval": "required"
+    },
+    {
+      "lane": "runway-motion",
+      "selected": "Runway",
+      "alternatives": [],
+      "access": "evidence-only",
+      "costApproval": "required"
+    }
+  ],
+  "workflow": [
+    { "stage": "ingest", "status": "partial", "authority": "Read-only source references; no upload." },
+    { "stage": "validate", "status": "blocked", "authority": "Complete POD constraints and tolerances first." },
+    { "stage": "generate-reference-pack", "status": "blocked", "authority": "Requires validated constraints and approved cost." },
+    { "stage": "generate-media", "status": "blocked", "authority": "Requires a ready provider adapter and exact spend approval." },
+    { "stage": "qa", "status": "complete", "authority": "The two Product Owner-selected Hoodie video derivatives passed deterministic format, duration, checksum and visual-sequence QA." },
+    { "stage": "human-approval", "status": "complete", "authority": "Product Owner approved these exact two Hoodie videos for Staging presentation on 2026-08-18." },
+    { "stage": "registry-proposal", "status": "blocked", "authority": "No durable command, audit or writer is connected." },
+    { "stage": "preview", "status": "complete", "authority": "The approved Hoodie videos are bound to the feature-flagged Staging presentation only; Production authority remains unchanged." },
+    { "stage": "release", "status": "blocked", "authority": "Existing Product Release Record remains the only release authority." }
+  ],
+  "candidates": [
+    {
+      "assetId": "signature-hoodie-runway-final-01",
+      "label": "Runway motion",
+      "kind": "video",
+      "role": "runway-motion",
+      "truthClassification": "ai-editorial",
+      "sourceReference": "public/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "checksum": "sha256:9f24bcc094a181bf802dda64008af38c8bdd468e42cd5485b9ff329d91648e53",
+      "storageState": "approved-preview",
+      "qaStatus": "passed",
+      "approvalStatus": "approved",
+      "placement": "landing-editorial",
+      "storefrontBound": false,
+      "stagingPreviewBound": true,
+      "notes": [
+        "Closed-eye opening removed by trimming the first two seconds.",
+        "Final duration is 7.79 seconds at 0.9× playback.",
+        "No reversal, mirroring, colour inversion or CP-mark alteration was applied.",
+        "Autoplays muted only while the Hoodie panel is visible, pauses when obscured, and stops at the end."
+      ]
+    },
+    {
+      "assetId": "signature-hoodie-fit-silhouette-final-01",
+      "label": "Fit & silhouette",
+      "kind": "video",
+      "role": "fit-silhouette",
+      "truthClassification": "ai-editorial",
+      "sourceReference": "public/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "checksum": "sha256:6f7b3cb5a9efdac390e84562ec632d3da38b91b3c4e5632c76459c175f3c5db9",
+      "storageState": "approved-preview",
+      "qaStatus": "passed",
+      "approvalStatus": "approved",
+      "placement": "explore-media",
+      "storefrontBound": false,
+      "stagingPreviewBound": true,
+      "notes": [
+        "AI editorial; not physical fit evidence.",
+        "Available only after explicit user selection in the media viewer.",
+        "The media viewer opens on a factual product image and never autoplays this video."
+      ]
+    }
+  ]
+}

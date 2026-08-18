@@ -11,7 +11,7 @@ describe('product release registry', () => {
     expect(evidence).toMatchObject({
       releaseRecord: {
         releaseId: 'cp-signature-hoodie-2026-001',
-        state: 'draft',
+        state: 'staged',
         shopify: { handle: 'carlophillips-signature-hoodie' },
       },
       mediaManifest: {
@@ -25,7 +25,7 @@ describe('product release registry', () => {
     const first = getProductReleaseEvidence('carlophillips-signature-hoodie');
     first.releaseRecord.state = 'released';
 
-    expect(getProductReleaseEvidence('carlophillips-signature-hoodie').releaseRecord.state).toBe('draft');
+    expect(getProductReleaseEvidence('carlophillips-signature-hoodie').releaseRecord.state).toBe('staged');
   });
 
   it('enumerates only release-bound handles for reusable catalog resolution', () => {

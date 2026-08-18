@@ -41,7 +41,7 @@
       "alternatives": [],
       "blocker": {
         "code": "CART_ACTIVATION_AUTHORITY_REQUIRED",
-        "humanAction": "Keep customer cart and checkout disabled while the Product Release Record is Draft and current release-bound fingerprints and activation approval are absent.",
+        "humanAction": "Keep public customer cart and checkout disabled until the Staged Product Release Record becomes Released and current release-bound fingerprints and activation approval are complete.",
         "resumePoint": "After Released, re-observe the exact product and variants, prove server-only resolution, record Product Owner activation approval for the exact environment, and enable the server gate separately."
       }
     },
@@ -206,7 +206,7 @@
       "alternatives": [],
       "blocker": {
         "code": "CHECKOUT_AUTHORITY_NOT_RELEASE_BOUND",
-        "humanAction": "Keep checkout disabled while the Product Release Record is Draft and no controlled order has been approved.",
+        "humanAction": "Keep public checkout disabled while the Product Release Record is Staged and the controlled order has not completed its evidence path.",
         "resumePoint": "After Released, bind an explicit short-lived checkout authorization to the exact release, environment, fingerprints, rollback, and controlled-order evidence."
       }
     },
@@ -222,8 +222,8 @@
       "alternatives": [],
       "blocker": {
         "code": "CONTROLLED_ORDER_NOT_AUTHORIZED",
-        "humanAction": "Approve one exact controlled order only after all product, media, release, cart, and checkout gates pass.",
-        "resumePoint": "Complete the order once and bind sanitized payment, order, tax, shipping, cancellation, and refund evidence."
+        "humanAction": "Use the Product Owner-only controlled checkout to prepare exactly one Medium sample order, then approve the exact shipping, tax, total, payment exposure, and refund boundary before paying.",
+        "resumePoint": "Complete the one controlled Medium order and bind sanitized payment, Apliiq intake, tax, shipping, cancellation, and refund evidence."
       }
     },
     {

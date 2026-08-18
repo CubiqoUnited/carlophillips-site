@@ -39,7 +39,7 @@ function previewSummary() {
 }
 
 describe('Signature Hoodie homepage media coverage', () => {
-  it('includes the selected Modelize, MODA, detail, and still-derived motion assets', () => {
+  it('includes the selected stills, still-derived study, and two approved Staging videos', () => {
     const gallery = buildHomeGalleryMedia(previewSummary());
     const sources = gallery.map(item => item.src);
 
@@ -49,15 +49,23 @@ describe('Signature Hoodie homepage media coverage', () => {
       ...selectedModaFiles.map(file => `/products/signature-hoodie/candidates/moda/${file}`),
       '/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png',
       '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.webp',
+      '/media/signature-hoodie/videos/runway-motion-final.mp4',
+      '/media/signature-hoodie/videos/fit-silhouette-final.mp4',
     ]));
     expect(gallery.find(item => item.gifHref)).toMatchObject({
       label: 'Still-derived motion loop',
       gifHref: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif',
+      posterSrc: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp',
     });
     for (const item of gallery) {
       expect(existsSync(`public${item.src}`), item.src).toBe(true);
     }
     expect(existsSync(`public${gallery.find(item => item.gifHref).gifHref}`)).toBe(true);
+    expect(existsSync(`public${gallery.find(item => item.gifHref).posterSrc}`)).toBe(true);
+    for (const video of gallery.filter(item => item.type === 'video')) {
+      expect(existsSync(`public${video.posterSrc}`), video.posterSrc).toBe(true);
+      expect(video.disclosure).toContain('Staging approved');
+    }
   });
 
   it('excludes the quarantined back hypothesis and superseded built-in front study', () => {
@@ -72,5 +80,12 @@ describe('Signature Hoodie homepage media coverage', () => {
     expect(serialized).not.toContain('360');
     expect(serialized).not.toContain('3d');
     expect(SIGNATURE_HOODIE_SHOWCASE_MEDIA.some(item => item.type === 'video')).toBe(false);
+  });
+
+  it('keeps the approved videos truthfully separate from the still-derived study', () => {
+    const videos = buildHomeGalleryMedia(previewSummary()).filter(item => item.type === 'video');
+    expect(videos.map(item => item.label)).toEqual(['Runway motion', 'Fit & silhouette']);
+    expect(videos.every(item => item.disclosure === 'AI editorial · Staging approved')).toBe(true);
+    expect(videos.every(item => item.hideCaption === true)).toBe(true);
   });
 });

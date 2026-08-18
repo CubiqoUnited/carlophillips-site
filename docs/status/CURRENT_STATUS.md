@@ -33,7 +33,7 @@ Updated: 2026-07-23. The detailed repository status is maintained in `/STATUS.md
 - The scheduled trend simulation is explicitly stale, fixture-sourced, research-only, human-pending, and unable to trigger external research; four safe PipelineRun items remain actionable around that blocker.
 - A strict release-transition decision contract and non-mutating policy for Draft → Staged → Approved → Released plus rework/withdrawal paths.
 - A nine-modality Media Registry gate that requires approved bound assets with verified exact-product match, rights, quality evidence, correct modality type, and accessible fallbacks.
-- A Hoodie-specific withdrawal plan and machine-readable staging-readiness denial with seven exact blocker/resume records.
+- A Hoodie-specific withdrawal plan and a formally Staged Product Release Record bound to exact Shopify review, build, protected Preview, fulfillment mapping, and rollback-plan evidence.
 
 ## Partial
 

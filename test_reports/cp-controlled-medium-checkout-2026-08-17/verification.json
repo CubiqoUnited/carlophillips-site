@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "cp.controlled-medium-checkout-qa.v1",
+  "capturedAt": "2026-08-17T16:02:24.202Z",
+  "story": "Product Owner Orders action -> protected same-origin POST -> fixed one-Medium Shopify checkout preparation; no payment/order submission and no public checkout activation.",
+  "baseUrl": "http://127.0.0.1:3135",
+  "browser": "Playwright Chromium headless",
+  "visibility": "background; no focus or foreground window",
+  "viewports": [
+    {
+      "id": "desktop-1440x1000",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "id": "mobile-390x844",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "passed": true,
+  "findings": [
+    {
+      "passed": true,
+      "message": "Product Owner Orders route returns HTTP 200.",
+      "viewport": "desktop-1440x1000",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Product Owner sees exactly one controlled checkout action.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "The action discloses that opening checkout cannot charge or order.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "The Orders warning truthfully discloses the temporary Shopify cart mutation.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "The selected existing order path is explained.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route has no horizontal overflow.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route renders meaningful content without an error overlay.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route exposes no raw Shopify or provider reference.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route has no critical or serious automated accessibility violations.",
+      "viewport": "desktop-1440x1000",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route emits no console errors.",
+      "viewport": "desktop-1440x1000",
+      "consoleErrors": []
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route has no failed requests.",
+      "viewport": "desktop-1440x1000",
+      "requestFailures": []
+    },
+    {
+      "passed": true,
+      "message": "Reviewer retains read-only Orders visibility.",
+      "viewport": "desktop-1440x1000",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Reviewer cannot see the Product Owner action.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "Reviewer receives no controlled-order form.",
+      "viewport": "desktop-1440x1000"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route returns HTTP 200.",
+      "viewport": "mobile-390x844",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Product Owner sees exactly one controlled checkout action.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "The action discloses that opening checkout cannot charge or order.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "The Orders warning truthfully discloses the temporary Shopify cart mutation.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "The selected existing order path is explained.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route has no horizontal overflow.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route renders meaningful content without an error overlay.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route exposes no raw Shopify or provider reference.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route has no critical or serious automated accessibility violations.",
+      "viewport": "mobile-390x844",
+      "violations": []
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route emits no console errors.",
+      "viewport": "mobile-390x844",
+      "consoleErrors": []
+    },
+    {
+      "passed": true,
+      "message": "Product Owner Orders route has no failed requests.",
+      "viewport": "mobile-390x844",
+      "requestFailures": []
+    },
+    {
+      "passed": true,
+      "message": "Reviewer retains read-only Orders visibility.",
+      "viewport": "mobile-390x844",
+      "status": 200
+    },
+    {
+      "passed": true,
+      "message": "Reviewer cannot see the Product Owner action.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "Reviewer receives no controlled-order form.",
+      "viewport": "mobile-390x844"
+    },
+    {
+      "passed": true,
+      "message": "Anonymous controlled-order POST is concealed as not found.",
+      "status": 404
+    },
+    {
+      "passed": true,
+      "message": "Cross-origin Product Owner POST is denied.",
+      "status": 403
+    },
+    {
+      "passed": true,
+      "message": "Cross-origin denial names the origin boundary."
+    }
+  ],
+  "failures": []
+}

@@ -10,11 +10,9 @@ const tokenPath = 'app/design-tokens.css';
 const globalPath = 'app/globals.css';
 const activeCustomerFiles = [
   'app/layout.js',
-  'app/concept-preview/page.js',
   'components/storefront/home-storefront.jsx',
   'components/storefront/storefront-header.jsx',
   'components/storefront/site-policies-footer.jsx',
-  'components/privacy/consent-preferences.jsx',
   'components/privacy/policy-page.jsx',
   'components/commerce/catalog-state.jsx',
   'components/commerce/bag-state.jsx',
@@ -145,6 +143,7 @@ describe('storefront design system', () => {
     const addReferences = declaration => references(declaration.value).forEach(reference => reachable.add(reference));
 
     parseCss(globalPath).walkDecls(addReferences);
+    parseCss('app/admin/admin.module.css').walkDecls(addReferences);
     parseCss(tokenPath).walkDecls(declaration => {
       if (!declaration.prop.startsWith('--cp-')) addReferences(declaration);
     });
@@ -411,7 +410,7 @@ describe('storefront design system', () => {
       .digest('hex');
 
     expect(digest).toBe('2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338');
-    for (const copy of ['At the edge of life', "displayName: 'ONE'", "'Black'", "'XS–5XL'", "'Heavyweight fleece'", "'CP embroidery'"]) {
+    for (const copy of ['At the edge of life', "displayName: 'ONE'", "label: 'Color'", "value: 'Black'", "label: 'Material'", "value: 'Structured fleece'", "label: 'Feel'", "value: 'Heavyweight, soft interior'"]) {
       expect(home).toContain(copy);
     }
     expect(home).toContain('cp-product-layout cp-page-shell');
@@ -421,19 +420,21 @@ describe('storefront design system', () => {
     expect(home).toContain('role="dialog"');
     expect(home).toContain('aria-modal="true"');
     expect(home).toContain("classList.add('cp-scroll-locked')");
+    expect(home).not.toContain('cp-site-menu-open');
     expect(home).toContain("addEventListener('wheel', preventScroll, { passive: false })");
     expect(home).toContain("removeEventListener('wheel', preventScroll)");
     expect(home).toContain('moveDialogFocus(event, dialog)');
     expect(styles).toContain('html.cp-scroll-locked');
+    expect(styles).not.toContain('.cp-consent');
+    expect(readFileSync('app/layout.js', 'utf8')).not.toContain('ConsentPreferences');
     expect(home).toContain("event.key === 'Escape'");
     expect(home).toContain('menuButtonRef.current?.focus()');
-    expect(home).toContain('inert={menuOpen || mediaOpen ? true : undefined}');
+    expect(home).toContain('inert={menuOpen || mediaOpen || orderOpen || Boolean(bagItem) ? true : undefined}');
     expect(styles).toContain('.cp-product-layout');
     expect(styles).toContain('justify-content: var(--cp-semantic-layout-justify-end)');
     expect(styles).toContain('transform: translateY(var(--cp-component-product-copy-offset))');
     expect(styles).toContain('padding: var(--cp-semantic-space-media-panel-inset)');
     expect(home).not.toContain('Product attributes');
-    expect(home).not.toContain('Structured fleece');
     expect(home).not.toContain('11 views');
   });
 

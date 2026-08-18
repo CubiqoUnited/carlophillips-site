@@ -54,13 +54,13 @@ describe('canonical evidence reconciliation', () => {
     });
   });
 
-  it('keeps a Draft release unbound and never operationally ready', () => {
-    expect(release.state).toBe('draft');
+  it('keeps a Staged release review-bound but never operationally ready', () => {
+    expect(release.state).toBe('staged');
     expect(model.records.find(record => record.id === 'release-observation-binding')).toMatchObject({
-      classification: 'missing',
+      classification: 'stale',
       operationalAuthority: 'blocked',
-      issueCode: 'CURRENT_OBSERVATION_NOT_RELEASE_BOUND',
-      finding: '3 canonical Shopify fingerprints are missing from the Draft release.',
+      issueCode: 'FRESH_RELEASE_OBSERVATION_REQUIRED',
+      finding: 'The bound observation must still satisfy release-state and freshness gates.',
     });
     expect(model.status).not.toBe('ready');
   });

@@ -10,7 +10,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import theme from '../theme.json';
 import {
   contrastRatio,
@@ -30,6 +30,12 @@ import {
   evaluateThemeWriteBoundary,
   isSameOriginRequest,
 } from '../lib/theme/theme-workflow';
+import {
+  loadCanonicalTheme,
+  saveThemeCandidate,
+} from '../lib/theme/theme-repository';
+
+vi.mock('server-only', () => ({}));
 
 function sourceFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
@@ -116,6 +122,41 @@ describe('canonical theme token governance', () => {
     expect(isSameOriginRequest(url, null)).toBe(false);
   });
 
+  it('packages the canonical theme for server functions and denies remote writes before filesystem access', () => {
+    const nextConfig = readFileSync('next.config.js', 'utf8');
+    expect(nextConfig).toContain("'/*': ['./theme.json']");
+
+    const repository = readFileSync('lib/theme/theme-repository.js', 'utf8');
+    expect(repository).toContain("import bundledCanonicalTheme from '../../theme.json'");
+    expect(repository).toContain("runtimeSurface === 'vercel-preview'");
+    expect(repository).toContain('theme: bundledThemeValidation.theme');
+    const saveThemeCandidate = repository.slice(repository.indexOf('export function saveThemeCandidate'));
+    expect(saveThemeCandidate.indexOf('if (!boundary.allowed)'))
+      .toBeLessThan(saveThemeCandidate.indexOf('readCanonicalTheme(projectRoot)'));
+  });
+
+  it('loads the bundled theme and denies writes without touching a missing Preview filesystem', () => {
+    const previousVercelEnvironment = process.env.VERCEL_ENV;
+    const previousCommerceEnvironment = process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT;
+    process.env.VERCEL_ENV = 'preview';
+    process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT = 'preview';
+    try {
+      const missingRoot = path.join(tmpdir(), 'cp-theme-root-that-does-not-exist');
+      expect(loadCanonicalTheme(missingRoot)).toMatchObject({
+        theme,
+        fingerprint: themeFingerprint(theme),
+        workflow: { branch: null, writeEnabled: false, productionMutation: false },
+      });
+      expect(saveThemeCandidate({ candidate: theme, expectedFingerprint: themeFingerprint(theme) }, missingRoot))
+        .toEqual({ ok: false, status: 403, code: 'EXTERNAL_SURFACE_DENIED' });
+    } finally {
+      if (previousVercelEnvironment === undefined) delete process.env.VERCEL_ENV;
+      else process.env.VERCEL_ENV = previousVercelEnvironment;
+      if (previousCommerceEnvironment === undefined) delete process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT;
+      else process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT = previousCommerceEnvironment;
+    }
+  });
+
   it('rejects a symlinked canonical file and cannot resolve a caller-selected target path', () => {
     const temporaryRoot = mkdtempSync(path.join(tmpdir(), 'cp-theme-policy-'));
     const outsideRoot = path.join(temporaryRoot, 'outside');
@@ -153,6 +194,9 @@ describe('canonical theme token governance', () => {
   });
 
   it('extends hardcoded-value enforcement across every active app and component source', () => {
+    const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
+    expect(packageJson.scripts.lint).toContain('lint:design-system');
+    expect(readFileSync('scripts/lint-design-system.mjs', 'utf8')).toContain('Design-system lint failed');
     const files = [...sourceFiles('app'), ...sourceFiles('components')]
       .filter(file => !['app/design-tokens.css', 'app/opengraph-image.js'].includes(file));
     const violations = [];

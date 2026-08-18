@@ -32,7 +32,7 @@ for (const viewport of viewports) {
 await browser.close();
 await writeFile(`${outputDir}/accessibility-verification.json`, JSON.stringify(results, null, 2));
 
-const failures = results.filter((result) => result.status !== 200 || result.consoleErrors.length || result.violations.length || result.analyticsRequests.length || result.horizontalOverflow || result.consentButtons.length !== 2);
+const failures = results.filter((result) => result.status !== 200 || result.consoleErrors.length || result.violations.length || result.analyticsRequests.length || result.horizontalOverflow || result.consentButtons.length !== 0);
 if (failures.length) {
   console.error(JSON.stringify(failures, null, 2));
   process.exitCode = 1;

@@ -16,22 +16,29 @@ function blockerCodes(decision) {
 }
 
 describe('Product Release Record transitions', () => {
-  it('keeps the current Hoodie Draft and reports exact staging resume gates', () => {
+  it('keeps the current Hoodie Staged and reports exact approval resume gates', () => {
     const original = structuredClone(hoodieRelease);
     const decision = evaluateProductReleaseTransition({
       record: hoodieRelease,
       manifest: hoodieManifest,
-      targetState: 'staged',
+      targetState: 'approved',
     });
 
     expect(decision.allowed).toBe(false);
     expect(decision.candidate).toBeNull();
     expect(blockerCodes(decision)).toEqual(expect.arrayContaining([
-      'SHOPIFY_VARIANT_FINGERPRINT_MISSING',
+      'PHYSICAL_SAMPLE_APPROVAL_REQUIRED',
+      'PRODUCT_APPROVAL_REQUIRED',
+      'MEDIA_APPROVAL_REQUIRED',
+      'FULFILLMENT_APPROVAL_REQUIRED',
+    ]));
+    expect(blockerCodes(decision)).not.toEqual(expect.arrayContaining([
       'FULFILLMENT_VARIANT_FINGERPRINT_MISSING',
       'CANDIDATE_COMMIT_MISSING',
+      'MEDIA_MANIFEST_FINGERPRINT_MISSING',
       'BUILD_EVIDENCE_MISSING',
       'STAGING_EVIDENCE_MISSING',
+      'ROLLBACK_PLAN_BINDING_INVALID',
     ]));
     expect(hoodieRelease).toEqual(original);
   });

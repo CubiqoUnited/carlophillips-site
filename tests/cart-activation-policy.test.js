@@ -37,6 +37,7 @@ const readyVariantResolver = {
   blockers: [],
 };
 const releasedRecord = {
+  releaseId: 'cp-test-release-2026-001',
   state: 'released',
   shopify: {
     handle: 'test-product',
@@ -78,7 +79,19 @@ const approval = {
   status: 'approved',
   owner: 'Product Owner',
   scope: 'activate-customer-cart',
+  releaseId: 'cp-test-release-2026-001',
+  handle: 'test-product',
+  environments: ['preview', 'production'],
   evidence: 'approval-record-001',
+};
+const checkoutApproval = {
+  status: 'approved',
+  owner: 'Product Owner',
+  scope: 'shopify-hosted-checkout-redirect',
+  releaseId: 'cp-test-release-2026-001',
+  handle: 'test-product',
+  environments: ['preview', 'production'],
+  evidence: 'checkout-approval-record-001',
 };
 
 describe('cart activation policy', () => {
@@ -303,6 +316,46 @@ describe('cart activation policy', () => {
       checkoutReason: 'CHECKOUT_REQUIRES_SEPARATE_APPROVAL_AND_LIVE_PROOF',
     });
     expect(decision.prerequisites.every(item => item.status === 'satisfied')).toBe(true);
+  });
+
+  it('authorizes checkout only after the separate Product Owner and environment gates pass', () => {
+    const decision = evaluateCartActivation({
+      environment: 'production',
+      productDecision,
+      releaseRecord: { ...releasedRecord, releaseId: 'cp-test-release-2026-001' },
+      capabilityDecision: readyCapability,
+      variantResolverDecision: readyVariantResolver,
+      activationApproval: approval,
+      activationRequested: true,
+      checkoutApproval,
+      checkoutRequested: true,
+    });
+
+    expect(decision).toMatchObject({
+      status: 'eligible',
+      cartAllowed: true,
+      checkoutAllowed: true,
+      checkoutReason: 'SHOPIFY_HOSTED_CHECKOUT_AUTHORIZED',
+    });
+    expect(toCartActivationSummary(decision).checkoutAllowed).toBe(true);
+  });
+
+  it('keeps checkout disabled when its environment gate is off', () => {
+    const decision = evaluateCartActivation({
+      environment: 'production',
+      productDecision,
+      releaseRecord: { ...releasedRecord, releaseId: 'cp-test-release-2026-001' },
+      capabilityDecision: readyCapability,
+      variantResolverDecision: readyVariantResolver,
+      activationApproval: approval,
+      activationRequested: true,
+      checkoutApproval,
+      checkoutRequested: false,
+    });
+
+    expect(decision.cartAllowed).toBe(true);
+    expect(decision.checkoutAllowed).toBe(false);
+    expect(decision.checkoutReason).toBe('CHECKOUT_ENVIRONMENT_GATE_DISABLED');
   });
 
   it('sanitizes the client summary and never carries product or variant payloads', () => {

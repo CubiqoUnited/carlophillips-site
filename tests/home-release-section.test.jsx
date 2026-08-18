@@ -2,9 +2,16 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import HomeStorefront, {
+  BagDrawer,
   buildHomeGalleryMedia,
+  isPreviewRunwayReference,
+  OrderTray,
   ProductMediaOverlay,
+  SizeFitDrawer,
 } from '../components/storefront/home-storefront.jsx';
+import { offeredVariants } from '../components/commerce/shopify-checkout-form.jsx';
+import observation from '../releases/cp-signature-hoodie-2026-001/shopify-product-observation.json';
+import { createVariantPresentation } from '../lib/commerce/variant-presentation-policy.js';
 
 const availableSummary = {
   schemaVersion: 'cp.home-catalog-summary.v1',
@@ -69,8 +76,8 @@ describe('home release composition', () => {
       excludedCount: 1,
       primaryProduct: null,
     }} />);
-    expect(available).toContain('Explore media');
-    expect(available).toContain('12 views');
+    expect(available).toContain('View gallery');
+    expect(available).toContain('>14</span>');
     expect(available).toContain('data-media-trigger="signature-hoodie"');
     expect(available).toContain('aria-haspopup="dialog"');
     expect(available).toContain('aria-controls="product-media-overlay"');
@@ -91,15 +98,15 @@ describe('home release composition', () => {
     expect(unavailable).not.toContain('data-media-trigger="signature-hoodie"');
   });
 
-  it('places the brand campaign before the gated Hoodie runway and category rail', () => {
+  it('places the brand campaign before the gated Hoodie runway without duplicating menu categories', () => {
     const html = renderToStaticMarkup(<HomeStorefront catalogSummary={availableSummary} />);
     const campaignIndex = html.indexOf('aria-label="CARLOPHILLIPS runway campaign"');
     const productIndex = html.indexOf('aria-label="Signature Hoodie runway"');
-    const categoriesIndex = html.indexOf('aria-label="Product categories"');
 
     expect(campaignIndex).toBeGreaterThan(-1);
     expect(productIndex).toBeGreaterThan(campaignIndex);
-    expect(categoriesIndex).toBeGreaterThan(productIndex);
+    expect(html).not.toContain('aria-label="Product categories"');
+    expect(html).not.toContain('aria-label="Collection categories"');
     expect(html).toContain('href="#signature-runway"');
     expect(html).toContain('aria-label="Scroll down to discover the Signature Hoodie"');
     expect(html).toContain('id="signature-runway"');
@@ -133,34 +140,35 @@ describe('home release composition', () => {
       commerceAllowed: true,
       primaryProduct: { ...availableSummary.primaryProduct, commerceAllowed: true },
     }} />);
-    expect(html).toContain('Explore media');
+    expect(html).toContain('View gallery');
     expect(html).toContain('Signature Series');
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
     expect(html).not.toContain('Built as a premium core layer');
     expect(html).toContain('aria-label="Product highlights"');
-    expect(html).toContain('<li>Black</li><li>XS–5XL</li><li>Heavyweight fleece</li><li>CP embroidery</li>');
+    expect(html).toContain('<span class="cp-product-fact-label">Color</span><span class="cp-product-fact-value">Black</span>');
+    expect(html).toContain('<span class="cp-product-fact-label">Material</span><span class="cp-product-fact-value">Structured fleece</span>');
+    expect(html).toContain('<span class="cp-product-fact-label">Feel</span><span class="cp-product-fact-value">Heavyweight, soft interior</span>');
+    expect(html).not.toContain('XS–5XL</li>');
+    expect(html).not.toContain('CP embroidery</li>');
     expect(html).not.toContain('aria-label="Product attributes"');
-    expect(html).not.toContain('Structured fleece');
     expect(html).toContain('cp-product-layout');
     expect(html).toContain('lucide-expand');
     expect(html).not.toContain('lucide-arrow-right h-4 w-4');
     expect(html).not.toContain('Available now / Black / XS–5XL');
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
-    expect(html).toContain('aria-current="page"');
-    expect(html).toContain('>Hoodies</a>');
-    expect(html).toContain('aria-disabled="true"');
-    expect(html).toContain('>Shirts</span>');
-    expect(html).toContain('>Bottoms</span>');
     expect(html).not.toContain('release gate');
     expect(html).not.toContain('Current collection');
     expect(html).not.toContain('Candidates</span>');
     expect(html).not.toContain('Withheld</span>');
     expect(html.toLowerCase()).not.toContain('shopify');
-    expect(html).toContain('cp-product-media-button-corner');
+    expect(html).toContain('cp-product-actions-corner');
+    expect(html).toContain('href="/privacy"');
+    expect(html).toContain('href="/terms"');
+    expect(html).toContain('href="/cookie-policy"');
   });
 
-  it('keeps runway product media and active categories behind product visibility eligibility', () => {
+  it('keeps runway product media behind product visibility eligibility', () => {
     const html = renderToStaticMarkup(<HomeStorefront catalogSummary={{
       ...availableSummary,
       status: 'denied',
@@ -172,8 +180,39 @@ describe('home release composition', () => {
     expect(html).not.toContain('/products/signature-hoodie/candidates/moda/');
     expect(html).toContain('%2Fcampaigns%2Flofoten-runway-hero.png');
     expect(html).not.toContain('Signature Series / Runway 001');
+    expect(html).not.toContain('aria-label="Product categories"');
+  });
+
+  it('restores the Production Hoodie runway as a Preview-only visual reference without commerce authority', () => {
+    const previewDenied = {
+      ...availableSummary,
+      environment: 'preview',
+      status: 'denied',
+      visibleCount: 0,
+      excludedCount: 1,
+      commerceAllowed: false,
+      primaryProduct: null,
+    };
+    const html = renderToStaticMarkup(<HomeStorefront catalogSummary={previewDenied} />);
+
+    expect(isPreviewRunwayReference(previewDenied)).toBe(true);
+    expect(isPreviewRunwayReference({ ...previewDenied, environment: 'production' })).toBe(false);
+    expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
+    expect(html).toContain('/media/signature-hoodie/videos/runway-motion-final.mp4');
+    expect(html).toContain('/media/signature-hoodie/posters/runway-motion-final.jpg');
+    expect(html).not.toContain('Production visual reference · Preview only');
+    expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
+    expect(html).not.toContain('data-preview-reference="signature-hoodie"');
+    expect(html).not.toContain('Commerce withheld');
+    expect(html).toContain('data-media-trigger="signature-hoodie"');
+    expect(html).toContain('View gallery');
+    expect(html).toContain('>14</span>');
+    expect(html).not.toContain('href="/products/carlophillips-signature-hoodie"');
     expect(html).not.toContain('aria-current="page"');
-    expect(html).toContain('aria-disabled="true"');
+    expect(html).not.toContain('>Hoodies</a>');
+    expect(html).not.toContain('>T-Shirts</a>');
+    expect(buildHomeGalleryMedia(previewDenied)).toHaveLength(14);
+    expect(buildHomeGalleryMedia(previewDenied).filter(item => item.type === 'video')).toHaveLength(2);
   });
 
   it('builds a swipe gallery from eligible media without exposing preview studies in production', () => {
@@ -228,12 +267,54 @@ describe('home release composition', () => {
     expect(openHtml).toContain('aria-label="Previous product image"');
     expect(openHtml).toContain('aria-label="Next product image"');
     expect(openHtml).toContain('aria-label="Close product media viewer"');
-    expect(openHtml).toContain('01 / 12');
+    expect(openHtml).toContain('01 / 14');
     expect(openHtml).toContain('cp-media-track');
     expect(openHtml).toContain('cp-media-panel');
-    expect(openHtml).toContain('aria-label="Jump to motion study"');
-    expect(openHtml).toContain('>Motion study</button>');
+    expect(openHtml).toContain('aria-label="Show Runway motion"');
+    expect(openHtml).toContain('aria-label="Show Fit &amp; silhouette"');
+    expect(openHtml).toContain('aria-pressed="false"');
+    expect(openHtml).toContain('>Runway motion</button>');
+    expect(openHtml).toContain('>Fit &amp; silhouette</button>');
+    expect(openHtml).toContain('still-derived-motion-study-poster.webp');
+    expect(openHtml).not.toContain('Still-derived motion loop');
+    expect(openHtml).not.toContain('AI-assisted still-derived motion');
     expect(openHtml).not.toContain('href="/products/');
     expect(closedHtml).toBe('');
+  });
+
+  it('renders the released S/M/L order, fit and bag interactions through the secure checkout endpoint', () => {
+    const presentation = createVariantPresentation(observation);
+    const variants = offeredVariants('carlophillips-signature-hoodie', presentation);
+    const selected = variants[0];
+    const orderHtml = renderToStaticMarkup(<OrderTray
+      handle="carlophillips-signature-hoodie"
+      onAddToBag={() => {}}
+      onClose={() => {}}
+      onOpenSizeFit={() => {}}
+      onSelect={() => {}}
+      open
+      priceLabel="$128"
+      selectedHash={selected.referenceHash}
+      variants={variants}
+    />);
+    const fitHtml = renderToStaticMarkup(<SizeFitDrawer onClose={() => {}} open />);
+    const bagHtml = renderToStaticMarkup(<BagDrawer
+      handle="carlophillips-signature-hoodie"
+      item={selected}
+      onClose={() => {}}
+      onContinue={() => {}}
+      open
+    />);
+
+    expect(variants.map(item => item.selectedOptions.find(option => option.name.toLowerCase() === 'size').value.toUpperCase())).toEqual(['S', 'M', 'L']);
+    expect(orderHtml).toContain('Add to bag');
+    expect(orderHtml).toContain('Buy now — $128');
+    expect(orderHtml).toContain('action="/api/checkout"');
+    expect(orderHtml).toContain(`value="${selected.referenceHash}"`);
+    expect(fitHtml).toContain('Garment measurements');
+    expect(fitHtml).toContain('How to measure');
+    expect(bagHtml).toContain('Your bag');
+    expect(bagHtml).toContain('Checkout — $128');
+    expect(bagHtml).toContain('Continue shopping');
   });
 });

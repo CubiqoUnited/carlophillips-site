@@ -24,6 +24,9 @@ docs/
 memory/
 test_result.md
 
+# Draft campaign studies are local-only and must not enter Preview/Production artifacts
+public/campaigns/draft-pod/
+
 # Local tool metadata
 .github/
 .emergent/

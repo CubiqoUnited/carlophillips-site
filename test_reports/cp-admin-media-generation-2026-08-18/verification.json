@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "cp.media-generation-visual-qa.v1",
+  "baseUrl": "http://127.0.0.1:3141",
+  "generatedAt": "2026-08-18T05:11:34.797Z",
+  "passed": true,
+  "results": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "title": "Media Generation",
+      "contentLength": 4873,
+      "overflow": false,
+      "overlay": false,
+      "mediaNavCurrent": "Media Generation",
+      "actionButtons": [
+        {
+          "label": "Generate",
+          "disabled": true
+        },
+        {
+          "label": "Regenerate",
+          "disabled": true
+        },
+        {
+          "label": "Compare",
+          "disabled": false
+        },
+        {
+          "label": "Quarantine",
+          "disabled": true
+        },
+        {
+          "label": "Approve for registry proposal",
+          "disabled": true
+        },
+        {
+          "label": "Assign placement",
+          "disabled": true
+        }
+      ],
+      "truthLabels": true,
+      "boundary": true,
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "name": "tablet",
+        "width": 1024,
+        "height": 768
+      },
+      "status": 200,
+      "title": "Media Generation",
+      "contentLength": 4873,
+      "overflow": false,
+      "overlay": false,
+      "mediaNavCurrent": "Media Generation",
+      "actionButtons": [
+        {
+          "label": "Generate",
+          "disabled": true
+        },
+        {
+          "label": "Regenerate",
+          "disabled": true
+        },
+        {
+          "label": "Compare",
+          "disabled": false
+        },
+        {
+          "label": "Quarantine",
+          "disabled": true
+        },
+        {
+          "label": "Approve for registry proposal",
+          "disabled": true
+        },
+        {
+          "label": "Assign placement",
+          "disabled": true
+        }
+      ],
+      "truthLabels": true,
+      "boundary": true,
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "title": "Media Generation",
+      "contentLength": 4913,
+      "overflow": false,
+      "overlay": false,
+      "mediaNavCurrent": "Media Generation",
+      "actionButtons": [
+        {
+          "label": "Generate",
+          "disabled": true
+        },
+        {
+          "label": "Regenerate",
+          "disabled": true
+        },
+        {
+          "label": "Compare",
+          "disabled": false
+        },
+        {
+          "label": "Quarantine",
+          "disabled": true
+        },
+        {
+          "label": "Approve for registry proposal",
+          "disabled": true
+        },
+        {
+          "label": "Assign placement",
+          "disabled": true
+        }
+      ],
+      "truthLabels": true,
+      "boundary": true,
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "access": "reviewer-denied",
+      "status": 404,
+      "title": "Page not available"
+    },
+    {
+      "access": "anonymous-denied",
+      "status": 404,
+      "title": "Page not available"
+    }
+  ],
+  "failures": [],
+  "denialFailures": []
+}

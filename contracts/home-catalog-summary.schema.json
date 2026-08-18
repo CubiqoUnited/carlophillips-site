@@ -20,11 +20,20 @@
           "type": "object",
           "required": ["title", "href", "sourceLabel", "commerceAllowed", "description", "heroMedia", "media"],
           "properties": {
+            "handle": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
             "title": { "type": "string", "minLength": 1 },
             "href": { "type": "string", "pattern": "^/products/[a-z0-9]+(?:-[a-z0-9]+)*$" },
             "sourceLabel": { "type": "string", "minLength": 1 },
             "commerceAllowed": { "type": "boolean" },
             "description": { "type": "string" },
+            "price": { "type": "number", "minimum": 0 },
+            "currency": { "type": "string", "minLength": 3, "maxLength": 3 },
+            "variantPresentation": {
+              "oneOf": [
+                { "type": "null" },
+                { "type": "object" }
+              ]
+            },
             "heroMedia": {
               "oneOf": [
                 { "type": "null" },

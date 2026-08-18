@@ -23,6 +23,11 @@ on:
         description: Release identifier recorded in both deployment metadata envelopes
         required: true
         type: string
+      expected_candidate_checkout:
+        description: Must match the reviewed staged candidate checkout marker
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   actions: read
@@ -43,6 +48,7 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+      EXPECTED_CANDIDATE_CHECKOUT: ${{ inputs.expected_candidate_checkout && 'true' || 'false' }}
 
     steps:
       - name: Enforce external Production enablement
@@ -65,6 +71,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
 
       - name: Validate immutable release-pair inputs
         env:
@@ -85,6 +92,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           test -n "$VERCEL_ORG_ID"
           test -n "$VERCEL_PROJECT_ID"
+          [[ "$EXPECTED_CANDIDATE_CHECKOUT" =~ ^(true|false)$ ]]
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -96,6 +104,15 @@ jobs:
           corepack enable
           corepack prepare yarn@1.22.22 --activate
           test "$(yarn --version)" = "1.22.22"
+
+      - name: Reverify exact release before checkout-enabled promotion
+        if: ${{ inputs.expected_candidate_checkout }}
+        env:
+          RELEASE: ${{ inputs.release }}
+        run: >-
+          node scripts/verify-production-commerce-release.mjs
+          --release "$RELEASE"
+          --expected-sha "$GITHUB_SHA"
 
       - name: Install pinned Vercel CLI
         run: |
@@ -140,6 +157,7 @@ jobs:
             --expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR" \
             --expected-sha "$GITHUB_SHA" \
             --expected-release "$RELEASE" \
+            --expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT" \
             --output selected-release-pair-receipt.json
 
       - name: Capture current Production immediately before promotion
@@ -163,6 +181,7 @@ jobs:
             --expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR" \
             --expected-sha "$GITHUB_SHA" \
             --expected-release "$RELEASE" \
+            --expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT" \
             --output pre-promotion-release-pair-receipt.json
 
       - name: Promote the exact staged candidate
@@ -207,9 +226,10 @@ jobs:
             --expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR" \
             --expected-sha "$GITHUB_SHA" \
             --expected-release "$RELEASE" \
+            --expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT" \
             --output production-release-receipt.json
 
-      - name: Run fail-fast Production route smoke test
+      - name: Run release-aware Production route smoke test
         run: |
           for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
             curl --fail --silent --show-error --location --max-time 30 "https://www.carlophillips.com$route" > /dev/null
@@ -219,12 +239,17 @@ jobs:
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('production-pdp.html', 'utf8');
-          if (!html.includes('Selection disabled')) throw new Error('Production PDP is missing the disabled-selection proof.');
-          if (!html.includes('Purchasing disabled')) throw new Error('Production PDP is missing the fail-closed purchasing proof.');
-          if (html.includes('Continue to checkout')) throw new Error('Production PDP unexpectedly exposes checkout continuation.');
-          if (html.includes('action="/api/checkout"')) throw new Error('Production PDP unexpectedly exposes the checkout endpoint.');
-          if (/<form\b[^>]*>[\s\S]*?type=["']submit["']/i.test(html)) {
-            throw new Error('Production PDP unexpectedly exposes an enabled submit form.');
+          if (process.env.EXPECTED_CANDIDATE_CHECKOUT === 'true') {
+            if (!html.includes('Continue to checkout')) throw new Error('Production PDP is missing checkout continuation.');
+            if (!html.includes('action="/api/checkout"')) throw new Error('Production PDP is missing the checkout endpoint.');
+          } else {
+            if (!html.includes('Selection disabled')) throw new Error('Production PDP is missing the disabled-selection proof.');
+            if (!html.includes('Purchasing disabled')) throw new Error('Production PDP is missing the fail-closed purchasing proof.');
+            if (html.includes('Continue to checkout')) throw new Error('Production PDP unexpectedly exposes checkout continuation.');
+            if (html.includes('action="/api/checkout"')) throw new Error('Production PDP unexpectedly exposes the checkout endpoint.');
+            if (/<form\b[^>]*>[\s\S]*?type=["']submit["']/i.test(html)) {
+              throw new Error('Production PDP unexpectedly exposes an enabled submit form.');
+            }
           }
           NODE
 
@@ -310,6 +335,7 @@ jobs:
             --expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR" \
             --expected-sha "$GITHUB_SHA" \
             --expected-release "$RELEASE" \
+            --expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT" \
             --output production-safe-fallback-receipt.json
 
       - name: Run fail-closed safe-fallback route smoke test

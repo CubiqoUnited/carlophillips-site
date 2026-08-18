@@ -140,9 +140,29 @@ function Rows({ columns, rows, empty = 'No records in this read-only projection.
   );
 }
 
-function LifecycleView({ summary, blockers }) {
+function ControlledOrderAction() {
+  return (
+    <section className={styles.controlledOrder} aria-labelledby="controlled-order-title">
+      <div>
+        <span className={styles.eyebrow}>Product Owner controlled order</span>
+        <h2 id="controlled-order-title">Prepare one Medium checkout</h2>
+        <p>
+          Uses the existing CARLOPHILLIPS → Shopify → Apliiq route. Shopify will
+          show shipping, tax, and the final total before you decide whether to pay.
+        </p>
+      </div>
+      <form method="post" action="/api/admin/controlled-order">
+        <button type="submit">Open controlled Shopify checkout</button>
+        <small>No charge or order occurs by opening checkout.</small>
+      </form>
+    </section>
+  );
+}
+
+function LifecycleView({ summary, blockers, controlledOrder = false }) {
   return (
     <>
+      {controlledOrder ? <ControlledOrderAction /> : null}
       <article className={styles.emptyState}>
         <div className={styles.cardHeading}>
           <div><span className={styles.eyebrow}>Canonical empty state</span><h2>{summary.title}</h2></div>
@@ -193,6 +213,160 @@ function CommandsView({ commands }) {
   );
 }
 
+function MediaGenerationView({ workspace }) {
+  const actionLabels = {
+    generate: 'Generate',
+    regenerate: 'Regenerate',
+    compare: 'Compare',
+    quarantine: 'Quarantine',
+    approve: 'Approve for registry proposal',
+    assign: 'Assign placement',
+  };
+  return (
+    <>
+      <section className={styles.metrics} aria-label="Media Generation summary">
+        <Metric label="Rollout" value={workspace.rollout.mode} detail="Hoodie only · feature flagged" />
+        <Metric label="Source inputs" value={`${workspace.metrics.inputsReady}/${workspace.metrics.inputsTotal}`} detail="Complete inputs required before generation" />
+        <Metric label="Video candidates" value={workspace.metrics.candidates} detail={`${workspace.metrics.approved} approved`} />
+        <Metric label="Staging bound" value={workspace.metrics.stagingPreviewBound} detail="Production remains unbound" />
+      </section>
+
+      <article className={styles.mediaBoundary}>
+        <span className={styles.eyebrow}>Non-disruptive integration</span>
+        <h2>Funnel 1 remains unchanged while Funnel 2 stays feature-flagged.</h2>
+        <p>{workspace.boundary}</p>
+        <dl className={styles.mediaBoundaryList}>
+          <div><dt>Canonical release</dt><dd>{statusLabel(workspace.canonicalReleaseState)}</dd></div>
+          <div><dt>Registry</dt><dd>{workspace.canonicalMediaRegistry}</dd></div>
+          <div><dt>Rollback</dt><dd>Disable {workspace.rollout.flagName}</dd></div>
+        </dl>
+      </article>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>01 · Inputs & constraints</span><h2>Minimal POD evidence</h2></div>
+          <p>Generation stays blocked until factual product inputs and tolerances are complete.</p>
+        </div>
+        <Rows columns={[
+          { key: 'role', label: 'Input' },
+          { key: 'reference', label: 'Canonical reference' },
+          { key: 'status', label: 'Status', render: row => <Status value={row.status} /> },
+          { key: 'fingerprint', label: 'Fingerprint', render: row => row.fingerprint ? 'Bound' : 'Not bound' },
+        ]} rows={workspace.inputs.map(row => ({ ...row, id: row.inputId }))} />
+        <div className={styles.mediaConstraintGrid}>
+          {workspace.constraintProfile.checks.map(check => (
+            <article className={styles.mediaConstraint} key={check.dimension}>
+              <div><span className={styles.eyebrow}>{check.dimension}</span><Status value={check.status} /></div>
+              <p>{check.requirement}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>02–03 · Reference pack & generation</span><h2>Replaceable provider lanes</h2></div>
+          <p>Connections and credit approvals are explicit. Installed or previously used does not mean callable.</p>
+        </div>
+        <Rows columns={[
+          { key: 'lane', label: 'Lane' },
+          { key: 'selected', label: 'Selected', render: row => row.selected || 'Not selected' },
+          { key: 'alternatives', label: 'Alternatives', render: row => row.alternatives.join(', ') || 'None recorded' },
+          { key: 'access', label: 'Access', render: row => <Status value={row.access} /> },
+          { key: 'costApproval', label: 'Cost gate', render: row => <Status value={row.costApproval} /> },
+        ]} rows={workspace.providers.map(row => ({ ...row, id: row.lane }))} />
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Connection handshakes</span><h2>Provider access readiness</h2></div>
+          <p>A listed app is not treated as connected until its supported authentication probe succeeds. No credits or external mutations are used by this check.</p>
+        </div>
+        <Rows columns={[
+          { key: 'label', label: 'Provider' },
+          { key: 'lane', label: 'Lane' },
+          { key: 'accessMode', label: 'Supported access' },
+          { key: 'status', label: 'Handshake', render: row => <Status value={row.status} /> },
+          { key: 'credentialName', label: 'Server credential', render: row => row.credentialName || 'Not applicable' },
+          { key: 'nextAction', label: 'Next safe action' },
+        ]} rows={workspace.providerHandshakes} />
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>04 · Compare & QA</span><h2>Existing Hoodie candidates</h2></div>
+          <p>Truth labels are permanent. Passing QA never converts generated media into physical evidence.</p>
+        </div>
+        <div className={styles.mediaCandidateGrid}>
+          {workspace.candidates.map(candidate => (
+            <article className={styles.mediaCandidate} key={candidate.assetId}>
+              <div className={styles.cardHeading}>
+                <div><span className={styles.eyebrow}>{candidate.role}</span><h3>{candidate.label}</h3></div>
+                <Status value={candidate.qaStatus} />
+              </div>
+              <p className={styles.mediaTruth}>{statusLabel(candidate.truthClassification)} · Staging review</p>
+              <dl className={styles.detailList}>
+                <div><dt>Storage</dt><dd>{statusLabel(candidate.storageState)}</dd></div>
+                <div><dt>Proposed placement</dt><dd>{statusLabel(candidate.placement)}</dd></div>
+                <div><dt>Approval</dt><dd>{statusLabel(candidate.approvalStatus)}</dd></div>
+                <div><dt>Staging preview</dt><dd>{candidate.stagingPreviewBound ? 'Bound' : 'Not bound'}</dd></div>
+                <div><dt>Production binding</dt><dd>None</dd></div>
+              </dl>
+              <details className={styles.mediaNotes}>
+                <summary>View QA notes</summary>
+                <ul>{candidate.notes.map(note => <li key={note}>{note}</li>)}</ul>
+              </details>
+            </article>
+          ))}
+        </div>
+        <article className={styles.mediaComparison}>
+          <div>
+            <span className={styles.eyebrow}>Existing approved asset</span>
+            <strong>None storefront-bound</strong>
+            <p>The current Media Registry has no approved, bound production comparison asset.</p>
+          </div>
+          <div>
+            <span className={styles.eyebrow}>Generated candidate</span>
+            <strong>Two Product Owner-approved AI editorial videos</strong>
+            <p>Bound to the feature-flagged Staging presentation. They do not claim physical truth or Production publication authority.</p>
+          </div>
+        </article>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>05–06 · Quarantine, approval & placement</span><h2>Action gates</h2></div>
+          <p>Only read-only comparison is currently available. Every mutation fails closed.</p>
+        </div>
+        <div className={styles.mediaActions}>
+          {workspace.actions.map(action => (
+            <div key={action.id}>
+              <button type="button" disabled={!action.allowed}>{actionLabels[action.id]}</button>
+              <small>{statusLabel(action.reason)}</small>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Agentic workflow</span><h2>Two funnels, one release authority</h2></div>
+          <p>Funnel 1 continues the current POD-to-publish path. Funnel 2 may prepare media candidates and QA evidence, but both reuse the same Product Release Record and Media Registry.</p>
+        </div>
+        <ol className={styles.stageList}>
+          {workspace.workflow.map((stage, index) => (
+            <li key={stage.stage}>
+              <span className={styles.stageIndex}>{String(index + 1).padStart(2, '0')}</span>
+              <div><strong>{statusLabel(stage.stage)}</strong><span>{stage.authority}</span></div>
+              <Status value={stage.status} />
+            </li>
+          ))}
+        </ol>
+      </section>
+    </>
+  );
+}
+
 function ReleasesView({ model }) {
   const blockers = model.blockers.filter(blocker => {
     const stage = model.stages.find(item => item.id === blocker.stageId);
@@ -214,7 +388,7 @@ function ReleasesView({ model }) {
       <section className={styles.section}>
         <div className={styles.sectionHeading}>
           <div><span className={styles.eyebrow}>Release dependencies</span><h2>Blocked transitions</h2></div>
-          <p>The current Draft cannot advance until its canonical stage blockers and immutable bindings both pass.</p>
+          <p>The current {statusLabel(model.release.state)} release cannot advance until its canonical stage blockers and immutable bindings both pass.</p>
         </div>
         <BlockerCards blockers={blockers} />
       </section>
@@ -222,7 +396,7 @@ function ReleasesView({ model }) {
   );
 }
 
-function SectionView({ section, model, themeModel }) {
+function SectionView({ section, model, themeModel, mediaGenerationModel, viewerRole }) {
   if (section === 'overview') return <Overview model={model} />;
   if (section === 'evidence') return <EvidenceHealth model={model} />;
   if (section === 'theme') {
@@ -234,6 +408,7 @@ function SectionView({ section, model, themeModel }) {
       />
     );
   }
+  if (section === 'media-generation') return <MediaGenerationView workspace={mediaGenerationModel} />;
   if (section === 'runs') return <Rows columns={[
     { key: 'capability', label: 'Work item' },
     { key: 'lane', label: 'Lane' },
@@ -288,18 +463,35 @@ function SectionView({ section, model, themeModel }) {
     const stage = model.stages.find(item => item.id === blocker.stageId);
     return groups.includes(stage?.group);
   });
-  if (section === 'orders') return <LifecycleView summary={model.lifecycle.orders} blockers={blockers} />;
+  if (section === 'orders') return (
+    <LifecycleView
+      summary={model.lifecycle.orders}
+      blockers={blockers}
+      controlledOrder={viewerRole === 'product_owner'}
+    />
+  );
   if (section === 'post-sale') return <LifecycleView summary={model.lifecycle.postSale} blockers={blockers} />;
   if (section === 'analytics') return <LifecycleView summary={model.lifecycle.analytics} blockers={blockers} />;
   return <BlockerCards blockers={blockers} />;
 }
 
-export function AdminControlPlane({ activeSection, model, themeModel, viewerRole }) {
+export function AdminControlPlane({ activeSection, model, themeModel, mediaGenerationModel, mediaGenerationEnabled, viewerRole }) {
   const definition = adminSections.find(section => section.id === activeSection);
   const visibleSections = adminSections.filter(
-    section => section.id !== 'theme' || viewerRole === 'product_owner'
+    section => (section.id !== 'theme' || viewerRole === 'product_owner')
+      && (section.id !== 'media-generation' || (viewerRole === 'product_owner' && mediaGenerationEnabled))
   );
   const isTheme = activeSection === 'theme';
+  const warning = isTheme
+    ? 'Local repo proposal only. Production is unchanged; QA, pull request, Preview, review, and merge remain separate.'
+    : activeSection === 'orders' && viewerRole === 'product_owner'
+      ? 'Preparing the controlled checkout creates one temporary Shopify cart. It cannot charge, submit an order, request fulfillment, or enable public purchasing.'
+      : model.meta.warning;
+  const headerEyebrow = isTheme
+    ? 'Local repository token proposal'
+    : activeSection === 'orders' && viewerRole === 'product_owner'
+      ? 'Restricted controlled-order preparation'
+      : 'Non-authoritative operational projection';
   return (
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
@@ -320,7 +512,7 @@ export function AdminControlPlane({ activeSection, model, themeModel, viewerRole
       <main id="main-content" className={styles.main}>
         <header className={styles.header}>
           <div>
-            <span className={styles.eyebrow}>{isTheme ? 'Local repository token proposal' : 'Non-authoritative operational projection'}</span>
+            <span className={styles.eyebrow}>{headerEyebrow}</span>
             <h1>{definition.label}</h1>
             <p>{definition.description}</p>
           </div>
@@ -331,8 +523,14 @@ export function AdminControlPlane({ activeSection, model, themeModel, viewerRole
             </div>
           )}
         </header>
-        <div className={styles.warning} role="status"><span aria-hidden="true">!</span><p>{isTheme ? 'Local repo proposal only. Production is unchanged; QA, pull request, Preview, review, and merge remain separate.' : model.meta.warning}</p></div>
-        <SectionView section={activeSection} model={model} themeModel={themeModel} />
+        <div className={styles.warning} role="status"><span aria-hidden="true">!</span><p>{warning}</p></div>
+        <SectionView
+          section={activeSection}
+          model={model}
+          themeModel={themeModel}
+          mediaGenerationModel={mediaGenerationModel}
+          viewerRole={viewerRole}
+        />
       </main>
     </div>
   );

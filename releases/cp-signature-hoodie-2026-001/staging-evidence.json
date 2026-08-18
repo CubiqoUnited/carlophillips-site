@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "cp.staging-evidence.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "candidateCommit": "4ee088cd39cfa9b967bde32893f0dc2a33325904",
+  "recordedAt": "2026-08-17T00:42:00Z",
+  "target": "preview",
+  "deploymentId": "dpl_2Yb3oFEHNGDyr8QCGRmC7BGW5G6V",
+  "deploymentUrl": "https://carlophillips-site-1c9igdoux-adityas-projects-261b17a9.vercel.app",
+  "readyState": "READY",
+  "protected": true,
+  "aliases": [],
+  "checkoutEnabled": false,
+  "verification": {
+    "productRouteHttp": 200,
+    "checkoutProbeHttp": 409,
+    "checkoutProbeReason": "PRODUCT_RELEASE_NOT_RELEASED",
+    "desktopScreenshot": "test_reports/cp-product-offer-sml-2026-08-17/desktop.png",
+    "mobileScreenshot": "test_reports/cp-product-offer-sml-2026-08-17/mobile.png",
+    "horizontalOverflow": false,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "frameworkOverlay": false
+  },
+  "authority": "private_staging_evidence_only_no_production_or_payment_authority"
+}

@@ -1,3 +1,81 @@
+# HUMAN INTERVENTION REQUIRED — FINISH FIRST-PRODUCTION PROOF AND REAL-PAYMENT ACTIVATION
+
+Updated: 2026-08-17
+
+## Superseding live-payment state — 2026-08-17
+
+The Product Owner explicitly authorized Production payment activation. Shopify Payments test mode is now **off**. Shopify's authoritative summary states **Accepting payments** and **Receiving payouts**, with payouts routed to the existing Shopify Balance USD account ending `4549`. A separate Stripe account is not required for this Shopify Payments configuration.
+
+Live `www.carlophillips.com` was then verified without customer data or order submission. The Production PDP selected one Black / Medium Hoodie at USD $128 and redirected to the trusted `carlophillips.myshopify.com` checkout. Shopify Checkout showed live card fields, Shop Pay, PayPal, one Medium item, and a USD $128 pre-shipping total at desktop and mobile widths. Evidence is under `test_reports/cp-production-payments-live-2026-08-17/`.
+
+This supersedes every older statement below that says Shopify Payments is still in test mode. Customer payment acceptance is live. What remains incomplete is the newer release-bound source rollout and one separately authorized real-order settlement/fulfillment proof. PR #14 remains unmerged and undeployed because the linked Vercel deployment account is blocked and the canonical repository protections/reviewers remain incomplete. Do not mistake that source-governance blocker for a Shopify payment-gateway blocker, and do not switch Shopify Payments back to test mode during remediation.
+
+## Current shortest path — verified 2026-08-17
+
+1. **Use the existing storefront order path; do not depend on Apliiq's separate sample cart.** Shopify cart/checkout and test order `#1002` already prove the CARLOPHILLIPS → Shopify → Apliiq handoff. The isolated candidate adds a Product Owner-only action that prepares exactly one Medium Shopify checkout at the reviewed USD $128 item subtotal. It does not charge or submit an order. Before payment, the Product Owner must review and approve the exact shipping, tax, final total, and live-payment exposure shown by Shopify.
+2. **The delivered sample must be inspected.** Fit, colour, artwork placement, and finish require real evidence. Shopify being Active and checkout working cannot substitute for this physical fulfillment proof.
+3. **A canonical repository administrator must restore the release guardrails.** PR #14 is mergeable and contains the green checkout implementation ancestor `81a1c7e25efebde6b587ac7880a87cd5e45f93af`, but the repository has no active `main` ruleset and GitHub environments `Preview` and `Production` have no required reviewers. The connected Codex identity is pull-only and cannot configure or merge them.
+4. **Do not promote the current live deployment as the candidate or rollback.** `www.carlophillips.com` is on historical feature-branch commit `bb9568f`; it is healthy in the observed runtime sample but is only the captured drift anchor.
+5. After sample/media/product/fulfillment approval, capture the fresh Shopify Production observation, verify a distinct Production candidate and safe fallback, and merge the exact reviewed PR through protected `main` without toggling Shopify Payments back to test mode. Run one separately approved exact-value real order to prove payment settlement, Apliiq acceptance, tracking, and customer email before declaring the entire commerce-and-fulfillment lifecycle complete.
+
+## What is complete
+
+The isolated checkout candidate now implements the server-only Shopify hosted-checkout handoff requested by the Product Owner. It accepts only an opaque reviewed variant hash, re-reads current Shopify facts on the server, rejects stale or unavailable variants, creates a Shopify cart, and redirects only to an exact configured HTTPS Shopify checkout host. Same-origin POST enforcement, separate cart/checkout Product Owner approvals, environment kill switches, and foreign-host denial are covered by tests.
+
+Source QA passes design-system lint, zero-warning code lint, 51 test files / 532 tests, zero production-dependency vulnerabilities, and the optimized Next.js build. Headless desktop 1440×1000 and mobile 390×844 evidence for the immutable candidate returns HTTP 200 with no console errors, runtime overlay, or overflow. The protected Preview returns HTTP 409 `PRODUCT_RELEASE_NOT_RELEASED` for checkout and creates no Shopify cart.
+
+The 2026-08-16 authenticated read-only account audit also proves that the external product itself is no longer a Shopify Draft. It is Active on Online Store and Carlophillips Headless, has nine Black variants from XS through 5XL at USD 128–134, and all nine variants are assigned to Apliiq Dropship Fulfillment. Apliiq shows the Shopify store connected and a fulfillment payment method present.
+
+The 2026-08-17 continuation audit additionally proves that Shopify hosted checkout and test payment already work end to end. Shopify order `#1002` is explicitly labeled **Test order**, **Paid**, and **Unfulfilled**; it originated from Carlophillips Headless, charged USD $128.00 plus USD $8.20 shipping for a USD $136.20 test total, and generated the order-confirmation email. Shopify offers a fulfillment request to Apliiq, but that order uses Shopify's intentionally fake test destination and the XS variant. It must not be submitted to Apliiq or treated as physical-sample evidence.
+
+The same read-only audit reconfirms the Hoodie is Active, all nine Black sizes exist, S/M/L are present, and Shopify Payments remains explicitly in test mode with live payouts unavailable.
+
+The Product Owner subsequently completed private Apliiq sign-in. The authenticated saved design was reverified as black IND4000 with front 2×2-inch, 648-stitch embroidery; the S/M/L mappings still match the Staged release. Apliiq showed Medium stock above 5,700 and accepted local form state for exactly one Medium sample. The quote form displayed an estimated USD $39.45 unit price, warned of a possible one-time USD $11 first-order digitization fee, and warned that the final embroidery price may change after digitization. Shipping and tax remain unknown.
+
+Apliiq did not create the quote cart. Two controlled Add to cart attempts—one in the normal browser viewport and one after a clean authenticated desktop-width reload—both caused Apliiq's own JavaScript to receive an HTML error document where JSON was expected (`Unexpected token '<'`). The cart remained empty after both attempts. No address, order, fulfillment request, or charge was submitted. This provider-side cart failure is now the first external boundary.
+
+The Product Owner approved the support reply address and message. Codex submitted the exact cart-error report to Apliiq Customer Service, but this route is now retired as a release dependency. The recurring inbox monitor was deleted. Any later provider reply is informational only; it does not block or authorize the controlled Shopify order.
+
+Separately, the current Production storefront successfully created a Shopify cart for **Black / Medium** at USD $128 and redirected to `carlophillips.myshopify.com`. The hosted order summary matched one Medium Hoodie and exposed the configured payment methods. No contact, address, payment data, or order was submitted. This is additional technical observation evidence only; it does not reclassify the capability registry or authorize release/payment activation. Evidence: `test_reports/cp-production-medium-cart-2026-08-17/`.
+
+On 2026-08-17 the Product Owner approved exact Shopify observation `sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4`. That approval is bound to immutable candidate `4ee088cd39cfa9b967bde32893f0dc2a33325904`, and the canonical Product Release Record is formally **Staged**. The initial customer offer remains exactly Small, Medium and Large; the other observed Shopify sizes were not deleted or changed.
+
+## What is blocked
+
+Customer payment acceptance is now **live** on the historical Production storefront by explicit Product Owner authorization. The newer Staged release still lacks an approved delivered physical sample and inspection, final product/media/fulfillment approvals, the complete required release-bound media matrix, a fresh post-approval ACTIVE Production observation, verified rollback execution, and operational `cart-write` authority. The candidate cart capability remains `write_test_verified` with only `cart-write-test`; it is not yet the deployed public authority. The newer controlled-order switch is separate and remains undeployed.
+
+The Product Owner approved the Production-preflight correction on 2026-08-17. The implementation accepts a later selected `main` SHA only when Git proves that the reviewed candidate is its ancestor and every endpoint difference is confined to the explicit evidence-only allowlist. Storefront, component, checkout, media manifest/assets, workflow, script, configuration, theme, malformed-path and symlink changes remain forbidden. This correction is not merged or deployed to Production; its fresh immutable Preview must be reviewed before candidate binding.
+
+Exact source commit `d713f8449487f2c6cd342976499ab283c66bf779` is pushed to PR #14, repository CI is green, and its clean immutable Preview is `https://carlophillips-site-q2jxpnkvz-adityas-projects-261b17a9.vercel.app` (`dpl_DfPkQ7XVYWMQs4GK2JUDmQYn8N5f`). It is READY Preview, has no aliases or dirty marker, keeps checkout disabled, passes eight protected routes, and returns `PRODUCT_RELEASE_NOT_RELEASED` for a valid S/M/L checkout selection. Production remains unchanged. Product Owner visual/release review of this exact Preview is the next candidate-binding action.
+
+## Exact human action
+
+1. Shopify Payments is live and payouts are configured. Do not turn test mode back on unless the Product Owner explicitly orders an emergency payment freeze. If Shopify later prompts for two-step authentication, complete it privately and do not send recovery codes, one-time codes, passkeys, or phone details to Codex.
+2. Preserve the captured Apliiq per-variant/SKU mapping and verify it against the Staged release. The initial public offer is S/M/L only; Shopify's other variants remain unchanged.
+3. After the controlled-order candidate is deployed to protected Staging and `SHOPIFY_CONTROLLED_ORDER_ENABLED=true` is provisioned there, sign in as the Product Owner, open `/admin/orders`, and choose **Open controlled Shopify checkout**. The server fixes the cart to one Medium and verifies the reviewed USD $128 item subtotal. Enter private contact/shipping/payment details only inside Shopify. Before pressing Shopify's final pay button, record and approve the exact shipping, tax, total, and live-payment exposure. Do not submit test order `#1002` for fulfillment: it is XS and uses a fake test destination.
+4. Supply or approve the missing truthful release media and bindings; generated candidates cannot be recorded as physical-product proof.
+5. After the remaining evidence and approvals are complete, let Codex capture a fresh sanitized ACTIVE Shopify Production observation inside an approved protected runtime. The reviewed Staging observation is already bound; the Production observation must be newer than the final approvals.
+6. Review the immutable Staging candidate and separately approve the product, media, and fulfillment evidence for that exact candidate.
+7. Shopify Payments is already live by explicit Product Owner authorization. Keep the newer release-bound candidate fail-closed until its evidence passes, then deploy it without changing the live Shopify Payments setting.
+8. Review the fresh immutable Preview for the approved preflight correction after PR CI passes. Preview approval does not approve merge, payment, order or Production release.
+9. Signal `Controlled Medium Shopify checkout ready — total [AMOUNT]` after Shopify displays the final review total. This is the point for exact spend approval. Do not send credentials, address, payment data, or verification codes in chat.
+
+Do not paste Shopify tokens, payment details, customer data, or provider IDs into chat. Do not enable the two Vercel checkout switches manually while the Product Release Record remains Staged.
+
+Read-only Vercel inspection confirms `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_TOKEN`, and `SHOPIFY_CART_UI_ENABLED` already exist by name for Preview and Production. `SHOPIFY_CONTROLLED_ORDER_ENABLED`, `SHOPIFY_CHECKOUT_ENABLED`, and `SHOPIFY_CHECKOUT_HOSTS` are not yet provisioned. The first switch enables only the Product Owner controlled checkout in protected Staging; the public checkout switch stays off until the release/capability gates pass. The checkout-host allowlist is the exact comma-separated trusted host list (for example `www.carlophillips.com`).
+
+## Cost and risk
+
+- Code work and read-only observation have no intended purchase cost.
+- The physical sample, shipping, tax, and any provider plan are separate costs and require exact approval before purchase.
+- Enabling checkout before the release record passes could sell a stale, unverified, or incorrectly fulfilled variant. The candidate therefore remains fail-closed.
+
+## Resume point
+
+After the protected admin action reaches the exact Medium Shopify checkout, present the final one-order cost approval and continue the Staged → Approved → Released sequence. Do not enable public customer charging until the delivered sample, exact release, and operational cart evidence pass.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — PRODUCT OWNER ADMIN SIGN-IN
 
 Updated: 2026-08-14
@@ -136,6 +214,35 @@ The previously requested runway-motion file remains optional and secondary to th
 
 ---
 
+# HUMAN INTERVENTION REQUIRED — TWO GENUINE HOODIE MOTION FEEDS
+
+Updated: 2026-08-17
+
+## What is ready
+
+The storefront now has a token-governed, accessible motion/gallery/purchase shell that can consume approved Shopify video media. It pauses by visibility, page state, reduced-motion preference and user choice. The gallery and purchase flow are fully implemented and locally verified.
+
+## Exact human action
+
+Provide or approve two genuine, silent, 6–8 second Hoodie video files:
+
+1. a professional runway walk; and
+2. minimal movements, gestures and styling.
+
+The physical Hoodie must remain visually accurate to the approved product. Upload the files to the approved product-media intake/Shopify product media, record rights/quality approval, and signal: `Two Hoodie motion feeds uploaded and approved`.
+
+## Cost and risk
+
+- Existing approved footage can be used without new generation spend.
+- Any external generation, studio booking, model usage, editing subscription or media-app credit requires approval for the exact provider, access, price and side effects before work begins.
+- Do not label the current Moda still sequence or still-derived GIF as genuine filmed product motion.
+
+## Resume point
+
+After the exact signal, bind both video assets to the Media Registry and current Product Release Record, verify the Shopify-derived storefront payload, then repeat desktop/tablet/mobile motion, reduced-motion, gallery, console/network and screenshot QA in an immutable Vercel Preview. Production remains a separate reviewed promotion.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — PRODUCTION AUTHORITY CLOSURE
 
 Updated: 2026-08-14
@@ -193,3 +300,63 @@ Status: **PR #10 is merged and the first `CI / Verify` run on `main` was reporte
 ## Resume point
 
 After `CI/CD protection configured`, verify the ruleset plus both environment reviewer/variable/secret-name configurations read-only. Do not reveal values. A release-candidate run must create distinct same-SHA/same-release `staged-production` and `safe-fallback` deployments with no CARLOPHILLIPS domain aliases. Production remains unchanged until a separately approved promotion dispatch.
+# RED — MEDIA GENERATION ACTIVATION DECISIONS REQUIRED
+
+The feature-flagged Admin review workspace can be tested in protected Staging without external effects. Do **not** enable paid generation, upload candidates, or activate any mutating control until the Product Owner records all of the following:
+
+1. Private Draft/quarantine storage provider, retention period, deletion policy, and expected cost.
+2. Initial fashion provider (MODA or Modelize), initial 3D provider (Instant 3D or Spacecheck), ProductSpin access method, and exact Runway access boundary.
+3. Per-run and monthly credit ceilings, including whether approval is required for every run.
+4. Numerical tolerances for colour, logo shape/scale, artwork placement, silhouette, fit, and construction.
+5. Rights evidence accepted for each source and provider.
+6. Roles allowed to generate/regenerate versus quarantine, approve, assign, upload, and release.
+7. Confirmation that “80–90% slow motion” means playback at `0.8–0.9×`, plus approval of the final 7–8 second edit.
+
+Cost/risk: provider calls may consume credits; storage may incur recurring cost; inaccurate generated media can misrepresent a garment. Shopify upload/publication affects customer-visible product media and must remain separately approved.
+
+Completion signal: reply with `Media Generation activation decisions recorded` and the approved provider/storage/cost/tolerance/role details. Until then, Staging remains review-only and Production remains off.
+
+---
+
+# RED — FUNNEL 2 PROVIDER AUTHENTICATION AND CREDIT BOUNDARIES
+
+Updated: 2026-08-18
+
+## What is complete
+
+- Both existing Hoodie MP4s are now Product Owner-approved for the feature-flagged Staging presentation.
+- The Runway derivative is 7.79 seconds at 0.9× playback with the first two seconds removed; the Fit & Silhouette derivative is 5.04 seconds.
+- Both are checksum-bound, format-verified and truthfully classified as AI editorial. This supersedes the earlier request for two additional motion feeds for Staging UAT only; it does not claim physical verification or Production media publication.
+- A sanitized Admin connection registry now covers Modelize, MODA, Sugata, TAYLA, Raspberry AI, ProductSpin AI, Instant 3D, Spacecheck and Runway without exposing secrets or spending credits.
+
+## What remains blocked
+
+No named Funnel 2 provider currently has a verified server-to-server authenticated handshake. Runway has an official API contract but the Vercel project has no `RUNWAYML_API_SECRET`. MODA is a Shopify app review/install path. Modelize and Sugata are browser-session paths. TAYLA requires provider access discussion. Official supported APIs for Raspberry AI, ProductSpin AI, Instant 3D and Spacecheck are not yet bound to this project.
+
+## Exact human actions
+
+1. Choose the initial paid fashion provider and approve its exact plan/credit ceiling. Do not install or purchase a plan merely to clear this record.
+2. For Runway, create a least-privilege API key only after approving a per-run and monthly maximum. Add it as the encrypted Vercel environment variable named `RUNWAYML_API_SECRET` for Preview only; never paste the value into chat, GitHub, reports or screenshots.
+3. For MODA, manually review the Shopify app scopes and price before installation. Stop if it requests catalog write, publication, order, customer or billing access outside the approved Draft-media boundary.
+4. For ProductSpin AI and the selected 3D provider, supply the exact commercial product URL and official API documentation or enterprise contact response. Similar names and research projects are not integration authority.
+5. Signal completion as: `Funnel 2 provider access ready — [PROVIDER] — max [AMOUNT]/run and [AMOUNT]/month`.
+
+## Cost and risk
+
+Provider generation can incur real charges and can create inaccurate product media. Authentication alone does not authorize generation, Shopify upload, publication or Production use. Every generated result remains quarantined until accuracy QA and Product Owner approval.
+
+## Resume point
+
+Run a read-only authentication probe for the named provider, capture a sanitized receipt, then enable only the corresponding Draft generation control in protected Staging. Do not call other providers or spend beyond the approved ceiling.
+
+---
+
+# RED — VERCEL AND SHOPIFY ANALYTICS ACTIVATION CHECK
+
+Updated: 2026-08-18
+
+The code path for Vercel Web Analytics and Speed Insights is prepared for public routes and excludes `/admin`; query strings are removed before page events are sent. Shopify remains authoritative for checkout, orders, conversion, revenue and payment reporting.
+
+If the Staging deployment does not start accepting the Vercel analytics beacons automatically, manually open Vercel Dashboard → `aditya's projects` → `carlophillips-site` → Analytics and enable Web Analytics and Speed Insights for that exact project. Do not accept a paid upgrade without reporting the exact price first. Signal `CP Vercel analytics enabled` after the dashboard confirms data collection. No consent banner should be added for this technical implementation.
+
+Resume by verifying the public beacon responses, confirming Admin exclusion at desktop/mobile, and checking that Shopify order analytics remain separate from Vercel traffic/performance analytics.

@@ -14,7 +14,7 @@ Human action: Product Owner or designee approves product facts, price, media pro
 
 Resume point: update the versioned Product Release Record and Media Registry, including hashed current storefront bindings for approved media, and execute only the specifically authorized boundary.
 
-Current staging decision: `releases/cp-signature-hoodie-2026-001/staging-readiness.json` denies staging until reviewed Shopify variant/commerce-facts/full-observation bindings, the Apliiq variant fingerprint, an immutable candidate commit, passing build evidence, and private staging evidence are bound. The release-specific withdrawal plan now exists; its verification remains intentionally null until an authorized live proof.
+The Hoodie Product Release Record is now formally Staged with reviewed Shopify variant/commerce-facts/full-observation bindings, the Apliiq mapping fingerprint, immutable candidate commit `4ee088c`, passing build evidence, and protected private Preview evidence. Approval and release remain blocked by the physical sample, product/media/fulfillment approvals, complete media requirements, Production observation, verified rollback, and live cart/checkout capability evidence.
 
 ## Read-only Shopify product observation
 
