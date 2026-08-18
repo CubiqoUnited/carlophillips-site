@@ -227,13 +227,13 @@ function MediaGenerationView({ workspace }) {
       <section className={styles.metrics} aria-label="Media Generation summary">
         <Metric label="Rollout" value={workspace.rollout.mode} detail="Hoodie only · feature flagged" />
         <Metric label="Source inputs" value={`${workspace.metrics.inputsReady}/${workspace.metrics.inputsTotal}`} detail="Complete inputs required before generation" />
-        <Metric label="Draft candidates" value={workspace.metrics.candidates} detail={`${workspace.metrics.approved} approved`} />
-        <Metric label="Storefront bound" value={workspace.metrics.storefrontBound} detail="No existing media changed" />
+        <Metric label="Video candidates" value={workspace.metrics.candidates} detail={`${workspace.metrics.approved} approved`} />
+        <Metric label="Staging bound" value={workspace.metrics.stagingPreviewBound} detail="Production remains unbound" />
       </section>
 
       <article className={styles.mediaBoundary}>
         <span className={styles.eyebrow}>Non-disruptive integration</span>
-        <h2>The existing POD-to-publish funnel remains unchanged.</h2>
+        <h2>Funnel 1 remains unchanged while Funnel 2 stays feature-flagged.</h2>
         <p>{workspace.boundary}</p>
         <dl className={styles.mediaBoundaryList}>
           <div><dt>Canonical release</dt><dd>{statusLabel(workspace.canonicalReleaseState)}</dd></div>
@@ -279,6 +279,21 @@ function MediaGenerationView({ workspace }) {
 
       <section className={styles.section}>
         <div className={styles.sectionHeading}>
+          <div><span className={styles.eyebrow}>Connection handshakes</span><h2>Provider access readiness</h2></div>
+          <p>A listed app is not treated as connected until its supported authentication probe succeeds. No credits or external mutations are used by this check.</p>
+        </div>
+        <Rows columns={[
+          { key: 'label', label: 'Provider' },
+          { key: 'lane', label: 'Lane' },
+          { key: 'accessMode', label: 'Supported access' },
+          { key: 'status', label: 'Handshake', render: row => <Status value={row.status} /> },
+          { key: 'credentialName', label: 'Server credential', render: row => row.credentialName || 'Not applicable' },
+          { key: 'nextAction', label: 'Next safe action' },
+        ]} rows={workspace.providerHandshakes} />
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
           <div><span className={styles.eyebrow}>04 · Compare & QA</span><h2>Existing Hoodie candidates</h2></div>
           <p>Truth labels are permanent. Passing QA never converts generated media into physical evidence.</p>
         </div>
@@ -289,12 +304,13 @@ function MediaGenerationView({ workspace }) {
                 <div><span className={styles.eyebrow}>{candidate.role}</span><h3>{candidate.label}</h3></div>
                 <Status value={candidate.qaStatus} />
               </div>
-              <p className={styles.mediaTruth}>{statusLabel(candidate.truthClassification)} · Draft only</p>
+              <p className={styles.mediaTruth}>{statusLabel(candidate.truthClassification)} · Staging review</p>
               <dl className={styles.detailList}>
                 <div><dt>Storage</dt><dd>{statusLabel(candidate.storageState)}</dd></div>
                 <div><dt>Proposed placement</dt><dd>{statusLabel(candidate.placement)}</dd></div>
                 <div><dt>Approval</dt><dd>{statusLabel(candidate.approvalStatus)}</dd></div>
-                <div><dt>Storefront binding</dt><dd>None</dd></div>
+                <div><dt>Staging preview</dt><dd>{candidate.stagingPreviewBound ? 'Bound' : 'Not bound'}</dd></div>
+                <div><dt>Production binding</dt><dd>None</dd></div>
               </dl>
               <details className={styles.mediaNotes}>
                 <summary>View QA notes</summary>
@@ -311,8 +327,8 @@ function MediaGenerationView({ workspace }) {
           </div>
           <div>
             <span className={styles.eyebrow}>Generated candidate</span>
-            <strong>Two AI editorial videos</strong>
-            <p>Local evidence only. They are not shipped with this Admin candidate and cannot appear in the gallery.</p>
+            <strong>Two Product Owner-approved AI editorial videos</strong>
+            <p>Bound to the feature-flagged Staging presentation. They do not claim physical truth or Production publication authority.</p>
           </div>
         </article>
       </section>
@@ -334,8 +350,8 @@ function MediaGenerationView({ workspace }) {
 
       <section className={styles.section}>
         <div className={styles.sectionHeading}>
-          <div><span className={styles.eyebrow}>Agentic workflow</span><h2>One funnel, explicit gates</h2></div>
-          <p>AI may prepare candidates and QA evidence. Human approval and the existing release system remain authoritative.</p>
+          <div><span className={styles.eyebrow}>Agentic workflow</span><h2>Two funnels, one release authority</h2></div>
+          <p>Funnel 1 continues the current POD-to-publish path. Funnel 2 may prepare media candidates and QA evidence, but both reuse the same Product Release Record and Media Registry.</p>
         </div>
         <ol className={styles.stageList}>
           {workspace.workflow.map((stage, index) => (

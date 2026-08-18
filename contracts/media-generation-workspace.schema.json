@@ -140,7 +140,8 @@
           "qaStatus",
           "approvalStatus",
           "placement",
-          "storefrontBound"
+          "storefrontBound",
+          "stagingPreviewBound"
         ],
         "properties": {
           "assetId": { "type": "string", "minLength": 1 },
@@ -155,6 +156,7 @@
           "approvalStatus": { "enum": ["pending", "approved", "rejected", "quarantined"] },
           "placement": { "enum": ["unassigned", "landing-editorial", "explore-media"] },
           "storefrontBound": { "const": false },
+          "stagingPreviewBound": { "type": "boolean" },
           "notes": { "type": "array", "items": { "type": "string", "minLength": 1 } }
         },
         "additionalProperties": false

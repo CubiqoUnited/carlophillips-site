@@ -12,7 +12,7 @@
   "rollout": {
     "flagName": "CP_ADMIN_MEDIA_GENERATION_ENABLED",
     "defaultEnabled": false,
-    "mode": "shadow",
+    "mode": "review",
     "productScoped": true,
     "rollback": "disable-feature-flag"
   },
@@ -101,49 +101,52 @@
     { "stage": "validate", "status": "blocked", "authority": "Complete POD constraints and tolerances first." },
     { "stage": "generate-reference-pack", "status": "blocked", "authority": "Requires validated constraints and approved cost." },
     { "stage": "generate-media", "status": "blocked", "authority": "Requires a ready provider adapter and exact spend approval." },
-    { "stage": "qa", "status": "partial", "authority": "Existing candidate observations only." },
-    { "stage": "human-approval", "status": "pending", "authority": "Product Owner approval cannot be automated." },
+    { "stage": "qa", "status": "complete", "authority": "The two Product Owner-selected Hoodie video derivatives passed deterministic format, duration, checksum and visual-sequence QA." },
+    { "stage": "human-approval", "status": "complete", "authority": "Product Owner approved these exact two Hoodie videos for Staging presentation on 2026-08-18." },
     { "stage": "registry-proposal", "status": "blocked", "authority": "No durable command, audit or writer is connected." },
-    { "stage": "preview", "status": "blocked", "authority": "Only approved, registry-bound candidates may reach Preview." },
+    { "stage": "preview", "status": "complete", "authority": "The approved Hoodie videos are bound to the feature-flagged Staging presentation only; Production authority remains unchanged." },
     { "stage": "release", "status": "blocked", "authority": "Existing Product Release Record remains the only release authority." }
   ],
   "candidates": [
     {
-      "assetId": "signature-hoodie-runway-gen45-draft-01",
+      "assetId": "signature-hoodie-runway-final-01",
       "label": "Runway motion",
       "kind": "video",
       "role": "runway-motion",
       "truthClassification": "ai-editorial",
-      "sourceReference": "test_reports/runway-signature-hoodie-2026-08-17/signature-hoodie-runway-gen45-draft-01.mp4",
-      "checksum": "sha256:663775a801db44929dfd815f2c2c0dc3bb4b216d2a728f8fbbfc5f653d03f4a5",
-      "storageState": "local-evidence",
-      "qaStatus": "failed",
-      "approvalStatus": "pending",
+      "sourceReference": "public/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "checksum": "sha256:9f24bcc094a181bf802dda64008af38c8bdd468e42cd5485b9ff329d91648e53",
+      "storageState": "approved-preview",
+      "qaStatus": "passed",
+      "approvalStatus": "approved",
       "placement": "landing-editorial",
       "storefrontBound": false,
+      "stagingPreviewBound": true,
       "notes": [
-        "Closed-eye opening must be trimmed.",
-        "Create a 7–8 second derived edit at a confirmed 0.8–0.9× playback rate.",
-        "No reversal, mirroring, colour inversion or CP-mark alteration."
+        "Closed-eye opening removed by trimming the first two seconds.",
+        "Final duration is 7.79 seconds at 0.9× playback.",
+        "No reversal, mirroring, colour inversion or CP-mark alteration was applied.",
+        "Autoplays muted only while the Hoodie panel is visible, pauses when obscured, and stops at the end."
       ]
     },
     {
-      "assetId": "signature-hoodie-showcase-gen45-draft-01",
+      "assetId": "signature-hoodie-fit-silhouette-final-01",
       "label": "Fit & silhouette",
       "kind": "video",
       "role": "fit-silhouette",
       "truthClassification": "ai-editorial",
-      "sourceReference": "test_reports/runway-signature-hoodie-2026-08-17/signature-hoodie-showcase-gen45-draft-01.mp4",
-      "checksum": "sha256:68fd8802c0343c706485380334546585b85f0a032e5d80aa15d20bee2a6b9956",
-      "storageState": "local-evidence",
-      "qaStatus": "partial",
-      "approvalStatus": "pending",
+      "sourceReference": "public/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "checksum": "sha256:6f7b3cb5a9efdac390e84562ec632d3da38b91b3c4e5632c76459c175f3c5db9",
+      "storageState": "approved-preview",
+      "qaStatus": "passed",
+      "approvalStatus": "approved",
       "placement": "explore-media",
       "storefrontBound": false,
+      "stagingPreviewBound": true,
       "notes": [
         "AI editorial; not physical fit evidence.",
-        "Video requires explicit user selection in the media viewer.",
-        "The media viewer must open on a factual product image."
+        "Available only after explicit user selection in the media viewer.",
+        "The media viewer opens on a factual product image and never autoplays this video."
       ]
     }
   ]

@@ -315,3 +315,48 @@ The feature-flagged Admin review workspace can be tested in protected Staging wi
 Cost/risk: provider calls may consume credits; storage may incur recurring cost; inaccurate generated media can misrepresent a garment. Shopify upload/publication affects customer-visible product media and must remain separately approved.
 
 Completion signal: reply with `Media Generation activation decisions recorded` and the approved provider/storage/cost/tolerance/role details. Until then, Staging remains review-only and Production remains off.
+
+---
+
+# RED — FUNNEL 2 PROVIDER AUTHENTICATION AND CREDIT BOUNDARIES
+
+Updated: 2026-08-18
+
+## What is complete
+
+- Both existing Hoodie MP4s are now Product Owner-approved for the feature-flagged Staging presentation.
+- The Runway derivative is 7.79 seconds at 0.9× playback with the first two seconds removed; the Fit & Silhouette derivative is 5.04 seconds.
+- Both are checksum-bound, format-verified and truthfully classified as AI editorial. This supersedes the earlier request for two additional motion feeds for Staging UAT only; it does not claim physical verification or Production media publication.
+- A sanitized Admin connection registry now covers Modelize, MODA, Sugata, TAYLA, Raspberry AI, ProductSpin AI, Instant 3D, Spacecheck and Runway without exposing secrets or spending credits.
+
+## What remains blocked
+
+No named Funnel 2 provider currently has a verified server-to-server authenticated handshake. Runway has an official API contract but the Vercel project has no `RUNWAYML_API_SECRET`. MODA is a Shopify app review/install path. Modelize and Sugata are browser-session paths. TAYLA requires provider access discussion. Official supported APIs for Raspberry AI, ProductSpin AI, Instant 3D and Spacecheck are not yet bound to this project.
+
+## Exact human actions
+
+1. Choose the initial paid fashion provider and approve its exact plan/credit ceiling. Do not install or purchase a plan merely to clear this record.
+2. For Runway, create a least-privilege API key only after approving a per-run and monthly maximum. Add it as the encrypted Vercel environment variable named `RUNWAYML_API_SECRET` for Preview only; never paste the value into chat, GitHub, reports or screenshots.
+3. For MODA, manually review the Shopify app scopes and price before installation. Stop if it requests catalog write, publication, order, customer or billing access outside the approved Draft-media boundary.
+4. For ProductSpin AI and the selected 3D provider, supply the exact commercial product URL and official API documentation or enterprise contact response. Similar names and research projects are not integration authority.
+5. Signal completion as: `Funnel 2 provider access ready — [PROVIDER] — max [AMOUNT]/run and [AMOUNT]/month`.
+
+## Cost and risk
+
+Provider generation can incur real charges and can create inaccurate product media. Authentication alone does not authorize generation, Shopify upload, publication or Production use. Every generated result remains quarantined until accuracy QA and Product Owner approval.
+
+## Resume point
+
+Run a read-only authentication probe for the named provider, capture a sanitized receipt, then enable only the corresponding Draft generation control in protected Staging. Do not call other providers or spend beyond the approved ceiling.
+
+---
+
+# RED — VERCEL AND SHOPIFY ANALYTICS ACTIVATION CHECK
+
+Updated: 2026-08-18
+
+The code path for Vercel Web Analytics and Speed Insights is prepared for public routes and excludes `/admin`; query strings are removed before page events are sent. Shopify remains authoritative for checkout, orders, conversion, revenue and payment reporting.
+
+If the Staging deployment does not start accepting the Vercel analytics beacons automatically, manually open Vercel Dashboard → `aditya's projects` → `carlophillips-site` → Analytics and enable Web Analytics and Speed Insights for that exact project. Do not accept a paid upgrade without reporting the exact price first. Signal `CP Vercel analytics enabled` after the dashboard confirms data collection. No consent banner should be added for this technical implementation.
+
+Resume by verifying the public beacon responses, confirming Admin exclusion at desktop/mobile, and checking that Shopify order analytics remain separate from Vercel traffic/performance analytics.

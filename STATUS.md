@@ -1,8 +1,19 @@
 # Current Status
 
-Updated: 2026-08-17
-Branch: isolated commerce handoff `codex/cp-shopify-checkout-handoff`; exact checkout implementation ancestor `81a1c7e`; no merge to `main` or Production deployment
+Updated: 2026-08-18
+Branch: isolated Staging UAT candidate `codex/cp-uat-final-media-analytics` from exact `origin/staging` `ad3f690`; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Funnel 2, final Hoodie motion and analytics UAT — 2026-08-18
+
+- Funnel 1 remains the existing POD-to-publish path. Funnel 2 is a separate, Hoodie-scoped, feature-flagged `Media Generation` workspace inside the same Product Owner Admin portal; both reuse the same Product Release Record and Media Registry.
+- The Product Owner selected the two existing Hoodie MP4 files as the final Staging motion assets. The 7.79-second Runway edit removes the first two seconds, plays at 0.9×, autoplays muted only while the Hoodie panel is visible, stops at the end, and has pause/replay plus reduced-motion behavior. The 5.04-second Fit & Silhouette video is a separate, user-selected gallery item. Both retain the truthful `AI editorial` classification and are not physical sample evidence.
+- Public desktop/tablet/mobile headless UAT passes HTTP, responsive layout, byte-range video delivery, autoplay/stop/reduced-motion behavior, factual-image-first gallery behavior, separate video selection, console/network health, accessibility and screenshot capture. Admin Product Owner desktop/tablet/mobile review passes, while reviewer and anonymous direct access return concealed 404 responses.
+- The Admin connection-readiness registry covers Modelize, MODA, Sugata, TAYLA, Raspberry AI, ProductSpin AI, Instant 3D, Spacecheck and Runway. It does not falsely claim authenticated handshakes: provider credentials, supported API contracts and exact credit ceilings remain external activation gates.
+- Vercel Web Analytics and Speed Insights are integrated on public routes behind `NEXT_PUBLIC_VERCEL_OBSERVABILITY_ENABLED`; `/admin` is excluded and query/hash data is removed from page-event URLs. Shopify remains authoritative for checkout, orders, conversion, revenue, payouts and payment reporting.
+- Production-candidate lint now requires cart and checkout to be enabled for the primary candidate while preserving the separately verified checkout-disabled rollback artifact and all release/preflight/smoke gates.
+- Commerce UAT is **blocked, not failed or faked**: the canonical Hoodie release remains `staged`, so live Order, bag handoff and `/api/checkout` correctly deny with `PRODUCT_RELEASE_NOT_RELEASED`. The existing Shopify payment and test-order evidence proves the technical route, but it does not supply missing Product Release Record product/media/fulfillment approvals, a physical sample, fresh Production observation or rollback verification. Production is unchanged.
+- Evidence is under `test_reports/cp-uat-final-media-analytics/`.
 
 ## Product motion/gallery/purchase experience — 2026-08-17
 
