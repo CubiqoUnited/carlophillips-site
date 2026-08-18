@@ -130,7 +130,7 @@ describe('admin operational projection', () => {
 
   it('covers the complete protected information architecture', () => {
     expect(adminSections.map(section => section.id)).toEqual([
-      'overview', 'evidence', 'theme', 'drops', 'runs', 'products', 'media', 'releases', 'approvals', 'commands', 'publication', 'orders', 'post-sale', 'analytics', 'capabilities', 'audit',
+      'overview', 'evidence', 'theme', 'drops', 'runs', 'products', 'media-generation', 'media', 'releases', 'approvals', 'commands', 'publication', 'orders', 'post-sale', 'analytics', 'capabilities', 'audit',
     ]);
   });
 
@@ -268,7 +268,9 @@ describe('admin operational projection', () => {
     expect(component).toContain('creates one temporary Shopify cart');
     expect(component).toContain('Restricted controlled-order preparation');
     expect(component).toContain("section.id !== 'theme' || viewerRole === 'product_owner'");
-    expect(route).toContain("activeSection === 'theme' ? 'product_owner' : null");
+    expect(component).toContain("section.id !== 'media-generation' || (viewerRole === 'product_owner' && mediaGenerationEnabled)");
+    expect(route).toContain("['theme', 'media-generation'].includes(activeSection) ? 'product_owner' : null");
+    expect(route).toContain("activeSection === 'media-generation' && !mediaGenerationEnabled");
     expect(editor).toContain('Exactly four token values. No layout changes.');
     expect(editor).toContain('Save branch proposal');
     expect(editor).toContain('local, uncommitted repository proposal');

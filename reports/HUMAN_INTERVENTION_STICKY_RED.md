@@ -300,3 +300,18 @@ Status: **PR #10 is merged and the first `CI / Verify` run on `main` was reporte
 ## Resume point
 
 After `CI/CD protection configured`, verify the ruleset plus both environment reviewer/variable/secret-name configurations read-only. Do not reveal values. A release-candidate run must create distinct same-SHA/same-release `staged-production` and `safe-fallback` deployments with no CARLOPHILLIPS domain aliases. Production remains unchanged until a separately approved promotion dispatch.
+# RED — MEDIA GENERATION ACTIVATION DECISIONS REQUIRED
+
+The feature-flagged Admin review workspace can be tested in protected Staging without external effects. Do **not** enable paid generation, upload candidates, or activate any mutating control until the Product Owner records all of the following:
+
+1. Private Draft/quarantine storage provider, retention period, deletion policy, and expected cost.
+2. Initial fashion provider (MODA or Modelize), initial 3D provider (Instant 3D or Spacecheck), ProductSpin access method, and exact Runway access boundary.
+3. Per-run and monthly credit ceilings, including whether approval is required for every run.
+4. Numerical tolerances for colour, logo shape/scale, artwork placement, silhouette, fit, and construction.
+5. Rights evidence accepted for each source and provider.
+6. Roles allowed to generate/regenerate versus quarantine, approve, assign, upload, and release.
+7. Confirmation that “80–90% slow motion” means playback at `0.8–0.9×`, plus approval of the final 7–8 second edit.
+
+Cost/risk: provider calls may consume credits; storage may incur recurring cost; inaccurate generated media can misrepresent a garment. Shopify upload/publication affects customer-visible product media and must remain separately approved.
+
+Completion signal: reply with `Media Generation activation decisions recorded` and the approved provider/storage/cost/tolerance/role details. Until then, Staging remains review-only and Production remains off.

@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "cp.media-generation-flag-off-parity.v1",
+  "baselineUrl": "http://127.0.0.1:3140",
+  "candidateUrl": "http://127.0.0.1:3141",
+  "generatedAt": "2026-08-18T05:15:52.855Z",
+  "featureOffRouteStatus": 404,
+  "passed": true,
+  "results": [
+    {
+      "case": {
+        "name": "home-desktop",
+        "route": "/",
+        "width": 1440,
+        "height": 1000,
+        "auth": false
+      },
+      "baseline": {
+        "screenshotPath": "home-desktop-baseline.png",
+        "status": 200,
+        "consoleErrors": [],
+        "failedRequests": [
+          "http://127.0.0.1:3140/bag?_rsc=1p-R_iEY6bj0jY31",
+          "http://127.0.0.1:3140/shop?_rsc=1p-R_iEY6bj0jY31"
+        ],
+        "unexpectedFailedRequests": [],
+        "overflow": false,
+        "overlay": false,
+        "mediaGenerationVisible": false
+      },
+      "candidate": {
+        "screenshotPath": "home-desktop-candidate.png",
+        "status": 200,
+        "consoleErrors": [],
+        "failedRequests": [
+          "http://127.0.0.1:3141/bag?_rsc=1p-R_iEY6bj0jY31",
+          "http://127.0.0.1:3141/shop?_rsc=1p-R_iEY6bj0jY31"
+        ],
+        "unexpectedFailedRequests": [],
+        "overflow": false,
+        "overlay": false,
+        "mediaGenerationVisible": false
+      },
+      "dimensionsMatch": true,
+      "differentBytes": 0,
+      "totalBytes": 12078720,
+      "byteDifferenceRatio": 0
+    },
+    {
+      "case": {
+        "name": "home-mobile",
+        "route": "/",
+        "width": 390,
+        "height": 844,
+        "auth": false
+      },
+      "baseline": {
+        "screenshotPath": "home-mobile-baseline.png",
+        "status": 200,
+        "consoleErrors": [],
+        "failedRequests": [
+          "http://127.0.0.1:3140/bag?_rsc=1p-R_iEY6bj0jY31",
+          "http://127.0.0.1:3140/shop?_rsc=1p-R_iEY6bj0jY31"
+        ],
+        "unexpectedFailedRequests": [],
+        "overflow": false,
+        "overlay": false,
+        "mediaGenerationVisible": false
+      },
+      "candidate": {
+        "screenshotPath": "home-mobile-candidate.png",
+        "status": 200,
+        "consoleErrors": [],
+        "failedRequests": [
+          "http://127.0.0.1:3141/bag?_rsc=1p-R_iEY6bj0jY31",
+          "http://127.0.0.1:3141/shop?_rsc=1p-R_iEY6bj0jY31"
+        ],
+        "unexpectedFailedRequests": [],
+        "overflow": false,
+        "overlay": false,
+        "mediaGenerationVisible": false
+      },
+      "dimensionsMatch": true,
+      "differentBytes": 0,
+      "totalBytes": 2901600,
+      "byteDifferenceRatio": 0
+    },
+    {
+      "case": {
+        "name": "media-registry-desktop",
+        "route": "/admin/media",
+        "width": 1440,
+        "height": 1000,
+        "auth": true
+      },
+      "baseline": {
+        "screenshotPath": "media-registry-desktop-baseline.png",
+        "status": 200,
+        "consoleErrors": [],
+        "failedRequests": [],
+        "unexpectedFailedRequests": [],
+        "overflow": false,
+        "overlay": false,
+        "mediaGenerationVisible": false
+      },
+      "candidate": {
+        "screenshotPath": "media-registry-desktop-candidate.png",
+        "status": 200,
+        "consoleErrors": [],
+        "failedRequests": [],
+        "unexpectedFailedRequests": [],
+        "overflow": false,
+        "overlay": false,
+        "mediaGenerationVisible": false
+      },
+      "dimensionsMatch": true,
+      "differentBytes": 0,
+      "totalBytes": 6531840,
+      "byteDifferenceRatio": 0
+    },
+    {
+      "case": {
+        "name": "media-registry-mobile",
+        "route": "/admin/media",
+        "width": 390,
+        "height": 844,
+        "auth": true
+      },
+      "baseline": {
+        "screenshotPath": "media-registry-mobile-baseline.png",
+        "status": 200,
+        "consoleErrors": [],
+        "failedRequests": [],
+        "unexpectedFailedRequests": [],
+        "overflow": false,
+        "overlay": false,
+        "mediaGenerationVisible": false
+      },
+      "candidate": {
+        "screenshotPath": "media-registry-mobile-candidate.png",
+        "status": 200,
+        "consoleErrors": [],
+        "failedRequests": [],
+        "unexpectedFailedRequests": [],
+        "overflow": false,
+        "overlay": false,
+        "mediaGenerationVisible": false
+      },
+      "dimensionsMatch": true,
+      "differentBytes": 0,
+      "totalBytes": 4733040,
+      "byteDifferenceRatio": 0
+    }
+  ],
+  "failures": []
+}
