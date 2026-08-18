@@ -77,7 +77,7 @@ describe('home release composition', () => {
       primaryProduct: null,
     }} />);
     expect(available).toContain('View gallery');
-    expect(available).toContain('>12</span>');
+    expect(available).toContain('>14</span>');
     expect(available).toContain('data-media-trigger="signature-hoodie"');
     expect(available).toContain('aria-haspopup="dialog"');
     expect(available).toContain('aria-controls="product-media-overlay"');
@@ -198,21 +198,21 @@ describe('home release composition', () => {
     expect(isPreviewRunwayReference(previewDenied)).toBe(true);
     expect(isPreviewRunwayReference({ ...previewDenied, environment: 'production' })).toBe(false);
     expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-front-full.jpg');
-    expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-three-quarter.jpg');
-    expect(html).toContain('%2Fproducts%2Fsignature-hoodie%2Fcandidates%2Fmoda%2Fmodel-side-profile.jpg');
+    expect(html).toContain('/media/signature-hoodie/videos/runway-motion-final.mp4');
+    expect(html).toContain('/media/signature-hoodie/posters/runway-motion-final.jpg');
     expect(html).not.toContain('Production visual reference · Preview only');
     expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
     expect(html).not.toContain('data-preview-reference="signature-hoodie"');
     expect(html).not.toContain('Commerce withheld');
     expect(html).toContain('data-media-trigger="signature-hoodie"');
     expect(html).toContain('View gallery');
-    expect(html).toContain('>12</span>');
+    expect(html).toContain('>14</span>');
     expect(html).not.toContain('href="/products/carlophillips-signature-hoodie"');
     expect(html).not.toContain('aria-current="page"');
     expect(html).not.toContain('>Hoodies</a>');
     expect(html).not.toContain('>T-Shirts</a>');
-    expect(buildHomeGalleryMedia(previewDenied)).toHaveLength(12);
-    expect(buildHomeGalleryMedia(previewDenied).every(item => item.type === 'image')).toBe(true);
+    expect(buildHomeGalleryMedia(previewDenied)).toHaveLength(14);
+    expect(buildHomeGalleryMedia(previewDenied).filter(item => item.type === 'video')).toHaveLength(2);
   });
 
   it('builds a swipe gallery from eligible media without exposing preview studies in production', () => {
@@ -267,12 +267,14 @@ describe('home release composition', () => {
     expect(openHtml).toContain('aria-label="Previous product image"');
     expect(openHtml).toContain('aria-label="Next product image"');
     expect(openHtml).toContain('aria-label="Close product media viewer"');
-    expect(openHtml).toContain('01 / 12');
+    expect(openHtml).toContain('01 / 14');
     expect(openHtml).toContain('cp-media-track');
     expect(openHtml).toContain('cp-media-panel');
-    expect(openHtml).toContain('aria-label="Jump to motion study"');
+    expect(openHtml).toContain('aria-label="Show Runway motion"');
+    expect(openHtml).toContain('aria-label="Show Fit &amp; silhouette"');
     expect(openHtml).toContain('aria-pressed="false"');
-    expect(openHtml).toContain('>Motion study</button>');
+    expect(openHtml).toContain('>Runway motion</button>');
+    expect(openHtml).toContain('>Fit &amp; silhouette</button>');
     expect(openHtml).toContain('still-derived-motion-study-poster.webp');
     expect(openHtml).not.toContain('Still-derived motion loop');
     expect(openHtml).not.toContain('AI-assisted still-derived motion');

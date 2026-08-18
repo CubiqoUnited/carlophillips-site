@@ -40,8 +40,8 @@ for (const viewport of viewports) {
     overlay: Boolean(document.querySelector('[data-nextjs-dialog], .vite-error-overlay, #webpack-dev-server-client-overlay')),
     mediaNavCurrent: document.querySelector('a[aria-current="page"]')?.textContent?.trim() || '',
     actionButtons: [...document.querySelectorAll('button')].map(button => ({ label: button.textContent.trim(), disabled: button.disabled })),
-    truthLabels: document.body.innerText.toLowerCase().includes('ai editorial · draft only'),
-    boundary: document.body.innerText.includes('The existing POD-to-publish funnel remains unchanged.'),
+    truthLabels: document.body.innerText.toLowerCase().includes('ai editorial · staging review'),
+    boundary: document.body.innerText.includes('Funnel 1 remains unchanged while Funnel 2 stays feature-flagged.'),
   }));
   await page.screenshot({ path: path.join(outputDir, 'screenshots', `media-generation-${viewport.name}.png`), fullPage: true });
   results.push({

@@ -14,7 +14,7 @@ on:
       checkout_enabled:
         description: Stage a release-bound checkout candidate; the safe fallback always remains disabled
         required: true
-        default: false
+        default: true
         type: boolean
 
 permissions:
@@ -75,6 +75,8 @@ jobs:
           test "$NEXT_PUBLIC_COMMERCE_ENVIRONMENT" = "production"
           [[ "$SHOPIFY_CART_UI_ENABLED" =~ ^(true|false)$ ]]
           test "$SHOPIFY_CHECKOUT_ENABLED" = "$SHOPIFY_CART_UI_ENABLED"
+          test "$SHOPIFY_CART_UI_ENABLED" = "true"
+          test "$SHOPIFY_CHECKOUT_ENABLED" = "true"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

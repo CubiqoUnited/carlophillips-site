@@ -48,10 +48,10 @@ describe('feature-flagged Media Generation workspace', () => {
 
     expect(model).toMatchObject({
       authoritative: false,
-      draftOnly: true,
+      draftOnly: false,
       existingFunnelChanged: false,
       canonicalReleaseState: 'staged',
-      metrics: { candidates: 2, approved: 0, storefrontBound: 0 },
+      metrics: { candidates: 2, approved: 2, storefrontBound: 0, stagingPreviewBound: 2 },
       bindings: {
         mediaManifest: true,
         shopifyObservation: true,
@@ -113,17 +113,19 @@ describe('feature-flagged Media Generation workspace', () => {
       .toBe('EXACT_COST_APPROVAL_REQUIRED');
   });
 
-  it('keeps the two existing videos Draft-only and truthfully classified', () => {
+  it('binds the two approved videos to Staging only and keeps their truth classification', () => {
     expect(workspace.candidates).toHaveLength(2);
     expect(workspace.candidates.map(candidate => candidate.label)).toEqual(['Runway motion', 'Fit & silhouette']);
     for (const candidate of workspace.candidates) {
       expect(candidate.kind).toBe('video');
       expect(candidate.truthClassification).toBe('ai-editorial');
-      expect(candidate.storageState).toBe('local-evidence');
-      expect(candidate.approvalStatus).toBe('pending');
+      expect(candidate.storageState).toBe('approved-preview');
+      expect(candidate.approvalStatus).toBe('approved');
+      expect(candidate.qaStatus).toBe('passed');
+      expect(candidate.stagingPreviewBound).toBe(true);
       expect(candidate.storefrontBound).toBe(false);
     }
-    expect(workspace.candidates[0].notes.join(' ')).toContain('Closed-eye opening');
+    expect(workspace.candidates[0].notes.join(' ')).toContain('Closed-eye opening removed');
     expect(workspace.candidates[1].notes.join(' ')).toContain('not physical fit evidence');
   });
 });

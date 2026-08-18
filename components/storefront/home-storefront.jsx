@@ -75,6 +75,29 @@ const signaturePreviewReferenceMedia = [
   },
 ];
 
+const signatureApprovedStagingVideos = [
+  {
+    type: 'video',
+    src: '/media/signature-hoodie/videos/runway-motion-final.mp4',
+    posterSrc: '/media/signature-hoodie/posters/runway-motion-final.jpg',
+    previewUrl: '/media/signature-hoodie/posters/runway-motion-final.jpg',
+    alt: 'AI editorial runway motion showing the black CARLOPHILLIPS Signature Hoodie in a concrete studio',
+    label: 'Runway motion',
+    disclosure: 'AI editorial · Staging approved',
+    hideCaption: true,
+  },
+  {
+    type: 'video',
+    src: '/media/signature-hoodie/videos/fit-silhouette-final.mp4',
+    posterSrc: '/media/signature-hoodie/posters/fit-silhouette-final.jpg',
+    previewUrl: '/media/signature-hoodie/posters/fit-silhouette-final.jpg',
+    alt: 'AI editorial fit and silhouette study of the black CARLOPHILLIPS Signature Hoodie in a concrete studio',
+    label: 'Fit & silhouette',
+    disclosure: 'AI editorial · Staging approved',
+    hideCaption: true,
+  },
+];
+
 const productCategories = [
   { label: 'Hoodies', href: '/products/carlophillips-signature-hoodie' },
   { label: 'T-Shirts', href: '/shop?category=t-shirts' },
@@ -168,7 +191,10 @@ function useDialogLifecycle({ open, onClose, dialogRef, trapFocus = true }) {
 
 export function buildHomeGalleryMedia(summary) {
   if (isPreviewRunwayReference(summary)) {
-    return signaturePreviewReferenceMedia.map(item => ({ ...item, type: 'image' }));
+    return [
+      ...signaturePreviewReferenceMedia.map(item => ({ ...item, type: 'image' })),
+      ...signatureApprovedStagingVideos,
+    ];
   }
 
   const product = summary?.primaryProduct;
@@ -183,7 +209,10 @@ export function buildHomeGalleryMedia(summary) {
   }));
   const reviewMedia = summary.environment === 'production'
     ? []
-    : SIGNATURE_HOODIE_SHOWCASE_MEDIA.map(item => ({ ...item, type: 'image' }));
+    : [
+        ...SIGNATURE_HOODIE_SHOWCASE_MEDIA.map(item => ({ ...item, type: 'image' })),
+        ...signatureApprovedStagingVideos,
+      ];
   const uniqueMedia = new Map();
   [...releaseMedia, ...reviewMedia].forEach(item => {
     const source = item.src || item.url;
@@ -203,6 +232,9 @@ export function ProductMediaOverlay({ activeIndex = 0, interactive = true, media
   activeIndexRef.current = activeIndex;
 
   const motionIndex = media.findIndex(item => item.gifHref || item.type === 'video');
+  const videoIndexes = media
+    .map((item, index) => item.type === 'video' ? index : -1)
+    .filter(index => index >= 0);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -216,6 +248,12 @@ export function ProductMediaOverlay({ activeIndex = 0, interactive = true, media
     });
     return releaseDocumentScroll;
   }, [open]);
+
+  useEffect(() => {
+    dialogRef.current?.querySelectorAll('video').forEach(video => {
+      if (Number(video.dataset.mediaIndex) !== activeIndex) video.pause();
+    });
+  }, [activeIndex]);
 
   const moveTo = useCallback(nextIndex => {
     const index = Math.max(0, Math.min(nextIndex, media.length - 1));
@@ -313,7 +351,19 @@ export function ProductMediaOverlay({ activeIndex = 0, interactive = true, media
         <header className="cp-media-dialog-header">
           <div className="cp-media-header-group">
             <p className="cp-eyebrow cp-media-title-eyebrow">Signature Series / Media</p>
-            {motionIndex >= 0 && (
+            {videoIndexes.map(index => (
+              <button
+                key={media[index].label}
+                type="button"
+                onClick={() => handleManualMove(index)}
+                className="cp-media-jump"
+                aria-label={`Show ${media[index].label}`}
+                aria-pressed={activeIndex === index}
+              >
+                {media[index].label}
+              </button>
+            ))}
+            {videoIndexes.length === 0 && motionIndex >= 0 && (
               <button
                 type="button"
                 onClick={handleMotionControl}
@@ -375,8 +425,9 @@ export function ProductMediaOverlay({ activeIndex = 0, interactive = true, media
                   <video
                     controls
                     preload="metadata"
-                    poster={previewSource}
+                    poster={item.posterSrc || previewSource}
                     src={source}
+                    data-media-index={index}
                     className="cp-media-asset cp-media-fit-contain"
                   />
                 ) : (
@@ -390,7 +441,7 @@ export function ProductMediaOverlay({ activeIndex = 0, interactive = true, media
                     className={`cp-media-asset cp-media-asset-image ${item.fit || 'cp-media-fit-contain'} ${item.position || 'cp-media-position-center'}`}
                   />
                 )}
-                {!isStillDerivedMotion && (
+                {!isStillDerivedMotion && !item.hideCaption && (
                   <figcaption className="cp-media-caption">
                     <span>{item.label}</span>
                     <span className="cp-text-align-end">{item.disclosure}</span>
@@ -575,7 +626,8 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
   const [inMotionRange, setInMotionRange] = useState(false);
   const [pageActive, setPageActive] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(true);
-  const [userPaused, setUserPaused] = useState(true);
+  const [userPaused, setUserPaused] = useState(false);
+  const [motionCompleted, setMotionCompleted] = useState(false);
   const heroMedia = summary.primaryProduct?.heroMedia || null;
   const product = summary.primaryProduct;
   const signatureVisible = summary.visibleCount > 0
@@ -594,6 +646,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
     && pageActive
     && !reducedMotion
     && !userPaused
+    && !motionCompleted
     && !motionSuspended;
 
   useEffect(() => {
@@ -634,6 +687,13 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
   }, []);
 
   const toggleMotion = () => {
+    if (motionCompleted) {
+      if (motionVideoRef.current) motionVideoRef.current.currentTime = 0;
+      setMotionCompleted(false);
+      setUserPaused(false);
+      window.sessionStorage.setItem(motionPreferenceKey, 'false');
+      return;
+    }
     setUserPaused(current => {
       const next = !current;
       window.sessionStorage.setItem(motionPreferenceKey, String(next));
@@ -666,11 +726,11 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
               <video
                 ref={motionVideoRef}
                 src={motionAsset.src || motionAsset.url}
-                poster={motionAsset.previewUrl}
+                poster={motionAsset.posterSrc || motionAsset.previewUrl}
                 muted
-                loop
                 playsInline
                 preload="metadata"
+                onEnded={() => setMotionCompleted(true)}
                 className="cp-runway-live-motion"
                 aria-label={motionAsset.alt}
               />
@@ -761,11 +821,11 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
       {runwayVisualReady && (
         <div className="cp-motion-control-group">
           <span className="cp-motion-status" aria-live="polite">
-            Motion study · {motionPlaying ? 'playing' : 'paused'}
+            Runway motion · {motionPlaying ? 'playing' : motionCompleted ? 'complete' : 'paused'}
           </span>
           <button type="button" className="cp-motion-control" onClick={toggleMotion} aria-pressed={!motionPlaying}>
             {motionPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
-            <span>{motionPlaying ? 'Pause motion' : 'Play motion'}</span>
+            <span>{motionPlaying ? 'Pause motion' : motionCompleted ? 'Replay motion' : 'Play motion'}</span>
           </button>
           <span className={motionPlaying ? 'cp-motion-timeline' : 'cp-motion-timeline cp-motion-paused'} aria-hidden="true">
             <span />
@@ -1008,7 +1068,10 @@ export default function HomeStorefront({ catalogSummary }) {
           galleryCount={galleryMedia.length}
           motionAsset={motionAsset}
           motionSuspended={mediaOpen || orderOpen || Boolean(bagItem)}
-          onOpenGallery={() => setMediaOpen(true)}
+          onOpenGallery={() => {
+            setMediaIndex(0);
+            setMediaOpen(true);
+          }}
           onOpenOrder={() => setOrderOpen(true)}
           priceLabel={priceLabel}
           purchaseReady={purchaseReady}

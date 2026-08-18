@@ -1,5 +1,20 @@
 # Delivery Tasks
 
+## Current Staging UAT: Funnel 2, final Hoodie video and analytics
+
+- [x] Preserve Funnel 1 and add the feature-flagged Funnel 2 Media Generation workspace inside the same Product Owner Admin portal and canonical release/media authority.
+- [x] Treat the exact two Product Owner-selected Hoodie videos as final for Staging, checksum-bind the derivatives, and keep their truthful AI-editorial classification.
+- [x] Use the 7.79-second Runway edit on the default post-hero Hoodie panel with visibility-aware muted autoplay, end-stop, pause/replay and reduced-motion fallback.
+- [x] Open Explore Media on a factual still and expose separate Runway motion and Fit & silhouette video selectors without bottom captions.
+- [x] Add a truthful provider-readiness registry for Modelize, MODA, Sugata, TAYLA, Raspberry AI, ProductSpin AI, Instant 3D, Spacecheck and Runway without claiming unavailable authenticated handshakes or spending credits.
+- [x] Integrate Vercel Web Analytics and Speed Insights on public routes only; exclude Admin and strip query/hash data from event URLs. Retain Shopify as commerce/revenue authority.
+- [x] Add Production-candidate lint that requires cart and checkout on the primary candidate and preserves the distinct checkout-disabled fallback and release gates.
+- [x] Pass public desktop/tablet/mobile video, gallery, reduced-motion, accessibility, console/network, overflow and screenshot QA plus Product Owner Admin allow and reviewer/anonymous denial QA.
+- [ ] Complete live Order tray, bag, hosted Shopify checkout and payment UAT only after the canonical Hoodie Product Release Record is Approved/Released with product, media, fulfillment, fresh Production and rollback evidence. Do not fake this state or bypass the server gate.
+- [ ] Provision one selected Funnel 2 provider with approved credentials and exact per-run/monthly limits, then capture a sanitized read-only authentication receipt before enabling generation.
+- [x] Deploy exact commit `3d8cefd5` to the permanent protected Staging URL and verify public routes, final media, analytics hooks, Admin sign-in/anonymous concealment and unchanged Production.
+- [ ] Complete one manual authenticated Product Owner review of `/admin/media-generation` on permanent Staging; local Product Owner desktop/tablet/mobile RBAC UAT is already green.
+
 ## Product motion/gallery/purchase experience
 
 - [x] Consolidate the previously verified motion controls with the current Shopify checkout handoff branch.
@@ -8,7 +23,7 @@
 - [x] Add Shopify-price Order entry, exact S/M/L selector, Size & Fit drawer, Add-to-Bag confirmation, quantity/subtotal and secure checkout handoff without exposing raw variant IDs.
 - [x] Keep every new look-and-feel value in the canonical design-token/component authority and pass the existing hardcoded-value lint.
 - [x] Pass desktop/tablet/mobile interaction, console/network, overflow and screenshot QA with no checkout submission.
-- [ ] Ingest and approve two genuine Hoodie videos (runway walk; minimal movements/gestures/styling), bind them to the Media Registry/Product Release Record, and repeat immutable Preview QA.
+- [x] Bind the two Product Owner-selected Hoodie videos to the feature-flagged Staging presentation and repeat desktop/tablet/mobile UAT. Production Media Registry binding remains separate.
 - [ ] Deploy only through the protected Staging/Production path after the current branch is reviewed and repository/environment protections are configured.
 
 ## Current Production payment activation

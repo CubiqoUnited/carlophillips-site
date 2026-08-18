@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "cp.uat-final-media.v1",
+  "baseUrl": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app",
+  "generatedAt": "2026-08-18T06:50:36.208Z",
+  "results": [
+    {
+      "viewport": {
+        "id": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "overlay": 0,
+      "hasContent": true,
+      "overflow": false,
+      "videoState": {
+        "src": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "duration": 7.791667,
+        "muted": true,
+        "loop": false,
+        "paused": false,
+        "currentTime": 0.843389
+      },
+      "videoAdvanced": true,
+      "stoppedAtEnd": true,
+      "controls": {
+        "pauseMotion": 1,
+        "gallery": 1,
+        "order": 0,
+        "mobilePurchase": 0
+      },
+      "galleryInitial": {
+        "firstSlideImage": 1,
+        "firstSlideVideo": 0,
+        "runwaySelector": 1,
+        "fitSelector": 1
+      },
+      "activeRunwayVideo": 1,
+      "activeFitVideo": 1,
+      "consoleErrors": [],
+      "mediaResponses": [
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "status": 206
+        },
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "status": 206
+        },
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "status": 206
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "id": "tablet",
+        "width": 768,
+        "height": 1024
+      },
+      "status": 200,
+      "overlay": 0,
+      "hasContent": true,
+      "overflow": false,
+      "videoState": {
+        "src": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "duration": 7.791667,
+        "muted": true,
+        "loop": false,
+        "paused": false,
+        "currentTime": 0.786006
+      },
+      "videoAdvanced": true,
+      "stoppedAtEnd": true,
+      "controls": {
+        "pauseMotion": 1,
+        "gallery": 1,
+        "order": 0,
+        "mobilePurchase": 0
+      },
+      "galleryInitial": {
+        "firstSlideImage": 1,
+        "firstSlideVideo": 0,
+        "runwaySelector": 1,
+        "fitSelector": 1
+      },
+      "activeRunwayVideo": 1,
+      "activeFitVideo": 1,
+      "consoleErrors": [],
+      "mediaResponses": [
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "status": 206
+        },
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "status": 206
+        },
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "status": 206
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "id": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "overlay": 0,
+      "hasContent": true,
+      "overflow": false,
+      "videoState": {
+        "src": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "duration": 7.791667,
+        "muted": true,
+        "loop": false,
+        "paused": false,
+        "currentTime": 0.888529
+      },
+      "videoAdvanced": true,
+      "stoppedAtEnd": true,
+      "controls": {
+        "pauseMotion": 1,
+        "gallery": 1,
+        "order": 0,
+        "mobilePurchase": 0
+      },
+      "galleryInitial": {
+        "firstSlideImage": 1,
+        "firstSlideVideo": 0,
+        "runwaySelector": 1,
+        "fitSelector": 1
+      },
+      "activeRunwayVideo": 1,
+      "activeFitVideo": 1,
+      "consoleErrors": [],
+      "mediaResponses": [
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "status": 206
+        },
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "status": 206
+        },
+        {
+          "url": "https://carlophillips-site-staging-adityas-projects-261b17a9.vercel.app/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "status": 206
+        }
+      ],
+      "failedRequests": []
+    }
+  ],
+  "reducedMotion": {
+    "paused": true,
+    "currentTime": 0
+  },
+  "assertions": {
+    "pageHealthy": true,
+    "responsive": true,
+    "videoContract": true,
+    "factualGalleryOpening": true,
+    "separateVideos": true,
+    "reducedMotion": true,
+    "consoleAndNetworkClean": true,
+    "commerceControlsPresent": false
+  }
+}
