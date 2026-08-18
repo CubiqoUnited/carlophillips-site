@@ -613,3 +613,17 @@
 - [x] Re-run the complete source gate and three-width, seven-route background visual/functional QA for the reference correction.
 - [x] Make Motion Study an accessible Jump → Pause → Play component, remove its visible footer caption, and verify all three states at desktop, tablet, and mobile widths.
 - [ ] Push the exact verified candidate, obtain exact-head CI and immutable Preview evidence, then merge and promote only the accepted main artifact with rollback proven.
+
+# Feature-flagged Admin Media Generation
+
+- [x] Add a Product Owner-only `Media Generation` workspace inside the existing Admin portal, hidden and 404 when the server-only flag is off.
+- [x] Bind the workspace to the exact existing Product Release Record, Media Registry, Shopify observation, provider mapping, and release-evidence fingerprints without mutating them.
+- [x] Model minimal POD inputs, eight constraint dimensions, replaceable provider lanes, six permanent truth classifications, Draft candidates, QA, quarantine, approval, and placement proposals.
+- [x] Record the two existing Hoodie videos as sanitized, local-evidence-only AI editorial candidates without copying them into public or Shopify storage.
+- [x] Keep Generate, Regenerate, Quarantine, Approve, Assign, Shopify upload, Preview placement, publication, and release fail-closed; expose only read-only comparison.
+- [x] Pass full lint/test/audit/build QA plus desktop/tablet/mobile Product Owner visual checks and reviewer/anonymous denial checks.
+- [x] Prove feature-off homepage and existing Media Registry parity against exact Staging with four byte-identical screenshot comparisons.
+- [ ] Configure `CP_ADMIN_MEDIA_GENERATION_ENABLED=true` only for protected Staging after exact-head CI; keep Production false/unset.
+- [ ] Select and approve private Draft storage, provider access, exact per-run/monthly credit ceilings, numerical product tolerances, rights evidence, and mutation-role ownership before enabling generation.
+- [ ] Create the 7–8 second Hoodie runway derivative only after the exact playback interpretation and edit are approved; keep both video binaries private and Draft-only until Media Registry approval.
+- [ ] Connect durable command/audit storage and separately reviewed provider adapters before enabling any mutating Admin control.
