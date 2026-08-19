@@ -1,0 +1,55 @@
+'use client';
+
+import Image from 'next/image';
+import { useState } from 'react';
+import { MediaViewer } from '../MediaViewer';
+import type { ViewerMediaItem } from '@/lib/media/types';
+import type { MediaReview } from '@/types';
+
+export function ProductGallery({
+  media,
+  mediaReview = null,
+  customerFacing = false,
+}: {
+  media: ViewerMediaItem[];
+  mediaReview?: MediaReview | null;
+  customerFacing?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+
+  if (media.length === 0) {
+    return (
+      <div className="cp-product-gallery-empty cp-surface-raised cp-text-muted flex flex-col items-center justify-center gap-4 p-10 text-center text-sm">
+        <p>No approved product media was returned by the selected source.</p>
+        {mediaReview && <p className="cp-label-small max-w-xl font-mono">Media review incomplete — missing: {mediaReview.missingModalities.join(', ') || 'approved fallback'}</p>}
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="cp-product-gallery-grid cp-grid-rule grid lg:grid-cols-2" data-media-count={media.length}>
+        {media.map((item, index) => (
+          <figure key={item.id} className={index === 0 ? 'cp-card-media-featured lg:col-span-2' : 'cp-card-media'}>
+            {item.type === 'image' && item.url ? (
+              <button type="button" className="block h-full w-full" onClick={() => setOpen(true)} aria-label={`Open ${item.label}`}>
+                <div className={`${index === 0 ? 'cp-product-media-featured' : 'cp-product-media-portrait'} relative`}>
+                  <Image src={item.url} alt={item.alt} fill sizes="(min-width: 1024px) 52vw, 100vw" className="object-contain object-center p-8 sm:p-12" />
+                </div>
+              </button>
+            ) : item.type === 'video' && item.url ? (
+              <video controls autoPlay muted playsInline preload="metadata" poster={item.previewUrl} className="h-full w-full object-contain" src={item.url} />
+            ) : (
+              <div className="cp-product-media-portrait cp-text-muted flex items-center justify-center p-8 text-sm">Media unavailable</div>
+            )}
+            <figcaption className="cp-label-small cp-surface-canvas cp-rule border-t px-5 py-4">{customerFacing ? `View ${String(index + 1).padStart(2, '0')}` : item.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <div className="flex justify-end border-b px-5 py-4">
+        <button type="button" className="cp-action cp-action-outline" onClick={() => setOpen(true)}>View gallery</button>
+      </div>
+      <MediaViewer media={media} open={open} onClose={() => setOpen(false)} title="Signature Hoodie" />
+    </>
+  );
+}
