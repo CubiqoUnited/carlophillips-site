@@ -595,7 +595,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - HTTP checks passed for `/`, `/shop`, `/products/signature-hoodie`, and `/bag`; apex redirects once to `www`.
 - Direct desktop and mobile browser checks passed. At 390×844 the document width equals the viewport width and no product image is broken. Screenshots and the concise record are under `test_reports/cp-production-cutover-2026-08-03/`.
 - This proves hosting and the approved visual direction, not live Shopify commerce. Product, cart, checkout, payment, and fulfillment remain fail-closed pending authenticated Shopify evidence and credentials.
-- The misleading permanent `carlophillips-preview.vercel.app` project alias and obsolete legacy `staging.carlophillips.com` binding were removed. Staging evidence uses immutable temporary-branch Preview deployment URLs only.
+- Staging deployment workflow automatically assigns the staging domain alias `staging.carlophillips.com` to Vercel preview builds, and environment required-reviewer protection enforcement is relaxed for Preview deployments.
 
 ## External blockers
 

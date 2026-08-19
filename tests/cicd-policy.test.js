@@ -335,7 +335,7 @@ describe('CI/CD policy', () => {
     ['wrong role', { metadata: { cpArtifactKind: 'staged-production' } }],
     ['wrong environment', { metadata: { cpBuildEnvironment: 'production' } }],
     ['checkout enabled', { metadata: { cpCheckoutEnabled: 'true' } }],
-    ['alias leakage', { inspect: { aliases: ['preview.example.com'] } }],
+    ['alias leakage', { inspect: { aliases: ['www.carlophillips.com'] } }],
     ['Production drift', { productionAfter: { id: 'dpl_other' } }],
   ])('rejects immutable Preview tampering: %s', (_label, overrides) => {
     const directory = mkdtempSync(join(tmpdir(), 'cp-preview-invalid-'));

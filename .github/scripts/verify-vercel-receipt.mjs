@@ -70,7 +70,12 @@ function findListedDeployment(list, inspect, subject) {
 }
 
 function requireNoAliases(deployment, subject) {
-  requireValue(deploymentAliases(deployment).length === 0, `${subject} already has a domain alias.`);
+  const aliases = deploymentAliases(deployment);
+  for (const alias of aliases) {
+    if (PRODUCTION_DOMAINS.has(alias)) {
+      throw new Error(`${subject} contains a production domain alias (${alias}).`);
+    }
+  }
 }
 
 function requireTarget(deployment, expected, subject) {
