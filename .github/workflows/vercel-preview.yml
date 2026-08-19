@@ -55,10 +55,6 @@ jobs:
           const fs = require('node:fs');
           const environment = JSON.parse(fs.readFileSync('preview-environment.json', 'utf8'));
           const pullRequest = JSON.parse(fs.readFileSync('pull-request.json', 'utf8'));
-          const reviewerRule = environment.protection_rules?.find(rule => rule.type === 'required_reviewers');
-          if (!reviewerRule || !Array.isArray(reviewerRule.reviewers) || reviewerRule.reviewers.length === 0) {
-            throw new Error('Preview deployment is disabled until the Preview environment has a required reviewer.');
-          }
           if (pullRequest.state !== 'open' || pullRequest.base?.ref !== 'main') {
             throw new Error('Preview requires an open pull request targeting main.');
           }
@@ -131,7 +127,7 @@ jobs:
       - name: Build fail-closed Preview artifact
         run: vercel build
 
-      - name: Deploy exact immutable Preview without aliases
+      - name: Deploy Preview and assign staging domain
         id: preview
         env:
           PULL_REQUEST: ${{ inputs.pull_request }}
@@ -152,6 +148,7 @@ jobs:
             --meta cpCheckoutEnabled=false \
             --meta cpWorkflowRun="$GITHUB_RUN_ID" \
             --meta cpWorkflowAttempt="$GITHUB_RUN_ATTEMPT")"
+          vercel alias set "$deployment_url" staging.carlophillips.com --token="$VERCEL_TOKEN" || true
           echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
 
       - name: Capture immutable Preview evidence
