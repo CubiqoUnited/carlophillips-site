@@ -52,19 +52,18 @@ export function SignatureHoodieMediaLab() {
   return (
     <main className="cp-media-lab">
       <div className="cp-media-lab-shell">
-        <p className="cp-media-lab-kicker">
-          CARLOPHILLIPS / Local media lab
-        </p>
+        <p className="cp-media-lab-kicker">CARLOPHILLIPS / Local media lab</p>
         <div className="cp-media-lab-intro">
           <div>
             <h1 className="cp-media-lab-title">
-              Signature Hoodie<br />
+              Signature Hoodie
+              <br />
               Media System
             </h1>
             <p className="cp-media-lab-intro-copy">
-              Private local review only. These are AI-assisted visual studies and
-              a factual front reference—not customer-facing product proof, not
-              Shopify media, and not a live storefront release.
+              Private local review only. These are AI-assisted visual studies
+              and a factual front reference—not customer-facing product proof,
+              not Shopify media, and not a live storefront release.
             </p>
           </div>
           <p className="cp-media-lab-intro-label">
@@ -72,22 +71,50 @@ export function SignatureHoodieMediaLab() {
           </p>
         </div>
 
-        <section className="cp-media-lab-admin" aria-labelledby="media-generation-title">
+        <section
+          className="cp-media-lab-admin"
+          aria-labelledby="media-generation-title"
+        >
           <div>
-            <p className="cp-media-lab-section-label">Admin / Media Generation</p>
-            <h2 id="media-generation-title" className="cp-media-lab-heading">Generation control plane</h2>
-            <p className="cp-media-lab-intro-copy">Draft-only generation jobs are listed with truth labels and approval state. This review surface does not publish or change storefront media.</p>
+            <p className="cp-media-lab-section-label">
+              Admin / Media Generation
+            </p>
+            <h2 id="media-generation-title" className="cp-media-lab-heading">
+              Generation control plane
+            </h2>
+            <p className="cp-media-lab-intro-copy">
+              Draft-only generation jobs are listed with truth labels and
+              approval state. This review surface does not publish or change
+              storefront media.
+            </p>
           </div>
-          <div className="cp-media-lab-jobs" role="list" aria-label="Media generation jobs">
+          <div
+            className="cp-media-lab-jobs"
+            role="list"
+            aria-label="Media generation jobs"
+          >
             {[
               ['Runway motion', 'AI-assisted motion', 'Ready for review'],
               ['Fit and silhouette', 'AI-assisted motion', 'Ready for review'],
               ['Four-angle study', 'Approximate 360', 'Disclosure required'],
             ].map(([name, truth, state]) => (
               <article key={name} role="listitem" className="cp-media-lab-job">
-                <div><strong>{name}</strong><span>{truth}</span></div>
+                <div>
+                  <strong>{name}</strong>
+                  <span>{truth}</span>
+                </div>
                 <span className="cp-media-lab-job-state">{state}</span>
-                <div className="cp-media-lab-job-actions"><button type="button" disabled>Regenerate</button><button type="button" disabled>Approve</button><button type="button" disabled>Quarantine</button></div>
+                <div className="cp-media-lab-job-actions">
+                  <button type="button" disabled>
+                    Regenerate
+                  </button>
+                  <button type="button" disabled>
+                    Approve
+                  </button>
+                  <button type="button" disabled>
+                    Quarantine
+                  </button>
+                </div>
               </article>
             ))}
           </div>
@@ -95,9 +122,7 @@ export function SignatureHoodieMediaLab() {
 
         <section className="cp-media-lab-motion-grid">
           <div>
-            <p className="cp-media-lab-section-label">
-              01 / 360 motion study
-            </p>
+            <p className="cp-media-lab-section-label">01 / 360 motion study</p>
             <div className="cp-media-lab-portrait">
               <Image
                 src="/media/draft-signature-hoodie/signature-hoodie-draft-360.gif"
@@ -159,9 +184,7 @@ export function SignatureHoodieMediaLab() {
               <p className="cp-media-lab-section-label">
                 03 / Editorial system
               </p>
-              <h2 className="cp-media-lab-heading">
-                Concrete runway studies
-              </h2>
+              <h2 className="cp-media-lab-heading">Concrete runway studies</h2>
             </div>
             <p className="cp-media-lab-editorial-note">
               Background direction comes from the supplied concrete still and
@@ -190,7 +213,9 @@ export function SignatureHoodieMediaLab() {
                     alt={item.alt}
                     fill
                     unoptimized
-                    sizes={index === 0 ? '100vw' : '(max-width: 640px) 100vw, 50vw'}
+                    sizes={
+                      index === 0 ? '100vw' : '(max-width: 640px) 100vw, 50vw'
+                    }
                     className="cp-media-lab-editorial-image"
                   />
                 </div>

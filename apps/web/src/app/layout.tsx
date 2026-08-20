@@ -151,7 +151,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
         {/* GA4 Analytics */}
         {(() => {
-          const ga4Id = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || 'G-CPSTAGING2026';
+          const ga4Id =
+            process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || 'G-CPSTAGING2026';
           return (
             <>
               <script
@@ -168,7 +169,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         })()}
         {/* Microsoft Clarity */}
         {(() => {
-          const clarityId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || 'cp-clarity-staging';
+          const clarityId =
+            process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || 'cp-clarity-staging';
           return (
             <script
               dangerouslySetInnerHTML={{

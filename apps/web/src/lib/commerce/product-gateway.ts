@@ -27,10 +27,7 @@ export function resolveCommerceDataMode({
   if (!mode) {
     if (environment === 'local' && canUseFixtureData(environment)) {
       mode = COMMERCE_DATA_MODES.FIXTURE;
-    } else if (
-      environment === 'preview' &&
-      canRenderDraftProductPreviews()
-    ) {
+    } else if (environment === 'preview' && canRenderDraftProductPreviews()) {
       mode = COMMERCE_DATA_MODES.FIXTURE;
     } else {
       mode = COMMERCE_DATA_MODES.SHOPIFY;

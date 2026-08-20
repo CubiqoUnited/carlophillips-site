@@ -107,7 +107,11 @@ export default function ShopifyCheckoutForm({
         {selected ? money(selected.price.amount, selected.price.currency) : ''}
       </button>
       <div className="mt-4 flex flex-wrap gap-4 text-xs">
-        <button type="button" className="underline" onClick={() => setSizeGuideOpen(true)}>
+        <button
+          type="button"
+          className="underline"
+          onClick={() => setSizeGuideOpen(true)}
+        >
           Size guide
         </button>
         <span>Shipping & returns available at checkout</span>
@@ -116,17 +120,25 @@ export default function ShopifyCheckoutForm({
         <div role="dialog" aria-modal="true" className="cp-drawer mt-5 p-5">
           <div className="flex items-center justify-between">
             <strong>Size & fit</strong>
-            <button type="button" onClick={() => setSizeGuideOpen(false)} aria-label="Close size guide">
+            <button
+              type="button"
+              onClick={() => setSizeGuideOpen(false)}
+              aria-label="Close size guide"
+            >
               Close
             </button>
           </div>
           <p className="mt-4 text-sm">
-            This piece is designed for a relaxed fit. Measurements and model guidance are sourced from the approved product record.
+            This piece is designed for a relaxed fit. Measurements and model
+            guidance are sourced from the approved product record.
           </p>
           <details className="mt-4">
-            <summary className="cursor-pointer">Measurements & how to measure</summary>
+            <summary className="cursor-pointer">
+              Measurements & how to measure
+            </summary>
             <p className="mt-3 text-sm">
-              Measure chest at the fullest point and keep the tape level. Compare against the size information returned by Shopify.
+              Measure chest at the fullest point and keep the tape level.
+              Compare against the size information returned by Shopify.
             </p>
           </details>
         </div>
@@ -135,18 +147,42 @@ export default function ShopifyCheckoutForm({
         <div role="dialog" aria-modal="true" className="cp-drawer mt-5 p-5">
           <div className="flex items-center justify-between">
             <strong>Added to bag</strong>
-            <button type="button" onClick={() => setBagOpen(false)} aria-label="Close bag confirmation">
+            <button
+              type="button"
+              onClick={() => setBagOpen(false)}
+              aria-label="Close bag confirmation"
+            >
               Close
             </button>
           </div>
-          <p className="mt-4 text-sm">{selected.title} · {sizeFor(selected).toUpperCase()}</p>
+          <p className="mt-4 text-sm">
+            {selected.title} · {sizeFor(selected).toUpperCase()}
+          </p>
           <div className="mt-4 flex items-center gap-3">
             <label htmlFor="quantity">Quantity</label>
-            <input id="quantity" type="number" min="1" max="9" value={quantity} onChange={(event) => setQuantity(Math.max(1, Number(event.target.value) || 1))} className="w-16 border p-2" />
+            <input
+              id="quantity"
+              type="number"
+              min="1"
+              max="9"
+              value={quantity}
+              onChange={(event) =>
+                setQuantity(Math.max(1, Number(event.target.value) || 1))
+              }
+              className="w-16 border p-2"
+            />
           </div>
           <div className="mt-5 flex gap-3">
-            <a className="cp-action cp-action-solid" href="/bag">View bag</a>
-            <button type="button" className="cp-action cp-action-outline" onClick={() => setBagOpen(false)}>Continue shopping</button>
+            <a className="cp-action cp-action-solid" href="/bag">
+              View bag
+            </a>
+            <button
+              type="button"
+              className="cp-action cp-action-outline"
+              onClick={() => setBagOpen(false)}
+            >
+              Continue shopping
+            </button>
           </div>
         </div>
       )}

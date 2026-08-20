@@ -6,7 +6,8 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Signature Hoodie Media Lab | CARLOPHILLIPS',
-  description: 'Private Draft-only media review for the CARLOPHILLIPS Signature Hoodie.',
+  description:
+    'Private Draft-only media review for the CARLOPHILLIPS Signature Hoodie.',
   robots: { index: false, follow: false },
 };
 
