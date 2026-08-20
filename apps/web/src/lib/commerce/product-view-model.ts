@@ -115,7 +115,7 @@ export function toProductViewModel(
         ? product.variantPresentation || null
         // Synthetic staging variants so S/M/L size chooser renders during fixture/preview review.
         // Reference hashes match shopify-product-offer.json allowedReferenceHashes.
-        : (decision.source === 'fixture' || decision.environment === 'preview' || decision.environment === 'local')
+        : (decision.source === 'fixture' || decision.environment === 'preview' || decision.environment === 'local' || decision.environment === 'staging')
           ? {
               combinations: [
                 {
