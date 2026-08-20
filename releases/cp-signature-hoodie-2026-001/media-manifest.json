@@ -163,6 +163,74 @@
       "quality": { "status": "pending", "evidence": null },
       "alt": "Signature Hoodie fit and silhouette motion",
       "fallbackAssetId": "apliiq-5958463-black-front-original"
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "signature-hoodie-runway-motion-poster",
+      "kind": "image",
+      "source": {
+        "type": "product-owner-approved",
+        "reference": "apps/web/public/media/signature-hoodie/posters/runway-motion.jpg",
+        "method": "Extracted poster frame from approved runway-motion.mp4"
+      },
+      "storefrontBinding": "landing-runway-motion-poster",
+      "exactProductMatch": "approved",
+      "rightsStatus": "approved",
+      "approvalStatus": "approved",
+      "quality": { "status": "approved", "evidence": null },
+      "alt": "Signature Hoodie runway motion poster frame",
+      "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "signature-hoodie-fit-silhouette-poster",
+      "kind": "image",
+      "source": {
+        "type": "product-owner-approved",
+        "reference": "apps/web/public/media/signature-hoodie/posters/fit-silhouette.jpg",
+        "method": "Extracted poster frame from approved fit-silhouette.mp4"
+      },
+      "storefrontBinding": "explore-fit-silhouette-poster",
+      "exactProductMatch": "approved",
+      "rightsStatus": "approved",
+      "approvalStatus": "approved",
+      "quality": { "status": "approved", "evidence": null },
+      "alt": "Signature Hoodie fit silhouette poster frame",
+      "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "signature-hoodie-derivatives-placeholder",
+      "kind": "placeholder",
+      "source": {
+        "type": "product-owner-approved",
+        "reference": "apps/web/public/media/signature-hoodie/derivatives/.gitkeep",
+        "method": "Directory placeholder for derivative output pipeline"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "approved",
+      "rightsStatus": "approved",
+      "approvalStatus": "approved",
+      "quality": { "status": "approved", "evidence": null },
+      "alt": null,
+      "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "signature-hoodie-originals-placeholder",
+      "kind": "placeholder",
+      "source": {
+        "type": "product-owner-approved",
+        "reference": "apps/web/public/media/signature-hoodie/originals/.gitkeep",
+        "method": "Directory placeholder for originals storage pipeline"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "approved",
+      "rightsStatus": "approved",
+      "approvalStatus": "approved",
+      "quality": { "status": "approved", "evidence": null },
+      "alt": null,
+      "fallbackAssetId": null
     }
   ]
 }
