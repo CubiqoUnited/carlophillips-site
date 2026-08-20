@@ -13,7 +13,6 @@ import {
   ShoppingBag,
   X,
   Ruler,
-  ShoppingBag as BagIcon,
   Check,
   Minus,
   Plus,
@@ -40,51 +39,6 @@ const signatureRunwayFrameClasses = [
 ];
 
 const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
-
-const STRIP_MEDIA = [
-  {
-    id: 'strip-runway',
-    label: 'Runway',
-    src: '/media/draft-signature-hoodie/runway-front-v1.png',
-    alt: 'Runway motion',
-  },
-  {
-    id: 'strip-fit',
-    label: 'Fit',
-    src: '/media/draft-signature-hoodie/07-three-quarter-neutral.png',
-    alt: 'Fit view',
-  },
-  {
-    id: 'strip-front',
-    label: 'Front',
-    src: '/media/draft-signature-hoodie/01-factual-apliiq-front.png',
-    alt: 'Front view',
-  },
-  {
-    id: 'strip-3q',
-    label: '3/4',
-    src: '/media/draft-signature-hoodie/03-ai-right-three-quarter.png',
-    alt: '3/4 view',
-  },
-  {
-    id: 'strip-back',
-    label: 'Back',
-    src: '/media/draft-signature-hoodie/04-ai-back.png',
-    alt: 'Back view',
-  },
-  {
-    id: 'strip-detail',
-    label: 'Detail',
-    src: '/media/draft-signature-hoodie/09-hood-logo-drawstrings-closeup.png',
-    alt: 'Detail',
-  },
-  {
-    id: 'strip-lifestyle',
-    label: 'Life',
-    src: '/media/draft-signature-hoodie/11-seated-forward-lean.png',
-    alt: 'Lifestyle',
-  },
-];
 
 const PRODUCT_OFFER_HASHES = [
   'sha256:0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d', // S
@@ -417,7 +371,7 @@ function ProductRunwayHero({
               onClick={onOpenOrder}
               className="cp-action cp-action-solid mt-7 inline-flex"
             >
-              ORDER — {priceLabel || '€180'}
+              ORDER — {priceLabel || '\u20ac180'}
             </button>
           )}
           {signatureVisible && (
@@ -435,24 +389,28 @@ function ProductRunwayHero({
           )}
         </div>
       </div>
-      {signatureVisible && (
-        <div className="absolute bottom-0 left-0 z-20 flex gap-1 p-3">
-          {STRIP_MEDIA.map((thumb) => (
-            <button
-              key={thumb.id}
-              type="button"
-              aria-label={thumb.label}
-              className="relative h-10 w-10 overflow-hidden border border-white/20 opacity-70 hover:opacity-100 transition-opacity"
-            >
-              <Image
-                src={thumb.src}
-                alt={thumb.alt}
-                fill
-                className="object-cover"
-                sizes="40px"
-              />
-            </button>
-          ))}
+      {signatureVisible && galleryMedia.length > 0 && (
+        <div className="cp-thumb-strip">
+          {galleryMedia
+            .filter((m) => m.type === 'image')
+            .slice(0, 7)
+            .map((thumb) => (
+              <button
+                key={thumb.id || thumb.src}
+                type="button"
+                aria-label={thumb.alt || thumb.label}
+                className="cp-thumb-btn"
+                onClick={onOpenGallery}
+              >
+                <Image
+                  src={thumb.src || thumb.url}
+                  alt={thumb.alt || ''}
+                  fill
+                  className="object-cover"
+                  sizes="40px"
+                />
+              </button>
+            ))}
         </div>
       )}
     </section>
@@ -520,59 +478,47 @@ function SizeFitDrawer({ onClose }: { onClose: () => void }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="size-fit-title"
-      className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-[#0d0d0d] shadow-2xl"
+      className="cp-dark-panel"
     >
-      <header className="flex items-start justify-between border-b border-white/10 p-6">
+      <header className="cp-dark-panel-header">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">
-            Fit guide
-          </p>
-          <h2
-            id="size-fit-title"
-            className="mt-1 text-2xl font-light text-white"
-          >
-            Size & Fit
+          <p className="cp-dark-panel-kicker">Fit guide</p>
+          <h2 id="size-fit-title" className="cp-dark-panel-title">
+            Size &amp; Fit
           </h2>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="ml-4 text-white/60 hover:text-white"
+          className="cp-dark-panel-close"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
         </button>
       </header>
-      <div className="flex-1 overflow-y-auto p-6 text-white/80">
-        <p className="text-lg font-light">Regular fit</p>
-        <p className="mt-3 text-sm leading-relaxed text-white/60">
+      <div className="cp-dark-panel-body cp-dark-panel-body-text">
+        <p className="cp-fit-title">Regular fit</p>
+        <p className="cp-dark-panel-copy">
           Designed with room through the chest and body. Choose your usual size
           for the intended structured silhouette.
         </p>
-        <div className="mt-5 flex gap-3">
+        <div className="cp-size-btn-row">
           {STAGING_SIZES.map((s) => (
-            <span
-              key={s}
-              className="flex h-11 w-16 items-center justify-center border border-white/20 text-sm"
-            >
+            <span key={s} className="cp-size-btn">
               {s}
             </span>
           ))}
         </div>
-        <details className="mt-6 border-t border-white/10 pt-4" open>
-          <summary className="cursor-pointer text-xs uppercase tracking-widest text-white/50">
-            Garment measurements
-          </summary>
-          <p className="mt-3 text-sm leading-relaxed text-white/50">
+        <details className="cp-fit-section" open>
+          <summary className="cp-fit-summary">Garment measurements</summary>
+          <p className="cp-fit-body">
             Compare a favourite hoodie laid flat. Measure chest from underarm to
             underarm and length from shoulder to hem.
           </p>
         </details>
-        <details className="mt-4 border-t border-white/10 pt-4">
-          <summary className="cursor-pointer text-xs uppercase tracking-widest text-white/50">
-            How to measure
-          </summary>
-          <p className="mt-3 text-sm leading-relaxed text-white/50">
+        <details className="cp-fit-section">
+          <summary className="cp-fit-summary">How to measure</summary>
+          <p className="cp-fit-body">
             Keep the tape level and relaxed. If you are between sizes, size up
             for a looser fit.
           </p>
@@ -603,51 +549,40 @@ function OrderTray({
       role="dialog"
       aria-modal="true"
       aria-labelledby="order-tray-title"
-      className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-[#0d0d0d] shadow-2xl"
+      className="cp-dark-panel"
     >
-      <header className="flex items-start justify-between border-b border-white/10 p-6">
+      <header className="cp-dark-panel-header">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">
-            Signature Series / 001
-          </p>
-          <h2
-            id="order-tray-title"
-            className="mt-1 text-2xl font-light text-white"
-          >
+          <p className="cp-dark-panel-kicker">Signature Series / 001</p>
+          <h2 id="order-tray-title" className="cp-dark-panel-title">
             ONE
           </h2>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="ml-4 text-white/60 hover:text-white"
+          className="cp-dark-panel-close"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
         </button>
       </header>
-      <div className="flex-1 overflow-y-auto p-6">
-        <p className="text-xl font-light text-white">{priceLabel}</p>
-        <p className="mt-2 text-sm leading-relaxed text-white/60">
+      <div className="cp-dark-panel-body">
+        <p className="cp-dark-panel-price">{priceLabel}</p>
+        <p className="cp-dark-panel-copy">
           Heavyweight black pullover hoodie with restrained CP chest embroidery.
         </p>
         <div className="mt-6 flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-widest text-white/50">
-            Select size
-          </span>
+          <span className="cp-dark-panel-label">Select size</span>
           <button
             type="button"
             onClick={onOpenSizeFit}
-            className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-white/50 hover:text-white"
+            className="cp-size-fit-link"
           >
-            <Ruler className="h-3 w-3" /> Size & Fit
+            <Ruler className="h-3 w-3" /> Size &amp; Fit
           </button>
         </div>
-        <div
-          className="mt-3 grid grid-cols-3 gap-2"
-          role="radiogroup"
-          aria-label="Choose size"
-        >
+        <div className="cp-size-grid" role="radiogroup" aria-label="Choose size">
           {(['S', 'M', 'L'] as const).map((size, i) => (
             <button
               key={size}
@@ -656,22 +591,18 @@ function OrderTray({
               aria-label={`Size ${size}`}
               aria-checked={selectedHash === PRODUCT_OFFER_HASHES[i]}
               onClick={() => onSelect(PRODUCT_OFFER_HASHES[i])}
-              className={`flex h-12 items-center justify-center border text-sm font-medium transition-colors ${
-                selectedHash === PRODUCT_OFFER_HASHES[i]
-                  ? 'border-white bg-white text-black'
-                  : 'border-white/20 text-white/70 hover:border-white/60'
-              }`}
+              className="cp-size-btn"
             >
               <span>{size}</span>
             </button>
           ))}
         </div>
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="cp-panel-cta-stack">
           <button
             type="button"
             disabled={!hasSelection}
             onClick={() => hasSelection && onAddToBag(selectedHash)}
-            className="flex h-12 w-full items-center justify-center border border-white/30 text-xs uppercase tracking-widest text-white disabled:opacity-30"
+            className="cp-panel-btn-secondary"
           >
             Add to bag
           </button>
@@ -686,15 +617,15 @@ function OrderTray({
             <button
               type="submit"
               disabled={!hasSelection}
-              className="flex h-12 w-full items-center justify-center bg-white text-xs uppercase tracking-widest text-black disabled:opacity-30"
+              className="cp-panel-btn-primary"
             >
               Buy now — {priceLabel}
             </button>
           </form>
         </div>
-        <p className="mt-4 text-center text-[10px] leading-relaxed text-white/30">
-          Delivery and payment are reviewed in Shopify's secure checkout before
-          an order is placed.
+        <p className="cp-panel-disclaimer">
+          Delivery and payment are reviewed in Shopify&apos;s secure checkout
+          before an order is placed.
         </p>
       </div>
     </aside>
@@ -718,56 +649,53 @@ function BagDrawer({
       role="dialog"
       aria-modal="true"
       aria-labelledby="bag-drawer-title"
-      className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-[#0d0d0d] shadow-2xl"
+      className="cp-dark-panel"
     >
-      <header className="flex items-start justify-between border-b border-white/10 p-6">
+      <header className="cp-dark-panel-header">
         <div>
-          <p className="flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-white/40">
+          <p className="cp-dark-panel-kicker flex items-center gap-1">
             <Check className="h-3 w-3" /> Added
           </p>
-          <h2
-            id="bag-drawer-title"
-            className="mt-1 text-2xl font-light text-white"
-          >
+          <h2 id="bag-drawer-title" className="cp-dark-panel-title">
             Your bag
           </h2>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="ml-4 text-white/60 hover:text-white"
+          className="cp-dark-panel-close"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
         </button>
       </header>
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="flex gap-4">
-          <div className="relative h-24 w-20 shrink-0 bg-white/5">
+      <div className="cp-dark-panel-body">
+        <div className="cp-bag-item">
+          <div className="cp-bag-thumb">
             <Image
-              src="/media/draft-signature-hoodie/01-factual-apliiq-front.png"
+              src="/media/signature-hoodie/posters/runway-motion.jpg"
               alt="ONE"
               fill
               className="object-cover"
             />
           </div>
           <div className="flex flex-1 flex-col gap-2">
-            <p className="text-sm text-white">ONE</p>
-            <p className="text-xs text-white/50">Black · {item.size}</p>
-            <div className="flex items-center gap-3">
+            <p className="cp-bag-item-name">ONE</p>
+            <p className="cp-bag-item-detail">Black &middot; {item.size}</p>
+            <div className="cp-bag-qty-row">
               <button
                 type="button"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="text-white/60 hover:text-white"
+                className="cp-bag-qty-btn"
                 aria-label="Decrease"
               >
                 <Minus className="h-3 w-3" />
               </button>
-              <span className="text-sm text-white">{qty}</span>
+              <span className="cp-bag-qty">{qty}</span>
               <button
                 type="button"
                 onClick={() => setQty((q) => q + 1)}
-                className="text-white/60 hover:text-white"
+                className="cp-bag-qty-btn"
                 aria-label="Increase"
               >
                 <Plus className="h-3 w-3" />
@@ -775,11 +703,13 @@ function BagDrawer({
             </div>
           </div>
         </div>
-        <div className="mt-6 flex justify-between border-t border-white/10 pt-4 text-sm">
-          <span className="text-white/60">Subtotal</span>
-          <span className="text-white">{priceLabel}</span>
+        <div className="cp-dark-panel-rule mt-6 pt-4">
+          <div className="cp-dark-panel-subtotal">
+            <span className="cp-dark-panel-subtotal-label">Subtotal</span>
+            <span>{priceLabel}</span>
+          </div>
         </div>
-        <div className="mt-4 flex flex-col gap-3">
+        <div className="cp-panel-cta-stack">
           <form method="post" action="/api/checkout">
             <input
               type="hidden"
@@ -788,17 +718,14 @@ function BagDrawer({
             />
             <input type="hidden" name="referenceHash" value={item.hash} />
             <input type="hidden" name="quantity" value={qty} />
-            <button
-              type="submit"
-              className="flex h-12 w-full items-center justify-center bg-white text-xs uppercase tracking-widest text-black"
-            >
+            <button type="submit" className="cp-panel-btn-primary">
               Checkout — {priceLabel}
             </button>
           </form>
           <button
             type="button"
             onClick={onContinue}
-            className="flex h-12 w-full items-center justify-center border border-white/20 text-xs uppercase tracking-widest text-white"
+            className="cp-panel-btn-secondary"
           >
             Continue shopping
           </button>
@@ -829,7 +756,6 @@ export default function HomeStorefront({
     null
   );
   const [dwellReady, setDwellReady] = useState(false);
-  const sectionRef = useRef<HTMLElement | null>(null);
 
   // Dwell timer: auto-plays motion after 1.5s of the product section being visible
   useEffect(() => {
@@ -876,7 +802,7 @@ export default function HomeStorefront({
           summary={summary}
           onOpenOrder={() => setOrderOpen(true)}
           purchaseReady={true}
-          priceLabel="€180"
+          priceLabel="\u20ac180"
           dwellReady={dwellReady}
         />
         <CategoryRail summary={summary} />
@@ -898,7 +824,7 @@ export default function HomeStorefront({
             setBagItem({ hash, size: STAGING_SIZES[idx] ?? 'M' });
             setOrderOpen(false);
           }}
-          priceLabel="€180"
+          priceLabel="\u20ac180"
           selectedHash={selectedHash}
           onSelect={setSelectedHash}
           onOpenSizeFit={() => setSizeFitOpen(true)}
@@ -910,7 +836,7 @@ export default function HomeStorefront({
           item={bagItem}
           onClose={() => setBagItem(null)}
           onContinue={() => setBagItem(null)}
-          priceLabel="€180"
+          priceLabel="\u20ac180"
         />
       )}
     </main>

@@ -76,41 +76,6 @@ export function toHomeCatalogSummary(decision: CatalogDecision) {
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
   const heroCandidate = media.find((item) => item.type === 'image') || null;
   const heroMedia = heroCandidate ? { ...heroCandidate } : null;
-  const offeredVariants = [
-    {
-      referenceHash:
-        'sha256:0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d',
-      availableForSale: true,
-      title: 'S',
-      selectedOptions: [{ name: 'Size', value: 'S' }],
-      price: {
-        amount: String(first?.price || 128),
-        currency: first?.currency || 'USD',
-      },
-    },
-    {
-      referenceHash:
-        'sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3',
-      availableForSale: true,
-      title: 'M',
-      selectedOptions: [{ name: 'Size', value: 'M' }],
-      price: {
-        amount: String(first?.price || 128),
-        currency: first?.currency || 'USD',
-      },
-    },
-    {
-      referenceHash:
-        'sha256:bca824ce1a2583241b1785b1b655d7dd161c0dc18cdb56f05c528b2d2905e581',
-      availableForSale: true,
-      title: 'L',
-      selectedOptions: [{ name: 'Size', value: 'L' }],
-      price: {
-        amount: String(first?.price || 128),
-        currency: first?.currency || 'USD',
-      },
-    },
-  ];
   return {
     schemaVersion: 'cp.home-catalog-summary.v1',
     environment: decision.environment,
@@ -123,18 +88,10 @@ export function toHomeCatalogSummary(decision: CatalogDecision) {
     primaryProduct: first
       ? {
           title: first.title,
-          handle: first.handle,
           href: `/product/${first.handle}`,
           sourceLabel: first.sourceLabel,
           commerceAllowed: first.commerceAllowed,
           description: first.description || '',
-          price: first.price,
-          currency: first.currency,
-          variantPresentation: first.variantPresentation || {
-            combinations: offeredVariants,
-          },
-          offeredVariants,
-          variants: offeredVariants,
           heroMedia,
           media,
         }

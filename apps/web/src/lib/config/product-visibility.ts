@@ -1,20 +1,18 @@
-import type { CommerceEnvironment } from '../commerce/runtime-types';
-
 export const SHOW_PRODUCTS =
-  process.env.NODE_ENV !== 'test' ||
   process.env.NEXT_PUBLIC_SHOW_PRODUCTS === 'true' ||
   process.env.VERCEL_ENV === 'preview' ||
   process.env.NEXT_PUBLIC_STAGING_REVIEW === 'true';
 
 export const PREVIEW_DRAFT_PRODUCTS =
-  process.env.NODE_ENV !== 'test' ||
   process.env.NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS === 'true' ||
   process.env.VERCEL_ENV === 'preview' ||
   process.env.NEXT_PUBLIC_STAGING_REVIEW === 'true';
 
+import type { CommerceEnvironment } from '../commerce/runtime-types';
+
 function isPreviewEnvironment(): boolean {
   if (process.env.VERCEL_ENV === 'preview') return true;
-  return process.env.NODE_ENV !== 'test';
+  return false;
 }
 
 export function getCommerceEnvironment(): CommerceEnvironment {
@@ -39,7 +37,7 @@ export function getCommerceEnvironment(): CommerceEnvironment {
 export function canUseFixtureData(
   environment: CommerceEnvironment = getCommerceEnvironment()
 ): boolean {
-  return environment === 'local' || environment === 'preview';
+  return environment === 'local';
 }
 
 export function canRenderProducts(): boolean {
