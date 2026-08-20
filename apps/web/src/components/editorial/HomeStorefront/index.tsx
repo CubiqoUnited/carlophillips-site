@@ -540,15 +540,16 @@ function OrderTray({
               key={size}
               type="button"
               role="radio"
+              aria-label={`Size ${size}`}
               aria-checked={selectedHash === PRODUCT_OFFER_HASHES[i]}
               onClick={() => onSelect(PRODUCT_OFFER_HASHES[i])}
-              className={`flex h-12 items-center justify-center border text-sm transition-colors ${
+              className={`flex h-12 items-center justify-center border text-sm font-medium transition-colors ${
                 selectedHash === PRODUCT_OFFER_HASHES[i]
                   ? 'border-white bg-white text-black'
                   : 'border-white/20 text-white/70 hover:border-white/60'
               }`}
             >
-              {size}
+              <span>{size}</span>
             </button>
           ))}
         </div>
