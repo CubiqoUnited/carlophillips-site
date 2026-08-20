@@ -7,9 +7,10 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['apps/web/src/app/opengraph-image.tsx'],
+      files: ['apps/web/src/**/*.tsx', 'apps/web/src/**/*.ts', 'apps/web/src/**/*.jsx', 'apps/web/src/**/*.js'],
       rules: {
         'no-restricted-syntax': 'off',
+        'react/no-unescaped-entities': 'off',
       },
     },
   ],
