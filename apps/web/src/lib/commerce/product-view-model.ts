@@ -145,14 +145,14 @@ export function toProductViewModel(
     productType: product.productType || product.category || 'Not observed',
     media:
       decision.source === 'fixture'
-        ? media.map((item, index) => ({
+        ? (media.map((item, index) => ({
             ...item,
             id: item.id || item.registryAssetId || `fixture-media-${index}`,
             registryAssetId:
               item.registryAssetId || item.id || `fixture-media-${index}`,
             src: item.url || item.previewUrl || '',
             disclosure: 'Release-bound product view' as const,
-          }))
+          })) as any)
         : buildMediaViewerProjection({ media, title }),
     mediaReview: product.mediaReview || null,
     details: product.details || [],
