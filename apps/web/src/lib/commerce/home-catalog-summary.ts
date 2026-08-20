@@ -88,10 +88,14 @@ export function toHomeCatalogSummary(decision: CatalogDecision) {
     primaryProduct: first
       ? {
           title: first.title,
+          handle: first.handle,
           href: `/product/${first.handle}`,
           sourceLabel: first.sourceLabel,
           commerceAllowed: first.commerceAllowed,
           description: first.description || '',
+          price: first.price,
+          currency: first.currency,
+          variantPresentation: first.variantPresentation || null,
           heroMedia,
           media,
         }
