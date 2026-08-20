@@ -115,31 +115,43 @@ export function toProductViewModel(
         ? product.variantPresentation
         // Synthetic staging variants so S/M/L size chooser renders during fixture/preview/staging review.
         // Reference hashes match shopify-product-offer.json allowedReferenceHashes.
-        : {
+        : ({
             combinations: [
               {
-                referenceHash: 'sha256:0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d',
+                referenceHash:
+                  'sha256:0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d',
                 availableForSale: true,
                 title: 'S',
                 selectedOptions: [{ name: 'Size', value: 'S' }],
-                price: { amount: String(product.price || 128), currency: product.currency || 'USD' },
+                price: {
+                  amount: String(product.price || 128),
+                  currency: product.currency || 'USD',
+                },
               },
               {
-                referenceHash: 'sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3',
+                referenceHash:
+                  'sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3',
                 availableForSale: true,
                 title: 'M',
                 selectedOptions: [{ name: 'Size', value: 'M' }],
-                price: { amount: String(product.price || 128), currency: product.currency || 'USD' },
+                price: {
+                  amount: String(product.price || 128),
+                  currency: product.currency || 'USD',
+                },
               },
               {
-                referenceHash: 'sha256:bca824ce1a2583241b1785b1b655d7dd161c0dc18cdb56f05c528b2d2905e581',
+                referenceHash:
+                  'sha256:bca824ce1a2583241b1785b1b655d7dd161c0dc18cdb56f05c528b2d2905e581',
                 availableForSale: true,
                 title: 'L',
                 selectedOptions: [{ name: 'Size', value: 'L' }],
-                price: { amount: String(product.price || 128), currency: product.currency || 'USD' },
+                price: {
+                  amount: String(product.price || 128),
+                  currency: product.currency || 'USD',
+                },
               },
             ],
-          } as any,
+          } as any),
     availableForSale: Boolean(product.availableForSale),
     vendor: product.vendor || 'Not observed',
     productType: product.productType || product.category || 'Not observed',
