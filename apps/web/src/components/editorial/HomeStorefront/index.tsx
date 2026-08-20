@@ -535,7 +535,7 @@ function OrderTray({
           </button>
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Choose size">
-          {STAGING_SIZES.map((size, i) => (
+          {(['S', 'M', 'L'] as const).map((size, i) => (
             <button
               key={size}
               type="button"
