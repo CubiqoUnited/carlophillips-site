@@ -111,11 +111,11 @@ export function toProductViewModel(
     colors: decision.source === 'fixture' ? localColors : [],
     sizes: decision.source === 'fixture' ? localSizes : [],
     variantPresentation:
-      (decision.source === 'shopify' && product.variantPresentation)
+      decision.source === 'shopify' && product.variantPresentation
         ? product.variantPresentation
-        // Synthetic staging variants so S/M/L size chooser renders during fixture/preview/staging review.
-        // Reference hashes match shopify-product-offer.json allowedReferenceHashes.
-        : ({
+        : // Synthetic staging variants so S/M/L size chooser renders during fixture/preview/staging review.
+          // Reference hashes match shopify-product-offer.json allowedReferenceHashes.
+          ({
             combinations: [
               {
                 referenceHash:

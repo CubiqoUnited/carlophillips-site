@@ -42,13 +42,48 @@ const signatureRunwayFrameClasses = [
 const categoryTabs = ['Shirts', 'Outerwear', 'Bottoms', 'Accessories'];
 
 const STRIP_MEDIA = [
-  { id: 'strip-runway', label: 'Runway', src: '/media/draft-signature-hoodie/runway-front-v1.png', alt: 'Runway motion' },
-  { id: 'strip-fit', label: 'Fit', src: '/media/draft-signature-hoodie/07-three-quarter-neutral.png', alt: 'Fit view' },
-  { id: 'strip-front', label: 'Front', src: '/media/draft-signature-hoodie/01-factual-apliiq-front.png', alt: 'Front view' },
-  { id: 'strip-3q', label: '3/4', src: '/media/draft-signature-hoodie/03-ai-right-three-quarter.png', alt: '3/4 view' },
-  { id: 'strip-back', label: 'Back', src: '/media/draft-signature-hoodie/04-ai-back.png', alt: 'Back view' },
-  { id: 'strip-detail', label: 'Detail', src: '/media/draft-signature-hoodie/09-hood-logo-drawstrings-closeup.png', alt: 'Detail' },
-  { id: 'strip-lifestyle', label: 'Life', src: '/media/draft-signature-hoodie/11-seated-forward-lean.png', alt: 'Lifestyle' }
+  {
+    id: 'strip-runway',
+    label: 'Runway',
+    src: '/media/draft-signature-hoodie/runway-front-v1.png',
+    alt: 'Runway motion',
+  },
+  {
+    id: 'strip-fit',
+    label: 'Fit',
+    src: '/media/draft-signature-hoodie/07-three-quarter-neutral.png',
+    alt: 'Fit view',
+  },
+  {
+    id: 'strip-front',
+    label: 'Front',
+    src: '/media/draft-signature-hoodie/01-factual-apliiq-front.png',
+    alt: 'Front view',
+  },
+  {
+    id: 'strip-3q',
+    label: '3/4',
+    src: '/media/draft-signature-hoodie/03-ai-right-three-quarter.png',
+    alt: '3/4 view',
+  },
+  {
+    id: 'strip-back',
+    label: 'Back',
+    src: '/media/draft-signature-hoodie/04-ai-back.png',
+    alt: 'Back view',
+  },
+  {
+    id: 'strip-detail',
+    label: 'Detail',
+    src: '/media/draft-signature-hoodie/09-hood-logo-drawstrings-closeup.png',
+    alt: 'Detail',
+  },
+  {
+    id: 'strip-lifestyle',
+    label: 'Life',
+    src: '/media/draft-signature-hoodie/11-seated-forward-lean.png',
+    alt: 'Lifestyle',
+  },
 ];
 
 const PRODUCT_OFFER_HASHES = [
@@ -58,7 +93,6 @@ const PRODUCT_OFFER_HASHES = [
 ] as const;
 
 const STAGING_SIZES = ['S', 'M', 'L'] as const;
-
 
 const signatureHomepagePresentation = {
   displayName: 'ONE',
@@ -233,7 +267,9 @@ function ProductRunwayHero({
     .filter((item) => item.type === 'image')
     .slice(0, 3);
   const runwaySequenceReady = signatureVisible && runwayMedia.length === 3;
-  const motionMedia = galleryMedia.filter((item) => item.type === 'video').slice(0, 2);
+  const motionMedia = galleryMedia
+    .filter((item) => item.type === 'video')
+    .slice(0, 2);
   const galleryReady = signatureVisible && galleryMedia.length > 0;
   const productDescription = firstSentence(
     product?.description,
@@ -251,7 +287,9 @@ function ProductRunwayHero({
           <div className="cp-landing-motion absolute inset-0">
             {motionMedia.map((item, index) => (
               <video
-                key={item.id || item.registryAssetId || `landing-video-${index}`}
+                key={
+                  item.id || item.registryAssetId || `landing-video-${index}`
+                }
                 className={`cp-landing-motion-video ${index === 0 ? 'is-active' : ''}`}
                 src={item.src || item.url}
                 poster={item.previewUrl}
@@ -262,7 +300,10 @@ function ProductRunwayHero({
                 aria-label={item.alt}
               />
             ))}
-            <div className="cp-product-scrim absolute inset-0" aria-hidden="true" />
+            <div
+              className="cp-product-scrim absolute inset-0"
+              aria-hidden="true"
+            />
           </div>
         ) : runwaySequenceReady ? (
           <>
@@ -314,8 +355,17 @@ function ProductRunwayHero({
 
       {galleryReady ? (
         <div className="cp-landing-actions absolute right-5 top-5 z-20 flex flex-wrap justify-end gap-2 sm:right-8 sm:top-8">
-          <button type="button" onClick={onToggleMotion} className="cp-action cp-action-outline inline-flex items-center gap-2" aria-pressed={!motionPaused}>
-            {motionPaused ? <Play className="h-4 w-4" aria-hidden="true" /> : <Pause className="h-4 w-4" aria-hidden="true" />}
+          <button
+            type="button"
+            onClick={onToggleMotion}
+            className="cp-action cp-action-outline inline-flex items-center gap-2"
+            aria-pressed={!motionPaused}
+          >
+            {motionPaused ? (
+              <Play className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <Pause className="h-4 w-4" aria-hidden="true" />
+            )}
             {motionPaused ? 'Play motion' : 'Pause motion'}
           </button>
           <button
@@ -329,7 +379,9 @@ function ProductRunwayHero({
           >
             <span>View gallery</span>
             <Expand className="h-4 w-4" aria-hidden="true" />
-            <span className="text-right">{String(galleryMedia.length).padStart(2, '0')}</span>
+            <span className="text-right">
+              {String(galleryMedia.length).padStart(2, '0')}
+            </span>
           </button>
         </div>
       ) : (
@@ -392,7 +444,13 @@ function ProductRunwayHero({
               aria-label={thumb.label}
               className="relative h-10 w-10 overflow-hidden border border-white/20 opacity-70 hover:opacity-100 transition-opacity"
             >
-              <Image src={thumb.src} alt={thumb.alt} fill className="object-cover" sizes="40px" />
+              <Image
+                src={thumb.src}
+                alt={thumb.alt}
+                fill
+                className="object-cover"
+                sizes="40px"
+              />
             </button>
           ))}
         </div>
@@ -456,7 +514,6 @@ function Footer() {
   );
 }
 
-
 function SizeFitDrawer({ onClose }: { onClose: () => void }) {
   return (
     <aside
@@ -467,26 +524,58 @@ function SizeFitDrawer({ onClose }: { onClose: () => void }) {
     >
       <header className="flex items-start justify-between border-b border-white/10 p-6">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">Fit guide</p>
-          <h2 id="size-fit-title" className="mt-1 text-2xl font-light text-white">Size & Fit</h2>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">
+            Fit guide
+          </p>
+          <h2
+            id="size-fit-title"
+            className="mt-1 text-2xl font-light text-white"
+          >
+            Size & Fit
+          </h2>
         </div>
-        <button type="button" onClick={onClose} className="ml-4 text-white/60 hover:text-white" aria-label="Close">
+        <button
+          type="button"
+          onClick={onClose}
+          className="ml-4 text-white/60 hover:text-white"
+          aria-label="Close"
+        >
           <X className="h-5 w-5" />
         </button>
       </header>
       <div className="flex-1 overflow-y-auto p-6 text-white/80">
         <p className="text-lg font-light">Regular fit</p>
-        <p className="mt-3 text-sm leading-relaxed text-white/60">Designed with room through the chest and body. Choose your usual size for the intended structured silhouette.</p>
+        <p className="mt-3 text-sm leading-relaxed text-white/60">
+          Designed with room through the chest and body. Choose your usual size
+          for the intended structured silhouette.
+        </p>
         <div className="mt-5 flex gap-3">
-          {STAGING_SIZES.map((s) => <span key={s} className="flex h-11 w-16 items-center justify-center border border-white/20 text-sm">{s}</span>)}
+          {STAGING_SIZES.map((s) => (
+            <span
+              key={s}
+              className="flex h-11 w-16 items-center justify-center border border-white/20 text-sm"
+            >
+              {s}
+            </span>
+          ))}
         </div>
         <details className="mt-6 border-t border-white/10 pt-4" open>
-          <summary className="cursor-pointer text-xs uppercase tracking-widest text-white/50">Garment measurements</summary>
-          <p className="mt-3 text-sm leading-relaxed text-white/50">Compare a favourite hoodie laid flat. Measure chest from underarm to underarm and length from shoulder to hem.</p>
+          <summary className="cursor-pointer text-xs uppercase tracking-widest text-white/50">
+            Garment measurements
+          </summary>
+          <p className="mt-3 text-sm leading-relaxed text-white/50">
+            Compare a favourite hoodie laid flat. Measure chest from underarm to
+            underarm and length from shoulder to hem.
+          </p>
         </details>
         <details className="mt-4 border-t border-white/10 pt-4">
-          <summary className="cursor-pointer text-xs uppercase tracking-widest text-white/50">How to measure</summary>
-          <p className="mt-3 text-sm leading-relaxed text-white/50">Keep the tape level and relaxed. If you are between sizes, size up for a looser fit.</p>
+          <summary className="cursor-pointer text-xs uppercase tracking-widest text-white/50">
+            How to measure
+          </summary>
+          <p className="mt-3 text-sm leading-relaxed text-white/50">
+            Keep the tape level and relaxed. If you are between sizes, size up
+            for a looser fit.
+          </p>
         </details>
       </div>
     </aside>
@@ -518,23 +607,47 @@ function OrderTray({
     >
       <header className="flex items-start justify-between border-b border-white/10 p-6">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">Signature Series / 001</p>
-          <h2 id="order-tray-title" className="mt-1 text-2xl font-light text-white">ONE</h2>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">
+            Signature Series / 001
+          </p>
+          <h2
+            id="order-tray-title"
+            className="mt-1 text-2xl font-light text-white"
+          >
+            ONE
+          </h2>
         </div>
-        <button type="button" onClick={onClose} className="ml-4 text-white/60 hover:text-white" aria-label="Close">
+        <button
+          type="button"
+          onClick={onClose}
+          className="ml-4 text-white/60 hover:text-white"
+          aria-label="Close"
+        >
           <X className="h-5 w-5" />
         </button>
       </header>
       <div className="flex-1 overflow-y-auto p-6">
         <p className="text-xl font-light text-white">{priceLabel}</p>
-        <p className="mt-2 text-sm leading-relaxed text-white/60">Heavyweight black pullover hoodie with restrained CP chest embroidery.</p>
+        <p className="mt-2 text-sm leading-relaxed text-white/60">
+          Heavyweight black pullover hoodie with restrained CP chest embroidery.
+        </p>
         <div className="mt-6 flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-widest text-white/50">Select size</span>
-          <button type="button" onClick={onOpenSizeFit} className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-white/50 hover:text-white">
+          <span className="text-[10px] uppercase tracking-widest text-white/50">
+            Select size
+          </span>
+          <button
+            type="button"
+            onClick={onOpenSizeFit}
+            className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-white/50 hover:text-white"
+          >
             <Ruler className="h-3 w-3" /> Size & Fit
           </button>
         </div>
-        <div className="mt-3 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Choose size">
+        <div
+          className="mt-3 grid grid-cols-3 gap-2"
+          role="radiogroup"
+          aria-label="Choose size"
+        >
           {(['S', 'M', 'L'] as const).map((size, i) => (
             <button
               key={size}
@@ -563,7 +676,11 @@ function OrderTray({
             Add to bag
           </button>
           <form method="post" action="/api/checkout">
-            <input type="hidden" name="handle" value="carlophillips-signature-hoodie" />
+            <input
+              type="hidden"
+              name="handle"
+              value="carlophillips-signature-hoodie"
+            />
             <input type="hidden" name="referenceHash" value={selectedHash} />
             <input type="hidden" name="quantity" value="1" />
             <button
@@ -575,7 +692,10 @@ function OrderTray({
             </button>
           </form>
         </div>
-        <p className="mt-4 text-center text-[10px] leading-relaxed text-white/30">Delivery and payment are reviewed in Shopify's secure checkout before an order is placed.</p>
+        <p className="mt-4 text-center text-[10px] leading-relaxed text-white/30">
+          Delivery and payment are reviewed in Shopify's secure checkout before
+          an order is placed.
+        </p>
       </div>
     </aside>
   );
@@ -602,27 +722,54 @@ function BagDrawer({
     >
       <header className="flex items-start justify-between border-b border-white/10 p-6">
         <div>
-          <p className="flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-white/40"><Check className="h-3 w-3" /> Added</p>
-          <h2 id="bag-drawer-title" className="mt-1 text-2xl font-light text-white">Your bag</h2>
+          <p className="flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-white/40">
+            <Check className="h-3 w-3" /> Added
+          </p>
+          <h2
+            id="bag-drawer-title"
+            className="mt-1 text-2xl font-light text-white"
+          >
+            Your bag
+          </h2>
         </div>
-        <button type="button" onClick={onClose} className="ml-4 text-white/60 hover:text-white" aria-label="Close">
+        <button
+          type="button"
+          onClick={onClose}
+          className="ml-4 text-white/60 hover:text-white"
+          aria-label="Close"
+        >
           <X className="h-5 w-5" />
         </button>
       </header>
       <div className="flex-1 overflow-y-auto p-6">
         <div className="flex gap-4">
           <div className="relative h-24 w-20 shrink-0 bg-white/5">
-            <Image src="/media/draft-signature-hoodie/01-factual-apliiq-front.png" alt="ONE" fill className="object-cover" />
+            <Image
+              src="/media/draft-signature-hoodie/01-factual-apliiq-front.png"
+              alt="ONE"
+              fill
+              className="object-cover"
+            />
           </div>
           <div className="flex flex-1 flex-col gap-2">
             <p className="text-sm text-white">ONE</p>
             <p className="text-xs text-white/50">Black · {item.size}</p>
             <div className="flex items-center gap-3">
-              <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} className="text-white/60 hover:text-white" aria-label="Decrease">
+              <button
+                type="button"
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="text-white/60 hover:text-white"
+                aria-label="Decrease"
+              >
                 <Minus className="h-3 w-3" />
               </button>
               <span className="text-sm text-white">{qty}</span>
-              <button type="button" onClick={() => setQty((q) => q + 1)} className="text-white/60 hover:text-white" aria-label="Increase">
+              <button
+                type="button"
+                onClick={() => setQty((q) => q + 1)}
+                className="text-white/60 hover:text-white"
+                aria-label="Increase"
+              >
                 <Plus className="h-3 w-3" />
               </button>
             </div>
@@ -634,12 +781,27 @@ function BagDrawer({
         </div>
         <div className="mt-4 flex flex-col gap-3">
           <form method="post" action="/api/checkout">
-            <input type="hidden" name="handle" value="carlophillips-signature-hoodie" />
+            <input
+              type="hidden"
+              name="handle"
+              value="carlophillips-signature-hoodie"
+            />
             <input type="hidden" name="referenceHash" value={item.hash} />
             <input type="hidden" name="quantity" value={qty} />
-            <button type="submit" className="flex h-12 w-full items-center justify-center bg-white text-xs uppercase tracking-widest text-black">Checkout — {priceLabel}</button>
+            <button
+              type="submit"
+              className="flex h-12 w-full items-center justify-center bg-white text-xs uppercase tracking-widest text-black"
+            >
+              Checkout — {priceLabel}
+            </button>
           </form>
-          <button type="button" onClick={onContinue} className="flex h-12 w-full items-center justify-center border border-white/20 text-xs uppercase tracking-widest text-white">Continue shopping</button>
+          <button
+            type="button"
+            onClick={onContinue}
+            className="flex h-12 w-full items-center justify-center border border-white/20 text-xs uppercase tracking-widest text-white"
+          >
+            Continue shopping
+          </button>
         </div>
       </div>
     </aside>
@@ -660,8 +822,12 @@ export default function HomeStorefront({
 
   const [orderOpen, setOrderOpen] = useState(false);
   const [sizeFitOpen, setSizeFitOpen] = useState(false);
-  const [selectedHash, setSelectedHash] = useState<string>(PRODUCT_OFFER_HASHES[0]);
-  const [bagItem, setBagItem] = useState<{ size: string; hash: string } | null>(null);
+  const [selectedHash, setSelectedHash] = useState<string>(
+    PRODUCT_OFFER_HASHES[0]
+  );
+  const [bagItem, setBagItem] = useState<{ size: string; hash: string } | null>(
+    null
+  );
   const [dwellReady, setDwellReady] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
 
@@ -703,7 +869,9 @@ export default function HomeStorefront({
           galleryButtonRef={galleryButtonRef}
           galleryMedia={galleryMedia}
           onOpenGallery={() => setMediaOpen(true)}
-          motionPaused={motionPaused || mediaOpen || orderOpen || Boolean(bagItem)}
+          motionPaused={
+            motionPaused || mediaOpen || orderOpen || Boolean(bagItem)
+          }
           onToggleMotion={() => setMotionPaused((value) => !value)}
           summary={summary}
           onOpenOrder={() => setOrderOpen(true)}
@@ -724,7 +892,9 @@ export default function HomeStorefront({
         <OrderTray
           onClose={() => setOrderOpen(false)}
           onAddToBag={(hash) => {
-            const idx = PRODUCT_OFFER_HASHES.indexOf(hash as typeof PRODUCT_OFFER_HASHES[number]);
+            const idx = PRODUCT_OFFER_HASHES.indexOf(
+              hash as (typeof PRODUCT_OFFER_HASHES)[number]
+            );
             setBagItem({ hash, size: STAGING_SIZES[idx] ?? 'M' });
             setOrderOpen(false);
           }}

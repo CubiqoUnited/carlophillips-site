@@ -130,7 +130,9 @@ export function toHomeCatalogSummary(decision: CatalogDecision) {
           description: first.description || '',
           price: first.price,
           currency: first.currency,
-          variantPresentation: first.variantPresentation || { combinations: offeredVariants },
+          variantPresentation: first.variantPresentation || {
+            combinations: offeredVariants,
+          },
           offeredVariants,
           variants: offeredVariants,
           heroMedia,
