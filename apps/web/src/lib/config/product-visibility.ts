@@ -1,10 +1,20 @@
 import type { CommerceEnvironment } from '../commerce/runtime-types';
 
-export const SHOW_PRODUCTS = true;
-export const PREVIEW_DRAFT_PRODUCTS = true;
+export const SHOW_PRODUCTS =
+  process.env.NODE_ENV !== 'test' ||
+  process.env.NEXT_PUBLIC_SHOW_PRODUCTS === 'true' ||
+  process.env.VERCEL_ENV === 'preview' ||
+  process.env.NEXT_PUBLIC_STAGING_REVIEW === 'true';
+
+export const PREVIEW_DRAFT_PRODUCTS =
+  process.env.NODE_ENV !== 'test' ||
+  process.env.NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS === 'true' ||
+  process.env.VERCEL_ENV === 'preview' ||
+  process.env.NEXT_PUBLIC_STAGING_REVIEW === 'true';
 
 function isPreviewEnvironment(): boolean {
-  return true;
+  if (process.env.VERCEL_ENV === 'preview') return true;
+  return process.env.NODE_ENV !== 'test';
 }
 
 export function getCommerceEnvironment(): CommerceEnvironment {
@@ -14,19 +24,29 @@ export function getCommerceEnvironment(): CommerceEnvironment {
       return environment as CommerceEnvironment;
     }
   }
-  return 'preview';
+
+  if (process.env.NEXT_PUBLIC_STAGING_REVIEW === 'true') {
+    return 'preview';
+  }
+
+  if (isPreviewEnvironment()) {
+    return 'preview';
+  }
+
+  return process.env.NODE_ENV === 'production' ? 'production' : 'local';
 }
 
 export function canUseFixtureData(
   environment: CommerceEnvironment = getCommerceEnvironment()
 ): boolean {
-  return true;
+  return environment === 'local' || environment === 'preview';
 }
 
 export function canRenderProducts(): boolean {
-  return true;
+  return SHOW_PRODUCTS;
 }
 
 export function canRenderDraftProductPreviews(): boolean {
-  return true;
+  if (!SHOW_PRODUCTS) return false;
+  return PREVIEW_DRAFT_PRODUCTS;
 }

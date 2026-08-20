@@ -101,6 +101,12 @@
             "sourceLabel": { "type": "string", "minLength": 1 },
             "commerceAllowed": { "type": "boolean" },
             "description": { "type": "string" },
+            "handle": { "type": "string" },
+            "price": { "type": "number" },
+            "currency": { "type": "string" },
+            "variantPresentation": { "type": ["object", "null"] },
+            "offeredVariants": { "type": "array" },
+            "variants": { "type": "array" },
             "heroMedia": {
               "oneOf": [
                 { "type": "null" },
