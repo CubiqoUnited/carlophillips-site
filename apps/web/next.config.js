@@ -31,7 +31,6 @@ function securityHeaders() {
 }
 
 const nextConfig = {
-  output: 'standalone',
   outputFileTracingRoot: repositoryRoot,
   transpilePackages: ['@repo/design-system', '@repo/shopify', '@repo/utils'],
   poweredByHeader: false,

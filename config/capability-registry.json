@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cp.capability-registry.v1",
-  "observedAt": "2026-08-04",
-  "source": "Live authenticated Shopify Admin and Storefront capability verification plus Cycle 19 local resolver verification; secrets and raw Shopify references are excluded from durable evidence",
+  "observedAt": "2026-08-17",
+  "source": "Live authenticated Shopify Admin, provider/app capability verification, and local pipeline verification; secrets and raw Shopify references are excluded from durable evidence",
   "canonicalOwners": {
     "releaseTruth": "Product Release Record",
     "mediaTruth": "Media Registry",
@@ -95,6 +95,83 @@
         "humanAction": "Open the current Shopify login tab, choose Continue with Google and the existing account, then enter Shopify's one-time email code if prompted; do not share or record the code.",
         "resumePoint": "Resume at installed-app inventory, inspect Modelize access/credits/settings read-only, and record inputs, outputs, provenance controls, and Draft-safe export path."
       }
+    },
+    {
+      "capability": "pod-garment-spec-read",
+      "selectedAdapter": "apliiq",
+      "accessState": "human_required",
+      "callableSurface": "authenticated_browser",
+      "allowedOperations": [],
+      "requiresApproval": [],
+      "costGate": "read-only specification inspection only; samples, orders, and fulfillment remain separately approval-gated",
+      "draftSafety": "POD construction, fabric, fit, color, and decoration facts are input constraints only until bound to the product release record",
+      "alternatives": [],
+      "blocker": {
+        "code": "EXACT_HOODIE_SPEC_UNOBSERVED",
+        "humanAction": "No action is needed unless Apliiq requests fresh authentication; do not accept a paid plan, sample, cart, or order prompt.",
+        "resumePoint": "Read the saved Hoodie design specification and bind only non-secret garment constraints to the Draft media QA profile."
+      }
+    },
+    {
+      "capability": "editorial-ai-generation",
+      "selectedAdapter": "moda-ai",
+      "accessState": "human_required",
+      "callableSurface": "authenticated_browser",
+      "allowedOperations": [],
+      "requiresApproval": ["credits"],
+      "costGate": "one MODA credit creates a Draft ten-image catalog set; no paid plan, attachment, or publication is authorized",
+      "draftSafety": "front/back garment inputs plus POD-spec constraints must pass visual QA before an output can enter the Draft media registry",
+      "alternatives": ["modelize", "sugata-studio", "tayla", "raspberry-ai"],
+      "blocker": {
+        "code": "LOCAL_FILE_HANDOFF_BLOCKED",
+        "humanAction": "Enable the browser's local-file access setting recorded in reports/HUMAN_INTERVENTION_STICKY_RED.md; no Shopify/product change is required.",
+        "resumePoint": "Load the prepared front/back inputs into MODA, generate one Draft-only catalog set, then evaluate it against the POD constraint sheet."
+      }
+    },
+    {
+      "capability": "spin-360-ai-generation",
+      "selectedAdapter": "productspin-ai",
+      "accessState": "unverified",
+      "callableSurface": "unverified",
+      "allowedOperations": [],
+      "requiresApproval": ["credits", "spend"],
+      "costGate": "free manual/AI allowance may be available, but installation, scopes, credits, and any token purchase require exact approval",
+      "draftSafety": "a spin may use POD-constrained AI angle references only as a Draft visualisation and must never imply a photographed physical rotation",
+      "alternatives": ["spinr", "spin-studio", "zs-spin-view"],
+      "blocker": {
+        "code": "PRODUCTSPIN_CONNECTION_UNVERIFIED",
+        "humanAction": "Approve ProductSpin installation and its displayed Shopify scopes only if a direct vendor spin test remains required.",
+        "resumePoint": "Run one unbound Draft Signature Hoodie spin and reject any mismatch in hood, pocket, cuffs, hem, silhouette, or CP decoration."
+      }
+    },
+    {
+      "capability": "model-3d-ai-generation",
+      "selectedAdapter": "instant-3d",
+      "accessState": "human_required",
+      "callableSurface": "authenticated_browser",
+      "allowedOperations": [],
+      "requiresApproval": ["credits"],
+      "costGate": "use only the installed free allowance; no product assignment, Shopify media attachment, AR claim, or paid credit purchase is authorized",
+      "draftSafety": "generated geometry is an approximate Draft model unless a vendor-verified 3D asset and material/scale validation are recorded",
+      "alternatives": ["spacecheck"],
+      "blocker": {
+        "code": "LOCAL_FILE_HANDOFF_BLOCKED",
+        "humanAction": "Enable the browser's local-file access setting recorded in reports/HUMAN_INTERVENTION_STICKY_RED.md; no Shopify/product change is required.",
+        "resumePoint": "Upload the unassigned Draft GLB or start a no-publish photo-to-3D test, then inspect front, side, back, scale, and texture fidelity."
+      }
+    },
+    {
+      "capability": "headless-draft-media-display",
+      "selectedAdapter": "cp-local-media-lab",
+      "accessState": "local_verified",
+      "callableSurface": "local",
+      "evidenceRef": "apps/web/src/app/media-lab/page.tsx",
+      "allowedOperations": ["draft-media-display"],
+      "requiresApproval": [],
+      "costGate": "no external call, credit, Shopify write, publication, or production deployment",
+      "draftSafety": "local-only Explore-media presentation carries factual-versus-AI disclosure and does not represent the 2.5D study as a physical scan or AR-accurate model; it is separate from the default landing-editorial media lane",
+      "alternatives": [],
+      "blocker": null
     },
     {
       "capability": "shopify-local-automation",
