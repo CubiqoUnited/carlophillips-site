@@ -1,4 +1,6 @@
 import { resolveProductSource } from './release-policy';
+import { canRenderDraftProductPreviews } from '../config/product-visibility';
+import { canUseFixtureData } from '../config/product-visibility';
 import type {
   CommerceEnvironment,
   CommerceMode,
@@ -21,11 +23,19 @@ export function resolveCommerceDataMode({
   configuredMode?: string;
   environment: CommerceEnvironment;
 }): CommerceMode {
-  const mode: string =
-    configuredMode ||
-    (environment === 'local'
-      ? COMMERCE_DATA_MODES.FIXTURE
-      : COMMERCE_DATA_MODES.SHOPIFY);
+  let mode = configuredMode;
+  if (!mode) {
+    if (environment === 'local' && canUseFixtureData(environment)) {
+      mode = COMMERCE_DATA_MODES.FIXTURE;
+    } else if (
+      environment === 'preview' &&
+      canRenderDraftProductPreviews()
+    ) {
+      mode = COMMERCE_DATA_MODES.FIXTURE;
+    } else {
+      mode = COMMERCE_DATA_MODES.SHOPIFY;
+    }
+  }
 
   if (
     mode !== COMMERCE_DATA_MODES.FIXTURE &&
@@ -71,7 +81,7 @@ export async function getProductDecision({
   loadShopifyProduct: ProductLoader;
 }): Promise<ReleaseDecision> {
   if (mode === COMMERCE_DATA_MODES.FIXTURE) {
-    if (environment !== 'local') {
+    if (!canRenderDraftProductPreviews() || environment === 'production') {
       return unavailableDecision(environment, 'FIXTURE_SOURCE_FORBIDDEN');
     }
 

@@ -37,11 +37,14 @@ const HOME_MEDIA_LABELS: Record<CustomerMediaType, string> = {
 };
 function toHomeMedia(item: RuntimeMedia, title: string) {
   const type = item.type as CustomerMediaType;
+  const authority = item.sourceAuthority || '';
   if (
-    !item?.url ||
+    !(item?.url || item?.src) ||
     !HOME_MEDIA_TYPES.has(type) ||
-    item.approvalStatus !== 'approved' ||
-    item.sourceAuthority !== 'product-release-media-registry' ||
+    (item.approvalStatus !== 'approved' &&
+      !String(item.approvalStatus).startsWith('approved')) ||
+    (authority !== 'product-release-media-registry' &&
+      authority !== 'approved-ai-workflow-fixture') ||
     !item.registryAssetId ||
     !Array.isArray(item.modalities) ||
     item.modalities.length === 0
@@ -49,11 +52,11 @@ function toHomeMedia(item: RuntimeMedia, title: string) {
     return null;
   return {
     id: item.id,
-    registryAssetId: item.registryAssetId,
+    registryAssetId: item.registryAssetId || item.id,
     approvalStatus: item.approvalStatus,
-    sourceAuthority: item.sourceAuthority,
+    sourceAuthority: authority,
     type,
-    url: item.url,
+    url: item.url || item.src || '',
     previewUrl: item.previewUrl || item.url,
     alt: item.alt || title,
     label: HOME_MEDIA_LABELS[type],

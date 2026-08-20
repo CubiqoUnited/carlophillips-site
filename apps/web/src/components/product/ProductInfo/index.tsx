@@ -1,12 +1,10 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import ShopifyCheckoutForm from '../ProductForm';
+import { ProductGallery } from '../ProductGallery';
 import { ProductSequence } from '../Sequence';
 import { StorefrontHeader } from '../../layout/StorefrontHeader';
-import type { ViewerMediaItem } from '@/lib/media/types';
 import type {
-  MediaReview,
   ProductDetailProps,
   ReleaseDecision,
   VariantPresentation as VariantPresentationData,
@@ -34,135 +32,6 @@ function releaseStatusCopy(reason: string): string {
   if (reason === 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE')
     return 'Private product review';
   return 'Product review';
-}
-
-function ProductMedia({
-  item,
-  featured,
-}: {
-  item: ViewerMediaItem;
-  featured: boolean;
-}) {
-  const frameClass = featured
-    ? 'cp-product-media-featured'
-    : 'cp-product-media-portrait';
-
-  if (item.type === 'video' && item.url) {
-    return (
-      <video
-        controls
-        preload="metadata"
-        poster={item.previewUrl}
-        className={`${frameClass} h-full w-full object-contain`}
-        src={item.url}
-      />
-    );
-  }
-
-  if (item.type === 'external_video' && item.url) {
-    return (
-      <div
-        className={`${frameClass} flex items-center justify-center p-8 text-center`}
-      >
-        <a
-          href={item.url}
-          rel="noreferrer"
-          target="_blank"
-          className="cp-action cp-action-outline"
-        >
-          Open approved external video
-        </a>
-      </div>
-    );
-  }
-
-  if (item.type === 'model_3d') {
-    return (
-      <div
-        className={`${frameClass} cp-text-soft flex items-center justify-center p-8 text-center text-sm`}
-      >
-        A verified interactive 3D renderer is not active. Static fallback only.
-      </div>
-    );
-  }
-
-  return item.url ? (
-    <div className={`${frameClass} relative`}>
-      <Image
-        src={item.url}
-        alt={item.alt}
-        fill
-        sizes="(min-width: 1024px) 52vw, 100vw"
-        className="object-contain object-center p-8 sm:p-12"
-      />
-    </div>
-  ) : (
-    <div
-      className={`${frameClass} cp-text-muted flex items-center justify-center p-8 text-sm`}
-    >
-      Media unavailable
-    </div>
-  );
-}
-
-function ProductGallery({
-  media,
-  mediaReview = null,
-  customerFacing = false,
-}: {
-  media: ViewerMediaItem[];
-  mediaReview?: MediaReview | null;
-  customerFacing?: boolean;
-}) {
-  if (media.length === 0) {
-    return (
-      <div className="cp-product-gallery-empty cp-surface-raised cp-text-muted flex flex-col items-center justify-center gap-4 p-10 text-center text-sm">
-        <p>No approved product media was returned by the selected source.</p>
-        {mediaReview && (
-          <p
-            data-media-review={mediaReview.status}
-            className="cp-label-small max-w-xl font-mono"
-          >
-            Media review incomplete — missing:{' '}
-            {mediaReview.missingModalities.join(', ') || 'approved fallback'}
-          </p>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <div className="cp-product-gallery-grid cp-grid-rule grid lg:grid-cols-2">
-        {media.map((item, index) => (
-          <figure
-            key={item.id}
-            className={
-              index === 0
-                ? 'cp-card-media-featured lg:col-span-2'
-                : 'cp-card-media'
-            }
-          >
-            <ProductMedia item={item} featured={index === 0} />
-            <figcaption className="cp-label-small cp-surface-canvas cp-rule border-t px-5 py-4">
-              {customerFacing
-                ? `View ${String(index + 1).padStart(2, '0')}`
-                : item.label}
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-      {mediaReview?.status === 'incomplete' && (
-        <p
-          data-media-review="incomplete"
-          className="cp-label-small cp-surface-canvas cp-rule border-t px-5 py-4 font-mono"
-        >
-          Private media review incomplete — missing:{' '}
-          {mediaReview.missingModalities.join(', ') || 'approved fallback'}
-        </p>
-      )}
-    </div>
-  );
 }
 
 function VariantPresentation({

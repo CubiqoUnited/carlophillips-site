@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Maximize, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Text } from '@repo/design-system';
 import type { ViewerMediaItem } from '@/lib/media/types';
@@ -16,6 +16,9 @@ interface MediaViewerProps {
 export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
   const controlledMedia = media.slice(0, 12);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(false);
+  const [zoomed, setZoomed] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const dialogRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -24,6 +27,9 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     setActiveIndex(0);
+    setZoomed(false);
+    setAutoPlay(false);
+    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     requestAnimationFrame(() => {
       trackRef.current?.scrollTo({ left: 0 });
       dialogRef.current?.focus();
@@ -32,6 +38,21 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
       document.body.style.overflow = previousOverflow;
     };
   }, [open]);
+
+  useEffect(() => {
+    if (!open || !autoPlay || reducedMotion) return undefined;
+    const timer = window.setInterval(() => setActiveIndex((index) => (index + 1) % controlledMedia.length), 4500);
+    return () => window.clearInterval(timer);
+  }, [autoPlay, controlledMedia.length, open, reducedMotion]);
+
+  useEffect(() => {
+    if (!open || !trackRef.current) return;
+    trackRef.current.scrollTo({ left: activeIndex * trackRef.current.clientWidth, behavior: reducedMotion ? 'auto' : 'smooth' });
+    trackRef.current.querySelectorAll('video').forEach((video, index) => {
+      if (index === activeIndex && !reducedMotion) void video.play().catch(() => undefined);
+      else video.pause();
+    });
+  }, [activeIndex, open, reducedMotion]);
 
   if (!open || controlledMedia.length === 0) return null;
 
@@ -58,6 +79,13 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
         if (event.key === 'Escape') onClose();
         if (event.key === 'ArrowLeft') moveTo(activeIndex - 1);
         if (event.key === 'ArrowRight') moveTo(activeIndex + 1);
+        if (event.key === 'Tab') {
+          const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button, [href], input, video, [tabindex]:not([tabindex="-1"])') || []).filter((element) => !element.hasAttribute('disabled'));
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+          else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+        }
       }}
       className="cp-media-dialog"
       data-product-media-overlay="open"
@@ -72,6 +100,12 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
                 Motion study
               </Button>
             )}
+            <button type="button" className="cp-media-text-button" onClick={() => setAutoPlay((value) => !value)} aria-pressed={autoPlay}>
+              {autoPlay ? 'Stop auto' : 'Play auto'}
+            </button>
+            <button type="button" className="cp-media-text-button" onClick={() => setZoomed((value) => !value)} aria-pressed={zoomed}>
+              {zoomed ? 'Reset zoom' : 'Zoom'}
+            </button>
             <h2 id="product-media-title" className="sr-only">
               {title} media viewer
             </h2>
@@ -107,10 +141,13 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
             const source = item.src || item.url;
             const previewSource = item.previewUrl || source;
             return (
-              <figure key={item.registryAssetId} className="cp-media-slide">
+              <figure key={item.registryAssetId || item.id || `${item.type}-${index}`} className="cp-media-slide">
                 {item.type === 'video' ? (
                   <video
                     controls
+                    autoPlay={!reducedMotion && index === activeIndex}
+                    muted
+                    playsInline
                     preload="metadata"
                     poster={previewSource}
                     src={source}
@@ -123,7 +160,7 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
                     priority={index === 0}
                     sizes="90vw"
                     unoptimized
-                    className="cp-media-slide-image"
+                    className={`cp-media-slide-image ${zoomed && index === activeIndex ? 'is-zoomed' : ''}`}
                   />
                 )}
                 <figcaption className="cp-media-caption">
@@ -144,6 +181,9 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
             aria-label="Previous product image"
           >
             <ArrowLeft aria-hidden="true" />
+          </button>
+          <button type="button" onClick={() => document.querySelectorAll<HTMLElement>('.cp-media-slide')[activeIndex]?.requestFullscreen?.()} className="cp-media-arrow" aria-label="Open active media fullscreen">
+            <Maximize aria-hidden="true" />
           </button>
           <button
             type="button"

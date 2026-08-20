@@ -133,7 +133,12 @@ export function resolveProductSource({
     };
   }
 
-  if (environment === 'local' && fixtureProduct) {
+  if (
+    fixtureProduct &&
+    (environment === 'local' ||
+      (environment === 'preview' &&
+        process.env.NEXT_PUBLIC_STAGING_REVIEW === 'true'))
+  ) {
     return {
       schemaVersion: 'cp.release-decision.v1',
       environment,
