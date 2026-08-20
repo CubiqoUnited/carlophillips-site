@@ -659,7 +659,7 @@ export default function HomeStorefront({
 
   const [orderOpen, setOrderOpen] = useState(false);
   const [sizeFitOpen, setSizeFitOpen] = useState(false);
-  const [selectedHash, setSelectedHash] = useState('');
+  const [selectedHash, setSelectedHash] = useState<string>(PRODUCT_OFFER_HASHES[0]);
   const [bagItem, setBagItem] = useState<{ size: string; hash: string } | null>(null);
   const [dwellReady, setDwellReady] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
