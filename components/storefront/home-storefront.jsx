@@ -671,9 +671,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(designSystemRuntimeContract.media.reducedMotion);
-    const savedPaused = window.sessionStorage.getItem(motionPreferenceKey) === 'true';
     setReducedMotion(mediaQuery.matches);
-    setUserPaused(savedPaused);
     const handlePreference = event => {
       setReducedMotion(event.matches);
       if (event.matches) setUserPaused(true);
@@ -777,6 +775,12 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
                 muted
                 playsInline
                 preload="auto"
+                onCanPlay={(e) => {
+                  if (motionPlaying) {
+                    const promise = e.currentTarget.play();
+                    if (promise !== undefined) promise.catch(() => {});
+                  }
+                }}
                 onEnded={() => setMotionCompleted(true)}
                 className="cp-runway-live-motion"
                 aria-label={currentHeroVideo?.alt || motionAsset.alt}

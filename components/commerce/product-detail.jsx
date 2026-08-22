@@ -30,7 +30,7 @@ function ProductMedia({ item, featured }) {
   const frameClass = featured ? 'cp-product-media-featured' : 'cp-product-media-portrait';
 
   if (item.type === 'video' && item.url) {
-    return <video controls preload="metadata" poster={item.previewUrl} className={`${frameClass} cp-product-media-asset cp-media-fit-contain`} src={item.url} />;
+    return <video autoPlay muted playsInline loop controls preload="auto" poster={item.previewUrl} className={`${frameClass} cp-product-media-asset cp-media-fit-contain`} src={item.url} />;
   }
 
   if (item.type === 'external_video' && item.url) {
