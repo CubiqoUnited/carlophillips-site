@@ -671,9 +671,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(designSystemRuntimeContract.media.reducedMotion);
-    setReducedMotion(mediaQuery.matches);
     const handlePreference = event => {
-      setReducedMotion(event.matches);
       if (event.matches) setUserPaused(true);
     };
     mediaQuery.addEventListener('change', handlePreference);
@@ -683,6 +681,9 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
   useEffect(() => {
     const video = motionVideoRef.current;
     if (!video) return;
+    video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
     if (motionPlaying) {
       const playPromise = video.play();
       if (playPromise !== undefined) {
@@ -778,12 +779,15 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
                 autoPlay
                 muted
                 playsInline
+                disablePictureInPicture
                 preload="auto"
                 onLoadedMetadata={(e) => {
+                  e.currentTarget.defaultMuted = true;
                   e.currentTarget.muted = true;
                   if (motionPlaying) e.currentTarget.play().catch(() => {});
                 }}
                 onCanPlay={(e) => {
+                  e.currentTarget.defaultMuted = true;
                   e.currentTarget.muted = true;
                   if (motionPlaying) e.currentTarget.play().catch(() => {});
                 }}
