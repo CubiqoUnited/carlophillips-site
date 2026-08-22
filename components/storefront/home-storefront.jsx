@@ -823,7 +823,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
           <span className="cp-motion-status" aria-live="polite">
             Runway motion · {motionPlaying ? 'playing' : motionCompleted ? 'complete' : 'paused'}
           </span>
-          <button type="button" className="cp-motion-control" onClick={toggleMotion} aria-pressed={!motionPlaying}>
+          <button type="button" className="cp-motion-control" onClick={toggleMotion} aria-pressed={!motionPlaying} data-motion-control="true">
             {motionPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
             <span>{motionPlaying ? 'Pause motion' : motionCompleted ? 'Replay motion' : 'Play motion'}</span>
           </button>

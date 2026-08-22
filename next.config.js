@@ -63,12 +63,19 @@ const nextConfig = {
       "www.houseofcarlphillips.com",
     ];
 
-    return brandRedirectHosts.map((host) => ({
-      source: "/:path*",
-      has: [{ type: "host", value: host }],
-      destination: `${canonicalHost}/:path*`,
-      permanent: true,
-    }));
+    return [
+      ...brandRedirectHosts.map((host) => ({
+        source: "/:path*",
+        has: [{ type: "host", value: host }],
+        destination: `${canonicalHost}/:path*`,
+        permanent: true,
+      })),
+      {
+        source: "/product/:handle",
+        destination: "/products/:handle",
+        permanent: true,
+      },
+    ];
   },
   async headers() {
     return [
