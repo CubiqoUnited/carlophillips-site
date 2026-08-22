@@ -478,6 +478,30 @@ export function ProductMediaOverlay({ activeIndex = 0, interactive = true, media
           </div>
         )}
 
+        <nav className="cp-media-thumbnails cp-scrollbar-hide" aria-label="Media gallery thumbnails">
+          {media.map((item, index) => {
+            const thumbSrc = item.posterSrc || item.previewUrl || item.src || item.url;
+            return (
+              <button
+                key={`thumb-${index}`}
+                type="button"
+                onClick={() => handleManualMove(index)}
+                className={activeIndex === index ? 'cp-media-thumbnail cp-media-thumbnail-active' : 'cp-media-thumbnail'}
+                aria-label={`Jump to view ${index + 1}`}
+                aria-pressed={activeIndex === index}
+              >
+                <Image
+                  src={thumbSrc}
+                  alt=""
+                  width={36}
+                  height={45}
+                  className="cp-media-thumbnail-img"
+                />
+              </button>
+            );
+          })}
+        </nav>
+
         <div className="cp-media-navigation">
           <button
             type="button"
@@ -501,6 +525,12 @@ export function ProductMediaOverlay({ activeIndex = 0, interactive = true, media
       </div>
     </section>
   );
+}
+
+function formatTime(sec) {
+  const s = Math.floor(sec || 0);
+  const m = Math.floor(s / 60);
+  return `${String(m).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 }
 
 function Navigation({ menuButtonRef, menuOpen, onMenu }) {
@@ -645,6 +675,8 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
   const [reducedMotion, setReducedMotion] = useState(false);
   const [userPaused, setUserPaused] = useState(false);
   const [motionCompleted, setMotionCompleted] = useState(false);
+  const [videoCurrentTime, setVideoCurrentTime] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(7);
   const [heroSequenceIndex, setHeroSequenceIndex] = useState(0);
   const heroVideos = signatureHeroSequence;
   const currentHeroVideo = heroVideos[heroSequenceIndex] || motionAsset;
@@ -784,12 +816,17 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
                 onLoadedMetadata={(e) => {
                   e.currentTarget.defaultMuted = true;
                   e.currentTarget.muted = true;
+                  if (e.currentTarget.duration) setVideoDuration(e.currentTarget.duration);
                   if (motionPlaying) e.currentTarget.play().catch(() => {});
                 }}
                 onCanPlay={(e) => {
                   e.currentTarget.defaultMuted = true;
                   e.currentTarget.muted = true;
                   if (motionPlaying) e.currentTarget.play().catch(() => {});
+                }}
+                onTimeUpdate={(e) => {
+                  setVideoCurrentTime(e.currentTarget.currentTime || 0);
+                  if (e.currentTarget.duration) setVideoDuration(e.currentTarget.duration);
                 }}
                 onEnded={() => setMotionCompleted(true)}
                 className="cp-runway-live-motion"
@@ -848,9 +885,13 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
 
       {galleryReady ? (
         <div className="cp-product-actions-corner">
+          <span className="cp-motion-status" aria-live="polite">
+            Motion study · {motionPlaying ? 'playing' : motionCompleted ? 'complete' : 'paused'}
+          </span>
           {purchaseReady && (
             <button type="button" onClick={onOpenOrder} className="cp-product-order-button">
-              Order — {priceLabel}
+              <span>Order — {priceLabel}</span>
+              <ArrowRight className="cp-icon cp-icon-small" aria-hidden="true" />
             </button>
           )}
           <button
@@ -881,13 +922,13 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
 
       {runwayVisualReady && (
         <div className="cp-motion-control-group">
-          <span className="cp-motion-status" aria-live="polite">
-            Runway motion · {motionPlaying ? 'playing' : motionCompleted ? 'complete' : 'paused'}
-          </span>
           <button type="button" className="cp-motion-control" onClick={toggleMotion} aria-pressed={!motionPlaying} data-motion-control="true">
             {motionPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
             <span>{motionPlaying ? 'Pause motion' : motionCompleted ? 'Replay motion' : 'Play motion'}</span>
           </button>
+          <span className="cp-motion-timestamp" aria-live="polite">
+            {formatTime(videoCurrentTime)} / {formatTime(videoDuration)}
+          </span>
           <span className={motionPlaying ? 'cp-motion-timeline' : 'cp-motion-timeline cp-motion-paused'} aria-hidden="true">
             <span />
           </span>

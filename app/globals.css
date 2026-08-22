@@ -875,12 +875,18 @@
 
   .cp-motion-control-group {
     position: var(--cp-semantic-layout-position-absolute);
-    right: var(--cp-semantic-space-page-gutter);
+    left: var(--cp-semantic-media-position-navigation);
     bottom: var(--cp-semantic-space-6);
     z-index: var(--cp-component-control-layer);
-    display: var(--cp-semantic-layout-display-grid);
-    width: var(--cp-semantic-size-motion-progress);
-    gap: var(--cp-semantic-space-2);
+    display: var(--cp-semantic-layout-display-flex);
+    align-items: var(--cp-semantic-layout-align-center);
+    gap: var(--cp-semantic-space-4);
+    padding: var(--cp-semantic-space-2) var(--cp-semantic-space-4);
+    background: var(--cp-semantic-color-control-dark);
+    border: var(--cp-semantic-border-rule-strong);
+    border-radius: var(--cp-semantic-radius-control);
+    backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
+    transform: translateX(var(--cp-semantic-media-translate-navigation));
     color: var(--cp-semantic-color-copy-soft);
     font-size: var(--cp-semantic-font-size-label-small);
     letter-spacing: var(--cp-semantic-font-tracking-fact);
@@ -891,13 +897,24 @@
     display: var(--cp-semantic-layout-display-inline-flex);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-2);
-    width: var(--cp-semantic-layout-width-fit-content);
+    border: var(--cp-semantic-border-rule-strong);
+    padding: var(--cp-semantic-space-2) var(--cp-semantic-space-3);
+    background: var(--cp-semantic-color-canvas);
     color: var(--cp-semantic-color-ink);
+  }
+
+  .cp-motion-timestamp {
+    display: var(--cp-semantic-layout-display-inline-flex);
+    font-size: var(--cp-semantic-font-size-label-small);
+    letter-spacing: var(--cp-semantic-font-tracking-fact);
+    color: var(--cp-semantic-color-copy-soft);
+    white-space: var(--cp-semantic-layout-white-space-nowrap);
   }
 
   .cp-motion-timeline,
   .cp-media-auto-progress-track {
     display: var(--cp-semantic-layout-display-block);
+    width: var(--cp-semantic-size-motion-progress);
     height: var(--cp-semantic-size-progress-track);
     overflow: var(--cp-semantic-layout-overflow-hidden);
     background: var(--cp-semantic-color-rule);
@@ -1062,6 +1079,48 @@
   .cp-media-auto-progress-fill {
     animation-duration: var(--cp-semantic-duration-gallery-auto);
     animation-iteration-count: var(--cp-semantic-layout-animation-count-once);
+  }
+
+  .cp-media-thumbnails {
+    position: var(--cp-semantic-layout-position-absolute);
+    left: var(--cp-semantic-space-page-gutter);
+    bottom: var(--cp-semantic-space-5);
+    z-index: var(--cp-component-control-layer);
+    display: var(--cp-semantic-layout-display-flex);
+    align-items: var(--cp-semantic-layout-align-center);
+    gap: var(--cp-semantic-space-2);
+    max-width: calc(var(--cp-semantic-size-full) - var(--cp-semantic-space-page-gutter) * 2);
+    overflow-x: var(--cp-semantic-layout-overflow-auto);
+    padding: var(--cp-semantic-space-1);
+    background: var(--cp-semantic-color-control-dark);
+    border: var(--cp-semantic-border-rule-strong);
+    border-radius: var(--cp-semantic-radius-control);
+    backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
+  }
+
+  .cp-media-thumbnail {
+    position: var(--cp-semantic-layout-position-relative);
+    flex-shrink: var(--cp-semantic-layout-flex-none);
+    width: var(--cp-semantic-space-8);
+    height: var(--cp-semantic-space-10);
+    overflow: var(--cp-semantic-layout-overflow-hidden);
+    border: var(--cp-semantic-border-rule);
+    opacity: var(--cp-semantic-opacity-media-expand);
+    transition:
+      border-color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard),
+      opacity var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
+  }
+
+  .cp-media-thumbnail:hover,
+  .cp-media-thumbnail-active {
+    border-color: var(--cp-semantic-color-ink);
+    opacity: var(--cp-semantic-opacity-full);
+  }
+
+  .cp-media-thumbnail-img {
+    width: var(--cp-semantic-size-full);
+    height: var(--cp-semantic-size-full);
+    object-fit: var(--cp-semantic-layout-object-fit-cover);
   }
 
   .cp-media-title-eyebrow {
