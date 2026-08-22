@@ -697,7 +697,11 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
     const target = sectionRef.current;
     if (!target) return undefined;
     const observer = new IntersectionObserver(
-      entries => setInMotionRange(entries[0]?.isIntersecting || entries[0]?.intersectionRatio >= 0.6),
+      entries => {
+        const entry = entries[0];
+        if (!entry) return;
+        setInMotionRange(entry.isIntersecting || entry.intersectionRatio >= 0.6 || entry.intersectionRatio > 0);
+      },
       { threshold: [0, 0.1, 0.6, 1] }
     );
     observer.observe(target);
@@ -775,11 +779,13 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
                 muted
                 playsInline
                 preload="auto"
+                onLoadedMetadata={(e) => {
+                  e.currentTarget.muted = true;
+                  if (motionPlaying) e.currentTarget.play().catch(() => {});
+                }}
                 onCanPlay={(e) => {
-                  if (motionPlaying) {
-                    const promise = e.currentTarget.play();
-                    if (promise !== undefined) promise.catch(() => {});
-                  }
+                  e.currentTarget.muted = true;
+                  if (motionPlaying) e.currentTarget.play().catch(() => {});
                 }}
                 onEnded={() => setMotionCompleted(true)}
                 className="cp-runway-live-motion"
