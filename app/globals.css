@@ -1084,8 +1084,8 @@
   .cp-media-thumbnails {
     position: var(--cp-semantic-layout-position-absolute);
     left: var(--cp-semantic-space-page-gutter);
-    bottom: var(--cp-semantic-space-5);
-    z-index: var(--cp-component-control-layer);
+    bottom: var(--cp-semantic-space-8);
+    z-index: var(--cp-semantic-layer-drawer);
     display: var(--cp-semantic-layout-display-flex);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-2);
