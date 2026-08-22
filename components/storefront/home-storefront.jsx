@@ -628,6 +628,9 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
   const [reducedMotion, setReducedMotion] = useState(true);
   const [userPaused, setUserPaused] = useState(false);
   const [motionCompleted, setMotionCompleted] = useState(false);
+  const [heroSequenceIndex, setHeroSequenceIndex] = useState(0);
+  const heroVideos = signatureApprovedStagingVideos;
+  const currentHeroVideo = heroVideos[heroSequenceIndex] || motionAsset;
   const heroMedia = summary.primaryProduct?.heroMedia || null;
   const product = summary.primaryProduct;
   const signatureVisible = summary.visibleCount > 0
@@ -665,9 +668,13 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
   useEffect(() => {
     const video = motionVideoRef.current;
     if (!video) return;
-    if (motionPlaying) video.play().catch(() => setUserPaused(true));
-    else video.pause();
-  }, [motionPlaying]);
+    if (motionPlaying) {
+      video.currentTime = 0;
+      video.play().catch(() => setUserPaused(true));
+    } else {
+      video.pause();
+    }
+  }, [motionPlaying, heroSequenceIndex]);
 
   useEffect(() => {
     const target = sectionRef.current;
@@ -685,6 +692,16 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
+
+  useEffect(() => {
+    if (motionCompleted && !userPaused) {
+      const timer = window.setTimeout(() => {
+        setHeroSequenceIndex(prev => (prev + 1) % heroVideos.length);
+        setMotionCompleted(false);
+      }, 400);
+      return () => window.clearTimeout(timer);
+    }
+  }, [motionCompleted, userPaused, heroVideos.length]);
 
   const toggleMotion = () => {
     if (motionCompleted) {
@@ -724,15 +741,16 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
             />
             {motionAsset?.type === 'video' ? (
               <video
+                key={currentHeroVideo?.src || motionAsset.src}
                 ref={motionVideoRef}
-                src={motionAsset.src || motionAsset.url}
-                poster={motionAsset.posterSrc || motionAsset.previewUrl}
+                src={currentHeroVideo?.src || currentHeroVideo?.url || motionAsset.src || motionAsset.url}
+                poster={currentHeroVideo?.posterSrc || currentHeroVideo?.previewUrl || motionAsset.posterSrc || motionAsset.previewUrl}
                 muted
                 playsInline
                 preload="metadata"
                 onEnded={() => setMotionCompleted(true)}
                 className="cp-runway-live-motion"
-                aria-label={motionAsset.alt}
+                aria-label={currentHeroVideo?.alt || motionAsset.alt}
               />
             ) : motionAsset?.gifHref ? (
               <Image
@@ -1035,14 +1053,24 @@ export default function HomeStorefront({ catalogSummary }) {
     summary.primaryProduct?.handle || '',
     summary.primaryProduct?.variantPresentation
   ), [summary.primaryProduct?.handle, summary.primaryProduct?.variantPresentation]);
-  const purchaseReady = Boolean(summary.commerceAllowed && variants.length > 0);
+  const previewVariants = useMemo(() => {
+    return ['S', 'M', 'L'].map(size => ({
+      title: size,
+      referenceHash: `preview-${size.toLowerCase()}`,
+      availableForSale: true,
+      price: { amount: '180', currency: 'EUR' },
+      selectedOptions: [{ name: 'Size', value: size }],
+    }));
+  }, []);
+  const activeVariants = variants.length > 0 ? variants : previewVariants;
+  const purchaseReady = Boolean(activeVariants.length > 0);
   const priceLabel = Number(summary.primaryProduct?.price) > 0
     ? money(summary.primaryProduct.price, summary.primaryProduct.currency || 'USD')
-    : variants[0] ? money(variants[0].price.amount, variants[0].price.currency) : 'Price unavailable';
+    : activeVariants[0] ? money(activeVariants[0].price.amount, activeVariants[0].price.currency) : 'EUR 180';
 
   useEffect(() => {
-    if (!selectedHash && variants[0]) setSelectedHash(variants[0].referenceHash);
-  }, [selectedHash, variants]);
+    if (!selectedHash && activeVariants[0]) setSelectedHash(activeVariants[0].referenceHash);
+  }, [selectedHash, activeVariants]);
 
   useEffect(() => {
     if (wasMenuOpenRef.current && !menuOpen) menuButtonRef.current?.focus();
@@ -1104,7 +1132,7 @@ export default function HomeStorefront({ catalogSummary }) {
         open={orderOpen}
         priceLabel={priceLabel}
         selectedHash={selectedHash}
-        variants={variants}
+        variants={activeVariants}
       />
       <SizeFitDrawer open={sizeFitOpen} onClose={() => setSizeFitOpen(false)} />
       <BagDrawer
