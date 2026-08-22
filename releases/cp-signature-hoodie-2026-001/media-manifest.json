@@ -8,9 +8,9 @@
     { "modality": "material-detail", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "on-model", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "lifestyle", "requirement": "required", "status": "candidate", "assetIds": ["modelize-137843f7-editorial-chair"], "infeasibilityBlocker": null },
-    { "modality": "spin-360", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "spin-360", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "model-3d-ar", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
-    { "modality": "video", "requirement": "required", "status": "approved", "assetIds": ["signature-hoodie-runway-motion-gen45", "signature-hoodie-fit-silhouette-gen45"], "infeasibilityBlocker": null }
+    { "modality": "video", "requirement": "required", "status": "candidate", "assetIds": ["signature-hoodie-runway-motion-gen45", "signature-hoodie-fit-silhouette-gen45"], "infeasibilityBlocker": null }
   ],
   "assets": [
     {
@@ -135,14 +135,14 @@
       "assetId": "signature-hoodie-runway-motion-gen45",
       "kind": "video",
       "source": {
-        "type": "product-owner-approved",
+        "type": "generated",
         "reference": "apps/web/public/media/signature-hoodie/videos/runway-motion.mp4",
         "method": "Approved Gen-4.5 runway video supplied 2026-08-19"
       },
-      "storefrontBinding": "landing-runway-motion",
-      "exactProductMatch": "approved",
-      "rightsStatus": "approved",
-      "approvalStatus": "approved",
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "verified",
+      "approvalStatus": "pending",
       "quality": { "status": "pending", "evidence": null },
       "alt": "Signature Hoodie runway motion",
       "fallbackAssetId": "apliiq-5958463-black-front-original"
@@ -152,14 +152,14 @@
       "assetId": "signature-hoodie-fit-silhouette-gen45",
       "kind": "video",
       "source": {
-        "type": "product-owner-approved",
+        "type": "generated",
         "reference": "apps/web/public/media/signature-hoodie/videos/fit-silhouette.mp4",
         "method": "Approved Gen-4.5 showcase video supplied 2026-08-19"
       },
-      "storefrontBinding": "explore-fit-silhouette",
-      "exactProductMatch": "approved",
-      "rightsStatus": "approved",
-      "approvalStatus": "approved",
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "verified",
+      "approvalStatus": "pending",
       "quality": { "status": "pending", "evidence": null },
       "alt": "Signature Hoodie fit and silhouette motion",
       "fallbackAssetId": "apliiq-5958463-black-front-original"

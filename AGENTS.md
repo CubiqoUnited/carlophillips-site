@@ -4,6 +4,7 @@
 
 - Canonical repository: `https://github.com/CubiqoUnited/carlophillips-site.git`.
 - `main` is the production-intent branch. Feature work uses temporary branches and pull requests.
+- **Branch Lifecycle Governance:** Only `main` (Production) and `staging` (Staging) may persist as long-lived branches on `origin`. Any temporary working/task branch created by an agent (e.g. `codex/*`, `copilot/*`, `feature/*`, `cp-staging-*`) MUST be deleted immediately after its pull request or changes are merged into `main` or `staging`. No unmerged, stale, or abandoned feature branches may be left on remote.
 - Current product requirements live in `PRD.md`; architecture lives in `ARCHITECTURE.md`; execution state lives in `STATUS.md` and `TASKS.md`.
 - Shopify is the intended source of truth for products, variants, prices, availability, cart, and checkout. Static or mock data must be visibly identified and must never be presented as proof of live commerce.
 only 1-2 original pod image - rest AI generated acceptable
