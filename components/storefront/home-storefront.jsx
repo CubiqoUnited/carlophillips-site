@@ -98,6 +98,23 @@ const signatureApprovedStagingVideos = [
   },
 ];
 
+const signatureSpinAsset = {
+  type: 'image',
+  src: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.webp',
+  gifHref: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif',
+  posterSrc: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp',
+  previewUrl: '/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.webp',
+  alt: 'AI-assisted still-derived motion study cycling through the CARLOPHILLIPS Signature Hoodie visualisations',
+  label: 'Still-derived motion loop',
+  disclosure: 'AI-assisted still-derived motion',
+  hideCaption: true,
+};
+
+const signatureHeroSequence = [
+  ...signatureApprovedStagingVideos,
+  signatureSpinAsset,
+];
+
 const productCategories = [
   { label: 'Hoodies', href: '/products/carlophillips-signature-hoodie' },
   { label: 'T-Shirts', href: '/shop?category=t-shirts' },
@@ -629,7 +646,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
   const [userPaused, setUserPaused] = useState(false);
   const [motionCompleted, setMotionCompleted] = useState(false);
   const [heroSequenceIndex, setHeroSequenceIndex] = useState(0);
-  const heroVideos = signatureApprovedStagingVideos;
+  const heroVideos = signatureHeroSequence;
   const currentHeroVideo = heroVideos[heroSequenceIndex] || motionAsset;
   const heroMedia = summary.primaryProduct?.heroMedia || null;
   const product = summary.primaryProduct;
@@ -705,6 +722,15 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
     }
   }, [motionCompleted, userPaused, heroVideos.length]);
 
+  useEffect(() => {
+    if (currentHeroVideo?.gifHref && motionPlaying) {
+      const timer = window.setTimeout(() => {
+        setMotionCompleted(true);
+      }, 5000);
+      return () => window.clearTimeout(timer);
+    }
+  }, [currentHeroVideo?.gifHref, motionPlaying, heroSequenceIndex]);
+
   const toggleMotion = () => {
     if (motionCompleted) {
       if (motionVideoRef.current) motionVideoRef.current.currentTime = 0;
@@ -741,7 +767,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
               className="cp-runway-backdrop"
               aria-hidden="true"
             />
-            {motionAsset?.type === 'video' ? (
+            {currentHeroVideo?.type === 'video' ? (
               <video
                 key={currentHeroVideo?.src || motionAsset.src}
                 ref={motionVideoRef}
@@ -755,10 +781,10 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
                 className="cp-runway-live-motion"
                 aria-label={currentHeroVideo?.alt || motionAsset.alt}
               />
-            ) : motionAsset?.gifHref ? (
+            ) : currentHeroVideo?.gifHref || motionAsset?.gifHref ? (
               <Image
-                src={motionPlaying ? motionAsset.gifHref : motionAsset.posterSrc || motionAsset.src}
-                alt={motionAsset.alt}
+                src={motionPlaying ? (currentHeroVideo?.gifHref || motionAsset.gifHref) : (currentHeroVideo?.posterSrc || motionAsset.posterSrc || currentHeroVideo?.src || motionAsset.src)}
+                alt={currentHeroVideo?.alt || motionAsset.alt}
                 fill
                 priority
                 unoptimized
