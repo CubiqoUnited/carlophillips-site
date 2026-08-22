@@ -623,9 +623,9 @@ function CampaignHero() {
 function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motionSuspended, onOpenGallery, onOpenOrder, priceLabel, purchaseReady, summary }) {
   const sectionRef = useRef(null);
   const motionVideoRef = useRef(null);
-  const [inMotionRange, setInMotionRange] = useState(false);
+  const [inMotionRange, setInMotionRange] = useState(true);
   const [pageActive, setPageActive] = useState(true);
-  const [reducedMotion, setReducedMotion] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [userPaused, setUserPaused] = useState(false);
   const [motionCompleted, setMotionCompleted] = useState(false);
   const [heroSequenceIndex, setHeroSequenceIndex] = useState(0);
@@ -656,7 +656,7 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
     const mediaQuery = window.matchMedia(designSystemRuntimeContract.media.reducedMotion);
     const savedPaused = window.sessionStorage.getItem(motionPreferenceKey) === 'true';
     setReducedMotion(mediaQuery.matches);
-    setUserPaused(mediaQuery.matches || savedPaused);
+    setUserPaused(savedPaused);
     const handlePreference = event => {
       setReducedMotion(event.matches);
       if (event.matches) setUserPaused(true);
@@ -669,8 +669,10 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
     const video = motionVideoRef.current;
     if (!video) return;
     if (motionPlaying) {
-      video.currentTime = 0;
-      video.play().catch(() => setUserPaused(true));
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
     } else {
       video.pause();
     }
@@ -680,8 +682,8 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
     const target = sectionRef.current;
     if (!target) return undefined;
     const observer = new IntersectionObserver(
-      entries => setInMotionRange(entries[0]?.intersectionRatio >= 0.6),
-      { threshold: [0, 0.6, 1] }
+      entries => setInMotionRange(entries[0]?.isIntersecting || entries[0]?.intersectionRatio >= 0.6),
+      { threshold: [0, 0.1, 0.6, 1] }
     );
     observer.observe(target);
     return () => observer.disconnect();
@@ -745,9 +747,10 @@ function ProductRunwayHero({ galleryButtonRef, galleryCount, motionAsset, motion
                 ref={motionVideoRef}
                 src={currentHeroVideo?.src || currentHeroVideo?.url || motionAsset.src || motionAsset.url}
                 poster={currentHeroVideo?.posterSrc || currentHeroVideo?.previewUrl || motionAsset.posterSrc || motionAsset.previewUrl}
+                autoPlay
                 muted
                 playsInline
-                preload="metadata"
+                preload="auto"
                 onEnded={() => setMotionCompleted(true)}
                 className="cp-runway-live-motion"
                 aria-label={currentHeroVideo?.alt || motionAsset.alt}
