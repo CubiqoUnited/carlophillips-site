@@ -1,8 +1,14 @@
 # CARLOPHILLIPS Storefront Design System
 
-Status: v1.2.2 candidate. This release corrects and expands v1.2.1; it is not a redesign.
+Status: v1.3 candidate. The token authority, tier direction and governance are unchanged from v1.2.2;
+the customer composition is superseded by the *Screen Inventory Review Workbook*.
 
-Visible baseline: approved production artifact `bb9568f`. The binding composition is the Lofoten `At the edge of life` opener, persistent header/navigation, bottom-left `ONE` hierarchy, the four tags `Black`, `XS–5XL`, `Heavyweight fleece`, and `CP embroidery`, `Explore media / 12 views`, and the inset truthful media viewer.
+Visible baseline: the workbook's 28 screens plus its exception appendix. The binding composition is
+the Lofoten `At the edge of life` opener behind a black morph panel that translates left on `ENTER`,
+persistent Menu / wordmark / Bag header, a three-column discovery stage with a 4:5 product video,
+`VIEW GALLERY` / `ORDER` stack, the overlay gallery, category and product grids, and the cart →
+checkout → confirmation → tracking path. The gap register and its scope exclusions are in
+`docs/screen-inventory-gap-analysis.md`.
 
 ## Authority and dependency
 
@@ -52,16 +58,38 @@ CSS custom properties cannot drive media-query conditions. The canonical respons
 
 ## Production composition contract
 
-The v1.2.2 implementation preserves these exact customer-facing decisions from `bb9568f`:
+The workbook implementation preserves these exact customer-facing decisions:
 
-1. `CARLOPHILLIPS / At the edge of life`, `At the edge of life.`, and `Runway 001 / Lofoten` over the exact approved runway asset.
-2. Persistent CARLOPHILLIPS header with Menu and Bag navigation.
-3. `ONE` in the lower-left product scene, with its reviewed first description sentence and the four approved tags.
-4. A compact upper-right `Explore media` control with a truthful 12-view count for the current four eligible fixture views plus eight disclosed Preview studies.
-5. A centered inset media panel over a dimmed/blurred backdrop, with page context still visible around it.
-6. Provider-neutral customer copy and truthful `Product view`, `AI-assisted preview`, `AI-assisted still-derived motion`, and `Unverified back visualisation` disclosures.
+1. `CARLO PHILLIPS`, `Lofoten · Norway`, `At the edge of life.`, and `Runway 001 / Lofoten` carried on
+   a black panel over the exact approved runway asset. `ENTER` translates the panel left; the hero
+   beneath never fades, flashes, or goes fullscreen.
+2. Persistent CARLOPHILLIPS header with Menu, wordmark, Bag, and `Join the list` before entry.
+3. Discovery as three columns: `Signature Series / 001` and `ONE` with its reviewed first description
+   sentence and the three disclosure chips `Color`, `Material`, `Feel`; a centred 4:5 video stage; and
+   the `VIEW GALLERY` / `ORDER` stack that the order panel replaces in place.
+4. A product stage with play/pause, progress and three clip dashes, muted autoplay for two complete
+   runs, a hold on the final frame behind a centred Play, and **no fullscreen affordance anywhere**.
+5. A centred inset gallery over a dimmed/blurred backdrop, with `01 / NN`, position dashes, the
+   same-model / merchandise / detail / 2.5D category rail, and a thumbnail rail.
+6. Provider-neutral customer copy and truthful `Product view`, `AI-assisted preview`, `AI-assisted
+   still-derived motion`, and `Unverified back visualisation` disclosures.
+7. The appendix exception states as one shared widget, with the workbook's exact copy.
 
-The superseded v1.2.1 three-label experiment (`Color`, `Material`, `Feel`), its 11-view evidence, and its upper product-copy placement are not the production contract.
+The superseded v1.2.2 full-bleed runway composition — bottom-left `ONE`, the corner `Explore media`
+control with its expand affordance, the four `Black` / `XS–5XL` / `Heavyweight fleece` /
+`CP embroidery` tags, and the side-drawer order tray — is no longer the production contract.
+
+## Media readiness
+
+No customer surface chooses its own motion asset. `lib/media/media-readiness.js` declares the landing
+hero (16:9 desktop, 9:16 mobile) and the three approved product clips, and returns `ready` /
+`poster-only` / `not-ready` per slot with a machine-readable reason. `ready` requires **both** an
+evidenced source and a verified first-frame poster, because the workbook needs the poster for instant
+render and for the reduced-motion fallback. Unknown is never ready.
+
+`yarn verify:media-readiness` writes the report to `test_reports/media-readiness/`; the home route
+passes the same decision into the view; and a runtime media error raises the appendix
+`Video unavailable` widget rather than leaving a broken player on the page.
 
 ## Measured Production parity roles
 

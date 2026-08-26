@@ -1,0 +1,4 @@
+{
+  "note": "Codes the storefront may recognise before checkout. Empty by design: discount authority belongs to the secure hosted checkout, so an unlisted code leaves the cart total unchanged and raises the appendix 'Discount code not recognised' state rather than implying a reduction the store has not granted.",
+  "recognisedCodes": []
+}

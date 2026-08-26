@@ -17,24 +17,39 @@ describe('approved Signature Hoodie Staging videos', () => {
     }
   });
 
-  it('keeps the landing video muted, finite, visibility-controlled and replayable', () => {
-    const source = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
+  /*
+   * Workbook screen 03: muted autoplay runs the clip twice, then holds the final frame behind a
+   * centred Play. The stage must never loop, must stop when it leaves view or the tab is hidden,
+   * and must stay replayable.
+   */
+  it('keeps the product stage muted, finite, visibility-controlled and replayable', () => {
+    const source = readFileSync('components/storefront/discovery-stage.jsx', 'utf8');
     expect(source).toContain('muted');
     expect(source).toContain('playsInline');
-    expect(source).toContain('onEnded={() => setMotionCompleted(true)}');
-    expect(source).not.toMatch(/<video[\s\S]{0,280}\bloop\b/);
-    expect(source).toContain('intersectionRatio >= 0.6');
+    expect(source).toContain('COMPLETE_RUNS = 2');
+    expect(source).toContain('onEnded={handleEnded}');
+    expect(source).not.toMatch(/<video[\s\S]{0,400}\bloop\b/);
+    expect(source).toContain('IntersectionObserver');
     expect(source).toContain('document.hidden');
-    expect(source).toContain('motionSuspended');
-    expect(source).toContain('motionVideoRef.current.currentTime = 0');
+    expect(source).toContain('suspended');
+    expect(source).toContain('if (video) video.currentTime = 0;');
+  });
+
+  it('drives the stage only from clips the readiness gate cleared for motion', () => {
+    const source = readFileSync('components/storefront/discovery-stage.jsx', 'utf8');
+    expect(source).toContain('declaredClips.filter(clip => clip.motionAllowed)');
+    expect(source).toContain('EXCEPTION_STATES.videoUnavailable');
+    expect(source).toContain('setPlaybackFailed(true)');
+    // A slot the gate withheld still shows its dash, disabled, rather than disappearing.
+    expect(source).toContain('disabled={!clip.motionAllowed}');
   });
 
   it('opens the gallery on a factual still and exposes both videos by explicit selection', () => {
-    const source = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
-    expect(source).toContain('setMediaIndex(0)');
-    expect(source).toContain('Show ${media[index].label}');
-    expect(source).toContain("label: 'Runway motion'");
-    expect(source).toContain("label: 'Fit & silhouette'");
-    expect(source).toContain('data-media-index={index}');
+    const home = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
+    const gallery = readFileSync('components/storefront/gallery-overlay.jsx', 'utf8');
+    expect(home).toContain('setMediaIndex(typeof index === \'number\' ? index : 0)');
+    expect(home).toContain("label: 'Runway motion'");
+    expect(home).toContain("label: 'Fit & silhouette'");
+    expect(gallery).toContain('data-media-index={index}');
   });
 });

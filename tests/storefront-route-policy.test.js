@@ -25,15 +25,27 @@ describe('storefront route policy', () => {
 
   it('keeps the storefront client free of product fixtures and Shopify transport', () => {
     const source = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
-    expect(source).not.toContain('signature-hoodie-preview');
-    expect(source).not.toContain('loadShopifyProduct');
-    expect(source).not.toContain('SHOPIFY_');
-    expect(source).toContain('Add to bag');
-    expect(source).toContain('action="/api/checkout"');
-    expect(source).toContain('/campaigns/lofoten-runway-hero.png');
-    expect(source).toContain('At the<br />edge of life.');
-    expect(source).toContain('Collection preview');
-    expect(source).toContain('/brand-boards/carlophillips-drop-board.png');
+    const discovery = readFileSync('components/storefront/discovery-section.jsx', 'utf8');
+    const landing = readFileSync('components/storefront/landing-morph.jsx', 'utf8');
+    for (const file of [source, discovery, landing]) {
+      expect(file).not.toContain('signature-hoodie-preview');
+      expect(file).not.toContain('loadShopifyProduct');
+      expect(file).not.toContain('SHOPIFY_');
+    }
+    expect(discovery).toContain('Add to bag');
+    expect(discovery).toContain('action="/api/checkout"');
+    expect(landing).toContain('At the<br />edge of life.');
+  });
+
+  it('renders the landing hero only from a media readiness decision', () => {
+    const page = readFileSync('app/page.js', 'utf8');
+    const landing = readFileSync('components/storefront/landing-morph.jsx', 'utf8');
+    expect(page).toContain('getMediaReadiness');
+    expect(page).toContain('mediaReadiness={getMediaReadiness()}');
+    // The hero source is never a literal in the view: it comes from the verified decision only.
+    expect(landing).not.toContain('/campaigns/');
+    expect(landing).toContain('hero?.motionAllowed && hero.sourceUrl');
+    expect(landing).toContain('hero?.posterUrl');
   });
 
   it('publishes only active product and commerce routes in the sitemap', () => {

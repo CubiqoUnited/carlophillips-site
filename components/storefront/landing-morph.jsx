@@ -1,0 +1,96 @@
+'use client';
+
+import Image from 'next/image';
+import React, { useEffect, useRef } from 'react';
+import { ArrowRight } from 'lucide-react';
+import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
+
+/*
+ * Screens 01 / 02 — Landing, pre-morph and post-morph.
+ *
+ * "ENTER starts the leftward landing-panel reveal; the logo, copy and CTA travel with the panel.
+ * The black panel translates left; video remains stationary beneath it. No fade, flash or
+ * fullscreen."
+ *
+ * The video never moves and never changes opacity: only the panel and the copy carried on it are
+ * transformed. The copy counter-travels a shorter distance than the panel, so it settles at the
+ * left of the frame instead of leaving with it — the difference between the two mocks.
+ *
+ * `hero` is a media readiness decision. When it clears motion the hero plays; when it is poster-only
+ * the same still renders, which is also what a reduced-motion visitor sees. Nothing else is drawn.
+ */
+export function LandingMorph({ entered, hero, onEnter }) {
+  const enterButtonRef = useRef(null);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
+    if (window.matchMedia(designSystemRuntimeContract.media.reducedMotion).matches) {
+      video.pause();
+      return;
+    }
+    video.play().catch(() => {});
+  }, [hero?.sourceUrl]);
+
+  return (
+    <section
+      className="cp-landing"
+      data-landing-state={entered ? 'post-morph' : 'pre-morph'}
+      aria-label="CARLOPHILLIPS runway campaign"
+    >
+      <div className="cp-landing-media" aria-hidden={entered ? undefined : true}>
+        {hero?.motionAllowed && hero.sourceUrl ? (
+          <video
+            ref={videoRef}
+            src={hero.sourceUrl}
+            poster={hero.posterUrl || undefined}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
+            aria-label={hero.alt}
+            className="cp-landing-video"
+          />
+        ) : hero?.posterUrl ? (
+          <Image
+            src={hero.posterUrl}
+            alt={hero.alt}
+            fill
+            priority
+            sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+            className="cp-landing-still"
+          />
+        ) : null}
+        <div className="cp-landing-scrim" aria-hidden="true" />
+      </div>
+
+      <div className="cp-landing-panel" aria-hidden={entered ? true : undefined} />
+
+      <div className="cp-landing-copy">
+        <p className="cp-landing-crest">CARLO PHILLIPS</p>
+        <p className="cp-eyebrow cp-landing-origin">Lofoten · Norway</p>
+        <h1 className="cp-display cp-landing-title">
+          At the<br />edge of life.
+        </h1>
+        <p className="cp-eyebrow cp-landing-caption">Runway 001 / Lofoten</p>
+        <button
+          ref={enterButtonRef}
+          type="button"
+          onClick={onEnter}
+          className="cp-landing-enter"
+          aria-controls="signature-runway"
+        >
+          <span>Enter</span>
+          <ArrowRight className="cp-icon cp-icon-small" aria-hidden="true" />
+        </button>
+      </div>
+    </section>
+  );
+}

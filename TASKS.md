@@ -1,5 +1,28 @@
 # Delivery Tasks
 
+## Screen Inventory Review Workbook look-and-feel
+
+- [x] Record current state, future state and the gap register before implementing (`docs/screen-inventory-gap-analysis.md`).
+- [x] Rebuild the landing as a black morph panel over a stationary hero, with `ENTER` and `Join the list` (screens 01–02).
+- [x] Rebuild discovery as a three-column stage: copy and `Color`/`Material`/`Feel` disclosure chips, a centred 4:5 video with play/pause, progress and three clip dashes, and the `VIEW GALLERY` / `ORDER` stack with the in-place order panel (screens 03–04, 19).
+- [x] Remove every fullscreen affordance from the video stage and the gallery, per `FULLSCREEN: Not available`.
+- [x] Play muted autoplay for two complete runs, then hold the final frame behind a centred Play.
+- [x] Rework the overlay gallery with the `01 / NN` position, dashes, category rail and thumbnail rail (screens 05–06, 20).
+- [x] Add the categories and product grid overlays with truthful counts and the `(viewing)` marker (screens 07–08).
+- [x] Add the cart drawer with quantity, remove, discount capture, totals, CP recognition and the empty state (screens 09, 24, 30).
+- [x] Add checkout with the step rail and order summary, plus processing, payment-failed and expired states (screens 10, 14, 15, 25).
+- [x] Add order confirmation, the confirmation email template and order tracking (screens 11, 12, 27).
+- [x] Add the support form with success and validation states, and the private list with all four states (screens 13, 16–18, 26, 28).
+- [x] Rebuild the menu to the workbook entries and footnote, and add the size guide measurement table (screens 21–22).
+- [x] Implement the ten appendix exception states as one shared widget with the workbook's exact copy.
+- [x] Add the fail-closed media readiness check for the landing hero and the default product video, with a build script, a runtime boundary and a machine-readable report.
+- [x] Derive optimised AVIF/WebP first-frame posters from the approved stills.
+- [x] Pass `yarn lint`, `yarn verify:media-readiness`, the full test suite, `yarn build`, desktop/mobile visual QA and an axe WCAG 2.1 A/AA sweep with zero violations.
+- [ ] Product Owner to approve the superseded customer composition in canonical Staging before any Production promotion. The workbook supersedes the v1.2.2 baseline, so this needs a fresh visual baseline sign-off.
+- [ ] Provision an approved 360 Showcase master, or record an approved infeasibility blocker, so the third declared clip slot stops reporting `not-ready`.
+- [ ] Provision a landing hero master (16:9 and 9:16, H.264, SDR Rec.709, 24 fps, muted) so the hero slot moves from `poster-only` to `ready`.
+- [ ] Provision `CP_SUPPORT_WEBHOOK_URL` and `CP_PRIVATE_LIST_WEBHOOK_URL` so support and private-list intake can report delivery instead of `CHANNEL_UNCONFIGURED`.
+
 ## Current Staging UAT: Funnel 2, final Hoodie video and analytics
 
 - [x] Preserve Funnel 1 and add the feature-flagged Funnel 2 Media Generation workspace inside the same Product Owner Admin portal and canonical release/media authority.

@@ -78,9 +78,10 @@ describe('canonical theme token governance', () => {
       '--cp-primitive-space-025': '0.25rem',
       '--cp-primitive-space-100': '1rem',
       '--cp-primitive-space-800': '8rem',
-      '--cp-primitive-space-negative-200': '-2rem',
       '--cp-primitive-space-negative-050': '-0.5rem',
     });
+    // Only negative offsets an active surface consumes are emitted; a dormant token is a blocker.
+    expect(entries).not.toHaveProperty('--cp-primitive-space-negative-200');
     const css = buildThemeCss(theme);
     expect(css).toContain('--cp-primitive-color-accent: #ffffff');
     expect(readFileSync('app/design-tokens.css', 'utf8')).not.toMatch(

@@ -11,11 +11,25 @@ const globalPath = 'app/globals.css';
 const activeCustomerFiles = [
   'app/layout.js',
   'components/storefront/home-storefront.jsx',
+  'components/storefront/dialog-lifecycle.js',
+  'components/storefront/landing-morph.jsx',
+  'components/storefront/discovery-section.jsx',
+  'components/storefront/discovery-stage.jsx',
+  'components/storefront/gallery-overlay.jsx',
+  'components/storefront/catalog-overlays.jsx',
+  'components/storefront/site-navigation.jsx',
+  'components/storefront/exception-widget.jsx',
+  'components/storefront/support-form.jsx',
+  'components/storefront/private-list.jsx',
   'components/storefront/storefront-header.jsx',
   'components/storefront/site-policies-footer.jsx',
   'components/privacy/policy-page.jsx',
   'components/commerce/catalog-state.jsx',
   'components/commerce/bag-state.jsx',
+  'components/commerce/cart-drawer.jsx',
+  'components/commerce/checkout-experience.jsx',
+  'components/commerce/order-outcome.jsx',
+  'components/commerce/size-guide.jsx',
   'components/commerce/product-detail.jsx',
   'components/commerce/shopify-checkout-form.jsx',
 ];
@@ -259,8 +273,8 @@ describe('storefront design system', () => {
     expect(tokens).toContain('--cp-semantic-radius-card: var(--cp-primitive-radius-none)');
     expect(tokens).toContain('--cp-component-card-radius: var(--cp-semantic-radius-card)');
     expect(styles).toContain('border-radius: var(--cp-component-card-radius)');
-    expect(tokens).toContain('--cp-semantic-duration-runway: var(--cp-primitive-duration-runway)');
-    expect(styles).toContain('animation: cp-runway-frame var(--cp-semantic-duration-runway)');
+    expect(tokens).toContain('--cp-semantic-duration-campaign: var(--cp-primitive-duration-campaign)');
+    expect(styles).toContain('animation: cp-campaign-drift var(--cp-semantic-duration-campaign)');
     expect(tokens).toContain('--cp-component-commerce-explanation-color: var(--cp-semantic-color-status-copy)');
     expect(styles).toContain('color: var(--cp-component-commerce-explanation-color)');
     expect(styles).toContain('@media (prefers-reduced-motion: reduce)');
@@ -276,14 +290,14 @@ describe('storefront design system', () => {
     expect(tokens).toContain('--cp-semantic-color-canvas-deep: var(--cp-primitive-color-neutral-025)');
     expect(tokens).toContain('--cp-component-commerce-page-background: var(--cp-semantic-color-canvas-deep)');
     expect(tokens).toContain('--cp-component-product-detail-page-background: var(--cp-semantic-color-canvas)');
-    expect(tokens).toContain('--cp-component-product-runway-scroll-margin: var(--cp-semantic-size-header)');
+    expect(tokens).toContain('--cp-component-discovery-scroll-margin: var(--cp-semantic-size-header)');
     expect(tokens).toContain('--cp-component-commerce-header-outer-height: calc(var(--cp-semantic-size-header) + var(--cp-semantic-size-hairline))');
     expect(tokens).toContain('--cp-component-product-detail-title-size: var(--cp-semantic-font-size-product-detail-mobile)');
     expect(tokens).toContain('--cp-component-commerce-title-line-height: var(--cp-semantic-font-line-height-section)');
     expect(tokens).toContain('--cp-component-bag-panel-padding: var(--cp-semantic-space-7)');
     expect(tokens).toContain('--cp-component-bag-definition-line-height: var(--cp-semantic-font-line-height-control)');
     expect(tokens).toContain('--cp-component-bag-description-line-height: var(--cp-semantic-font-line-height-commerce-body-mobile)');
-    expect(styles).toContain('scroll-margin-top: var(--cp-component-product-runway-scroll-margin)');
+    expect(styles).toContain('scroll-margin-top: var(--cp-component-discovery-scroll-margin)');
     expect(selectorDeclarations('.cp-commerce-page').background).toBe('var(--cp-component-commerce-page-background)');
     expect(selectorDeclarations('.cp-product-detail-page').background).toBe('var(--cp-component-product-detail-page-background)');
     expect(styles).toContain('height: var(--cp-component-commerce-header-outer-height)');
@@ -359,7 +373,7 @@ describe('storefront design system', () => {
 
   it('binds shared selectors to role tokens without recoupling unrelated labels, headings, or actions', () => {
     expect(selectorDeclarations('.cp-label-small')['font-size']).toBe('var(--cp-semantic-font-size-label-small)');
-    expect(selectorDeclarations('.cp-product-facts li')['font-size']).toBe('var(--cp-component-product-fact-font-size)');
+    expect(selectorDeclarations('.cp-discovery-chip-summary')['font-size']).toBe('var(--cp-component-product-fact-font-size)');
     expect(selectorDeclarations('.cp-card-copy > .cp-label-small')).toMatchObject({
       'font-size': 'var(--cp-component-card-label-font-size)',
       'line-height': 'var(--cp-component-card-label-line-height)',
@@ -402,37 +416,65 @@ describe('storefront design system', () => {
     });
   });
 
-  it('keeps the production composition contract and exact supplied runway asset', () => {
+  /*
+   * Screen Inventory Review Workbook composition contract. This supersedes the v1.2.2 full-bleed
+   * runway composition: the landing is a morph panel over a stationary hero, and discovery is a
+   * three-column stage. Governance (tiers, closure, reachability, no raw literals) is unchanged.
+   */
+  it('keeps the workbook composition contract and the exact supplied runway asset', () => {
     const home = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
+    const landing = readFileSync('components/storefront/landing-morph.jsx', 'utf8');
+    const discovery = readFileSync('components/storefront/discovery-section.jsx', 'utf8');
+    const stage = readFileSync('components/storefront/discovery-stage.jsx', 'utf8');
+    const dialogs = readFileSync('components/storefront/dialog-lifecycle.js', 'utf8');
     const styles = readFileSync(globalPath, 'utf8');
     const digest = createHash('sha256')
       .update(readFileSync('public/campaigns/lofoten-runway-hero.png'))
       .digest('hex');
 
     expect(digest).toBe('2c42ff8fab50819522e7a6a8e48a51083e39b0e4fdbc41df13568446426ac338');
-    for (const copy of ['At the edge of life', "displayName: 'ONE'", "label: 'Color'", "value: 'Black'", "label: 'Material'", "value: 'Structured fleece'", "label: 'Feel'", "value: 'Heavyweight, soft interior'"]) {
+    for (const copy of ["displayName: 'ONE'", "label: 'Color'", "value: 'Black'", "label: 'Material'", "value: 'Structured fleece'", "label: 'Feel'", "value: 'Heavyweight, soft interior'"]) {
       expect(home).toContain(copy);
     }
-    expect(home).toContain('cp-product-layout cp-page-shell');
-    expect(home).toContain('cp-product-media-button cp-product-media-button-corner');
-    expect(home).toContain('aria-controls="site-menu-overlay"');
-    expect(home).toContain('aria-expanded={menuOpen}');
-    expect(home).toContain('role="dialog"');
-    expect(home).toContain('aria-modal="true"');
-    expect(home).toContain("classList.add('cp-scroll-locked')");
-    expect(home).not.toContain('cp-site-menu-open');
-    expect(home).toContain("addEventListener('wheel', preventScroll, { passive: false })");
-    expect(home).toContain("removeEventListener('wheel', preventScroll)");
-    expect(home).toContain('moveDialogFocus(event, dialog)');
+
+    // 01 / 02 — the panel and its copy move; the video beneath never fades, flashes or goes fullscreen.
+    expect(landing).toContain('At the<br />edge of life.');
+    expect(landing).toContain("data-landing-state={entered ? 'post-morph' : 'pre-morph'}");
+    expect(landing).toContain('cp-landing-panel');
+    expect(landing).toContain('cp-landing-enter');
+    expect(landing).toContain('controlsList="nodownload nofullscreen noremoteplayback"');
+    expect(styles).toContain('transform: var(--cp-component-landing-panel-transform-exit)');
+    expect(styles).toContain('transform: var(--cp-component-landing-copy-transform-exit)');
+
+    // 03 / 04 — a 4:5 stage with play/pause, progress and three dashes, and no fullscreen control.
+    expect(discovery).toContain('cp-discovery-grid cp-page-shell');
+    expect(discovery).toContain('cp-stack-action');
+    expect(discovery).toContain('<OrderPanel');
+    expect(discovery).toContain('cp-discovery-chips');
+    expect(discovery).toContain('cp-discovery-thumbs');
+    expect(stage).toContain('aria-label="Discovery videos"');
+    expect(stage).toContain('cp-stage-progress');
+    expect(stage).toContain('COMPLETE_RUNS = 2');
+    expect(stage).toContain('controlsList="nodownload nofullscreen noremoteplayback"');
+    expect(stage).not.toMatch(/\bExpand\b|requestFullscreen|allowFullScreen/);
+    expect(discovery).not.toMatch(/\bExpand\b|requestFullscreen|allowFullScreen/);
+    expect(styles).toContain('aspect-ratio: var(--cp-semantic-ratio-product-portrait)');
+    expect(styles).toContain('grid-template-columns: var(--cp-component-discovery-grid-template)');
+
+    // Dialog behaviour is shared, so no screen can ship an overlay that behaves differently.
+    const navigation = readFileSync('components/storefront/site-navigation.jsx', 'utf8');
+    expect(navigation).toContain('aria-controls="site-menu-overlay"');
+    expect(navigation).toContain('aria-modal="true"');
+    expect(dialogs).toContain("classList.add('cp-scroll-locked')");
+    expect(dialogs).toContain("addEventListener('wheel', preventScroll, { passive: false })");
+    expect(dialogs).toContain("removeEventListener('wheel', preventScroll)");
+    expect(dialogs).toContain('moveDialogFocus(event, dialogRef.current)');
+    expect(dialogs).toContain("event.key === 'Escape'");
+    expect(home).toContain('menuButtonRef.current?.focus()');
+    expect(home).toContain('inert={overlayOpen ? true : undefined}');
     expect(styles).toContain('html.cp-scroll-locked');
     expect(styles).not.toContain('.cp-consent');
     expect(readFileSync('app/layout.js', 'utf8')).not.toContain('ConsentPreferences');
-    expect(home).toContain("event.key === 'Escape'");
-    expect(home).toContain('menuButtonRef.current?.focus()');
-    expect(home).toContain('inert={menuOpen || mediaOpen || orderOpen || Boolean(bagItem) ? true : undefined}');
-    expect(styles).toContain('.cp-product-layout');
-    expect(styles).toContain('justify-content: var(--cp-semantic-layout-justify-end)');
-    expect(styles).toContain('transform: translateY(var(--cp-component-product-copy-offset))');
     expect(styles).toContain('padding: var(--cp-semantic-space-media-panel-inset)');
     expect(home).not.toContain('Product attributes');
     expect(home).not.toContain('11 views');

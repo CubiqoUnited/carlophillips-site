@@ -1,8 +1,18 @@
 # Current Status
 
-Updated: 2026-08-18
-Branch: isolated Staging UAT candidate `codex/cp-uat-final-media-analytics` from exact `origin/staging` `ad3f690`; no merge to `main` or Production deployment
+Updated: 2026-08-26
+Branch: `claude/website-look-feel-update-ltvzd7` from `staging`; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Screen Inventory Review Workbook — full look-and-feel implementation — 2026-08-26
+
+- The *Screen Inventory Review Workbook* (45 pages, 28 numbered screens plus the media/order/cart/shipping/session exception appendix) is the final look-and-feel requirement. Current state, future state and a 33-item gap register with recorded scope exclusions are in `docs/screen-inventory-gap-analysis.md`; that document is the analysis gate this change was built against.
+- The customer composition is superseded, not redesigned around: token authority, tier direction, reference closure, reachability, the four canonical breakpoints and the no-raw-literal rules are unchanged, and `yarn lint:design-system` passes. Landing is now a black morph panel over a stationary hero with `ENTER`; discovery is a three-column stage with a 4:5 product video; the cart → checkout → confirmation → tracking path, support form, private list, size guide and the ten appendix exception states are implemented.
+- The workbook's pages 24–28 are stamped `EXPLORATORY COLOUR STUDY — NOT AN ACTIVE THEME TOKEN`. That palette was **not** adopted; no theme value changed.
+- **Media readiness (requirement 2)** is a single fail-closed contract, `lib/media/media-readiness.js`, covering the landing hero (16:9 desktop, 9:16 mobile) and the three approved product clips at 4:5. `ready` requires an evidenced source **and** a verified first-frame poster, because the workbook needs that poster for instant render and for the reduced-motion fallback. Current repository verdict: landing hero `poster-only` (no approved hero master is provisioned), Runway motion and Fit & silhouette `ready`, 360 showcase `not-ready` (`source-not-declared`). Report: `test_reports/media-readiness/media-readiness.json` via `yarn verify:media-readiness`.
+- The unprovisioned 360 slot is declared and withheld rather than substituted: its dash renders disabled and labelled, honouring the rule against inventing spin/3D evidence. Optimised AVIF/WebP first-frame posters are derived from the approved stills by `yarn build:media-posters`.
+- Commerce authority is unchanged. The checkout screen owns contact and shipping capture and hands payment to the authorised secure hosted checkout; card fields are a disabled preview of that step and can never take a card number. Discount codes are recognised only from `config/storefront-discounts.json` (empty by design), so an unlisted code raises the appendix state and leaves the total untouched.
+- Verification: `yarn lint`, `yarn verify:media-readiness`, 590 tests across 60 files, and `yarn build` all pass. Desktop (1440×900) and mobile (390×844) evidence for screens 01–05, 07–11, 13, 16, 21, 23 and 27 is under `test_reports/workbook-visual-qa/`; axe WCAG 2.1 A/AA across nine routes at both widths reports **0 violations and no horizontal overflow** (`test_reports/workbook-a11y/`).
 
 ## Funnel 2, final Hoodie motion and analytics UAT — 2026-08-18
 

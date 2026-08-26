@@ -16,7 +16,9 @@
         "test:watch": "vitest",
         "audit:prod": "yarn audit --groups dependencies --level moderate",
         "verify:vercel-link": "node scripts/verify-vercel-link.mjs",
-        "verify": "yarn lint && yarn test && yarn audit:prod && yarn build"
+        "verify:media-readiness": "node scripts/verify-media-readiness.mjs",
+        "build:media-posters": "node scripts/build-media-posters.mjs",
+        "verify": "yarn lint && yarn verify:media-readiness && yarn test && yarn audit:prod && yarn build"
     },
     "dependencies": {
         "@clerk/nextjs": "7.7.5",
