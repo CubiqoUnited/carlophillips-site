@@ -1054,6 +1054,7 @@
     --cp-component-product-copy-top: var(--cp-semantic-space-32);
     --cp-component-side-drawer-width: var(--cp-semantic-size-side-drawer-desktop);
     --cp-component-landing-copy-transform-exit: var(--cp-semantic-motion-landing-copy-travel);
+    --cp-component-discovery-scroll-margin: var(--cp-semantic-space-none);
     --cp-component-discovery-grid-template: var(--cp-semantic-layout-grid-discovery);
     --cp-component-discovery-align: var(--cp-semantic-layout-align-center);
     --cp-component-stage-timestamp-display: var(--cp-semantic-layout-display-inline-flex);

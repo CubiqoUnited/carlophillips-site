@@ -274,11 +274,11 @@ export default function HomeStorefront({ catalogSummary, mediaReadiness }) {
     if (!target) return;
     const reducedMotion = window.matchMedia(designSystemRuntimeContract.media.reducedMotion).matches;
     window.requestAnimationFrame(() => {
-      target.scrollIntoView({
+      window.scrollTo({
+        top: target.offsetTop,
         behavior: reducedMotion
           ? designSystemRuntimeContract.behavior.instantScroll
           : designSystemRuntimeContract.behavior.smoothScroll,
-        block: designSystemRuntimeContract.behavior.scrollBlockStart,
       });
     });
   }, []);
