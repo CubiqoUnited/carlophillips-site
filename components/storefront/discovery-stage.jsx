@@ -40,7 +40,7 @@ export function DiscoveryVideoStage({
   const [runsCompleted, setRunsCompleted] = useState(0);
   const [userPaused, setUserPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
   const [pageActive, setPageActive] = useState(true);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -201,10 +201,22 @@ export function DiscoveryVideoStage({
             controlsList="nodownload nofullscreen noremoteplayback"
             aria-label={activeClip.alt}
             className="cp-stage-video"
+            onCanPlay={event => {
+              event.currentTarget.defaultMuted = true;
+              event.currentTarget.muted = true;
+              event.currentTarget.playsInline = true;
+              if (!userPaused && !suspended) {
+                event.currentTarget.play().catch(() => {});
+              }
+            }}
             onLoadedMetadata={event => {
               event.currentTarget.defaultMuted = true;
               event.currentTarget.muted = true;
+              event.currentTarget.playsInline = true;
               setDuration(event.currentTarget.duration || 0);
+              if (!userPaused && !suspended) {
+                event.currentTarget.play().catch(() => {});
+              }
             }}
             onTimeUpdate={event => setElapsed(event.currentTarget.currentTime || 0)}
             onEnded={handleEnded}
