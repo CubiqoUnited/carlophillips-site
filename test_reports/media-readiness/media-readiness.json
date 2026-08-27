@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-27T17:51:40.922Z",
+  "generatedAt": "2026-08-27T19:52:18.223Z",
   "strict": false,
   "schemaVersion": "cp.media-readiness.v1",
   "decisions": [
@@ -30,8 +30,8 @@
       "motionAllowed": true,
       "playbackId": null,
       "sourceUrl": "/campaigns/lofoten-runway-hero-portrait.mp4",
-      "posterUrl": "/campaigns/lofoten-runway-hero.png",
-      "posterFormat": "png",
+      "posterUrl": "/campaigns/lofoten-runway-hero-portrait.avif",
+      "posterFormat": "avif",
       "disclosure": null,
       "alt": "CARLOPHILLIPS runway campaign staged against a dramatic coastal mountain landscape",
       "viewport": "mobile",
@@ -118,8 +118,8 @@
         "motionAllowed": true,
         "playbackId": null,
         "sourceUrl": "/campaigns/lofoten-runway-hero-portrait.mp4",
-        "posterUrl": "/campaigns/lofoten-runway-hero.png",
-        "posterFormat": "png",
+        "posterUrl": "/campaigns/lofoten-runway-hero-portrait.avif",
+        "posterFormat": "avif",
         "disclosure": null,
         "alt": "CARLOPHILLIPS runway campaign staged against a dramatic coastal mountain landscape",
         "viewport": "mobile",

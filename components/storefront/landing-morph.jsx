@@ -72,6 +72,16 @@ export function LandingMorph({ entered, hero, onEnter }) {
       aria-label="CARLOPHILLIPS runway campaign"
     >
       <div className="cp-landing-media" aria-hidden={entered ? undefined : true}>
+        {hero?.posterUrl ? (
+          <Image
+            src={hero.posterUrl}
+            alt={hero.alt}
+            fill
+            priority
+            sizes={designSystemRuntimeContract.imageSizes.fullViewport}
+            className="cp-landing-still cp-landing-scene"
+          />
+        ) : null}
         {hero?.motionAllowed && hero.sourceUrl ? (
           <video
             ref={videoRef}
@@ -85,16 +95,8 @@ export function LandingMorph({ entered, hero, onEnter }) {
             disablePictureInPicture
             controlsList="nodownload nofullscreen noremoteplayback"
             aria-label={hero.alt}
-            className="cp-landing-video cp-landing-scene"
-          />
-        ) : hero?.posterUrl ? (
-          <Image
-            src={hero.posterUrl}
-            alt={hero.alt}
-            fill
-            priority
-            sizes={designSystemRuntimeContract.imageSizes.fullViewport}
-            className="cp-landing-still cp-landing-scene"
+            className="cp-landing-video cp-landing-scene cp-visually-hidden"
+            aria-hidden="true"
           />
         ) : null}
         <div className="cp-landing-scrim" aria-hidden="true" />
