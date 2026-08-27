@@ -90,13 +90,11 @@ export function DiscoveryVideoStage({
     video.defaultMuted = true;
     video.muted = true;
     video.playsInline = true;
-    /*
-     * A rejected play() is usually the browser's autoplay policy or a play interrupted by pause —
-     * neither means the media is broken. Those surface the centred Play instead of the exception
-     * widget; only a real media error demotes the stage.
-     */
-    if (shouldPlay) video.play().catch(() => setUserPaused(true));
-    else video.pause();
+    if (shouldPlay) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
   }, [shouldPlay, activeSlotId]);
 
   const selectClip = useCallback(slotId => {
