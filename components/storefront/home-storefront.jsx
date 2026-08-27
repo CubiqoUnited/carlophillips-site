@@ -269,9 +269,14 @@ export default function HomeStorefront({ catalogSummary, mediaReadiness }) {
   }, [menuOpen]);
 
   useEffect(() => {
-    if (wasMediaOpenRef.current && !mediaOpen) galleryButtonRef.current?.focus();
-    wasMediaOpenRef.current = mediaOpen;
-  }, [mediaOpen]);
+    const handleScroll = () => {
+      if (window.scrollY > 80 && !entered) {
+        setEntered(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [entered]);
 
   const openGallery = useCallback(index => {
     setMediaIndex(typeof index === 'number' ? index : 0);

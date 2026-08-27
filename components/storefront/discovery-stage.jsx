@@ -211,10 +211,12 @@ export function DiscoveryVideoStage({
           />
         ) : null}
 
-        <p className="cp-stage-caption">{caption}</p>
+        {!activeClip?.sourceUrl && caption ? (
+          <p className="cp-stage-caption">{caption}</p>
+        ) : null}
 
-        {!motionPlaying && activeClip && !posterOnly && (
-          <button type="button" onClick={toggleMotion} className="cp-stage-resume" aria-label={held ? 'Replay product video' : 'Play product video'}>
+        {held && activeClip && !posterOnly && (
+          <button type="button" onClick={toggleMotion} className="cp-stage-resume" aria-label="Replay product video">
             <Play className="cp-icon cp-icon-medium" aria-hidden="true" />
           </button>
         )}

@@ -1206,8 +1206,8 @@
   }
 
   .cp-media-order-action {
-    background: var(--cp-semantic-color-ink);
-    color: var(--cp-semantic-color-canvas);
+    background: var(--cp-semantic-color-canvas);
+    color: var(--cp-semantic-color-ink);
   }
 
   .cp-media-thumbnails {
