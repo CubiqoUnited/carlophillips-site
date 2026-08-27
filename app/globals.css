@@ -1220,8 +1220,10 @@
     aspect-ratio: var(--cp-semantic-ratio-product-portrait);
     border: var(--cp-semantic-border-rule);
     background: var(--cp-semantic-color-panel);
+    transition: border var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
   }
 
+  .cp-discovery-thumb:hover,
   .cp-discovery-thumb-active {
     border: var(--cp-semantic-border-rule-strong);
   }
