@@ -857,12 +857,13 @@
     justify-content: var(--cp-semantic-layout-justify-center);
     align-items: var(--cp-semantic-layout-align-center);
     height: var(--cp-semantic-size-full);
+    min-height: var(--cp-semantic-layout-size-zero);
   }
 
   .cp-stage-frame {
     position: var(--cp-semantic-layout-position-relative);
-    height: min(var(--cp-semantic-size-full), calc(var(--cp-semantic-size-viewport-height) - var(--cp-semantic-size-header) - var(--cp-semantic-space-24)));
-    max-height: calc(var(--cp-semantic-size-viewport-height) - var(--cp-semantic-size-header) - var(--cp-semantic-space-24));
+    height: var(--cp-component-stage-height);
+    max-height: var(--cp-component-stage-height);
     max-width: min(var(--cp-semantic-size-full), var(--cp-semantic-size-stage));
     aspect-ratio: var(--cp-semantic-ratio-product-portrait);
     overflow: var(--cp-semantic-layout-overflow-hidden);

@@ -165,6 +165,7 @@
   --cp-primitive-size-media-panel-inset: clamp(0.75rem, 4vw, 2.5rem);
   --cp-primitive-size-empty-state-padding: clamp(2rem, 4vw, 3rem);
   --cp-primitive-size-stage: 34rem;
+  --cp-primitive-size-stage-height: clamp(18rem, calc(100svh - 12rem), 42rem);
   --cp-primitive-size-dash: 2.25rem;
   --cp-primitive-size-rail-dot: 0.3125rem;
   --cp-primitive-size-discovery-thumb: 2.25rem;
@@ -604,6 +605,7 @@
   --cp-semantic-size-panel-study: var(--cp-primitive-size-panel-study);
   --cp-semantic-size-panel-catalog: var(--cp-primitive-size-panel-catalog);
   --cp-semantic-size-stage: var(--cp-primitive-size-stage);
+  --cp-semantic-size-stage-height: var(--cp-primitive-size-stage-height);
   --cp-semantic-size-dash: var(--cp-primitive-size-dash);
   --cp-semantic-size-rail-dot: var(--cp-primitive-size-rail-dot);
   --cp-semantic-size-discovery-thumb: var(--cp-primitive-size-discovery-thumb);
@@ -952,6 +954,7 @@
   --cp-component-discovery-grid-template: var(--cp-semantic-layout-grid-single);
   --cp-component-discovery-align: var(--cp-semantic-layout-align-stretch);
   --cp-component-stage-timestamp-display: var(--cp-semantic-layout-display-none);
+  --cp-component-stage-height: var(--cp-semantic-size-stage-height);
   --cp-component-discovery-padding-bottom: var(--cp-semantic-space-16);
   --cp-component-discovery-lead-order: var(--cp-semantic-layout-order-none);
   --cp-component-discovery-stage-order: var(--cp-semantic-layout-order-first);
