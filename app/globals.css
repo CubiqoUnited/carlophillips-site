@@ -650,6 +650,13 @@
     transform: var(--cp-component-landing-copy-transform-exit);
   }
 
+  .cp-landing-emblem {
+    width: var(--cp-semantic-size-control);
+    height: var(--cp-semantic-size-control);
+    color: var(--cp-semantic-color-ink);
+    margin-bottom: var(--cp-semantic-space-2);
+  }
+
   .cp-landing-crest {
     color: var(--cp-semantic-color-ink);
     font-size: var(--cp-semantic-font-size-wordmark);
