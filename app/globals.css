@@ -581,10 +581,14 @@
   /* Screens 01 / 02 — Landing, pre-morph and post-morph. */
   .cp-landing {
     position: var(--cp-semantic-layout-position-relative);
+    height: var(--cp-semantic-size-viewport-height);
     min-height: var(--cp-semantic-size-viewport-height);
+    max-height: var(--cp-semantic-size-viewport-height);
     overflow: var(--cp-semantic-layout-overflow-hidden);
     border-bottom: var(--cp-semantic-border-rule);
     background: var(--cp-semantic-color-canvas);
+    scroll-snap-align: var(--cp-semantic-layout-scroll-snap-start);
+    scroll-snap-stop: var(--cp-semantic-layout-scroll-snap-normal);
   }
 
   .cp-landing-media {
@@ -593,10 +597,19 @@
     overflow: var(--cp-semantic-layout-overflow-hidden);
   }
 
+  .cp-landing-scene {
+    position: var(--cp-semantic-layout-position-absolute);
+    inset-block: var(--cp-semantic-space-none);
+    right: var(--cp-semantic-space-none);
+    left: var(--cp-component-landing-scene-left);
+    width: var(--cp-component-landing-scene-width);
+    height: var(--cp-semantic-size-full);
+    object-fit: var(--cp-semantic-layout-object-fit-cover);
+    object-position: var(--cp-semantic-media-position-campaign);
+  }
+
   .cp-landing-video,
   .cp-landing-still {
-    width: var(--cp-semantic-size-full);
-    height: var(--cp-semantic-size-full);
     object-fit: var(--cp-semantic-layout-object-fit-cover);
     object-position: var(--cp-semantic-media-position-campaign);
   }
@@ -613,6 +626,16 @@
     background: var(--cp-semantic-effect-scrim-campaign);
   }
 
+  .cp-landing-edge-blend {
+    position: var(--cp-semantic-layout-position-absolute);
+    inset: var(--cp-semantic-layout-inset-full);
+    z-index: var(--cp-semantic-layer-control);
+    pointer-events: var(--cp-semantic-layout-pointer-none);
+    background: var(--cp-component-landing-edge-blend);
+    opacity: var(--cp-semantic-opacity-none);
+    animation: var(--cp-component-landing-blend-motion);
+  }
+
   /*
    * The panel translates; the video beneath never moves and never changes opacity. The copy is
    * carried on the panel and counter-travels a shorter distance, so it settles at the left of the
@@ -625,21 +648,26 @@
     background: var(--cp-semantic-color-canvas);
     transform: var(--cp-component-landing-panel-transform);
     transition: transform var(--cp-semantic-duration-morph) var(--cp-semantic-easing-standard);
+    animation: var(--cp-component-landing-curtain-motion);
   }
 
   .cp-landing-copy {
     position: var(--cp-semantic-layout-position-absolute);
-    inset: var(--cp-semantic-layout-inset-full);
     z-index: var(--cp-semantic-layer-control);
+    left: var(--cp-component-landing-copy-left);
+    top: var(--cp-component-landing-copy-top);
+    width: var(--cp-component-landing-copy-width);
     display: var(--cp-semantic-layout-display-flex);
     flex-direction: var(--cp-semantic-layout-direction-column);
-    align-items: var(--cp-semantic-layout-align-center);
+    align-items: var(--cp-semantic-layout-align-start);
     justify-content: var(--cp-semantic-layout-justify-center);
-    gap: var(--cp-semantic-space-4);
-    padding-inline: var(--cp-semantic-space-page-gutter);
-    text-align: var(--cp-semantic-layout-text-align-center);
+    gap: var(--cp-semantic-space-1);
+    padding-inline: var(--cp-semantic-space-none);
+    text-align: var(--cp-semantic-layout-text-align-start);
     transform: var(--cp-component-landing-copy-transform);
     transition: transform var(--cp-semantic-duration-morph) var(--cp-semantic-easing-standard) var(--cp-semantic-delay-morph-copy);
+    animation: var(--cp-component-landing-copy-motion);
+    will-change: var(--cp-semantic-layout-will-change-transform);
   }
 
   .cp-landing[data-landing-state='post-morph'] .cp-landing-panel {
@@ -651,45 +679,75 @@
   }
 
   .cp-landing-emblem {
-    width: var(--cp-semantic-size-control);
-    height: var(--cp-semantic-size-control);
-    color: var(--cp-semantic-color-ink);
-    margin-bottom: var(--cp-semantic-space-2);
+    display: var(--cp-semantic-layout-display-none);
   }
 
   .cp-landing-crest {
-    color: var(--cp-semantic-color-ink);
-    font-size: var(--cp-semantic-font-size-wordmark);
-    letter-spacing: var(--cp-semantic-font-tracking-brand);
-    text-transform: var(--cp-semantic-layout-text-transform-label);
+    display: var(--cp-semantic-layout-display-none);
   }
 
   .cp-landing-origin,
   .cp-landing-caption {
-    color: var(--cp-semantic-color-muted);
+    display: var(--cp-semantic-layout-display-none);
+  }
+
+  .cp-landing-over {
+    font-family: var(--cp-component-landing-serif-font);
+    font-size: var(--cp-semantic-font-size-card-title);
+    font-style: var(--cp-component-landing-font-style-over);
+    color: var(--cp-component-landing-cream-over);
+    margin-bottom: var(--cp-semantic-space-1);
   }
 
   .cp-landing-title {
+    font-family: var(--cp-component-landing-serif-font);
+    font-size: var(--cp-component-landing-font-size-title);
+    line-height: var(--cp-semantic-font-line-height-solid);
+    font-weight: var(--cp-semantic-font-weight-regular);
+    letter-spacing: var(--cp-semantic-space-negative-2);
+    background: var(--cp-component-landing-title-gradient);
+    -webkit-background-clip: var(--cp-semantic-layout-background-clip-text);
+    background-clip: var(--cp-semantic-layout-background-clip-text);
+    color: var(--cp-semantic-color-transparent);
     text-shadow: var(--cp-semantic-effect-shadow-copy);
+    margin: var(--cp-semantic-space-none);
   }
 
-  .cp-landing-enter {
-    display: var(--cp-semantic-layout-display-inline-flex);
-    min-height: var(--cp-semantic-size-action-wide);
-    align-items: var(--cp-semantic-layout-align-center);
-    gap: var(--cp-semantic-space-3);
-    margin-top: var(--cp-semantic-space-6);
-    border: var(--cp-semantic-border-rule-strong);
-    padding-inline: var(--cp-semantic-space-8);
-    background: var(--cp-semantic-color-glass);
-    color: var(--cp-semantic-color-ink);
-    font-size: var(--cp-semantic-font-size-label);
-    letter-spacing: var(--cp-semantic-font-tracking-action);
+  .cp-landing-sig {
+    margin-top: var(--cp-semantic-space-9);
+    margin-left: var(--cp-component-landing-sig-indent);
+    font-size: var(--cp-semantic-font-size-label-small);
+    font-weight: var(--cp-semantic-font-weight-regular);
+    letter-spacing: var(--cp-semantic-font-tracking-brand);
+    color: var(--cp-component-landing-cream-sig);
     text-transform: var(--cp-semantic-layout-text-transform-label);
+    white-space: var(--cp-semantic-layout-white-space-nowrap);
+    font-family: var(--cp-semantic-font-family-sans);
+  }
+
+  .cp-landing-scroll,
+  .cp-landing-enter {
+    position: var(--cp-semantic-layout-position-absolute);
+    z-index: var(--cp-semantic-layer-control);
+    left: var(--cp-component-landing-scroll-left);
+    bottom: var(--cp-semantic-space-7);
+    width: var(--cp-semantic-size-control);
+    height: var(--cp-semantic-size-control);
+    border: var(--cp-semantic-border-rule-strong);
+    border-radius: var(--cp-semantic-radius-round);
+    display: var(--cp-semantic-layout-display-grid);
+    place-items: var(--cp-semantic-layout-align-center);
+    color: var(--cp-component-landing-gold-accent);
+    animation: var(--cp-component-landing-scroll-motion);
+    background: var(--cp-semantic-color-glass);
     backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
-    transition:
-      background var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard),
-      color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
+    cursor: var(--cp-semantic-layout-cursor-action);
+  }
+
+  .cp-landing-scroll-arrow {
+    font-size: var(--cp-semantic-font-size-body-large);
+    line-height: var(--cp-semantic-font-line-height-solid);
+    color: var(--cp-component-landing-gold-accent);
   }
 
   .cp-landing-enter:hover {
@@ -700,21 +758,28 @@
   /* Screens 03 / 04 / 19 — Discovery. */
   .cp-discovery {
     position: var(--cp-semantic-layout-position-relative);
+    height: var(--cp-semantic-size-viewport-height);
     min-height: var(--cp-semantic-size-viewport-height);
+    max-height: var(--cp-semantic-size-viewport-height);
     overflow: var(--cp-semantic-layout-overflow-hidden);
     border-bottom: var(--cp-semantic-border-rule);
     background: var(--cp-semantic-color-canvas);
     scroll-margin-top: var(--cp-component-discovery-scroll-margin);
+    scroll-snap-align: var(--cp-semantic-layout-scroll-snap-start);
+    scroll-snap-stop: var(--cp-semantic-layout-scroll-snap-normal);
   }
 
   .cp-discovery-grid {
     display: var(--cp-semantic-layout-display-grid);
-    min-height: var(--cp-semantic-size-viewport-height);
+    height: var(--cp-semantic-size-full);
+    min-height: var(--cp-semantic-size-full);
+    max-height: var(--cp-semantic-size-viewport-height);
     grid-template-columns: var(--cp-component-discovery-grid-template);
     align-items: var(--cp-component-discovery-align);
-    gap: var(--cp-semantic-space-10);
-    padding-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-12));
+    gap: var(--cp-semantic-space-8);
+    padding-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-4));
     padding-bottom: var(--cp-component-discovery-padding-bottom);
+    box-sizing: var(--cp-semantic-layout-box-sizing-border-box);
   }
 
   .cp-discovery-lead {

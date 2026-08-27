@@ -66,6 +66,7 @@ export function LandingMorph({ entered, hero, onEnter }) {
 
   return (
     <section
+      id="landing-hero"
       className="cp-landing"
       data-landing-state={entered ? 'post-morph' : 'pre-morph'}
       aria-label="CARLOPHILLIPS runway campaign"
@@ -84,7 +85,7 @@ export function LandingMorph({ entered, hero, onEnter }) {
             disablePictureInPicture
             controlsList="nodownload nofullscreen noremoteplayback"
             aria-label={hero.alt}
-            className="cp-landing-video"
+            className="cp-landing-video cp-landing-scene"
           />
         ) : hero?.posterUrl ? (
           <Image
@@ -93,31 +94,36 @@ export function LandingMorph({ entered, hero, onEnter }) {
             fill
             priority
             sizes={designSystemRuntimeContract.imageSizes.fullViewport}
-            className="cp-landing-still"
+            className="cp-landing-still cp-landing-scene"
           />
         ) : null}
         <div className="cp-landing-scrim" aria-hidden="true" />
       </div>
 
       <div className="cp-landing-panel" aria-hidden={entered ? true : undefined} />
+      <div className="cp-landing-edge-blend" aria-hidden="true" />
 
       <div className="cp-landing-copy">
         <ShieldCrest className="cp-landing-emblem" />
         <p className="cp-landing-crest">CARLO PHILLIPS</p>
         <p className="cp-eyebrow cp-landing-origin">Lofoten · Norway</p>
+        <div className="cp-landing-over">at the</div>
         <h1 className="cp-display cp-landing-title">
           At the<br />edge of life.
         </h1>
+        <div className="cp-landing-sig">with carlophillips</div>
         <p className="cp-eyebrow cp-landing-caption">Runway 001 / Lofoten</p>
         <button
           ref={enterButtonRef}
           type="button"
           onClick={onEnter}
-          className="cp-landing-enter"
+          className="cp-landing-enter cp-landing-scroll"
+          aria-label="Scroll to product discovery"
           aria-controls="signature-runway"
         >
-          <span>Enter</span>
-          <ArrowRight className="cp-icon cp-icon-small" aria-hidden="true" />
+          <span className="cp-landing-scroll-arrow" aria-hidden="true">↓</span>
+          <span className="cp-visually-hidden">Enter</span>
+          <ArrowRight className="cp-icon cp-icon-small cp-visually-hidden" aria-hidden="true" />
         </button>
       </div>
     </section>

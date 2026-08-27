@@ -268,21 +268,6 @@ export default function HomeStorefront({ catalogSummary, mediaReadiness }) {
     wasMenuOpenRef.current = menuOpen;
   }, [menuOpen]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 80 && !entered) {
-        setEntered(true);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [entered]);
-
-  const openGallery = useCallback(index => {
-    setMediaIndex(typeof index === 'number' ? index : 0);
-    setMediaOpen(true);
-  }, []);
-
   const handleEnter = useCallback(() => {
     setEntered(true);
     const target = document.getElementById('signature-runway');
@@ -296,6 +281,31 @@ export default function HomeStorefront({ catalogSummary, mediaReadiness }) {
         block: designSystemRuntimeContract.behavior.scrollBlockStart,
       });
     });
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80 && !entered) {
+        setEntered(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [entered]);
+
+  useEffect(() => {
+    if (entered) return undefined;
+    const timer = setTimeout(() => {
+      if (!entered && window.scrollY < 50) {
+        handleEnter();
+      }
+    }, 6500);
+    return () => clearTimeout(timer);
+  }, [entered, handleEnter]);
+
+  const openGallery = useCallback(index => {
+    setMediaIndex(typeof index === 'number' ? index : 0);
+    setMediaOpen(true);
   }, []);
 
   const addToBag = useCallback(variant => {
