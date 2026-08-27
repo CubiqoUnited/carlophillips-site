@@ -1155,9 +1155,16 @@
     bottom: var(--cp-semantic-space-6);
     z-index: var(--cp-semantic-layer-control);
     display: var(--cp-component-discovery-corner-display);
+    flex-direction: var(--cp-semantic-layout-direction-row);
+    align-items: var(--cp-semantic-layout-align-center);
+    gap: var(--cp-semantic-space-4);
+  }
+
+  .cp-discovery-corner-actions {
+    display: var(--cp-semantic-layout-display-flex);
     flex-direction: var(--cp-semantic-layout-direction-column);
     align-items: var(--cp-semantic-layout-align-end);
-    gap: var(--cp-semantic-space-3);
+    gap: var(--cp-semantic-space-2);
   }
 
   .cp-corner-action {
@@ -1180,7 +1187,7 @@
     flex-direction: var(--cp-semantic-layout-direction-column);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-2);
-    margin-top: var(--cp-semantic-space-4);
+    margin: var(--cp-semantic-space-none);
   }
 
   .cp-discovery-rail-dot {

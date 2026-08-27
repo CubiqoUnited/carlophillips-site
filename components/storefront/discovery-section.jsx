@@ -192,14 +192,16 @@ export function DiscoverySection({
       </div>
 
       <div className="cp-discovery-corner">
-        <button type="button" onClick={onOpenCategories} className="cp-corner-action">
-          <LayoutGrid className="cp-icon cp-icon-small" aria-hidden="true" />
-          <span>All categories</span>
-        </button>
-        <button type="button" onClick={onOpenProducts} className="cp-corner-action">
-          <Rows3 className="cp-icon cp-icon-small" aria-hidden="true" />
-          <span>All hoodies</span>
-        </button>
+        <div className="cp-discovery-corner-actions">
+          <button type="button" onClick={onOpenCategories} className="cp-corner-action">
+            <LayoutGrid className="cp-icon cp-icon-small" aria-hidden="true" />
+            <span>All categories</span>
+          </button>
+          <button type="button" onClick={onOpenProducts} className="cp-corner-action">
+            <Rows3 className="cp-icon cp-icon-small" aria-hidden="true" />
+            <span>All hoodies</span>
+          </button>
+        </div>
         <ol className="cp-discovery-rail" aria-label="Gallery position">
           {railPositions.map((item, index) => (
             <li key={item.src || item.url || index}>
