@@ -186,7 +186,7 @@ export function CheckoutExperience({ initialStatus = 'editing' }) {
   return (
     <main id="main-content" className="cp-checkout-page" data-checkout-status={status}>
       <SiteHeader onMenu={() => {}} />
-      <CheckoutSteps activeId="shipping-payment" />
+      <CheckoutSteps activeId="information" />
 
       {hydrated && bag.lines.length === 0 ? (
         <div className="cp-checkout-recovery">

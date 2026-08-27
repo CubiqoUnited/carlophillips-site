@@ -38,6 +38,7 @@
         "eslint": "8.57.1",
         "eslint-config-next": "15.5.21",
         "globals": "^16.2.0",
+        "pdfreader": "^3.0.8",
         "playwright": "1.55.0",
         "postcss": "8.5.25",
         "typescript": "5.9.3",

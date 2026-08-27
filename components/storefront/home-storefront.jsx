@@ -120,6 +120,13 @@ const bagLineImage = {
 };
 
 export function isPreviewRunwayReference(summary) {
+  /*
+   * Returns true when the catalog reports a denied/empty state in the 'preview' commerce
+   * environment — this is the staging runway reference mode. For the staging Vercel deployment
+   * to show the full Signature Hoodie runway content, set:
+   *   NEXT_PUBLIC_COMMERCE_ENVIRONMENT=preview
+   * in the Vercel project environment variables.
+   */
   return summary?.environment === 'preview'
     && summary?.visibleCount === 0
     && summary?.commerceAllowed === false;
@@ -237,7 +244,20 @@ export default function HomeStorefront({ catalogSummary, mediaReadiness }) {
     || isPreviewRunwayReference(summary);
 
   const categoryCards = useMemo(() => discoveryCategoryCards(summary), [summary]);
-  const productCards = useMemo(() => discoveryProductCards(summary, 'hoodies', product?.handle || null), [product?.handle, summary]);
+  const productCards = useMemo(() => {
+    const cards = discoveryProductCards(summary, 'hoodies', product?.handle || 'carlophillips-signature-hoodie');
+    if (cards.length > 0) return cards;
+    return [{
+      id: 'carlophillips-signature-hoodie',
+      name: signatureHomepagePresentation.displayName,
+      href: '/products/carlophillips-signature-hoodie',
+      meta: priceLabel,
+      available: true,
+      viewing: true,
+      imageUrl: '/products/signature-hoodie/candidates/moda/model-front-full.jpg',
+      imageAlt: 'CARLOPHILLIPS Signature Hoodie in black',
+    }];
+  }, [priceLabel, product?.handle, summary]);
 
   useEffect(() => {
     if (!selectedHash && activeVariants[0]) setSelectedHash(activeVariants[0].referenceHash);

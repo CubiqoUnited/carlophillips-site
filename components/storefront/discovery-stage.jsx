@@ -116,7 +116,7 @@ export function DiscoveryVideoStage({
         const video = videoRef.current;
         if (video) {
           video.currentTime = 0;
-          video.play().catch(() => setUserPaused(true));
+          video.play().catch(() => {});
         }
       }
       return next;

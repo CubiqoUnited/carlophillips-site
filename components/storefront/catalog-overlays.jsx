@@ -68,7 +68,7 @@ export function CatalogGridOverlay({
                   )}
                 </span>
                 <span className="cp-catalog-overlay-name">
-                  {card.name}{card.viewing ? ' (viewing)' : ''}
+                  {card.name}
                 </span>
                 <span className="cp-catalog-overlay-count">{card.meta}</span>
               </>

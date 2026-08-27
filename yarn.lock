@@ -946,6 +946,11 @@
     loupe "^3.1.2"
     tinyrainbow "^1.2.0"
 
+"@xmldom/xmldom@^0.8.10":
+  version "0.8.15"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.15.tgz#71ebf80729e4e95221d519ac9b1e1eaea7784907"
+  integrity sha512-/5NV/vDALVFDXgLmfsy9TRCBlKwO2LNBFzpzvb9iIj+jR+eSc6DLYYvVOdivT/jm7MtU6TebYuRmzEOI7w40UA==
+
 acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
@@ -2742,6 +2747,20 @@ pathval@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/pathval/-/pathval-2.0.1.tgz#8855c5a2899af072d6ac05d11e46045ad0dc605d"
   integrity sha512-//nshmD55c46FuFw26xV/xFAaB5HF9Xdap7HJBBnrKdAd6/GxDBaNA1870O79+9ueg61cZLSVc+OaFlfmObYVQ==
+
+pdf2json@3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/pdf2json/-/pdf2json-3.1.4.tgz#d1bf8cb663bef9568bba3ad6d58b4e2b662c93b8"
+  integrity sha512-rS+VapXpXZr+5lUpHmRh3ugXdFXp24p1RyG24yP1DMpqP4t0mrYNGpLtpSbWD42PnQ59GIXofxF+yWb7M+3THg==
+  dependencies:
+    "@xmldom/xmldom" "^0.8.10"
+
+pdfreader@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/pdfreader/-/pdfreader-3.0.8.tgz#1aff363517b1a292208898c93d970858f65a1f1c"
+  integrity sha512-95X/7bIYfetvu2J12i1MwPIqMo6niWn2fcZU64UJh7agV7/tKNOhp01z7WVAcblpY+bosvwIZG18Pku9VpMulQ==
+  dependencies:
+    pdf2json "3.1.4"
 
 picocolors@^1.1.1:
   version "1.1.1"
