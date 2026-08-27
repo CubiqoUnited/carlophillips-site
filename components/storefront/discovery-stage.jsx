@@ -242,47 +242,47 @@ export function DiscoveryVideoStage({
             <Play className="cp-icon cp-icon-medium" aria-hidden="true" />
           </button>
         )}
+      </div>
 
-        <div className="cp-stage-controls">
-          {activeClip && !posterOnly && (
-            <>
-              <button
-                type="button"
-                onClick={toggleMotion}
-                className="cp-stage-control"
-                aria-pressed={motionPlaying}
-                aria-label={motionPlaying ? 'Pause product video' : held ? 'Replay product video' : 'Play product video'}
-                data-motion-control="true"
-              >
-                {motionPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
-              </button>
-              <progress
-                className="cp-stage-progress"
-                max={progressMax}
-                value={elapsed}
-                aria-label="Playback position"
-              />
-              <span className="cp-stage-timestamp" aria-live="polite">
-                {formatTime(elapsed)} / {formatTime(duration)}
-              </span>
-            </>
-          )}
-        </div>
-
-        <div className="cp-stage-dashes" role="tablist" aria-label="Discovery videos">
-          {declaredClips.map(clip => (
+      <div className="cp-stage-controls">
+        {activeClip && !posterOnly && (
+          <>
             <button
-              key={clip.slotId}
               type="button"
-              role="tab"
-              disabled={!clip.motionAllowed}
-              aria-selected={clip.slotId === activeClip?.slotId}
-              aria-label={clip.motionAllowed ? `Show ${clip.label}` : `${clip.label} is not yet available`}
-              onClick={() => selectClip(clip.slotId)}
-              className={clip.slotId === activeClip?.slotId ? 'cp-stage-dash cp-stage-dash-active' : 'cp-stage-dash'}
+              onClick={toggleMotion}
+              className="cp-stage-control"
+              aria-pressed={motionPlaying}
+              aria-label={motionPlaying ? 'Pause product video' : held ? 'Replay product video' : 'Play product video'}
+              data-motion-control="true"
+            >
+              {motionPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
+            </button>
+            <progress
+              className="cp-stage-progress"
+              max={progressMax}
+              value={elapsed}
+              aria-label="Playback position"
             />
-          ))}
-        </div>
+            <span className="cp-stage-timestamp" aria-live="polite">
+              {formatTime(elapsed)} / {formatTime(duration)}
+            </span>
+          </>
+        )}
+      </div>
+
+      <div className="cp-stage-dashes" role="tablist" aria-label="Discovery videos">
+        {declaredClips.map(clip => (
+          <button
+            key={clip.slotId}
+            type="button"
+            role="tab"
+            disabled={!clip.motionAllowed}
+            aria-selected={clip.slotId === activeClip?.slotId}
+            aria-label={clip.motionAllowed ? `Show ${clip.label}` : `${clip.label} is not yet available`}
+            onClick={() => selectClip(clip.slotId)}
+            className={clip.slotId === activeClip?.slotId ? 'cp-stage-dash cp-stage-dash-active' : 'cp-stage-dash'}
+          />
+        ))}
       </div>
     </div>
   );

@@ -930,12 +930,13 @@
 
   .cp-stage-controls {
     position: var(--cp-semantic-layout-position-absolute);
-    left: var(--cp-semantic-space-5);
-    bottom: var(--cp-semantic-space-5);
+    left: var(--cp-semantic-media-position-navigation);
+    bottom: var(--cp-semantic-space-6);
     z-index: var(--cp-semantic-layer-control);
     display: var(--cp-semantic-layout-display-flex);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-control-gap);
+    transform: translateX(var(--cp-semantic-media-translate-navigation));
   }
 
   .cp-stage-control {
