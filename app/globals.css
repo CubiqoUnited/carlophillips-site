@@ -702,9 +702,9 @@
   .cp-landing-title {
     font-family: var(--cp-component-landing-serif-font);
     font-size: var(--cp-component-landing-font-size-title);
-    line-height: var(--cp-semantic-font-line-height-solid);
+    line-height: var(--cp-semantic-font-line-height-editorial-title-mobile);
     font-weight: var(--cp-semantic-font-weight-regular);
-    letter-spacing: var(--cp-semantic-space-negative-2);
+    letter-spacing: var(--cp-semantic-font-tracking-editorial-title);
     background: var(--cp-component-landing-title-gradient);
     -webkit-background-clip: var(--cp-semantic-layout-background-clip-text);
     background-clip: var(--cp-semantic-layout-background-clip-text);
