@@ -40,7 +40,7 @@ export function DiscoveryVideoStage({
   const [runsCompleted, setRunsCompleted] = useState(0);
   const [userPaused, setUserPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [inView, setInView] = useState(true);
+  const [inView, setInView] = useState(false);
   const [pageActive, setPageActive] = useState(true);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -52,7 +52,6 @@ export function DiscoveryVideoStage({
   const shouldPlay = Boolean(activeClip)
     && !posterOnly
     && !playbackFailed
-    && !held
     && !userPaused
     && !reducedMotion
     && inView
@@ -71,8 +70,21 @@ export function DiscoveryVideoStage({
     const target = stageRef.current;
     if (!target) return undefined;
     const observer = new IntersectionObserver(
-      entries => setInView(Boolean(entries[0]?.isIntersecting)),
-      { threshold: [0, 0.25, 0.6] }
+      entries => {
+        const isVisible = Boolean(entries[0]?.isIntersecting);
+        setInView(isVisible);
+        if (isVisible) {
+          setUserPaused(false);
+          const video = videoRef.current;
+          if (video) {
+            video.defaultMuted = true;
+            video.muted = true;
+            video.playsInline = true;
+            video.play().catch(() => {});
+          }
+        }
+      },
+      { threshold: [0, 0.1, 0.5] }
     );
     observer.observe(target);
     return () => observer.disconnect();
@@ -112,19 +124,17 @@ export function DiscoveryVideoStage({
   const handleEnded = () => {
     setRunsCompleted(current => {
       const next = current + 1;
-      if (next < COMPLETE_RUNS) {
-        const video = videoRef.current;
-        if (video) {
-          video.currentTime = 0;
-          video.play().catch(() => {});
-        }
+      const video = videoRef.current;
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
       }
       return next;
     });
   };
 
   const toggleMotion = () => {
-    if (held) {
+    if (held || userPaused) {
       const video = videoRef.current;
       if (video) video.currentTime = 0;
       setRunsCompleted(0);
@@ -132,7 +142,7 @@ export function DiscoveryVideoStage({
       setUserPaused(false);
       return;
     }
-    setUserPaused(current => !current);
+    setUserPaused(true);
   };
 
   /*
