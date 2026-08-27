@@ -728,9 +728,10 @@
   .cp-landing-scroll,
   .cp-landing-enter {
     position: var(--cp-semantic-layout-position-absolute);
-    z-index: var(--cp-semantic-layer-control);
+    z-index: var(--cp-semantic-layer-header);
     left: var(--cp-component-landing-scroll-left);
     bottom: var(--cp-semantic-space-7);
+    transform: var(--cp-component-landing-scroll-origin);
     width: var(--cp-semantic-size-control);
     height: var(--cp-semantic-size-control);
     border: var(--cp-semantic-border-rule-strong);
@@ -738,6 +739,7 @@
     display: var(--cp-semantic-layout-display-grid);
     place-items: var(--cp-semantic-layout-align-center);
     color: var(--cp-component-landing-gold-accent);
+    opacity: var(--cp-semantic-opacity-none);
     animation: var(--cp-component-landing-scroll-motion);
     background: var(--cp-semantic-color-glass);
     backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));

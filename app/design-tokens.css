@@ -380,10 +380,11 @@
   --cp-primitive-motion-landing-copy-travel-compact: translateX(-6vw);
   --cp-primitive-motion-landing-copy-travel: translateX(-28vw);
   --cp-primitive-motion-centre: translate(-50%, -50%);
+  --cp-primitive-motion-scroll-origin: translate(-50%, 0);
   --cp-primitive-motion-curtain-slide: cp-curtain-slide 4s cubic-bezier(0.76, 0, 0.24, 1) 1.25s forwards;
   --cp-primitive-motion-copy-slide: cp-copy-slide 4s cubic-bezier(0.76, 0, 0.24, 1) 1.25s forwards;
   --cp-primitive-motion-blend-in: cp-blend-in 1.4s cubic-bezier(0.2, 0.65, 0.3, 1) 3.85s forwards;
-  --cp-primitive-motion-scroll-bounce: cp-scroll-bounce 1.7s ease-in-out infinite;
+  --cp-primitive-motion-scroll-bounce: cp-scroll-bounce 1.7s ease-in-out infinite, cp-blend-in 1.4s cubic-bezier(0.2, 0.65, 0.3, 1) 3.85s forwards;
   --cp-primitive-layout-background-clip-text: text;
 
   /* Tier 2: semantics. Every value references Tier 1 only. */
@@ -774,6 +775,7 @@
   --cp-semantic-motion-copy-slide: var(--cp-primitive-motion-copy-slide);
   --cp-semantic-motion-blend-in: var(--cp-primitive-motion-blend-in);
   --cp-semantic-motion-scroll-bounce: var(--cp-primitive-motion-scroll-bounce);
+  --cp-semantic-motion-scroll-origin: var(--cp-primitive-motion-scroll-origin);
   --cp-semantic-size-scene-left: var(--cp-primitive-size-scene-left);
   --cp-semantic-size-scene-width: var(--cp-primitive-size-scene-width);
   --cp-semantic-size-copy-left: var(--cp-primitive-size-copy-left);
@@ -950,6 +952,7 @@
   --cp-component-landing-copy-top: var(--cp-semantic-size-copy-top);
   --cp-component-landing-copy-width: var(--cp-semantic-size-copy-width);
   --cp-component-landing-scroll-left: var(--cp-semantic-size-scroll-left);
+  --cp-component-landing-scroll-origin: var(--cp-semantic-motion-scroll-origin);
   --cp-component-discovery-scroll-margin: var(--cp-semantic-size-header);
   --cp-component-discovery-grid-template: var(--cp-semantic-layout-grid-single);
   --cp-component-discovery-align: var(--cp-semantic-layout-align-stretch);
@@ -1117,6 +1120,6 @@
 }
 
 @keyframes cp-scroll-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(7px); }
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 7px); }
 }

@@ -113,19 +113,20 @@ export function LandingMorph({ entered, hero, onEnter }) {
         </h1>
         <div className="cp-landing-sig">with carlophillips</div>
         <p className="cp-eyebrow cp-landing-caption">Runway 001 / Lofoten</p>
-        <button
-          ref={enterButtonRef}
-          type="button"
-          onClick={onEnter}
-          className="cp-landing-enter cp-landing-scroll"
-          aria-label="Scroll to product discovery"
-          aria-controls="signature-runway"
-        >
-          <span className="cp-landing-scroll-arrow" aria-hidden="true">↓</span>
-          <span className="cp-visually-hidden">Enter</span>
-          <ArrowRight className="cp-icon cp-icon-small cp-visually-hidden" aria-hidden="true" />
-        </button>
       </div>
+
+      <button
+        ref={enterButtonRef}
+        type="button"
+        onClick={onEnter}
+        className="cp-landing-enter cp-landing-scroll"
+        aria-label="Scroll to product discovery"
+        aria-controls="signature-runway"
+      >
+        <span className="cp-landing-scroll-arrow" aria-hidden="true">↓</span>
+        <span className="cp-visually-hidden">Enter</span>
+        <ArrowRight className="cp-icon cp-icon-small cp-visually-hidden" aria-hidden="true" />
+      </button>
     </section>
   );
 }
