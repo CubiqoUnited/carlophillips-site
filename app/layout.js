@@ -1,9 +1,22 @@
 import './globals.css';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
 import { designSystemRuntimeContract } from '@/lib/design-system/runtime-contract';
 import { SitePoliciesFooter } from '@/components/storefront/site-policies-footer';
 import { ThemeStyle } from '@/components/theme/theme-style';
 import { SiteObservability } from '@/components/analytics/site-observability';
 import { publicIndexingEnabled, siteConfig } from '@/lib/site/site-config';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600'],
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['300', '400', '500', '600'],
+});
 
 // SEO and Metadata Configuration
 const metadataConfig = {
@@ -126,7 +139,7 @@ const websiteJsonLd = {
 export default function RootLayout({ children }) {
   const observabilityEnabled = process.env.NEXT_PUBLIC_VERCEL_OBSERVABILITY_ENABLED === 'true';
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.className} ${cormorantGaramond.className}`}>
       <head>
         <ThemeStyle />
         {/* JSON-LD Structured Data */}

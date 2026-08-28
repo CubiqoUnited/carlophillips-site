@@ -24,9 +24,9 @@
   --cp-primitive-color-channel-dark: 0 0 0;
   --cp-primitive-color-channel-light: 255 255 255;
 
-  --cp-primitive-font-family-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --cp-primitive-font-family-serif: Didot, 'Bodoni 72', 'Bodoni MT', 'Playfair Display', Georgia, serif;
-  --cp-primitive-font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --cp-primitive-font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Roboto, 'Arial Nova', sans-serif;
+  --cp-primitive-font-family-serif: 'Cormorant Garamond', 'Playfair Display', Didot, 'Bodoni 72', 'Bodoni MT', 'Cinzel', Georgia, serif;
+  --cp-primitive-font-family-mono: 'SFMono-Regular', 'JetBrains Mono', 'Fira Code', Menlo, Consolas, monospace;
   --cp-primitive-font-family-open-graph: Arial, sans-serif;
   --cp-primitive-color-gold: #d6be7a;
   --cp-primitive-color-cream-over: #d9d0c2;
