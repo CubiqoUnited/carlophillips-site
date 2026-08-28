@@ -679,6 +679,10 @@
     transform: var(--cp-component-landing-copy-transform-exit);
   }
 
+  .cp-landing[data-landing-state='post-morph'] .cp-landing-enter {
+    display: var(--cp-semantic-layout-display-none);
+  }
+
   .cp-landing-emblem {
     display: var(--cp-semantic-layout-display-none);
   }
@@ -762,10 +766,7 @@
   /* Screens 03 / 04 / 19 — Discovery. */
   .cp-discovery {
     position: var(--cp-semantic-layout-position-relative);
-    height: var(--cp-semantic-size-viewport-height);
     min-height: var(--cp-semantic-size-viewport-height);
-    max-height: var(--cp-semantic-size-viewport-height);
-    overflow: var(--cp-semantic-layout-overflow-hidden);
     border-bottom: var(--cp-semantic-border-rule);
     background: var(--cp-semantic-color-canvas);
     scroll-margin-top: var(--cp-component-discovery-scroll-margin);
@@ -775,9 +776,7 @@
 
   .cp-discovery-grid {
     display: var(--cp-semantic-layout-display-grid);
-    height: var(--cp-semantic-size-full);
-    min-height: var(--cp-semantic-size-full);
-    max-height: var(--cp-semantic-size-viewport-height);
+    min-height: var(--cp-semantic-size-viewport-height);
     grid-template-columns: var(--cp-component-discovery-grid-template);
     align-items: var(--cp-component-discovery-align);
     gap: var(--cp-semantic-space-8);
