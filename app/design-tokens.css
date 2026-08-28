@@ -31,6 +31,7 @@
   --cp-primitive-color-gold: #d6be7a;
   --cp-primitive-color-cream-over: #d9d0c2;
   --cp-primitive-color-cream-sig: #c9bca9;
+  --cp-primitive-font-weight-thin: 100;
   --cp-primitive-font-weight-regular: 400;
   --cp-primitive-font-weight-bold-relative: bolder;
   --cp-primitive-font-size-inherit: inherit;
@@ -427,6 +428,7 @@
   --cp-semantic-font-family-mono: var(--cp-primitive-font-family-mono);
   --cp-semantic-font-family-open-graph: var(--cp-primitive-font-family-open-graph);
   --cp-semantic-font-style-italic: var(--cp-primitive-font-style-italic);
+  --cp-semantic-font-weight-thin: var(--cp-primitive-font-weight-thin);
   --cp-semantic-font-weight-light: var(--cp-primitive-font-weight-light);
   --cp-semantic-font-weight-regular: var(--cp-primitive-font-weight-regular);
   --cp-semantic-font-weight-bold-relative: var(--cp-primitive-font-weight-bold-relative);
@@ -826,6 +828,7 @@
   --cp-component-dialog-radius: var(--cp-semantic-radius-dialog);
   --cp-component-product-title-color: var(--cp-semantic-color-copy);
   --cp-component-product-title-size: calc(var(--cp-semantic-font-size-product) + var(--cp-semantic-font-size-adjustment-product-title));
+  --cp-component-product-title-font-weight: var(--cp-semantic-font-weight-thin);
   --cp-component-product-fact-font-size: var(--cp-semantic-font-size-product-fact);
   --cp-component-product-review-color: var(--cp-semantic-color-copy-strong);
   --cp-component-product-review-size: var(--cp-semantic-font-size-body-large);

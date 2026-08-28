@@ -802,7 +802,7 @@
     max-width: var(--cp-semantic-size-product-title-width);
     color: var(--cp-component-product-title-color);
     font-size: var(--cp-component-product-title-size);
-    font-weight: var(--cp-semantic-font-weight-light);
+    font-weight: var(--cp-component-product-title-font-weight);
     line-height: var(--cp-semantic-font-line-height-title);
     letter-spacing: var(--cp-semantic-font-tracking-display);
   }
