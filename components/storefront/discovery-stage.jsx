@@ -56,7 +56,8 @@ export function DiscoveryVideoStage({
     && !reducedMotion
     && inView
     && pageActive
-    && !suspended;
+    && !suspended
+    && !held;
 
   useEffect(() => {
     const query = window.matchMedia(designSystemRuntimeContract.media.reducedMotion);
@@ -73,16 +74,6 @@ export function DiscoveryVideoStage({
       entries => {
         const isVisible = Boolean(entries[0]?.isIntersecting);
         setInView(isVisible);
-        if (isVisible) {
-          setUserPaused(false);
-          const video = videoRef.current;
-          if (video) {
-            video.defaultMuted = true;
-            video.muted = true;
-            video.playsInline = true;
-            video.play().catch(() => {});
-          }
-        }
       },
       { threshold: [0, 0.1, 0.5] }
     );
@@ -107,7 +98,7 @@ export function DiscoveryVideoStage({
     } else {
       video.pause();
     }
-  }, [shouldPlay, activeSlotId]);
+  }, [shouldPlay, activeSlotId, activeClip?.sourceUrl]);
 
   const selectClip = useCallback(slotId => {
     setActiveSlotId(slotId);
@@ -125,24 +116,33 @@ export function DiscoveryVideoStage({
     setRunsCompleted(current => {
       const next = current + 1;
       const video = videoRef.current;
-      if (video) {
-        video.currentTime = 0;
-        video.play().catch(() => {});
+      if (next < COMPLETE_RUNS) {
+        if (video) video.currentTime = 0;
+        if (video) video.play().catch(() => {});
+      } else {
+        if (video) video.pause();
       }
       return next;
     });
   };
 
   const toggleMotion = () => {
-    if (held || userPaused) {
-      const video = videoRef.current;
+    const video = videoRef.current;
+    if (held) {
       if (video) video.currentTime = 0;
+      if (video) video.play().catch(() => {});
       setRunsCompleted(0);
       setElapsed(0);
       setUserPaused(false);
       return;
     }
-    setUserPaused(true);
+    if (userPaused) {
+      if (video) video.play().catch(() => {});
+      setUserPaused(false);
+    } else {
+      if (video) video.pause();
+      setUserPaused(true);
+    }
   };
 
   /*
@@ -205,7 +205,7 @@ export function DiscoveryVideoStage({
               event.currentTarget.defaultMuted = true;
               event.currentTarget.muted = true;
               event.currentTarget.playsInline = true;
-              if (!userPaused && !suspended) {
+              if (shouldPlay) {
                 event.currentTarget.play().catch(() => {});
               }
             }}
@@ -214,7 +214,7 @@ export function DiscoveryVideoStage({
               event.currentTarget.muted = true;
               event.currentTarget.playsInline = true;
               setDuration(event.currentTarget.duration || 0);
-              if (!userPaused && !suspended) {
+              if (shouldPlay) {
                 event.currentTarget.play().catch(() => {});
               }
             }}
