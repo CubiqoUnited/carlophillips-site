@@ -1318,7 +1318,7 @@
     gap: var(--cp-semantic-space-1);
     overflow-x: var(--cp-semantic-layout-overflow-auto);
     border-top: var(--cp-semantic-border-rule);
-    padding: var(--cp-semantic-space-3) var(--cp-semantic-space-page-gutter);
+    padding: var(--cp-semantic-space-2) var(--cp-semantic-space-page-gutter);
     background: var(--cp-semantic-color-control-dark);
   }
 
@@ -2719,7 +2719,7 @@
     flex-direction: var(--cp-semantic-layout-direction-column);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-position-gap);
-    padding-block: var(--cp-semantic-space-4);
+    padding-block: var(--cp-semantic-space-2);
   }
 
   .cp-media-counter {
