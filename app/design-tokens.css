@@ -1063,7 +1063,7 @@
     --cp-component-discovery-grid-template: var(--cp-semantic-layout-grid-discovery);
     --cp-component-discovery-align: var(--cp-semantic-layout-align-center);
     --cp-component-stage-timestamp-display: var(--cp-semantic-layout-display-inline-flex);
-    --cp-component-discovery-padding-bottom: var(--cp-semantic-space-24);
+    --cp-component-discovery-padding-bottom: var(--cp-semantic-space-6);
     --cp-component-discovery-stage-order: var(--cp-semantic-layout-order-none);
     --cp-component-discovery-corner-display: var(--cp-semantic-layout-display-flex);
     --cp-component-catalog-overlay-grid-template: var(--cp-semantic-layout-grid-three);

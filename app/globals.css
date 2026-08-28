@@ -861,10 +861,11 @@
 
   /* The 4:5 stage. No fullscreen affordance is offered anywhere on it. */
   .cp-stage {
+    position: var(--cp-semantic-layout-position-relative);
     order: var(--cp-component-discovery-stage-order);
     display: var(--cp-semantic-layout-display-flex);
     justify-content: var(--cp-semantic-layout-justify-center);
-    align-items: var(--cp-semantic-layout-align-center);
+    align-items: var(--cp-semantic-layout-align-end);
     height: var(--cp-semantic-size-full);
     min-height: var(--cp-semantic-layout-size-zero);
   }
