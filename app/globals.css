@@ -1027,8 +1027,8 @@
     order: var(--cp-component-discovery-actions-order);
     display: var(--cp-semantic-layout-display-flex);
     flex-direction: var(--cp-semantic-layout-direction-column);
-    gap: var(--cp-semantic-size-hairline);
-    background: var(--cp-semantic-color-rule);
+    gap: var(--cp-semantic-space-3);
+    background: var(--cp-semantic-color-transparent);
     opacity: var(--cp-component-discovery-peripheral-opacity);
     transition: opacity var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
   }
