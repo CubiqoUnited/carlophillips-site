@@ -164,8 +164,8 @@
   --cp-primitive-size-section-space: clamp(5rem, 8vw, 8rem);
   --cp-primitive-size-media-panel-inset: clamp(0.75rem, 4vw, 2.5rem);
   --cp-primitive-size-empty-state-padding: clamp(2rem, 4vw, 3rem);
-  --cp-primitive-size-stage: 36rem;
-  --cp-primitive-size-stage-height: clamp(20rem, calc(100svh - 11rem), 44rem);
+  --cp-primitive-size-stage: 42rem;
+  --cp-primitive-size-stage-height: clamp(24rem, calc(100svh - 8.5rem), 52rem);
   --cp-primitive-size-dash: 2.25rem;
   --cp-primitive-size-rail-dot: 0.3125rem;
   --cp-primitive-size-discovery-thumb: 2.25rem;
@@ -344,7 +344,7 @@
   --cp-primitive-layout-grid-header: repeat(3, 1fr);
   --cp-primitive-layout-grid-variant: 1fr auto;
   --cp-primitive-layout-grid-two: repeat(2, minmax(0, 1fr));
-  --cp-primitive-layout-grid-discovery: minmax(0, 1fr) minmax(0, 1.55fr) minmax(0, 1fr);
+  --cp-primitive-layout-grid-discovery: minmax(0, 0.85fr) minmax(0, 2.1fr) minmax(0, 0.85fr);
   --cp-primitive-layout-grid-cart-line: auto minmax(0, 1fr) auto;
   --cp-primitive-layout-grid-checkout: minmax(0, 1.4fr) minmax(0, 0.85fr);
   --cp-primitive-layout-appearance-none: none;

@@ -711,7 +711,7 @@
     color: var(--cp-semantic-color-transparent);
     text-shadow: var(--cp-semantic-effect-shadow-copy);
     margin: var(--cp-semantic-space-none);
-    padding-bottom: var(--cp-semantic-space-2);
+    padding-bottom: var(--cp-semantic-space-3);
   }
 
   .cp-landing-sig {
@@ -943,6 +943,11 @@
     display: var(--cp-semantic-layout-display-flex);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-control-gap);
+    padding: var(--cp-semantic-space-1) var(--cp-semantic-space-4);
+    border-radius: var(--cp-semantic-radius-round);
+    border: var(--cp-semantic-border-rule);
+    background: var(--cp-semantic-color-glass-soft);
+    backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
     transform: translateX(var(--cp-semantic-media-translate-navigation));
   }
 
