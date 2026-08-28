@@ -711,6 +711,7 @@
     color: var(--cp-semantic-color-transparent);
     text-shadow: var(--cp-semantic-effect-shadow-copy);
     margin: var(--cp-semantic-space-none);
+    padding-bottom: var(--cp-semantic-space-2);
   }
 
   .cp-landing-sig {
@@ -787,6 +788,12 @@
   .cp-discovery-lead {
     order: var(--cp-component-discovery-lead-order);
     max-width: var(--cp-semantic-size-copy-product);
+    opacity: var(--cp-component-discovery-peripheral-opacity);
+    transition: opacity var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
+  }
+
+  .cp-discovery-lead:hover {
+    opacity: var(--cp-semantic-opacity-full);
   }
 
   .cp-product-title {
@@ -1016,6 +1023,12 @@
     flex-direction: var(--cp-semantic-layout-direction-column);
     gap: var(--cp-semantic-size-hairline);
     background: var(--cp-semantic-color-rule);
+    opacity: var(--cp-component-discovery-peripheral-opacity);
+    transition: opacity var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
+  }
+
+  .cp-discovery-actions:hover {
+    opacity: var(--cp-semantic-opacity-full);
   }
 
   .cp-stack-action {
