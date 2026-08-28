@@ -555,6 +555,7 @@
   .cp-eyebrow {
     color: var(--cp-semantic-color-copy);
     font-size: var(--cp-semantic-font-size-label);
+    font-weight: var(--cp-semantic-font-weight-light);
     letter-spacing: var(--cp-semantic-font-tracking-label);
   }
 
@@ -787,6 +788,7 @@
 
   .cp-discovery-lead {
     order: var(--cp-component-discovery-lead-order);
+    align-self: var(--cp-semantic-layout-align-start);
     max-width: var(--cp-semantic-size-copy-product);
     opacity: var(--cp-component-discovery-peripheral-opacity);
     transition: opacity var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
@@ -813,6 +815,7 @@
     -webkit-line-clamp: var(--cp-semantic-layout-line-clamp-product);
     color: var(--cp-component-product-review-color);
     font-size: var(--cp-component-product-review-size);
+    font-weight: var(--cp-semantic-font-weight-light);
     line-height: var(--cp-semantic-font-line-height-body);
     text-align: var(--cp-semantic-layout-text-align-start);
     text-wrap: var(--cp-semantic-layout-text-wrap-pretty);
@@ -841,6 +844,7 @@
     color: var(--cp-semantic-color-copy-strong);
     cursor: var(--cp-semantic-layout-cursor-action);
     font-size: var(--cp-component-product-fact-font-size);
+    font-weight: var(--cp-semantic-font-weight-light);
     letter-spacing: var(--cp-semantic-font-tracking-fact);
     list-style: var(--cp-semantic-layout-list-style-none);
     text-transform: var(--cp-semantic-layout-text-transform-label);
