@@ -204,12 +204,6 @@ export function ProductMediaOverlay({
                         className={`cp-media-asset cp-media-asset-image ${item.fit || 'cp-media-fit-contain'} ${item.position || 'cp-media-position-center'}`}
                       />
                     )}
-                    {!item.hideCaption && (
-                      <figcaption className="cp-media-caption">
-                        <span>{item.label}</span>
-                        <span className="cp-text-align-end">{item.disclosure}</span>
-                      </figcaption>
-                    )}
                   </figure>
                 );
               })}

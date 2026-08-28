@@ -141,7 +141,6 @@
   --cp-primitive-size-media-panel-width: 58rem;
   --cp-primitive-size-media-panel-height: 56rem;
   --cp-primitive-size-media-button-corner-height: 3.25rem;
-  --cp-primitive-size-media-caption-height: 3rem;
   --cp-primitive-size-side-drawer-mobile: 100vw;
   --cp-primitive-size-side-drawer-desktop: min(32rem, 32vw);
   --cp-primitive-size-motion-progress: 11rem;
@@ -586,7 +585,6 @@
   --cp-semantic-size-media-panel-width: var(--cp-primitive-size-media-panel-width);
   --cp-semantic-size-media-panel-height: var(--cp-primitive-size-media-panel-height);
   --cp-semantic-size-media-button-corner-height: var(--cp-primitive-size-media-button-corner-height);
-  --cp-semantic-size-media-caption-height: var(--cp-primitive-size-media-caption-height);
   --cp-semantic-size-side-drawer-mobile: var(--cp-primitive-size-side-drawer-mobile);
   --cp-semantic-size-side-drawer-desktop: var(--cp-primitive-size-side-drawer-desktop);
   --cp-semantic-size-motion-progress: var(--cp-primitive-size-motion-progress);
@@ -842,10 +840,6 @@
   --cp-component-control-layer: var(--cp-semantic-layer-control);
   --cp-component-media-asset-padding: var(--cp-semantic-space-none);
   --cp-component-media-navigation-padding: var(--cp-semantic-space-3);
-  --cp-component-media-caption-direction: var(--cp-semantic-layout-direction-column);
-  --cp-component-media-caption-align: var(--cp-semantic-layout-align-start);
-  --cp-component-media-caption-justify: var(--cp-semantic-layout-align-end);
-  --cp-component-media-caption-gap: var(--cp-semantic-space-2);
   --cp-component-nav-label-display: var(--cp-semantic-layout-display-none);
   --cp-component-side-drawer-width: var(--cp-semantic-size-side-drawer-mobile);
   --cp-component-side-drawer-layer: var(--cp-semantic-layer-drawer);
@@ -977,10 +971,6 @@
   :root {
     --cp-component-media-asset-padding: var(--cp-semantic-space-none);
     --cp-component-media-navigation-padding: var(--cp-semantic-space-8);
-    --cp-component-media-caption-direction: var(--cp-semantic-layout-direction-row);
-    --cp-component-media-caption-align: var(--cp-semantic-layout-align-end);
-    --cp-component-media-caption-justify: var(--cp-semantic-layout-justify-between);
-    --cp-component-media-caption-gap: var(--cp-semantic-space-6);
     --cp-component-nav-label-display: var(--cp-semantic-layout-display-inline);
     --cp-component-footer-direction: var(--cp-semantic-layout-direction-row);
     --cp-component-footer-align: var(--cp-semantic-layout-align-center);
