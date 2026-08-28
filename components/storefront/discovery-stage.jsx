@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Pause, Play } from 'lucide-react';
+import { Maximize2, Pause, Play } from 'lucide-react';
 import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
 import { EXCEPTION_STATES, ExceptionWidget } from './exception-widget.jsx';
 
@@ -242,32 +242,40 @@ export function DiscoveryVideoStage({
             <Play className="cp-icon cp-icon-medium" aria-hidden="true" />
           </button>
         )}
-      </div>
 
-      <div className="cp-stage-controls">
-        {activeClip && !posterOnly && (
-          <>
-            <button
-              type="button"
-              onClick={toggleMotion}
-              className="cp-stage-control"
-              aria-pressed={motionPlaying}
-              aria-label={motionPlaying ? 'Pause product video' : held ? 'Replay product video' : 'Play product video'}
-              data-motion-control="true"
-            >
-              {motionPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
-            </button>
-            <progress
-              className="cp-stage-progress"
-              max={progressMax}
-              value={elapsed}
-              aria-label="Playback position"
-            />
-            <span className="cp-stage-timestamp" aria-live="polite">
-              {formatTime(elapsed)} / {formatTime(duration)}
-            </span>
-          </>
-        )}
+        <div className="cp-stage-controls">
+          {activeClip && !posterOnly && (
+            <>
+              <button
+                type="button"
+                onClick={toggleMotion}
+                className="cp-stage-control"
+                aria-pressed={motionPlaying}
+                aria-label={motionPlaying ? 'Pause product video' : held ? 'Replay product video' : 'Play product video'}
+                data-motion-control="true"
+              >
+                {motionPlaying ? <Pause className="cp-icon cp-icon-small" /> : <Play className="cp-icon cp-icon-small" />}
+              </button>
+              <progress
+                className="cp-stage-progress"
+                max={progressMax}
+                value={elapsed}
+                aria-label="Playback position"
+              />
+              <button
+                type="button"
+                onClick={onOpenGallery}
+                className="cp-stage-control"
+                aria-label="View fullscreen gallery"
+              >
+                <Maximize2 className="cp-icon cp-icon-small" />
+              </button>
+              <span className="cp-stage-timestamp cp-visually-hidden" aria-live="polite">
+                {formatTime(elapsed)} / {formatTime(duration)}
+              </span>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="cp-stage-dashes" role="tablist" aria-label="Discovery videos">

@@ -194,11 +194,9 @@ export function DiscoverySection({
       <div className="cp-discovery-corner">
         <div className="cp-discovery-corner-actions">
           <button type="button" onClick={onOpenCategories} className="cp-corner-action">
-            <LayoutGrid className="cp-icon cp-icon-small" aria-hidden="true" />
             <span>All categories</span>
           </button>
           <button type="button" onClick={onOpenProducts} className="cp-corner-action">
-            <Rows3 className="cp-icon cp-icon-small" aria-hidden="true" />
             <span>All hoodies</span>
           </button>
         </div>

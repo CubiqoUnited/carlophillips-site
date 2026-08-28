@@ -937,18 +937,13 @@
 
   .cp-stage-controls {
     position: var(--cp-semantic-layout-position-absolute);
-    left: var(--cp-semantic-media-position-navigation);
-    bottom: var(--cp-semantic-space-6);
+    left: var(--cp-semantic-space-4);
+    right: var(--cp-semantic-space-4);
+    bottom: var(--cp-semantic-space-4);
     z-index: var(--cp-semantic-layer-control);
     display: var(--cp-semantic-layout-display-flex);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-control-gap);
-    padding: var(--cp-semantic-space-1) var(--cp-semantic-space-4);
-    border-radius: var(--cp-semantic-radius-round);
-    border: var(--cp-semantic-border-rule);
-    background: var(--cp-semantic-color-glass-soft);
-    backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
-    transform: translateX(var(--cp-semantic-media-translate-navigation));
   }
 
   .cp-stage-control {
@@ -957,23 +952,24 @@
     height: var(--cp-semantic-size-touch-target);
     align-items: var(--cp-semantic-layout-align-center);
     justify-content: var(--cp-semantic-layout-justify-center);
-    border: var(--cp-semantic-border-rule-strong);
-    background: var(--cp-semantic-color-control-dark);
+    border: var(--cp-semantic-border-none);
+    background: var(--cp-semantic-color-transparent);
     color: var(--cp-semantic-color-ink);
-    backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
+    cursor: var(--cp-semantic-layout-cursor-action);
   }
 
   .cp-stage-progress {
+    flex: var(--cp-semantic-layout-flex-grow);
     width: var(--cp-semantic-size-motion-progress);
     height: var(--cp-semantic-size-progress-track);
     appearance: var(--cp-semantic-layout-appearance-none);
     border: var(--cp-semantic-border-none);
-    background: var(--cp-semantic-color-rule);
+    background: var(--cp-semantic-color-faint);
     color: var(--cp-semantic-color-ink);
   }
 
   .cp-stage-progress::-webkit-progress-bar {
-    background: var(--cp-semantic-color-rule);
+    background: var(--cp-semantic-color-faint);
   }
 
   .cp-stage-progress::-webkit-progress-value {
@@ -995,7 +991,7 @@
   .cp-stage-dashes {
     position: var(--cp-semantic-layout-position-absolute);
     left: var(--cp-semantic-media-position-navigation);
-    bottom: var(--cp-semantic-space-6);
+    bottom: calc(var(--cp-semantic-space-none) - var(--cp-semantic-space-4));
     z-index: var(--cp-semantic-layer-control);
     display: var(--cp-semantic-layout-display-flex);
     align-items: var(--cp-semantic-layout-align-center);
@@ -1174,9 +1170,9 @@
     bottom: var(--cp-semantic-space-6);
     z-index: var(--cp-semantic-layer-control);
     display: var(--cp-component-discovery-corner-display);
-    flex-direction: var(--cp-semantic-layout-direction-row);
-    align-items: var(--cp-semantic-layout-align-center);
-    gap: var(--cp-semantic-space-4);
+    flex-direction: var(--cp-semantic-layout-direction-column);
+    align-items: var(--cp-semantic-layout-align-end);
+    gap: var(--cp-semantic-space-2);
   }
 
   .cp-discovery-corner-actions {
@@ -1203,7 +1199,7 @@
 
   .cp-discovery-rail {
     display: var(--cp-semantic-layout-display-flex);
-    flex-direction: var(--cp-semantic-layout-direction-column);
+    flex-direction: var(--cp-semantic-layout-direction-row);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-2);
     margin: var(--cp-semantic-space-none);
