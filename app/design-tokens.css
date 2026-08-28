@@ -138,10 +138,10 @@
   --cp-primitive-size-copy-display: 64rem;
   --cp-primitive-size-copy-editorial: 72rem;
   --cp-primitive-size-copy-product: clamp(14rem, 36vw, 25.5rem);
-  --cp-primitive-size-media-panel-width: 80rem;
+  --cp-primitive-size-media-panel-width: 58rem;
   --cp-primitive-size-media-panel-height: 56rem;
   --cp-primitive-size-media-button-corner-height: 3.25rem;
-  --cp-primitive-size-media-caption-height: 4.5rem;
+  --cp-primitive-size-media-caption-height: 3rem;
   --cp-primitive-size-side-drawer-mobile: 100vw;
   --cp-primitive-size-side-drawer-desktop: min(32rem, 32vw);
   --cp-primitive-size-motion-progress: 11rem;
@@ -235,7 +235,6 @@
   --cp-primitive-effect-scrim-campaign:
     linear-gradient(0deg, rgb(0 0 0 / 68%), transparent 48%, rgb(0 0 0 / 28%)),
     linear-gradient(90deg, rgb(0 0 0 / 74%), rgb(0 0 0 / 8%) 54%, rgb(0 0 0 / 20%));
-  --cp-primitive-effect-scrim-media: linear-gradient(0deg, rgb(0 0 0 / 92%), rgb(0 0 0 / 45%));
   --cp-primitive-effect-scrim-card: linear-gradient(0deg, rgb(0 0 0 / 80%), transparent 60%);
   --cp-primitive-effect-gradient-title: linear-gradient(180deg, rgb(255 250 241) 0%, rgb(234 223 206) 46%, rgb(198 185 167) 100%);
   --cp-primitive-effect-edge-blend: linear-gradient(90deg, rgb(0 0 0) 0%, rgb(0 0 0) 18%, rgb(0 0 0 / 98%) 23%, rgb(0 0 0 / 72%) 29%, rgb(0 0 0 / 24%) 36%, transparent 45%);
@@ -669,7 +668,6 @@
   --cp-semantic-effect-shadow-copy: var(--cp-primitive-effect-shadow-copy);
   --cp-semantic-effect-shadow-dialog: var(--cp-primitive-effect-shadow-dialog);
   --cp-semantic-effect-scrim-campaign: var(--cp-primitive-effect-scrim-campaign);
-  --cp-semantic-effect-scrim-media: var(--cp-primitive-effect-scrim-media);
   --cp-semantic-effect-scrim-card: var(--cp-primitive-effect-scrim-card);
   --cp-semantic-effect-gradient-title: var(--cp-primitive-effect-gradient-title);
   --cp-semantic-effect-edge-blend: var(--cp-primitive-effect-edge-blend);
@@ -977,7 +975,7 @@
 /* Canonical responsive contract. Literal media conditions live only here. */
 @media (min-width: 40rem) {
   :root {
-    --cp-component-media-asset-padding: var(--cp-semantic-space-8);
+    --cp-component-media-asset-padding: var(--cp-semantic-space-none);
     --cp-component-media-navigation-padding: var(--cp-semantic-space-8);
     --cp-component-media-caption-direction: var(--cp-semantic-layout-direction-row);
     --cp-component-media-caption-align: var(--cp-semantic-layout-align-end);
