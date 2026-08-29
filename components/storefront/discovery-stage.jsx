@@ -9,17 +9,17 @@ import { EXCEPTION_STATES, ExceptionWidget } from './exception-widget.jsx';
 /*
  * Screen 03 — Discovery, default video stage.
  *
- * "Central portrait runway view; compose the approved source at 4:5. Three approved clips: Runway
- * Motion, Fit & Silhouette, and 360 Showcase. Muted autoplay plays two complete runs, then stops on
- * the final frame with centred Play. Show Play/Pause, progress and the three video dashes while
- * playing. No fullscreen."
+ * "Central portrait runway view; compose the approved source at 4:5. Two approved clips play in
+ * sequence: Fit & Silhouette, then Runway Motion. Muted autoplay plays the complete sequence twice,
+ * then stops on the final frame with centred Play. Show Play/Pause, progress and the three position
+ * dashes while playing. The third position stays unavailable until an approved asset exists."
  *
  * The clips this stage is given have already passed the media readiness gate, so it never has to
  * decide whether an asset is legitimate — only whether the browser could actually play it. A
  * playback error demotes the stage to the appendix "Video unavailable" widget, which the workbook
  * requires to leave product details and the gallery reachable.
  */
-const COMPLETE_RUNS = 2;
+const COMPLETE_SEQUENCES = 2;
 
 function formatTime(seconds) {
   const whole = Math.max(0, Math.floor(seconds || 0));
@@ -37,7 +37,7 @@ export function DiscoveryVideoStage({
   const stageRef = useRef(null);
   const playableClips = useMemo(() => declaredClips.filter(clip => clip.motionAllowed), [declaredClips]);
   const [activeSlotId, setActiveSlotId] = useState(playableClips[0]?.slotId || null);
-  const [runsCompleted, setRunsCompleted] = useState(0);
+  const [sequencesCompleted, setSequencesCompleted] = useState(0);
   const [userPaused, setUserPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [inView, setInView] = useState(true);
@@ -48,7 +48,7 @@ export function DiscoveryVideoStage({
 
   const activeClip = playableClips.find(clip => clip.slotId === activeSlotId) || playableClips[0] || null;
   const posterClip = activeClip || declaredClips.find(clip => clip.posterUrl) || null;
-  const held = runsCompleted >= COMPLETE_RUNS;
+  const held = sequencesCompleted >= COMPLETE_SEQUENCES;
   const shouldPlay = Boolean(activeClip)
     && !posterOnly
     && !playbackFailed
@@ -102,36 +102,43 @@ export function DiscoveryVideoStage({
 
   const selectClip = useCallback(slotId => {
     setActiveSlotId(slotId);
-    setRunsCompleted(0);
+    setSequencesCompleted(0);
     setElapsed(0);
     setUserPaused(false);
     setPlaybackFailed(false);
   }, []);
 
   /*
-   * One complete run is one `ended`. After the second the stage holds the final frame — the video is
-   * left at its end position rather than reset — and the centred Play becomes a replay.
+   * One complete sequence is every approved clip from first to last. After the second sequence, the
+   * stage holds the last clip's final frame and the centred Play becomes a replay control.
    */
   const handleEnded = () => {
-    setRunsCompleted(current => {
-      const next = current + 1;
-      const video = videoRef.current;
-      if (next < COMPLETE_RUNS) {
-        if (video) video.currentTime = 0;
-        if (video) video.play().catch(() => {});
-      } else {
-        if (video) video.pause();
-      }
-      return next;
-    });
+    const activeIndex = playableClips.findIndex(clip => clip.slotId === activeClip?.slotId);
+    const nextClip = activeIndex >= 0 ? playableClips[activeIndex + 1] : null;
+
+    if (nextClip) {
+      setActiveSlotId(nextClip.slotId);
+      setElapsed(0);
+      return;
+    }
+
+    const completed = sequencesCompleted + 1;
+    if (completed < COMPLETE_SEQUENCES && playableClips[0]) {
+      setSequencesCompleted(completed);
+      setActiveSlotId(playableClips[0].slotId);
+      setElapsed(0);
+      return;
+    }
+
+    videoRef.current?.pause();
+    setSequencesCompleted(completed);
   };
 
   const toggleMotion = () => {
     const video = videoRef.current;
     if (held) {
-      if (video) video.currentTime = 0;
-      if (video) video.play().catch(() => {});
-      setRunsCompleted(0);
+      setActiveSlotId(playableClips[0]?.slotId || null);
+      setSequencesCompleted(0);
       setElapsed(0);
       setUserPaused(false);
       return;
@@ -266,7 +273,7 @@ export function DiscoveryVideoStage({
                 type="button"
                 onClick={onOpenGallery}
                 className="cp-stage-control"
-                aria-label="View fullscreen gallery"
+                aria-label="Open product media overlay"
               >
                 <Maximize2 className="cp-icon cp-icon-small" />
               </button>

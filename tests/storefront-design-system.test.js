@@ -454,7 +454,8 @@ describe('storefront design system', () => {
     expect(discovery).toContain('cp-discovery-thumbs');
     expect(stage).toContain('aria-label="Discovery videos"');
     expect(stage).toContain('cp-stage-progress');
-    expect(stage).toContain('COMPLETE_RUNS = 2');
+    expect(stage).toContain('COMPLETE_SEQUENCES = 2');
+    expect(stage).toContain('aria-label="Open product media overlay"');
     expect(stage).toContain('controlsList="nodownload nofullscreen noremoteplayback"');
     expect(stage).not.toMatch(/\bExpand\b|requestFullscreen|allowFullScreen/);
     expect(discovery).not.toMatch(/\bExpand\b|requestFullscreen|allowFullScreen/);

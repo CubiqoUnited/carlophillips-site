@@ -133,11 +133,12 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
     const html = render(availableSummary);
 
     expect(html).toContain('aria-label="Discovery videos"');
-    expect(html).toContain('aria-label="Show Runway motion"');
     expect(html).toContain('aria-label="Show Fit &amp; silhouette"');
+    expect(html).toContain('aria-label="Show Runway motion"');
     expect(html).toContain('aria-label="360 showcase is not yet available"');
     expect(html).toContain('data-ready-clips="2"');
-    expect(html).toContain('/media/signature-hoodie/videos/runway-motion-final.mp4');
+    expect(html).toContain('/media/signature-hoodie/videos/fit-silhouette-final.mp4');
+    expect(html).toContain('aria-label="Open product media overlay"');
     expect(html).toContain('nofullscreen');
     expect(html).not.toContain('lucide-expand');
   });

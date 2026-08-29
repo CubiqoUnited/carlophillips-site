@@ -932,16 +932,21 @@
     left: var(--cp-semantic-media-position-navigation);
     z-index: var(--cp-semantic-layer-control);
     display: var(--cp-semantic-layout-display-inline-flex);
-    width: var(--cp-semantic-size-control);
-    height: var(--cp-semantic-size-control);
+    width: var(--cp-component-product-replay-size);
+    height: var(--cp-component-product-replay-size);
     align-items: var(--cp-semantic-layout-align-center);
     justify-content: var(--cp-semantic-layout-justify-center);
-    border: var(--cp-semantic-border-rule-strong);
+    border: var(--cp-semantic-size-hairline) var(--cp-semantic-border-style-default) var(--cp-component-product-control-color);
     border-radius: var(--cp-semantic-radius-round);
     background: var(--cp-semantic-color-glass);
-    color: var(--cp-semantic-color-ink);
+    color: var(--cp-component-product-control-color);
     transform: var(--cp-semantic-motion-centre);
     backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
+  }
+
+  .cp-stage-resume .cp-icon {
+    width: var(--cp-component-product-replay-icon-size);
+    height: var(--cp-component-product-replay-icon-size);
   }
 
   .cp-stage-resume:hover {
@@ -968,7 +973,7 @@
     justify-content: var(--cp-semantic-layout-justify-center);
     border: var(--cp-semantic-border-none);
     background: var(--cp-semantic-color-transparent);
-    color: var(--cp-semantic-color-stage-control);
+    color: var(--cp-component-product-control-color);
     cursor: var(--cp-semantic-layout-cursor-action);
     transition: color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
   }
@@ -992,11 +997,11 @@
   }
 
   .cp-stage-progress::-webkit-progress-value {
-    background: var(--cp-semantic-color-stage-control-hover);
+    background: var(--cp-component-product-progress-color);
   }
 
   .cp-stage-progress::-moz-progress-bar {
-    background: var(--cp-semantic-color-stage-control-hover);
+    background: var(--cp-component-product-progress-color);
   }
 
   .cp-stage-timestamp {
@@ -1028,7 +1033,7 @@
   }
 
   .cp-stage-dash-active {
-    background: var(--cp-semantic-color-stage-control-hover);
+    background: var(--cp-component-product-control-color);
   }
 
   .cp-stage-dash:disabled {
