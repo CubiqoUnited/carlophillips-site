@@ -99,11 +99,12 @@ This document is canonical for requirements consolidation. Shopify remains the c
 
 ### 4.1 Landing and motion
 - While visible, the landing page SHOULD combine editorial runway movement with subtle still-image movement.
-- The primary landing/product display sequence is: **Runway video -> Fit & silhouette video -> Product-only 360 spin**, when each approved modality exists:
-  - **Phase 1 (Runway Motion):** Editorial walking motion, 7.79 seconds, 0.9x speed, muted autoplay when in viewport (≥60% visibility).
-  - **Phase 2 (Fit & Silhouette):** Shows garment drape, structure, and profile (5.04 seconds).
-  - **Phase 3 (Product 360 Spin):** 360-degree rotation of the merchandise alone without on-model invention.
-- Both videos are distinct assets with visible Play/Pause, muted autoplay only while visible on the landing hero, reduced-motion fallback, and soft lateral edge vignette so no portion of the garment is cropped.
+- The default product display sequence is: **Fit & silhouette video -> Runway video**:
+  - **Phase 1 (Fit & Silhouette):** Shows garment drape, structure, and profile (5.04 seconds).
+  - **Phase 2 (Runway Motion):** Editorial walking motion, 7.79 seconds, 0.9x speed.
+- Both videos are distinct assets and autoplay muted in sequence while the default product stage is visible. The complete two-video sequence runs twice, then stops on the Runway final frame with a centred Play control.
+- Keep the third position dash unavailable until an approved product-only 360 asset exists. Do not substitute or imply a 360 view.
+- Keep visible cream Play/Pause and expand controls, a green progress line, three position dashes, reduced-motion fallback, and a soft lateral edge vignette so no portion of the garment is cropped.
 - Keep `Pause Motion`, progress timeline, `ORDER`, and `VIEW GALLERY` visible.
 - `ORDER - EUR 180` opens the purchase tray. The price is a product-page reference and must be replaced by Shopify truth for a live product.
 - `VIEW GALLERY` opens the gallery overlay.
@@ -380,13 +381,13 @@ External API/browser access and pay-as-used credits are OPEN GATES. No paid serv
   - **Source asset:** Approved Gen-4.5 runway walking edit (`apps/web/public/media/signature-hoodie/videos/runway-motion.mp4` / `runway-motion-final.mp4`).
   - **Duration & Speed:** Exactly 7.79 seconds runtime, rendered at 0.9× playback speed.
   - **Edit sequence:** Starts directly with walking steps (closed-eye opening cut), stop, quarter-turn, and confident hold.
-  - **Landing viewport playback:** Muted autoplay initiates when the hero panel is in view (≥60% intersection ratio). Video plays once and pauses at the final frame; visible `Pause motion` / `Play motion` control allows manual toggle.
+  - **Default product-stage playback:** Plays second in the muted Fit → Runway sequence. After the second complete sequence, hold its final frame behind the centred Play control.
   - **Edge rendering:** Lateral vignette gradient preserves 100% of the model and hoodie without vertical seam cutoffs.
   - **Accessibility:** Reduced-motion preferences (`prefers-reduced-motion: reduce`) prevent autoplay and display the primary static poster.
 - **Fit & Silhouette Video:**
   - **Source asset:** Approved Gen-4.5 garment drape & silhouette showcase (`fit-silhouette.mp4`).
   - **Duration:** Exactly 5.04 seconds.
-  - **Modal interaction:** Explicit user-selected asset inside the gallery overlay modal; does not autoplay on landing hero.
+  - **Default product-stage playback:** Plays first in the muted Fit → Runway sequence while the product stage is visible.
 - **Product 360 Spin:**
   - Dedicated merchandise-only rotation (isolated product, no invented on-model spin) labeled as `AI-assisted 360` or physically verified.
 

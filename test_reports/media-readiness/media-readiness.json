@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T12:19:05.008Z",
+  "generatedAt": "2026-08-29T14:04:42.077Z",
   "strict": false,
   "schemaVersion": "cp.media-readiness.v1",
   "decisions": [
@@ -38,23 +38,6 @@
       "clipOrder": null
     },
     {
-      "slotId": "product-runway-motion",
-      "role": "product-video",
-      "label": "Runway motion",
-      "aspect": "4:5",
-      "verdict": "ready",
-      "reason": "ok",
-      "motionAllowed": true,
-      "playbackId": null,
-      "sourceUrl": "/media/signature-hoodie/videos/runway-motion-final.mp4",
-      "posterUrl": "/media/signature-hoodie/posters/runway-motion-final.avif",
-      "posterFormat": "avif",
-      "disclosure": "AI editorial · Staging approved",
-      "alt": "AI editorial runway motion showing the black CARLOPHILLIPS Signature Hoodie in a concrete studio",
-      "viewport": null,
-      "clipOrder": 1
-    },
-    {
       "slotId": "product-fit-silhouette",
       "role": "product-video",
       "label": "Fit & silhouette",
@@ -68,6 +51,23 @@
       "posterFormat": "avif",
       "disclosure": "AI editorial · Staging approved",
       "alt": "AI editorial fit and silhouette study of the black CARLOPHILLIPS Signature Hoodie in a concrete studio",
+      "viewport": null,
+      "clipOrder": 1
+    },
+    {
+      "slotId": "product-runway-motion",
+      "role": "product-video",
+      "label": "Runway motion",
+      "aspect": "4:5",
+      "verdict": "ready",
+      "reason": "ok",
+      "motionAllowed": true,
+      "playbackId": null,
+      "sourceUrl": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "posterUrl": "/media/signature-hoodie/posters/runway-motion-final.avif",
+      "posterFormat": "avif",
+      "disclosure": "AI editorial · Staging approved",
+      "alt": "AI editorial runway motion showing the black CARLOPHILLIPS Signature Hoodie in a concrete studio",
       "viewport": null,
       "clipOrder": 2
     },
@@ -132,23 +132,6 @@
   "productVideo": {
     "decisions": [
       {
-        "slotId": "product-runway-motion",
-        "role": "product-video",
-        "label": "Runway motion",
-        "aspect": "4:5",
-        "verdict": "ready",
-        "reason": "ok",
-        "motionAllowed": true,
-        "playbackId": null,
-        "sourceUrl": "/media/signature-hoodie/videos/runway-motion-final.mp4",
-        "posterUrl": "/media/signature-hoodie/posters/runway-motion-final.avif",
-        "posterFormat": "avif",
-        "disclosure": "AI editorial · Staging approved",
-        "alt": "AI editorial runway motion showing the black CARLOPHILLIPS Signature Hoodie in a concrete studio",
-        "viewport": null,
-        "clipOrder": 1
-      },
-      {
         "slotId": "product-fit-silhouette",
         "role": "product-video",
         "label": "Fit & silhouette",
@@ -162,6 +145,23 @@
         "posterFormat": "avif",
         "disclosure": "AI editorial · Staging approved",
         "alt": "AI editorial fit and silhouette study of the black CARLOPHILLIPS Signature Hoodie in a concrete studio",
+        "viewport": null,
+        "clipOrder": 1
+      },
+      {
+        "slotId": "product-runway-motion",
+        "role": "product-video",
+        "label": "Runway motion",
+        "aspect": "4:5",
+        "verdict": "ready",
+        "reason": "ok",
+        "motionAllowed": true,
+        "playbackId": null,
+        "sourceUrl": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "posterUrl": "/media/signature-hoodie/posters/runway-motion-final.avif",
+        "posterFormat": "avif",
+        "disclosure": "AI editorial · Staging approved",
+        "alt": "AI editorial runway motion showing the black CARLOPHILLIPS Signature Hoodie in a concrete studio",
         "viewport": null,
         "clipOrder": 2
       },

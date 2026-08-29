@@ -27,7 +27,7 @@ describe('media readiness contract', () => {
     expect(MEDIA_READINESS_SLOTS.filter(slot => slot.role === 'landing-hero').map(slot => slot.aspect.label))
       .toEqual(['16:9', '9:16']);
     expect(MEDIA_READINESS_SLOTS.filter(slot => slot.role === 'product-video').map(slot => slot.label))
-      .toEqual(['Runway motion', 'Fit & silhouette', '360 showcase']);
+      .toEqual(['Fit & silhouette', 'Runway motion', '360 showcase']);
     for (const slot of MEDIA_READINESS_SLOTS.filter(slot => slot.role === 'product-video')) {
       expect(slot.aspect.label).toBe('4:5');
     }
@@ -119,7 +119,7 @@ describe('media readiness contract', () => {
     expect(decisionById(readiness, 'product-360-showcase').verdict).toBe(MEDIA_READINESS_VERDICT.notReady);
     expect(readiness.landingHero.renderable).toBe(true);
     expect(heroPresentation(readiness, 'desktop').posterUrl).toMatch(/lofoten-runway-hero/);
-    expect(readyProductClips(readiness).map(clip => clip.label)).toEqual(['Runway motion', 'Fit & silhouette']);
+    expect(readyProductClips(readiness).map(clip => clip.label)).toEqual(['Fit & silhouette', 'Runway motion']);
   });
 
   it('probes real files, sizes them, and detects the ISO media brand', () => {

@@ -84,7 +84,7 @@ describe('Signature Hoodie homepage media coverage', () => {
 
   it('keeps the approved videos truthfully separate from the still-derived study', () => {
     const videos = buildHomeGalleryMedia(previewSummary()).filter(item => item.type === 'video');
-    expect(videos.map(item => item.label)).toEqual(['Runway motion', 'Fit & silhouette']);
+    expect(videos.map(item => item.label)).toEqual(['Fit & silhouette', 'Runway motion']);
     expect(videos.every(item => item.disclosure === 'AI editorial · Staging approved')).toBe(true);
     expect(videos.every(item => item.hideCaption === true)).toBe(true);
   });

@@ -18,21 +18,23 @@ describe('approved Signature Hoodie Staging videos', () => {
   });
 
   /*
-   * Workbook screen 03: muted autoplay runs the clip twice, then holds the final frame behind a
-   * centred Play. The stage must never loop, must stop when it leaves view or the tab is hidden,
-   * and must stay replayable.
+   * Workbook screen 03: muted autoplay runs Fit → Runway twice, then holds the Runway final frame
+   * behind a centred Play. The stage must never loop, must stop when it leaves view or the tab is
+   * hidden, and must stay replayable.
    */
   it('keeps the product stage muted, finite, visibility-controlled and replayable', () => {
     const source = readFileSync('components/storefront/discovery-stage.jsx', 'utf8');
     expect(source).toContain('muted');
     expect(source).toContain('playsInline');
-    expect(source).toContain('COMPLETE_RUNS = 2');
+    expect(source).toContain('COMPLETE_SEQUENCES = 2');
+    expect(source).toContain('const nextClip = activeIndex >= 0 ? playableClips[activeIndex + 1] : null');
+    expect(source).toContain('setActiveSlotId(playableClips[0]?.slotId || null)');
     expect(source).toContain('onEnded={handleEnded}');
     expect(source).not.toMatch(/<video[\s\S]{0,400}\bloop\b/);
     expect(source).toContain('IntersectionObserver');
     expect(source).toContain('document.hidden');
     expect(source).toContain('suspended');
-    expect(source).toContain('if (video) video.currentTime = 0;');
+    expect(source).toContain('videoRef.current?.pause()');
   });
 
   it('drives the stage only from clips the readiness gate cleared for motion', () => {
