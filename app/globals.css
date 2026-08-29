@@ -779,7 +779,10 @@
     min-height: var(--cp-semantic-size-viewport-height);
     grid-template-columns: var(--cp-component-discovery-grid-template);
     align-items: var(--cp-component-discovery-align);
-    gap: var(--cp-semantic-space-8);
+    gap: var(--cp-semantic-space-grid-gap-discovery);
+    max-width: var(--cp-semantic-size-discovery-max-width);
+    margin-inline: var(--cp-semantic-layout-margin-auto);
+    padding-inline: var(--cp-semantic-space-discovery-padding-inline);
     padding-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-4));
     padding-bottom: var(--cp-component-discovery-padding-bottom);
     box-sizing: var(--cp-semantic-layout-box-sizing-border-box);
@@ -797,13 +800,20 @@
     opacity: var(--cp-semantic-opacity-full);
   }
 
+  .cp-discovery-lead .cp-eyebrow {
+    color: var(--cp-semantic-color-copy-strong);
+    font-size: var(--cp-semantic-font-size-label);
+    letter-spacing: var(--cp-semantic-font-tracking-eyebrow-strong);
+    font-weight: var(--cp-semantic-font-weight-regular);
+  }
+
   .cp-product-title {
     max-width: var(--cp-semantic-size-product-title-width);
     color: var(--cp-component-product-title-color);
     font-size: var(--cp-component-product-title-size);
     font-weight: var(--cp-component-product-title-font-weight);
     line-height: var(--cp-semantic-font-line-height-title);
-    letter-spacing: var(--cp-semantic-font-tracking-display);
+    letter-spacing: var(--cp-semantic-font-tracking-title-presence);
   }
 
   .cp-product-review {
@@ -815,7 +825,7 @@
     color: var(--cp-component-product-review-color);
     font-size: var(--cp-component-product-review-size);
     font-weight: var(--cp-semantic-font-weight-light);
-    line-height: var(--cp-semantic-font-line-height-body);
+    line-height: var(--cp-semantic-font-line-height-product-description);
     text-align: var(--cp-semantic-layout-text-align-start);
     text-wrap: var(--cp-semantic-layout-text-wrap-pretty);
   }
@@ -958,8 +968,13 @@
     justify-content: var(--cp-semantic-layout-justify-center);
     border: var(--cp-semantic-border-none);
     background: var(--cp-semantic-color-transparent);
-    color: var(--cp-semantic-color-ink);
+    color: var(--cp-semantic-color-stage-control);
     cursor: var(--cp-semantic-layout-cursor-action);
+    transition: color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
+  }
+
+  .cp-stage-control:hover {
+    color: var(--cp-semantic-color-stage-control-hover);
   }
 
   .cp-stage-progress {
@@ -968,20 +983,20 @@
     height: var(--cp-semantic-size-progress-track);
     appearance: var(--cp-semantic-layout-appearance-none);
     border: var(--cp-semantic-border-none);
-    background: var(--cp-semantic-color-faint);
+    background: var(--cp-semantic-color-stage-track);
     color: var(--cp-semantic-color-ink);
   }
 
   .cp-stage-progress::-webkit-progress-bar {
-    background: var(--cp-semantic-color-faint);
+    background: var(--cp-semantic-color-stage-track);
   }
 
   .cp-stage-progress::-webkit-progress-value {
-    background: var(--cp-semantic-color-ink);
+    background: var(--cp-semantic-color-stage-control-hover);
   }
 
   .cp-stage-progress::-moz-progress-bar {
-    background: var(--cp-semantic-color-ink);
+    background: var(--cp-semantic-color-stage-control-hover);
   }
 
   .cp-stage-timestamp {
@@ -1008,12 +1023,12 @@
     width: var(--cp-semantic-size-dash);
     height: var(--cp-semantic-size-progress-track);
     border: var(--cp-semantic-border-none);
-    background: var(--cp-semantic-color-faint);
+    background: var(--cp-semantic-color-stage-dash);
     transition: background var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
   }
 
   .cp-stage-dash-active {
-    background: var(--cp-semantic-color-ink);
+    background: var(--cp-semantic-color-stage-control-hover);
   }
 
   .cp-stage-dash:disabled {
@@ -1042,15 +1057,16 @@
     min-height: var(--cp-semantic-size-media-button-corner-height);
     align-items: var(--cp-semantic-layout-align-center);
     justify-content: var(--cp-semantic-layout-justify-between);
-    gap: var(--cp-semantic-space-6);
+    gap: var(--cp-semantic-space-5);
     border: var(--cp-semantic-border-rule-strong);
+    padding-block: var(--cp-semantic-space-3);
     padding-inline: var(--cp-semantic-space-5);
     background: var(--cp-semantic-color-glass);
     color: var(--cp-semantic-color-copy-strong);
     font-size: var(--cp-semantic-font-size-label);
-    letter-spacing: var(--cp-semantic-font-tracking-fact);
-    text-align: var(--cp-semantic-layout-text-align-start);
+    letter-spacing: var(--cp-semantic-font-tracking-action);
     text-transform: var(--cp-semantic-layout-text-transform-label);
+    cursor: var(--cp-semantic-layout-cursor-action);
     backdrop-filter: blur(var(--cp-semantic-effect-blur-glass));
     transition:
       background var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard),
@@ -1183,7 +1199,7 @@
     display: var(--cp-semantic-layout-display-flex);
     flex-direction: var(--cp-semantic-layout-direction-column);
     align-items: var(--cp-semantic-layout-align-end);
-    gap: var(--cp-semantic-space-2);
+    gap: var(--cp-semantic-space-3);
   }
 
   .cp-corner-action {
@@ -1228,7 +1244,7 @@
     z-index: var(--cp-semantic-layer-control);
     display: var(--cp-component-discovery-corner-display);
     max-width: var(--cp-semantic-size-copy-compact);
-    gap: var(--cp-semantic-size-hairline);
+    gap: var(--cp-semantic-space-2);
     overflow-x: var(--cp-semantic-layout-overflow-auto);
   }
 
@@ -1237,14 +1253,21 @@
     width: var(--cp-semantic-size-discovery-thumb);
     flex: var(--cp-semantic-layout-flex-none);
     aspect-ratio: var(--cp-semantic-ratio-product-portrait);
-    border: var(--cp-semantic-border-rule);
+    border: var(--cp-semantic-size-hairline) solid var(--cp-semantic-color-thumb-border);
     background: var(--cp-semantic-color-panel);
-    transition: border var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
+    transition:
+      border-color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard),
+      transform var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
   }
 
-  .cp-discovery-thumb:hover,
+  .cp-discovery-thumb:hover {
+    border-color: var(--cp-semantic-color-thumb-hover);
+    transform: var(--cp-semantic-motion-thumb-lift);
+  }
+
   .cp-discovery-thumb-active {
-    border: var(--cp-semantic-border-rule-strong);
+    border-color: var(--cp-semantic-color-copy-strong);
+    box-shadow: var(--cp-semantic-effect-thumb-glow);
   }
 
   .cp-discovery-thumb-image {

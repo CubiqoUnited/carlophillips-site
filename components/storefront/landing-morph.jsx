@@ -86,6 +86,20 @@ export function LandingMorph({ entered, hero, onEnter }) {
             controlsList="nodownload nofullscreen noremoteplayback"
             aria-label={hero.alt}
             className="cp-landing-video cp-landing-scene"
+            onCanPlay={event => {
+              const el = event.currentTarget;
+              el.defaultMuted = true;
+              el.muted = true;
+              el.playsInline = true;
+              el.play().catch(() => {});
+            }}
+            onLoadedMetadata={event => {
+              const el = event.currentTarget;
+              el.defaultMuted = true;
+              el.muted = true;
+              el.playsInline = true;
+              el.play().catch(() => {});
+            }}
           />
         ) : hero?.posterUrl ? (
           <Image

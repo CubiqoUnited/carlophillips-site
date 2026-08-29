@@ -150,11 +150,20 @@ export function buildHomeGalleryMedia(summary) {
     && product?.href === '/products/carlophillips-signature-hoodie';
   if (!signatureVisible) return [];
 
-  const releaseMedia = (product.media || []).map(item => ({
-    ...item,
-    src: item.url,
-    disclosure: 'Product view',
-  }));
+  const releaseMedia = (product.media || []).map((item, index) => {
+    let src = item.url || item.src;
+    if (src && src.startsWith('//')) src = `https:${src}`;
+    let previewUrl = item.previewUrl;
+    if (previewUrl && previewUrl.startsWith('//')) previewUrl = `https:${previewUrl}`;
+    return {
+      ...item,
+      src,
+      url: src,
+      previewUrl: previewUrl || src,
+      label: item.label || `Product view / ${String(index + 1).padStart(2, '0')}`,
+      disclosure: 'Product view',
+    };
+  });
   const reviewMedia = summary.environment === 'production'
     ? []
     : [
