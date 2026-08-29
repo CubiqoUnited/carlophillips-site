@@ -81,29 +81,6 @@ const signaturePreviewReferenceMedia = [
   },
 ];
 
-const signatureApprovedStagingVideos = [
-  {
-    type: 'video',
-    src: '/media/signature-hoodie/videos/fit-silhouette-final.mp4',
-    posterSrc: '/media/signature-hoodie/posters/fit-silhouette-final.jpg',
-    previewUrl: '/media/signature-hoodie/posters/fit-silhouette-final.jpg',
-    alt: 'AI editorial fit and silhouette study of the black CARLOPHILLIPS Signature Hoodie in a concrete studio',
-    label: 'Fit & silhouette',
-    disclosure: 'AI editorial · Staging approved',
-    hideCaption: true,
-  },
-  {
-    type: 'video',
-    src: '/media/signature-hoodie/videos/runway-motion-final.mp4',
-    posterSrc: '/media/signature-hoodie/posters/runway-motion-final.jpg',
-    previewUrl: '/media/signature-hoodie/posters/runway-motion-final.jpg',
-    alt: 'AI editorial runway motion showing the black CARLOPHILLIPS Signature Hoodie in a concrete studio',
-    label: 'Runway motion',
-    disclosure: 'AI editorial · Staging approved',
-    hideCaption: true,
-  },
-];
-
 const signatureHomepagePresentation = {
   displayName: 'ONE',
   description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery.',
@@ -139,10 +116,9 @@ function firstSentence(value, fallback) {
 
 export function buildHomeGalleryMedia(summary) {
   if (isPreviewRunwayReference(summary)) {
-    return [
-      ...signaturePreviewReferenceMedia.map(item => ({ ...item, type: 'image' })),
-      ...signatureApprovedStagingVideos,
-    ];
+    return signaturePreviewReferenceMedia
+      .filter(item => !item.gifHref)
+      .map(item => ({ ...item, type: 'image' }));
   }
 
   const product = summary?.primaryProduct;
@@ -150,7 +126,7 @@ export function buildHomeGalleryMedia(summary) {
     && product?.href === '/products/carlophillips-signature-hoodie';
   if (!signatureVisible) return [];
 
-  const releaseMedia = (product.media || []).map((item, index) => {
+  const releaseMedia = (product.media || []).filter(item => item.type === 'image').map((item, index) => {
     let src = item.url || item.src;
     if (src && src.startsWith('//')) src = `https:${src}`;
     let previewUrl = item.previewUrl;
@@ -166,10 +142,9 @@ export function buildHomeGalleryMedia(summary) {
   });
   const reviewMedia = summary.environment === 'production'
     ? []
-    : [
-        ...SIGNATURE_HOODIE_SHOWCASE_MEDIA.map(item => ({ ...item, type: 'image' })),
-        ...signatureApprovedStagingVideos,
-      ];
+    : SIGNATURE_HOODIE_SHOWCASE_MEDIA
+        .filter(item => !item.gifHref)
+        .map(item => ({ ...item, type: 'image' }));
   const uniqueMedia = new Map();
   [...releaseMedia, ...reviewMedia].forEach(item => {
     const source = item.src || item.url;

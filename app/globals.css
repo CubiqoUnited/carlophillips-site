@@ -609,7 +609,6 @@
     object-position: var(--cp-semantic-media-position-campaign);
   }
 
-  .cp-landing-video,
   .cp-landing-still {
     object-fit: var(--cp-semantic-layout-object-fit-cover);
     object-position: var(--cp-semantic-media-position-campaign);
@@ -930,7 +929,7 @@
     position: var(--cp-semantic-layout-position-absolute);
     top: var(--cp-semantic-media-position-navigation);
     left: var(--cp-semantic-media-position-navigation);
-    z-index: var(--cp-semantic-layer-control);
+    z-index: var(--cp-component-product-stage-controls-layer);
     display: var(--cp-semantic-layout-display-inline-flex);
     width: var(--cp-component-product-replay-size);
     height: var(--cp-component-product-replay-size);
@@ -959,7 +958,7 @@
     left: var(--cp-semantic-space-4);
     right: var(--cp-semantic-space-4);
     bottom: var(--cp-semantic-space-4);
-    z-index: var(--cp-semantic-layer-control);
+    z-index: var(--cp-component-product-stage-controls-layer);
     display: var(--cp-semantic-layout-display-flex);
     align-items: var(--cp-semantic-layout-align-center);
     gap: var(--cp-semantic-space-control-gap);
@@ -1248,7 +1247,7 @@
     bottom: var(--cp-semantic-space-6);
     z-index: var(--cp-semantic-layer-control);
     display: var(--cp-component-discovery-corner-display);
-    max-width: var(--cp-semantic-size-copy-compact);
+    max-width: var(--cp-component-discovery-thumbs-max-width);
     gap: var(--cp-semantic-space-2);
     overflow-x: var(--cp-semantic-layout-overflow-auto);
   }

@@ -1,5 +1,16 @@
 # Delivery Tasks
 
+## Staging runtime regressions — 2026-08-29
+
+- [x] Make Fit → Runway autoplay muted on first viewport entry, repeat the complete sequence twice, and hold the final Runway frame with centred cream replay.
+- [x] Derive Play/Pause from actual browser playback state and provide a one-click recovery control when autoplay is rejected.
+- [x] Keep cream Pause/Play, green progress, overlay control and three dashes visible without thumbnail overlap.
+- [x] Remove videos and animated loops from the gallery overlay while preserving the two product clips in the default stage.
+- [x] Remove the interim landing title-card video and render the stationary approved runway poster beneath the morph.
+- [x] Add United States to the served checkout-country list.
+- [x] Pass lint, 591 tests, media readiness, optimized build, real-time default/reduced-motion sequence testing, desktop/mobile screenshot QA and 14 accessibility route/viewport checks.
+- [ ] Merge the reviewed staging PR and verify the canonical `https://staging.carlophillips.com` alias; do not deploy Production.
+
 ## Screen Inventory Review Workbook look-and-feel
 
 - [x] Record current state, future state and the gap register before implementing (`docs/screen-inventory-gap-analysis.md`).

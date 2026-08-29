@@ -1,0 +1,655 @@
+{
+  "target": "http://127.0.0.1:4317/",
+  "samples": [
+    {
+      "label": "after-navigation",
+      "stageState": "playing",
+      "stageRect": {
+        "top": 95,
+        "bottom": 975,
+        "width": 690.453125,
+        "height": 880
+      },
+      "source": "/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "paused": false,
+      "muted": true,
+      "autoplay": true,
+      "currentTime": 0.965588,
+      "duration": 4.974944,
+      "readyState": 4,
+      "controls": [
+        {
+          "label": "Pause product video",
+          "visible": true
+        },
+        {
+          "label": "Open product media overlay",
+          "visible": true
+        }
+      ],
+      "replay": false
+    },
+    {
+      "label": "5s",
+      "stageState": "playing",
+      "stageRect": {
+        "top": 95,
+        "bottom": 975,
+        "width": 690.453125,
+        "height": 880
+      },
+      "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "paused": false,
+      "muted": true,
+      "autoplay": true,
+      "currentTime": 0.949545,
+      "duration": 9.974944,
+      "readyState": 4,
+      "controls": [
+        {
+          "label": "Pause product video",
+          "visible": true
+        },
+        {
+          "label": "Open product media overlay",
+          "visible": true
+        }
+      ],
+      "replay": false
+    },
+    {
+      "label": "10s",
+      "stageState": "playing",
+      "stageRect": {
+        "top": 95,
+        "bottom": 975,
+        "width": 690.453125,
+        "height": 880
+      },
+      "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "paused": false,
+      "muted": true,
+      "autoplay": true,
+      "currentTime": 5.955339,
+      "duration": 9.974944,
+      "readyState": 4,
+      "controls": [
+        {
+          "label": "Pause product video",
+          "visible": true
+        },
+        {
+          "label": "Open product media overlay",
+          "visible": true
+        }
+      ],
+      "replay": false
+    },
+    {
+      "label": "15s",
+      "stageState": "playing",
+      "stageRect": {
+        "top": 95,
+        "bottom": 975,
+        "width": 690.453125,
+        "height": 880
+      },
+      "source": "/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "paused": false,
+      "muted": true,
+      "autoplay": true,
+      "currentTime": 0.934424,
+      "duration": 4.974944,
+      "readyState": 4,
+      "controls": [
+        {
+          "label": "Pause product video",
+          "visible": true
+        },
+        {
+          "label": "Open product media overlay",
+          "visible": true
+        }
+      ],
+      "replay": false
+    },
+    {
+      "label": "20s",
+      "stageState": "playing",
+      "stageRect": {
+        "top": 95,
+        "bottom": 975,
+        "width": 690.453125,
+        "height": 880
+      },
+      "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "paused": false,
+      "muted": true,
+      "autoplay": true,
+      "currentTime": 0.918447,
+      "duration": 9.974944,
+      "readyState": 4,
+      "controls": [
+        {
+          "label": "Pause product video",
+          "visible": true
+        },
+        {
+          "label": "Open product media overlay",
+          "visible": true
+        }
+      ],
+      "replay": false
+    },
+    {
+      "label": "25s",
+      "stageState": "playing",
+      "stageRect": {
+        "top": 95,
+        "bottom": 975,
+        "width": 690.453125,
+        "height": 880
+      },
+      "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "paused": false,
+      "muted": true,
+      "autoplay": true,
+      "currentTime": 5.922528,
+      "duration": 9.974944,
+      "readyState": 4,
+      "controls": [
+        {
+          "label": "Pause product video",
+          "visible": true
+        },
+        {
+          "label": "Open product media overlay",
+          "visible": true
+        }
+      ],
+      "replay": false
+    },
+    {
+      "label": "30s",
+      "stageState": "held",
+      "stageRect": {
+        "top": 95,
+        "bottom": 975,
+        "width": 690.453125,
+        "height": 880
+      },
+      "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "paused": true,
+      "muted": true,
+      "autoplay": true,
+      "currentTime": 10,
+      "duration": 10,
+      "readyState": 4,
+      "controls": [
+        {
+          "label": "Replay product video",
+          "visible": true
+        },
+        {
+          "label": "Open product media overlay",
+          "visible": true
+        }
+      ],
+      "replay": true
+    },
+    {
+      "label": "35s",
+      "stageState": "held",
+      "stageRect": {
+        "top": 95,
+        "bottom": 975,
+        "width": 690.453125,
+        "height": 880
+      },
+      "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "paused": true,
+      "muted": true,
+      "autoplay": true,
+      "currentTime": 10,
+      "duration": 10,
+      "readyState": 4,
+      "controls": [
+        {
+          "label": "Replay product video",
+          "visible": true
+        },
+        {
+          "label": "Open product media overlay",
+          "visible": true
+        }
+      ],
+      "replay": true
+    }
+  ],
+  "mediaEvents": [
+    {
+      "event": "loadedmetadata",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 273.3999999910593,
+      "paused": true,
+      "currentTime": 0,
+      "readyState": 1,
+      "networkState": 1
+    },
+    {
+      "event": "canplay",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 316.5,
+      "paused": true,
+      "currentTime": 0,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 2454.5,
+      "paused": true
+    },
+    {
+      "event": "playing",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 2454.8999999910593,
+      "paused": false,
+      "currentTime": 0.000173,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 2455,
+      "paused": false
+    },
+    {
+      "event": "waiting",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 2523.8999999910593,
+      "paused": false,
+      "currentTime": 0.068903,
+      "readyState": 2,
+      "networkState": 1
+    },
+    {
+      "event": "canplay",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 2524.2999999970198,
+      "paused": false,
+      "currentTime": 0.069429,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 2524.2999999970198,
+      "paused": false
+    },
+    {
+      "event": "playing",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 2524.2999999970198,
+      "paused": false,
+      "currentTime": 0.069486,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 2524.2999999970198,
+      "paused": false
+    },
+    {
+      "event": "pause",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 7456.5999999940395,
+      "paused": true,
+      "currentTime": 5,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "ended",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 7458.0999999940395,
+      "paused": true,
+      "currentTime": 5,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7460.5999999940395,
+      "paused": true
+    },
+    {
+      "event": "waiting",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7460.79999999702,
+      "paused": false,
+      "currentTime": 0,
+      "readyState": 0,
+      "networkState": 2
+    },
+    {
+      "event": "loadedmetadata",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7465.199999988079,
+      "paused": false,
+      "currentTime": 0,
+      "readyState": 1,
+      "networkState": 2
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7465.29999999702,
+      "paused": false
+    },
+    {
+      "event": "canplay",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7475.699999988079,
+      "paused": false,
+      "currentTime": 0.000098,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7475.699999988079,
+      "paused": false
+    },
+    {
+      "event": "playing",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7475.79999999702,
+      "paused": false,
+      "currentTime": 0.000154,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7475.79999999702,
+      "paused": false
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7475.79999999702,
+      "paused": false
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 7475.79999999702,
+      "paused": false
+    },
+    {
+      "event": "pause",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 17480.19999998808,
+      "paused": true,
+      "currentTime": 10,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "ended",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 17481.09999999404,
+      "paused": true,
+      "currentTime": 10,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17484.5,
+      "paused": true
+    },
+    {
+      "event": "waiting",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17484.59999999404,
+      "paused": false,
+      "currentTime": 0,
+      "readyState": 0,
+      "networkState": 1
+    },
+    {
+      "event": "loadedmetadata",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17485.39999999106,
+      "paused": false,
+      "currentTime": 0,
+      "readyState": 1,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17485.5,
+      "paused": false
+    },
+    {
+      "event": "canplay",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17501,
+      "paused": false,
+      "currentTime": 0.000148,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17501,
+      "paused": false
+    },
+    {
+      "event": "playing",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17501,
+      "paused": false,
+      "currentTime": 0.000231,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17501.09999999404,
+      "paused": false
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17501.09999999404,
+      "paused": false
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 17501.09999999404,
+      "paused": false
+    },
+    {
+      "event": "pause",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 22505.79999999702,
+      "paused": true,
+      "currentTime": 5,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "ended",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+      "at": 22506.59999999404,
+      "paused": true,
+      "currentTime": 5,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22508.59999999404,
+      "paused": true
+    },
+    {
+      "event": "waiting",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22508.69999998808,
+      "paused": false,
+      "currentTime": 0,
+      "readyState": 0,
+      "networkState": 1
+    },
+    {
+      "event": "loadedmetadata",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22509.59999999404,
+      "paused": false,
+      "currentTime": 0,
+      "readyState": 1,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22509.69999998808,
+      "paused": false
+    },
+    {
+      "event": "canplay",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22521.09999999404,
+      "paused": false,
+      "currentTime": 0.00013,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22521.19999998808,
+      "paused": false
+    },
+    {
+      "event": "playing",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22521.19999998808,
+      "paused": false,
+      "currentTime": 0.0002,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22521.29999999702,
+      "paused": false
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22521.29999999702,
+      "paused": false
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22521.29999999702,
+      "paused": false
+    },
+    {
+      "event": "waiting",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22590.5,
+      "paused": false,
+      "currentTime": 0.069254,
+      "readyState": 2,
+      "networkState": 1
+    },
+    {
+      "event": "canplay",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22590.79999999702,
+      "paused": false,
+      "currentTime": 0.069583,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-call",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22590.79999999702,
+      "paused": false
+    },
+    {
+      "event": "playing",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22590.79999999702,
+      "paused": false,
+      "currentTime": 0.069655,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "play-resolved",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 22590.89999999106,
+      "paused": false
+    },
+    {
+      "event": "pause",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 32524,
+      "paused": true,
+      "currentTime": 10,
+      "readyState": 4,
+      "networkState": 1
+    },
+    {
+      "event": "ended",
+      "source": "http://127.0.0.1:4317/media/signature-hoodie/videos/runway-motion-final.mp4",
+      "at": 32525,
+      "paused": true,
+      "currentTime": 10,
+      "readyState": 4,
+      "networkState": 1
+    }
+  ],
+  "consoleErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:4317/collections?_rsc=1p-R_iEY6bj0jY31",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:4317/contact?_rsc=1p-R_iEY6bj0jY31",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:4317/bag?_rsc=1p-R_iEY6bj0jY31",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:4317/shop?_rsc=1p-R_iEY6bj0jY31",
+      "reason": "net::ERR_ABORTED"
+    }
+  ]
+}

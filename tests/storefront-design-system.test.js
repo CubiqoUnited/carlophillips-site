@@ -437,12 +437,13 @@ describe('storefront design system', () => {
       expect(home).toContain(copy);
     }
 
-    // 01 / 02 — the panel and its copy move; the video beneath never fades, flashes or goes fullscreen.
+    // 01 / 02 — the panel and its copy move over one stationary approved poster.
     expect(landing).toContain('At the<br />edge of life.');
     expect(landing).toContain("data-landing-state={entered ? 'post-morph' : 'pre-morph'}");
     expect(landing).toContain('cp-landing-panel');
     expect(landing).toContain('cp-landing-enter');
-    expect(landing).toContain('controlsList="nodownload nofullscreen noremoteplayback"');
+    expect(landing).toContain('hero?.posterUrl');
+    expect(landing).not.toContain('<video');
     expect(styles).toContain('transform: var(--cp-component-landing-panel-transform-exit)');
     expect(styles).toContain('transform: var(--cp-component-landing-copy-transform-exit)');
 

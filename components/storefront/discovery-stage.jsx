@@ -35,12 +35,14 @@ export function DiscoveryVideoStage({
 }) {
   const videoRef = useRef(null);
   const stageRef = useRef(null);
+  const wasInViewRef = useRef(false);
   const playableClips = useMemo(() => declaredClips.filter(clip => clip.motionAllowed), [declaredClips]);
   const [activeSlotId, setActiveSlotId] = useState(playableClips[0]?.slotId || null);
   const [sequencesCompleted, setSequencesCompleted] = useState(0);
   const [userPaused, setUserPaused] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [inView, setInView] = useState(true);
+  const [actualPlaying, setActualPlaying] = useState(false);
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
+  const [inView, setInView] = useState(false);
   const [pageActive, setPageActive] = useState(true);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -53,26 +55,18 @@ export function DiscoveryVideoStage({
     && !posterOnly
     && !playbackFailed
     && !userPaused
-    && !reducedMotion
     && inView
     && pageActive
     && !suspended
     && !held;
 
   useEffect(() => {
-    const query = window.matchMedia(designSystemRuntimeContract.media.reducedMotion);
-    const apply = event => setReducedMotion(event.matches);
-    apply(query);
-    query.addEventListener('change', apply);
-    return () => query.removeEventListener('change', apply);
-  }, []);
-
-  useEffect(() => {
     const target = stageRef.current;
     if (!target) return undefined;
     const observer = new IntersectionObserver(
       entries => {
-        const isVisible = Boolean(entries[0]?.isIntersecting);
+        const entry = entries[0];
+        const isVisible = Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.1);
         setInView(isVisible);
       },
       { threshold: [0, 0.1, 0.5] }
@@ -82,9 +76,36 @@ export function DiscoveryVideoStage({
   }, []);
 
   useEffect(() => {
+    if (inView && !wasInViewRef.current) {
+      setActiveSlotId(playableClips[0]?.slotId || null);
+      setSequencesCompleted(0);
+      setElapsed(0);
+      setUserPaused(false);
+      setActualPlaying(false);
+      setAutoplayBlocked(false);
+      setPlaybackFailed(false);
+    }
+    wasInViewRef.current = inView;
+  }, [inView, playableClips]);
+
+  useEffect(() => {
     const handleVisibility = () => setPageActive(!document.hidden);
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, []);
+
+  const attemptPlay = useCallback(video => {
+    if (!video) return;
+    video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
+    const attempt = video.play();
+    attempt?.catch(error => {
+      if (error?.name !== 'AbortError') {
+        setActualPlaying(false);
+        setAutoplayBlocked(true);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -94,17 +115,19 @@ export function DiscoveryVideoStage({
     video.muted = true;
     video.playsInline = true;
     if (shouldPlay) {
-      video.play().catch(() => {});
+      attemptPlay(video);
     } else {
       video.pause();
     }
-  }, [shouldPlay, activeSlotId, activeClip?.sourceUrl]);
+  }, [shouldPlay, activeSlotId, activeClip?.sourceUrl, attemptPlay]);
 
   const selectClip = useCallback(slotId => {
     setActiveSlotId(slotId);
     setSequencesCompleted(0);
     setElapsed(0);
     setUserPaused(false);
+    setActualPlaying(false);
+    setAutoplayBlocked(false);
     setPlaybackFailed(false);
   }, []);
 
@@ -113,6 +136,8 @@ export function DiscoveryVideoStage({
    * stage holds the last clip's final frame and the centred Play becomes a replay control.
    */
   const handleEnded = () => {
+    setActualPlaying(false);
+    setAutoplayBlocked(false);
     const activeIndex = playableClips.findIndex(clip => clip.slotId === activeClip?.slotId);
     const nextClip = activeIndex >= 0 ? playableClips[activeIndex + 1] : null;
 
@@ -141,11 +166,14 @@ export function DiscoveryVideoStage({
       setSequencesCompleted(0);
       setElapsed(0);
       setUserPaused(false);
+      setActualPlaying(false);
+      setAutoplayBlocked(false);
       return;
     }
-    if (userPaused) {
-      if (video) video.play().catch(() => {});
+    if (video?.paused) {
       setUserPaused(false);
+      setAutoplayBlocked(false);
+      attemptPlay(video);
     } else {
       if (video) video.pause();
       setUserPaused(true);
@@ -183,7 +211,7 @@ export function DiscoveryVideoStage({
     );
   }
 
-  const motionPlaying = shouldPlay && !held;
+  const motionPlaying = actualPlaying && shouldPlay && !held;
   const progressMax = duration > 0 ? duration : 1;
 
   return (
@@ -213,7 +241,7 @@ export function DiscoveryVideoStage({
               event.currentTarget.muted = true;
               event.currentTarget.playsInline = true;
               if (shouldPlay) {
-                event.currentTarget.play().catch(() => {});
+                attemptPlay(event.currentTarget);
               }
             }}
             onLoadedMetadata={event => {
@@ -222,12 +250,20 @@ export function DiscoveryVideoStage({
               event.currentTarget.playsInline = true;
               setDuration(event.currentTarget.duration || 0);
               if (shouldPlay) {
-                event.currentTarget.play().catch(() => {});
+                attemptPlay(event.currentTarget);
               }
             }}
+            onPlaying={() => {
+              setActualPlaying(true);
+              setAutoplayBlocked(false);
+            }}
+            onPause={() => setActualPlaying(false)}
             onTimeUpdate={event => setElapsed(event.currentTarget.currentTime || 0)}
             onEnded={handleEnded}
-            onError={() => setPlaybackFailed(true)}
+            onError={() => {
+              setActualPlaying(false);
+              setPlaybackFailed(true);
+            }}
           />
         ) : posterClip?.posterUrl ? (
           <Image
@@ -244,8 +280,13 @@ export function DiscoveryVideoStage({
           <p className="cp-stage-caption">{caption}</p>
         ) : null}
 
-        {held && activeClip && !posterOnly && (
-          <button type="button" onClick={toggleMotion} className="cp-stage-resume" aria-label="Replay product video">
+        {(held || autoplayBlocked) && activeClip && !posterOnly && (
+          <button
+            type="button"
+            onClick={toggleMotion}
+            className="cp-stage-resume"
+            aria-label={held ? 'Replay product video' : 'Play product video'}
+          >
             <Play className="cp-icon cp-icon-medium" aria-hidden="true" />
           </button>
         )}

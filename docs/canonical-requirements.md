@@ -98,13 +98,14 @@ This document is canonical for requirements consolidation. Shopify remains the c
 ## 4. Product page requirements
 
 ### 4.1 Landing and motion
-- While visible, the landing page SHOULD combine editorial runway movement with subtle still-image movement.
+- The current landing morph reveals the stationary approved runway poster. Do not play the interim title-card/banner video behind the post-morph hero.
 - The default product display sequence is: **Fit & silhouette video -> Runway video**:
   - **Phase 1 (Fit & Silhouette):** Shows garment drape, structure, and profile (5.04 seconds).
   - **Phase 2 (Runway Motion):** Editorial walking motion, 7.79 seconds, 0.9x speed.
 - Both videos are distinct assets and autoplay muted in sequence while the default product stage is visible. The complete two-video sequence runs twice, then stops on the Runway final frame with a centred Play control.
 - Keep the third position dash unavailable until an approved product-only 360 asset exists. Do not substitute or imply a 360 view.
-- Keep visible cream Play/Pause and expand controls, a green progress line, three position dashes, reduced-motion fallback, and a soft lateral edge vignette so no portion of the garment is cropped.
+- Keep visible cream Play/Pause and media-overlay controls, a green progress line, three position dashes, and a soft lateral edge vignette so no portion of the garment is cropped.
+- Product-stage muted autoplay begins when the customer first navigates the stage into view. The real video playback state—not an intended state—controls whether Play or Pause is shown. If browser policy rejects autoplay, show the centred cream Play recovery control immediately.
 - Keep `Pause Motion`, progress timeline, `ORDER`, and `VIEW GALLERY` visible.
 - `ORDER - EUR 180` opens the purchase tray. The price is a product-page reference and must be replaced by Shopify truth for a live product.
 - `VIEW GALLERY` opens the gallery overlay.
@@ -139,6 +140,7 @@ This document is canonical for requirements consolidation. Shopify remains the c
 - The guest/member distinction must be visible in the bag without requiring a prototype toggle or forcing account creation.
 
 ### 4.6 Gallery & Preview Strip
+- The gallery overlay is static-picture only. Product videos and animated loops remain exclusive to the default product stage and must not be inserted into the overlay.
 - The left-bottom gallery thumbnail/control is always visible when approved gallery media exists and provides visual thumbnails for the full approved media set. Clicking it opens the gallery overlay without leaving the product view.
 - The gallery overlay MUST contain at least 12 approved product views when the full gallery is enabled. The set should cover front, back, side, three-quarter, detail, construction, fit/scale, movement, and product-only 360 entry where available.
 - The overlay must preserve the product name, selected variant/size, live order cost, and primary order CTA.
@@ -383,7 +385,7 @@ External API/browser access and pay-as-used credits are OPEN GATES. No paid serv
   - **Edit sequence:** Starts directly with walking steps (closed-eye opening cut), stop, quarter-turn, and confident hold.
   - **Default product-stage playback:** Plays second in the muted Fit → Runway sequence. After the second complete sequence, hold its final frame behind the centred Play control.
   - **Edge rendering:** Lateral vignette gradient preserves 100% of the model and hoodie without vertical seam cutoffs.
-  - **Accessibility:** Reduced-motion preferences (`prefers-reduced-motion: reduce`) prevent autoplay and display the primary static poster.
+  - **Playback control:** The latest Product Owner requirement keeps this muted product sequence autoplaying on entry for all customer settings; a persistent cream Pause control provides immediate customer control. Other site motion continues to respect reduced-motion preferences.
 - **Fit & Silhouette Video:**
   - **Source asset:** Approved Gen-4.5 garment drape & silhouette showcase (`fit-silhouette.mp4`).
   - **Duration:** Exactly 5.04 seconds.

@@ -5,21 +5,22 @@ async function run() {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   
-  console.log('Testing landing hero video on live site...');
-  await page.goto('https://carlophillips-site.vercel.app', { waitUntil: 'networkidle' });
+  const target = process.env.CP_HERO_QA_TARGET || 'https://staging.carlophillips.com';
+  console.log(`Testing stationary landing hero on ${target}...`);
+  await page.goto(target, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1000);
   
-  const heroVideo = await page.locator('.cp-landing-video').first();
-  const exists = await heroVideo.count() > 0;
-  console.log('Hero video element exists:', exists);
+  const heroMedia = page.locator('.cp-landing-scene').first();
+  const exists = await heroMedia.count() > 0;
+  console.log('Hero poster element exists:', exists);
   if (exists) {
-    const src = await heroVideo.getAttribute('src');
-    const poster = await heroVideo.getAttribute('poster');
-    console.log('Hero video src:', src, 'poster:', poster);
+    const src = await heroMedia.getAttribute('src');
+    console.log('Hero poster src:', src);
   }
+  console.log('Hero video count:', await page.locator('#landing-hero video').count());
   
-  await page.screenshot({ path: 'test_reports/live-hero-video-active.png' });
-  console.log('Screenshot saved: test_reports/live-hero-video-active.png');
+  await page.screenshot({ path: 'test_reports/live-hero-stationary.png' });
+  console.log('Screenshot saved: test_reports/live-hero-stationary.png');
   await browser.close();
 }
 
