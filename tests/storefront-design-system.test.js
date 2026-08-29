@@ -428,6 +428,7 @@ describe('storefront design system', () => {
     const stage = readFileSync('components/storefront/discovery-stage.jsx', 'utf8');
     const dialogs = readFileSync('components/storefront/dialog-lifecycle.js', 'utf8');
     const styles = readFileSync(globalPath, 'utf8');
+    const tokens = readFileSync(tokenPath, 'utf8');
     const digest = createHash('sha256')
       .update(readFileSync('public/campaigns/lofoten-runway-hero.png'))
       .digest('hex');
@@ -462,6 +463,10 @@ describe('storefront design system', () => {
     expect(discovery).not.toMatch(/\bExpand\b|requestFullscreen|allowFullScreen/);
     expect(styles).toContain('aspect-ratio: var(--cp-semantic-ratio-product-portrait)');
     expect(styles).toContain('grid-template-columns: var(--cp-component-discovery-grid-template)');
+    expect(styles).toContain('gap: var(--cp-component-discovery-action-gap)');
+    expect(styles).toContain('font-size: var(--cp-component-discovery-action-font-size)');
+    expect(tokens).toContain('--cp-component-discovery-action-gap: var(--cp-semantic-space-5)');
+    expect(tokens).toContain('--cp-component-discovery-action-font-size: var(--cp-semantic-font-size-wordmark)');
 
     // Dialog behaviour is shared, so no screen can ship an overlay that behaves differently.
     const navigation = readFileSync('components/storefront/site-navigation.jsx', 'utf8');
