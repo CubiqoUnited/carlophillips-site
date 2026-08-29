@@ -44,8 +44,8 @@ describe('storefront route policy', () => {
     expect(page).toContain('mediaReadiness={getMediaReadiness()}');
     // The hero source is never a literal in the view: it comes from the verified decision only.
     expect(landing).not.toContain('/campaigns/');
-    expect(landing).toContain('hero?.motionAllowed && hero.sourceUrl');
     expect(landing).toContain('hero?.posterUrl');
+    expect(landing).not.toContain('<video');
   });
 
   it('publishes only active product and commerce routes in the sitemap', () => {

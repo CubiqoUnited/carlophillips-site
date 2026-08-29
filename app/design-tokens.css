@@ -869,6 +869,8 @@
   --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-gallery-arrow-disabled);
   --cp-component-product-control-color: var(--cp-semantic-color-product-control);
   --cp-component-product-progress-color: var(--cp-semantic-color-product-progress);
+  --cp-component-product-stage-controls-layer: var(--cp-semantic-layer-header);
+  --cp-component-discovery-thumbs-max-width: calc(var(--cp-semantic-size-copy-product) - var(--cp-semantic-size-touch-target) - var(--cp-semantic-space-5));
   --cp-component-product-replay-size: var(--cp-semantic-size-product-replay);
   --cp-component-product-replay-icon-size: var(--cp-semantic-size-product-replay-icon);
   --cp-component-header-layer: var(--cp-semantic-layer-header);

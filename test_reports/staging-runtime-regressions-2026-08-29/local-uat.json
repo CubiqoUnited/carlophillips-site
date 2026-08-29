@@ -1,0 +1,284 @@
+{
+  "target": "http://127.0.0.1:4317",
+  "checks": [
+    {
+      "name": "desktop: landing uses no video",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "desktop: landing poster present",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "desktop: post-morph state",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "desktop: product autoplays",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "desktop: product is muted",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "desktop: approved sequence clip is playing",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "desktop: Pause is visible",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "desktop: overlay control is visible",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "desktop: three media dashes",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "desktop: gallery contains only pictures",
+      "passed": true,
+      "detail": {
+        "videos": 0,
+        "images": 22,
+        "animated": 0
+      }
+    },
+    {
+      "name": "desktop: no console errors",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "mobile: landing uses no video",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "mobile: landing poster present",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "mobile: post-morph state",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "mobile: product autoplays",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "mobile: product is muted",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "mobile: approved sequence clip is playing",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "mobile: Pause is visible",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "mobile: overlay control is visible",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "mobile: three media dashes",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "paused": false,
+        "muted": true,
+        "controls": [
+          "Pause product video",
+          "Open product media overlay"
+        ],
+        "controlCount": 2,
+        "progressColor": "#00a63b",
+        "dashes": 3
+      }
+    },
+    {
+      "name": "mobile: gallery contains only pictures",
+      "passed": true,
+      "detail": {
+        "videos": 0,
+        "images": 22,
+        "animated": 0
+      }
+    },
+    {
+      "name": "mobile: no console errors",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "checkout: United States is available",
+      "passed": true,
+      "detail": [
+        "United States",
+        "Norway",
+        "Sweden",
+        "Denmark",
+        "Finland",
+        "Germany",
+        "France",
+        "Netherlands",
+        "United Kingdom",
+        "Another country"
+      ]
+    }
+  ],
+  "failures": []
+}

@@ -88,6 +88,8 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
     expect(html).toContain('aria-label="CARLOPHILLIPS runway campaign"');
     expect(html).toContain('At the<br/>edge of life.');
     expect(html).toContain('Lofoten · Norway');
+    expect(html).toContain('%2Fcampaigns%2Flofoten-runway-hero.avif');
+    expect(html).not.toContain('cp-landing-video');
     expect(html).toContain('Runway 001 / Lofoten');
     expect(html).toContain('aria-controls="signature-runway"');
     expect(html).toContain('>Enter</span>');
@@ -120,7 +122,7 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
       expect(html).toContain(`<summary class="cp-discovery-chip-summary">${fact}</summary>`);
     }
     expect(html).toContain('View gallery');
-    expect(html).toContain('14 images');
+    expect(html).toContain('11 images');
     expect(html).toContain('data-media-trigger="signature-hoodie"');
     expect(html).toContain('aria-haspopup="dialog"');
     expect(html).toContain('aria-controls="product-media-overlay"');
@@ -211,10 +213,10 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
     expect(isPreviewRunwayReference(previewDenied)).toBe(true);
     expect(isPreviewRunwayReference({ ...previewDenied, environment: 'production' })).toBe(false);
     expect(html).toContain('data-media-trigger="signature-hoodie"');
-    expect(html).toContain('14 images');
+    expect(html).toContain('11 images');
     expect(html).not.toContain('href="/products/carlophillips-signature-hoodie"');
-    expect(buildHomeGalleryMedia(previewDenied)).toHaveLength(14);
-    expect(buildHomeGalleryMedia(previewDenied).filter(item => item.type === 'video')).toHaveLength(2);
+    expect(buildHomeGalleryMedia(previewDenied)).toHaveLength(11);
+    expect(buildHomeGalleryMedia(previewDenied).filter(item => item.type === 'video')).toHaveLength(0);
   });
 
   it('builds a swipe gallery from eligible media without exposing preview studies in production', () => {
@@ -263,7 +265,7 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
     expect(openHtml).toContain('aria-label="Previous product image"');
     expect(openHtml).toContain('aria-label="Next product image"');
     expect(openHtml).toContain('aria-label="Close product media viewer"');
-    expect(openHtml).toContain('01 / 14');
+    expect(openHtml).toContain('01 / 11');
     expect(openHtml).toContain('cp-media-dashes');
     expect(openHtml).toContain('aria-label="Gallery categories"');
     expect(openHtml).toContain('>Same-model</button>');

@@ -1,8 +1,17 @@
 # Current Status
 
-Updated: 2026-08-26
-Branch: `claude/website-look-feel-update-ltvzd7` from `staging`; no merge to `main` or Production deployment
+Updated: 2026-08-29
+Branch: `codex/staging-runtime-regressions-20260829` from `staging`; no merge to `main` or Production deployment
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Staging product-video, gallery, landing and checkout correction — 2026-08-29
+
+- Fixed the product stage to start muted playback on first viewport entry, use actual media playback state for Play/Pause, recover cleanly from browser autoplay rejection, and run Fit → Runway twice before holding the final Runway frame with the centred cream Play control.
+- Kept product video controls visibly above the thumbnail rail, including cream Pause/Play and overlay controls, the tokenised green progress bar and three media dashes.
+- Restricted the gallery overlay to static product pictures. Product videos remain exclusive to the default discovery stage, and the animated study is excluded from the overlay.
+- Replaced the interim landing title-card video with the approved stationary runway poster beneath the existing morph panel, removing the duplicate post-morph banner.
+- Added United States to the checkout country list and made it the default served country.
+- Verification: design-system and production-commerce lint pass; 591/591 tests pass; media-readiness and optimized build pass; real-time default and reduced-motion Chrome traces both complete the exact two-pass sequence; desktop/mobile visual assertions pass with zero console errors; axe passes 14 route/viewport combinations. Evidence: `test_reports/product-video-runtime-debug-2026-08-29/` and `test_reports/staging-runtime-regressions-2026-08-29/`.
 
 ## Screen Inventory Review Workbook — full look-and-feel implementation — 2026-08-26
 

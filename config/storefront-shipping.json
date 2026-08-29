@@ -1,6 +1,7 @@
 {
   "note": "Destinations the storefront offers before checkout. A destination outside this list raises the appendix 'Shipping unavailable' state instead of accepting an address the release cannot serve. Final rates and availability are confirmed by the secure hosted checkout.",
   "servedCountries": [
+    { "code": "US", "label": "United States" },
     { "code": "NO", "label": "Norway" },
     { "code": "SE", "label": "Sweden" },
     { "code": "DK", "label": "Denmark" },

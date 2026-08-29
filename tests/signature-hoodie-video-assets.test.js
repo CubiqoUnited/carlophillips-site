@@ -46,12 +46,15 @@ describe('approved Signature Hoodie Staging videos', () => {
     expect(source).toContain('disabled={!clip.motionAllowed}');
   });
 
-  it('opens the gallery on a factual still and exposes both videos by explicit selection', () => {
+  it('keeps the gallery picture-only while the default stage exposes both videos', () => {
     const home = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
+    const stage = readFileSync('components/storefront/discovery-stage.jsx', 'utf8');
     const gallery = readFileSync('components/storefront/gallery-overlay.jsx', 'utf8');
     expect(home).toContain('setMediaIndex(typeof index === \'number\' ? index : 0)');
-    expect(home).toContain("label: 'Runway motion'");
-    expect(home).toContain("label: 'Fit & silhouette'");
+    expect(home).not.toContain("type: 'video'");
+    expect(stage).toContain('declaredClips.map(clip =>');
+    expect(stage).toContain('attemptPlay');
+    expect(stage).toContain('onPlaying');
     expect(gallery).toContain('data-media-index={index}');
   });
 });

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
 
@@ -9,15 +9,14 @@ import { designSystemRuntimeContract } from '../../lib/design-system/runtime-con
  * Screens 01 / 02 — Landing, pre-morph and post-morph.
  *
  * "ENTER starts the leftward landing-panel reveal; the logo, copy and CTA travel with the panel.
- * The black panel translates left; video remains stationary beneath it. No fade, flash or
+ * The black panel translates left; the approved poster remains stationary beneath it. No fade, flash or
  * fullscreen."
  *
- * The video never moves and never changes opacity: only the panel and the copy carried on it are
+ * The poster never moves and never changes opacity: only the panel and the copy carried on it are
  * transformed. The copy counter-travels a shorter distance than the panel, so it settles at the
  * left of the frame instead of leaving with it — the difference between the two mocks.
  *
- * `hero` is a media readiness decision. When it clears motion the hero plays; when it is poster-only
- * the same still renders, which is also what a reduced-motion visitor sees. Nothing else is drawn.
+ * `hero` is a media readiness decision. The approved poster is the only runway scene drawn here.
  */
 function ShieldCrest({ className }) {
   return (
@@ -49,20 +48,6 @@ function ShieldCrest({ className }) {
 
 export function LandingMorph({ entered, hero, onEnter }) {
   const enterButtonRef = useRef(null);
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.defaultMuted = true;
-    video.muted = true;
-    video.playsInline = true;
-    if (window.matchMedia(designSystemRuntimeContract.media.reducedMotion).matches) {
-      video.pause();
-      return;
-    }
-    video.play().catch(() => {});
-  }, [hero?.sourceUrl]);
 
   return (
     <section
@@ -72,36 +57,7 @@ export function LandingMorph({ entered, hero, onEnter }) {
       aria-label="CARLOPHILLIPS runway campaign"
     >
       <div className="cp-landing-media" aria-hidden={entered ? undefined : true}>
-        {hero?.motionAllowed && hero.sourceUrl ? (
-          <video
-            ref={videoRef}
-            src={hero.sourceUrl}
-            poster={hero.posterUrl || undefined}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            disablePictureInPicture
-            controlsList="nodownload nofullscreen noremoteplayback"
-            aria-label={hero.alt}
-            className="cp-landing-video cp-landing-scene"
-            onCanPlay={event => {
-              const el = event.currentTarget;
-              el.defaultMuted = true;
-              el.muted = true;
-              el.playsInline = true;
-              el.play().catch(() => {});
-            }}
-            onLoadedMetadata={event => {
-              const el = event.currentTarget;
-              el.defaultMuted = true;
-              el.muted = true;
-              el.playsInline = true;
-              el.play().catch(() => {});
-            }}
-          />
-        ) : hero?.posterUrl ? (
+        {hero?.posterUrl ? (
           <Image
             src={hero.posterUrl}
             alt={hero.alt}
