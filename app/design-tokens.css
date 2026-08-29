@@ -147,8 +147,8 @@
   --cp-primitive-size-copy-display: 64rem;
   --cp-primitive-size-copy-editorial: 72rem;
   --cp-primitive-size-copy-product: clamp(14rem, 36vw, 25.5rem);
-  --cp-primitive-size-media-panel-width: 62rem;
-  --cp-primitive-size-media-panel-height: 64rem;
+  --cp-primitive-size-media-panel-width: 68rem;
+  --cp-primitive-size-media-panel-height: 68rem;
   --cp-primitive-size-media-button-corner-height: 2.75rem;
   --cp-primitive-size-side-drawer-mobile: 100vw;
   --cp-primitive-size-side-drawer-desktop: min(32rem, 32vw);
@@ -674,6 +674,7 @@
   --cp-semantic-layer-drawer: var(--cp-primitive-layer-drawer);
   --cp-semantic-layer-drawer-nested: var(--cp-primitive-layer-drawer-nested);
   --cp-semantic-opacity-disabled: var(--cp-primitive-opacity-018);
+  --cp-semantic-opacity-gallery-arrow-disabled: var(--cp-primitive-opacity-038);
   --cp-semantic-opacity-none: var(--cp-primitive-opacity-000);
   --cp-semantic-opacity-full: var(--cp-primitive-opacity-100);
   --cp-semantic-opacity-media-expand: var(--cp-primitive-opacity-072);
@@ -857,7 +858,7 @@
   --cp-component-product-review-color: var(--cp-semantic-color-copy-strong);
   --cp-component-product-review-size: var(--cp-semantic-font-size-body-large);
   --cp-component-media-control-size: var(--cp-semantic-size-control);
-  --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-disabled);
+  --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-gallery-arrow-disabled);
   --cp-component-header-layer: var(--cp-semantic-layer-header);
   --cp-component-commerce-page-background: var(--cp-semantic-color-canvas-deep);
   --cp-component-product-detail-page-background: var(--cp-semantic-color-canvas);
@@ -998,7 +999,7 @@
 @media (min-width: 40rem) {
   :root {
     --cp-component-media-asset-padding: var(--cp-semantic-space-none);
-    --cp-component-media-navigation-padding: var(--cp-semantic-space-8);
+    --cp-component-media-navigation-padding: var(--cp-semantic-space-5);
     --cp-component-nav-label-display: var(--cp-semantic-layout-display-inline);
     --cp-component-footer-direction: var(--cp-semantic-layout-direction-row);
     --cp-component-footer-align: var(--cp-semantic-layout-align-center);
