@@ -5,7 +5,7 @@
   "productHandle": "carlophillips-signature-hoodie",
   "bindings": {
     "mediaManifestFingerprint": "sha256:873a75f8c4a2068cbf1ac6e1a2f518d1da2957389f9015010fcdef211845ddd5",
-    "shopifyObservationFingerprint": "sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4",
+    "shopifyObservationFingerprint": "sha256:d999faf035a3716f3e01c274fcb6ccb25bc36206d1247f14d714ec9df68406a7",
     "providerMappingFingerprint": "sha256:99aceb3be41fa2ad918715b2af091456119a6ef39109bb266a3b0bd373e62a56",
     "releaseEvidenceFingerprint": "sha256:6d729f272531586b9b44eb30e2e81454f32cced4a253c22f6c78f5fa7766de4f"
   },

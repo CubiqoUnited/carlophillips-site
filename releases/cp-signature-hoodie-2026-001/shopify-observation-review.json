@@ -2,7 +2,7 @@
   "schemaVersion": "cp.product-observation-review.v1",
   "status": "accepted",
   "authoritative": true,
-  "observationFingerprint": "sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4",
+  "observationFingerprint": "sha256:d999faf035a3716f3e01c274fcb6ccb25bc36206d1247f14d714ec9df68406a7",
   "blockers": [],
   "candidateReleasePatch": {
     "handle": "carlophillips-signature-hoodie",
@@ -11,7 +11,7 @@
     "variantFingerprintStatus": "observed",
     "commerceFactsFingerprint": "sha256:c055e02227f425e36a72b7899a804b17bd270e7d22dd18c9fa119dd3840a77ec",
     "commerceFactsFingerprintStatus": "reviewed",
-    "observationFingerprint": "sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4",
+    "observationFingerprint": "sha256:d999faf035a3716f3e01c274fcb6ccb25bc36206d1247f14d714ec9df68406a7",
     "observationFingerprintStatus": "reviewed",
     "observationReviewEvidence": "codex-thread:01a0011f-5bd5-7cb1-83cf-669082120abb#shopify-observation-approval-2026-08-17"
   }
