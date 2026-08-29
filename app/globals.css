@@ -1045,7 +1045,7 @@
     order: var(--cp-component-discovery-actions-order);
     display: var(--cp-semantic-layout-display-flex);
     flex-direction: var(--cp-semantic-layout-direction-column);
-    gap: var(--cp-semantic-space-3);
+    gap: var(--cp-component-discovery-action-gap);
     background: var(--cp-semantic-color-transparent);
     opacity: var(--cp-component-discovery-peripheral-opacity);
     transition: opacity var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
@@ -1067,7 +1067,7 @@
     padding-inline: var(--cp-semantic-space-5);
     background: var(--cp-semantic-color-glass);
     color: var(--cp-semantic-color-copy-strong);
-    font-size: var(--cp-semantic-font-size-label);
+    font-size: var(--cp-component-discovery-action-font-size);
     letter-spacing: var(--cp-semantic-font-tracking-action);
     text-transform: var(--cp-semantic-layout-text-transform-label);
     cursor: var(--cp-semantic-layout-cursor-action);

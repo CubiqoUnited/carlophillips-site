@@ -1001,6 +1001,8 @@
   --cp-component-discovery-lead-order: var(--cp-semantic-layout-order-none);
   --cp-component-discovery-stage-order: var(--cp-semantic-layout-order-first);
   --cp-component-discovery-actions-order: var(--cp-semantic-layout-order-none);
+  --cp-component-discovery-action-gap: var(--cp-semantic-space-5);
+  --cp-component-discovery-action-font-size: var(--cp-semantic-font-size-wordmark);
   --cp-component-discovery-peripheral-opacity: var(--cp-semantic-opacity-peripheral);
   --cp-component-discovery-corner-display: var(--cp-semantic-layout-display-none);
   --cp-component-catalog-overlay-grid-template: var(--cp-semantic-layout-grid-two);
@@ -1100,6 +1102,8 @@
     --cp-component-stage-height: var(--cp-semantic-size-stage-height);
     --cp-component-discovery-padding-bottom: var(--cp-semantic-space-6);
     --cp-component-discovery-stage-order: var(--cp-semantic-layout-order-none);
+    --cp-component-discovery-action-gap: var(--cp-semantic-space-3);
+    --cp-component-discovery-action-font-size: var(--cp-semantic-font-size-label);
     --cp-component-discovery-corner-display: var(--cp-semantic-layout-display-flex);
     --cp-component-catalog-overlay-grid-template: var(--cp-semantic-layout-grid-three);
     --cp-component-checkout-grid-template: var(--cp-semantic-layout-grid-checkout);
