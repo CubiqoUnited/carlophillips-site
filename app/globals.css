@@ -1089,7 +1089,7 @@
   }
 
   .cp-stack-action-meta {
-    color: var(--cp-semantic-color-muted);
+    color: var(--cp-semantic-color-copy);
   }
 
   .cp-order-panel {
