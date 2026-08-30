@@ -12,6 +12,16 @@ interface PublicVariant {
   option3?: string | null;
 }
 
+interface PublicMedia {
+  id?: string | number;
+  media_type?: string;
+  src?: string;
+  alt?: string | null;
+  preview_image?: {
+    src?: string;
+  } | null;
+}
+
 interface PublicProduct {
   id?: string | number;
   handle?: string;
@@ -24,6 +34,7 @@ interface PublicProduct {
   price_max?: number;
   options?: Array<{ name?: string }>;
   images?: Array<string | { src?: string }>;
+  media?: PublicMedia[];
   variants?: PublicVariant[];
 }
 
@@ -70,6 +81,18 @@ function safeImageUrl(value: unknown, storeDomain: string): string {
   } catch {
     return '';
   }
+}
+
+function mediaIdentity(type: string, id: string | number): string {
+  const resource =
+    type === 'video'
+      ? 'Video'
+      : type === 'external_video'
+        ? 'ExternalVideo'
+        : type === 'model_3d'
+          ? 'Model3d'
+          : 'MediaImage';
+  return `gid://shopify/${resource}/${id}`;
 }
 
 export function normalizePublicShopifyProduct(
@@ -123,6 +146,32 @@ export function normalizePublicShopifyProduct(
       safeImageUrl(typeof image === 'string' ? image : image?.src, storeDomain)
     )
     .filter(Boolean);
+  const media = (Array.isArray(payload.media) ? payload.media : [])
+    .map((item) => {
+      const id = String(item?.id || '');
+      const type = String(item?.media_type || '').toLowerCase();
+      const url = safeImageUrl(item?.src, storeDomain);
+      const previewUrl = safeImageUrl(item?.preview_image?.src, storeDomain);
+      if (!PRODUCT_ID_PATTERN.test(id) || !type || (!url && !previewUrl))
+        return null;
+      return {
+        id: mediaIdentity(type, id),
+        type,
+        url,
+        previewUrl: previewUrl || url,
+        alt: String(item?.alt || payload.title),
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+  const canonicalMedia = media.length
+    ? media
+    : images.map((url, index) => ({
+        id: `${shopifyId}-image-${index}`,
+        type: 'image',
+        url,
+        previewUrl: url,
+        alt: payload.title as string,
+      }));
   const colors = [
     ...new Set(
       observedVariants
@@ -155,13 +204,7 @@ export function normalizePublicShopifyProduct(
     description,
     details: description ? [description] : [],
     images,
-    media: images.map((url, index) => ({
-      id: `${shopifyId}-image-${index}`,
-      type: 'image',
-      url,
-      previewUrl: url,
-      alt: payload.title,
-    })),
+    media: canonicalMedia,
     heroImage: images[0] || '',
     variants: {
       colors: colors.length ? colors : ['Default'],

@@ -12,6 +12,19 @@ const payload = {
   price_min: 12800,
   price_max: 13000,
   images: ['https://cdn.shopify.com/hoodie.jpg'],
+  media: [
+    {
+      id: 40883299221741,
+      media_type: 'image',
+      src: 'https://cdn.shopify.com/hoodie.jpg',
+      alt: 'Signature Hoodie front',
+      preview_image: {
+        src: 'https://cdn.shopify.com/hoodie.jpg',
+        width: 944,
+        height: 1440,
+      },
+    },
+  ],
   options: [{ name: 'Color' }, { name: 'Size' }],
   variants: [
     {
@@ -52,6 +65,13 @@ describe('Shopify public product JSON adapter', () => {
     expect(product.observedVariants[0].id).toBe(
       'gid://shopify/ProductVariant/1'
     );
+    expect(product.media).toEqual([
+      expect.objectContaining({
+        id: 'gid://shopify/MediaImage/40883299221741',
+        type: 'image',
+        url: 'https://cdn.shopify.com/hoodie.jpg',
+      }),
+    ]);
   });
 
   it.each([

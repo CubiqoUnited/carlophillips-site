@@ -74,16 +74,20 @@ export function toHomeCatalogSummary(decision: CatalogDecision) {
               )
           );
           return {
+            handle: first.handle,
             title: first.title,
             href: `/product/${first.handle}`,
             sourceLabel: first.sourceLabel,
             commerceAllowed: first.commerceAllowed,
             description: first.description || '',
+            price: first.price,
+            currency: first.currency,
             tagline: first.tagline || '',
             productType: first.productType || '',
             colors: first.colors || [],
             details: first.details || [],
             sizes: first.sizes || [],
+            variantPresentation: first.variantPresentation || null,
             heroMedia: productMedia[0] || null,
             media: productMedia,
           };

@@ -31,36 +31,52 @@ type Surface =
   | 'gallery'
   | 'gallery-order'
   | 'order'
-  | 'bag'
-  | 'cart'
-  | 'checkout'
-  | 'confirmation'
-  | 'email'
-  | 'empty-cart'
-  | 'recognition'
   | 'video-unavailable'
   | 'gallery-unavailable'
   | 'size-unavailable'
-  | 'discount-rejected'
-  | 'shipping-details'
-  | 'shipping-unavailable'
   | 'menu'
   | 'size'
   | 'contact'
   | 'private-list'
   | 'private-already'
   | 'categories'
-  | 'hoodies'
-  | 'payment-failed'
-  | 'checkout-expired'
-  | 'processing'
-  | 'tracking';
+  | 'hoodies';
 type StatusSurfaceName = Exclude<
   Surface,
-  'discovery' | 'gallery' | 'gallery-order' | 'order' | 'bag' | 'menu' | 'size'
+  'discovery' | 'gallery' | 'gallery-order' | 'order' | 'menu' | 'size'
 >;
 
-const sizes = ['S', 'M', 'L'];
+const NAVIGABLE_SURFACES = new Set<Surface>([
+  'discovery',
+  'gallery',
+  'gallery-order',
+  'order',
+  'video-unavailable',
+  'gallery-unavailable',
+  'size-unavailable',
+  'menu',
+  'size',
+  'contact',
+  'private-list',
+  'private-already',
+  'categories',
+  'hoodies',
+]);
+
+const FALLBACK_SIZES = ['S', 'M', 'L'];
+
+export function formatCatalogPrice(
+  price: number | undefined,
+  currency: string | undefined
+): string {
+  if (typeof price !== 'number' || !Number.isFinite(price) || !currency)
+    return 'Price unavailable';
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 0,
+  }).format(price);
+}
 
 type GalleryStill = {
   id: string;
@@ -162,23 +178,25 @@ function Panel({
 
 function OrderWidgetBody({
   size,
+  sizes,
+  description,
+  priceLabel,
   onSize,
   onSizeGuide,
-  onAddToBag,
-  onBuyNow,
+  onContinue,
 }: {
   size: string;
+  sizes: string[];
+  description: string;
+  priceLabel: string;
   onSize: (value: string) => void;
   onSizeGuide: () => void;
-  onAddToBag: () => void;
-  onBuyNow: () => void;
+  onContinue: () => void;
 }) {
   return (
     <div className="cp-workbook-order-body">
-      <p className="cp-workbook-copy">
-        Product description copy will render here.
-      </p>
-      <p className="cp-workbook-order-price">€180</p>
+      <p className="cp-workbook-copy">{description}</p>
+      <p className="cp-workbook-order-price">{priceLabel}</p>
       <p className="cp-workbook-kicker">SELECT SIZE</p>
       <div className="cp-workbook-sizes">
         {sizes.map((value) => (
@@ -195,12 +213,9 @@ function OrderWidgetBody({
         SIZE GUIDE
       </button>
       <div className="cp-workbook-order-actions">
-        <ActionButton onClick={onAddToBag}>ADD TO BAG</ActionButton>
-        <ActionButton subtle onClick={onBuyNow}>
-          BUY NOW
-        </ActionButton>
+        <ActionButton onClick={onContinue}>CONTINUE TO CHECKOUT</ActionButton>
         <p className="cp-workbook-order-note">
-          COMPLIMENTARY SHIPPING &amp; RETURNS
+          SHIPPING &amp; RETURNS AVAILABLE AT CHECKOUT
         </p>
       </div>
     </div>
@@ -210,19 +225,23 @@ function OrderWidgetBody({
 function GridSurface({
   kind,
   onNavigate,
+  productTitle,
+  productHref,
 }: {
   kind: 'categories' | 'hoodies';
   onNavigate: (next: Surface) => void;
+  productTitle: string;
+  productHref: string;
 }) {
   const cards =
     kind === 'categories'
       ? ['ALL HOODIES', 'TOPS', 'BOTTOMS', 'ACCESSORIES']
-      : ['ONE', 'TWO', 'THREE', 'FOUR'];
+      : [productTitle];
   return (
     <main className="cp-workbook-screen cp-workbook-grid-screen">
       <ScreenHeader
         onMenu={() => onNavigate('menu')}
-        onBag={() => onNavigate('cart')}
+        onBag={() => window.location.assign('/bag')}
       />
       <section>
         <p className="cp-workbook-kicker">DISCOVERY</p>
@@ -233,9 +252,9 @@ function GridSurface({
               type="button"
               key={card}
               onClick={() =>
-                onNavigate(
-                  kind === 'categories' && index === 0 ? 'hoodies' : 'discovery'
-                )
+                kind === 'hoodies'
+                  ? window.location.assign(productHref)
+                  : onNavigate(index === 0 ? 'hoodies' : 'discovery')
               }
             >
               <div className="cp-workbook-grid-image">
@@ -268,36 +287,6 @@ function StatusSurface({
   onNavigate: (next: Surface) => void;
 }) {
   const copy: Record<typeof state, [string, string, string]> = {
-    cart: [
-      'YOUR BAG',
-      'ONE / Size M / EUR 180\n\nSUBTOTAL — EUR 180',
-      'CHECKOUT',
-    ],
-    checkout: [
-      'CHECKOUT',
-      'EMAIL ADDRESS\nSHIPPING ADDRESS\nPAYMENT',
-      'PAY EUR 180',
-    ],
-    confirmation: [
-      'ORDER CONFIRMED',
-      'ORDER CP-0001\nYour order is confirmed. Tracking will appear when the shipment is handed to the carrier.',
-      'TRACK ORDER',
-    ],
-    email: [
-      'CONFIRMATION EMAIL',
-      'ORDER CP-0001\nThank you. Your order confirmation has been sent.',
-      'CONTINUE TO DISCOVERY',
-    ],
-    'empty-cart': [
-      'YOUR BAG',
-      'Your bag is empty.\nDiscover the current collection.',
-      'CONTINUE SHOPPING',
-    ],
-    recognition: [
-      'HAVE A CP ACCOUNT OR STORE CREDIT?',
-      'Enter your email for passwordless recognition.',
-      'RECOGNISE ME',
-    ],
     'video-unavailable': [
       'VIDEO UNAVAILABLE',
       'The selected product video could not be loaded. Product details and gallery remain available.',
@@ -312,21 +301,6 @@ function StatusSurface({
       'SELECTED SIZE UNAVAILABLE',
       'This variant is no longer available. Choose another size to continue.',
       'RETURN TO ORDER',
-    ],
-    'discount-rejected': [
-      'DISCOUNT CODE NOT RECOGNISED',
-      'The code could not be applied. Your cart total has not changed.',
-      'RETURN TO CHECKOUT',
-    ],
-    'shipping-details': [
-      'REVIEW SHIPPING DETAILS',
-      'Enter a valid email and complete the required shipping address fields before payment.',
-      'RETURN TO CHECKOUT',
-    ],
-    'shipping-unavailable': [
-      'SHIPPING UNAVAILABLE',
-      'No shipping option is available for this address. Edit the address or return to your bag.',
-      'RETURN TO BAG',
     ],
     contact: [
       'CONTACT US',
@@ -349,70 +323,31 @@ function StatusSurface({
       'ALL HOODIES',
     ],
     hoodies: ['ALL HOODIES', 'Signature Series / 001', 'VIEW ONE'],
-    'payment-failed': [
-      'PAYMENT COULD NOT BE COMPLETED',
-      'No payment was taken. Please try another method or return to your bag.',
-      'TRY ANOTHER PAYMENT METHOD',
-    ],
-    'checkout-expired': [
-      'YOUR CHECKOUT EXPIRED',
-      'Your bag is saved. Start a new checkout when you are ready.',
-      'START NEW CHECKOUT',
-    ],
-    processing: [
-      'PROCESSING PAYMENT',
-      'Please do not close or refresh this page.',
-      'PAYMENT IN PROGRESS',
-    ],
-    tracking: [
-      'TRACK ORDER',
-      'ORDER CP-0001\nORDER CONFIRMED — Recorded\nIN PRODUCTION — Recorded\nSHIPPED — Pending update\nDELIVERED — Pending update',
-      'RETURN TO DISCOVERY',
-    ],
   };
   const [title, body, action] = copy[state];
   const [submitted, setSubmitted] = useState(false);
   const [invalid, setInvalid] = useState(false);
-  useEffect(() => {
-    if (state !== 'processing') return;
-    const timer = window.setTimeout(() => onNavigate('confirmation'), 1400);
-    return () => window.clearTimeout(timer);
-  }, [state, onNavigate]);
   const next: Partial<Record<typeof state, Surface>> = {
-    cart: 'checkout',
-    checkout: 'processing',
-    processing: 'confirmation',
-    confirmation: 'tracking',
-    email: 'discovery',
-    'empty-cart': 'discovery',
-    recognition: 'cart',
     'video-unavailable': 'gallery',
     'gallery-unavailable': 'discovery',
     'size-unavailable': 'order',
-    'discount-rejected': 'checkout',
-    'shipping-details': 'checkout',
-    'shipping-unavailable': 'cart',
-    'payment-failed': 'checkout',
-    'checkout-expired': 'cart',
-    tracking: 'discovery',
     'private-already': 'discovery',
     categories: 'hoodies',
     hoodies: 'discovery',
   };
   return (
     <main className="cp-workbook-screen cp-workbook-state">
-      <ScreenHeader onMenu={onBack} onBag={() => onNavigate('cart')} />
+      <ScreenHeader
+        onMenu={onBack}
+        onBag={() => window.location.assign('/bag')}
+      />
       <div className="cp-workbook-state-card">
         <p className="cp-workbook-kicker">
           {state === 'contact'
             ? 'SUPPORT'
             : state.startsWith('private')
               ? 'PRIVATE LIST'
-              : state === 'cart' ||
-                  state === 'empty-cart' ||
-                  state === 'recognition'
-                ? 'YOUR BAG'
-                : 'CHECKOUT'}
+              : 'PRODUCT'}
         </p>
         <h1>
           {submitted
@@ -478,63 +413,13 @@ function StatusSurface({
             <ActionButton type="submit">{action}</ActionButton>
           </form>
         )}
-        {state === 'recognition' && (
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              onNavigate('cart');
-            }}
-          >
-            <input
-              required
-              name="email"
-              type="email"
-              placeholder="EMAIL ADDRESS"
-            />
-            <ActionButton type="submit">{action}</ActionButton>
-            <ActionButton subtle onClick={() => onNavigate('cart')}>
-              CONTINUE AS GUEST
-            </ActionButton>
-          </form>
-        )}
-        {state === 'checkout' && (
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              onNavigate('processing');
-            }}
-          >
-            <input
-              required
-              name="email"
-              type="email"
-              placeholder="EMAIL ADDRESS"
-            />
-            <input required name="address" placeholder="SHIPPING ADDRESS" />
-            <input name="discount" placeholder="DISCOUNT CODE" />
-            <ActionButton type="submit">{action}</ActionButton>
-          </form>
-        )}
-        {!['contact', 'private-list', 'recognition', 'checkout'].includes(
-          state
-        ) && (
+        {!['contact', 'private-list'].includes(state) && (
           <>
             <ActionButton
-              disabled={state === 'processing'}
               onClick={() => (next[state] ? onNavigate(next[state]!) : onBack)}
             >
               {action}
             </ActionButton>
-            {state === 'cart' && (
-              <ActionButton subtle onClick={() => onNavigate('recognition')}>
-                HAVE A CP ACCOUNT OR STORE CREDIT?
-              </ActionButton>
-            )}
-            {['payment-failed', 'checkout-expired'].includes(state) && (
-              <ActionButton subtle onClick={() => onNavigate('contact')}>
-                CONTACT SUPPORT
-              </ActionButton>
-            )}
           </>
         )}
       </div>
@@ -549,17 +434,26 @@ export default function WorkbookReplica({
   campaignAsset: ApprovedCampaignAsset | null;
   catalogSummary: HomeCatalogSummary;
 }) {
+  const product = catalogSummary.primaryProduct;
+  const productHandle = product?.handle || 'carlophillips-signature-hoodie';
   const productMotion = getApprovedCampaignMotionAssets(
     'product-runway',
-    'carlophillips-signature-hoodie'
+    productHandle
   );
+  const productDescription =
+    product?.description || 'Product details are currently unavailable.';
+  const priceLabel = formatCatalogPrice(product?.price, product?.currency);
+  const sizeOptions = product?.sizes?.length
+    ? product.sizes.map((value) => value.toUpperCase())
+    : FALLBACK_SIZES;
+  const productHref = product?.href || `/product/${productHandle}`;
   const [entered, setEntered] = useState(false);
   const [surface, setSurface] = useState<Surface>('discovery');
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get(
       'screen'
     ) as Surface | null;
-    if (requested) setSurface(requested);
+    if (requested && NAVIGABLE_SURFACES.has(requested)) setSurface(requested);
   }, []);
   const [activeVideo, setActiveVideo] = useState(0);
   const [productStarted, setProductStarted] = useState(false);
@@ -567,7 +461,9 @@ export default function WorkbookReplica({
   const [completedRuns, setCompletedRuns] = useState(0);
   const [progress, setProgress] = useState(0);
   const [productFrameReady, setProductFrameReady] = useState(false);
-  const [size, setSize] = useState('M');
+  const [size, setSize] = useState(
+    sizeOptions.includes('M') ? 'M' : sizeOptions[0] || 'M'
+  );
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [videoExpanded, setVideoExpanded] = useState(false);
   const productVideo = useRef<MuxVideoElement>(null);
@@ -582,7 +478,6 @@ export default function WorkbookReplica({
       'gallery',
       'gallery-order',
       'order',
-      'bag',
       'menu',
       'size',
       'categories',
@@ -747,7 +642,14 @@ export default function WorkbookReplica({
       />
     );
   if (surface === 'categories' || surface === 'hoodies')
-    return <GridSurface kind={surface} onNavigate={setSurface} />;
+    return (
+      <GridSurface
+        kind={surface}
+        onNavigate={setSurface}
+        productTitle={product?.title || 'Current product'}
+        productHref={productHref}
+      />
+    );
   return (
     <main id="main-content" className="cp-workbook-site">
       <div inert={surface !== 'discovery' ? true : undefined}>
@@ -757,7 +659,7 @@ export default function WorkbookReplica({
           onReveal={enterExperience}
           onExplore={snapToProduct}
           onMenu={() => setSurface('menu')}
-          onBag={() => setSurface('cart')}
+          onBag={() => window.location.assign('/bag')}
         />
         <section
           id="signature-runway"
@@ -766,13 +668,13 @@ export default function WorkbookReplica({
         >
           <ScreenHeader
             onMenu={() => setSurface('menu')}
-            onBag={() => setSurface('cart')}
+            onBag={() => window.location.assign('/bag')}
           />
           <div className="cp-workbook-discovery-grid">
             <div className="cp-workbook-product-copy">
               <p className="cp-workbook-kicker">SIGNATURE SERIES / 001</p>
               <h2>ONE</h2>
-              <p>Product description copy will render here.</p>
+              <p>{productDescription}</p>
               <div className="cp-workbook-tags">
                 <span>COLOR</span>
                 <span>MATERIAL</span>
@@ -904,7 +806,7 @@ export default function WorkbookReplica({
                 className="cp-workbook-order-cta"
                 onClick={() => setSurface('order')}
               >
-                ORDER — €180
+                ORDER — {priceLabel}
               </ActionButton>
             </div>
             <div
@@ -979,7 +881,7 @@ export default function WorkbookReplica({
           <div className="cp-workbook-gallery-media">
             <header>
               <ActionButton subtle onClick={() => setSurface('gallery-order')}>
-                ORDER — €180
+                ORDER — {priceLabel}
               </ActionButton>
               <button type="button" onClick={close} aria-label="Close gallery">
                 <X />
@@ -1054,10 +956,12 @@ export default function WorkbookReplica({
               </header>
               <OrderWidgetBody
                 size={size}
+                sizes={sizeOptions}
+                description={productDescription}
+                priceLabel={priceLabel}
                 onSize={setSize}
                 onSizeGuide={() => setSurface('size')}
-                onAddToBag={() => setSurface('bag')}
-                onBuyNow={() => setSurface('processing')}
+                onContinue={() => window.location.assign(productHref)}
               />
             </aside>
           )}
@@ -1067,10 +971,12 @@ export default function WorkbookReplica({
         <Panel title="ORDER" onClose={() => setSurface('discovery')}>
           <OrderWidgetBody
             size={size}
+            sizes={sizeOptions}
+            description={productDescription}
+            priceLabel={priceLabel}
             onSize={setSize}
             onSizeGuide={() => setSurface('size')}
-            onAddToBag={() => setSurface('bag')}
-            onBuyNow={() => setSurface('processing')}
+            onContinue={() => window.location.assign(productHref)}
           />
         </Panel>
       )}
@@ -1102,17 +1008,6 @@ export default function WorkbookReplica({
             Measurements are garment measurements.
           </p>
           <ActionButton onClick={() => setSurface('order')}>CLOSE</ActionButton>
-        </Panel>
-      )}
-      {surface === 'bag' && (
-        <Panel title="ADDED TO BAG" onClose={close}>
-          <p className="cp-workbook-copy">ONE / Size {size} / EUR 180</p>
-          <ActionButton onClick={() => setSurface('cart')}>
-            VIEW BAG
-          </ActionButton>
-          <ActionButton subtle onClick={close}>
-            Continue shopping
-          </ActionButton>
         </Panel>
       )}
     </main>

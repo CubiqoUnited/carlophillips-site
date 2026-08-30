@@ -21,6 +21,17 @@ describe('monorepo Shopify public product loader fallback', () => {
         price_max: 12800,
         options: [{ name: 'Color' }, { name: 'Size' }],
         images: ['https://cdn.shopify.com/test/product.png'],
+        media: [
+          {
+            id: 200,
+            media_type: 'image',
+            src: 'https://cdn.shopify.com/test/product.png',
+            alt: 'Observed Hoodie front',
+            preview_image: {
+              src: 'https://cdn.shopify.com/test/product.png',
+            },
+          },
+        ],
         variants: [
           {
             id: 100,
@@ -67,6 +78,12 @@ describe('monorepo Shopify public product loader fallback', () => {
         environment: 'preview',
         authority: 'candidate',
       },
+      media: [
+        {
+          id: 'gid://shopify/MediaImage/200',
+          type: 'image',
+        },
+      ],
     });
     expect(product.variantFingerprint).toMatch(/^sha256:[a-f0-9]{64}$/);
     expect(product.observation.commerceFactsFingerprint).toMatch(

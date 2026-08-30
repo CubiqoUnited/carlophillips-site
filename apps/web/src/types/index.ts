@@ -93,16 +93,20 @@ export interface CatalogDecision {
 }
 
 export interface HomeCatalogProduct {
+  handle: string;
   title: string;
   href: string;
   sourceLabel: string;
   commerceAllowed: boolean;
   description: string;
+  price: number;
+  currency: string;
   tagline: string;
   productType: string;
   colors: string[];
   details: string[] | string[][];
   sizes: string[];
+  variantPresentation: VariantPresentation | null;
   heroMedia: ViewerMediaItem | null;
   media: ViewerMediaItem[];
 }
