@@ -3,8 +3,11 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const outputDir = path.dirname(fileURLToPath(import.meta.url));
-const baseUrl = 'http://127.0.0.1:3000';
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const outputDir = path.resolve(process.env.CP_QA_OUTPUT_DIR || scriptDir);
+const baseUrl = String(
+  process.env.CP_QA_BASE_URL || 'http://127.0.0.1:3000'
+).replace(/\/$/, '');
 const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const routes = [
   { name: 'home', path: '/' },
@@ -24,11 +27,12 @@ const browser = await chromium.launch({
   headless: true,
   args: ['--disable-background-networking', '--disable-component-update'],
 });
+await fs.mkdir(outputDir, { recursive: true });
 const evidence = {
   schemaVersion: 'cp.integration-visual-qa.v1',
   target: baseUrl,
   capturedAt: new Date().toISOString(),
-  mode: 'local-fixture-layout-only',
+  mode: process.env.CP_QA_MODE || 'local-fixture-layout-only',
   viewports: {},
 };
 
