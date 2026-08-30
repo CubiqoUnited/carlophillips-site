@@ -1,7 +1,7 @@
 # Current Status
 
 Updated: 2026-08-30
-Branch: `main`; current Production source `4326385228ea7c7ec9a86b6e874e670ff584c261`
+Branch: `main`; verified Production storefront/checkout code anchor `4326385228ea7c7ec9a86b6e874e670ff584c261` (later evidence-only documentation descendants do not change storefront code)
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Production checkout interaction repair and payment-surface proof — 2026-08-30
