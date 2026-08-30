@@ -8,6 +8,7 @@ const outputDir = path.resolve(process.env.CP_QA_OUTPUT_DIR || scriptDir);
 const baseUrl = String(
   process.env.CP_QA_BASE_URL || 'http://127.0.0.1:3000'
 ).replace(/\/$/, '');
+const accessUrl = process.env.CP_QA_ACCESS_URL || null;
 const settleMs = Number(process.env.CP_QA_SETTLE_MS || 0);
 const fullPage = process.env.CP_QA_FULL_PAGE !== 'false';
 const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -44,6 +45,14 @@ for (const viewport of viewports) {
     locale: 'en-US',
   });
   evidence.viewports[viewport.name] = {};
+  if (accessUrl) {
+    const accessPage = await context.newPage();
+    await accessPage.goto(accessUrl, {
+      waitUntil: 'networkidle',
+      timeout: 30_000,
+    });
+    await accessPage.close();
+  }
 
   for (const route of routes) {
     const page = await context.newPage();

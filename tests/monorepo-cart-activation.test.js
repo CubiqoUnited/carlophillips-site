@@ -100,6 +100,41 @@ describe('monorepo cart activation', () => {
     });
   });
 
+  it('accepts write-test evidence only for the non-mutating Preview rehearsal', () => {
+    const previewEvidence = {
+      ...capabilityDecision,
+      status: 'evidence_only',
+      evidenceRef: 'evidence/cart-write-test.json',
+    };
+    const preview = evaluateCartActivation({
+      environment: 'preview',
+      productDecision,
+      releaseRecord,
+      capabilityDecision: previewEvidence,
+      variantResolverDecision: resolver,
+      activationApproval,
+      checkoutApproval,
+    });
+    const production = evaluateCartActivation({
+      environment: 'production',
+      productDecision,
+      releaseRecord: { ...releaseRecord, state: 'released' },
+      capabilityDecision: previewEvidence,
+      variantResolverDecision: { ...resolver, environment: 'production' },
+      activationApproval,
+      checkoutApproval,
+    });
+
+    expect(preview).toMatchObject({
+      status: 'eligible',
+      cartAllowed: true,
+      checkoutAllowed: true,
+      checkoutReason: 'PRIVATE_CHECKOUT_REHEARSAL_AUTHORIZED',
+    });
+    expect(production.cartAllowed).toBe(false);
+    expect(production.reason).toBe('STOREFRONT_CART_WRITE_CAPABILITY_REQUIRED');
+  });
+
   it('still requires Released state for Production', () => {
     const decision = evaluateCartActivation({
       environment: 'production',
