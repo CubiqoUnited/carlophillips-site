@@ -49,8 +49,9 @@ describe('initial Shopify product offer', () => {
         .sort()
     ).toEqual(['L', 'M', 'S']);
     expect(decisions.every((item) => item.allowed)).toBe(true);
-    const unlisted = Array.from({ length: 6 }, (_, index) =>
-      `sha256:${String(index).repeat(64)}`
+    const unlisted = Array.from(
+      { length: 6 },
+      (_, index) => `sha256:${String(index).repeat(64)}`
     );
     expect(
       unlisted.filter(
