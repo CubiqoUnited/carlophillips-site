@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "cp.production-checkout-proof.v1",
+  "verifiedAt": "2026-08-30T16:53:59.679Z",
+  "productionSourceCommit": "4326385228ea7c7ec9a86b6e874e670ff584c261",
+  "deploymentStatus": "success",
+  "scope": "checkout-and-payment-surface-no-order",
+  "desktop": {
+    "homeStatus": 200,
+    "homeScrollSnap": "y mandatory",
+    "galleryImageCount": 12,
+    "approvedVideoCount": 2,
+    "productStatus": 200,
+    "productScrollSnap": "none",
+    "mediumReachable": true,
+    "checkoutFormEnabled": true
+  },
+  "mobile": {
+    "homeStatus": 200,
+    "homeScrollSnap": "y mandatory",
+    "galleryImageCount": 12,
+    "approvedVideoCount": 2,
+    "productStatus": 200,
+    "productScrollSnap": "none",
+    "mediumReachable": true,
+    "checkoutFormEnabled": true
+  },
+  "videoPlayback": {
+    "browser": "Google Chrome 151 headless",
+    "enabledControlCount": 2,
+    "video1": {
+      "advancedPastSeconds": 2.5,
+      "readyState": 4,
+      "error": null
+    },
+    "video2": {
+      "advancedPastSeconds": 2.5,
+      "readyState": 4,
+      "error": null
+    },
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "checkout": {
+    "sameOriginStatus": 303,
+    "sourceHost": "www.carlophillips.com",
+    "trustedTargetHost": "carlophillips.myshopify.com",
+    "protocol": "https:",
+    "product": "CARLOPHILLIPS Signature Hoodie",
+    "selection": "Black / Medium",
+    "quantity": 1,
+    "currency": "USD",
+    "merchandiseTotal": 128,
+    "machineObservedPaymentControls": [
+      "Credit card",
+      "Shop Pay",
+      "PayPal",
+      "Pay now"
+    ]
+  },
+  "mutations": {
+    "cartCreated": true,
+    "customerDataEntered": false,
+    "paymentSubmitted": false,
+    "orderCreated": false,
+    "fulfillmentRequested": false
+  },
+  "notClaimed": [
+    "payment-settlement",
+    "pod-fulfillment",
+    "tracking",
+    "support",
+    "returns"
+  ]
+}
