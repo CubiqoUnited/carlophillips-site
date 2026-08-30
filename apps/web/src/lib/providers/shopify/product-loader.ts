@@ -139,7 +139,7 @@ function toObservedProduct(
       title: variant.title,
       availableForSale: variant.availableForSale,
       price: {
-        amount: variant.price.amount,
+        amount: canonicalMoneyAmount(variant.price.amount),
         currencyCode: variant.price.currency,
       },
       selectedOptions: variant.selectedOptions.map((option) => ({ ...option })),
@@ -155,6 +155,14 @@ function toObservedProduct(
 
 function canonicalCustomerText(value: string): string {
   return value.replace(/\s+/g, ' ').trim();
+}
+
+function canonicalMoneyAmount(value: string): string {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount < 0) {
+    throw new Error('Shopify variant price is invalid.');
+  }
+  return amount.toFixed(2);
 }
 
 function distinctOptions(

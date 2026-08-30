@@ -88,8 +88,8 @@ describe('monorepo Shopify public product loader fallback', () => {
             productType: 'Hoodie',
             tags: [],
             priceRange: {
-              minVariantPrice: { amount: '128.00', currencyCode: 'USD' },
-              maxVariantPrice: { amount: '128.00', currencyCode: 'USD' },
+              minVariantPrice: { amount: '128.0', currencyCode: 'USD' },
+              maxVariantPrice: { amount: '128.0', currencyCode: 'USD' },
             },
             media: { edges: [] },
             variants: {
@@ -99,7 +99,7 @@ describe('monorepo Shopify public product loader fallback', () => {
                     id: 'gid://shopify/ProductVariant/100',
                     title: 'black / m',
                     availableForSale: true,
-                    price: { amount: '128.00', currencyCode: 'USD' },
+                    price: { amount: '128.0', currencyCode: 'USD' },
                     selectedOptions: [
                       { name: 'Color', value: 'black' },
                       { name: 'Size', value: 'm' },
@@ -126,6 +126,11 @@ describe('monorepo Shopify public product loader fallback', () => {
     expect(product).toMatchObject({
       description: 'Line one Line two',
       details: ['Line one Line two'],
+      observedVariants: [
+        {
+          price: { amount: '128.00', currencyCode: 'USD' },
+        },
+      ],
     });
   });
 });
