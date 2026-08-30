@@ -23,6 +23,8 @@ import type { HomeCatalogSummary } from '@/types';
 import HeroMorphPreview from './HeroMorphPreview';
 
 const MuxVideo = dynamic(() => import('@mux/mux-video/react'), { ssr: false });
+const disableMuxTracking =
+  process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT !== 'production';
 
 type Surface =
   | 'discovery'
@@ -794,6 +796,7 @@ export default function WorkbookReplica({
                   playsInline
                   autoplay={productStarted ? 'muted' : false}
                   preload={productStarted ? 'auto' : 'metadata'}
+                  disableTracking={disableMuxTracking}
                   onLoadedMetadata={() => {
                     productEndHandled.current = false;
                   }}
@@ -906,6 +909,7 @@ export default function WorkbookReplica({
             </div>
             <div
               className="cp-workbook-discovery-tray"
+              role="region"
               aria-label="Product media thumbnails"
             >
               {galleryMedia.slice(0, 8).map((still, index) => (
@@ -933,7 +937,7 @@ export default function WorkbookReplica({
               <ActionButton subtle onClick={() => setSurface('hoodies')}>
                 ALL HOODIES
               </ActionButton>
-              <div aria-label="Discovery pagination">
+              <div role="group" aria-label="Discovery pagination">
                 {Array.from({ length: 6 }, (_, index) => (
                   <span
                     key={index}

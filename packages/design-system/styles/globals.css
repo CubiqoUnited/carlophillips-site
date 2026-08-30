@@ -1926,7 +1926,7 @@ mux-video.cp-product-motion-video {
     .cp-product-description {
       color: var(--cp-color-copy-soft);
       font-size: var(--cp-size-copy-small);
-      opacity: var(--cp-opacity-media-expand);
+      opacity: var(--cp-opacity-visible);
     }
 
     .cp-product-copy {

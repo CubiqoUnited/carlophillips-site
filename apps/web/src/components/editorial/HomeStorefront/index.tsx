@@ -39,6 +39,8 @@ import WorkbookReplica from '../WorkbookReplica';
 const MuxVideo = dynamic(() => import('@mux/mux-video/react'), {
   ssr: false,
 });
+const disableMuxTracking =
+  process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT !== 'production';
 
 function SectionPagination({ activeSection }: { activeSection: number }) {
   const sections = [
@@ -186,6 +188,7 @@ function MuxHlsVideo({
       playsInline
       autoplay={autoPlay ? 'muted' : false}
       preload="metadata"
+      disableTracking={disableMuxTracking}
       disablePictureInPicture
       disableRemotePlayback
       onCanPlay={() => {

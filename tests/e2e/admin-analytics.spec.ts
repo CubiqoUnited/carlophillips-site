@@ -1,7 +1,11 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('CP Member private review surface works at desktop and mobile widths', async ({
+test.use({
+  extraHTTPHeaders: { Authorization: 'Bearer qa-review-token' },
+});
+
+test('Admin analytics is truthful, accessible, and visually captured', async ({
   page,
 }, testInfo) => {
   const consoleErrors: string[] = [];
@@ -13,22 +17,16 @@ test('CP Member private review surface works at desktop and mobile widths', asyn
     failedRequests.push(`${request.method()} ${request.url()}`);
   });
 
-  const response = await page.goto('/member', { waitUntil: 'networkidle' });
+  const response = await page.goto('/admin/analytics', {
+    waitUntil: 'networkidle',
+  });
   expect(response?.ok()).toBe(true);
   await expect(
-    page.getByRole('heading', { name: 'A private layer around the brand.' })
+    page.getByRole('heading', { name: 'No verified analytics are connected' })
   ).toBeVisible();
-  await expect(page.getByText('Private review fixture')).toBeVisible();
-  await expect(
-    page.getByText('does not create a live Shopify customer account')
-  ).toBeVisible();
-
-  await page.getByLabel('Email address').fill('preview@example.com');
-  await page.getByLabel(/I want CP private-list updates/).check();
-  await page.getByRole('button', { name: 'Join the private list' }).click();
-  await expect(page.getByRole('status')).toContainText(
-    'You are on the private list.'
-  );
+  await expect(page.getByText('Not connected')).toBeVisible();
+  await expect(page.getByText('Unavailable', { exact: true })).toBeVisible();
+  await expect(page.locator('main')).not.toContainText(/revenue|conversion/i);
 
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -41,7 +39,7 @@ test('CP Member private review surface works at desktop and mobile widths', asyn
   expect(unexpectedFailedRequests).toEqual([]);
 
   await page.screenshot({
-    path: testInfo.outputPath('member-private-review.png'),
+    path: testInfo.outputPath('admin-analytics.png'),
     fullPage: true,
   });
 });
