@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('server-only', () => ({}));
 
@@ -11,6 +11,12 @@ import {
 
 const variantId = 'gid://shopify/ProductVariant/100';
 const referenceHash = `sha256:${createHash('sha256').update(variantId).digest('hex')}`;
+const originalCheckoutEnabled = process.env.SHOPIFY_CHECKOUT_ENABLED;
+
+afterEach(() => {
+  if (originalCheckoutEnabled === undefined) delete process.env.SHOPIFY_CHECKOUT_ENABLED;
+  else process.env.SHOPIFY_CHECKOUT_ENABLED = originalCheckoutEnabled;
+});
 
 function readyCapabilityRegistry() {
   return {
@@ -69,7 +75,6 @@ function approvedOptions(overrides = {}) {
     releaseRecord,
     mediaManifest: createCompleteMediaManifest(),
     checkoutAuthorization: authorization(releaseRecord),
-    checkoutRequested: true,
     storeDomain: 'example.myshopify.com',
     storefrontToken: 'test-token',
     capabilityRegistry: readyCapabilityRegistry(),
@@ -102,6 +107,7 @@ function approvedOptions(overrides = {}) {
 
 describe('release-bound Shopify checkout handoff', () => {
   it('creates a server-only cart and returns the trusted hosted checkout URL', async () => {
+    delete process.env.SHOPIFY_CHECKOUT_ENABLED;
     const options = approvedOptions();
     const result = await createApprovedHoodieCheckout(options);
 
@@ -114,6 +120,17 @@ describe('release-bound Shopify checkout handoff', () => {
     expect(request.headers['X-Shopify-Storefront-Access-Token']).toBe('test-token');
     expect(request.body).toContain(variantId);
     expect(JSON.stringify(result)).not.toContain(variantId);
+  });
+
+  it('does not reintroduce the obsolete checkout switch for authorized Production', async () => {
+    process.env.SHOPIFY_CHECKOUT_ENABLED = 'false';
+    const options = approvedOptions();
+
+    await expect(createApprovedHoodieCheckout(options)).resolves.toEqual({
+      ok: true,
+      checkoutUrl: 'https://example.myshopify.com/checkouts/test',
+    });
+    expect(options.fetchImpl).toHaveBeenCalledTimes(1);
   });
 
   it('denies before any Shopify call when the release is still Draft', async () => {
@@ -142,7 +159,7 @@ describe('release-bound Shopify checkout handoff', () => {
 
   it.each([
     ['missing Product Owner authorization', { checkoutAuthorization: null }, 'CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION'],
-    ['disabled environment gate', { checkoutRequested: false }, 'CHECKOUT_ENVIRONMENT_GATE_DISABLED'],
+    ['Preview environment', { environment: 'preview' }, 'CHECKOUT_ENVIRONMENT_REJECTED'],
     ['local environment', { environment: 'local' }, 'CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION'],
     ['unverified cart capability', { capabilityRegistry: { capabilities: [] } }, 'SHOPIFY_CART_CAPABILITY_NOT_READY'],
   ])('fails closed for %s', async (_label, override, reason) => {

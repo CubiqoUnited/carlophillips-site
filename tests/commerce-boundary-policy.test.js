@@ -81,7 +81,8 @@ describe('active commerce boundary policy', () => {
     expect(serverEntry).toContain('PRODUCT_RELEASE_NOT_RELEASED');
     expect(serverEntry).toContain('CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION');
     expect(serverEntry).toContain('SHOPIFY_RELEASE_BINDING_STALE');
-    expect(serverEntry).toContain('SHOPIFY_CHECKOUT_ENABLED');
+    expect(serverEntry).not.toContain('SHOPIFY_CHECKOUT_ENABLED');
+    expect(serverEntry).toContain("environment !== 'production'");
     expect(serverEntry).not.toContain('console.');
     expect(route).toContain('getProductReleaseEvidence');
     expect(route).toContain('shopify-checkout-authorization.json');

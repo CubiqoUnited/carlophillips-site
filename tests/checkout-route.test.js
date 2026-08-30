@@ -8,7 +8,7 @@ vi.mock('@/lib/commerce/shopify-checkout-server', () => ({
   })),
 }));
 vi.mock('@/lib/config/product-visibility', () => ({
-  getCommerceEnvironment: () => 'preview',
+  getCommerceEnvironment: () => 'production',
 }));
 vi.mock('@/lib/releases/product-release-registry', () => ({
   getProductReleaseEvidence: () => ({
@@ -57,7 +57,7 @@ describe('checkout POST boundary', () => {
     expect(response.headers.get('location')).toBe('https://example.myshopify.com/checkouts/test');
     expect(createApprovedHoodieCheckout).toHaveBeenCalledWith(expect.objectContaining({
       handle: 'carlophillips-signature-hoodie',
-      environment: 'preview',
+      environment: 'production',
       quantity: 1,
     }));
   });

@@ -318,7 +318,7 @@ describe('cart activation policy', () => {
     expect(decision.prerequisites.every(item => item.status === 'satisfied')).toBe(true);
   });
 
-  it('authorizes checkout only after the separate Product Owner and environment gates pass', () => {
+  it('authorizes checkout in production without a second environment switch', () => {
     const decision = evaluateCartActivation({
       environment: 'production',
       productDecision,
@@ -328,7 +328,6 @@ describe('cart activation policy', () => {
       activationApproval: approval,
       activationRequested: true,
       checkoutApproval,
-      checkoutRequested: true,
     });
 
     expect(decision).toMatchObject({
@@ -340,17 +339,16 @@ describe('cart activation policy', () => {
     expect(toCartActivationSummary(decision).checkoutAllowed).toBe(true);
   });
 
-  it('keeps checkout disabled when its environment gate is off', () => {
+  it('keeps checkout disabled in Preview even when every cart and approval gate passes', () => {
     const decision = evaluateCartActivation({
-      environment: 'production',
+      environment: 'preview',
       productDecision,
       releaseRecord: { ...releasedRecord, releaseId: 'cp-test-release-2026-001' },
       capabilityDecision: readyCapability,
-      variantResolverDecision: readyVariantResolver,
+      variantResolverDecision: { ...readyVariantResolver, environment: 'preview' },
       activationApproval: approval,
       activationRequested: true,
       checkoutApproval,
-      checkoutRequested: false,
     });
 
     expect(decision.cartAllowed).toBe(true);
