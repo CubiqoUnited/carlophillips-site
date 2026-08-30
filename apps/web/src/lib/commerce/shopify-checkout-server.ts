@@ -3,6 +3,7 @@ import 'server-only';
 import { createHash } from 'node:crypto';
 import productOffer from '../../../../../config/shopify-product-offer.json';
 import storefrontRuntime from '../../../../../config/shopify-storefront-runtime.json';
+import reviewedObservation from '../../../../../releases/cp-signature-hoodie-2026-001/shopify-product-observation.json';
 import {
   discoverCapability,
   getCapabilityRegistry,
@@ -58,6 +59,26 @@ function normalizeDomain(value: string | undefined): string {
 function numericVariantId(value: string): string | null {
   const match = value.match(/^gid:\/\/shopify\/ProductVariant\/([1-9][0-9]*)$/);
   return match?.[1] || null;
+}
+
+function staleCommerceFactCategories(
+  product: Awaited<ReturnType<ProductLoader>>
+): string[] {
+  const current = product?.observation;
+  const expected = reviewedObservation;
+  const categories = Object.keys(expected.product).filter(
+    (key) =>
+      JSON.stringify(
+        current?.product?.[key as keyof typeof current.product] ?? null
+      ) !==
+      JSON.stringify(
+        expected.product[key as keyof typeof expected.product] ?? null
+      )
+  );
+  if (JSON.stringify(current?.variants) !== JSON.stringify(expected.variants)) {
+    categories.push('variantFacts');
+  }
+  return categories;
 }
 
 function trustedCheckoutUrl(
@@ -260,7 +281,20 @@ export async function createApprovedHoodieCheckout({
     product.observation?.commerceFactsFingerprint !==
     releaseRecord.shopify.commerceFactsFingerprint
   ) {
-    return { ok: false, reason: 'SHOPIFY_RELEASE_COMMERCE_FACTS_STALE' };
+    const diagnostic =
+      environment === 'preview'
+        ? `_${
+            staleCommerceFactCategories(product)
+              .map((item) =>
+                item.replace(/([a-z])([A-Z])/g, '$1_$2').toUpperCase()
+              )
+              .join('_') || 'UNKNOWN'
+          }`
+        : '';
+    return {
+      ok: false,
+      reason: `SHOPIFY_RELEASE_COMMERCE_FACTS_STALE${diagnostic}`,
+    };
   }
 
   const variant = product.observedVariants?.find(
