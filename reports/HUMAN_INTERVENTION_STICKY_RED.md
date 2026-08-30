@@ -1,3 +1,52 @@
+# SUPERSEDING PRODUCT OWNER DECISION — SELL THE APPROVED STAGING HOODIE
+
+Updated: 2026-08-30
+
+The Product Owner has explicitly directed that the CARLOPHILLIPS Signature Hoodie be
+placed on Production and offered for sale with the exact staging presentation: two
+approved videos, twelve approved images, the reviewed Shopify product/variant facts,
+and live Shopify-hosted payment. This is Production authorization for the reviewed
+staging work and checkout path.
+
+The Product Owner did **not** create the repository's physical-sample requirement and
+has explicitly rejected it as an agent-authored launch condition. Do not instruct the
+Product Owner to order or inspect a Hoodie, do not describe this decision as a sample
+"waiver," and do not invent sample delivery or inspection evidence. The truthful
+physical state remains: no sample was ordered or inspected. The Product Owner has
+accepted the resulting risk that fit, colour, artwork placement, and finish have not
+been verified from a delivered physical item. This record supersedes the older
+sample-first instructions later in this file.
+
+## Remaining external media action, only if strict Shopify media identity is retained
+
+The current reviewed storefront already displays both videos from the approved Mux/app
+media registry and all twelve observed Shopify images. The legacy release evaluator,
+however, accepts a video only when it has a canonical Shopify product-media identity.
+If that strict identity rule remains, Shopify Admin must add these exact existing files
+to **Products → CARLOPHILLIPS Signature Hoodie → Media**:
+
+- `apps/web/public/media/signature-hoodie/videos/runway-motion-final.mp4`
+- `apps/web/public/media/signature-hoodie/videos/fit-silhouette-final.mp4`
+
+This action creates two Shopify product-media records but does not place an order,
+charge a payment method, or change the twelve approved images. The expected result is
+fourteen product-media records: twelve images and two processed videos. Do not paste
+Shopify credentials or verification codes into Codex. Codex must not foreground the
+Shopify Admin screen unless Boss explicitly approves that exact visible action; Boss
+may instead perform the two uploads manually and signal `Shopify Hoodie media is 12
+images plus 2 processed videos`.
+
+## Current implementation resume point
+
+Continue from canonical staging merge `3c2b6fee8a6adcf9da815370e378ee4dd1f6ca81`.
+Preserve the design system and the exact approved staging presentation. Reconcile the
+release metadata and checkout capability with the Product Owner decision and observed
+live Shopify facts; verify a no-order cart/checkout redirect, a recoverable Production
+candidate, desktop/mobile screenshots, and then promote the exact reviewed source to
+`main` and `www.carlophillips.com`.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — FINISH FIRST-PRODUCTION PROOF AND REAL-PAYMENT ACTIVATION
 
 Updated: 2026-08-17

@@ -8,6 +8,8 @@ const outputDir = path.resolve(process.env.CP_QA_OUTPUT_DIR || scriptDir);
 const baseUrl = String(
   process.env.CP_QA_BASE_URL || 'http://127.0.0.1:3000'
 ).replace(/\/$/, '');
+const settleMs = Number(process.env.CP_QA_SETTLE_MS || 0);
+const fullPage = process.env.CP_QA_FULL_PAGE !== 'false';
 const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const routes = [
   { name: 'home', path: '/' },
@@ -62,6 +64,7 @@ for (const viewport of viewports) {
       waitUntil: 'networkidle',
       timeout: 30_000,
     });
+    if (settleMs > 0) await page.waitForTimeout(settleMs);
     const dom = await page.evaluate(() => ({
       title: document.title,
       bodyLength: document.body.innerText.trim().length,
@@ -92,7 +95,7 @@ for (const viewport of viewports) {
     const screenshot = `${viewport.name}-${route.name}.png`;
     await page.screenshot({
       path: path.join(outputDir, screenshot),
-      fullPage: true,
+      fullPage,
     });
     evidence.viewports[viewport.name][route.name] = {
       status: response?.status() || null,
