@@ -7,5 +7,5 @@
   "handle": "carlophillips-signature-hoodie",
   "environments": ["preview", "production"],
   "evidence": "Codex task 2026-08-16: make the Shopify payments jump from our frontend and make the payments work",
-  "limitations": "Authorizes the release-bound Shopify hosted-checkout redirect only. It does not waive Product Release Record, current-variant, capability, environment, or deployment gates."
+  "limitations": "Authorizes a same-origin no-write checkout rehearsal for a matching Staged Preview and the Shopify-hosted checkout redirect only for a matching Released Production record. It does not waive current-variant, capability, environment, or deployment gates."
 }

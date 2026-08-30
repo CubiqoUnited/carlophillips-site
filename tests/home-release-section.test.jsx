@@ -9,7 +9,10 @@ import HomeStorefront, {
 import { OrderPanel } from '../components/storefront/discovery-section.jsx';
 import { CartDrawer } from '../components/commerce/cart-drawer.jsx';
 import { SizeGuideDrawer } from '../components/commerce/size-guide.jsx';
-import { evaluateMediaReadiness, MEDIA_READINESS_SLOTS } from '../lib/media/media-readiness.js';
+import {
+  evaluateMediaReadiness,
+  MEDIA_READINESS_SLOTS,
+} from '../lib/media/media-readiness.js';
 import { emptyBag, addLine } from '../lib/commerce/client-bag.js';
 import { offeredVariants } from '../components/commerce/shopify-checkout-form.jsx';
 import observation from '../releases/cp-signature-hoodie-2026-001/shopify-product-observation.json';
@@ -26,41 +29,47 @@ const availableSummary = {
   message: '1 local non-commerce fixture is available for review.',
   primaryProduct: {
     title: 'CARLOPHILLIPS Signature Hoodie',
-    description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.',
+    description:
+      'Heavyweight black pullover hoodie with restrained CP chest embroidery. Built as a premium core layer with structured fleece, a soft interior, and minimal front-chest branding.',
     href: '/products/carlophillips-signature-hoodie',
     sourceLabel: 'Local fixture review — not live store data',
     commerceAllowed: false,
     heroMedia: {
       url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
       alt: 'Signature Hoodie front candidate',
-      label: 'Modelize product portrait · generated candidate · approval pending',
+      label:
+        'Modelize product portrait · generated candidate · approval pending',
     },
     media: [
       {
         type: 'image',
         url: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
-        previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+        previewUrl:
+          '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
         alt: 'Signature Hoodie front candidate',
         label: 'Product front',
       },
       {
         type: 'image',
         url: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
-        previewUrl: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
+        previewUrl:
+          '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
         alt: 'Signature Hoodie editorial candidate',
         label: 'Product editorial',
       },
       {
         type: 'image',
         url: 'https://cdn.shopify.com/s/files/recorded-signature-hoodie-front.jpg',
-        previewUrl: 'https://cdn.shopify.com/s/files/recorded-signature-hoodie-front.jpg',
+        previewUrl:
+          'https://cdn.shopify.com/s/files/recorded-signature-hoodie-front.jpg',
         alt: 'Recorded Signature Hoodie front candidate',
         label: 'Recorded product front',
       },
       {
         type: 'image',
         url: '/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png',
-        previewUrl: '/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png',
+        previewUrl:
+          '/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png',
         alt: 'AI-assisted Signature Hoodie back flat-lay hypothesis',
         label: 'Back flat-lay hypothesis',
       },
@@ -69,17 +78,24 @@ const availableSummary = {
 };
 
 describe('home release composition (Screen Inventory Review Workbook)', () => {
-  const readyProbe = relativePath => {
+  const readyProbe = (relativePath) => {
     if (!relativePath) return { exists: false };
-    if (relativePath.endsWith('.mp4')) return { exists: true, bytes: 2_000_000, isoMedia: true };
-    if (relativePath.includes('lofoten')) return { exists: true, bytes: 120_000 };
-    if (relativePath.includes('posters/')) return { exists: true, bytes: 15_000 };
+    if (relativePath.endsWith('.mp4'))
+      return { exists: true, bytes: 2_000_000, isoMedia: true };
+    if (relativePath.includes('lofoten'))
+      return { exists: true, bytes: 120_000 };
+    if (relativePath.includes('posters/'))
+      return { exists: true, bytes: 15_000 };
     return { exists: false };
   };
-  const readiness = evaluateMediaReadiness({ probe: readyProbe, slots: MEDIA_READINESS_SLOTS });
-  const render = summary => renderToStaticMarkup(
-    <HomeStorefront catalogSummary={summary} mediaReadiness={readiness} />
-  );
+  const readiness = evaluateMediaReadiness({
+    probe: readyProbe,
+    slots: MEDIA_READINESS_SLOTS,
+  });
+  const render = (summary) =>
+    renderToStaticMarkup(
+      <HomeStorefront catalogSummary={summary} mediaReadiness={readiness} />
+    );
 
   it('renders the landing pre-morph over the hero, with ENTER into discovery', () => {
     const html = render(availableSummary);
@@ -98,7 +114,9 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
 
   it('places the landing before discovery and keeps the header contract', () => {
     const html = render(availableSummary);
-    const landingIndex = html.indexOf('aria-label="CARLOPHILLIPS runway campaign"');
+    const landingIndex = html.indexOf(
+      'aria-label="CARLOPHILLIPS runway campaign"'
+    );
     const discoveryIndex = html.indexOf('aria-label="Signature Hoodie runway"');
 
     expect(landingIndex).toBeGreaterThan(-1);
@@ -115,11 +133,15 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
 
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('>ONE</h2>');
-    expect(html).toContain('Heavyweight black pullover hoodie with restrained CP chest embroidery.');
+    expect(html).toContain(
+      'Heavyweight black pullover hoodie with restrained CP chest embroidery.'
+    );
     expect(html).not.toContain('Built as a premium core layer');
     expect(html).toContain('cp-discovery-chips');
     for (const fact of ['Color', 'Material', 'Feel']) {
-      expect(html).toContain(`<summary class="cp-discovery-chip-summary">${fact}</summary>`);
+      expect(html).toContain(
+        `<summary class="cp-discovery-chip-summary">${fact}</summary>`
+      );
     }
     expect(html).toContain('View gallery');
     expect(html).toContain('11 images');
@@ -139,16 +161,24 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
     expect(html).toContain('aria-label="Show Runway motion"');
     expect(html).toContain('aria-label="360 showcase is not yet available"');
     expect(html).toContain('data-ready-clips="2"');
-    expect(html).toContain('/media/signature-hoodie/videos/fit-silhouette-final.mp4');
+    expect(html).toContain(
+      '/media/signature-hoodie/videos/fit-silhouette-final.mp4'
+    );
     expect(html).toContain('aria-label="Open product media overlay"');
     expect(html).toContain('nofullscreen');
     expect(html).not.toContain('lucide-expand');
   });
 
   it('raises the Video unavailable widget when no clip clears the readiness gate', () => {
-    const withheld = evaluateMediaReadiness({ probe: () => ({ exists: false }), slots: MEDIA_READINESS_SLOTS });
+    const withheld = evaluateMediaReadiness({
+      probe: () => ({ exists: false }),
+      slots: MEDIA_READINESS_SLOTS,
+    });
     const html = renderToStaticMarkup(
-      <HomeStorefront catalogSummary={availableSummary} mediaReadiness={withheld} />
+      <HomeStorefront
+        catalogSummary={availableSummary}
+        mediaReadiness={withheld}
+      />
     );
 
     expect(html).toContain('data-exception-state="video-unavailable"');
@@ -171,7 +201,9 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
     expect(html).not.toContain('/products/signature-hoodie/candidates/moda/');
     expect(html).not.toContain('data-media-trigger="signature-hoodie"');
     expect(html).not.toContain('editorial-02.jpg');
-    expect(html).toContain('A considered study in form, material and everyday utility.');
+    expect(html).toContain(
+      'A considered study in form, material and everyday utility.'
+    );
     expect(html).not.toContain('Add to bag');
   });
 
@@ -180,7 +212,10 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
       ...availableSummary,
       environment: 'preview',
       commerceAllowed: true,
-      primaryProduct: { ...availableSummary.primaryProduct, commerceAllowed: true },
+      primaryProduct: {
+        ...availableSummary.primaryProduct,
+        commerceAllowed: true,
+      },
     });
 
     expect(html).toContain('Signature Series / 001');
@@ -190,7 +225,9 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
     expect(html).not.toContain('Withheld</span>');
     // Provider neutrality applies to customer copy. Asset hosts inside src/href attributes are
     // transport, not copy, so they are excluded before the check.
-    expect(html.replace(/(?:src|href|srcset|imagesrcset)="[^"]*"/gi, '')).not.toMatch(/shopify/i);
+    expect(
+      html.replace(/(?:src|href|srcset|imagesrcset)="[^"]*"/gi, '')
+    ).not.toMatch(/shopify/i);
     expect(html).toContain('href="/privacy"');
     expect(html).toContain('href="/terms"');
     expect(html).toContain('href="/cookie-policy"');
@@ -211,24 +248,37 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
     const html = render(previewDenied);
 
     expect(isPreviewRunwayReference(previewDenied)).toBe(true);
-    expect(isPreviewRunwayReference({ ...previewDenied, environment: 'production' })).toBe(false);
+    expect(
+      isPreviewRunwayReference({ ...previewDenied, environment: 'production' })
+    ).toBe(false);
     expect(html).toContain('data-media-trigger="signature-hoodie"');
     expect(html).toContain('11 images');
-    expect(html).not.toContain('href="/products/carlophillips-signature-hoodie"');
+    expect(html).not.toContain(
+      'href="/products/carlophillips-signature-hoodie"'
+    );
     expect(buildHomeGalleryMedia(previewDenied)).toHaveLength(11);
-    expect(buildHomeGalleryMedia(previewDenied).filter(item => item.type === 'video')).toHaveLength(0);
+    expect(
+      buildHomeGalleryMedia(previewDenied).filter(
+        (item) => item.type === 'video'
+      )
+    ).toHaveLength(0);
   });
 
   it('builds a swipe gallery from eligible media without exposing preview studies in production', () => {
     const localMedia = buildHomeGalleryMedia(availableSummary);
-    const productionMedia = buildHomeGalleryMedia({ ...availableSummary, environment: 'production' });
+    const productionMedia = buildHomeGalleryMedia({
+      ...availableSummary,
+      environment: 'production',
+    });
 
     expect(localMedia.length).toBeGreaterThan(productionMedia.length);
     expect(localMedia[0]).toMatchObject({
       src: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
       disclosure: 'Product view',
     });
-    expect(localMedia.some(item => item.src.includes('model-front-full.jpg'))).toBe(true);
+    expect(
+      localMedia.some((item) => item.src.includes('model-front-full.jpg'))
+    ).toBe(true);
     expect(productionMedia).toHaveLength(4);
     expect(productionMedia[0].src).toContain('editorial-02.jpg');
   });
@@ -244,19 +294,38 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
         ],
       },
     };
-    const denied = { ...availableSummary, visibleCount: 0, excludedCount: 1, primaryProduct: null };
+    const denied = {
+      ...availableSummary,
+      visibleCount: 0,
+      excludedCount: 1,
+      primaryProduct: null,
+    };
 
-    expect(buildHomeGalleryMedia(duplicated).filter(item => item.src.includes('editorial-02.jpg'))).toHaveLength(1);
+    expect(
+      buildHomeGalleryMedia(duplicated).filter((item) =>
+        item.src.includes('editorial-02.jpg')
+      )
+    ).toHaveLength(1);
     expect(buildHomeGalleryMedia(denied)).toEqual([]);
   });
 
   it('renders the overlay gallery furniture from screens 05 and 06', () => {
     const media = buildHomeGalleryMedia(availableSummary);
     const openHtml = renderToStaticMarkup(
-      <ProductMediaOverlay media={media} onClose={() => {}} open title="Signature Hoodie" />
+      <ProductMediaOverlay
+        media={media}
+        onClose={() => {}}
+        open
+        title="Signature Hoodie"
+      />
     );
     const closedHtml = renderToStaticMarkup(
-      <ProductMediaOverlay media={media} onClose={() => {}} open={false} title="Signature Hoodie" />
+      <ProductMediaOverlay
+        media={media}
+        onClose={() => {}}
+        open={false}
+        title="Signature Hoodie"
+      />
     );
 
     expect(openHtml).toContain('id="product-media-overlay"');
@@ -279,7 +348,12 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
 
   it('shows the Gallery unavailable widget when no approved media exists', () => {
     const html = renderToStaticMarkup(
-      <ProductMediaOverlay media={[]} onClose={() => {}} open title="Signature Hoodie" />
+      <ProductMediaOverlay
+        media={[]}
+        onClose={() => {}}
+        open
+        title="Signature Hoodie"
+      />
     );
     expect(html).toContain('data-exception-state="gallery-unavailable"');
     expect(html).toContain('No approved gallery media is currently available');
@@ -288,22 +362,33 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
 
   it('renders the order panel, size guide and cart through the secure checkout endpoint', () => {
     const presentation = createVariantPresentation(observation);
-    const variants = offeredVariants('carlophillips-signature-hoodie', presentation)
-      .map(variant => ({ ...variant, sizeLabel: variant.selectedOptions.find(option => option.name.toLowerCase() === 'size').value.toUpperCase() }));
+    const variants = offeredVariants(
+      'carlophillips-signature-hoodie',
+      presentation
+    ).map((variant) => ({
+      ...variant,
+      sizeLabel: variant.selectedOptions
+        .find((option) => option.name.toLowerCase() === 'size')
+        .value.toUpperCase(),
+    }));
     const selected = variants[0];
 
-    const orderHtml = renderToStaticMarkup(<OrderPanel
-      description="Heavyweight black pullover hoodie."
-      handle="carlophillips-signature-hoodie"
-      onAddToBag={() => {}}
-      onClose={() => {}}
-      onOpenSizeGuide={() => {}}
-      onSelect={() => {}}
-      priceLabel="$128"
-      selectedHash={selected.referenceHash}
-      variants={variants}
-    />);
-    const guideHtml = renderToStaticMarkup(<SizeGuideDrawer onClose={() => {}} open />);
+    const orderHtml = renderToStaticMarkup(
+      <OrderPanel
+        description="Heavyweight black pullover hoodie."
+        handle="carlophillips-signature-hoodie"
+        onAddToBag={() => {}}
+        onClose={() => {}}
+        onOpenSizeGuide={() => {}}
+        onSelect={() => {}}
+        priceLabel="$128"
+        selectedHash={selected.referenceHash}
+        variants={variants}
+      />
+    );
+    const guideHtml = renderToStaticMarkup(
+      <SizeGuideDrawer onClose={() => {}} open />
+    );
     const bag = addLine(emptyBag, {
       handle: 'carlophillips-signature-hoodie',
       referenceHash: selected.referenceHash,
@@ -313,26 +398,30 @@ describe('home release composition (Screen Inventory Review Workbook)', () => {
       unitPrice: 180,
       quantity: 1,
     });
-    const cartHtml = renderToStaticMarkup(<CartDrawer
-      bag={bag}
-      onApplyDiscount={() => {}}
-      onClose={() => {}}
-      onContinue={() => {}}
-      onQuantity={() => {}}
-      onRemove={() => {}}
-      open
-    />);
-    const emptyCartHtml = renderToStaticMarkup(<CartDrawer
-      bag={emptyBag}
-      onApplyDiscount={() => {}}
-      onClose={() => {}}
-      onContinue={() => {}}
-      onQuantity={() => {}}
-      onRemove={() => {}}
-      open
-    />);
+    const cartHtml = renderToStaticMarkup(
+      <CartDrawer
+        bag={bag}
+        onApplyDiscount={() => {}}
+        onClose={() => {}}
+        onContinue={() => {}}
+        onQuantity={() => {}}
+        onRemove={() => {}}
+        open
+      />
+    );
+    const emptyCartHtml = renderToStaticMarkup(
+      <CartDrawer
+        bag={emptyBag}
+        onApplyDiscount={() => {}}
+        onClose={() => {}}
+        onContinue={() => {}}
+        onQuantity={() => {}}
+        onRemove={() => {}}
+        open
+      />
+    );
 
-    expect(variants.map(item => item.sizeLabel)).toEqual(['S', 'M', 'L']);
+    expect(variants.map((item) => item.sizeLabel)).toEqual(['S', 'M', 'L']);
     expect(orderHtml).toContain('Add to bag');
     expect(orderHtml).toContain('Buy now');
     expect(orderHtml).toContain('Size guide');

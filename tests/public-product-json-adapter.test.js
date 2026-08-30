@@ -14,8 +14,22 @@ const payload = {
   images: ['https://cdn.shopify.com/hoodie.jpg'],
   options: [{ name: 'Color' }, { name: 'Size' }],
   variants: [
-    { id: 1, title: 'black / xs', option1: 'black', option2: 'xs', price: 12800, available: true },
-    { id: 2, title: 'black / xxl', option1: 'black', option2: 'xxl', price: 13000, available: false },
+    {
+      id: 1,
+      title: 'black / xs',
+      option1: 'black',
+      option2: 'xs',
+      price: 12800,
+      available: true,
+    },
+    {
+      id: 2,
+      title: 'black / xxl',
+      option1: 'black',
+      option2: 'xxl',
+      price: 13000,
+      available: false,
+    },
   ],
 };
 
@@ -35,15 +49,22 @@ describe('Shopify public product JSON adapter', () => {
       variants: { colors: ['black'], sizes: ['xs', 'xxl'] },
     });
     expect(product.observedVariants).toHaveLength(2);
-    expect(product.observedVariants[0].id).toBe('gid://shopify/ProductVariant/1');
+    expect(product.observedVariants[0].id).toBe(
+      'gid://shopify/ProductVariant/1'
+    );
   });
 
   it.each([
     ['invalid product id', { id: 'bad' }],
     ['missing variants', { variants: [] }],
-    ['invalid variant id', { variants: [{ ...payload.variants[0], id: 'bad' }] }],
+    [
+      'invalid variant id',
+      { variants: [{ ...payload.variants[0], id: 'bad' }] },
+    ],
     ['invalid price', { price_min: -1 }],
   ])('rejects %s', (_label, override) => {
-    expect(() => normalizePublicShopifyProduct({ ...payload, ...override })).toThrow();
+    expect(() =>
+      normalizePublicShopifyProduct({ ...payload, ...override })
+    ).toThrow();
   });
 });

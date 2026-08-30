@@ -1,0 +1,439 @@
+{
+  "allPassed": true,
+  "results": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "first": {
+        "playbackId": "mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc",
+        "muted": true,
+        "paused": false,
+        "currentTime": 3.55422,
+        "autoplay": "muted",
+        "playsInline": true,
+        "controlColor": "rgb(231, 224, 210)",
+        "playControlLabel": "Pause motion",
+        "progressColor": "rgba(255, 255, 255, 0.1)",
+        "progressToken": "#00a63b",
+        "selectorCount": 3,
+        "selectorDisabled": [
+          false,
+          false,
+          true
+        ],
+        "selectorColors": [
+          "rgb(231, 224, 210)",
+          "rgba(255, 255, 255, 0.48)",
+          "rgba(255, 255, 255, 0.48)"
+        ],
+        "replayVisible": false,
+        "replayRect": null,
+        "replayColor": null,
+        "replayBorderColor": null
+      },
+      "sequence": [
+        {
+          "playbackId": "mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc",
+          "muted": true,
+          "paused": false,
+          "currentTime": 3.55422,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Pause motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.467247,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Pause motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgba(255, 255, 255, 0.48)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "playbackId": "mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.695453,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Pause motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.673103,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Pause motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgba(255, 255, 255, 0.48)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+          "muted": true,
+          "paused": false,
+          "currentTime": 1.433555,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Play motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgba(255, 255, 255, 0.48)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": true,
+          "replayRect": {
+            "width": 120,
+            "height": 120
+          },
+          "replayColor": "rgb(231, 224, 210)",
+          "replayBorderColor": "rgb(231, 224, 210)"
+        }
+      ],
+      "final": {
+        "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+        "muted": true,
+        "paused": false,
+        "currentTime": 1.433555,
+        "autoplay": "muted",
+        "playsInline": true,
+        "controlColor": "rgb(231, 224, 210)",
+        "playControlLabel": "Play motion",
+        "progressColor": "rgba(255, 255, 255, 0.1)",
+        "progressToken": "#00a63b",
+        "selectorCount": 3,
+        "selectorDisabled": [
+          false,
+          false,
+          true
+        ],
+        "selectorColors": [
+          "rgba(255, 255, 255, 0.48)",
+          "rgb(231, 224, 210)",
+          "rgba(255, 255, 255, 0.48)"
+        ],
+        "replayVisible": true,
+        "replayRect": {
+          "width": 120,
+          "height": 120
+        },
+        "replayColor": "rgb(231, 224, 210)",
+        "replayBorderColor": "rgb(231, 224, 210)"
+      },
+      "assertions": {
+        "startsWithFit": true,
+        "mutedAutoplay": true,
+        "advancesToRunway": true,
+        "repeatsFromFit": true,
+        "repeatsRunway": true,
+        "stopsWithReplay": true,
+        "creamControls": true,
+        "greenProgressToken": true,
+        "threePositionDashes": true,
+        "thirdPositionUnavailable": true
+      },
+      "errors": []
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "first": {
+        "playbackId": "mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc",
+        "muted": true,
+        "paused": false,
+        "currentTime": 3.553028,
+        "autoplay": "muted",
+        "playsInline": true,
+        "controlColor": "rgb(231, 224, 210)",
+        "playControlLabel": "Pause motion",
+        "progressColor": "rgba(255, 255, 255, 0.1)",
+        "progressToken": "#00a63b",
+        "selectorCount": 3,
+        "selectorDisabled": [
+          false,
+          false,
+          true
+        ],
+        "selectorColors": [
+          "rgb(231, 224, 210)",
+          "rgba(255, 255, 255, 0.48)",
+          "rgba(255, 255, 255, 0.48)"
+        ],
+        "replayVisible": false,
+        "replayRect": null,
+        "replayColor": null,
+        "replayBorderColor": null
+      },
+      "sequence": [
+        {
+          "playbackId": "mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc",
+          "muted": true,
+          "paused": false,
+          "currentTime": 3.553028,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Pause motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.401717,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Pause motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgba(255, 255, 255, 0.48)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "playbackId": "mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.214016,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Pause motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.671823,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Pause motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgba(255, 255, 255, 0.48)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+          "muted": true,
+          "paused": false,
+          "currentTime": 1.431829,
+          "autoplay": "muted",
+          "playsInline": true,
+          "controlColor": "rgb(231, 224, 210)",
+          "playControlLabel": "Play motion",
+          "progressColor": "rgba(255, 255, 255, 0.1)",
+          "progressToken": "#00a63b",
+          "selectorCount": 3,
+          "selectorDisabled": [
+            false,
+            false,
+            true
+          ],
+          "selectorColors": [
+            "rgba(255, 255, 255, 0.48)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.48)"
+          ],
+          "replayVisible": true,
+          "replayRect": {
+            "width": 120,
+            "height": 120
+          },
+          "replayColor": "rgb(231, 224, 210)",
+          "replayBorderColor": "rgb(231, 224, 210)"
+        }
+      ],
+      "final": {
+        "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+        "muted": true,
+        "paused": false,
+        "currentTime": 1.431829,
+        "autoplay": "muted",
+        "playsInline": true,
+        "controlColor": "rgb(231, 224, 210)",
+        "playControlLabel": "Play motion",
+        "progressColor": "rgba(255, 255, 255, 0.1)",
+        "progressToken": "#00a63b",
+        "selectorCount": 3,
+        "selectorDisabled": [
+          false,
+          false,
+          true
+        ],
+        "selectorColors": [
+          "rgba(255, 255, 255, 0.48)",
+          "rgb(231, 224, 210)",
+          "rgba(255, 255, 255, 0.48)"
+        ],
+        "replayVisible": true,
+        "replayRect": {
+          "width": 120,
+          "height": 120
+        },
+        "replayColor": "rgb(231, 224, 210)",
+        "replayBorderColor": "rgb(231, 224, 210)"
+      },
+      "assertions": {
+        "startsWithFit": true,
+        "mutedAutoplay": true,
+        "advancesToRunway": true,
+        "repeatsFromFit": true,
+        "repeatsRunway": true,
+        "stopsWithReplay": true,
+        "creamControls": true,
+        "greenProgressToken": true,
+        "threePositionDashes": true,
+        "thirdPositionUnavailable": true
+      },
+      "errors": []
+    }
+  ]
+}

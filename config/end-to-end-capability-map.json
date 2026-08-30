@@ -95,9 +95,9 @@
       "owner": "Experience and release owner",
       "evidenceRefs": ["releases/cp-signature-hoodie-2026-001/release.json"],
       "blocker": {
-        "code": "RELEASE_NOT_STAGED",
-        "humanAction": "No action is safe until product, Shopify, fulfillment, media, candidate-build, staging, and rollback evidence are complete.",
-        "resumePoint": "Advance the Product Release Record from Draft to Staged through the canonical transition evaluator, then review the immutable Preview."
+        "code": "RELEASE_APPROVAL_BLOCKED",
+        "humanAction": "Keep the canonical Product Release Record Staged while the exact candidate media, physical sample, approvals, and rollback verification are completed.",
+        "resumePoint": "Bind a new immutable candidate and matching Preview evidence, complete the physical-sample and approval gates, then evaluate Staged to Approved."
       }
     },
     {

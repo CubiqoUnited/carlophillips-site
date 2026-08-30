@@ -34,12 +34,15 @@ describe('product release gates', () => {
     expect(visibility.canRenderDraftProductPreviews()).toBe(true);
   });
 
-  it.each(['preview', 'production'])('blocks fixture previews in %s', async environment => {
-    vi.stubEnv('NEXT_PUBLIC_COMMERCE_ENVIRONMENT', environment);
-    vi.stubEnv('NEXT_PUBLIC_SHOW_PRODUCTS', 'true');
-    vi.stubEnv('NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS', 'true');
-    const visibility = await loadVisibility();
-    expect(visibility.canUseFixtureData()).toBe(false);
-    expect(visibility.canRenderDraftProductPreviews()).toBe(false);
-  });
+  it.each(['preview', 'production'])(
+    'blocks fixture previews in %s',
+    async (environment) => {
+      vi.stubEnv('NEXT_PUBLIC_COMMERCE_ENVIRONMENT', environment);
+      vi.stubEnv('NEXT_PUBLIC_SHOW_PRODUCTS', 'true');
+      vi.stubEnv('NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS', 'true');
+      const visibility = await loadVisibility();
+      expect(visibility.canUseFixtureData()).toBe(false);
+      expect(visibility.canRenderDraftProductPreviews()).toBe(false);
+    }
+  );
 });

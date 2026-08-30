@@ -24,8 +24,16 @@ describe('Shopify normalization', () => {
               id: 'media-image',
               mediaContentType: 'IMAGE',
               alt: 'Front view',
-              previewImage: { url: 'https://cdn.example/front.jpg', width: 800, height: 800 },
-              image: { url: 'https://cdn.example/front.jpg', width: 800, height: 800 },
+              previewImage: {
+                url: 'https://cdn.example/front.jpg',
+                width: 800,
+                height: 800,
+              },
+              image: {
+                url: 'https://cdn.example/front.jpg',
+                width: 800,
+                height: 800,
+              },
             },
           },
           {
@@ -34,20 +42,26 @@ describe('Shopify normalization', () => {
               mediaContentType: 'VIDEO',
               alt: 'Product film',
               previewImage: { url: 'https://cdn.example/film.jpg' },
-              sources: [{ url: 'https://cdn.example/film.mp4', mimeType: 'video/mp4' }],
+              sources: [
+                { url: 'https://cdn.example/film.mp4', mimeType: 'video/mp4' },
+              ],
             },
           },
         ],
       },
       variants: {
-        edges: [{ node: {
-          id: 'gid://shopify/ProductVariant/1',
-          availableForSale: true,
-          selectedOptions: [
-            { name: 'Color', value: 'Black' },
-            { name: 'Size', value: 'M' },
-          ],
-        } }],
+        edges: [
+          {
+            node: {
+              id: 'gid://shopify/ProductVariant/1',
+              availableForSale: true,
+              selectedOptions: [
+                { name: 'Color', value: 'Black' },
+                { name: 'Size', value: 'M' },
+              ],
+            },
+          },
+        ],
       },
     });
 
@@ -62,10 +76,12 @@ describe('Shopify normalization', () => {
       tagline: 'SIGNATURE',
       details: ['Heavyweight hoodie', 'Embroidered chest mark'],
     });
-    expect(product.media.map(item => item.type)).toEqual(['image', 'video']);
+    expect(product.media.map((item) => item.type)).toEqual(['image', 'video']);
     expect(product).not.toHaveProperty('shopifyVariants');
     expect(product).not.toHaveProperty('firstVariantId');
-    expect(product.observedVariants[0].id).toBe('gid://shopify/ProductVariant/1');
+    expect(product.observedVariants[0].id).toBe(
+      'gid://shopify/ProductVariant/1'
+    );
     expect(product.availableForSale).toBe(true);
   });
 
@@ -79,20 +95,27 @@ describe('Shopify normalization', () => {
         totalAmount: { amount: '256.00' },
       },
       lines: {
-        edges: [{ node: {
-          id: 'line-1',
-          quantity: 2,
-          merchandise: {
-            id: 'variant-1',
-            price: { amount: '128.00' },
-            image: { url: 'https://cdn.example/front.jpg' },
-            selectedOptions: [
-              { name: 'Color', value: 'Black' },
-              { name: 'Size', value: 'M' },
-            ],
-            product: { handle: 'signature-hoodie', title: 'Signature Hoodie' },
+        edges: [
+          {
+            node: {
+              id: 'line-1',
+              quantity: 2,
+              merchandise: {
+                id: 'variant-1',
+                price: { amount: '128.00' },
+                image: { url: 'https://cdn.example/front.jpg' },
+                selectedOptions: [
+                  { name: 'Color', value: 'Black' },
+                  { name: 'Size', value: 'M' },
+                ],
+                product: {
+                  handle: 'signature-hoodie',
+                  title: 'Signature Hoodie',
+                },
+              },
+            },
           },
-        } }],
+        ],
       },
     });
 

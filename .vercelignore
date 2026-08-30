@@ -1,6 +1,7 @@
 # Local dependencies and framework output
 node_modules/
 .next/
+**/.next/
 out/
 coverage/
 
@@ -10,6 +11,7 @@ coverage/
 .vercel/
 .git/
 .DS_Store
+.github/
 
 # Recovered design exports and temporary working files
 chat-images/
@@ -28,8 +30,20 @@ test_result.md
 public/campaigns/draft-pod/
 
 # Local tool metadata
-.github/
 .emergent/
 .vscode/
 .idea/
 *.log
+
+# Non-runtime design and production working files
+casting/
+design/
+design-deliverables/
+deliverables/
+downloads/
+drafts/
+outputs/
+runs/
+output/
+ASI_ARTIFACTS/
+apps/web/src/fixtures/unverified-media/

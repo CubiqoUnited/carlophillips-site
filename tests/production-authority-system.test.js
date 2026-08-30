@@ -1,7 +1,9 @@
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const registry = JSON.parse(fs.readFileSync('config/production-authorities.json', 'utf8'));
+const registry = JSON.parse(
+  fs.readFileSync('config/production-authorities.json', 'utf8')
+);
 const workflow = fs.readFileSync('.github/workflows/ci.yml', 'utf8');
 
 describe('production authority system', () => {
@@ -32,7 +34,9 @@ describe('production authority system', () => {
 
   it('binds deployment tooling to the read-only verified production project', () => {
     expect(registry.vercel.expectedProjectName).toBe('carlophillips-site');
-    expect(registry.vercel.identityStatus).toBe('verified-read-only-2026-08-14');
+    expect(registry.vercel.identityStatus).toBe(
+      'verified-read-only-2026-08-14'
+    );
     expect(registry.vercel.projectId).toBe('prj_9VHD0AhhQnuml8frfNDsmFLHXcq1');
     expect(registry.vercel.orgId).toBe('team_8ABMxicIAtMyzgNYsJawFad0');
   });
@@ -41,7 +45,11 @@ describe('production authority system', () => {
     expect(workflow).toContain('pull_request:');
     expect(workflow).toContain('branches:\n      - main');
     expect(workflow).toContain('node-version: 24');
-    for (const command of ['yarn install --frozen-lockfile', 'yarn verify', 'yarn test:a11y']) {
+    for (const command of [
+      'yarn install --frozen-lockfile',
+      'yarn verify',
+      'yarn test:a11y',
+    ]) {
       expect(workflow).toContain(command);
     }
     expect(workflow).toContain('mkdir -p test_reports/ci');

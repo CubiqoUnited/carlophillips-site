@@ -1,0 +1,1760 @@
+[
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    "url": "https://staging.carlophillips.com/",
+    "before": {
+      "title": "CARLOPHILLIPS | Signature Series",
+      "canonical": "https://www.carlophillips.com/",
+      "ogType": "website",
+      "bodyWidth": 1440,
+      "viewportWidth": 1440,
+      "images": [
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-front-full.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 49,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 1792,
+            "height": 2400
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-three-quarter.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 93,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 864,
+            "height": 1184
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 137,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 1126,
+            "height": 1397
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 181,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 540,
+            "height": 675
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-seated.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 225,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 896,
+            "height": 1200
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-side-profile.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 269,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 864,
+            "height": 1184
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 313,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 896,
+            "height": 1200
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/product-flat-lay.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 357,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 864,
+            "height": 1184
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-01.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 401,
+            "y": 932,
+            "width": 34,
+            "height": 43
+          },
+          "natural": {
+            "width": 928,
+            "height": 1152
+          }
+        }
+      ],
+      "videos": [
+        {
+          "src": "https://staging.carlophillips.com/campaigns/lofoten-runway-hero.mp4",
+          "preload": "auto",
+          "autoplay": true,
+          "muted": true,
+          "playsInline": true,
+          "rendered": {
+            "x": 360,
+            "y": -1000,
+            "width": 1080,
+            "height": 999
+          }
+        },
+        {
+          "src": "https://staging.carlophillips.com/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "preload": "auto",
+          "autoplay": true,
+          "muted": true,
+          "playsInline": true,
+          "rendered": {
+            "x": 388.1875,
+            "y": 145,
+            "width": 663.59375,
+            "height": 830
+          }
+        }
+      ],
+      "buttons": [
+        "Menu",
+        "Bag",
+        "↓Enter",
+        "View gallery14 images",
+        "Order — €180",
+        "All categories",
+        "All hoodies"
+      ],
+      "links": [
+        "Skip to main content",
+        "CARLOPHILLIPS",
+        "Shop",
+        "Collections",
+        "Contact",
+        "Private list",
+        "Bag",
+        "Privacy",
+        "Terms",
+        "Cookies"
+      ]
+    },
+    "galleryTriggerCount": 1,
+    "gallery": {
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1000
+      },
+      "root": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1000
+      },
+      "text": "Signature Hoodie media viewerOrder — €18001 / 14AllSame-modelMerchandiseDetail2.5D viewer",
+      "buttonCount": 23,
+      "buttons": [
+        {
+          "text": "Order — €180",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 201,
+            "y": 38.5,
+            "width": 134.8125,
+            "height": 44
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Close product media viewer",
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 1191,
+            "y": 36.5,
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "text": "All",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 504.046875,
+            "y": 874.609375,
+            "width": 24.03125,
+            "height": 24
+          }
+        },
+        {
+          "text": "Same-model",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 552.078125,
+            "y": 874.609375,
+            "width": 87.921875,
+            "height": 24
+          }
+        },
+        {
+          "text": "Merchandise",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 664,
+            "y": 874.609375,
+            "width": 94.390625,
+            "height": 24
+          }
+        },
+        {
+          "text": "Detail",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 782.390625,
+            "y": 874.609375,
+            "width": 45.65625,
+            "height": 24
+          }
+        },
+        {
+          "text": "2.5D viewer",
+          "ariaLabel": null,
+          "disabled": true,
+          "opacity": "0.18",
+          "rect": {
+            "x": 852.046875,
+            "y": 874.609375,
+            "width": 83.890625,
+            "height": 24
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 1",
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 416,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 2",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 460,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 3",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 504,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 4",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 548,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 5",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 592,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 6",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 636,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 7",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 680,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 8",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 724,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 9",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 768,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 10",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 812,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 11",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 856,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 12",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 900,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 13",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 944,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 14",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 988,
+            "y": 922,
+            "width": 36,
+            "height": 45
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Previous product image",
+          "disabled": true,
+          "opacity": "0.38",
+          "rect": {
+            "x": 197,
+            "y": 476,
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Next product image",
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 1195,
+            "y": 476,
+            "width": 48,
+            "height": 48
+          }
+        }
+      ],
+      "imageCount": 26,
+      "images": [
+        {
+          "alt": "Full-length front visualisation of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-front-full.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 177,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Three-quarter visualisation of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-three-quarter.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 1263,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Macro visualisation of the CARLOPHILLIPS CP embroidery and black knit surface",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 2349,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Animated still-derived motion study cycling through the CARLOPHILLIPS Signature Hoodie visualisations",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 3435,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Seated visualisation of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-seated.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 4521,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Side-profile visualisation of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-side-profile.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 5607,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Digital back-view hypothesis of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 6693,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Flat-lay visualisation of the CARLOPHILLIPS Signature Hoodie",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/product-flat-lay.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 7779,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Editorial visualisation of the CARLOPHILLIPS Signature Hoodie in a dark studio setting",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-01.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 8865,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Full-length editorial visualisation of the CARLOPHILLIPS Signature Hoodie",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-02.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 9951,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Front on-model visual study of the CARLOPHILLIPS Signature Hoodie",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 11037,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Back flat-lay hypothesis of the CARLOPHILLIPS Signature Hoodie",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 12123,
+            "y": 101,
+            "width": 1086,
+            "height": 714.03125
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-front-full.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 417,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-three-quarter.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 461,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 505,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 549,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-seated.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 593,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-side-profile.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 637,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 681,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/product-flat-lay.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 725,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-01.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 769,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-02.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 813,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 857,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 901,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/media/signature-hoodie/posters/runway-motion-final.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 945,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/media/signature-hoodie/posters/fit-silhouette-final.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 989,
+            "y": 923,
+            "width": 34,
+            "height": 43
+          },
+          "aspectRatio": "auto 36 / 45"
+        }
+      ],
+      "filters": [
+        "ALL",
+        "SAME-MODEL",
+        "MERCHANDISE",
+        "DETAIL",
+        "2.5D VIEWER"
+      ]
+    },
+    "consoleErrors": [],
+    "requestFailures": [
+      {
+        "url": "https://staging.carlophillips.com/collections?_rsc=1p-R_iEY6bj0jY31",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://staging.carlophillips.com/bag?_rsc=1p-R_iEY6bj0jY31",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://staging.carlophillips.com/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+        "error": "net::ERR_ABORTED"
+      }
+    ]
+  },
+  {
+    "viewport": {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    "url": "https://staging.carlophillips.com/",
+    "before": {
+      "title": "CARLOPHILLIPS | Signature Series",
+      "canonical": "https://www.carlophillips.com/",
+      "ogType": "website",
+      "bodyWidth": 598,
+      "viewportWidth": 390,
+      "images": [
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-front-full.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-three-quarter.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-seated.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-side-profile.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/product-flat-lay.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-01.jpg",
+          "srcset": "",
+          "sizes": "",
+          "nimg": "fill",
+          "rendered": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "natural": {
+            "width": 0,
+            "height": 0
+          }
+        }
+      ],
+      "videos": [
+        {
+          "src": "https://staging.carlophillips.com/campaigns/lofoten-runway-hero.mp4",
+          "preload": "auto",
+          "autoplay": true,
+          "muted": true,
+          "playsInline": true,
+          "rendered": {
+            "x": 97.5,
+            "y": -2,
+            "width": 292.5,
+            "height": 843
+          }
+        },
+        {
+          "src": "https://staging.carlophillips.com/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "preload": "auto",
+          "autoplay": true,
+          "muted": true,
+          "playsInline": true,
+          "rendered": {
+            "x": 33,
+            "y": 923,
+            "width": 564.390625,
+            "height": 706
+          }
+        }
+      ],
+      "buttons": [
+        "Menu",
+        "Bag",
+        "↓Enter",
+        "View gallery14 images",
+        "Order — €180",
+        "All categories",
+        "All hoodies"
+      ],
+      "links": [
+        "Skip to main content",
+        "CARLOPHILLIPS",
+        "Shop",
+        "Collections",
+        "Contact",
+        "Private list",
+        "Bag",
+        "Privacy",
+        "Terms",
+        "Cookies"
+      ]
+    },
+    "galleryTriggerCount": 1,
+    "gallery": {
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+      },
+      "root": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+      },
+      "text": "Signature Hoodie media viewerOrder — €18001 / 14AllSame-modelMerchandiseDetail2.5D viewer",
+      "buttonCount": 23,
+      "buttons": [
+        {
+          "text": "Order — €180",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 33,
+            "y": 18.5,
+            "width": 134.8125,
+            "height": 44
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Close product media viewer",
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 309,
+            "y": 16.5,
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "text": "All",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 33,
+            "y": 707.25,
+            "width": 24.03125,
+            "height": 24
+          }
+        },
+        {
+          "text": "Same-model",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 81.03125,
+            "y": 707.25,
+            "width": 87.921875,
+            "height": 24
+          }
+        },
+        {
+          "text": "Merchandise",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 192.953125,
+            "y": 707.25,
+            "width": 94.390625,
+            "height": 24
+          }
+        },
+        {
+          "text": "Detail",
+          "ariaLabel": null,
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 311.34375,
+            "y": 707.25,
+            "width": 45.65625,
+            "height": 24
+          }
+        },
+        {
+          "text": "2.5D viewer",
+          "ariaLabel": null,
+          "disabled": true,
+          "opacity": "0.18",
+          "rect": {
+            "x": 153.046875,
+            "y": 755.25,
+            "width": 83.890625,
+            "height": 24
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 1",
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 29,
+            "y": 802.640625,
+            "width": 16.296875,
+            "height": 20.359375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 2",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 53.296875,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 3",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 77.578125,
+            "y": 802.640625,
+            "width": 16.296875,
+            "height": 20.359375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 4",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 101.875,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 5",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 126.15625,
+            "y": 802.640625,
+            "width": 16.296875,
+            "height": 20.359375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 6",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 150.453125,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 7",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 174.734375,
+            "y": 802.640625,
+            "width": 16.296875,
+            "height": 20.359375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 8",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 199.03125,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 9",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 223.3125,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 10",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 247.59375,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 11",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 271.875,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 12",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 296.15625,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 13",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 320.4375,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Jump to view 14",
+          "disabled": false,
+          "opacity": "0.72",
+          "rect": {
+            "x": 344.71875,
+            "y": 802.640625,
+            "width": 16.28125,
+            "height": 20.34375
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Previous product image",
+          "disabled": true,
+          "opacity": "0.38",
+          "rect": {
+            "x": 21,
+            "y": 398,
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "text": "",
+          "ariaLabel": "Next product image",
+          "disabled": false,
+          "opacity": "1",
+          "rect": {
+            "x": 321,
+            "y": 398,
+            "width": 48,
+            "height": 48
+          }
+        }
+      ],
+      "imageCount": 26,
+      "images": [
+        {
+          "alt": "Full-length front visualisation of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-front-full.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 9,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Three-quarter visualisation of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-three-quarter.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 381,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Macro visualisation of the CARLOPHILLIPS CP embroidery and black knit surface",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 753,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Animated still-derived motion study cycling through the CARLOPHILLIPS Signature Hoodie visualisations",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 1125,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Seated visualisation of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-seated.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 1497,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Side-profile visualisation of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-side-profile.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 1869,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Digital back-view hypothesis of the CARLOPHILLIPS Signature Hoodie on a male model",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 2241,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Flat-lay visualisation of the CARLOPHILLIPS Signature Hoodie",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/product-flat-lay.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 2613,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Editorial visualisation of the CARLOPHILLIPS Signature Hoodie in a dark studio setting",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-01.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 2985,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Full-length editorial visualisation of the CARLOPHILLIPS Signature Hoodie",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-02.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 3357,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Front on-model visual study of the CARLOPHILLIPS Signature Hoodie",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 3729,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "Back flat-lay hypothesis of the CARLOPHILLIPS Signature Hoodie",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 4101,
+            "y": 73,
+            "width": 372,
+            "height": 559.875
+          },
+          "aspectRatio": "auto"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-front-full.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 30,
+            "y": 803.640625,
+            "width": 14.296875,
+            "height": 18.359375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-three-quarter.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 54.296875,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/material-embroidery-study.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 78.578125,
+            "y": 803.640625,
+            "width": 14.296875,
+            "height": 18.359375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 102.875,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-seated.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 127.15625,
+            "y": 803.640625,
+            "width": 14.296875,
+            "height": 18.359375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-side-profile.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 151.453125,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/model-back-digital-study.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 175.734375,
+            "y": 803.640625,
+            "width": 14.296875,
+            "height": 18.359375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/moda/product-flat-lay.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 200.03125,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-01.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 224.3125,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/modelize/editorial-02.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 248.59375,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 272.875,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 297.15625,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/media/signature-hoodie/posters/runway-motion-final.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 321.4375,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        },
+        {
+          "alt": "",
+          "src": "https://staging.carlophillips.com/media/signature-hoodie/posters/fit-silhouette-final.jpg",
+          "srcset": "",
+          "sizes": "",
+          "rect": {
+            "x": 345.71875,
+            "y": 803.640625,
+            "width": 14.28125,
+            "height": 18.34375
+          },
+          "aspectRatio": "auto 36 / 45"
+        }
+      ],
+      "filters": [
+        "ALL",
+        "SAME-MODEL",
+        "MERCHANDISE",
+        "DETAIL",
+        "2.5D VIEWER"
+      ]
+    },
+    "consoleErrors": [],
+    "requestFailures": [
+      {
+        "url": "https://staging.carlophillips.com/shop?_rsc=1p-R_iEY6bj0jY31",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://staging.carlophillips.com/collections?_rsc=1p-R_iEY6bj0jY31",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://staging.carlophillips.com/contact?_rsc=1p-R_iEY6bj0jY31",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://staging.carlophillips.com/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+        "error": "net::ERR_ABORTED"
+      }
+    ]
+  }
+]

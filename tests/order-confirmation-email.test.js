@@ -1,6 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { EMAIL_PALETTE, renderOrderConfirmationEmail } from '../lib/email/order-confirmation-email.js';
+import {
+  EMAIL_PALETTE,
+  renderOrderConfirmationEmail,
+} from '../lib/email/order-confirmation-email.js';
 
 /*
  * Screen 12 — Confirmation Email. A transactional email cannot load the stylesheet, so its palette
@@ -10,20 +13,42 @@ import { EMAIL_PALETTE, renderOrderConfirmationEmail } from '../lib/email/order-
 const tokens = readFileSync('app/design-tokens.css', 'utf8');
 
 function primitive(name) {
-  return tokens.match(new RegExp(`--cp-primitive-${name}:\\s*([^;]+);`))?.[1]?.trim();
+  return tokens
+    .match(new RegExp(`--cp-primitive-${name}:\\s*([^;]+);`))?.[1]
+    ?.trim();
 }
 
 const order = {
   orderReference: 'CP-20482',
   currency: 'EUR',
   lines: [
-    { title: 'ONE', size: 'M', color: 'Black', quantity: 1, unitPrice: 180, currency: 'EUR' },
-    { title: 'ONE', size: 'L', color: 'Black', quantity: 2, unitPrice: 180, currency: 'EUR' },
+    {
+      title: 'ONE',
+      size: 'M',
+      color: 'Black',
+      quantity: 1,
+      unitPrice: 180,
+      currency: 'EUR',
+    },
+    {
+      title: 'ONE',
+      size: 'L',
+      color: 'Black',
+      quantity: 2,
+      unitPrice: 180,
+      currency: 'EUR',
+    },
   ],
   subtotal: 540,
   shipping: 12,
   total: 552,
-  shippingAddress: { name: 'A Customer', address: 'Street 1', postalCode: '0150', city: 'Oslo', country: 'Norway' },
+  shippingAddress: {
+    name: 'A Customer',
+    address: 'Street 1',
+    postalCode: '0150',
+    city: 'Oslo',
+    country: 'Norway',
+  },
 };
 
 describe('order confirmation email', () => {
@@ -56,7 +81,10 @@ describe('order confirmation email', () => {
     const html = renderOrderConfirmationEmail({
       ...order,
       lines: [{ ...order.lines[0], title: '<script>alert(1)</script>' }],
-      shippingAddress: { ...order.shippingAddress, name: 'A "quoted" & <b>bold</b> name' },
+      shippingAddress: {
+        ...order.shippingAddress,
+        name: 'A "quoted" & <b>bold</b> name',
+      },
     });
 
     expect(html).not.toContain('<script>alert(1)</script>');

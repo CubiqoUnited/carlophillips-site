@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "cp.integration-visual-qa.v1",
+  "target": "http://127.0.0.1:3000",
+  "capturedAt": "2026-08-30T06:48:49.424Z",
+  "mode": "local-fixture-layout-only",
+  "viewports": {
+    "desktop": {
+      "home": {
+        "status": 200,
+        "screenshot": "desktop-home.png",
+        "dom": {
+          "title": "CARLOPHILLIPS | Signature Series",
+          "bodyLength": 281,
+          "headings": [
+            "Edge Of Life",
+            "ONE"
+          ],
+          "controls": [
+            "Skip to main content",
+            "☰MENU",
+            "Bag",
+            "↓",
+            "MENU",
+            "BAG",
+            "Play motion",
+            "Expand video",
+            "Play video 1",
+            "Play video 2",
+            "Video 3 unavailable",
+            "VIEW GALLERY 0 IMAGES",
+            "ORDER — €180",
+            "ALL CATEGORIES",
+            "ALL HOODIES"
+          ],
+          "errorOverlay": false,
+          "horizontalOverflow": false
+        },
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestFailures": []
+      },
+      "product": {
+        "status": 200,
+        "screenshot": "desktop-product.png",
+        "dom": {
+          "title": "Product Review | CARLOPHILLIPS",
+          "bodyLength": 1816,
+          "headings": [
+            "CARLOPHILLIPS Signature Hoodie",
+            "Runway / campaign opening",
+            "Product front and back",
+            "On-body editorial",
+            "Signature embroidery",
+            "Material and construction",
+            "Product film and motion preview",
+            "Customer-controlled 360°",
+            "Verified 3D model",
+            "Construction details",
+            "Product facts",
+            "Production, delivery, care and returns",
+            "Local fixture facts, not a release."
+          ],
+          "controls": [
+            "Skip to main content",
+            "CARLOPHILLIPS",
+            "Collection",
+            "Member",
+            "Bag",
+            "S",
+            "M",
+            "L",
+            "Purchasing disabled"
+          ],
+          "errorOverlay": false,
+          "horizontalOverflow": false
+        },
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestFailures": []
+      },
+      "checkout-rehearsal": {
+        "status": 200,
+        "screenshot": "desktop-checkout-rehearsal.png",
+        "dom": {
+          "title": "CARLOPHILLIPS | Signature Series",
+          "bodyLength": 428,
+          "headings": [
+            "Checkout rehearsal complete",
+            "Private staging evidence"
+          ],
+          "controls": [
+            "Skip to main content",
+            "Return to Storefront",
+            "View in Admin Portal"
+          ],
+          "errorOverlay": false,
+          "horizontalOverflow": false
+        },
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestFailures": []
+      }
+    },
+    "mobile": {
+      "home": {
+        "status": 200,
+        "screenshot": "mobile-home.png",
+        "dom": {
+          "title": "CARLOPHILLIPS | Signature Series",
+          "bodyLength": 268,
+          "headings": [
+            "Edge Of Life",
+            "ONE"
+          ],
+          "controls": [
+            "Skip to main content",
+            "☰MENU",
+            "Bag",
+            "↓",
+            "MENU",
+            "BAG",
+            "Play motion",
+            "Expand video",
+            "Play video 1",
+            "Play video 2",
+            "Video 3 unavailable",
+            "VIEW GALLERY 0 IMAGES",
+            "ALL CATEGORIES",
+            "ALL HOODIES"
+          ],
+          "errorOverlay": false,
+          "horizontalOverflow": false
+        },
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestFailures": []
+      },
+      "product": {
+        "status": 200,
+        "screenshot": "mobile-product.png",
+        "dom": {
+          "title": "Product Review | CARLOPHILLIPS",
+          "bodyLength": 1816,
+          "headings": [
+            "CARLOPHILLIPS Signature Hoodie",
+            "Runway / campaign opening",
+            "Product front and back",
+            "On-body editorial",
+            "Signature embroidery",
+            "Material and construction",
+            "Product film and motion preview",
+            "Customer-controlled 360°",
+            "Verified 3D model",
+            "Construction details",
+            "Product facts",
+            "Production, delivery, care and returns",
+            "Local fixture facts, not a release."
+          ],
+          "controls": [
+            "Skip to main content",
+            "CARLOPHILLIPS",
+            "Collection",
+            "Member",
+            "Bag",
+            "S",
+            "M",
+            "L",
+            "Purchasing disabled"
+          ],
+          "errorOverlay": false,
+          "horizontalOverflow": false
+        },
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestFailures": []
+      },
+      "checkout-rehearsal": {
+        "status": 200,
+        "screenshot": "mobile-checkout-rehearsal.png",
+        "dom": {
+          "title": "CARLOPHILLIPS | Signature Series",
+          "bodyLength": 428,
+          "headings": [
+            "Checkout rehearsal complete",
+            "Private staging evidence"
+          ],
+          "controls": [
+            "Skip to main content",
+            "Return to Storefront",
+            "View in Admin Portal"
+          ],
+          "errorOverlay": false,
+          "horizontalOverflow": false
+        },
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestFailures": []
+      }
+    }
+  }
+}

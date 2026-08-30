@@ -51,8 +51,8 @@ a current approved match; unrelated or unapproved extras are discarded.
 
 ## Current product state
 
-- One real Apliiq/Shopify Signature Hoodie POC is documented as Draft with purchasing disabled.
-- The currently deployed Production artifact contradicts that Draft truth by exposing checkout; no existing deployment is accepted as a safe rollback until inspected.
+- One real Apliiq/Shopify Signature Hoodie POC is documented as Staged. Preview may rehearse checkout without a Shopify cart, payment, order, inventory, email, or fulfillment write; customer purchasing remains release-gated.
+- The currently deployed Production artifact predates the Staged candidate. It remains historical runtime evidence, not immutable approval or rollback evidence for the current candidate.
 - A prior Shopify audit recorded 12 products with image-only media, but the broader catalog is later reuse/scale input and is not active or release-proven in the current UI.
 - The resolved sequence is Signature Hoodie through the complete reusable system first, then a meaningfully different product, then approved catalog expansion.
 - Vercel Production and the exact PR #9 Preview were read-only observed `READY` on 2026-08-14. GitHub still reports a failed blocked-account Vercel status on PR #9, and no merge or deployment is authorized by that observation.
