@@ -499,7 +499,12 @@ describe('truth contracts', () => {
     ).toBe(hoodieApliiqObservation.mappingFingerprint);
     expect(
       Object.values(hoodieRelease.approvals).every(
-        (approval) => approval.status === 'pending'
+        (approval) =>
+          approval.status === 'approved' &&
+          approval.evidence?.candidateCommit ===
+            hoodieRelease.candidate.gitCommit &&
+          approval.evidence?.approvedTargetFingerprint ===
+            hoodieRelease.candidate.releaseEvidenceFingerprint
       )
     ).toBe(true);
   });

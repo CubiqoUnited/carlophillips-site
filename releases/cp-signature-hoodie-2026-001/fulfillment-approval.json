@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "cp.release-approval.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+  "approval": "fulfillment",
+  "status": "approved",
+  "owner": "Product Owner",
+  "approvedAt": "2026-08-30T10:40:00Z",
+  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "scope": {
+    "adapter": "apliiq",
+    "providerProductId": "5958463",
+    "variantFingerprint": "sha256:68360eae54cec035448ccc4077f9f5d34ef504c5b7be42bfd5cfeeb6afe93bb6",
+    "mappingFingerprint": "sha256:99aceb3be41fa2ad918715b2af091456119a6ef39109bb266a3b0bd373e62a56"
+  },
+  "decisionEvidence": [
+    "codex-task:01a05146-d62b-72e2-8f27-bfb54a453296#explicit-production-go-live-2026-08-30"
+  ],
+  "statement": "The Product Owner approved using the existing reviewed Apliiq mapping for this exact release and directed that the hoodie be offered for sale.",
+  "boundaries": {
+    "sampleOrdered": false,
+    "sampleInspected": false,
+    "fulfillmentOrderCreated": false,
+    "providerStateChanged": false
+  }
+}
