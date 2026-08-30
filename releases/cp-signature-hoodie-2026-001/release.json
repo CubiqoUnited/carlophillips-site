@@ -18,8 +18,8 @@
       "reference": "releases/cp-signature-hoodie-2026-001/shopify-observation-approval.json",
       "fingerprint": "sha256:68fa73714af33f2036927811959a3e117db3c4f810a7ab492d2bd7ed01506ec7",
       "releaseId": "cp-signature-hoodie-2026-001",
-      "candidateCommit": "2ddca6f81e832a08f98149defcdbfb3ec1c0ef1f",
-      "recordedAt": "2026-08-30T08:03:15.202Z"
+      "candidateCommit": "0d696b1b57cbf9c27cab20f832ee744c2299e609",
+      "recordedAt": "2026-08-30T09:03:36.258Z"
     },
     "productionObservation": null
   },
@@ -54,22 +54,22 @@
     "fulfillment": { "status": "pending", "owner": "Product Owner/designee", "evidence": null }
   },
   "candidate": {
-    "gitCommit": "2ddca6f81e832a08f98149defcdbfb3ec1c0ef1f",
+    "gitCommit": "0d696b1b57cbf9c27cab20f832ee744c2299e609",
     "buildEvidence": {
       "reference": "releases/cp-signature-hoodie-2026-001/candidate-build-evidence.json",
-      "fingerprint": "sha256:17a7724bb5f830b565e06e2f00ec61cb4e9824cf4943c7824fda43302d1bd45b",
+      "fingerprint": "sha256:4e68515c65d1d58f6efc3573977917841d50513e7325b059d9677da1250758c1",
       "releaseId": "cp-signature-hoodie-2026-001",
-      "candidateCommit": "2ddca6f81e832a08f98149defcdbfb3ec1c0ef1f",
-      "recordedAt": "2026-08-30T08:01:40Z"
+      "candidateCommit": "0d696b1b57cbf9c27cab20f832ee744c2299e609",
+      "recordedAt": "2026-08-30T09:03:07Z"
     },
     "stagingEvidence": {
       "reference": "releases/cp-signature-hoodie-2026-001/staging-evidence.json",
-      "fingerprint": "sha256:628399a3e3d32043c48f3741e20db4a097a3c77aab02323b64481cc4998b427e",
+      "fingerprint": "sha256:033bb7a58d00df6af11eacd8cccddcf7ebd8d8edb80c5eea00e566439e028ff7",
       "releaseId": "cp-signature-hoodie-2026-001",
-      "candidateCommit": "2ddca6f81e832a08f98149defcdbfb3ec1c0ef1f",
-      "recordedAt": "2026-08-30T08:03:15.202Z"
+      "candidateCommit": "0d696b1b57cbf9c27cab20f832ee744c2299e609",
+      "recordedAt": "2026-08-30T09:03:36.258Z"
     },
-    "releaseEvidenceFingerprint": "sha256:55fce20c7c91a3be1795c3cd316a56058b024d02903ec70caf8d9771bb5a593d"
+    "releaseEvidenceFingerprint": "sha256:104bd168f7b3ac296bcab15818ce7404aa502d4219df3286459e2ffb8d4c600d"
   },
   "rollback": {
     "strategy": "withdraw-release",
@@ -77,8 +77,8 @@
       "reference": "releases/cp-signature-hoodie-2026-001/rollback-plan.md",
       "fingerprint": "sha256:c1ba2c33c24c9237fced7febb2263c6398235ba2945bfc4ce0b542fe8f40c96d",
       "releaseId": "cp-signature-hoodie-2026-001",
-      "candidateCommit": "2ddca6f81e832a08f98149defcdbfb3ec1c0ef1f",
-      "recordedAt": "2026-08-30T08:03:15.202Z"
+      "candidateCommit": "0d696b1b57cbf9c27cab20f832ee744c2299e609",
+      "recordedAt": "2026-08-30T09:03:36.258Z"
     },
     "verificationEvidence": null,
     "previousReleaseId": null

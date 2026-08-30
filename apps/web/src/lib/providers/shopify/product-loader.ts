@@ -18,6 +18,7 @@ import type {
   ProductLoader,
   RuntimeProduct,
 } from '../../commerce/runtime-types';
+import { normalizePublicShopifyProduct } from './public-product-json-adapter';
 
 class ShopifyConfigurationError extends Error {
   readonly code = 'SHOPIFY_NOT_CONFIGURED';
@@ -30,6 +31,7 @@ export function createShopifyProductLoader({
   environment = 'local',
   observedAt = () => new Date().toISOString(),
   capabilityEvidence = null,
+  publicCurrency = 'USD',
 }: {
   storeDomain?: string;
   storefrontToken?: string;
@@ -37,29 +39,52 @@ export function createShopifyProductLoader({
   environment?: CommerceEnvironment;
   observedAt?: () => string;
   capabilityEvidence?: string | null;
+  publicCurrency?: string;
 }): ProductLoader {
-  if (!storeDomain || !storefrontToken) {
+  if (!storeDomain) {
     throw new ShopifyConfigurationError(
-      'Shopify Storefront API is not configured'
+      'Shopify Storefront domain is not configured'
     );
   }
 
-  const client = createStorefrontClient({
-    storeDomain,
-    storefrontAccessToken: storefrontToken,
-    fetchImpl,
-  });
+  const client = storefrontToken
+    ? createStorefrontClient({
+        storeDomain,
+        storefrontAccessToken: storefrontToken,
+        fetchImpl,
+      })
+    : null;
 
   return async function loadProduct(handle: string) {
-    const result = await client.query<
-      GetProductByHandleQuery,
-      { handle: string }
-    >({
-      document: GET_PRODUCT_BY_HANDLE,
-      variables: { handle },
-    });
-    const transport = normalizeStorefrontProduct(result);
-    const product = transport ? toObservedProduct(transport) : null;
+    let product: RuntimeProduct | null;
+    if (client) {
+      const result = await client.query<
+        GetProductByHandleQuery,
+        { handle: string }
+      >({
+        document: GET_PRODUCT_BY_HANDLE,
+        variables: { handle },
+      });
+      const transport = normalizeStorefrontProduct(result);
+      product = transport ? toObservedProduct(transport) : null;
+    } else {
+      const normalizedDomain = storeDomain
+        .replace(/^https?:\/\//i, '')
+        .replace(/\/$/, '');
+      const response = await fetchImpl(
+        `https://${normalizedDomain}/products/${encodeURIComponent(handle)}.js`,
+        { method: 'GET', cache: 'no-store' }
+      );
+      if (!response.ok) {
+        throw new Error(
+          `Shopify public product JSON returned HTTP ${response.status}`
+        );
+      }
+      product = normalizePublicShopifyProduct(await response.json(), {
+        currency: publicCurrency,
+        storeDomain: normalizedDomain,
+      });
+    }
     if (!product) return null;
 
     const observation = createProductObservation({
@@ -79,6 +104,7 @@ function toObservedProduct(
   const colors = distinctOptions(product.variants, 'color');
   const sizes = distinctOptions(product.variants, 'size');
   const tagline = customerTagline(product.tags, product.productType);
+  const description = canonicalCustomerText(product.description);
 
   return {
     id: product.handle,
@@ -91,11 +117,8 @@ function toObservedProduct(
     compareAtPrice: Number(product.priceRange.maximum.amount),
     currency: product.priceRange.minimum.currency,
     tagline,
-    description: product.description,
-    details: product.description
-      .split(/\r?\n/)
-      .map((item) => item.trim())
-      .filter(Boolean),
+    description,
+    details: description ? [description] : [],
     images: product.media
       .filter((item) => item.type === 'image')
       .map((item) => item.url),
@@ -116,7 +139,7 @@ function toObservedProduct(
       title: variant.title,
       availableForSale: variant.availableForSale,
       price: {
-        amount: variant.price.amount,
+        amount: canonicalMoneyAmount(variant.price.amount),
         currencyCode: variant.price.currency,
       },
       selectedOptions: variant.selectedOptions.map((option) => ({ ...option })),
@@ -128,6 +151,18 @@ function toObservedProduct(
     productType: product.productType,
     tags: [...product.tags],
   };
+}
+
+function canonicalCustomerText(value: string): string {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function canonicalMoneyAmount(value: string): string {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount < 0) {
+    throw new Error('Shopify variant price is invalid.');
+  }
+  return amount.toFixed(2);
 }
 
 function distinctOptions(

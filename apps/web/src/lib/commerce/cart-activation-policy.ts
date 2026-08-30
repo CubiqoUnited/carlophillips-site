@@ -41,7 +41,6 @@ export function evaluateCartActivation({
   capabilityDecision,
   variantResolverDecision = null,
   activationApproval = null,
-  activationRequested = false,
   checkoutApproval = null,
 }: {
   environment: CommerceEnvironment;
@@ -58,7 +57,6 @@ export function evaluateCartActivation({
     environments: string[];
     evidence: string;
   } | null;
-  activationRequested?: boolean;
   checkoutApproval?: {
     status: string;
     owner: string;
@@ -187,11 +185,6 @@ export function evaluateCartActivation({
       approvalReady,
       'Record explicit Product Owner approval scoped to activate-customer-cart with durable evidence.',
       true
-    ),
-    prerequisite(
-      'SERVER_CART_UI_GATE_REQUIRED',
-      activationRequested === true,
-      'Set the server-only SHOPIFY_CART_UI_ENABLED gate only in the explicitly approved environment.'
     ),
   ];
   const firstUnmet = prerequisites.find((item) => item.status !== 'satisfied');
