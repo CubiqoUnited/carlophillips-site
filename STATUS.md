@@ -1,8 +1,17 @@
 # Current Status
 
-Updated: 2026-08-29
-Branch: `codex/staging-runtime-regressions-20260829` from `staging`; no merge to `main` or Production deployment
+Updated: 2026-08-30
+Branch: `main`; Production launch merged at `7c0fd6cb92d61c9a74cc83e64eb4291c31f0fd8c`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Signature Hoodie Production launch — 2026-08-30
+
+- The exact Product Owner-approved staging storefront is live at `https://www.carlophillips.com`: two approved videos, twelve approved images, USD $128, and Small, Medium, and Large selections.
+- Production uses an exact-product authorization bound to release `cp-signature-hoodie-2026-001`, the reviewed candidate and evidence fingerprint, the approved offer set, and sanitized no-order cart proof. It does not authorize future products.
+- The same-origin Production checkout returned HTTP 303 to the trusted Shopify host. Shopify Checkout returned HTTP 200 and showed one Black / Medium Hoodie at USD $128 with live payment controls. No customer data, payment, order, or fulfillment request was submitted during QA.
+- Desktop and mobile checks passed with HTTP 200, the expected two motion controls and twelve-image gallery, no page errors or overlays, and no horizontal overflow. The full source gate passed lint, typecheck, stylelint, 73 test files / 644 tests, formatting, and the optimized Next.js build.
+- The Product Owner rejected the agent-authored physical-sample condition for this exact launch. No sample was ordered or inspected, and this is not a launch blocker or a Product Owner action.
+- Earlier status entries below are retained as dated history; where they describe Production as unchanged, checkout as disabled, or a sample as required, they are superseded by this launch record.
 
 ## Staging product-video, gallery, landing and checkout correction — 2026-08-29
 
@@ -15,7 +24,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
 ## Screen Inventory Review Workbook — full look-and-feel implementation — 2026-08-26
 
-- The *Screen Inventory Review Workbook* (45 pages, 28 numbered screens plus the media/order/cart/shipping/session exception appendix) is the final look-and-feel requirement. Current state, future state and a 33-item gap register with recorded scope exclusions are in `docs/screen-inventory-gap-analysis.md`; that document is the analysis gate this change was built against.
+- The _Screen Inventory Review Workbook_ (45 pages, 28 numbered screens plus the media/order/cart/shipping/session exception appendix) is the final look-and-feel requirement. Current state, future state and a 33-item gap register with recorded scope exclusions are in `docs/screen-inventory-gap-analysis.md`; that document is the analysis gate this change was built against.
 - The customer composition is superseded, not redesigned around: token authority, tier direction, reference closure, reachability, the four canonical breakpoints and the no-raw-literal rules are unchanged, and `yarn lint:design-system` passes. Landing is now a black morph panel over a stationary hero with `ENTER`; discovery is a three-column stage with a 4:5 product video; the cart → checkout → confirmation → tracking path, support form, private list, size guide and the ten appendix exception states are implemented.
 - The workbook's pages 24–28 are stamped `EXPLORATORY COLOUR STUDY — NOT AN ACTIVE THEME TOKEN`. That palette was **not** adopted; no theme value changed.
 - **Media readiness (requirement 2)** is a single fail-closed contract, `lib/media/media-readiness.js`, covering the landing hero (16:9 desktop, 9:16 mobile) and the three approved product clips at 4:5. `ready` requires an evidenced source **and** a verified first-frame poster, because the workbook needs that poster for instant render and for the reduced-motion fallback. Current repository verdict: landing hero `poster-only` (no approved hero master is provisioned), Runway motion and Fit & silhouette `ready`, 360 showcase `not-ready` (`source-not-declared`). Report: `test_reports/media-readiness/media-readiness.json` via `yarn verify:media-readiness`.
@@ -177,6 +186,7 @@ Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 - One `main` branch remains production intent; temporary PR branches create Vercel Preview staging. A READY Preview or mergeable PR is evidence, not approval.
 - Checkout remains present but denied by default. Git tags identify code milestones; Product Release Records independently govern product truth and release authority.
 - The authority-closure merge changes repository documentation only. It does not itself assert Production readiness; external account, identity, deployment, and live-commerce gates remain evidence-bound.
+
 ## Canonical v1.2.2 merge and CI/CD bootstrap — 2026-08-14
 
 - PR #9 merged successfully into canonical `main` as `cd1cd771fdd6d22e49d772acf8850599e2dad692`. Its parents are exact prior `main` `9b153bf1` and reviewed head `f82733ca`; the immutable replacement receipt is `https://github.com/CubiqoUnited/carlophillips-site/pull/9#issuecomment-5291120282`.
