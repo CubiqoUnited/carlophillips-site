@@ -1,37 +1,62 @@
 {
   "schemaVersion": "cp.candidate-build-evidence.v1",
   "releaseId": "cp-signature-hoodie-2026-001",
-  "candidateCommit": "4ee088cd39cfa9b967bde32893f0dc2a33325904",
-  "recordedAt": "2026-08-17T00:41:23Z",
+  "candidateCommit": "2ddca6f81e832a08f98149defcdbfb3ec1c0ef1f",
+  "recordedAt": "2026-08-30T08:01:40Z",
   "sourceChecks": {
     "designSystemLint": "passed",
+    "productionCommerceLint": "passed",
     "eslint": "passed_zero_warnings",
+    "typecheck": "passed",
+    "stylelint": "passed",
+    "formatCheck": "passed",
     "tests": {
       "status": "passed",
-      "files": 50,
-      "assertions": 511
+      "files": 70,
+      "assertions": 621
     },
     "productionDependencyAudit": {
       "status": "passed",
       "vulnerabilities": 0,
-      "packages": 67,
-      "basis": "dependency graph unchanged from the full Yarn Classic verification recorded by the pipeline report"
+      "packages": 100
+    },
+    "storybookBuild": {
+      "status": "passed",
+      "version": "8.6.18"
     },
     "nextBuild": {
       "status": "passed",
       "version": "15.5.21"
     }
   },
+  "requiredChecks": [
+    {
+      "name": "Verify",
+      "status": "passed",
+      "completedAt": "2026-08-30T08:01:40Z"
+    },
+    {
+      "name": "Checkout E2E and accessibility",
+      "status": "passed",
+      "completedAt": "2026-08-30T08:01:12Z"
+    }
+  ],
   "browserChecks": {
     "status": "passed",
-    "route": "/products/carlophillips-signature-hoodie",
+    "evidencePhase": "prebinding-diagnostic",
+    "routes": [
+      "/",
+      "/product/carlophillips-signature-hoodie",
+      "/checkout/confirm?mode=preview"
+    ],
     "viewports": ["1440x1000", "390x844"],
-    "purchasingDenied": true,
-    "checkoutControls": 0,
-    "overflow": false,
-    "runtimeErrors": 0,
-    "evidence": "test_reports/cp-product-offer-sml-2026-08-17/report.md"
+    "accessibilityViolations": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestFailures": 0,
+    "frameworkOverlay": false,
+    "privateEvidenceFingerprint": "sha256:f3139083c6ca4768141247d1db960affa604bc68fcf10d50963b376f376df002"
   },
-  "report": "test_reports/cp-product-offer-sml-2026-08-17/report.md",
-  "authority": "candidate_evidence_only_no_deployment_or_release"
+  "authority": "candidate_build_and_quality_evidence_only_no_release_or_production_authority"
 }

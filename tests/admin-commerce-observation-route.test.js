@@ -27,13 +27,20 @@ const observation = {
   variantFingerprint: fingerprint,
   commerceFactsFingerprint: fingerprint,
   observationFingerprint: fingerprint,
-  review: { status: 'pending', owner: 'Product Owner/designee', evidence: null },
+  review: {
+    status: 'pending',
+    owner: 'Product Owner/designee',
+    evidence: null,
+  },
 };
 
 describe('Product Owner commerce observation endpoint', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    evaluateAdminRequest.mockResolvedValue({ allowed: true, role: 'product_owner' });
+    evaluateAdminRequest.mockResolvedValue({
+      allowed: true,
+      role: 'product_owner',
+    });
     loadShopifyProduct.mockResolvedValue({
       id: 'gid://shopify/Product/secret',
       observedVariants: [{ id: 'gid://shopify/ProductVariant/secret' }],
@@ -42,7 +49,11 @@ describe('Product Owner commerce observation endpoint', () => {
   });
 
   it('returns only the sanitized observation with private no-store headers', async () => {
-    const response = await GET(new Request('https://staging.carlophillips.com/api/admin/commerce-observation'));
+    const response = await GET(
+      new Request(
+        'https://staging.carlophillips.com/api/admin/commerce-observation'
+      )
+    );
 
     expect(response.status).toBe(200);
     expect(response.headers.get('cache-control')).toBe('no-store, private');
@@ -51,25 +62,40 @@ describe('Product Owner commerce observation endpoint', () => {
       handle: 'carlophillips-signature-hoodie',
       observation,
     });
-    expect(loadShopifyProduct).toHaveBeenCalledWith('carlophillips-signature-hoodie');
+    expect(loadShopifyProduct).toHaveBeenCalledWith(
+      'carlophillips-signature-hoodie'
+    );
     expect(evaluateAdminRequest).toHaveBeenCalledWith(expect.any(Headers), {
       requiredRole: 'product_owner',
     });
   });
 
   it('fails closed for an unauthenticated or wrong-role request', async () => {
-    evaluateAdminRequest.mockResolvedValue({ allowed: false, reason: 'not_found' });
+    evaluateAdminRequest.mockResolvedValue({
+      allowed: false,
+      reason: 'not_found',
+    });
 
-    const response = await GET(new Request('https://staging.carlophillips.com/api/admin/commerce-observation'));
+    const response = await GET(
+      new Request(
+        'https://staging.carlophillips.com/api/admin/commerce-observation'
+      )
+    );
 
     expect(response.status).toBe(404);
     expect(loadShopifyProduct).not.toHaveBeenCalled();
   });
 
   it('does not leak provider errors or return a partial observation', async () => {
-    loadShopifyProduct.mockRejectedValue(new Error('token and raw provider error'));
+    loadShopifyProduct.mockRejectedValue(
+      new Error('token and raw provider error')
+    );
 
-    const response = await GET(new Request('https://staging.carlophillips.com/api/admin/commerce-observation'));
+    const response = await GET(
+      new Request(
+        'https://staging.carlophillips.com/api/admin/commerce-observation'
+      )
+    );
 
     expect(response.status).toBe(503);
     await expect(response.json()).resolves.toEqual({

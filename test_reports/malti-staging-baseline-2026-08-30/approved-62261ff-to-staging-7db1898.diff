@@ -1,0 +1,55 @@
+diff --git a/lib/commerce/product-gateway.js b/lib/commerce/product-gateway.js
+index de61c75..713f7a3 100644
+--- a/lib/commerce/product-gateway.js
++++ b/lib/commerce/product-gateway.js
+@@ -1,21 +1,21 @@
+-import { resolveProductSource } from './release-policy';
++import { resolveProductSource } from './release-policy.js';
+
+ export const COMMERCE_DATA_MODES = Object.freeze({
+   FIXTURE: 'fixture',
+   SHOPIFY: 'shopify',
+ });
+
+ export function resolveCommerceDataMode({ configuredMode, environment }) {
+   const mode = configuredMode || (environment === 'local' ? COMMERCE_DATA_MODES.FIXTURE : COMMERCE_DATA_MODES.SHOPIFY);
+
+   if (!Object.values(COMMERCE_DATA_MODES).includes(mode)) {
+     throw new Error(`Unsupported commerce data mode: ${mode}`);
+   }
+
+   return mode;
+ }
+
+ function unavailableDecision(environment, reason) {
+   return {
+     schemaVersion: 'cp.release-decision.v1',
+     environment,
+diff --git a/test_reports/media-readiness/media-readiness.json b/test_reports/media-readiness/media-readiness.json
+index 472aa3c..2208f1a 100644
+--- a/test_reports/media-readiness/media-readiness.json
++++ b/test_reports/media-readiness/media-readiness.json
+@@ -1,22 +1,22 @@
+ {
+-  "generatedAt": "2026-08-29T14:04:42.077Z",
++  "generatedAt": "2026-08-29T20:09:19.376Z",
+   "strict": false,
+   "schemaVersion": "cp.media-readiness.v1",
+   "decisions": [
+     {
+       "slotId": "landing-hero-desktop",
+       "role": "landing-hero",
+       "label": "Landing hero / desktop",
+       "aspect": "16:9",
+       "verdict": "ready",
+       "reason": "ok",
+       "motionAllowed": true,
+       "playbackId": null,
+       "sourceUrl": "/campaigns/lofoten-runway-hero.mp4",
+       "posterUrl": "/campaigns/lofoten-runway-hero.avif",
+       "posterFormat": "avif",
+       "disclosure": null,
+       "alt": "CARLOPHILLIPS runway campaign staged against a dramatic coastal mountain landscape",
+       "viewport": "desktop",
+       "clipOrder": null
+     },

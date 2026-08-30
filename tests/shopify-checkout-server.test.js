@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('server-only', () => ({}));
 
@@ -11,6 +11,13 @@ import {
 
 const variantId = 'gid://shopify/ProductVariant/100';
 const referenceHash = `sha256:${createHash('sha256').update(variantId).digest('hex')}`;
+const originalCheckoutEnabled = process.env.SHOPIFY_CHECKOUT_ENABLED;
+
+afterEach(() => {
+  if (originalCheckoutEnabled === undefined)
+    delete process.env.SHOPIFY_CHECKOUT_ENABLED;
+  else process.env.SHOPIFY_CHECKOUT_ENABLED = originalCheckoutEnabled;
+});
 
 function readyCapabilityRegistry() {
   return {
@@ -69,7 +76,6 @@ function approvedOptions(overrides = {}) {
     releaseRecord,
     mediaManifest: createCompleteMediaManifest(),
     checkoutAuthorization: authorization(releaseRecord),
-    checkoutRequested: true,
     storeDomain: 'example.myshopify.com',
     storefrontToken: 'test-token',
     capabilityRegistry: readyCapabilityRegistry(),
@@ -102,6 +108,7 @@ function approvedOptions(overrides = {}) {
 
 describe('release-bound Shopify checkout handoff', () => {
   it('creates a server-only cart and returns the trusted hosted checkout URL', async () => {
+    delete process.env.SHOPIFY_CHECKOUT_ENABLED;
     const options = approvedOptions();
     const result = await createApprovedHoodieCheckout(options);
 
@@ -111,40 +118,79 @@ describe('release-bound Shopify checkout handoff', () => {
     });
     expect(options.fetchImpl).toHaveBeenCalledTimes(1);
     const request = options.fetchImpl.mock.calls[0][1];
-    expect(request.headers['X-Shopify-Storefront-Access-Token']).toBe('test-token');
+    expect(request.headers['X-Shopify-Storefront-Access-Token']).toBe(
+      'test-token'
+    );
     expect(request.body).toContain(variantId);
     expect(JSON.stringify(result)).not.toContain(variantId);
+  });
+
+  it('does not reintroduce the obsolete checkout switch for authorized Production', async () => {
+    process.env.SHOPIFY_CHECKOUT_ENABLED = 'false';
+    const options = approvedOptions();
+
+    await expect(createApprovedHoodieCheckout(options)).resolves.toEqual({
+      ok: true,
+      checkoutUrl: 'https://example.myshopify.com/checkouts/test',
+    });
+    expect(options.fetchImpl).toHaveBeenCalledTimes(1);
   });
 
   it('denies before any Shopify call when the release is still Draft', async () => {
     const releaseRecord = createCompleteReleaseRecord('draft');
     const fetchImpl = vi.fn();
     const loadProductImpl = vi.fn();
-    const result = await createApprovedHoodieCheckout(approvedOptions({
-      releaseRecord,
-      checkoutAuthorization: authorization(releaseRecord),
-      fetchImpl,
-      loadProductImpl,
-    }));
+    const result = await createApprovedHoodieCheckout(
+      approvedOptions({
+        releaseRecord,
+        checkoutAuthorization: authorization(releaseRecord),
+        fetchImpl,
+        loadProductImpl,
+      })
+    );
 
-    expect(result).toEqual({ ok: false, reason: 'PRODUCT_RELEASE_NOT_RELEASED' });
+    expect(result).toEqual({
+      ok: false,
+      reason: 'PRODUCT_RELEASE_NOT_RELEASED',
+    });
     expect(loadProductImpl).not.toHaveBeenCalled();
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
   it('rejects a variant outside the reviewed customer offer before Shopify access', async () => {
-    const options = approvedOptions({ referenceHash: `sha256:${'f'.repeat(64)}` });
+    const options = approvedOptions({
+      referenceHash: `sha256:${'f'.repeat(64)}`,
+    });
     const result = await createApprovedHoodieCheckout(options);
-    expect(result).toEqual({ ok: false, reason: 'VARIANT_OUTSIDE_APPROVED_OFFER' });
+    expect(result).toEqual({
+      ok: false,
+      reason: 'VARIANT_OUTSIDE_APPROVED_OFFER',
+    });
     expect(options.loadProductImpl).not.toHaveBeenCalled();
     expect(options.fetchImpl).not.toHaveBeenCalled();
   });
 
   it.each([
-    ['missing Product Owner authorization', { checkoutAuthorization: null }, 'CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION'],
-    ['disabled environment gate', { checkoutRequested: false }, 'CHECKOUT_ENVIRONMENT_GATE_DISABLED'],
-    ['local environment', { environment: 'local' }, 'CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION'],
-    ['unverified cart capability', { capabilityRegistry: { capabilities: [] } }, 'SHOPIFY_CART_CAPABILITY_NOT_READY'],
+    [
+      'missing Product Owner authorization',
+      { checkoutAuthorization: null },
+      'CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION',
+    ],
+    [
+      'Preview environment',
+      { environment: 'preview' },
+      'CHECKOUT_ENVIRONMENT_REJECTED',
+    ],
+    [
+      'local environment',
+      { environment: 'local' },
+      'CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION',
+    ],
+    [
+      'unverified cart capability',
+      { capabilityRegistry: { capabilities: [] } },
+      'SHOPIFY_CART_CAPABILITY_NOT_READY',
+    ],
   ])('fails closed for %s', async (_label, override, reason) => {
     const options = approvedOptions(override);
     const result = await createApprovedHoodieCheckout(options);
@@ -163,7 +209,10 @@ describe('release-bound Shopify checkout handoff', () => {
     }));
     const result = await createApprovedHoodieCheckout(options);
 
-    expect(result).toEqual({ ok: false, reason: 'SHOPIFY_RELEASE_BINDING_STALE' });
+    expect(result).toEqual({
+      ok: false,
+      reason: 'SHOPIFY_RELEASE_BINDING_STALE',
+    });
     expect(options.fetchImpl).not.toHaveBeenCalled();
   });
 
@@ -174,7 +223,10 @@ describe('release-bound Shopify checkout handoff', () => {
       json: async () => ({
         data: {
           cartCreate: {
-            cart: { checkoutUrl: 'https://attacker.example/checkout', totalQuantity: 1 },
+            cart: {
+              checkoutUrl: 'https://attacker.example/checkout',
+              totalQuantity: 1,
+            },
             userErrors: [],
           },
         },
@@ -182,7 +234,10 @@ describe('release-bound Shopify checkout handoff', () => {
     }));
     const result = await createApprovedHoodieCheckout(options);
 
-    expect(result).toEqual({ ok: false, reason: 'SHOPIFY_CHECKOUT_URL_REJECTED' });
+    expect(result).toEqual({
+      ok: false,
+      reason: 'SHOPIFY_CHECKOUT_URL_REJECTED',
+    });
   });
 
   it('accepts an explicitly configured custom Shopify checkout host', async () => {
@@ -192,7 +247,10 @@ describe('release-bound Shopify checkout handoff', () => {
       json: async () => ({
         data: {
           cartCreate: {
-            cart: { checkoutUrl: 'https://www.carlophillips.com/checkouts/test', totalQuantity: 1 },
+            cart: {
+              checkoutUrl: 'https://www.carlophillips.com/checkouts/test',
+              totalQuantity: 1,
+            },
             userErrors: [],
           },
         },

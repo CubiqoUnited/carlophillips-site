@@ -1,0 +1,572 @@
+{
+  "schemaVersion": "cp.malti-staging-baseline.v1",
+  "target": "https://staging.carlophillips.com",
+  "capturedAt": "2026-08-30T06:20:06.171Z",
+  "commit": "7db1898bcfd13e56d12104ec5fcdcb1027d7650b",
+  "staticFixtureCommerceProof": false,
+  "viewports": {
+    "desktop": {
+      "product": {
+        "requestedUrl": "https://staging.carlophillips.com/products/carlophillips-signature-hoodie",
+        "navigationStatus": 200,
+        "screenshot": "desktop-product.png",
+        "dom": {
+          "title": "Product preview | CARLOPHILLIPS",
+          "url": "https://staging.carlophillips.com/products/carlophillips-signature-hoodie",
+          "headings": [
+            "This piece is currently unavailable."
+          ],
+          "bodyText": "Skip to main content CARLOPHILLIPS COLLECTION BAG CARLOPHILLIPS This piece is currently unavailable. Return to the collection to see what is available now. RETURN TO COLLECTION © CARLOPHILLIPS Privacy Terms Cookies",
+          "purchaseSignals": [],
+          "controls": [
+            {
+              "tag": "a",
+              "text": "Skip to main content",
+              "href": "#main-content",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "CARLOPHILLIPS",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "BAG",
+              "href": "/bag",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "RETURN TO COLLECTION",
+              "href": "/shop",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Privacy",
+              "href": "/privacy",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Terms",
+              "href": "/terms",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Cookies",
+              "href": "/cookie-policy",
+              "enabled": true,
+              "type": null
+            }
+          ],
+          "forms": [],
+          "media": [],
+          "layout": {
+            "innerWidth": 1440,
+            "innerHeight": 1000,
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1068,
+            "horizontalOverflow": false
+          }
+        },
+        "consoleMessages": [],
+        "pageErrors": [],
+        "requestFailures": [
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/shop?_rsc=tkJ7P2FtcnAiq0y5",
+            "error": "net::ERR_ABORTED"
+          },
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/bag?_rsc=tkJ7P2FtcnAiq0y5",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "errorResponses": []
+      },
+      "bag": {
+        "requestedUrl": "https://staging.carlophillips.com/bag",
+        "navigationStatus": 200,
+        "screenshot": "desktop-bag.png",
+        "dom": {
+          "title": "Bag | CARLOPHILLIPS",
+          "url": "https://staging.carlophillips.com/bag",
+          "headings": [
+            "The bag cannot be opened safely."
+          ],
+          "bodyText": "Skip to main content CARLOPHILLIPS COLLECTION BAG COMMERCE TRUTH ENVIRONMENT preview SOURCE Unavailable CHECKOUT Disabled COMMERCE UNAVAILABLE The bag cannot be opened safely. The required cart capability has not been verified for this environment. No local cart has been substituted. VIEW RELEASE STATE RETURN HOME © CARLOPHILLIPS Privacy Terms Cookies",
+          "purchaseSignals": [
+            "preview"
+          ],
+          "controls": [
+            {
+              "tag": "a",
+              "text": "Skip to main content",
+              "href": "#main-content",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "CARLOPHILLIPS",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "COLLECTION",
+              "href": "/shop",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "VIEW RELEASE STATE",
+              "href": "/collections",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "RETURN HOME",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Privacy",
+              "href": "/privacy",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Terms",
+              "href": "/terms",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Cookies",
+              "href": "/cookie-policy",
+              "enabled": true,
+              "type": null
+            }
+          ],
+          "forms": [],
+          "media": [],
+          "layout": {
+            "innerWidth": 1440,
+            "innerHeight": 1000,
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1068,
+            "horizontalOverflow": false
+          }
+        },
+        "consoleMessages": [],
+        "pageErrors": [],
+        "requestFailures": [
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/shop?_rsc=YMXqTPMMiIuiQDA4",
+            "error": "net::ERR_ABORTED"
+          },
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/collections?_rsc=YMXqTPMMiIuiQDA4",
+            "error": "net::ERR_ABORTED"
+          },
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/?_rsc=YMXqTPMMiIuiQDA4",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "errorResponses": []
+      },
+      "checkout": {
+        "requestedUrl": "https://staging.carlophillips.com/checkout",
+        "navigationStatus": 200,
+        "screenshot": "desktop-checkout.png",
+        "dom": {
+          "title": "Checkout | CARLOPHILLIPS",
+          "url": "https://staging.carlophillips.com/checkout",
+          "headings": [
+            "YOUR BAG IS EMPTY"
+          ],
+          "bodyText": "Skip to main content MENU CARLOPHILLIPS BAG 1 INFORMATION 2 SHIPPING & PAYMENT 3 CONFIRMATION CARLOPHILLIPS EXCEPTION YOUR BAG IS EMPTY Add a product to continue to checkout. Your saved discovery context remains available. CONTINUE SHOPPING © CARLOPHILLIPS Privacy Terms Cookies",
+          "purchaseSignals": [
+            "Continue to checkout"
+          ],
+          "controls": [
+            {
+              "tag": "a",
+              "text": "Skip to main content",
+              "href": "#main-content",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "button",
+              "text": "MENU",
+              "href": null,
+              "enabled": true,
+              "type": "button"
+            },
+            {
+              "tag": "a",
+              "text": "CARLOPHILLIPS",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "BAG",
+              "href": "/bag",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "CONTINUE SHOPPING",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Privacy",
+              "href": "/privacy",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Terms",
+              "href": "/terms",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Cookies",
+              "href": "/cookie-policy",
+              "enabled": true,
+              "type": null
+            }
+          ],
+          "forms": [],
+          "media": [],
+          "layout": {
+            "innerWidth": 1440,
+            "innerHeight": 1000,
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1068,
+            "horizontalOverflow": false
+          }
+        },
+        "consoleMessages": [],
+        "pageErrors": [],
+        "requestFailures": [],
+        "errorResponses": []
+      }
+    },
+    "mobile": {
+      "product": {
+        "requestedUrl": "https://staging.carlophillips.com/products/carlophillips-signature-hoodie",
+        "navigationStatus": 200,
+        "screenshot": "mobile-product.png",
+        "dom": {
+          "title": "Product preview | CARLOPHILLIPS",
+          "url": "https://staging.carlophillips.com/products/carlophillips-signature-hoodie",
+          "headings": [
+            "This piece is currently unavailable."
+          ],
+          "bodyText": "Skip to main content CARLOPHILLIPS COLLECTION BAG CARLOPHILLIPS This piece is currently unavailable. Return to the collection to see what is available now. RETURN TO COLLECTION © CARLOPHILLIPS Privacy Terms Cookies",
+          "purchaseSignals": [],
+          "controls": [
+            {
+              "tag": "a",
+              "text": "Skip to main content",
+              "href": "#main-content",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "CARLOPHILLIPS",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "BAG",
+              "href": "/bag",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "RETURN TO COLLECTION",
+              "href": "/shop",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Privacy",
+              "href": "/privacy",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Terms",
+              "href": "/terms",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Cookies",
+              "href": "/cookie-policy",
+              "enabled": true,
+              "type": null
+            }
+          ],
+          "forms": [],
+          "media": [],
+          "layout": {
+            "innerWidth": 390,
+            "innerHeight": 844,
+            "clientWidth": 390,
+            "scrollWidth": 390,
+            "scrollHeight": 912,
+            "horizontalOverflow": false
+          }
+        },
+        "consoleMessages": [],
+        "pageErrors": [],
+        "requestFailures": [],
+        "errorResponses": []
+      },
+      "bag": {
+        "requestedUrl": "https://staging.carlophillips.com/bag",
+        "navigationStatus": 200,
+        "screenshot": "mobile-bag.png",
+        "dom": {
+          "title": "Bag | CARLOPHILLIPS",
+          "url": "https://staging.carlophillips.com/bag",
+          "headings": [
+            "The bag cannot be opened safely."
+          ],
+          "bodyText": "Skip to main content CARLOPHILLIPS COLLECTION BAG COMMERCE TRUTH ENVIRONMENT preview SOURCE Unavailable CHECKOUT Disabled COMMERCE UNAVAILABLE The bag cannot be opened safely. The required cart capability has not been verified for this environment. No local cart has been substituted. VIEW RELEASE STATE RETURN HOME © CARLOPHILLIPS Privacy Terms Cookies",
+          "purchaseSignals": [
+            "preview"
+          ],
+          "controls": [
+            {
+              "tag": "a",
+              "text": "Skip to main content",
+              "href": "#main-content",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "CARLOPHILLIPS",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "COLLECTION",
+              "href": "/shop",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "VIEW RELEASE STATE",
+              "href": "/collections",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "RETURN HOME",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Privacy",
+              "href": "/privacy",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Terms",
+              "href": "/terms",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Cookies",
+              "href": "/cookie-policy",
+              "enabled": true,
+              "type": null
+            }
+          ],
+          "forms": [],
+          "media": [],
+          "layout": {
+            "innerWidth": 390,
+            "innerHeight": 844,
+            "clientWidth": 390,
+            "scrollWidth": 390,
+            "scrollHeight": 1126,
+            "horizontalOverflow": false
+          }
+        },
+        "consoleMessages": [],
+        "pageErrors": [],
+        "requestFailures": [
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/shop?_rsc=YMXqTPMMiIuiQDA4",
+            "error": "net::ERR_ABORTED"
+          },
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/?_rsc=YMXqTPMMiIuiQDA4",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "errorResponses": []
+      },
+      "checkout": {
+        "requestedUrl": "https://staging.carlophillips.com/checkout",
+        "navigationStatus": 200,
+        "screenshot": "mobile-checkout.png",
+        "dom": {
+          "title": "Checkout | CARLOPHILLIPS",
+          "url": "https://staging.carlophillips.com/checkout",
+          "headings": [
+            "YOUR BAG IS EMPTY"
+          ],
+          "bodyText": "Skip to main content CARLOPHILLIPS 1 INFORMATION 2 SHIPPING & PAYMENT 3 CONFIRMATION CARLOPHILLIPS EXCEPTION YOUR BAG IS EMPTY Add a product to continue to checkout. Your saved discovery context remains available. CONTINUE SHOPPING © CARLOPHILLIPS Privacy Terms Cookies",
+          "purchaseSignals": [
+            "Continue to checkout"
+          ],
+          "controls": [
+            {
+              "tag": "a",
+              "text": "Skip to main content",
+              "href": "#main-content",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "button",
+              "text": "Open navigation",
+              "href": null,
+              "enabled": true,
+              "type": "button"
+            },
+            {
+              "tag": "a",
+              "text": "CARLOPHILLIPS",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Bag",
+              "href": "/bag",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "CONTINUE SHOPPING",
+              "href": "/",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Privacy",
+              "href": "/privacy",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Terms",
+              "href": "/terms",
+              "enabled": true,
+              "type": null
+            },
+            {
+              "tag": "a",
+              "text": "Cookies",
+              "href": "/cookie-policy",
+              "enabled": true,
+              "type": null
+            }
+          ],
+          "forms": [],
+          "media": [],
+          "layout": {
+            "innerWidth": 390,
+            "innerHeight": 844,
+            "clientWidth": 390,
+            "scrollWidth": 390,
+            "scrollHeight": 912,
+            "horizontalOverflow": false
+          }
+        },
+        "consoleMessages": [],
+        "pageErrors": [],
+        "requestFailures": [
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/?_rsc=pb9faTsi5d4o8qtp",
+            "error": "net::ERR_ABORTED"
+          },
+          {
+            "method": "GET",
+            "url": "https://staging.carlophillips.com/bag?_rsc=pb9faTsi5d4o8qtp",
+            "error": "net::ERR_ABORTED"
+          }
+        ],
+        "errorResponses": []
+      }
+    }
+  }
+}

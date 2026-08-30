@@ -1,0 +1,9 @@
+{
+  "extends": "../config/typescript.json",
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "rootDir": "src"
+  },
+  "include": ["src/**/*.ts"]
+}

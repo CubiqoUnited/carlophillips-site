@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/podpipe-delivery.schema.json",
+  "title": "PODPIPE Delivery Evidence v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "releaseId",
+    "releaseState",
+    "steps",
+    "approvals"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.podpipe-delivery-evidence.v1" },
+    "releaseId": { "type": "string", "pattern": "^cp-[a-z0-9-]+$" },
+    "releaseState": {
+      "enum": ["draft", "staged", "approved", "released", "withdrawn"]
+    },
+    "steps": {
+      "type": "object",
+      "required": [
+        "product-brief",
+        "select-provider-garment",
+        "prepare-production-artwork",
+        "create-pod-draft",
+        "configure-fulfillment-truth",
+        "sync-shopify-draft",
+        "verify-physical-sample",
+        "collect-canonical-references",
+        "produce-editorial-media",
+        "curate-quarantine-media",
+        "produce-real-360-3d",
+        "register-approved-media",
+        "assemble-headless-display",
+        "preview-qa",
+        "product-owner-approval",
+        "merge-production-deployment",
+        "live-verification"
+      ],
+      "properties": {
+        "product-brief": { "$ref": "#/$defs/evidence" },
+        "select-provider-garment": { "$ref": "#/$defs/evidence" },
+        "prepare-production-artwork": { "$ref": "#/$defs/evidence" },
+        "create-pod-draft": { "$ref": "#/$defs/evidence" },
+        "configure-fulfillment-truth": { "$ref": "#/$defs/evidence" },
+        "sync-shopify-draft": { "$ref": "#/$defs/evidence" },
+        "verify-physical-sample": { "$ref": "#/$defs/evidence" },
+        "collect-canonical-references": { "$ref": "#/$defs/evidence" },
+        "produce-editorial-media": { "$ref": "#/$defs/evidence" },
+        "curate-quarantine-media": { "$ref": "#/$defs/evidence" },
+        "produce-real-360-3d": { "$ref": "#/$defs/evidence" },
+        "register-approved-media": { "$ref": "#/$defs/evidence" },
+        "assemble-headless-display": { "$ref": "#/$defs/evidence" },
+        "preview-qa": { "$ref": "#/$defs/evidence" },
+        "product-owner-approval": { "$ref": "#/$defs/evidence" },
+        "merge-production-deployment": { "$ref": "#/$defs/evidence" },
+        "live-verification": { "$ref": "#/$defs/evidence" }
+      },
+      "additionalProperties": false
+    },
+    "approvals": {
+      "type": "object",
+      "required": [
+        "externalExecution",
+        "spend",
+        "sample",
+        "shopifyWrite",
+        "publish",
+        "production",
+        "liveVerification"
+      ],
+      "properties": {
+        "externalExecution": { "$ref": "#/$defs/approval" },
+        "spend": { "$ref": "#/$defs/approval" },
+        "sample": { "$ref": "#/$defs/approval" },
+        "shopifyWrite": { "$ref": "#/$defs/approval" },
+        "publish": { "$ref": "#/$defs/approval" },
+        "production": { "$ref": "#/$defs/approval" },
+        "liveVerification": { "$ref": "#/$defs/approval" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": ["status", "evidence"],
+      "properties": {
+        "status": {
+          "enum": ["missing", "candidate", "verified", "approved"]
+        },
+        "evidence": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": { "enum": ["verified", "approved"] }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "evidence": { "type": "array", "minItems": 1 }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "approval": {
+      "type": "object",
+      "required": ["status", "owner"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "denied"] },
+        "owner": { "const": "Product Owner" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

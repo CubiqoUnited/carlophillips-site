@@ -5,15 +5,17 @@ import { CommerceBagState } from '../components/commerce/bag-state';
 
 function render(status, source, environment = 'local') {
   return renderToStaticMarkup(
-    <CommerceBagState decision={{
-      status,
-      source,
-      environment,
-      commerceAllowed: false,
-      checkoutAllowed: false,
-      reason: 'TEST_REASON',
-      cart: null,
-    }} />
+    <CommerceBagState
+      decision={{
+        status,
+        source,
+        environment,
+        commerceAllowed: false,
+        checkoutAllowed: false,
+        reason: 'TEST_REASON',
+        cart: null,
+      }}
+    />
   );
 }
 

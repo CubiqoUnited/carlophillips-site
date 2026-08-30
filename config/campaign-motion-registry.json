@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "cp.campaign-motion-registry.v1",
+  "assets": [
+    {
+      "assetId": "lofoten-landing-hero-motion-v1",
+      "placement": "landing-hero",
+      "role": "hero-motion",
+      "playbackId": "nIt5dac3WbbMBEAFwJogApRtqxgIAWJar3qKOOxrL6I",
+      "playbackUrl": "https://stream.mux.com/nIt5dac3WbbMBEAFwJogApRtqxgIAWJar3qKOOxrL6I.m3u8",
+      "posterUrl": "https://image.mux.com/nIt5dac3WbbMBEAFwJogApRtqxgIAWJar3qKOOxrL6I/thumbnail.jpg?time=0&width=1920",
+      "approvalStatus": "approved",
+      "evidence": "reports/mux-video-upload-draft.json"
+    },
+    {
+      "assetId": "signature-001-runway-motion-v1",
+      "placement": "product-runway",
+      "productHandle": "carlophillips-signature-hoodie",
+      "role": "runway-motion",
+      "sequence": 2,
+      "label": "Runway motion",
+      "playbackId": "1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8",
+      "playbackUrl": "https://stream.mux.com/1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8.m3u8",
+      "posterUrl": "https://image.mux.com/1WVN1VPKqCIBMb8hW7R5g5gn01nFOltivagIy1Rjr5y8/thumbnail.jpg?time=0&width=1280",
+      "approvalStatus": "approved",
+      "evidence": "reports/mux-video-upload-draft.json"
+    },
+    {
+      "assetId": "signature-001-fit-silhouette-v1",
+      "placement": "product-runway",
+      "productHandle": "carlophillips-signature-hoodie",
+      "role": "fit-silhouette",
+      "sequence": 1,
+      "label": "Fit & silhouette",
+      "playbackId": "mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc",
+      "playbackUrl": "https://stream.mux.com/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc.m3u8",
+      "posterUrl": "https://image.mux.com/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc/thumbnail.jpg?time=0&width=1280",
+      "approvalStatus": "approved",
+      "evidence": "reports/mux-video-upload-draft.json"
+    }
+  ]
+}

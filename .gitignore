@@ -6,6 +6,8 @@ node_modules/
 # Testing
 /coverage
 test_result.md
+**/storybook-static/
+/test_reports/ci/
 
 # Next.js
 /.next/
@@ -61,3 +63,5 @@ Thumbs.db
 /chat-images/
 /tmp/
 /tmp_make_chat_pdf.py
+/mock-asset-factory-data/
+/.env.mock-assets.local

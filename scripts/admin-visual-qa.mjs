@@ -91,7 +91,7 @@ try {
       check(!/(gid:\/\/shopify|9432704909549|5958463)/i.test(pageState.bodyText), 'Admin route exposes no raw Shopify or POD reference.', { viewport: viewport.id, route });
       check(Boolean(pageState.activeNav), 'Admin route exposes a labelled active navigation state.', { viewport: viewport.id, route });
       check(await page.getByRole('link', { name: 'Theme', exact: true }).count() === 0, 'Reviewer navigation hides Product Owner Theme.', { viewport: viewport.id, route });
-      check(pageState.bodyText.includes('RELEASE: DRAFT'), 'Admin route labels the canonical release state explicitly.', { viewport: viewport.id, route });
+      check(pageState.bodyText.includes('RELEASE: STAGED'), 'Admin route labels the canonical release state explicitly.', { viewport: viewport.id, route });
       check(pageState.bodyText.includes('SYSTEM: NOT END TO END READY'), 'Admin route labels whole-system readiness explicitly.', { viewport: viewport.id, route });
 
       if (section === 'evidence') {
@@ -323,7 +323,7 @@ try {
     },
   });
   const checkoutPayload = await checkoutResponse.json();
-  check(checkoutResponse.status() === 409, 'Checkout endpoint denies the canonical Draft release.', { status: checkoutResponse.status() });
+  check(checkoutResponse.status() === 409, 'Checkout endpoint denies the canonical Staged release in Production.', { status: checkoutResponse.status() });
   check(checkoutPayload.error === 'PRODUCT_RELEASE_NOT_RELEASED', 'Checkout denial names the canonical release-state gate.', { error: checkoutPayload.error });
   await apiContext.close();
 } finally {
