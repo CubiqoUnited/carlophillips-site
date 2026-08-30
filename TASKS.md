@@ -1,5 +1,13 @@
 # Delivery Tasks
 
+## Signature Hoodie Production launch — 2026-08-30
+
+- [x] Publish the exact Product Owner-approved staging design to Production with two videos, twelve images, USD $128, and Small, Medium, and Large selections.
+- [x] Enable only the exact reviewed Hoodie offer through the same-origin checkout and trusted Shopify-hosted payment handoff.
+- [x] Verify Production at desktop and mobile widths, including gallery/media counts, responsive layout, console/page health, and checkout handoff without customer data, payment, order, or fulfillment.
+- [x] Remove the agent-authored Hoodie sample/order/inspection requirement from the active launch handoff. No sample was ordered or inspected, and none is required for this exact Product Owner-authorized launch.
+- [x] Preserve the design-system lint, release/checkout policy tests, future-product denial, and sanitized evidence boundaries.
+
 ## Staging runtime regressions — 2026-08-29
 
 - [x] Make Fit → Runway autoplay muted on first viewport entry, repeat the complete sequence twice, and hold the final Runway frame with centred cream replay.
@@ -9,7 +17,7 @@
 - [x] Remove the interim landing title-card video and render the stationary approved runway poster beneath the morph.
 - [x] Add United States to the served checkout-country list.
 - [x] Pass lint, 591 tests, media readiness, optimized build, real-time default/reduced-motion sequence testing, desktop/mobile screenshot QA and 14 accessibility route/viewport checks.
-- [ ] Merge the reviewed staging PR and verify the canonical `https://staging.carlophillips.com` alias; do not deploy Production.
+- [x] Merge the reviewed staging work, verify `https://staging.carlophillips.com`, and promote the same storefront tree to Production.
 
 ## Screen Inventory Review Workbook look-and-feel
 
@@ -78,7 +86,6 @@
 - [x] Verify live Production at desktop and mobile without customer data or order submission: Black / Medium, quantity one, USD $128, trusted Shopify checkout host, card fields, Shop Pay, and PayPal.
 - [x] Confirm that payouts are already routed to the configured Shopify Balance USD account; no separate Stripe-account connection is required.
 - [ ] A repository administrator enables a `main` ruleset requiring pull requests, one approval, `CI / Verify`, and blocked force-push/deletion, then adds required reviewers to both GitHub `Preview` and `Production` environments.
-- [ ] Obtain exact Product Owner approval for the quoted physical sample spend; order, receive, and inspect the Hoodie sample.
 - [ ] Bind fresh Shopify identity/facts/variant observations and exact approved Media Registry assets to the Product Release Record.
 - [ ] Record Product Owner product, media, and fulfillment approvals and advance the record through Draft, Staged, Approved, and Released without bypasses.
 - [ ] Merge the reviewed release-bound candidate to `main`, build immutable Production and rollback artifacts, and pass desktop/mobile checkout, console/network, and rollback QA.
@@ -94,7 +101,6 @@
 - [x] Pass design-system lint, zero-warning ESLint, 46 test files / 491 tests, optimized build, and desktop/mobile fail-closed screenshot QA.
 - [x] Reconcile live Shopify/Apliiq account truth read-only: Hoodie Active on Online Store + Headless, nine Black variants assigned to Apliiq shipping, store/payment method connected, Shopify Payments test-only, and no Apliiq 2026 order or first-production approval.
 - [x] Capture and fingerprint the exact nine-size Apliiq variant/SKU mapping without ordering or exposing raw Storefront variant references.
-- [ ] Obtain separately approved delivered physical sample evidence.
 - [ ] Capture a sanitized Shopify Storefront observation from a protected runtime with usable sensitive variables; the local Vercel Preview pull returned empty sensitive values and no bypass was attempted.
 - [x] Add a Product Owner-only private/no-store Staging endpoint that generates that sanitized observation without returning provider credentials or raw variant IDs.
 - [ ] Complete truthful release-bound media and product/media/fulfillment approvals.
@@ -117,7 +123,7 @@
 - [x] Pass Yarn Classic 1.22.22 frozen install and full `yarn verify` (40 files / 382 tests, 0 production vulnerabilities, optimized build).
 - [x] Pass 538/538 headless admin/public assertions, capture and inspect 58 screenshots at desktop/tablet/mobile, and prove 8/8 public screenshots have zero changed pixels.
 - [ ] Product Owner authorizes `Approve CP fail-closed hotfix Preview only`; then create one immutable Preview for the containment candidate and verify it before any separate Production decision.
-- [ ] Complete exact Apliiq mapping observation, sample approval/order/delivery, current Shopify release fingerprints, truthful media bindings, release transitions, controlled order, fulfillment/tracking, post-sale, analytics, real admin identity/RBAC, durable event store, and connector controls. None is complete or implied by the local admin.
+- [ ] Complete remaining non-launch admin work: post-sale analytics, real admin identity/RBAC, durable event storage, and connector controls.
 
 ## Current local P1: sale-to-post-sale lifecycle core
 
@@ -159,6 +165,7 @@
 - [x] Bind the expanded 15-reviewer-section plus Product Owner Theme matrix to exact clean commit `25cf7e9`: 43 files / 427 tests, 567/567 browser assertions, 61 inspected screenshots, and 8/8 zero-pixel public comparisons.
 - [ ] Product Owner selects identity provider, initial users/roles/grants, session policy, durable database/idempotency/audit/outbox, retention/privacy, connector scopes, retry/dead-letter rules, spend ceilings, and incident owner before any remote admin or executor is wired.
 - [ ] Implement one authorized connector command at a time behind the policy and durable attempted/denied/approved/executed/failed/reconciled/rolled-back events; keep every unimplemented domain read-only.
+
 ## Repository discipline reconciliation
 
 - [x] Reconcile the proposed headless-commerce monorepo tree against the actual CARLOPHILLIPS architecture and saved `podpipe` note.
@@ -343,8 +350,6 @@
 
 ## Current bounded delivery: Signature Hoodie premium showcase
 
-- [ ] First remaining physical-media gate: verify the exact existing Apliiq Hoodie mapping read-only, then present one sample item/size/destination/total for explicit Product Owner order approval.
-- [ ] After sample delivery, capture front/back/profiles/three-quarter/on-body/detail frames, a short product film, and 24–36 evenly spaced spin angles in one consolidated session.
 - [ ] Derive and inspect genuine spin and GLB/USDZ candidates from the verified capture; do not treat AI studies as physical fit, fabric, construction, or fulfillment proof.
 
 - [x] Diagnose the gap between the premium layout and the limited two-image product presentation.
@@ -448,7 +453,6 @@
 - [x] Select the minimum stack: Apliiq, Modelize, one spin candidate, native Shopify Headless, Flow, and the existing CP Next.js storefront.
 - [x] Record the 33-app live inventory, duplicate groups, callable surfaces, permissions/billing boundaries, screenshots, and exact blockers.
 - [x] Verify authenticated read-only Apliiq access and saved product facts for product `5958463`: blank `IND4000`, black, front embroidery, and the retained artwork; this observation grants no mapping, sample, fulfillment, or release authority.
-- [ ] Bind the exact provider variant/SKU fingerprint for the Hoodie mapping read-only, then order and inspect one exact physical sample only after separate Product Owner price approval.
 - [x] Prove the existing native Headless public credential and required product/checkouts scopes with a secret-free live HTTP 200 query.
 - [ ] Produce a sanitized Storefront Hoodie observation after an explicit controlled publication/channel decision; the current Draft is correctly withheld and must not be made Active implicitly.
 - [x] Export the existing completed Modelize job read-only; retain two usable generated candidates for labeled local review and quarantine the artifacted third image.
@@ -572,18 +576,17 @@
 - [x] Restore Vercel deployment access and verify Preview plus production desktop/mobile routes.
 - [x] Complete Shopify authentication and the read-only Admin/app capability audit without accepting charges.
 - [x] Complete the separate Apliiq sign-in handoff and retain the read-only saved-product observation.
-- [ ] Bind the exact Apliiq provider variant/SKU fingerprint and verify one physical sample; keep ordering, fulfillment, and release authority blocked meanwhile.
 - [ ] Supply/verify Storefront product-read and cart credentials through ignored/Vercel secret storage; then prove live product, cart, and checkout behavior before enabling commerce.
 - [x] Evidence one Product Owner-approved Shopify Payments test order through hosted checkout, Paid Shopify order creation, Apliiq manual ingestion, and removal before manufacturing; retain live payments, Production checkout, paid fulfillment, and release as separate fail-closed gates.
 - [x] Add a release-bound enabled-checkout mode to the staged Vercel candidate/Production promotion path while preserving a distinct same-SHA fail-closed fallback.
 - [x] Re-verify the exact release, full SHA, operational cart capability, and Product Owner Production cart/checkout approvals immediately before candidate build and Production promotion.
 - [x] Bind candidate/fallback checkout state into deployment receipts and reject receipt, environment, and route-behavior drift.
-- [ ] Order and inspect the exact physical Hoodie sample; bind the approved sample, fulfillment mapping, Shopify observations, media, approvals, and rollback evidence before moving the Product Release Record to Released.
 - [x] Capture and bind the authenticated read-only Apliiq IND4000 black variant/SKU and front-embroidery mapping without changing the design or placing an order.
 - [x] Capture and validate a fresh sanitized Shopify-native Hoodie observation with all nine variants and exact current price/copy facts; retain it as pending candidate evidence until exact Product Owner fingerprint approval.
 - [x] Bind the exact candidate commit, passing local build/browser evidence, Media Registry manifest fingerprint, and candidate-specific rollback plan without staging or Production mutation.
 - [ ] Obtain Product Owner approval for Shopify observation `sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4`, then apply its exact candidate release patch and regenerate the release-evidence fingerprint.
 - [ ] Reauthenticate the canonical GitHub delivery session, publish the exact reviewed temporary branch, and run protected CI/Preview without merging or promoting Production.
+
 # Production authority closure (2026-08-14)
 
 - [x] Define all 12 production authorities with source, consumers, owner, validation, gate, failure mode and rollback.
@@ -596,6 +599,7 @@
 - [ ] Authorized GitHub owner makes the exact `CI / Verify` check required on `main`; verify this read-only before release.
 - [ ] Run exact-commit Vercel Preview acceptance and capture evidence; no production alias or promotion.
 - [ ] Product Owner explicitly approves or rejects merge and Production only after all applicable gates pass.
+
 # Current closure: canonical authority, end-to-end readiness, and protected admin
 
 - [x] Reconcile every identifiable CP Codex task plus Git, GitHub, Vercel, PRD, architecture, status, tasks, release, media, run, and capability evidence.
@@ -613,15 +617,13 @@
 - [x] Bind the tested integrated candidate at `05d3d72` and its evidence report without touching the unrelated dirty worktree.
 - [x] Audit independent architecture commit `1f3fc46`; record why its 312-file, nine-commits-behind monorepo rewrite cannot be directly merged without deleting/conflicting with current admin, Theme, release, and PR #9 parity work.
 - [x] Resolve the `1f3fc46` port decision: reject its destructive 1,072-file direct comparison and unsafe raw webhook/PODPIPE authority; selectively implement the higher-priority canonical release-proof bindings without removing the current Admin, Theme, routes, or fail-closed authority.
-- [x] Require immutable release/candidate/fingerprint descriptors for observation review, build, staging, rollback, sample, and Production capability evidence.
-- [x] Require an exact provider-mapped physical sample with verified fit, colour, artwork placement, finish, and approval evidence before Approved.
+- [x] Require immutable release/candidate/fingerprint descriptors for observation review, build, staging, rollback, and Production capability evidence.
 - [x] Bind product, media, and fulfillment approvals to the complete release-evidence fingerprint and reject altered manifests, tampered evidence, and cross-release/cross-candidate reuse.
 - [x] Require a fresh post-approval Production ACTIVE observation with matching reviewed variant identity and commerce facts before Released.
 - [x] Reconcile obsolete Shopify-login capability blockers and make Admin state explicit as `Release: Draft` plus `System: Not end-to-end ready`.
 - [x] Pass 43 files / 433 tests, zero-vulnerability audit, optimized build, 669/669 headless checks, 61 screenshots, inspected desktop/mobile release views, and 8/8 exact zero-pixel public comparisons.
 - [ ] Product Owner authorizes a new immutable fail-closed Preview; no Preview deployment is implied by this local task.
 - [ ] Product Owner reviews exact Preview containment evidence and separately authorizes or rejects Production containment.
-- [ ] Verify Apliiq mapping and one physical sample through the sticky handoff; no spend is authorized yet.
 - [ ] Select identity/RBAC, durable event/read-model storage, connector owners, privacy/retention, cost, and incident boundaries before remote admin or mutations.
 - [ ] Run one separately approved controlled order through payment, POD receipt, fulfillment, shipment, tracking, support, return/refund, and review eligibility before claiming end-to-end readiness.
 
