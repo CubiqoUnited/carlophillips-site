@@ -1,15 +1,26 @@
 # Current Status
 
 Updated: 2026-08-30
-Branch: `main`; Production launch merged at `7c0fd6cb92d61c9a74cc83e64eb4291c31f0fd8c`
+Branch: `main`; current Production source `4326385228ea7c7ec9a86b6e874e670ff584c261`
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
+
+## Production checkout interaction repair and payment-surface proof — 2026-08-30
+
+- Root cause was a global `scroll-snap-type: y mandatory` rule on `html`. It could snap the Product page past the size and checkout controls even though the same-origin POST and Shopify handoff were healthy. Mandatory snap is now scoped to the approved `.cp-workbook-site` homepage; Product pages use normal scrolling.
+- The exact fix passed `yarn verify` (73 test files / 645 tests, lint, typecheck, stylelint, canonical Prettier scope, Storybook, production audit, and optimized build), 16/16 desktop/mobile Playwright checkout and accessibility checks, and all PR #47 checks.
+- Public Staging passed desktop 1440×1000 and mobile 390×844 visual/interaction QA: homepage snap remained `y mandatory`, Product snap was `none`, Medium was reachable, and the same-origin checkout returned HTTP 303 to the no-write Preview confirmation with no errors.
+- PR #47 promoted the exact canonical Staging tree to `main` at `4326385228ea7c7ec9a86b6e874e670ff584c261`; the Vercel status for that exact commit is successful.
+- Live Production passed desktop/mobile visual QA at HTTP 200 with the approved homepage composition, twelve-image gallery, two enabled product videos, USD $128 Order CTA, and a normally scrollable Product page. Headless Google Chrome loaded both approved streams without console/page errors; each reached ready state 4 and advanced past 2.5 seconds.
+- One bounded Production Medium cart proof POSTed to `www.carlophillips.com/api/checkout`, returned HTTP 303, and reached trusted HTTPS `carlophillips.myshopify.com`. Shopify showed one Black / Medium Hoodie at USD $128, live card fields, Shop Pay, PayPal, and `Pay now`. No customer data, payment, order, or fulfillment request was submitted.
+- This is checkout and payment-surface proof, not a claim that settlement, POD fulfillment, tracking, support, or returns were exercised. Those require a separately authorized real order/lifecycle test and are not represented as complete here.
+- Sanitized machine evidence and inspected screenshots are retained under `test_reports/production-checkout-scroll-fix-2026-08-30/`. No raw checkout URL, cart token, customer data, or credential is retained.
 
 ## Signature Hoodie Production launch — 2026-08-30
 
 - The exact Product Owner-approved staging storefront is live at `https://www.carlophillips.com`: two approved videos, twelve approved images, USD $128, and Small, Medium, and Large selections.
 - Production uses an exact-product authorization bound to release `cp-signature-hoodie-2026-001`, the reviewed candidate and evidence fingerprint, the approved offer set, and sanitized no-order cart proof. It does not authorize future products.
 - The same-origin Production checkout returned HTTP 303 to the trusted Shopify host. Shopify Checkout returned HTTP 200 and showed one Black / Medium Hoodie at USD $128 with live payment controls. No customer data, payment, order, or fulfillment request was submitted during QA.
-- Desktop and mobile checks passed with HTTP 200, the expected two motion controls and twelve-image gallery, no page errors or overlays, and no horizontal overflow. The full source gate passed lint, typecheck, stylelint, 73 test files / 644 tests, formatting, and the optimized Next.js build.
+- Desktop and mobile checks passed with HTTP 200, the expected two motion controls and twelve-image gallery, no page errors or overlays, and no horizontal overflow. The current full source gate passed lint, typecheck, stylelint, 73 test files / 645 tests, formatting, and the optimized Next.js build.
 - The Product Owner rejected the agent-authored physical-sample condition for this exact launch. No sample was ordered or inspected, and this is not a launch blocker or a Product Owner action.
 - Earlier status entries below are retained as dated history; where they describe Production as unchanged, checkout as disabled, or a sample as required, they are superseded by this launch record.
 

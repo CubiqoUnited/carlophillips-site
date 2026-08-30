@@ -1,5 +1,17 @@
 # Delivery Tasks
 
+## Production checkout interaction repair — 2026-08-30
+
+- [x] Reproduce the live Product failure and identify the global mandatory vertical snap as the interaction defect.
+- [x] Scope mandatory snap to the approved workbook homepage and add source plus desktop/mobile browser regressions proving homepage `y mandatory` and Product `none`.
+- [x] Pass full `yarn verify` (73 test files / 645 tests), 16/16 checkout/accessibility browser checks, and all PR #47 checks.
+- [x] Verify the exact merged fix on public Staging at desktop/mobile widths, including reachable Medium selection and the no-write HTTP 303 checkout rehearsal.
+- [x] Promote canonical Staging to `main` at `4326385228ea7c7ec9a86b6e874e670ff584c261` and verify the exact Vercel Production deployment is successful.
+- [x] Prove Production exposes exactly twelve approved images and two enabled videos; directly play both videos in headless Google Chrome with no console/page error.
+- [x] Create one bounded Medium cart, verify the trusted Shopify checkout, USD $128 product summary, card/Shop Pay/PayPal controls, and stop before customer data, payment, order, or fulfillment.
+- [ ] Treat the known mobile-homepage Order visibility issue as a separate non-blocking design follow-up; the mobile Product page and live checkout/payment path are operational.
+- [ ] Exercise settlement, POD fulfillment, tracking, support, and returns only through a separately authorized real order/lifecycle test; do not infer those outcomes from this no-order proof.
+
 ## Signature Hoodie Production launch — 2026-08-30
 
 - [x] Publish the exact Product Owner-approved staging design to Production with two videos, twelve images, USD $128, and Small, Medium, and Large selections.
