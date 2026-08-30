@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "cp.release-approval.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+  "approval": "product",
+  "status": "approved",
+  "owner": "Product Owner",
+  "approvedAt": "2026-08-30T10:40:00Z",
+  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "scope": {
+    "handle": "carlophillips-signature-hoodie",
+    "shopifyProductReference": "9432704909549",
+    "approvedSizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "displayedStartingPrice": "$128",
+    "canonicalStagingDeployment": "dpl_81EeMeruugZwzRF47zrfEPECp8fc"
+  },
+  "decisionEvidence": [
+    "releases/cp-signature-hoodie-2026-001/approvals/2026-08-29-product-owner-staging-approval.md",
+    "codex-task:01a05146-d62b-72e2-8f27-bfb54a453296#explicit-production-go-live-2026-08-30"
+  ],
+  "statement": "The Product Owner explicitly approved the exact canonical staging product and directed that it be presented for sale in Production.",
+  "boundaries": {
+    "physicalSampleClaimed": false,
+    "paymentClaimed": false,
+    "orderClaimed": false
+  }
+}

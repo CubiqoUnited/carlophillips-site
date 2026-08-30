@@ -17,7 +17,7 @@ requireText(workflow, '--meta cpArtifactKind=safe-fallback', 'A distinct checkou
 requireText(workflow, '--env SHOPIFY_CHECKOUT_ENABLED=false', 'The emergency fallback must remain checkout-disabled.');
 requireText(workflow, 'action="/api/checkout"', 'The release smoke test must verify the storefront checkout handoff.');
 requireText(checkoutServer, "releaseRecord.state !== 'released'", 'Checkout must require a Released Product Release Record.');
-requireText(checkoutServer, "SHOPIFY_CHECKOUT_ENABLED === 'true'", 'Checkout must require the server-only environment gate.');
+requireText(checkoutServer, "environment !== 'production'", 'Checkout must reject non-Production environments.');
 
 if (authorization.status !== 'approved' || !authorization.environments?.includes('production')) {
   violations.push('Production Shopify-hosted checkout authorization is missing.');

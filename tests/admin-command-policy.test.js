@@ -3,10 +3,13 @@ import addFormats from 'ajv-formats';
 import { describe, expect, it } from 'vitest';
 import registry from '../config/capability-registry.json';
 import decisionSchema from '../contracts/admin-command-decision.schema.json';
-import { evaluateAdminCommand, fingerprintAdminCommand } from '../lib/admin/command-policy';
+import {
+  evaluateAdminCommand,
+  fingerprintAdminCommand,
+} from '../lib/admin/command-policy';
 
 const now = new Date('2026-08-14T16:00:00.000Z');
-const fp = character => `sha256:${character.repeat(64)}`;
+const fp = (character) => `sha256:${character.repeat(64)}`;
 const ajv = new Ajv2020({ allErrors: true });
 addFormats(ajv);
 const validateDecision = ajv.compile(decisionSchema);
@@ -20,9 +23,22 @@ function command(overrides = {}) {
     environment: 'local',
     capability: 'admin-command-authorizer',
     operation: 'evaluate-reviewed-command',
-    target: { type: 'release', reference: 'cp-release-reference-hidden', fingerprint: fp('a') },
-    authority: { approvalRefs: [], evidenceRefs: ['evidence:command-envelope:001'] },
-    sideEffect: { kind: 'none', cost: null, currency: null, reversible: true, rollbackRef: null },
+    target: {
+      type: 'release',
+      reference: 'cp-release-reference-hidden',
+      fingerprint: fp('a'),
+    },
+    authority: {
+      approvalRefs: [],
+      evidenceRefs: ['evidence:command-envelope:001'],
+    },
+    sideEffect: {
+      kind: 'none',
+      cost: null,
+      currency: null,
+      reversible: true,
+      rollbackRef: null,
+    },
     status: 'approved',
     createdAt: '2026-08-14T15:55:00.000Z',
     expiresAt: '2026-08-14T16:05:00.000Z',
@@ -41,17 +57,19 @@ function context(candidate, overrides = {}) {
       role: candidate.actor.role,
       sessionFingerprint: fp('b'),
     },
-    roleGrants: [{
-      status: 'active',
-      role: candidate.actor.role,
-      capability: candidate.capability,
-      operation: candidate.operation,
-      environments: [candidate.environment],
-      sideEffects: [candidate.sideEffect.kind],
-      targetTypes: [candidate.target.type],
-      grantFingerprint: fp('c'),
-      expiresAt: '2026-08-14T16:10:00.000Z',
-    }],
+    roleGrants: [
+      {
+        status: 'active',
+        role: candidate.actor.role,
+        capability: candidate.capability,
+        operation: candidate.operation,
+        environments: [candidate.environment],
+        sideEffects: [candidate.sideEffect.kind],
+        targetTypes: [candidate.target.type],
+        grantFingerprint: fp('c'),
+        expiresAt: '2026-08-14T16:10:00.000Z',
+      },
+    ],
     targetBinding: {
       type: candidate.target.type,
       fingerprint: candidate.target.fingerprint,
@@ -97,7 +115,10 @@ describe('admin command policy', () => {
       refundAuthority: false,
       publicationAuthority: false,
     });
-    expect(validateDecision(decision), ajv.errorsText(validateDecision.errors)).toBe(true);
+    expect(
+      validateDecision(decision),
+      ajv.errorsText(validateDecision.errors)
+    ).toBe(true);
     expect(JSON.stringify(decision)).not.toContain(candidate.actor.subject);
     expect(JSON.stringify(decision)).not.toContain(candidate.target.reference);
   });
@@ -105,20 +126,34 @@ describe('admin command policy', () => {
   it('is deterministic across object key order', () => {
     const first = command();
     const second = Object.fromEntries(Object.entries(first).reverse());
-    expect(fingerprintAdminCommand(first)).toBe(fingerprintAdminCommand(second));
+    expect(fingerprintAdminCommand(first)).toBe(
+      fingerprintAdminCommand(second)
+    );
   });
 
   it('denies malformed, pending, expired, premature, and overlong commands', () => {
     const invalid = evaluateAdminCommand(null, { now, registry });
     expect(invalid.reasonCodes).toContain('COMMAND_CONTRACT_INVALID');
-    expect(validateDecision(invalid), ajv.errorsText(validateDecision.errors)).toBe(true);
+    expect(
+      validateDecision(invalid),
+      ajv.errorsText(validateDecision.errors)
+    ).toBe(true);
 
     for (const [candidate, code] of [
-      [{ ...command(), unreviewedPayload: { secret: 'must-not-pass' } }, 'COMMAND_CONTRACT_INVALID'],
+      [
+        { ...command(), unreviewedPayload: { secret: 'must-not-pass' } },
+        'COMMAND_CONTRACT_INVALID',
+      ],
       [command({ status: 'pending' }), 'COMMAND_STATUS_NOT_APPROVED'],
       [command({ expiresAt: '2026-08-14T15:59:00.000Z' }), 'COMMAND_EXPIRED'],
-      [command({ createdAt: '2026-08-14T16:01:00.000Z' }), 'COMMAND_NOT_YET_VALID'],
-      [command({ expiresAt: '2026-08-14T17:01:00.000Z' }), 'COMMAND_TTL_EXCEEDED'],
+      [
+        command({ createdAt: '2026-08-14T16:01:00.000Z' }),
+        'COMMAND_NOT_YET_VALID',
+      ],
+      [
+        command({ expiresAt: '2026-08-14T17:01:00.000Z' }),
+        'COMMAND_TTL_EXCEEDED',
+      ],
     ]) {
       expect(decisionFor(candidate).reasonCodes).toContain(code);
     }
@@ -126,40 +161,79 @@ describe('admin command policy', () => {
 
   it('denies unauthenticated, mismatched, or ungranted actors', () => {
     const candidate = command();
-    expect(decisionFor(candidate, { identity: null }).reasonCodes)
-      .toEqual(expect.arrayContaining(['IDENTITY_NOT_AUTHENTICATED', 'ACTOR_IDENTITY_MISMATCH']));
-    expect(decisionFor(candidate, {
-      identity: { ...context(candidate).identity, subject: 'subject:someone-else' },
-    }).reasonCodes).toContain('ACTOR_IDENTITY_MISMATCH');
-    expect(decisionFor(candidate, { roleGrants: [] }).reasonCodes).toContain('ROLE_GRANT_MISSING');
+    expect(decisionFor(candidate, { identity: null }).reasonCodes).toEqual(
+      expect.arrayContaining([
+        'IDENTITY_NOT_AUTHENTICATED',
+        'ACTOR_IDENTITY_MISMATCH',
+      ])
+    );
+    expect(
+      decisionFor(candidate, {
+        identity: {
+          ...context(candidate).identity,
+          subject: 'subject:someone-else',
+        },
+      }).reasonCodes
+    ).toContain('ACTOR_IDENTITY_MISMATCH');
+    expect(decisionFor(candidate, { roleGrants: [] }).reasonCodes).toContain(
+      'ROLE_GRANT_MISSING'
+    );
   });
 
   it('denies missing capability, unregistered operation, blocked capability, and write-test evidence', () => {
     const missing = command({ capability: 'not-registered' });
-    expect(decisionFor(missing).reasonCodes).toContain('CAPABILITY_NOT_REGISTERED');
+    expect(decisionFor(missing).reasonCodes).toContain(
+      'CAPABILITY_NOT_REGISTERED'
+    );
 
     const wrongOperation = command({ operation: 'invoke-connector' });
-    expect(decisionFor(wrongOperation).reasonCodes).toContain('OPERATION_NOT_ALLOWED');
+    expect(decisionFor(wrongOperation).reasonCodes).toContain(
+      'OPERATION_NOT_ALLOWED'
+    );
 
     const cart = command({
       environment: 'production',
       capability: 'shopify-storefront-cart',
       operation: 'cart-write-test',
-      sideEffect: { kind: 'write', cost: null, currency: null, reversible: true, rollbackRef: 'rollback:test-cart' },
+      sideEffect: {
+        kind: 'write',
+        cost: null,
+        currency: null,
+        reversible: true,
+        rollbackRef: 'rollback:test-cart',
+      },
     });
-    expect(decisionFor(cart).reasonCodes)
-      .toEqual(expect.arrayContaining(['CAPABILITY_BLOCKED', 'CAPABILITY_NOT_OPERATIONAL', 'CONNECTOR_NOT_READY']));
+    expect(decisionFor(cart).reasonCodes).toEqual(
+      expect.arrayContaining([
+        'CAPABILITY_BLOCKED',
+        'CAPABILITY_NOT_OPERATIONAL',
+        'CONNECTOR_NOT_READY',
+      ])
+    );
   });
 
   it('denies target, evidence, idempotency, and audit gaps independently', () => {
     const candidate = command();
-    expect(decisionFor(candidate, { targetBinding: null }).reasonCodes).toContain('TARGET_BINDING_MISMATCH');
-    const noEvidence = command({ authority: { approvalRefs: [], evidenceRefs: [] } });
+    expect(
+      decisionFor(candidate, { targetBinding: null }).reasonCodes
+    ).toContain('TARGET_BINDING_MISMATCH');
+    const noEvidence = command({
+      authority: { approvalRefs: [], evidenceRefs: [] },
+    });
     expect(decisionFor(noEvidence).reasonCodes).toContain('EVIDENCE_REQUIRED');
-    expect(decisionFor(candidate, { idempotency: null }).reasonCodes).toContain('IDEMPOTENCY_UNAVAILABLE');
-    expect(decisionFor(candidate, { idempotency: { status: 'replay' } }).reasonCodes).toContain('IDEMPOTENCY_REPLAYED');
-    expect(decisionFor(candidate, { idempotency: { status: 'conflict' } }).reasonCodes).toContain('IDEMPOTENCY_CONFLICT');
-    expect(decisionFor(candidate, { auditDecision: null }).reasonCodes).toContain('AUDIT_NOT_READY');
+    expect(decisionFor(candidate, { idempotency: null }).reasonCodes).toContain(
+      'IDEMPOTENCY_UNAVAILABLE'
+    );
+    expect(
+      decisionFor(candidate, { idempotency: { status: 'replay' } }).reasonCodes
+    ).toContain('IDEMPOTENCY_REPLAYED');
+    expect(
+      decisionFor(candidate, { idempotency: { status: 'conflict' } })
+        .reasonCodes
+    ).toContain('IDEMPOTENCY_CONFLICT');
+    expect(
+      decisionFor(candidate, { auditDecision: null }).reasonCodes
+    ).toContain('AUDIT_NOT_READY');
   });
 
   it('requires a fresh exact connector decision for every non-local operation', () => {
@@ -167,7 +241,13 @@ describe('admin command policy', () => {
       environment: 'preview',
       capability: 'shopify-storefront-product-read',
       operation: 'product-read',
-      sideEffect: { kind: 'read', cost: null, currency: null, reversible: true, rollbackRef: null },
+      sideEffect: {
+        kind: 'read',
+        cost: null,
+        currency: null,
+        reversible: true,
+        rollbackRef: null,
+      },
     });
     expect(decisionFor(read).reasonCodes).toContain('CONNECTOR_NOT_READY');
     const ready = {
@@ -180,7 +260,9 @@ describe('admin command policy', () => {
       evidenceFingerprint: fp('f'),
       expiresAt: '2026-08-14T16:10:00.000Z',
     };
-    expect(decisionFor(read, { connectorDecision: ready }).reasonCodes).not.toContain('CONNECTOR_NOT_READY');
+    expect(
+      decisionFor(read, { connectorDecision: ready }).reasonCodes
+    ).not.toContain('CONNECTOR_NOT_READY');
   });
 
   it('requires exact capability approvals and rejects unmatched approval references', () => {
@@ -188,24 +270,50 @@ describe('admin command policy', () => {
       environment: 'production',
       capability: 'shopify-storefront-cart',
       operation: 'cart-write-test',
-      authority: { approvalRefs: ['approval:activation'], evidenceRefs: ['evidence:cart'] },
-      sideEffect: { kind: 'write', cost: null, currency: null, reversible: true, rollbackRef: 'rollback:cart' },
+      authority: {
+        approvalRefs: ['approval:activation'],
+        evidenceRefs: ['evidence:cart'],
+      },
+      sideEffect: {
+        kind: 'write',
+        cost: null,
+        currency: null,
+        reversible: true,
+        rollbackRef: 'rollback:cart',
+      },
     });
-    expect(decisionFor(cart).reasonCodes)
-      .toEqual(expect.arrayContaining(['APPROVAL_REQUIRED', 'APPROVAL_INVALID']));
+    expect(decisionFor(cart).reasonCodes).toEqual(
+      expect.arrayContaining(['APPROVAL_REQUIRED', 'APPROVAL_INVALID'])
+    );
   });
 
   it('enforces exact spend ceilings', () => {
     const spend = command({
-      sideEffect: { kind: 'spend', cost: 120, currency: 'USD', reversible: false, rollbackRef: null },
+      sideEffect: {
+        kind: 'spend',
+        cost: 120,
+        currency: 'USD',
+        reversible: false,
+        rollbackRef: null,
+      },
     });
-    expect(decisionFor(spend, { maxCost: 100 }).reasonCodes)
-      .toEqual(expect.arrayContaining(['CAPABILITY_NOT_OPERATIONAL', 'COST_BOUNDARY_INVALID']));
+    expect(decisionFor(spend, { maxCost: 100 }).reasonCodes).toEqual(
+      expect.arrayContaining([
+        'CAPABILITY_NOT_OPERATIONAL',
+        'COST_BOUNDARY_INVALID',
+      ])
+    );
   });
 
   it('requires a rollback reference for write, publish, and Production mutations', () => {
     const write = command({
-      sideEffect: { kind: 'write', cost: null, currency: null, reversible: false, rollbackRef: null },
+      sideEffect: {
+        kind: 'write',
+        cost: null,
+        currency: null,
+        reversible: false,
+        rollbackRef: null,
+      },
     });
     expect(decisionFor(write).reasonCodes).toContain('ROLLBACK_REQUIRED');
   });
@@ -214,9 +322,17 @@ describe('admin command policy', () => {
     const candidate = command({
       actor: { subject: 'subject:operator:001', role: 'operator' },
       environment: 'production',
-      sideEffect: { kind: 'write', cost: null, currency: null, reversible: true, rollbackRef: 'rollback:001' },
+      sideEffect: {
+        kind: 'write',
+        cost: null,
+        currency: null,
+        reversible: true,
+        rollbackRef: 'rollback:001',
+      },
     });
-    expect(decisionFor(candidate).reasonCodes).toContain('PRODUCTION_OWNER_REQUIRED');
+    expect(decisionFor(candidate).reasonCodes).toContain(
+      'PRODUCTION_OWNER_REQUIRED'
+    );
   });
 
   it('does not let approval or connector fixtures create upstream authority', () => {

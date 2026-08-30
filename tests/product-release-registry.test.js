@@ -6,7 +6,9 @@ import {
 
 describe('product release registry', () => {
   it('returns release-bound evidence only for a registered product handle', () => {
-    const evidence = getProductReleaseEvidence('carlophillips-signature-hoodie');
+    const evidence = getProductReleaseEvidence(
+      'carlophillips-signature-hoodie'
+    );
 
     expect(evidence).toMatchObject({
       releaseRecord: {
@@ -25,10 +27,15 @@ describe('product release registry', () => {
     const first = getProductReleaseEvidence('carlophillips-signature-hoodie');
     first.releaseRecord.state = 'released';
 
-    expect(getProductReleaseEvidence('carlophillips-signature-hoodie').releaseRecord.state).toBe('staged');
+    expect(
+      getProductReleaseEvidence('carlophillips-signature-hoodie').releaseRecord
+        .state
+    ).toBe('staged');
   });
 
   it('enumerates only release-bound handles for reusable catalog resolution', () => {
-    expect(listProductReleaseHandles()).toEqual(['carlophillips-signature-hoodie']);
+    expect(listProductReleaseHandles()).toEqual([
+      'carlophillips-signature-hoodie',
+    ]);
   });
 });

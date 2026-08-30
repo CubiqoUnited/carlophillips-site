@@ -12,7 +12,7 @@ describe('Product Owner-observed Shopify app inventory', () => {
   it('validates exactly 30 unique reported installed-app records', () => {
     expect(validate(inventory), JSON.stringify(validate.errors)).toBe(true);
     expect(inventory.apps).toHaveLength(30);
-    expect(new Set(inventory.apps.map(app => app.name)).size).toBe(30);
+    expect(new Set(inventory.apps.map((app) => app.name)).size).toBe(30);
   });
 
   it('does not turn reported installation into callable capability', () => {
@@ -22,12 +22,20 @@ describe('Product Owner-observed Shopify app inventory', () => {
       capabilityStatus: 'unverified',
       browserAudit: 'login-required',
     });
-    expect(inventory.apps.every(app => app.verifiedCallableSurface === 'none-auth-blocked')).toBe(true);
+    expect(
+      inventory.apps.every(
+        (app) => app.verifiedCallableSurface === 'none-auth-blocked'
+      )
+    ).toBe(true);
   });
 
   it('keeps native Shopify access distinct from third-party private access', () => {
-    const byName = Object.fromEntries(inventory.apps.map(app => [app.name, app]));
-    expect(byName.Flow.accessPathToVerify).toBe('shopify-native-admin-flow-api');
+    const byName = Object.fromEntries(
+      inventory.apps.map((app) => [app.name, app])
+    );
+    expect(byName.Flow.accessPathToVerify).toBe(
+      'shopify-native-admin-flow-api'
+    );
     expect(byName['Apliiq - Print On Demand'].accessPathToVerify).toBe(
       'third-party-private-api-webhook-or-browser'
     );
@@ -43,7 +51,7 @@ describe('Product Owner-observed Shopify app inventory', () => {
       'Carlophillips Headless',
     ];
     for (const name of connectorNames) {
-      const app = inventory.apps.find(candidate => candidate.name === name);
+      const app = inventory.apps.find((candidate) => candidate.name === name);
       expect(app.ownershipFinding).toMatch(/does not|neither/i);
       expect(app.safeNextAction).toMatch(/read-only|Inspect/i);
       expect(app.verifiedCallableSurface).toBe('none-auth-blocked');
@@ -52,8 +60,8 @@ describe('Product Owner-observed Shopify app inventory', () => {
 
   it('flags every explicitly reported usage-fee app', () => {
     const feeApps = inventory.apps
-      .filter(app => app.usageFeeRisk === 'reported-usage-fees')
-      .map(app => app.name)
+      .filter((app) => app.usageFeeRisk === 'reported-usage-fees')
+      .map((app) => app.name)
       .sort();
     expect(feeApps).toEqual([
       'Order Printer Pro',

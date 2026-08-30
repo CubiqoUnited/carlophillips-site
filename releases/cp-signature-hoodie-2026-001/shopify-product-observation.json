@@ -3,7 +3,7 @@
   "source": "shopify",
   "authority": "candidate",
   "environment": "production",
-  "observedAt": "2026-08-17T00:21:38.203Z",
+  "observedAt": "2026-08-29T08:11:12.222Z",
   "capabilityEvidence": "test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json",
   "product": {
     "handle": "carlophillips-signature-hoodie",
@@ -195,7 +195,7 @@
   ],
   "variantFingerprint": "sha256:f7e89925f1119c324cc159444a2c90d645e910555d471bfe77fba2440e348db1",
   "commerceFactsFingerprint": "sha256:c055e02227f425e36a72b7899a804b17bd270e7d22dd18c9fa119dd3840a77ec",
-  "observationFingerprint": "sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4",
+  "observationFingerprint": "sha256:d999faf035a3716f3e01c274fcb6ccb25bc36206d1247f14d714ec9df68406a7",
   "review": {
     "status": "pending",
     "owner": "Product Owner/designee",

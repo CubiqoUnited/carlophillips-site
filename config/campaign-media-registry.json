@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "cp.campaign-media-registry.v1",
+  "assets": [
+    {
+      "assetId": "at-edge-of-life-lofoten-runway-hero",
+      "publicPath": "/media/editorial/lofoten-runway-hero-clean.png",
+      "sha256": "a6d218a648c5f54878e2b538136430316112c43b8ecf0f676a089ef5bbf85b5b",
+      "approvalStatus": "approved",
+      "approvalOwner": "Product Owner",
+      "evidence": "test_reports/cp-v1.2.1-design-system-standards-2026-08-09/"
+    },
+    {
+      "assetId": "signature-001-product-architecture-background",
+      "publicPath": "/media/editorial/product-architecture-background-v1.png",
+      "sha256": "827f8de3966012f5b0baccbcd3ec4cec4d536518afd9b938f96af1c94cd4a962",
+      "approvalStatus": "approved",
+      "approvalOwner": "Product Owner",
+      "evidence": "reports/mux-video-upload-draft.json"
+    },
+    {
+      "assetId": "at-edge-of-life-lofoten-rugged-platform-v2",
+      "publicPath": "/media/editorial/lofoten-runway-rugged-platform-v2.png",
+      "sha256": "0ba1a781e41ca8fbbe7fc8e57727237495c790f36d71e77d056dc2067a7eefa4",
+      "approvalStatus": "approved",
+      "approvalOwner": "Product Owner",
+      "evidence": "test_reports/cp-editorial-morph-2026-08-26/"
+    },
+    {
+      "assetId": "at-edge-of-life-editorial-morph-desktop-v4",
+      "publicPath": "/media/editorial/runway-editorial-realism-cross-frame-rock-edge-v4.png",
+      "sha256": "67cbfb17db09d22f875894846841aeea0c3ab3bd7b72a4d985880bd3f8cc9390",
+      "approvalStatus": "approved",
+      "approvalOwner": "Product Owner",
+      "evidence": "test_reports/cp-editorial-morph-2026-08-26/"
+    },
+    {
+      "assetId": "at-edge-of-life-editorial-morph-mobile-v3",
+      "publicPath": "/media/editorial/runway-editorial-realism-tablet-rock-edge-v3.png",
+      "sha256": "d57d67c042b03cbab5c5544889aa64cc6a07a44aa039c7f5285430e55247d296",
+      "approvalStatus": "approved",
+      "approvalOwner": "Product Owner",
+      "evidence": "test_reports/cp-editorial-morph-2026-08-26/"
+    },
+    {
+      "assetId": "at-edge-of-life-editorial-morph-desktop-warm-entry-cachefix-v6",
+      "publicPath": "/media/editorial/runway-editorial-realism-cross-frame-warm-entry-cachefix-v6.png",
+      "sha256": "a41b28e43f66e2e9df11deb4d44aa40ad2eb837deacd6948965e24c82e21bea3",
+      "approvalStatus": "approved",
+      "approvalOwner": "Product Owner",
+      "evidence": "deliverables/carlo-phillips-editorial-morph-final.zip"
+    },
+    {
+      "assetId": "at-edge-of-life-editorial-morph-mobile-warm-entry-cachefix-v6",
+      "publicPath": "/media/editorial/runway-editorial-realism-tablet-warm-entry-cachefix-v6.png",
+      "sha256": "4989aecd5328b66fe883d2f7bce2e3434305b83c744df1622bea841ebb98ee79",
+      "approvalStatus": "approved",
+      "approvalOwner": "Product Owner",
+      "evidence": "deliverables/carlo-phillips-editorial-morph-final.zip"
+    }
+  ]
+}

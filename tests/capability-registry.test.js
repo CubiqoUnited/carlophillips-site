@@ -42,7 +42,8 @@ describe('capability registry policy', () => {
       status: 'evidence_only',
       adapter: 'shopify-storefront-cart',
       callableSurface: 'shopify_storefront',
-      evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
+      evidenceRef:
+        'test_reports/cp-hoodie-production-activation-2026-08-04/report.md',
       technicalStatus: 'verified_test',
       operationalAuthority: 'blocked',
       reason: 'CART_ACTIVATION_AUTHORITY_REQUIRED',
@@ -59,7 +60,8 @@ describe('capability registry policy', () => {
       status: 'ready',
       adapter: 'shopify-storefront-product',
       callableSurface: 'shopify_storefront',
-      evidenceRef: 'test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json',
+      evidenceRef:
+        'test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json',
       reason: null,
     });
   });
@@ -76,29 +78,31 @@ describe('capability registry policy', () => {
       callableSurface: 'local',
       evidenceRef: 'tests/variant-resolution-policy.test.js',
     });
-    expect(discoverCapability(
-      getCapabilityRegistry(),
-      'shopify-storefront-variant-resolver',
-      'cart-write'
-    ).status).toBe('human_required');
+    expect(
+      discoverCapability(
+        getCapabilityRegistry(),
+        'shopify-storefront-variant-resolver',
+        'cart-write'
+      ).status
+    ).toBe('human_required');
   });
 
   it('registers the lifecycle reducer as local-only contract logic', () => {
     const registry = getCapabilityRegistry();
-    expect(discoverCapability(
-      registry,
-      'sale-post-sale-lifecycle-core',
-      'reduce-lifecycle'
-    )).toMatchObject({
+    expect(
+      discoverCapability(
+        registry,
+        'sale-post-sale-lifecycle-core',
+        'reduce-lifecycle'
+      )
+    ).toMatchObject({
       status: 'ready',
       callableSurface: 'local',
       operationalAuthority: 'local_only',
     });
-    expect(discoverCapability(
-      registry,
-      'sale-post-sale-lifecycle-core',
-      'refund'
-    )).toMatchObject({
+    expect(
+      discoverCapability(registry, 'sale-post-sale-lifecycle-core', 'refund')
+    ).toMatchObject({
       status: 'human_required',
       operationalAuthority: 'blocked',
     });
@@ -106,20 +110,20 @@ describe('capability registry policy', () => {
 
   it('registers only local webhook verification, not provider ingress', () => {
     const registry = getCapabilityRegistry();
-    expect(discoverCapability(
-      registry,
-      'shopify-webhook-verifier',
-      'verify-signature-envelope'
-    )).toMatchObject({
+    expect(
+      discoverCapability(
+        registry,
+        'shopify-webhook-verifier',
+        'verify-signature-envelope'
+      )
+    ).toMatchObject({
       status: 'ready',
       callableSurface: 'local',
       operationalAuthority: 'local_only',
     });
-    expect(discoverCapability(
-      registry,
-      'provider-webhook-inbox',
-      'receive-webhook'
-    )).toMatchObject({
+    expect(
+      discoverCapability(registry, 'provider-webhook-inbox', 'receive-webhook')
+    ).toMatchObject({
       status: 'unavailable',
       reason: 'WEBHOOK_INGRESS_AND_DURABILITY_NOT_IMPLEMENTED',
       operationalAuthority: 'blocked',
@@ -127,11 +131,13 @@ describe('capability registry policy', () => {
   });
 
   it('registers only a local admin command policy, not a connector executor', () => {
-    expect(discoverCapability(
-      getCapabilityRegistry(),
-      'admin-command-authorizer',
-      'evaluate-reviewed-command'
-    )).toMatchObject({
+    expect(
+      discoverCapability(
+        getCapabilityRegistry(),
+        'admin-command-authorizer',
+        'evaluate-reviewed-command'
+      )
+    ).toMatchObject({
       status: 'ready',
       callableSurface: 'local',
       operationalAuthority: 'local_only',
@@ -142,36 +148,55 @@ describe('capability registry policy', () => {
     const registry = getCapabilityRegistry();
     for (const [capability, operation, reason] of [
       ['spin-360', 'create-spin', 'SPIN_SOURCE_AND_HEADLESS_PATH_UNPROVEN'],
-      ['model-lifestyle-media', 'generate-media', 'MODELIZE_CREDITS_EXHAUSTED_AND_MEDIA_APPROVALS_MISSING'],
-      ['shopify-local-automation', 'activate-flow', 'SHOPIFY_FLOW_INACTIVE_AND_ACTIVATION_UNAPPROVED'],
-      ['pod-bulk-workflow', 'create-draft-job', 'MYDESIGNS_PERMISSION_AND_SELECTION_UNAPPROVED'],
-      ['trend-research-input', 'read-trends', 'TREND_RESEARCH_SCOPE_AND_COST_UNAPPROVED'],
+      [
+        'model-lifestyle-media',
+        'generate-media',
+        'MODELIZE_CREDITS_EXHAUSTED_AND_MEDIA_APPROVALS_MISSING',
+      ],
+      [
+        'shopify-local-automation',
+        'activate-flow',
+        'SHOPIFY_FLOW_INACTIVE_AND_ACTIVATION_UNAPPROVED',
+      ],
+      [
+        'pod-bulk-workflow',
+        'create-draft-job',
+        'MYDESIGNS_PERMISSION_AND_SELECTION_UNAPPROVED',
+      ],
+      [
+        'trend-research-input',
+        'read-trends',
+        'TREND_RESEARCH_SCOPE_AND_COST_UNAPPROVED',
+      ],
     ]) {
-      expect(discoverCapability(registry, capability, operation)).toMatchObject({
-        status: 'human_required',
-        callableSurface: 'unverified',
-        reason,
-      });
+      expect(discoverCapability(registry, capability, operation)).toMatchObject(
+        {
+          status: 'human_required',
+          callableSurface: 'unverified',
+          reason,
+        }
+      );
     }
   });
 
   it('records Apliiq access and saved-product facts without granting mapping or fulfillment authority', () => {
     const registry = getCapabilityRegistry();
-    expect(discoverCapability(
-      registry,
-      'hoodie-fulfillment',
-      'read-saved-product-facts'
-    )).toMatchObject({
+    expect(
+      discoverCapability(
+        registry,
+        'hoodie-fulfillment',
+        'read-saved-product-facts'
+      )
+    ).toMatchObject({
       status: 'ready',
       callableSurface: 'authenticated_browser',
       operationalAuthority: 'observation_only',
-      evidenceRef: 'test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/final-apliiq-assets-rerun-report.md',
+      evidenceRef:
+        'test_reports/carlophillips-signature-hoodie/apliiq-assets-rerun/final-apliiq-assets-rerun-report.md',
     });
-    expect(discoverCapability(
-      registry,
-      'hoodie-fulfillment',
-      'read-mapping'
-    )).toMatchObject({
+    expect(
+      discoverCapability(registry, 'hoodie-fulfillment', 'read-mapping')
+    ).toMatchObject({
       status: 'human_required',
       technicalStatus: 'verified',
       operationalAuthority: 'blocked',
@@ -190,7 +215,11 @@ describe('capability registry policy', () => {
   });
 
   it('returns an exact blocker for an unregistered capability', () => {
-    const decision = discoverCapability(getCapabilityRegistry(), 'unknown-worker', 'read');
+    const decision = discoverCapability(
+      getCapabilityRegistry(),
+      'unknown-worker',
+      'read'
+    );
     expect(decision).toMatchObject({
       status: 'unavailable',
       reason: 'CAPABILITY_NOT_REGISTERED',
@@ -209,7 +238,7 @@ describe('capability registry policy', () => {
   it('requires durable evidence before external access can be marked verified', () => {
     const registry = getCapabilityRegistry();
     const productRead = registry.capabilities.find(
-      item => item.capability === 'shopify-storefront-product-read'
+      (item) => item.capability === 'shopify-storefront-product-read'
     );
     productRead.accessState = 'read_only_verified';
     productRead.callableSurface = 'shopify_storefront';
@@ -233,14 +262,18 @@ describe('capability registry policy', () => {
 
   it('rejects any write-test entry that masquerades as operational authority', () => {
     const registry = getCapabilityRegistry();
-    const cart = registry.capabilities.find(item => item.capability === 'shopify-storefront-cart');
+    const cart = registry.capabilities.find(
+      (item) => item.capability === 'shopify-storefront-cart'
+    );
     cart.allowedOperations = ['cart-write'];
     cart.requiresApproval = [];
     cart.blocker = null;
-    expect(validateCapabilityRegistry(registry)).toEqual(expect.arrayContaining([
-      'shopify-storefront-cart exposes a write test as an operational write',
-      'shopify-storefront-cart lacks activation approvals for write-test evidence',
-      'shopify-storefront-cart lacks an operational blocker for write-test evidence',
-    ]));
+    expect(validateCapabilityRegistry(registry)).toEqual(
+      expect.arrayContaining([
+        'shopify-storefront-cart exposes a write test as an operational write',
+        'shopify-storefront-cart lacks activation approvals for write-test evidence',
+        'shopify-storefront-cart lacks an operational blocker for write-test evidence',
+      ])
+    );
   });
 });

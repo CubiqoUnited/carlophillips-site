@@ -1,37 +1,78 @@
 {
   "schemaVersion": "cp.candidate-build-evidence.v1",
   "releaseId": "cp-signature-hoodie-2026-001",
-  "candidateCommit": "4ee088cd39cfa9b967bde32893f0dc2a33325904",
-  "recordedAt": "2026-08-17T00:41:23Z",
+  "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+  "recordedAt": "2026-08-30T10:27:50.362Z",
+  "sourceTree": {
+    "reviewedPullRequest": 30,
+    "verifiedHeadCommit": "b06383b97220cd88c18f12c3ca9167bff4d42187",
+    "mergeCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+    "treeDifference": "none",
+    "mergedAt": "2026-08-30T10:25:29Z"
+  },
   "sourceChecks": {
     "designSystemLint": "passed",
+    "productionCommerceLint": "passed",
     "eslint": "passed_zero_warnings",
+    "typecheck": "passed",
+    "stylelint": "passed",
+    "formatCheck": "passed",
     "tests": {
       "status": "passed",
-      "files": 50,
-      "assertions": 511
+      "assertions": 628
     },
     "productionDependencyAudit": {
       "status": "passed",
-      "vulnerabilities": 0,
-      "packages": 67,
-      "basis": "dependency graph unchanged from the full Yarn Classic verification recorded by the pipeline report"
+      "vulnerabilities": 0
     },
     "nextBuild": {
       "status": "passed",
-      "version": "15.5.21"
+      "version": "15.5.21",
+      "exactMergeDeploymentId": "dpl_81EeMeruugZwzRF47zrfEPECp8fc"
     }
   },
+  "requiredChecks": [
+    {
+      "name": "Verify",
+      "status": "passed",
+      "completedAt": "2026-08-30T10:23:38Z",
+      "evidence": "https://github.com/CubiqoUnited/carlophillips-site/actions/runs/33306273858/job/99243285879"
+    },
+    {
+      "name": "Checkout E2E and accessibility",
+      "status": "passed",
+      "completedAt": "2026-08-30T10:23:14Z",
+      "evidence": "https://github.com/CubiqoUnited/carlophillips-site/actions/runs/33306273881/job/99243286299"
+    },
+    {
+      "name": "Vercel",
+      "status": "passed",
+      "completedAt": "2026-08-30T10:23:03Z",
+      "evidence": "dpl_58eGAKBf23PXWxRsm9fGoiwMB5ak"
+    }
+  ],
   "browserChecks": {
     "status": "passed",
-    "route": "/products/carlophillips-signature-hoodie",
-    "viewports": ["1440x1000", "390x844"],
-    "purchasingDenied": true,
-    "checkoutControls": 0,
-    "overflow": false,
-    "runtimeErrors": 0,
-    "evidence": "test_reports/cp-product-offer-sml-2026-08-17/report.md"
+    "evidencePhase": "canonical-staging-post-merge",
+    "deploymentId": "dpl_81EeMeruugZwzRF47zrfEPECp8fc",
+    "routes": [
+      "/",
+      "/product/carlophillips-signature-hoodie",
+      "/checkout/confirm?mode=preview"
+    ],
+    "viewports": [
+      "1440x1000",
+      "390x844"
+    ],
+    "productImages": 12,
+    "productVideos": 2,
+    "accessibilityViolations": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestFailures": 0,
+    "frameworkOverlay": false,
+    "privateEvidenceFingerprint": "sha256:36539c178a1e18bc3829739c635a1dfa8776bd7c090032a64d76c7d22b441253"
   },
-  "report": "test_reports/cp-product-offer-sml-2026-08-17/report.md",
-  "authority": "candidate_evidence_only_no_deployment_or_release"
+  "authority": "candidate_build_and_quality_evidence_only_no_release_or-production-authority"
 }

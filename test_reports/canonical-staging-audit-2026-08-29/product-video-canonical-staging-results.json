@@ -1,0 +1,468 @@
+{
+  "target": "https://staging.carlophillips.com/#signature-runway",
+  "allPassed": true,
+  "results": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "first": {
+        "source": "/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+        "muted": true,
+        "paused": false,
+        "currentTime": 3.879052,
+        "autoplay": true,
+        "playsInline": true,
+        "controlColors": [
+          "rgb(231, 224, 210)",
+          "rgb(231, 224, 210)"
+        ],
+        "progressToken": "#00a63b",
+        "controlToken": "#e7e0d2",
+        "dashCount": 3,
+        "dashDisabled": [
+          false,
+          false,
+          true
+        ],
+        "dashColors": [
+          "rgb(231, 224, 210)",
+          "rgba(255, 255, 255, 0.35)",
+          "rgba(255, 255, 255, 0.35)"
+        ],
+        "replayVisible": false,
+        "replayRect": null,
+        "replayColor": null,
+        "replayBorderColor": null
+      },
+      "sequence": [
+        {
+          "source": "/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "muted": true,
+          "paused": false,
+          "currentTime": 3.879052,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.345365,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgba(255, 255, 255, 0.35)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "source": "/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.491292,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.491918,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgba(255, 255, 255, 0.35)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "muted": true,
+          "paused": true,
+          "currentTime": 0.498142,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgba(255, 255, 255, 0.35)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": true,
+          "replayRect": {
+            "width": 120,
+            "height": 120
+          },
+          "replayColor": "rgb(231, 224, 210)",
+          "replayBorderColor": "rgb(231, 224, 210)"
+        }
+      ],
+      "final": {
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "muted": true,
+        "paused": true,
+        "currentTime": 0.498142,
+        "autoplay": true,
+        "playsInline": true,
+        "controlColors": [
+          "rgb(231, 224, 210)",
+          "rgb(231, 224, 210)"
+        ],
+        "progressToken": "#00a63b",
+        "controlToken": "#e7e0d2",
+        "dashCount": 3,
+        "dashDisabled": [
+          false,
+          false,
+          true
+        ],
+        "dashColors": [
+          "rgba(255, 255, 255, 0.35)",
+          "rgb(231, 224, 210)",
+          "rgba(255, 255, 255, 0.35)"
+        ],
+        "replayVisible": true,
+        "replayRect": {
+          "width": 120,
+          "height": 120
+        },
+        "replayColor": "rgb(231, 224, 210)",
+        "replayBorderColor": "rgb(231, 224, 210)"
+      },
+      "assertions": {
+        "startsWithFit": true,
+        "mutedAutoplay": true,
+        "advancesToRunway": true,
+        "repeatsFromFit": true,
+        "repeatsRunway": true,
+        "holdsFinalReplay": true,
+        "creamControls": true,
+        "greenProgress": true,
+        "threePositions": true,
+        "creamReplay": true
+      },
+      "errors": []
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "first": {
+        "source": "/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+        "muted": true,
+        "paused": false,
+        "currentTime": 0.954546,
+        "autoplay": true,
+        "playsInline": true,
+        "controlColors": [
+          "rgb(231, 224, 210)",
+          "rgb(231, 224, 210)"
+        ],
+        "progressToken": "#00a63b",
+        "controlToken": "#e7e0d2",
+        "dashCount": 3,
+        "dashDisabled": [
+          false,
+          false,
+          true
+        ],
+        "dashColors": [
+          "rgb(231, 224, 210)",
+          "rgba(255, 255, 255, 0.35)",
+          "rgba(255, 255, 255, 0.35)"
+        ],
+        "replayVisible": false,
+        "replayRect": null,
+        "replayColor": null,
+        "replayBorderColor": null
+      },
+      "sequence": [
+        {
+          "source": "/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.954546,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.459579,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgba(255, 255, 255, 0.35)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "source": "/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.490169,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "muted": true,
+          "paused": false,
+          "currentTime": 0.492915,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgba(255, 255, 255, 0.35)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": false,
+          "replayRect": null,
+          "replayColor": null,
+          "replayBorderColor": null
+        },
+        {
+          "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+          "muted": true,
+          "paused": true,
+          "currentTime": 0.498944,
+          "autoplay": true,
+          "playsInline": true,
+          "controlColors": [
+            "rgb(231, 224, 210)",
+            "rgb(231, 224, 210)"
+          ],
+          "progressToken": "#00a63b",
+          "controlToken": "#e7e0d2",
+          "dashCount": 3,
+          "dashDisabled": [
+            false,
+            false,
+            true
+          ],
+          "dashColors": [
+            "rgba(255, 255, 255, 0.35)",
+            "rgb(231, 224, 210)",
+            "rgba(255, 255, 255, 0.35)"
+          ],
+          "replayVisible": true,
+          "replayRect": {
+            "width": 120,
+            "height": 120
+          },
+          "replayColor": "rgb(231, 224, 210)",
+          "replayBorderColor": "rgb(231, 224, 210)"
+        }
+      ],
+      "final": {
+        "source": "/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "muted": true,
+        "paused": true,
+        "currentTime": 0.498944,
+        "autoplay": true,
+        "playsInline": true,
+        "controlColors": [
+          "rgb(231, 224, 210)",
+          "rgb(231, 224, 210)"
+        ],
+        "progressToken": "#00a63b",
+        "controlToken": "#e7e0d2",
+        "dashCount": 3,
+        "dashDisabled": [
+          false,
+          false,
+          true
+        ],
+        "dashColors": [
+          "rgba(255, 255, 255, 0.35)",
+          "rgb(231, 224, 210)",
+          "rgba(255, 255, 255, 0.35)"
+        ],
+        "replayVisible": true,
+        "replayRect": {
+          "width": 120,
+          "height": 120
+        },
+        "replayColor": "rgb(231, 224, 210)",
+        "replayBorderColor": "rgb(231, 224, 210)"
+      },
+      "assertions": {
+        "startsWithFit": true,
+        "mutedAutoplay": true,
+        "advancesToRunway": true,
+        "repeatsFromFit": true,
+        "repeatsRunway": true,
+        "holdsFinalReplay": true,
+        "creamControls": true,
+        "greenProgress": true,
+        "threePositions": true,
+        "creamReplay": true
+      },
+      "errors": []
+    }
+  ]
+}

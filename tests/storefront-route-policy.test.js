@@ -24,16 +24,40 @@ describe('storefront route policy', () => {
   });
 
   it('keeps the storefront client free of product fixtures and Shopify transport', () => {
-    const source = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
-    expect(source).not.toContain('signature-hoodie-preview');
-    expect(source).not.toContain('loadShopifyProduct');
-    expect(source).not.toContain('SHOPIFY_');
-    expect(source).toContain('Add to bag');
-    expect(source).toContain('action="/api/checkout"');
-    expect(source).toContain('/campaigns/lofoten-runway-hero.png');
-    expect(source).toContain('At the<br />edge of life.');
-    expect(source).toContain('Collection preview');
-    expect(source).toContain('/brand-boards/carlophillips-drop-board.png');
+    const source = readFileSync(
+      'components/storefront/home-storefront.jsx',
+      'utf8'
+    );
+    const discovery = readFileSync(
+      'components/storefront/discovery-section.jsx',
+      'utf8'
+    );
+    const landing = readFileSync(
+      'components/storefront/landing-morph.jsx',
+      'utf8'
+    );
+    for (const file of [source, discovery, landing]) {
+      expect(file).not.toContain('signature-hoodie-preview');
+      expect(file).not.toContain('loadShopifyProduct');
+      expect(file).not.toContain('SHOPIFY_');
+    }
+    expect(discovery).toContain('Add to bag');
+    expect(discovery).toContain('action="/api/checkout"');
+    expect(landing).toContain('At the<br />edge of life.');
+  });
+
+  it('renders the landing hero only from a media readiness decision', () => {
+    const page = readFileSync('app/page.js', 'utf8');
+    const landing = readFileSync(
+      'components/storefront/landing-morph.jsx',
+      'utf8'
+    );
+    expect(page).toContain('getMediaReadiness');
+    expect(page).toContain('mediaReadiness={getMediaReadiness()}');
+    // The hero source is never a literal in the view: it comes from the verified decision only.
+    expect(landing).not.toContain('/campaigns/');
+    expect(landing).toContain('hero?.posterUrl');
+    expect(landing).not.toContain('<video');
   });
 
   it('publishes only active product and commerce routes in the sitemap', () => {
@@ -50,12 +74,17 @@ describe('storefront route policy', () => {
   it('keeps site metadata aligned with the active Signature Series', () => {
     const source = readFileSync('lib/site/site-config.js', 'utf8');
     expect(source).toContain("tagline: 'Signature Series'");
-    expect(source).toContain('Product availability and checkout remain release-gated.');
+    expect(source).toContain(
+      'Product availability and checkout remain release-gated.'
+    );
     expect(source).not.toContain('Gesture of Luxury');
   });
 
   it('keeps public indexing fail-closed outside Production', () => {
-    expect(routeMetadata({ title: 'Preview', description: 'Preview', path: '/' }).robots).toEqual({
+    expect(
+      routeMetadata({ title: 'Preview', description: 'Preview', path: '/' })
+        .robots
+    ).toEqual({
       index: false,
       follow: false,
     });
@@ -69,19 +98,29 @@ describe('storefront route policy', () => {
     expect(ignore).toContain('public/campaigns/draft-pod/');
     expect(existsSync('app/concept-preview/page.js')).toBe(false);
     expect(existsSync('public/campaigns/draft-pod')).toBe(false);
-    expect(existsSync('docs/archive/draft-pod/edge-of-life-runway-desktop-v1.jpg')).toBe(true);
+    expect(
+      existsSync('docs/archive/draft-pod/edge-of-life-runway-desktop-v1.jpg')
+    ).toBe(true);
   });
 
   it('renders one home footer with policy links and keeps optional analytics UI absent', () => {
-    const home = readFileSync('components/storefront/home-storefront.jsx', 'utf8');
-    const policies = readFileSync('components/storefront/site-policies-footer.jsx', 'utf8');
+    const home = readFileSync(
+      'components/storefront/home-storefront.jsx',
+      'utf8'
+    );
+    const policies = readFileSync(
+      'components/storefront/site-policies-footer.jsx',
+      'utf8'
+    );
     const layout = readFileSync('app/layout.js', 'utf8');
     expect(home).toContain('<Link href="/privacy">Privacy</Link>');
     expect(home).toContain('<Link href="/terms">Terms</Link>');
     expect(home).toContain('<Link href="/cookie-policy">Cookies</Link>');
     expect(policies).toContain("if (pathname === '/') return null");
     expect(layout).not.toContain('ConsentPreferences');
-    expect(existsSync('components/privacy/consent-preferences.jsx')).toBe(false);
+    expect(existsSync('components/privacy/consent-preferences.jsx')).toBe(
+      false
+    );
   });
 
   it('uses route metadata for the canonical shop and collections surfaces', () => {

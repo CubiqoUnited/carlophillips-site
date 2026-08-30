@@ -1,8 +1,6 @@
 import { createHmac } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import {
-  verifyShopifyWebhookEnvelope,
-} from '../lib/operations/shopify-webhook-verifier';
+import { verifyShopifyWebhookEnvelope } from '../lib/operations/shopify-webhook-verifier';
 
 const secret = 'test-only-webhook-secret-value-32-chars';
 const rawBody = JSON.stringify({
@@ -59,7 +57,9 @@ async function expectCode(promise, code) {
 describe('sanitized Shopify webhook verifier', () => {
   it('verifies exact raw bytes and returns only observation fingerprints', async () => {
     const store = new MemoryIdempotencyStore();
-    const verified = await verifyShopifyWebhookEnvelope(options({ idempotencyStore: store }));
+    const verified = await verifyShopifyWebhookEnvelope(
+      options({ idempotencyStore: store })
+    );
     expect(verified).toMatchObject({
       schemaVersion: 'cp.provider-webhook-verification.v1',
       status: 'verified',
@@ -77,16 +77,23 @@ describe('sanitized Shopify webhook verifier', () => {
     expect(verified.deliveryFingerprint).toMatch(/^sha256:[a-f0-9]{64}$/);
     expect(verified.payloadFingerprint).toMatch(/^sha256:[a-f0-9]{64}$/);
     const serialized = JSON.stringify(verified);
-    expect(serialized).not.toMatch(/cp-test\.myshopify|webhook-delivery|private@example|raw-order-id|"payload"/);
+    expect(serialized).not.toMatch(
+      /cp-test\.myshopify|webhook-delivery|private@example|raw-order-id|"payload"/
+    );
     expect([...store.claims.keys()]).toEqual([verified.deliveryFingerprint]);
   });
 
   it('accepts a Headers object and exact Uint8Array body without changing the result contract', async () => {
-    const verified = await verifyShopifyWebhookEnvelope(options({
-      rawBody: new TextEncoder().encode(rawBody),
-      headers: new Headers(headers()),
-    }));
-    expect(verified).toMatchObject({ status: 'verified', rawPayloadReturned: false });
+    const verified = await verifyShopifyWebhookEnvelope(
+      options({
+        rawBody: new TextEncoder().encode(rawBody),
+        headers: new Headers(headers()),
+      })
+    );
+    expect(verified).toMatchObject({
+      status: 'verified',
+      rawPayloadReturned: false,
+    });
   });
 
   it('rejects an already-claimed delivery fingerprint', async () => {
@@ -104,9 +111,11 @@ describe('sanitized Shopify webhook verifier', () => {
       'SHOPIFY_WEBHOOK_HMAC_INVALID'
     );
     await expectCode(
-      verifyShopifyWebhookEnvelope(options({
-        headers: headers(rawBody, { 'x-shopify-hmac-sha256': 'not-base64' }),
-      })),
+      verifyShopifyWebhookEnvelope(
+        options({
+          headers: headers(rawBody, { 'x-shopify-hmac-sha256': 'not-base64' }),
+        })
+      ),
       'SHOPIFY_WEBHOOK_HMAC_INVALID'
     );
   });
@@ -118,7 +127,9 @@ describe('sanitized Shopify webhook verifier', () => {
       ['x-shopify-webhook-id', 'short', 'SHOPIFY_WEBHOOK_DELIVERY_ID_INVALID'],
     ]) {
       await expectCode(
-        verifyShopifyWebhookEnvelope(options({ headers: headers(rawBody, { [name]: value }) })),
+        verifyShopifyWebhookEnvelope(
+          options({ headers: headers(rawBody, { [name]: value }) })
+        ),
         code
       );
     }
@@ -126,13 +137,23 @@ describe('sanitized Shopify webhook verifier', () => {
 
   it('rejects unapproved or malformed shop and topic values', async () => {
     for (const [header, value, code] of [
-      ['x-shopify-shop-domain', 'other.myshopify.com', 'SHOPIFY_WEBHOOK_SHOP_DENIED'],
-      ['x-shopify-shop-domain', 'https://cp-test.myshopify.com', 'SHOPIFY_WEBHOOK_SHOP_DENIED'],
+      [
+        'x-shopify-shop-domain',
+        'other.myshopify.com',
+        'SHOPIFY_WEBHOOK_SHOP_DENIED',
+      ],
+      [
+        'x-shopify-shop-domain',
+        'https://cp-test.myshopify.com',
+        'SHOPIFY_WEBHOOK_SHOP_DENIED',
+      ],
       ['x-shopify-topic', 'orders/create', 'SHOPIFY_WEBHOOK_TOPIC_DENIED'],
       ['x-shopify-topic', '../orders/create', 'SHOPIFY_WEBHOOK_TOPIC_DENIED'],
     ]) {
       await expectCode(
-        verifyShopifyWebhookEnvelope(options({ headers: headers(rawBody, { [header]: value }) })),
+        verifyShopifyWebhookEnvelope(
+          options({ headers: headers(rawBody, { [header]: value }) })
+        ),
         code
       );
     }
@@ -145,9 +166,11 @@ describe('sanitized Shopify webhook verifier', () => {
       ['not-a-date', 'SHOPIFY_WEBHOOK_TIMESTAMP_INVALID'],
     ]) {
       await expectCode(
-        verifyShopifyWebhookEnvelope(options({
-          headers: headers(rawBody, { 'x-shopify-triggered-at': timestamp }),
-        })),
+        verifyShopifyWebhookEnvelope(
+          options({
+            headers: headers(rawBody, { 'x-shopify-triggered-at': timestamp }),
+          })
+        ),
         code
       );
     }
@@ -156,12 +179,16 @@ describe('sanitized Shopify webhook verifier', () => {
   it('rejects invalid JSON, empty/oversized bodies, and non-byte inputs', async () => {
     const invalidJson = '{invalid';
     await expectCode(
-      verifyShopifyWebhookEnvelope(options({ rawBody: invalidJson, headers: headers(invalidJson) })),
+      verifyShopifyWebhookEnvelope(
+        options({ rawBody: invalidJson, headers: headers(invalidJson) })
+      ),
       'SHOPIFY_WEBHOOK_PAYLOAD_INVALID'
     );
     const empty = '';
     await expectCode(
-      verifyShopifyWebhookEnvelope(options({ rawBody: empty, headers: headers(empty) })),
+      verifyShopifyWebhookEnvelope(
+        options({ rawBody: empty, headers: headers(empty) })
+      ),
       'SHOPIFY_WEBHOOK_BODY_SIZE_REJECTED'
     );
     await expectCode(
@@ -189,9 +216,15 @@ describe('sanitized Shopify webhook verifier', () => {
 
   it('fails closed when durable replay protection errors', async () => {
     await expectCode(
-      verifyShopifyWebhookEnvelope(options({
-        idempotencyStore: { claim: async () => { throw new Error('database detail must not escape'); } },
-      })),
+      verifyShopifyWebhookEnvelope(
+        options({
+          idempotencyStore: {
+            claim: async () => {
+              throw new Error('database detail must not escape');
+            },
+          },
+        })
+      ),
       'SHOPIFY_WEBHOOK_IDEMPOTENCY_STORE_FAILED'
     );
   });

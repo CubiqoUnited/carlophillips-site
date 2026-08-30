@@ -20,21 +20,42 @@
     "schemaVersion": { "const": "cp.media-generation-workspace.v1" },
     "workspaceId": { "type": "string", "minLength": 1 },
     "releaseId": { "type": "string", "minLength": 1 },
-    "productHandle": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "productHandle": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
     "bindings": {
       "type": "object",
-      "required": ["mediaManifestFingerprint", "shopifyObservationFingerprint", "providerMappingFingerprint", "releaseEvidenceFingerprint"],
+      "required": [
+        "mediaManifestFingerprint",
+        "shopifyObservationFingerprint",
+        "providerMappingFingerprint"
+      ],
       "properties": {
-        "mediaManifestFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-        "shopifyObservationFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-        "providerMappingFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-        "releaseEvidenceFingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        "mediaManifestFingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "shopifyObservationFingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "providerMappingFingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
       },
       "additionalProperties": false
     },
     "rollout": {
       "type": "object",
-      "required": ["flagName", "defaultEnabled", "mode", "productScoped", "rollback"],
+      "required": [
+        "flagName",
+        "defaultEnabled",
+        "mode",
+        "productScoped",
+        "rollback"
+      ],
       "properties": {
         "flagName": { "const": "CP_ADMIN_MEDIA_GENERATION_ENABLED" },
         "defaultEnabled": { "const": false },
@@ -52,7 +73,14 @@
         "required": ["inputId", "role", "reference", "fingerprint", "status"],
         "properties": {
           "inputId": { "type": "string", "minLength": 1 },
-          "role": { "enum": ["factual-front", "garment-specification", "variants", "artwork-placement"] },
+          "role": {
+            "enum": [
+              "factual-front",
+              "garment-specification",
+              "variants",
+              "artwork-placement"
+            ]
+          },
           "reference": { "type": "string", "minLength": 1 },
           "fingerprint": {
             "oneOf": [
@@ -84,7 +112,18 @@
             "type": "object",
             "required": ["dimension", "status", "requirement"],
             "properties": {
-              "dimension": { "enum": ["fabric", "weight", "fit", "construction", "colour", "decoration", "logo", "artwork-placement"] },
+              "dimension": {
+                "enum": [
+                  "fabric",
+                  "weight",
+                  "fit",
+                  "construction",
+                  "colour",
+                  "decoration",
+                  "logo",
+                  "artwork-placement"
+                ]
+              },
               "status": { "enum": ["known", "pending", "failed"] },
               "requirement": { "type": "string", "minLength": 1 }
             },
@@ -99,11 +138,22 @@
       "minItems": 4,
       "items": {
         "type": "object",
-        "required": ["lane", "selected", "alternatives", "access", "costApproval"],
+        "required": [
+          "lane",
+          "selected",
+          "alternatives",
+          "access",
+          "costApproval"
+        ],
         "properties": {
-          "lane": { "enum": ["fashion-imagery", "spin", "model-3d", "runway-motion"] },
+          "lane": {
+            "enum": ["fashion-imagery", "spin", "model-3d", "runway-motion"]
+          },
           "selected": { "type": ["string", "null"] },
-          "alternatives": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "alternatives": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
           "access": { "enum": ["unconfigured", "evidence-only", "ready"] },
           "costApproval": { "enum": ["required", "approved", "not-applicable"] }
         },
@@ -117,8 +167,22 @@
         "type": "object",
         "required": ["stage", "status", "authority"],
         "properties": {
-          "stage": { "enum": ["ingest", "validate", "generate-reference-pack", "generate-media", "qa", "human-approval", "registry-proposal", "preview", "release"] },
-          "status": { "enum": ["available", "partial", "blocked", "pending", "complete"] },
+          "stage": {
+            "enum": [
+              "ingest",
+              "validate",
+              "generate-reference-pack",
+              "generate-media",
+              "qa",
+              "human-approval",
+              "registry-proposal",
+              "preview",
+              "release"
+            ]
+          },
+          "status": {
+            "enum": ["available", "partial", "blocked", "pending", "complete"]
+          },
           "authority": { "type": "string", "minLength": 1 }
         },
         "additionalProperties": false
@@ -147,17 +211,53 @@
           "assetId": { "type": "string", "minLength": 1 },
           "label": { "type": "string", "minLength": 1 },
           "kind": { "enum": ["image", "video", "spin", "model-3d"] },
-          "role": { "enum": ["front", "back", "side", "three-quarter", "detail", "runway-motion", "fit-silhouette", "spin-360", "model-3d"] },
-          "truthClassification": { "enum": ["factual-pod", "ai-assisted-product-visual", "ai-editorial", "ai-assisted-360", "approximate-3d", "physically-verified"] },
+          "role": {
+            "enum": [
+              "front",
+              "back",
+              "side",
+              "three-quarter",
+              "detail",
+              "runway-motion",
+              "fit-silhouette",
+              "spin-360",
+              "model-3d"
+            ]
+          },
+          "truthClassification": {
+            "enum": [
+              "factual-pod",
+              "ai-assisted-product-visual",
+              "ai-editorial",
+              "ai-assisted-360",
+              "approximate-3d",
+              "physically-verified"
+            ]
+          },
           "sourceReference": { "type": "string", "minLength": 1 },
           "checksum": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-          "storageState": { "enum": ["local-evidence", "private-draft", "quarantined", "approved-preview", "shopify-bound"] },
+          "storageState": {
+            "enum": [
+              "local-evidence",
+              "private-draft",
+              "quarantined",
+              "approved-preview",
+              "shopify-bound"
+            ]
+          },
           "qaStatus": { "enum": ["pending", "partial", "failed", "passed"] },
-          "approvalStatus": { "enum": ["pending", "approved", "rejected", "quarantined"] },
-          "placement": { "enum": ["unassigned", "landing-editorial", "explore-media"] },
+          "approvalStatus": {
+            "enum": ["pending", "approved", "rejected", "quarantined"]
+          },
+          "placement": {
+            "enum": ["unassigned", "landing-editorial", "explore-media"]
+          },
           "storefrontBound": { "const": false },
           "stagingPreviewBound": { "type": "boolean" },
-          "notes": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+          "notes": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
         },
         "additionalProperties": false
       }

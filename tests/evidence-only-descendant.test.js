@@ -36,11 +36,13 @@ describe('evidence-only descendant policy', () => {
       mode: 'evidence_only_descendant',
       blockers: [],
     });
-    expect(evaluate({
-      expectedSha: candidateSha,
-      candidateIsAncestor: false,
-      changedPaths: [],
-    })).toMatchObject({
+    expect(
+      evaluate({
+        expectedSha: candidateSha,
+        candidateIsAncestor: false,
+        changedPaths: [],
+      })
+    ).toMatchObject({
       ready: true,
       mode: 'exact_candidate',
       blockers: [],
@@ -57,7 +59,7 @@ describe('evidence-only descendant policy', () => {
     '.github/workflows/vercel-production.yml',
     'scripts/verify-production-commerce-release.mjs',
     'theme.json',
-  ])('rejects non-evidence Production change %s', path => {
+  ])('rejects non-evidence Production change %s', (path) => {
     const decision = evaluate({ changedPaths: [path] });
     expect(decision.ready).toBe(false);
     expect(decision.blockers).toContain('NON_EVIDENCE_CHANGE_DETECTED');
@@ -65,14 +67,24 @@ describe('evidence-only descendant policy', () => {
   });
 
   it('rejects non-ancestry, missing commits, wrong HEAD and symlinks', () => {
-    expect(evaluate({ candidateIsAncestor: false }).blockers).toContain('CANDIDATE_IS_NOT_ANCESTOR');
-    expect(evaluate({ candidateExists: false }).blockers).toContain('CANDIDATE_COMMIT_NOT_FOUND');
-    expect(evaluate({ expectedExists: false }).blockers).toContain('EXPECTED_COMMIT_NOT_FOUND');
-    expect(evaluate({ expectedIsHead: false }).blockers).toContain('EXPECTED_SHA_IS_NOT_HEAD');
-    expect(evaluate({
-      changedPaths: [`releases/${releaseId}/release.json`],
-      symlinkPaths: [`releases/${releaseId}/release.json`],
-    }).blockers).toContain('SYMLINK_CHANGE_FORBIDDEN');
+    expect(evaluate({ candidateIsAncestor: false }).blockers).toContain(
+      'CANDIDATE_IS_NOT_ANCESTOR'
+    );
+    expect(evaluate({ candidateExists: false }).blockers).toContain(
+      'CANDIDATE_COMMIT_NOT_FOUND'
+    );
+    expect(evaluate({ expectedExists: false }).blockers).toContain(
+      'EXPECTED_COMMIT_NOT_FOUND'
+    );
+    expect(evaluate({ expectedIsHead: false }).blockers).toContain(
+      'EXPECTED_SHA_IS_NOT_HEAD'
+    );
+    expect(
+      evaluate({
+        changedPaths: [`releases/${releaseId}/release.json`],
+        symlinkPaths: [`releases/${releaseId}/release.json`],
+      }).blockers
+    ).toContain('SYMLINK_CHANGE_FORBIDDEN');
   });
 
   it.each([
@@ -81,19 +93,29 @@ describe('evidence-only descendant policy', () => {
     `releases/${releaseId}/../release.json`,
     `releases\\${releaseId}\\release.json`,
     '',
-  ])('rejects malformed or escaping path %s', path => {
+  ])('rejects malformed or escaping path %s', (path) => {
     const decision = evaluate({ changedPaths: [path] });
     expect(decision.ready).toBe(false);
-    expect(decision.blockers).toEqual(expect.arrayContaining([
-      'CHANGED_PATH_INVALID',
-      'NON_EVIDENCE_CHANGE_DETECTED',
-    ]));
+    expect(decision.blockers).toEqual(
+      expect.arrayContaining([
+        'CHANGED_PATH_INVALID',
+        'NON_EVIDENCE_CHANGE_DETECTED',
+      ])
+    );
   });
 
   it('keeps the release allowlist exact', () => {
-    expect(isEvidenceOnlyPath(`releases/${releaseId}/release.json`, releaseId)).toBe(true);
-    expect(isEvidenceOnlyPath(`releases/${releaseId}/media-approval.json`, releaseId)).toBe(true);
-    expect(isEvidenceOnlyPath(`releases/${releaseId}/media-manifest.json`, releaseId)).toBe(false);
-    expect(isEvidenceOnlyPath(`releases/${releaseId}/unreviewed.json`, releaseId)).toBe(false);
+    expect(
+      isEvidenceOnlyPath(`releases/${releaseId}/release.json`, releaseId)
+    ).toBe(true);
+    expect(
+      isEvidenceOnlyPath(`releases/${releaseId}/media-approval.json`, releaseId)
+    ).toBe(true);
+    expect(
+      isEvidenceOnlyPath(`releases/${releaseId}/media-manifest.json`, releaseId)
+    ).toBe(false);
+    expect(
+      isEvidenceOnlyPath(`releases/${releaseId}/unreviewed.json`, releaseId)
+    ).toBe(false);
   });
 });

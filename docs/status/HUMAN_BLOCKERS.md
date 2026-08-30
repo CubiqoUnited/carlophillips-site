@@ -22,7 +22,7 @@ Observed blocker: the local audit reports the Shopify Storefront environment is 
 
 Human action: an authorized owner supplies valid read-only Storefront domain/token values in the intended local or Preview environment.
 
-Resume point: mark the Storefront product-read capability ready only with its durable evidence reference, use `COMMERCE_DATA_MODE=shopify`, generate the sanitized canonical observation, and review the exact full observation fingerprint/handle. The review yields only a candidate patch binding variant identity, commerce facts, full audit fingerprint, and review evidence; apply it to the Draft release record only through a separately authorized step while purchasing remains disabled.
+Resume point: mark the Storefront product-read capability ready only with its durable evidence reference, use `COMMERCE_DATA_MODE=shopify`, generate the sanitized canonical observation, and review the exact full observation fingerprint/handle. A fresh observation has a fresh full-envelope fingerprint; keep it separate from the historically approved full fingerprint until an authorized Staged-record update binds new evidence.
 
 ## Shopify/app capability access
 

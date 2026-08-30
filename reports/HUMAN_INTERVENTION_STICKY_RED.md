@@ -1,3 +1,73 @@
+# SUPERSEDING PRODUCT OWNER DECISION — SELL THE APPROVED STAGING HOODIE
+
+Updated: 2026-08-30
+
+## Immediate browser permission needed for the two approved Shopify videos
+
+An authenticated background Chrome tab is already open on **Products →
+CARLOPHILLIPS Signature Hoodie → Media**, and the product remains Active with the
+existing twelve images. Chrome refused the two-file upload before any file was sent
+because the ChatGPT browser extension does not currently have file-URL access.
+
+Boss must manually open `chrome://extensions`, click **Details** under the ChatGPT
+browser extension, and enable **Allow access to file URLs**. Do not send a password,
+verification code, API key, or Shopify credential. Signal completion with `Chrome file
+access enabled`; Codex can then retry the already-authorized upload of only:
+
+- `apps/web/public/media/signature-hoodie/videos/runway-motion-final.mp4`
+- `apps/web/public/media/signature-hoodie/videos/fit-silhouette-final.mp4`
+
+This permission allows the browser extension to upload local files. The immediate
+external effect of the retry will be creating two product-media records in the
+CARLOPHILLIPS Shopify account. It does not place an order or charge a payment method.
+
+The Product Owner has explicitly directed that the CARLOPHILLIPS Signature Hoodie be
+placed on Production and offered for sale with the exact staging presentation: two
+approved videos, twelve approved images, the reviewed Shopify product/variant facts,
+and live Shopify-hosted payment. This is Production authorization for the reviewed
+staging work and checkout path.
+
+The Product Owner did **not** create the repository's physical-sample requirement and
+has explicitly rejected it as an agent-authored launch condition. Do not instruct the
+Product Owner to order or inspect a Hoodie, do not describe this decision as a sample
+"waiver," and do not invent sample delivery or inspection evidence. The truthful
+physical state remains: no sample was ordered or inspected. The Product Owner has
+accepted the resulting risk that fit, colour, artwork placement, and finish have not
+been verified from a delivered physical item. This record supersedes the older
+sample-first instructions later in this file.
+
+## Remaining external media action, only if strict Shopify media identity is retained
+
+The current reviewed storefront already displays both videos from the approved Mux/app
+media registry and all twelve observed Shopify images. The legacy release evaluator,
+however, accepts a video only when it has a canonical Shopify product-media identity.
+If that strict identity rule remains, Shopify Admin must add these exact existing files
+to **Products → CARLOPHILLIPS Signature Hoodie → Media**:
+
+- `apps/web/public/media/signature-hoodie/videos/runway-motion-final.mp4`
+- `apps/web/public/media/signature-hoodie/videos/fit-silhouette-final.mp4`
+
+This action creates two Shopify product-media records but does not place an order,
+charge a payment method, or change the twelve approved images. The expected result is
+fourteen product-media records: twelve images and two processed videos. Do not paste
+Shopify credentials or verification codes into Codex. Codex must not foreground the
+Shopify Admin screen unless Boss explicitly approves that exact visible action; Boss
+may instead perform the two uploads manually and signal `Shopify Hoodie media is 12
+images plus 2 processed videos`.
+
+## Current implementation resume point
+
+Continue from canonical staging merge `ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0`.
+Preserve the design system and the exact approved staging presentation. Reconcile the
+release metadata and checkout capability with the Product Owner decision and observed
+live Shopify facts. Canonical staging desktop/mobile QA and the checkout-disabled
+Production-mode rollback artifact are now verified. Complete the two Shopify video
+uploads, refresh the release-bound media observation, and then promote the exact
+reviewed source to `main` and `www.carlophillips.com` only after the same-origin
+Production checkout path can create a no-order cart.
+
+---
+
 # HUMAN INTERVENTION REQUIRED — FINISH FIRST-PRODUCTION PROOF AND REAL-PAYMENT ACTIVATION
 
 Updated: 2026-08-17
@@ -300,6 +370,7 @@ Status: **PR #10 is merged and the first `CI / Verify` run on `main` was reporte
 ## Resume point
 
 After `CI/CD protection configured`, verify the ruleset plus both environment reviewer/variable/secret-name configurations read-only. Do not reveal values. A release-candidate run must create distinct same-SHA/same-release `staged-production` and `safe-fallback` deployments with no CARLOPHILLIPS domain aliases. Production remains unchanged until a separately approved promotion dispatch.
+
 # RED — MEDIA GENERATION ACTIVATION DECISIONS REQUIRED
 
 The feature-flagged Admin review workspace can be tested in protected Staging without external effects. Do **not** enable paid generation, upload candidates, or activate any mutating control until the Product Owner records all of the following:

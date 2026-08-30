@@ -16,7 +16,10 @@ const validateWorkspace = ajv.compile(workspaceSchema);
 
 describe('feature-flagged Media Generation workspace', () => {
   it('validates the canonical draft workspace and every truth classification', () => {
-    expect(validateWorkspace(workspace), ajv.errorsText(validateWorkspace.errors)).toBe(true);
+    expect(
+      validateWorkspace(workspace),
+      ajv.errorsText(validateWorkspace.errors)
+    ).toBe(true);
     expect(mediaTruthClassifications).toEqual([
       'factual-pod',
       'ai-assisted-product-visual',
@@ -29,10 +32,27 @@ describe('feature-flagged Media Generation workspace', () => {
 
   it('defaults off, enables only by exact server flag, and hard-denies Production', () => {
     expect(isMediaGenerationEnabled({})).toBe(false);
-    expect(isMediaGenerationEnabled({ CP_ADMIN_MEDIA_GENERATION_ENABLED: 'TRUE' })).toBe(false);
-    expect(isMediaGenerationEnabled({ CP_ADMIN_MEDIA_GENERATION_ENABLED: 'true', VERCEL_ENV: 'preview' })).toBe(true);
-    expect(isMediaGenerationEnabled({ CP_ADMIN_MEDIA_GENERATION_ENABLED: 'true', VERCEL_ENV: 'production' })).toBe(false);
-    expect(isMediaGenerationEnabled({ CP_ADMIN_MEDIA_GENERATION_ENABLED: 'true', NEXT_PUBLIC_COMMERCE_ENVIRONMENT: 'production' })).toBe(false);
+    expect(
+      isMediaGenerationEnabled({ CP_ADMIN_MEDIA_GENERATION_ENABLED: 'TRUE' })
+    ).toBe(false);
+    expect(
+      isMediaGenerationEnabled({
+        CP_ADMIN_MEDIA_GENERATION_ENABLED: 'true',
+        VERCEL_ENV: 'preview',
+      })
+    ).toBe(true);
+    expect(
+      isMediaGenerationEnabled({
+        CP_ADMIN_MEDIA_GENERATION_ENABLED: 'true',
+        VERCEL_ENV: 'production',
+      })
+    ).toBe(false);
+    expect(
+      isMediaGenerationEnabled({
+        CP_ADMIN_MEDIA_GENERATION_ENABLED: 'true',
+        NEXT_PUBLIC_COMMERCE_ENVIRONMENT: 'production',
+      })
+    ).toBe(false);
   });
 
   it('references the exact release envelope without mutating the release or Media Registry', () => {
@@ -51,18 +71,26 @@ describe('feature-flagged Media Generation workspace', () => {
       draftOnly: false,
       existingFunnelChanged: false,
       canonicalReleaseState: 'staged',
-      metrics: { candidates: 2, approved: 2, storefrontBound: 0, stagingPreviewBound: 2 },
+      metrics: {
+        candidates: 2,
+        approved: 2,
+        storefrontBound: 0,
+        stagingPreviewBound: 2,
+      },
       bindings: {
         mediaManifest: true,
         shopifyObservation: true,
         providerMapping: true,
-        releaseEvidence: true,
       },
     });
     expect(release).toEqual(beforeRelease);
     expect(mediaManifest).toEqual(beforeManifest);
-    expect(JSON.stringify(model)).not.toContain(release.shopify.productReference);
-    expect(JSON.stringify(model)).not.toContain(release.fulfillmentMappings[0].providerProductId);
+    expect(JSON.stringify(model)).not.toContain(
+      release.shopify.productReference
+    );
+    expect(JSON.stringify(model)).not.toContain(
+      release.fulfillmentMappings[0].providerProductId
+    );
     expect(JSON.stringify(model)).not.toContain('test_reports/');
     expect(JSON.stringify(model)).not.toContain('sha256:');
   });
@@ -70,13 +98,31 @@ describe('feature-flagged Media Generation workspace', () => {
   it('fails closed when any canonical binding is stale', () => {
     const stale = structuredClone(workspace);
     stale.bindings.mediaManifestFingerprint = `sha256:${'a'.repeat(64)}`;
-    expect(() => deriveMediaGenerationWorkspace({
-      workspace: stale,
-      release,
-      mediaManifest,
-      featureEnabled: true,
-      role: 'product_owner',
-    })).toThrow('MEDIA_GENERATION_BINDING_STALE');
+    expect(() =>
+      deriveMediaGenerationWorkspace({
+        workspace: stale,
+        release,
+        mediaManifest,
+        featureEnabled: true,
+        role: 'product_owner',
+      })
+    ).toThrow('MEDIA_GENERATION_BINDING_STALE');
+  });
+
+  it('does not duplicate the mutable aggregate release-evidence binding', () => {
+    const updatedRelease = structuredClone(release);
+    updatedRelease.candidate.releaseEvidenceFingerprint = `sha256:${'b'.repeat(64)}`;
+
+    expect(() =>
+      deriveMediaGenerationWorkspace({
+        workspace,
+        release: updatedRelease,
+        mediaManifest,
+        featureEnabled: true,
+        role: 'product_owner',
+      })
+    ).not.toThrow();
+    expect(workspace.bindings).not.toHaveProperty('releaseEvidenceFingerprint');
   });
 
   it('allows only read-only comparison and denies every mutation without durable authority', () => {
@@ -86,36 +132,79 @@ describe('feature-flagged Media Generation workspace', () => {
       role: 'product_owner',
       workspace,
     });
-    expect(compare).toEqual({ id: 'compare', allowed: true, reason: 'READ_ONLY_COMPARISON_AVAILABLE' });
+    expect(compare).toEqual({
+      id: 'compare',
+      allowed: true,
+      reason: 'READ_ONLY_COMPARISON_AVAILABLE',
+    });
 
-    for (const action of ['generate', 'regenerate', 'quarantine', 'approve', 'assign']) {
-      expect(evaluateMediaGenerationAction({
-        action,
-        featureEnabled: true,
-        role: 'product_owner',
-        workspace,
-      }).allowed, action).toBe(false);
+    for (const action of [
+      'generate',
+      'regenerate',
+      'quarantine',
+      'approve',
+      'assign',
+    ]) {
+      expect(
+        evaluateMediaGenerationAction({
+          action,
+          featureEnabled: true,
+          role: 'product_owner',
+          workspace,
+        }).allowed,
+        action
+      ).toBe(false);
     }
   });
 
   it('denies disabled, reviewer, malformed and cost-gated operations', () => {
-    expect(evaluateMediaGenerationAction({ action: 'compare', featureEnabled: false, role: 'product_owner', workspace }).reason)
-      .toBe('MEDIA_GENERATION_FEATURE_DISABLED');
-    expect(evaluateMediaGenerationAction({ action: 'compare', featureEnabled: true, role: 'reviewer', workspace }).reason)
-      .toBe('PRODUCT_OWNER_REQUIRED');
-    expect(evaluateMediaGenerationAction({ action: 'delete', featureEnabled: true, role: 'product_owner', workspace }).reason)
-      .toBe('MEDIA_GENERATION_ACTION_UNKNOWN');
+    expect(
+      evaluateMediaGenerationAction({
+        action: 'compare',
+        featureEnabled: false,
+        role: 'product_owner',
+        workspace,
+      }).reason
+    ).toBe('MEDIA_GENERATION_FEATURE_DISABLED');
+    expect(
+      evaluateMediaGenerationAction({
+        action: 'compare',
+        featureEnabled: true,
+        role: 'reviewer',
+        workspace,
+      }).reason
+    ).toBe('PRODUCT_OWNER_REQUIRED');
+    expect(
+      evaluateMediaGenerationAction({
+        action: 'delete',
+        featureEnabled: true,
+        role: 'product_owner',
+        workspace,
+      }).reason
+    ).toBe('MEDIA_GENERATION_ACTION_UNKNOWN');
 
     const ready = structuredClone(workspace);
     ready.constraintProfile.status = 'ready';
-    ready.providers = ready.providers.map(provider => ({ ...provider, access: 'ready' }));
-    expect(evaluateMediaGenerationAction({ action: 'generate', featureEnabled: true, role: 'product_owner', workspace: ready }).reason)
-      .toBe('EXACT_COST_APPROVAL_REQUIRED');
+    ready.providers = ready.providers.map((provider) => ({
+      ...provider,
+      access: 'ready',
+    }));
+    expect(
+      evaluateMediaGenerationAction({
+        action: 'generate',
+        featureEnabled: true,
+        role: 'product_owner',
+        workspace: ready,
+      }).reason
+    ).toBe('EXACT_COST_APPROVAL_REQUIRED');
   });
 
   it('binds the two approved videos to Staging only and keeps their truth classification', () => {
     expect(workspace.candidates).toHaveLength(2);
-    expect(workspace.candidates.map(candidate => candidate.label)).toEqual(['Runway motion', 'Fit & silhouette']);
+    expect(workspace.candidates.map((candidate) => candidate.label)).toEqual([
+      'Runway motion',
+      'Fit & silhouette',
+    ]);
     for (const candidate of workspace.candidates) {
       expect(candidate.kind).toBe('video');
       expect(candidate.truthClassification).toBe('ai-editorial');
@@ -125,7 +214,11 @@ describe('feature-flagged Media Generation workspace', () => {
       expect(candidate.stagingPreviewBound).toBe(true);
       expect(candidate.storefrontBound).toBe(false);
     }
-    expect(workspace.candidates[0].notes.join(' ')).toContain('Closed-eye opening removed');
-    expect(workspace.candidates[1].notes.join(' ')).toContain('not physical fit evidence');
+    expect(workspace.candidates[0].notes.join(' ')).toContain(
+      'Closed-eye opening removed'
+    );
+    expect(workspace.candidates[1].notes.join(' ')).toContain(
+      'not physical fit evidence'
+    );
   });
 });

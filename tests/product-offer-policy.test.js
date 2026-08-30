@@ -16,26 +16,61 @@ const binding = {
 describe('initial Shopify product offer', () => {
   it('offers exactly S, M and L from the reviewed Shopify observation', () => {
     expect(validateProductOffer(productOffer, binding)).toBe(true);
-    const presentation = applyProductOffer(createVariantPresentation(observation), productOffer, binding);
-    const sizes = presentation.combinations.map(item => (
-      item.selectedOptions.find(option => option.name.toLowerCase() === 'size').value.toUpperCase()
-    )).sort();
+    const presentation = applyProductOffer(
+      createVariantPresentation(observation),
+      productOffer,
+      binding
+    );
+    const sizes = presentation.combinations
+      .map((item) =>
+        item.selectedOptions
+          .find((option) => option.name.toLowerCase() === 'size')
+          .value.toUpperCase()
+      )
+      .sort();
     expect(sizes).toEqual(['L', 'M', 'S']);
   });
 
   it('rejects every observed reference outside the initial offer', () => {
-    const decisions = observation.variants.map(item => ({
-      size: item.selectedOptions.find(option => option.name.toLowerCase() === 'size').value.toUpperCase(),
-      allowed: productOfferAllowsReference(productOffer, item.referenceHash, binding),
+    const decisions = observation.variants.map((item) => ({
+      size: item.selectedOptions
+        .find((option) => option.name.toLowerCase() === 'size')
+        .value.toUpperCase(),
+      allowed: productOfferAllowsReference(
+        productOffer,
+        item.referenceHash,
+        binding
+      ),
     }));
-    expect(decisions.filter(item => item.allowed).map(item => item.size).sort()).toEqual(['L', 'M', 'S']);
-    expect(decisions.filter(item => !item.allowed)).toHaveLength(6);
+    expect(
+      decisions
+        .filter((item) => item.allowed)
+        .map((item) => item.size)
+        .sort()
+    ).toEqual(['L', 'M', 'S']);
+    expect(decisions.filter((item) => !item.allowed)).toHaveLength(6);
   });
 
   it('fails closed for a stale release, product, or incomplete reference set', () => {
     const presentation = createVariantPresentation(observation);
-    expect(applyProductOffer(presentation, productOffer, { ...binding, releaseId: 'stale' })).toBeNull();
-    expect(applyProductOffer(presentation, productOffer, { ...binding, handle: 'wrong' })).toBeNull();
-    expect(applyProductOffer({ ...presentation, combinations: presentation.combinations.slice(1) }, productOffer, binding)).toBeNull();
+    expect(
+      applyProductOffer(presentation, productOffer, {
+        ...binding,
+        releaseId: 'stale',
+      })
+    ).toBeNull();
+    expect(
+      applyProductOffer(presentation, productOffer, {
+        ...binding,
+        handle: 'wrong',
+      })
+    ).toBeNull();
+    expect(
+      applyProductOffer(
+        { ...presentation, combinations: presentation.combinations.slice(1) },
+        productOffer,
+        binding
+      )
+    ).toBeNull();
   });
 });

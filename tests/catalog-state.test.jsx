@@ -5,26 +5,33 @@ import { CommerceCatalogState } from '../components/commerce/catalog-state.jsx';
 
 describe('catalog presentation', () => {
   it('renders truthful visible and withheld counts with review-only navigation', () => {
-    const html = renderToStaticMarkup(<CommerceCatalogState pageLabel="Shop" decision={{
-      schemaVersion: 'cp.catalog-decision.v1',
-      environment: 'local',
-      status: 'available',
-      source: 'fixture',
-      candidateCount: 2,
-      visibleCount: 1,
-      excludedCount: 1,
-      commerceAllowed: false,
-      reason: 'CATALOG_ITEMS_AVAILABLE',
-      excludedReasons: ['LOCAL_FIXTURE_NOT_FOUND'],
-      products: [{
-        handle: 'visible-product',
-        title: 'Visible fixture',
-        price: 20,
-        currency: 'USD',
-        sourceLabel: 'Local fixture review — not live store data',
-        media: [],
-      }],
-    }} />);
+    const html = renderToStaticMarkup(
+      <CommerceCatalogState
+        pageLabel="Shop"
+        decision={{
+          schemaVersion: 'cp.catalog-decision.v1',
+          environment: 'local',
+          status: 'available',
+          source: 'fixture',
+          candidateCount: 2,
+          visibleCount: 1,
+          excludedCount: 1,
+          commerceAllowed: false,
+          reason: 'CATALOG_ITEMS_AVAILABLE',
+          excludedReasons: ['LOCAL_FIXTURE_NOT_FOUND'],
+          products: [
+            {
+              handle: 'visible-product',
+              title: 'Visible fixture',
+              price: 20,
+              currency: 'USD',
+              sourceLabel: 'Local fixture review — not live store data',
+              media: [],
+            },
+          ],
+        }}
+      />
+    );
 
     expect(html).toContain('class="cp-commerce-page"');
     expect(html).not.toContain('cp-product-detail-page');
@@ -40,19 +47,23 @@ describe('catalog presentation', () => {
   });
 
   it('renders an empty state without denied product payloads', () => {
-    const html = renderToStaticMarkup(<CommerceCatalogState decision={{
-      schemaVersion: 'cp.catalog-decision.v1',
-      environment: 'production',
-      status: 'unavailable',
-      source: 'unavailable',
-      candidateCount: 1,
-      visibleCount: 0,
-      excludedCount: 1,
-      commerceAllowed: false,
-      reason: 'NO_RELEASE_ELIGIBLE_PRODUCTS',
-      excludedReasons: ['PRODUCT_RELEASE_NOT_RELEASED'],
-      products: [],
-    }} />);
+    const html = renderToStaticMarkup(
+      <CommerceCatalogState
+        decision={{
+          schemaVersion: 'cp.catalog-decision.v1',
+          environment: 'production',
+          status: 'unavailable',
+          source: 'unavailable',
+          candidateCount: 1,
+          visibleCount: 0,
+          excludedCount: 1,
+          commerceAllowed: false,
+          reason: 'NO_RELEASE_ELIGIBLE_PRODUCTS',
+          excludedReasons: ['PRODUCT_RELEASE_NOT_RELEASED'],
+          products: [],
+        }}
+      />
+    );
 
     expect(html).toContain('Coming soon.');
     expect(html).toContain('The next release is being prepared. Return soon.');
@@ -62,19 +73,32 @@ describe('catalog presentation', () => {
   });
 
   it('renders a live collection without internal release counters or status jargon', () => {
-    const html = renderToStaticMarkup(<CommerceCatalogState decision={{
-      schemaVersion: 'cp.catalog-decision.v1',
-      environment: 'preview',
-      status: 'available',
-      source: 'shopify',
-      candidateCount: 1,
-      visibleCount: 1,
-      excludedCount: 0,
-      commerceAllowed: true,
-      reason: 'CATALOG_ITEMS_AVAILABLE',
-      excludedReasons: [],
-      products: [{ handle: 'signature-hoodie', title: 'Signature Hoodie', price: 128, currency: 'USD', commerceAllowed: true, media: [] }],
-    }} />);
+    const html = renderToStaticMarkup(
+      <CommerceCatalogState
+        decision={{
+          schemaVersion: 'cp.catalog-decision.v1',
+          environment: 'preview',
+          status: 'available',
+          source: 'shopify',
+          candidateCount: 1,
+          visibleCount: 1,
+          excludedCount: 0,
+          commerceAllowed: true,
+          reason: 'CATALOG_ITEMS_AVAILABLE',
+          excludedReasons: [],
+          products: [
+            {
+              handle: 'signature-hoodie',
+              title: 'Signature Hoodie',
+              price: 128,
+              currency: 'USD',
+              commerceAllowed: true,
+              media: [],
+            },
+          ],
+        }}
+      />
+    );
     expect(html).toContain('The Collection');
     expect(html).toContain('Signature Series / 001');
     expect(html).toContain('View product');

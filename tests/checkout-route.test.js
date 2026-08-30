@@ -8,7 +8,7 @@ vi.mock('@/lib/commerce/shopify-checkout-server', () => ({
   })),
 }));
 vi.mock('@/lib/config/product-visibility', () => ({
-  getCommerceEnvironment: () => 'preview',
+  getCommerceEnvironment: () => 'production',
 }));
 vi.mock('@/lib/releases/product-release-registry', () => ({
   getProductReleaseEvidence: () => ({
@@ -46,7 +46,9 @@ describe('checkout POST boundary', () => {
     const response = await POST(checkoutRequest(origin));
 
     expect(response.status).toBe(403);
-    await expect(response.json()).resolves.toEqual({ error: 'ORIGIN_REJECTED' });
+    await expect(response.json()).resolves.toEqual({
+      error: 'ORIGIN_REJECTED',
+    });
     expect(createApprovedHoodieCheckout).not.toHaveBeenCalled();
   });
 
@@ -54,11 +56,15 @@ describe('checkout POST boundary', () => {
     const response = await POST(checkoutRequest('https://preview.example'));
 
     expect(response.status).toBe(303);
-    expect(response.headers.get('location')).toBe('https://example.myshopify.com/checkouts/test');
-    expect(createApprovedHoodieCheckout).toHaveBeenCalledWith(expect.objectContaining({
-      handle: 'carlophillips-signature-hoodie',
-      environment: 'preview',
-      quantity: 1,
-    }));
+    expect(response.headers.get('location')).toBe(
+      'https://example.myshopify.com/checkouts/test'
+    );
+    expect(createApprovedHoodieCheckout).toHaveBeenCalledWith(
+      expect.objectContaining({
+        handle: 'carlophillips-signature-hoodie',
+        environment: 'production',
+        quantity: 1,
+      })
+    );
   });
 });

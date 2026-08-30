@@ -21,12 +21,24 @@
   --cp-primitive-color-reset-border: #e5e7eb;
   --cp-primitive-color-reset-placeholder: #9ca3af;
   --cp-primitive-color-transparent: transparent;
+  --cp-primitive-color-stage-control-hover: #ffffff;
+  --cp-primitive-color-stage-track: rgb(255 255 255 / 22%);
+  --cp-primitive-color-stage-dash: rgb(255 255 255 / 35%);
+  --cp-primitive-color-product-control: #e7e0d2;
+  --cp-primitive-color-product-progress: #00a63b;
+  --cp-primitive-color-thumb-border: rgb(255 255 255 / 15%);
+  --cp-primitive-color-thumb-hover: rgb(255 255 255 / 60%);
   --cp-primitive-color-channel-dark: 0 0 0;
   --cp-primitive-color-channel-light: 255 255 255;
 
-  --cp-primitive-font-family-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --cp-primitive-font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --cp-primitive-font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Roboto, 'Arial Nova', sans-serif;
+  --cp-primitive-font-family-serif: 'Cormorant Garamond', 'Playfair Display', Didot, 'Bodoni 72', 'Bodoni MT', 'Cinzel', Georgia, serif;
+  --cp-primitive-font-family-mono: 'SFMono-Regular', 'JetBrains Mono', 'Fira Code', Menlo, Consolas, monospace;
   --cp-primitive-font-family-open-graph: Arial, sans-serif;
+  --cp-primitive-color-gold: #d6be7a;
+  --cp-primitive-color-cream-over: #d9d0c2;
+  --cp-primitive-color-cream-sig: #c9bca9;
+  --cp-primitive-font-weight-thin: 100;
   --cp-primitive-font-weight-regular: 400;
   --cp-primitive-font-weight-bold-relative: bolder;
   --cp-primitive-font-size-inherit: inherit;
@@ -61,6 +73,9 @@
   --cp-primitive-font-size-display-desktop: min(7.4vw, 8.5rem);
   --cp-primitive-font-size-menu: clamp(2rem, 4.25vw, 4.25rem);
   --cp-primitive-font-size-adjustment-4: 0.25rem;
+  --cp-primitive-font-size-landing-title: clamp(2rem, 5.2vw, 4.625rem);
+  --cp-primitive-font-style-italic: italic;
+  --cp-primitive-size-sig-indent: 44%;
   --cp-primitive-font-line-height-display: 0.82;
   --cp-primitive-font-line-height-title: 0.85;
   --cp-primitive-font-line-height-section: 0.9;
@@ -78,7 +93,10 @@
   --cp-primitive-font-line-height-commerce-product-mobile: 1.2;
   --cp-primitive-font-line-height-body: 1.5;
   --cp-primitive-font-line-height-relaxed: 1.75;
+  --cp-primitive-font-line-height-product-description: 1.65;
+  --cp-primitive-font-tracking-004: 0.04em;
   --cp-primitive-font-tracking-020: 0.2em;
+  --cp-primitive-font-tracking-022: 0.22em;
   --cp-primitive-font-tracking-024: 0.24em;
   --cp-primitive-font-tracking-028: 0.28em;
   --cp-primitive-font-tracking-030: 0.3em;
@@ -104,7 +122,15 @@
   --cp-primitive-size-viewport-height: 100svh;
   --cp-primitive-size-viewport-height-legacy: 100vh;
   --cp-primitive-size-viewport-width: 100vw;
+  --cp-primitive-size-scene-left: 25%;
+  --cp-primitive-size-scene-width: 75%;
+  --cp-primitive-size-copy-left: 29.5%;
+  --cp-primitive-size-copy-top: 36%;
+  --cp-primitive-size-copy-width: 43%;
+  --cp-primitive-size-scroll-left: 50%;
   --cp-primitive-size-control: 3rem;
+  --cp-primitive-size-product-replay: 7.5rem;
+  --cp-primitive-size-product-replay-icon: 2.75rem;
   --cp-primitive-size-touch-target: 2.75rem;
   --cp-primitive-size-icon-small: 1rem;
   --cp-primitive-size-icon-medium: 1.25rem;
@@ -124,23 +150,17 @@
   --cp-primitive-size-copy-display: 64rem;
   --cp-primitive-size-copy-editorial: 72rem;
   --cp-primitive-size-copy-product: clamp(14rem, 36vw, 25.5rem);
-  --cp-primitive-size-media-panel-width: 80rem;
-  --cp-primitive-size-media-panel-height: 56rem;
-  --cp-primitive-size-media-button-width: 29rem;
-  --cp-primitive-size-media-button-corner-width: 15rem;
-  --cp-primitive-size-media-button-height: 3.5rem;
-  --cp-primitive-size-media-button-corner-height: 3.25rem;
-  --cp-primitive-size-media-caption-height: 4.5rem;
+  --cp-primitive-size-media-panel-width: 68rem;
+  --cp-primitive-size-media-panel-height: 68rem;
+  --cp-primitive-size-media-button-corner-height: 2.75rem;
   --cp-primitive-size-side-drawer-mobile: 100vw;
   --cp-primitive-size-side-drawer-desktop: min(32rem, 32vw);
   --cp-primitive-size-motion-progress: 11rem;
   --cp-primitive-size-progress-track: 0.125rem;
-  --cp-primitive-size-mobile-purchase-bar: 4.25rem;
   --cp-primitive-size-bag-thumbnail: 7rem;
   --cp-primitive-size-choice: 3rem;
   --cp-primitive-size-action-wide: 3.5rem;
   --cp-primitive-size-information-fact: 8rem;
-  --cp-primitive-size-product-fact-min: 12rem;
   --cp-primitive-size-product-title-width: 5ch;
   --cp-primitive-size-scrollbar: 0.375rem;
   --cp-primitive-size-visually-hidden: 1px;
@@ -154,9 +174,18 @@
   --cp-primitive-size-panel-catalog: 62vh;
   --cp-primitive-size-page-gutter: clamp(1.25rem, 3.35vw, 3rem);
   --cp-primitive-size-section-space: clamp(5rem, 8vw, 8rem);
-  --cp-primitive-size-panel-bottom: clamp(2.5rem, 4vw, 3.5rem);
-  --cp-primitive-size-media-panel-inset: clamp(0.75rem, 4vw, 2.5rem);
+  --cp-primitive-size-media-panel-inset: clamp(0.5rem, 2vw, 1.25rem);
   --cp-primitive-size-empty-state-padding: clamp(2rem, 4vw, 3rem);
+  --cp-primitive-size-stage: 46.5rem;
+  --cp-primitive-size-stage-height-mobile: min(calc((100vw - 2.5rem) * 1.25), calc(100svh - 8.5rem));
+  --cp-primitive-size-stage-height: clamp(24rem, calc(100svh - 8.5rem), 52rem);
+  --cp-primitive-size-dash: 2.25rem;
+  --cp-primitive-size-rail-dot: 0.3125rem;
+  --cp-primitive-size-discovery-thumb: 2.25rem;
+  --cp-primitive-size-discovery-max-width: 104rem;
+  --cp-primitive-space-discovery-padding-inline: clamp(2rem, 4vw, 4.5rem);
+  --cp-primitive-space-grid-gap-discovery: clamp(1.25rem, 2.25vw, 2rem);
+  --cp-primitive-size-textarea: 9rem;
 
   --cp-primitive-ratio-product-portrait: 4 / 5;
   --cp-primitive-ratio-product-featured: 5 / 4;
@@ -192,7 +221,6 @@
   --cp-primitive-opacity-068: 0.68;
   --cp-primitive-opacity-072: 0.72;
   --cp-primitive-opacity-074: 0.74;
-  --cp-primitive-opacity-075: 0.75;
   --cp-primitive-opacity-076: 0.76;
   --cp-primitive-opacity-080: 0.8;
   --cp-primitive-opacity-082: 0.82;
@@ -209,30 +237,22 @@
   --cp-primitive-layer-drawer-nested: 100;
 
   --cp-primitive-duration-standard: 240ms;
+  --cp-primitive-duration-morph: 900ms;
+  --cp-primitive-delay-morph-copy: 60ms;
   --cp-primitive-duration-campaign: 18s;
-  --cp-primitive-duration-runway: 15s;
-  --cp-primitive-duration-scroll-prompt: 1.8s;
-  --cp-primitive-duration-gallery-auto: 5s;
-  --cp-primitive-duration-product-motion: 8s;
-  --cp-primitive-delay-runway-first: 0s;
-  --cp-primitive-delay-runway-second: -10s;
-  --cp-primitive-delay-runway-third: -20s;
   --cp-primitive-easing-standard: cubic-bezier(0.2, 0.65, 0.3, 1);
 
   --cp-primitive-effect-blur-soft: 0.65rem;
   --cp-primitive-effect-blur-glass: 0.75rem;
   --cp-primitive-effect-blur-strong: 1rem;
-  --cp-primitive-effect-blur-runway: 1.5rem;
   --cp-primitive-effect-shadow-copy: 0 1px 2rem rgb(0 0 0 / 90%);
   --cp-primitive-effect-shadow-dialog: 0 2rem 6rem rgb(0 0 0 / 72%);
   --cp-primitive-effect-scrim-campaign:
     linear-gradient(0deg, rgb(0 0 0 / 68%), transparent 48%, rgb(0 0 0 / 28%)),
     linear-gradient(90deg, rgb(0 0 0 / 74%), rgb(0 0 0 / 8%) 54%, rgb(0 0 0 / 20%));
-  --cp-primitive-effect-scrim-product:
-    linear-gradient(0deg, rgb(0 0 0 / 80%), transparent 48%, rgb(0 0 0 / 35%)),
-    linear-gradient(90deg, rgb(0 0 0 / 74%), rgb(0 0 0 / 8%) 54%, rgb(0 0 0 / 34%));
-  --cp-primitive-effect-scrim-media: linear-gradient(0deg, rgb(0 0 0 / 92%), rgb(0 0 0 / 45%));
   --cp-primitive-effect-scrim-card: linear-gradient(0deg, rgb(0 0 0 / 80%), transparent 60%);
+  --cp-primitive-effect-gradient-title: linear-gradient(180deg, rgb(255 250 241) 0%, rgb(234 223 206) 46%, rgb(198 185 167) 100%);
+  --cp-primitive-effect-edge-blend: linear-gradient(90deg, rgb(0 0 0) 0%, rgb(0 0 0) 18%, rgb(0 0 0 / 98%) 23%, rgb(0 0 0 / 72%) 29%, rgb(0 0 0 / 24%) 36%, transparent 45%);
 
   --cp-primitive-breakpoint-small: 40rem;
   --cp-primitive-breakpoint-tablet: 48rem;
@@ -269,7 +289,6 @@
   --cp-primitive-layout-justify-end: flex-end;
   --cp-primitive-layout-justify-self-center: center;
   --cp-primitive-layout-justify-self-end: end;
-  --cp-primitive-layout-align-self-center: center;
   --cp-primitive-layout-flex-wrap: wrap;
   --cp-primitive-layout-flex-none: none;
   --cp-primitive-layout-flex-grow: 1;
@@ -287,9 +306,6 @@
   --cp-primitive-layout-cursor-disabled: not-allowed;
   --cp-primitive-layout-cursor-action: pointer;
   --cp-primitive-layout-width-fit-content: fit-content;
-  --cp-primitive-layout-transform-origin-left: left center;
-  --cp-primitive-layout-animation-count-once: 1;
-  --cp-primitive-layout-animation-state-paused: paused;
   --cp-primitive-layout-white-space-nowrap: nowrap;
   --cp-primitive-layout-white-space-normal: normal;
   --cp-primitive-layout-clip-visually-hidden: rect(0, 0, 0, 0);
@@ -309,7 +325,6 @@
   --cp-primitive-layout-text-wrap-pretty: pretty;
   --cp-primitive-layout-text-decoration-link: underline;
   --cp-primitive-layout-text-decoration-abbreviation: underline dotted;
-  --cp-primitive-layout-text-shadow-none: none;
   --cp-primitive-layout-object-fit-cover: cover;
   --cp-primitive-layout-object-fit-contain: contain;
   --cp-primitive-layout-will-change-transform: transform;
@@ -342,14 +357,18 @@
   --cp-primitive-layout-size-auto: auto;
   --cp-primitive-layout-size-zero: 0;
   --cp-primitive-layout-grid-header: repeat(3, 1fr);
-  --cp-primitive-layout-grid-media-button: 1fr auto 1fr;
   --cp-primitive-layout-grid-variant: 1fr auto;
   --cp-primitive-layout-grid-two: repeat(2, minmax(0, 1fr));
+  --cp-primitive-layout-grid-discovery: minmax(0, 0.95fr) minmax(0, 2.3fr) minmax(0, 0.95fr);
+  --cp-primitive-layout-grid-cart-line: auto minmax(0, 1fr) auto;
+  --cp-primitive-layout-grid-checkout: minmax(0, 1.4fr) minmax(0, 0.85fr);
+  --cp-primitive-layout-appearance-none: none;
+  --cp-primitive-layout-order-first: -1;
+  --cp-primitive-layout-order-none: 0;
   --cp-primitive-layout-grid-three: repeat(3, minmax(0, 1fr));
   --cp-primitive-layout-grid-five: repeat(5, minmax(0, 1fr));
   --cp-primitive-layout-grid-span-two: span 2 / span 2;
   --cp-primitive-layout-line-clamp-product: 3;
-  --cp-primitive-layout-grid-column-media-icon: 3;
   --cp-primitive-media-position-campaign-mobile: 68% center;
   --cp-primitive-media-position-center: center;
   --cp-primitive-media-transform-origin-campaign: 62% 48%;
@@ -363,10 +382,27 @@
   --cp-primitive-motion-campaign-end: scale(1.075) translate3d(-0.7%, 0.4%, 0);
   --cp-primitive-motion-runway-start: scale(1.01);
   --cp-primitive-motion-runway-end: scale(1.035);
-  --cp-primitive-motion-runway-backdrop: scale(1.1);
   --cp-primitive-motion-runway-wide-start: translate3d(0, 5rem, 0) scale(1.01);
   --cp-primitive-motion-runway-wide-end: translate3d(0, 5rem, 0) scale(1.035);
-  --cp-primitive-motion-runway-wide-backdrop: translate3d(0, 5rem, 0) scale(1.1);
+  /*
+   * Landing morph. The panel leaves to the left by a full viewport; the copy it carries
+   * counter-travels a shorter distance in the same time, so it settles at the left of the frame
+   * instead of leaving with the panel. Both are viewport units so the net travel is predictable.
+   */
+  --cp-primitive-motion-landing-panel-rest: translateX(0);
+  --cp-primitive-motion-landing-panel-exit: translateX(-100vw);
+  --cp-primitive-motion-landing-copy-rest: translateX(0);
+  --cp-primitive-motion-landing-copy-travel-compact: translateX(-6vw);
+  --cp-primitive-motion-landing-copy-travel: translateX(-28vw);
+  --cp-primitive-motion-centre: translate(-50%, -50%);
+  --cp-primitive-motion-scroll-origin: translate(-50%, 0);
+  --cp-primitive-motion-thumb-lift: translateY(-0.125rem);
+  --cp-primitive-effect-thumb-glow: 0 0 0 1px #ffffff;
+  --cp-primitive-motion-curtain-slide: cp-curtain-slide 4s cubic-bezier(0.76, 0, 0.24, 1) 1.25s forwards;
+  --cp-primitive-motion-copy-slide: cp-copy-slide 4s cubic-bezier(0.76, 0, 0.24, 1) 1.25s forwards;
+  --cp-primitive-motion-blend-in: cp-blend-in 1.4s cubic-bezier(0.2, 0.65, 0.3, 1) 3.85s forwards;
+  --cp-primitive-motion-scroll-bounce: cp-scroll-bounce 1.7s ease-in-out infinite, cp-blend-in 1.4s cubic-bezier(0.2, 0.65, 0.3, 1) 3.85s forwards;
+  --cp-primitive-layout-background-clip-text: text;
 
   /* Tier 2: semantics. Every value references Tier 1 only. */
   --cp-semantic-color-canvas: var(--cp-primitive-color-neutral-000);
@@ -395,15 +431,27 @@
   --cp-semantic-color-header-commerce: rgb(var(--cp-primitive-color-channel-dark) / var(--cp-primitive-opacity-085));
   --cp-semantic-color-header-dialog: rgb(var(--cp-primitive-color-channel-dark) / var(--cp-primitive-opacity-074));
   --cp-semantic-color-control-dark: rgb(var(--cp-primitive-color-channel-dark) / var(--cp-primitive-opacity-072));
-  --cp-semantic-color-disclosure: rgb(var(--cp-primitive-color-channel-dark) / var(--cp-primitive-opacity-082));
   --cp-semantic-color-selection: color-mix(in srgb, var(--cp-primitive-color-accent) 20%, var(--cp-primitive-color-transparent));
   --cp-semantic-color-reset-border: var(--cp-primitive-color-reset-border);
   --cp-semantic-color-reset-placeholder: var(--cp-primitive-color-reset-placeholder);
   --cp-semantic-color-transparent: var(--cp-primitive-color-transparent);
+  --cp-semantic-color-stage-control-hover: var(--cp-primitive-color-stage-control-hover);
+  --cp-semantic-color-stage-track: var(--cp-primitive-color-stage-track);
+  --cp-semantic-color-stage-dash: var(--cp-primitive-color-stage-dash);
+  --cp-semantic-color-product-control: var(--cp-primitive-color-product-control);
+  --cp-semantic-color-product-progress: var(--cp-primitive-color-product-progress);
+  --cp-semantic-color-thumb-border: var(--cp-primitive-color-thumb-border);
+  --cp-semantic-color-thumb-hover: var(--cp-primitive-color-thumb-hover);
+  --cp-semantic-color-gold-accent: var(--cp-primitive-color-gold);
+  --cp-semantic-color-cream-over: var(--cp-primitive-color-cream-over);
+  --cp-semantic-color-cream-sig: var(--cp-primitive-color-cream-sig);
 
   --cp-semantic-font-family-sans: var(--cp-primitive-font-family-sans);
+  --cp-semantic-font-family-serif: var(--cp-primitive-font-family-serif);
   --cp-semantic-font-family-mono: var(--cp-primitive-font-family-mono);
   --cp-semantic-font-family-open-graph: var(--cp-primitive-font-family-open-graph);
+  --cp-semantic-font-style-italic: var(--cp-primitive-font-style-italic);
+  --cp-semantic-font-weight-thin: var(--cp-primitive-font-weight-thin);
   --cp-semantic-font-weight-light: var(--cp-primitive-font-weight-light);
   --cp-semantic-font-weight-regular: var(--cp-primitive-font-weight-regular);
   --cp-semantic-font-weight-bold-relative: var(--cp-primitive-font-weight-bold-relative);
@@ -412,6 +460,8 @@
   --cp-semantic-font-size-mono: var(--cp-primitive-font-size-mono);
   --cp-semantic-font-size-small: var(--cp-primitive-font-size-small);
   --cp-semantic-font-size-script: var(--cp-primitive-font-size-script);
+  --cp-semantic-font-size-landing-title: var(--cp-primitive-font-size-landing-title);
+  --cp-semantic-space-sig-indent: var(--cp-primitive-size-sig-indent);
   --cp-semantic-font-size-product-fact: var(--cp-primitive-font-size-050);
   --cp-semantic-font-size-label-small: var(--cp-primitive-font-size-062);
   --cp-semantic-font-size-label: var(--cp-primitive-font-size-056);
@@ -473,6 +523,7 @@
   --cp-semantic-font-line-height-commerce-product-mobile: var(--cp-primitive-font-line-height-commerce-product-mobile);
   --cp-semantic-font-line-height-body: var(--cp-primitive-font-line-height-body);
   --cp-semantic-font-line-height-relaxed: var(--cp-primitive-font-line-height-relaxed);
+  --cp-semantic-font-line-height-product-description: var(--cp-primitive-font-line-height-product-description);
   --cp-semantic-font-tracking-label: var(--cp-primitive-font-tracking-030);
   --cp-semantic-font-tracking-action: var(--cp-primitive-font-tracking-024);
   --cp-semantic-font-tracking-navigation: var(--cp-primitive-font-tracking-028);
@@ -486,6 +537,8 @@
   --cp-semantic-font-tracking-display: var(--cp-primitive-font-tracking-display);
   --cp-semantic-font-tracking-menu: var(--cp-primitive-font-tracking-menu);
   --cp-semantic-font-tracking-fact: var(--cp-primitive-font-tracking-020);
+  --cp-semantic-font-tracking-eyebrow-strong: var(--cp-primitive-font-tracking-022);
+  --cp-semantic-font-tracking-title-presence: var(--cp-primitive-font-tracking-004);
   --cp-semantic-font-tracking-card-title: var(--cp-primitive-font-tracking-concept-section);
   --cp-semantic-font-tracking-information-title: var(--cp-primitive-font-tracking-concept);
   --cp-semantic-font-tracking-editorial-title: var(--cp-primitive-font-tracking-section);
@@ -509,36 +562,38 @@
   --cp-semantic-space-24: var(--cp-primitive-space-600);
   --cp-semantic-space-28: var(--cp-primitive-space-700);
   --cp-semantic-space-32: var(--cp-primitive-space-800);
-  --cp-semantic-space-negative-8: var(--cp-primitive-space-negative-200);
   --cp-semantic-space-negative-2: var(--cp-primitive-space-negative-050);
   --cp-semantic-space-negative-hairline: var(--cp-primitive-space-negative-hairline);
   --cp-semantic-space-negative-1: var(--cp-primitive-space-negative-025);
   --cp-semantic-space-negative-script: var(--cp-primitive-space-negative-script);
   --cp-semantic-space-negative-search-outline: var(--cp-primitive-space-negative-search-outline);
-  --cp-semantic-space-scroll-gap: var(--cp-primitive-space-065);
-  --cp-semantic-space-product-fact-gap: var(--cp-primitive-space-045);
-  --cp-semantic-space-scroll-label-block-start: var(--cp-primitive-space-065);
-  --cp-semantic-space-scroll-label-inline-end: var(--cp-primitive-space-085);
-  --cp-semantic-space-scroll-label-block-end: var(--cp-primitive-space-060);
-  --cp-semantic-space-scroll-label-inline-start: var(--cp-primitive-space-105);
-  --cp-semantic-space-product-fact-block-start: var(--cp-primitive-space-055);
-  --cp-semantic-space-product-fact-inline-end: var(--cp-primitive-space-065);
-  --cp-semantic-space-product-fact-block-end: var(--cp-primitive-space-050);
-  --cp-semantic-space-product-fact-inline-start: var(--cp-primitive-space-078);
-  --cp-semantic-space-media-jump-leading: var(--cp-primitive-space-080);
-  --cp-semantic-space-media-button-leading: var(--cp-primitive-space-110);
-  --cp-semantic-space-media-button-trailing: var(--cp-primitive-space-095);
   --cp-semantic-space-page-gutter: var(--cp-primitive-size-page-gutter);
   --cp-semantic-space-section: var(--cp-primitive-size-section-space);
-  --cp-semantic-space-panel-bottom: var(--cp-primitive-size-panel-bottom);
   --cp-semantic-space-media-panel-inset: var(--cp-primitive-size-media-panel-inset);
   --cp-semantic-space-empty-state: var(--cp-primitive-size-empty-state-padding);
+  /*
+   * Fine control spacing. These steps come from the Product Owner-controlled base-spacing scale and
+   * carry the small paddings and gaps that keep chips, bars, dashes and rails at the reviewed
+   * density; the coarse scale would round them to a visibly different rhythm.
+   */
+  --cp-semantic-space-chip-block: var(--cp-primitive-space-045);
+  --cp-semantic-space-meta-gap: var(--cp-primitive-space-055);
+  --cp-semantic-space-bar-block: var(--cp-primitive-space-060);
+  --cp-semantic-space-rail-block: var(--cp-primitive-space-065);
+  --cp-semantic-space-chip-inline: var(--cp-primitive-space-078);
+  --cp-semantic-space-dash-gap: var(--cp-primitive-space-080);
+  --cp-semantic-space-control-gap: var(--cp-primitive-space-085);
+  --cp-semantic-space-position-gap: var(--cp-primitive-space-095);
+  --cp-semantic-space-bar-inline: var(--cp-primitive-space-105);
+  --cp-semantic-space-chip-summary-inline: var(--cp-primitive-space-110);
 
   --cp-semantic-size-full: var(--cp-primitive-size-full);
   --cp-semantic-size-viewport-height: var(--cp-primitive-size-viewport-height);
   --cp-semantic-size-viewport-height-legacy: var(--cp-primitive-size-viewport-height-legacy);
   --cp-semantic-size-viewport-width: var(--cp-primitive-size-viewport-width);
   --cp-semantic-size-control: var(--cp-primitive-size-control);
+  --cp-semantic-size-product-replay: var(--cp-primitive-size-product-replay);
+  --cp-semantic-size-product-replay-icon: var(--cp-primitive-size-product-replay-icon);
   --cp-semantic-size-card-action: var(--cp-primitive-size-category-mobile);
   --cp-semantic-size-touch-target: var(--cp-primitive-size-touch-target);
   --cp-semantic-size-icon-small: var(--cp-primitive-size-icon-small);
@@ -559,21 +614,15 @@
   --cp-semantic-size-copy-product: var(--cp-primitive-size-copy-product);
   --cp-semantic-size-media-panel-width: var(--cp-primitive-size-media-panel-width);
   --cp-semantic-size-media-panel-height: var(--cp-primitive-size-media-panel-height);
-  --cp-semantic-size-media-button-width: var(--cp-primitive-size-media-button-width);
-  --cp-semantic-size-media-button-corner-width: var(--cp-primitive-size-media-button-corner-width);
-  --cp-semantic-size-media-button-height: var(--cp-primitive-size-media-button-height);
   --cp-semantic-size-media-button-corner-height: var(--cp-primitive-size-media-button-corner-height);
-  --cp-semantic-size-media-caption-height: var(--cp-primitive-size-media-caption-height);
   --cp-semantic-size-side-drawer-mobile: var(--cp-primitive-size-side-drawer-mobile);
   --cp-semantic-size-side-drawer-desktop: var(--cp-primitive-size-side-drawer-desktop);
   --cp-semantic-size-motion-progress: var(--cp-primitive-size-motion-progress);
   --cp-semantic-size-progress-track: var(--cp-primitive-size-progress-track);
-  --cp-semantic-size-mobile-purchase-bar: var(--cp-primitive-size-mobile-purchase-bar);
   --cp-semantic-size-bag-thumbnail: var(--cp-primitive-size-bag-thumbnail);
   --cp-semantic-size-choice: var(--cp-primitive-size-choice);
   --cp-semantic-size-action-wide: var(--cp-primitive-size-action-wide);
   --cp-semantic-size-information-fact: var(--cp-primitive-size-information-fact);
-  --cp-semantic-size-product-fact-min: var(--cp-primitive-size-product-fact-min);
   --cp-semantic-size-product-title-width: var(--cp-primitive-size-product-title-width);
   --cp-semantic-size-scrollbar: var(--cp-primitive-size-scrollbar);
   --cp-semantic-size-visually-hidden: var(--cp-primitive-size-visually-hidden);
@@ -585,6 +634,18 @@
   --cp-semantic-size-panel-editorial: var(--cp-primitive-size-panel-editorial);
   --cp-semantic-size-panel-study: var(--cp-primitive-size-panel-study);
   --cp-semantic-size-panel-catalog: var(--cp-primitive-size-panel-catalog);
+  --cp-semantic-size-stage: var(--cp-primitive-size-stage);
+  --cp-semantic-size-stage-height-mobile: var(--cp-primitive-size-stage-height-mobile);
+  --cp-semantic-size-stage-height: var(--cp-primitive-size-stage-height);
+  --cp-semantic-size-dash: var(--cp-primitive-size-dash);
+  --cp-semantic-size-rail-dot: var(--cp-primitive-size-rail-dot);
+  --cp-semantic-size-discovery-thumb: var(--cp-primitive-size-discovery-thumb);
+  --cp-semantic-size-discovery-max-width: var(--cp-primitive-size-discovery-max-width);
+  --cp-semantic-space-discovery-padding-inline: var(--cp-primitive-space-discovery-padding-inline);
+  --cp-semantic-space-grid-gap-discovery: var(--cp-primitive-space-grid-gap-discovery);
+  --cp-semantic-motion-thumb-lift: var(--cp-primitive-motion-thumb-lift);
+  --cp-semantic-effect-thumb-glow: var(--cp-primitive-effect-thumb-glow);
+  --cp-semantic-size-textarea: var(--cp-primitive-size-textarea);
 
   --cp-semantic-ratio-product-portrait: var(--cp-primitive-ratio-product-portrait);
   --cp-semantic-ratio-product-featured: var(--cp-primitive-ratio-product-featured);
@@ -606,6 +667,7 @@
   --cp-semantic-border-style-default: var(--cp-primitive-border-style-default);
   --cp-semantic-border-style-emphasis: var(--cp-primitive-border-style-emphasis);
   --cp-semantic-border-rule-strong: var(--cp-primitive-border-width-hairline) var(--cp-primitive-border-style-default) rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-025));
+  --cp-semantic-border-rule-emphasis: var(--cp-primitive-border-width-hairline) var(--cp-primitive-border-style-emphasis) rgb(var(--cp-primitive-color-channel-light) / var(--cp-primitive-opacity-018));
   --cp-semantic-border-none: var(--cp-primitive-border-style-none);
   --cp-semantic-border-focus: var(--cp-primitive-border-width-hairline) var(--cp-primitive-border-style-default) color-mix(in srgb, var(--cp-primitive-color-accent) 55%, var(--cp-primitive-color-transparent));
   --cp-semantic-size-hairline: var(--cp-primitive-border-width-hairline);
@@ -620,37 +682,30 @@
   --cp-semantic-layer-drawer: var(--cp-primitive-layer-drawer);
   --cp-semantic-layer-drawer-nested: var(--cp-primitive-layer-drawer-nested);
   --cp-semantic-opacity-disabled: var(--cp-primitive-opacity-018);
+  --cp-semantic-opacity-gallery-arrow-disabled: var(--cp-primitive-opacity-038);
   --cp-semantic-opacity-none: var(--cp-primitive-opacity-000);
   --cp-semantic-opacity-full: var(--cp-primitive-opacity-100);
-  --cp-semantic-opacity-runway-backdrop: var(--cp-primitive-opacity-025);
-  --cp-semantic-opacity-runway-fallback: var(--cp-primitive-opacity-075);
   --cp-semantic-opacity-media-expand: var(--cp-primitive-opacity-072);
   --cp-semantic-opacity-purchasing-disabled: var(--cp-primitive-opacity-060);
   --cp-semantic-opacity-checkout-disabled: var(--cp-primitive-opacity-038);
   --cp-semantic-opacity-open-graph-status: var(--cp-primitive-opacity-062);
-  --cp-semantic-opacity-product-copy: var(--cp-primitive-opacity-100);
+  --cp-semantic-opacity-peripheral: var(--cp-primitive-opacity-085);
 
   --cp-semantic-duration-standard: var(--cp-primitive-duration-standard);
+  --cp-semantic-duration-morph: var(--cp-primitive-duration-morph);
+  --cp-semantic-delay-morph-copy: var(--cp-primitive-delay-morph-copy);
   --cp-semantic-duration-campaign: var(--cp-primitive-duration-campaign);
-  --cp-semantic-duration-runway: var(--cp-primitive-duration-runway);
-  --cp-semantic-duration-scroll-prompt: var(--cp-primitive-duration-scroll-prompt);
-  --cp-semantic-duration-gallery-auto: var(--cp-primitive-duration-gallery-auto);
-  --cp-semantic-duration-product-motion: var(--cp-primitive-duration-product-motion);
-  --cp-semantic-delay-runway-first: var(--cp-primitive-delay-runway-first);
-  --cp-semantic-delay-runway-second: var(--cp-primitive-delay-runway-second);
-  --cp-semantic-delay-runway-third: var(--cp-primitive-delay-runway-third);
   --cp-semantic-easing-standard: var(--cp-primitive-easing-standard);
 
   --cp-semantic-effect-blur-soft: var(--cp-primitive-effect-blur-soft);
   --cp-semantic-effect-blur-glass: var(--cp-primitive-effect-blur-glass);
   --cp-semantic-effect-blur-strong: var(--cp-primitive-effect-blur-strong);
-  --cp-semantic-effect-blur-runway: var(--cp-primitive-effect-blur-runway);
   --cp-semantic-effect-shadow-copy: var(--cp-primitive-effect-shadow-copy);
   --cp-semantic-effect-shadow-dialog: var(--cp-primitive-effect-shadow-dialog);
   --cp-semantic-effect-scrim-campaign: var(--cp-primitive-effect-scrim-campaign);
-  --cp-semantic-effect-scrim-product: var(--cp-primitive-effect-scrim-product);
-  --cp-semantic-effect-scrim-media: var(--cp-primitive-effect-scrim-media);
   --cp-semantic-effect-scrim-card: var(--cp-primitive-effect-scrim-card);
+  --cp-semantic-effect-gradient-title: var(--cp-primitive-effect-gradient-title);
+  --cp-semantic-effect-edge-blend: var(--cp-primitive-effect-edge-blend);
   --cp-semantic-layout-display-none: var(--cp-primitive-layout-display-none);
   --cp-semantic-layout-display-inline: var(--cp-primitive-layout-display-inline);
   --cp-semantic-layout-display-block: var(--cp-primitive-layout-display-block);
@@ -676,7 +731,6 @@
   --cp-semantic-layout-justify-end: var(--cp-primitive-layout-justify-end);
   --cp-semantic-layout-justify-self-center: var(--cp-primitive-layout-justify-self-center);
   --cp-semantic-layout-justify-self-end: var(--cp-primitive-layout-justify-self-end);
-  --cp-semantic-layout-align-self-center: var(--cp-primitive-layout-align-self-center);
   --cp-semantic-layout-flex-wrap: var(--cp-primitive-layout-flex-wrap);
   --cp-semantic-layout-flex-none: var(--cp-primitive-layout-flex-none);
   --cp-semantic-layout-flex-grow: var(--cp-primitive-layout-flex-grow);
@@ -694,9 +748,6 @@
   --cp-semantic-layout-cursor-disabled: var(--cp-primitive-layout-cursor-disabled);
   --cp-semantic-layout-cursor-action: var(--cp-primitive-layout-cursor-action);
   --cp-semantic-layout-width-fit-content: var(--cp-primitive-layout-width-fit-content);
-  --cp-semantic-layout-transform-origin-left: var(--cp-primitive-layout-transform-origin-left);
-  --cp-semantic-layout-animation-count-once: var(--cp-primitive-layout-animation-count-once);
-  --cp-semantic-layout-animation-state-paused: var(--cp-primitive-layout-animation-state-paused);
   --cp-semantic-layout-white-space-nowrap: var(--cp-primitive-layout-white-space-nowrap);
   --cp-semantic-layout-white-space-normal: var(--cp-primitive-layout-white-space-normal);
   --cp-semantic-layout-clip-visually-hidden: var(--cp-primitive-layout-clip-visually-hidden);
@@ -716,7 +767,6 @@
   --cp-semantic-layout-text-wrap-pretty: var(--cp-primitive-layout-text-wrap-pretty);
   --cp-semantic-layout-text-decoration-link: var(--cp-primitive-layout-text-decoration-link);
   --cp-semantic-layout-text-decoration-abbreviation: var(--cp-primitive-layout-text-decoration-abbreviation);
-  --cp-semantic-layout-text-shadow-none: var(--cp-primitive-layout-text-shadow-none);
   --cp-semantic-layout-object-fit-cover: var(--cp-primitive-layout-object-fit-cover);
   --cp-semantic-layout-object-fit-contain: var(--cp-primitive-layout-object-fit-contain);
   --cp-semantic-layout-will-change-transform: var(--cp-primitive-layout-will-change-transform);
@@ -749,14 +799,30 @@
   --cp-semantic-layout-size-auto: var(--cp-primitive-layout-size-auto);
   --cp-semantic-layout-size-zero: var(--cp-primitive-layout-size-zero);
   --cp-semantic-layout-grid-header: var(--cp-primitive-layout-grid-header);
-  --cp-semantic-layout-grid-media-button: var(--cp-primitive-layout-grid-media-button);
   --cp-semantic-layout-grid-variant: var(--cp-primitive-layout-grid-variant);
   --cp-semantic-layout-grid-two: var(--cp-primitive-layout-grid-two);
+  --cp-semantic-layout-grid-discovery: var(--cp-primitive-layout-grid-discovery);
+  --cp-semantic-layout-grid-cart-line: var(--cp-primitive-layout-grid-cart-line);
+  --cp-semantic-layout-grid-checkout: var(--cp-primitive-layout-grid-checkout);
+  --cp-semantic-layout-appearance-none: var(--cp-primitive-layout-appearance-none);
+  --cp-semantic-layout-order-first: var(--cp-primitive-layout-order-first);
+  --cp-semantic-layout-order-none: var(--cp-primitive-layout-order-none);
+  --cp-semantic-motion-curtain-slide: var(--cp-primitive-motion-curtain-slide);
+  --cp-semantic-motion-copy-slide: var(--cp-primitive-motion-copy-slide);
+  --cp-semantic-motion-blend-in: var(--cp-primitive-motion-blend-in);
+  --cp-semantic-motion-scroll-bounce: var(--cp-primitive-motion-scroll-bounce);
+  --cp-semantic-motion-scroll-origin: var(--cp-primitive-motion-scroll-origin);
+  --cp-semantic-size-scene-left: var(--cp-primitive-size-scene-left);
+  --cp-semantic-size-scene-width: var(--cp-primitive-size-scene-width);
+  --cp-semantic-size-copy-left: var(--cp-primitive-size-copy-left);
+  --cp-semantic-size-copy-top: var(--cp-primitive-size-copy-top);
+  --cp-semantic-size-copy-width: var(--cp-primitive-size-copy-width);
+  --cp-semantic-size-scroll-left: var(--cp-primitive-size-scroll-left);
+  --cp-semantic-layout-background-clip-text: var(--cp-primitive-layout-background-clip-text);
   --cp-semantic-layout-grid-three: var(--cp-primitive-layout-grid-three);
   --cp-semantic-layout-grid-five: var(--cp-primitive-layout-grid-five);
   --cp-semantic-layout-grid-span-two: var(--cp-primitive-layout-grid-span-two);
   --cp-semantic-layout-line-clamp-product: var(--cp-primitive-layout-line-clamp-product);
-  --cp-semantic-layout-grid-column-media-icon: var(--cp-primitive-layout-grid-column-media-icon);
   --cp-semantic-media-position-campaign: var(--cp-primitive-media-position-campaign-mobile);
   --cp-semantic-media-position-center: var(--cp-primitive-media-position-center);
   --cp-semantic-media-transform-origin-campaign: var(--cp-primitive-media-transform-origin-campaign);
@@ -770,7 +836,12 @@
   --cp-semantic-motion-campaign-end: var(--cp-primitive-motion-campaign-end);
   --cp-semantic-motion-runway-start: var(--cp-primitive-motion-runway-start);
   --cp-semantic-motion-runway-end: var(--cp-primitive-motion-runway-end);
-  --cp-semantic-motion-runway-backdrop: var(--cp-primitive-motion-runway-backdrop);
+  --cp-semantic-motion-landing-panel-rest: var(--cp-primitive-motion-landing-panel-rest);
+  --cp-semantic-motion-landing-panel-exit: var(--cp-primitive-motion-landing-panel-exit);
+  --cp-semantic-motion-landing-copy-rest: var(--cp-primitive-motion-landing-copy-rest);
+  --cp-semantic-motion-landing-copy-travel-compact: var(--cp-primitive-motion-landing-copy-travel-compact);
+  --cp-semantic-motion-landing-copy-travel: var(--cp-primitive-motion-landing-copy-travel);
+  --cp-semantic-motion-centre: var(--cp-primitive-motion-centre);
   --cp-semantic-runtime-image-gallery-width: var(--cp-primitive-runtime-image-gallery-width);
   --cp-semantic-runtime-image-product-panel-width: var(--cp-primitive-runtime-image-product-panel-width);
   --cp-semantic-runtime-image-product-detail-width: var(--cp-primitive-runtime-image-product-detail-width);
@@ -788,20 +859,20 @@
   --cp-component-action-accent-background: var(--cp-semantic-color-accent);
   --cp-component-card-radius: var(--cp-semantic-radius-card);
   --cp-component-dialog-radius: var(--cp-semantic-radius-dialog);
-  --cp-component-scroll-control-radius: var(--cp-semantic-radius-round);
   --cp-component-product-title-color: var(--cp-semantic-color-copy);
   --cp-component-product-title-size: calc(var(--cp-semantic-font-size-product) + var(--cp-semantic-font-size-adjustment-product-title));
+  --cp-component-product-title-font-weight: var(--cp-semantic-font-weight-thin);
   --cp-component-product-fact-font-size: var(--cp-semantic-font-size-product-fact);
-  --cp-component-product-copy-opacity: var(--cp-semantic-opacity-product-copy);
   --cp-component-product-review-color: var(--cp-semantic-color-copy-strong);
   --cp-component-product-review-size: var(--cp-semantic-font-size-body-large);
-  --cp-component-product-fact-label-color: var(--cp-semantic-color-muted);
-  --cp-component-product-fact-value-color: var(--cp-semantic-color-copy-soft);
-  --cp-component-product-fact-border: var(--cp-semantic-border-rule-strong);
-  --cp-component-product-fact-background: var(--cp-semantic-color-transparent);
-  --cp-component-product-fact-min-width: var(--cp-semantic-size-product-fact-min);
   --cp-component-media-control-size: var(--cp-semantic-size-control);
-  --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-disabled);
+  --cp-component-media-control-opacity-disabled: var(--cp-semantic-opacity-gallery-arrow-disabled);
+  --cp-component-product-control-color: var(--cp-semantic-color-product-control);
+  --cp-component-product-progress-color: var(--cp-semantic-color-product-progress);
+  --cp-component-product-stage-controls-layer: var(--cp-semantic-layer-header);
+  --cp-component-discovery-thumbs-max-width: calc(var(--cp-semantic-size-copy-product) - var(--cp-semantic-size-touch-target) - var(--cp-semantic-space-5));
+  --cp-component-product-replay-size: var(--cp-semantic-size-product-replay);
+  --cp-component-product-replay-icon-size: var(--cp-semantic-size-product-replay-icon);
   --cp-component-header-layer: var(--cp-semantic-layer-header);
   --cp-component-commerce-page-background: var(--cp-semantic-color-canvas-deep);
   --cp-component-product-detail-page-background: var(--cp-semantic-color-canvas);
@@ -812,14 +883,8 @@
   --cp-component-control-layer: var(--cp-semantic-layer-control);
   --cp-component-media-asset-padding: var(--cp-semantic-space-none);
   --cp-component-media-navigation-padding: var(--cp-semantic-space-3);
-  --cp-component-media-caption-direction: var(--cp-semantic-layout-direction-column);
-  --cp-component-media-caption-align: var(--cp-semantic-layout-align-start);
-  --cp-component-media-caption-justify: var(--cp-semantic-layout-align-end);
-  --cp-component-media-caption-gap: var(--cp-semantic-space-2);
   --cp-component-nav-label-display: var(--cp-semantic-layout-display-none);
-  --cp-component-media-title-eyebrow-display: var(--cp-semantic-layout-display-none);
   --cp-component-side-drawer-width: var(--cp-semantic-size-side-drawer-mobile);
-  --cp-component-mobile-purchase-display: var(--cp-semantic-layout-display-grid);
   --cp-component-side-drawer-layer: var(--cp-semantic-layer-drawer);
   --cp-component-nested-drawer-layer: var(--cp-semantic-layer-drawer-nested);
   --cp-component-footer-direction: var(--cp-semantic-layout-direction-column);
@@ -832,19 +897,11 @@
   --cp-component-information-facts-grid-template: var(--cp-semantic-layout-grid-single);
   --cp-component-product-featured-ratio: var(--cp-semantic-ratio-product-featured);
   --cp-component-product-gallery-min-height: var(--cp-semantic-layout-size-auto);
-  --cp-component-product-runway-scroll-margin: var(--cp-semantic-size-header);
   --cp-component-bag-panel-min-height: var(--cp-semantic-size-panel-bag);
   --cp-component-bag-panel-padding: var(--cp-semantic-space-7);
   --cp-component-bag-copy-padding: var(--cp-semantic-space-7);
   --cp-component-bag-definition-line-height: var(--cp-semantic-font-line-height-control);
   --cp-component-bag-description-line-height: var(--cp-semantic-font-line-height-commerce-body-mobile);
-  --cp-component-product-copy-offset: var(--cp-semantic-space-negative-8);
-  --cp-component-product-layout-justify: var(--cp-semantic-layout-justify-end);
-  --cp-component-product-layout-padding-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-12));
-  --cp-component-product-media-control-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-4));
-  --cp-component-product-label-gap: var(--cp-semantic-space-7);
-  --cp-component-product-review-gap: var(--cp-semantic-space-8);
-  --cp-component-product-facts-gap: var(--cp-semantic-space-5);
   --cp-component-icon-stroke-width: var(--cp-semantic-icon-stroke-width);
   --cp-component-catalog-hero-align: var(--cp-semantic-layout-align-stretch);
   --cp-component-catalog-standard-grid-template: var(--cp-semantic-layout-grid-single);
@@ -909,19 +966,57 @@
   --cp-component-open-graph-title-line-height: var(--cp-semantic-font-line-height-section);
   --cp-component-open-graph-status-size: var(--cp-semantic-font-size-price);
   --cp-component-open-graph-status-opacity: var(--cp-semantic-opacity-open-graph-status);
+
+  /* Screen Inventory Review Workbook surfaces. */
+  --cp-component-landing-panel-transform: var(--cp-semantic-motion-landing-panel-rest);
+  --cp-component-landing-panel-transform-exit: var(--cp-semantic-motion-landing-panel-exit);
+  --cp-component-landing-copy-transform: var(--cp-semantic-motion-landing-copy-rest);
+  --cp-component-landing-copy-transform-exit: var(--cp-semantic-motion-landing-copy-travel-compact);
+  --cp-component-landing-serif-font: var(--cp-semantic-font-family-serif);
+  --cp-component-landing-title-gradient: var(--cp-semantic-effect-gradient-title);
+  --cp-component-landing-edge-blend: var(--cp-semantic-effect-edge-blend);
+  --cp-component-landing-gold-accent: var(--cp-semantic-color-gold-accent);
+  --cp-component-landing-cream-over: var(--cp-semantic-color-cream-over);
+  --cp-component-landing-cream-sig: var(--cp-semantic-color-cream-sig);
+  --cp-component-landing-font-style-over: var(--cp-semantic-font-style-italic);
+  --cp-component-landing-font-size-title: var(--cp-semantic-font-size-landing-title);
+  --cp-component-landing-sig-indent: var(--cp-semantic-space-sig-indent);
+  --cp-component-landing-curtain-motion: var(--cp-semantic-motion-curtain-slide);
+  --cp-component-landing-copy-motion: var(--cp-semantic-motion-copy-slide);
+  --cp-component-landing-blend-motion: var(--cp-semantic-motion-blend-in);
+  --cp-component-landing-scroll-motion: var(--cp-semantic-motion-scroll-bounce);
+  --cp-component-landing-scene-left: var(--cp-semantic-size-scene-left);
+  --cp-component-landing-scene-width: var(--cp-semantic-size-scene-width);
+  --cp-component-landing-copy-left: var(--cp-semantic-size-copy-left);
+  --cp-component-landing-copy-top: var(--cp-semantic-size-copy-top);
+  --cp-component-landing-copy-width: var(--cp-semantic-size-copy-width);
+  --cp-component-landing-scroll-left: var(--cp-semantic-size-scroll-left);
+  --cp-component-landing-scroll-origin: var(--cp-semantic-motion-scroll-origin);
+  --cp-component-discovery-scroll-margin: var(--cp-semantic-size-header);
+  --cp-component-discovery-grid-template: var(--cp-semantic-layout-grid-single);
+  --cp-component-discovery-align: var(--cp-semantic-layout-align-stretch);
+  --cp-component-stage-timestamp-display: var(--cp-semantic-layout-display-none);
+  --cp-component-stage-height: var(--cp-semantic-size-stage-height-mobile);
+  --cp-component-discovery-padding-bottom: var(--cp-semantic-space-16);
+  --cp-component-discovery-lead-order: var(--cp-semantic-layout-order-none);
+  --cp-component-discovery-stage-order: var(--cp-semantic-layout-order-first);
+  --cp-component-discovery-actions-order: var(--cp-semantic-layout-order-none);
+  --cp-component-discovery-action-gap: var(--cp-semantic-space-5);
+  --cp-component-discovery-action-font-size: var(--cp-semantic-font-size-wordmark);
+  --cp-component-discovery-peripheral-opacity: var(--cp-semantic-opacity-peripheral);
+  --cp-component-discovery-corner-display: var(--cp-semantic-layout-display-none);
+  --cp-component-catalog-overlay-grid-template: var(--cp-semantic-layout-grid-two);
+  --cp-component-cart-line-template: var(--cp-semantic-layout-grid-cart-line);
+  --cp-component-field-row-template: var(--cp-semantic-layout-grid-single);
+  --cp-component-checkout-grid-template: var(--cp-semantic-layout-grid-single);
 }
 
 /* Canonical responsive contract. Literal media conditions live only here. */
 @media (min-width: 40rem) {
   :root {
-    --cp-component-media-asset-padding: var(--cp-semantic-space-8);
-    --cp-component-media-navigation-padding: var(--cp-semantic-space-8);
-    --cp-component-media-caption-direction: var(--cp-semantic-layout-direction-row);
-    --cp-component-media-caption-align: var(--cp-semantic-layout-align-end);
-    --cp-component-media-caption-justify: var(--cp-semantic-layout-justify-between);
-    --cp-component-media-caption-gap: var(--cp-semantic-space-6);
+    --cp-component-media-asset-padding: var(--cp-semantic-space-none);
+    --cp-component-media-navigation-padding: var(--cp-semantic-space-5);
     --cp-component-nav-label-display: var(--cp-semantic-layout-display-inline);
-    --cp-component-media-title-eyebrow-display: var(--cp-semantic-layout-display-block);
     --cp-component-footer-direction: var(--cp-semantic-layout-direction-row);
     --cp-component-footer-align: var(--cp-semantic-layout-align-center);
     --cp-component-footer-justify: var(--cp-semantic-layout-justify-between);
@@ -948,6 +1043,7 @@
     --cp-component-editorial-copy-line-height: var(--cp-semantic-font-line-height-editorial-copy-tablet);
     --cp-component-size-grid-template: var(--cp-semantic-layout-grid-five);
     --cp-component-information-facts-grid-template: var(--cp-semantic-layout-grid-two);
+    --cp-component-field-row-template: var(--cp-semantic-layout-grid-two);
   }
 }
 
@@ -997,12 +1093,20 @@
     --cp-component-product-media-border-right: var(--cp-semantic-border-rule);
     --cp-component-product-copy-position: var(--cp-semantic-layout-position-sticky);
     --cp-component-product-copy-top: var(--cp-semantic-space-32);
-    --cp-component-product-copy-offset: var(--cp-semantic-space-none);
-    --cp-component-product-layout-justify: var(--cp-semantic-layout-justify-start);
-    --cp-component-product-layout-padding-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-20));
-    --cp-component-product-media-control-top: calc(var(--cp-semantic-size-header) + var(--cp-semantic-space-24));
     --cp-component-side-drawer-width: var(--cp-semantic-size-side-drawer-desktop);
-    --cp-component-mobile-purchase-display: var(--cp-semantic-layout-display-none);
+    --cp-component-landing-copy-transform-exit: var(--cp-semantic-motion-landing-copy-travel);
+    --cp-component-discovery-scroll-margin: var(--cp-semantic-space-none);
+    --cp-component-discovery-grid-template: var(--cp-semantic-layout-grid-discovery);
+    --cp-component-discovery-align: var(--cp-semantic-layout-align-center);
+    --cp-component-stage-timestamp-display: var(--cp-semantic-layout-display-inline-flex);
+    --cp-component-stage-height: var(--cp-semantic-size-stage-height);
+    --cp-component-discovery-padding-bottom: var(--cp-semantic-space-6);
+    --cp-component-discovery-stage-order: var(--cp-semantic-layout-order-none);
+    --cp-component-discovery-action-gap: var(--cp-semantic-space-3);
+    --cp-component-discovery-action-font-size: var(--cp-semantic-font-size-label);
+    --cp-component-discovery-corner-display: var(--cp-semantic-layout-display-flex);
+    --cp-component-catalog-overlay-grid-template: var(--cp-semantic-layout-grid-three);
+    --cp-component-checkout-grid-template: var(--cp-semantic-layout-grid-checkout);
   }
 }
 
@@ -1013,7 +1117,6 @@
     --cp-component-editorial-title-size: var(--cp-semantic-font-size-editorial-title-wide);
     --cp-semantic-motion-runway-start: var(--cp-primitive-motion-runway-wide-start);
     --cp-semantic-motion-runway-end: var(--cp-primitive-motion-runway-wide-end);
-    --cp-semantic-motion-runway-backdrop: var(--cp-primitive-motion-runway-wide-backdrop);
   }
 }
 
@@ -1037,4 +1140,27 @@
 @keyframes cp-progress-line {
   from { transform: var(--cp-semantic-motion-progress-start); }
   to { transform: var(--cp-semantic-motion-progress-end); }
+}
+
+@keyframes cp-curtain-slide {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-75%, 0, 0); }
+}
+
+@keyframes cp-copy-slide {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-25.5vw, 7vh, 0) scale(0.76); }
+}
+
+@keyframes cp-copy-slide-mobile {
+  to { transform: translate3d(-9vw, 9vh, 0) scale(0.74); }
+}
+
+@keyframes cp-blend-in {
+  to { opacity: 1; }
+}
+
+@keyframes cp-scroll-bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 7px); }
 }

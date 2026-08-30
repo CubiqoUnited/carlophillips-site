@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "cp.shopify-cart-permalink-observation.v1",
+  "observedAt": "2026-08-30T09:56:13.156Z",
+  "storeDomain": "carlophillips.myshopify.com",
+  "handle": "carlophillips-signature-hoodie",
+  "selection": {
+    "referenceHash": "sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3",
+    "title": "black / m",
+    "available": true,
+    "price": "128.00",
+    "currency": "USD",
+    "quantity": 1
+  },
+  "request": {
+    "surface": "shopify-cart-permalink",
+    "status": 302
+  },
+  "redirect": {
+    "protocol": "https:",
+    "host": "shop.app",
+    "pathKind": "shopify-checkout"
+  },
+  "customerDataProvided": false,
+  "paymentDataProvided": false,
+  "orderSubmitted": false
+}
