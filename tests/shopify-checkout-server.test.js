@@ -125,6 +125,29 @@ describe('release-bound Shopify checkout handoff', () => {
     expect(JSON.stringify(result)).not.toContain(variantId);
   });
 
+  it('accepts the exact Shopify Shop checkout host returned by the live cart flow', async () => {
+    const options = approvedOptions({ checkoutHosts: 'shop.app' });
+    options.fetchImpl = vi.fn(async () => ({
+      ok: true,
+      json: async () => ({
+        data: {
+          cartCreate: {
+            cart: {
+              checkoutUrl: 'https://shop.app/checkout/example',
+              totalQuantity: 1,
+            },
+            userErrors: [],
+          },
+        },
+      }),
+    }));
+
+    await expect(createApprovedHoodieCheckout(options)).resolves.toEqual({
+      ok: true,
+      checkoutUrl: 'https://shop.app/checkout/example',
+    });
+  });
+
   it('does not reintroduce the obsolete checkout switch for authorized Production', async () => {
     process.env.SHOPIFY_CHECKOUT_ENABLED = 'false';
     const options = approvedOptions();

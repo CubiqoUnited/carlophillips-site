@@ -28,10 +28,10 @@ function capabilityRegistry() {
       {
         capability: 'shopify-storefront-cart',
         selectedAdapter: 'shopify-storefront-cart',
-        accessState: 'write_test_verified',
+        accessState: 'write_verified',
         callableSurface: 'shopify_storefront',
         evidenceRef: 'evidence/cart-write.json',
-        allowedOperations: ['cart-write-test', 'cart-write'],
+        allowedOperations: ['cart-write'],
       },
     ],
   };
@@ -153,6 +153,26 @@ describe('monorepo checkout boundary', () => {
     input.capabilityRegistry.capabilities[1].allowedOperations = [
       'cart-write-test',
     ];
+
+    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+      ok: false,
+      reason: 'SHOPIFY_CART_CAPABILITY_NOT_READY',
+    });
+    expect(input.fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('does not treat write-test evidence as operational cart authority', async () => {
+    const input = options();
+    input.capabilityRegistry.capabilities[1] = {
+      ...input.capabilityRegistry.capabilities[1],
+      accessState: 'write_test_verified',
+      allowedOperations: ['cart-write-test'],
+      blocker: {
+        code: 'CART_WRITE_TEST_EVIDENCE_ONLY',
+        humanAction: 'Capture a release-bound operational cart proof.',
+        resumePoint: 'Reclassify only after the exact proof passes.',
+      },
+    };
 
     await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
       ok: false,

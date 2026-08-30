@@ -173,11 +173,14 @@ export interface CapabilityRegistry {
 }
 
 export interface CapabilityDecision {
-  status: 'ready' | 'unavailable' | 'human_required';
+  status: 'ready' | 'evidence_only' | 'unavailable' | 'human_required';
   capability: string;
   adapter: string | null;
   callableSurface: string;
   evidenceRef: string | null;
+  technicalStatus?:
+    'verified' | 'verified_test' | 'unverified' | 'unclassified';
+  operationalAuthority?: 'local_only' | 'observation_only' | 'blocked';
   reason: string | null;
   blocker: Blocker | null;
 }

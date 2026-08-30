@@ -28,6 +28,7 @@ export function validateCapabilityRegistry(
       'local_verified',
       'read_only_verified',
       'write_test_verified',
+      'write_verified',
     ].includes(capability.accessState);
     if (verified && !capability.selectedAdapter) {
       errors.push(
@@ -47,6 +48,23 @@ export function validateCapabilityRegistry(
       errors.push(
         `${capability.capability} has verified external access without evidenceRef`
       );
+    }
+    if (capability.accessState === 'write_test_verified') {
+      if (
+        !capability.allowedOperations.length ||
+        capability.allowedOperations.some(
+          (operation) => !operation.endsWith('-test')
+        )
+      ) {
+        errors.push(
+          `${capability.capability} exposes a write test as an operational write`
+        );
+      }
+      if (!capability.blocker) {
+        errors.push(
+          `${capability.capability} lacks an operational blocker for write-test evidence`
+        );
+      }
     }
     if (!verified && !capability.blocker) {
       errors.push(`${capability.capability} lacks an exact blocker`);
@@ -86,7 +104,25 @@ export function discoverCapability(
     'local_verified',
     'read_only_verified',
     'write_test_verified',
+    'write_verified',
   ].includes(capability.accessState);
+  if (
+    capability.selectedAdapter &&
+    capability.accessState === 'write_test_verified' &&
+    operationAllowed
+  ) {
+    return {
+      status: 'evidence_only',
+      capability: capabilityName,
+      adapter: capability.selectedAdapter,
+      callableSurface: capability.callableSurface,
+      evidenceRef: capability.evidenceRef || null,
+      technicalStatus: 'verified_test',
+      operationalAuthority: 'blocked',
+      reason: capability.blocker?.code || 'WRITE_TEST_EVIDENCE_ONLY',
+      blocker: capability.blocker || null,
+    };
+  }
   if (capability.selectedAdapter && accessVerified && operationAllowed) {
     return {
       status: 'ready',
@@ -94,6 +130,11 @@ export function discoverCapability(
       adapter: capability.selectedAdapter,
       callableSurface: capability.callableSurface,
       evidenceRef: capability.evidenceRef || null,
+      technicalStatus: 'verified',
+      operationalAuthority:
+        capability.accessState === 'local_verified'
+          ? 'local_only'
+          : 'observation_only',
       reason: null,
       blocker: null,
     };
@@ -108,6 +149,8 @@ export function discoverCapability(
     adapter: capability.selectedAdapter,
     callableSurface: capability.callableSurface,
     evidenceRef: capability.evidenceRef || null,
+    technicalStatus: accessVerified ? 'verified' : 'unverified',
+    operationalAuthority: 'blocked',
     reason: capability.blocker?.code || 'CAPABILITY_OPERATION_UNVERIFIED',
     blocker: capability.blocker || {
       code: 'CAPABILITY_OPERATION_UNVERIFIED',
