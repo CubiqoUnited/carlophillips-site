@@ -9,10 +9,18 @@
   "environments": ["production"],
   "scopes": [
     "publish-reviewed-staging-presentation",
-    "acquire-one-medium-no-order-cart-proof"
+    "activate-exact-reviewed-offer"
   ],
-  "proofReferenceHash": "sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3",
-  "proofQuantity": 1,
+  "commerceActivation": {
+    "status": "approved",
+    "cartWriteEvidence": "evidence/shopify/cp-signature-hoodie-production-cart-write-2026-08-30.json",
+    "allowedReferenceHashes": [
+      "sha256:0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d",
+      "sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3",
+      "sha256:bca824ce1a2583241b1785b1b655d7dd161c0dc18cdb56f05c528b2d2905e581"
+    ],
+    "maximumQuantity": 5
+  },
   "evidence": "Codex task 01a05144-adb3-7291-8957-67b4193ee7b7 on 2026-08-30: Product Owner directed the exact approved staging Hoodie presentation to Production, rejected the agent-authored sample launch requirement, and accepted that no physical sample was ordered or inspected.",
-  "limitations": "Applies only to this exact release, handle, candidate commit, release-evidence fingerprint, and approved Product Owner product/media/fulfillment decisions. It authorizes the approved public presentation plus one exact same-origin Medium quantity-one Shopify cart proof with no customer, payment, order, fulfillment, public buy control, or future-product authority."
+  "limitations": "Applies only to this exact release, handle, candidate commit, release-evidence fingerprint, approved Product Owner product/media/fulfillment decisions, and the reviewed S/M/L reference hashes. Public cart creation requires the successful sanitized Production proof, existing release-bound cart/checkout approvals, same origin, current Shopify fingerprint and availability checks, server-only variant resolution, quantity 1-5, and a trusted HTTPS checkout host. It never submits payment, an order, fulfillment, or any future product automatically."
 }

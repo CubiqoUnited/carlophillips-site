@@ -49,7 +49,7 @@ function authorization(record) {
   };
 }
 
-function cartProofAuthorization(record, overrides = {}) {
+function productionLaunchAuthorization(record) {
   return {
     schemaVersion: 'cp.product-owner-production-launch-authorization.v1',
     status: 'approved',
@@ -59,11 +59,47 @@ function cartProofAuthorization(record, overrides = {}) {
     candidateCommit: record.candidate.gitCommit,
     approvedTargetFingerprint: record.candidate.releaseEvidenceFingerprint,
     environments: ['production'],
-    scopes: ['acquire-one-medium-no-order-cart-proof'],
-    proofReferenceHash: referenceHash,
-    proofQuantity: 1,
-    evidence: 'Test-scoped exact no-order cart proof authorization',
-    ...overrides,
+    scopes: ['activate-exact-reviewed-offer'],
+    commerceActivation: {
+      status: 'approved',
+      cartWriteEvidence:
+        'evidence/shopify/cp-signature-hoodie-production-cart-write-2026-08-30.json',
+      allowedReferenceHashes: [referenceHash],
+      maximumQuantity: 5,
+    },
+    evidence: 'Test-scoped exact Product Owner launch authorization',
+  };
+}
+
+function productionCartWriteProof(record) {
+  return {
+    schemaVersion: 'cp.shopify-cart-write-proof.v1',
+    releaseId: record.releaseId,
+    handle: record.shopify.handle,
+    candidateCommit: record.candidate.gitCommit,
+    approvedTargetFingerprint: record.candidate.releaseEvidenceFingerprint,
+    environment: 'production',
+    request: { referenceHash, quantity: 1 },
+    response: {
+      status: 303,
+      protocol: 'https:',
+      trustedCheckoutHost: 'carlophillips.myshopify.com',
+      redirectFollowed: false,
+      responseBodyBytes: 0,
+    },
+    negativeChecks: {
+      crossOrigin: { status: 403, reason: 'ORIGIN_REJECTED' },
+      unapprovedReference: {
+        status: 409,
+        reason: 'VARIANT_OUTSIDE_APPROVED_OFFER',
+      },
+    },
+    customerDataProvided: false,
+    paymentAttempted: false,
+    orderSubmitted: false,
+    fulfillmentInvoked: false,
+    privateCheckoutUrlRetained: false,
+    evidenceBoundary: 'Sanitized test proof without a private checkout URL.',
   };
 }
 
@@ -170,12 +206,15 @@ describe('monorepo checkout boundary', () => {
     expect(input.fetchImpl).not.toHaveBeenCalled();
   });
 
-  it('creates only the exact authorized Medium proof cart from Staged Production', async () => {
+  it('creates carts only for the exact proof-bound offer from Staged Production', async () => {
     const input = options('staged', 'production');
     input.releaseRecord.approvals.media.owner = 'Product Owner';
     input.releaseRecord.approvals.fulfillment.owner = 'Product Owner';
     input.capabilityRegistry = cartProofCapabilityRegistry();
-    input.productionCartProofAuthorization = cartProofAuthorization(
+    input.productionLaunchAuthorization = productionLaunchAuthorization(
+      input.releaseRecord
+    );
+    input.productionCartWriteProof = productionCartWriteProof(
       input.releaseRecord
     );
 
@@ -188,14 +227,18 @@ describe('monorepo checkout boundary', () => {
     expect(input.fetchImpl.mock.calls[0][1].body).toContain(variantId);
   });
 
-  it('denies a Staged Production proof when its exact reference binding differs', async () => {
+  it('denies Staged Production when its exact offer binding differs', async () => {
     const input = options('staged', 'production');
     input.releaseRecord.approvals.media.owner = 'Product Owner';
     input.releaseRecord.approvals.fulfillment.owner = 'Product Owner';
     input.capabilityRegistry = cartProofCapabilityRegistry();
-    input.productionCartProofAuthorization = cartProofAuthorization(
-      input.releaseRecord,
-      { proofReferenceHash: `sha256:${'f'.repeat(64)}` }
+    input.productionLaunchAuthorization = productionLaunchAuthorization(
+      input.releaseRecord
+    );
+    input.productionLaunchAuthorization.commerceActivation.allowedReferenceHashes =
+      [`sha256:${'f'.repeat(64)}`];
+    input.productionCartWriteProof = productionCartWriteProof(
+      input.releaseRecord
     );
 
     await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
