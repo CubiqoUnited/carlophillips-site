@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "cp.shopify-cart-write-proof.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "handle": "carlophillips-signature-hoodie",
+  "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "productionCommit": "19dd333ee7d75480f27877092d0756859696204b",
+  "environment": "production",
+  "origin": "https://www.carlophillips.com",
+  "observedAt": "2026-08-30T12:40:39.848Z",
+  "request": {
+    "size": "M",
+    "referenceHash": "sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3",
+    "quantity": 1
+  },
+  "response": {
+    "status": 303,
+    "protocol": "https:",
+    "trustedCheckoutHost": "carlophillips.myshopify.com",
+    "redirectFollowed": false,
+    "responseBodyBytes": 0
+  },
+  "negativeChecks": {
+    "crossOrigin": { "status": 403, "reason": "ORIGIN_REJECTED" },
+    "unapprovedReference": {
+      "status": 409,
+      "reason": "VARIANT_OUTSIDE_APPROVED_OFFER"
+    },
+    "unapprovedProofQuantity": {
+      "status": 409,
+      "reason": "PRODUCT_RELEASE_NOT_RELEASED"
+    }
+  },
+  "customerDataProvided": false,
+  "paymentAttempted": false,
+  "orderSubmitted": false,
+  "fulfillmentInvoked": false,
+  "privateCheckoutUrlRetained": false,
+  "evidenceBoundary": "This sanitized record proves one exact same-origin server-side Shopify cart creation and trusted hosted-checkout handoff. It contains no Storefront token, raw variant ID, cart token, checkout URL, customer data, payment data, or order."
+}

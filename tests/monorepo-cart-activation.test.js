@@ -80,6 +80,89 @@ const checkoutApproval = {
   evidence: 'checkout approval',
 };
 
+function exactLaunchInputs() {
+  const candidateCommit = 'abcdef1';
+  const targetFingerprint = `sha256:${'b'.repeat(64)}`;
+  const exactReleaseRecord = {
+    ...releaseRecord,
+    candidate: {
+      gitCommit: candidateCommit,
+      releaseEvidenceFingerprint: targetFingerprint,
+    },
+    approvals: Object.fromEntries(
+      ['product', 'media', 'fulfillment'].map((scope) => [
+        scope,
+        {
+          status: 'approved',
+          owner: 'Product Owner',
+          evidence: {
+            candidateCommit,
+            approvedTargetFingerprint: targetFingerprint,
+          },
+        },
+      ])
+    ),
+  };
+  return {
+    releaseRecord: exactReleaseRecord,
+    productOfferConfig: {
+      releaseId: exactReleaseRecord.releaseId,
+      handle: exactReleaseRecord.shopify.handle,
+      allowedSizes: ['M'],
+      allowedReferenceHashes: [fingerprint],
+      evidence: 'Reviewed test offer',
+    },
+    productionLaunchAuthorization: {
+      schemaVersion: 'cp.product-owner-production-launch-authorization.v1',
+      status: 'approved',
+      owner: 'Product Owner',
+      releaseId: exactReleaseRecord.releaseId,
+      handle: exactReleaseRecord.shopify.handle,
+      candidateCommit,
+      approvedTargetFingerprint: targetFingerprint,
+      environments: ['production'],
+      scopes: ['activate-exact-reviewed-offer'],
+      evidence: 'Exact Product Owner test launch authorization',
+      commerceActivation: {
+        status: 'approved',
+        cartWriteEvidence:
+          'evidence/shopify/cp-signature-hoodie-production-cart-write-2026-08-30.json',
+        allowedReferenceHashes: [fingerprint],
+        maximumQuantity: 5,
+      },
+    },
+    productionCartWriteProof: {
+      schemaVersion: 'cp.shopify-cart-write-proof.v1',
+      releaseId: exactReleaseRecord.releaseId,
+      handle: exactReleaseRecord.shopify.handle,
+      candidateCommit,
+      approvedTargetFingerprint: targetFingerprint,
+      environment: 'production',
+      request: { referenceHash: fingerprint, quantity: 1 },
+      response: {
+        status: 303,
+        protocol: 'https:',
+        trustedCheckoutHost: 'carlophillips.myshopify.com',
+        redirectFollowed: false,
+        responseBodyBytes: 0,
+      },
+      negativeChecks: {
+        crossOrigin: { status: 403, reason: 'ORIGIN_REJECTED' },
+        unapprovedReference: {
+          status: 409,
+          reason: 'VARIANT_OUTSIDE_APPROVED_OFFER',
+        },
+      },
+      customerDataProvided: false,
+      paymentAttempted: false,
+      orderSubmitted: false,
+      fulfillmentInvoked: false,
+      privateCheckoutUrlRetained: false,
+      evidenceBoundary: 'Sanitized test proof.',
+    },
+  };
+}
+
 describe('monorepo cart activation', () => {
   it('authorizes the no-write rehearsal without a redundant environment switch', () => {
     const decision = evaluateCartActivation({
@@ -149,5 +232,31 @@ describe('monorepo cart activation', () => {
 
     expect(decision.cartAllowed).toBe(false);
     expect(decision.reason).toBe('RELEASED_PRODUCT_REQUIRED');
+  });
+
+  it('authorizes only the exact proof-bound Product Owner offer in Production', () => {
+    const exact = exactLaunchInputs();
+    const decision = evaluateCartActivation({
+      environment: 'production',
+      productDecision,
+      releaseRecord: exact.releaseRecord,
+      capabilityDecision: {
+        ...capabilityDecision,
+        status: 'evidence_only',
+      },
+      variantResolverDecision: { ...resolver, environment: 'production' },
+      activationApproval,
+      checkoutApproval,
+      productionLaunchAuthorization: exact.productionLaunchAuthorization,
+      productionCartWriteProof: exact.productionCartWriteProof,
+      productOfferConfig: exact.productOfferConfig,
+    });
+
+    expect(decision).toMatchObject({
+      status: 'eligible',
+      cartAllowed: true,
+      checkoutAllowed: true,
+      checkoutReason: 'SHOPIFY_HOSTED_CHECKOUT_AUTHORIZED',
+    });
   });
 });

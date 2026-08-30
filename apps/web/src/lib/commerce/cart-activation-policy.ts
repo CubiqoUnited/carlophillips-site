@@ -1,4 +1,10 @@
 import { hasSellableReviewedVariant } from './variant-presentation-policy';
+import {
+  isExactProductionCommerceLaunchAuthorized,
+  type ProductionCartWriteProof,
+  type ProductionCommerceLaunchAuthorization,
+} from './production-launch-policy';
+import type { ProductOffer } from './product-offer-policy';
 import type {
   CapabilityDecision,
   CartActivationDecision,
@@ -42,6 +48,9 @@ export function evaluateCartActivation({
   variantResolverDecision = null,
   activationApproval = null,
   checkoutApproval = null,
+  productionLaunchAuthorization,
+  productionCartWriteProof,
+  productOfferConfig,
 }: {
   environment: CommerceEnvironment;
   productDecision: ReleaseDecision | null;
@@ -66,6 +75,9 @@ export function evaluateCartActivation({
     environments: string[];
     evidence: string;
   } | null;
+  productionLaunchAuthorization?: ProductionCommerceLaunchAuthorization | null;
+  productionCartWriteProof?: ProductionCartWriteProof | null;
+  productOfferConfig?: ProductOffer;
 }): CartActivationDecision {
   const shopifyProduct =
     productDecision?.source === 'shopify' &&
@@ -79,11 +91,23 @@ export function evaluateCartActivation({
     releaseRecord.shopify?.handle ===
       (shopifyProduct.handle || shopifyProduct.id)
   );
+  const exactProductionLaunchAuthorized = Boolean(
+    shopifyProduct &&
+    releaseRecord &&
+    isExactProductionCommerceLaunchAuthorized({
+      environment,
+      releaseRecord,
+      productHandle: shopifyProduct.handle,
+      authorization: productionLaunchAuthorization,
+      cartWriteProof: productionCartWriteProof,
+      productOfferConfig,
+    })
+  );
   const releaseReady = Boolean(
     releaseMatches &&
     (environment === 'preview'
       ? ['staged', 'approved', RELEASED].includes(releaseRecord?.state || '')
-      : releaseRecord?.state === RELEASED)
+      : releaseRecord?.state === RELEASED || exactProductionLaunchAuthorized)
   );
   const fingerprintReady = Boolean(
     releaseMatches &&
@@ -102,7 +126,7 @@ export function evaluateCartActivation({
   );
   const capabilityStatusReady =
     capabilityDecision?.status === 'ready' ||
-    (environment === 'preview' &&
+    ((environment === 'preview' || exactProductionLaunchAuthorized) &&
       capabilityDecision?.status === 'evidence_only');
   const capabilityReady =
     capabilityStatusReady &&
@@ -160,7 +184,7 @@ export function evaluateCartActivation({
       releaseReady,
       environment === 'preview'
         ? 'Stage the matching Product Release Record with immutable evidence before enabling the private checkout rehearsal.'
-        : 'Advance the matching Product Release Record through its evidence-backed Released transition.'
+        : 'Use either an evidence-backed Released transition or the exact Product Owner launch authorization bound to the verified production cart proof.'
     ),
     prerequisite(
       'OBSERVED_VARIANT_FINGERPRINT_REQUIRED',
