@@ -1,8 +1,8 @@
 {
   "schemaVersion": "cp.candidate-build-evidence.v1",
   "releaseId": "cp-signature-hoodie-2026-001",
-  "candidateCommit": "2ddca6f81e832a08f98149defcdbfb3ec1c0ef1f",
-  "recordedAt": "2026-08-30T08:01:40Z",
+  "candidateCommit": "0d696b1b57cbf9c27cab20f832ee744c2299e609",
+  "recordedAt": "2026-08-30T09:03:07Z",
   "sourceChecks": {
     "designSystemLint": "passed",
     "productionCommerceLint": "passed",
@@ -12,8 +12,8 @@
     "formatCheck": "passed",
     "tests": {
       "status": "passed",
-      "files": 70,
-      "assertions": 621
+      "files": 71,
+      "assertions": 624
     },
     "productionDependencyAudit": {
       "status": "passed",
@@ -33,17 +33,17 @@
     {
       "name": "Verify",
       "status": "passed",
-      "completedAt": "2026-08-30T08:01:40Z"
+      "completedAt": "2026-08-30T09:03:07Z"
     },
     {
       "name": "Checkout E2E and accessibility",
       "status": "passed",
-      "completedAt": "2026-08-30T08:01:12Z"
+      "completedAt": "2026-08-30T09:02:42Z"
     }
   ],
   "browserChecks": {
     "status": "passed",
-    "evidencePhase": "prebinding-diagnostic",
+    "evidencePhase": "exact-candidate-final",
     "routes": [
       "/",
       "/product/carlophillips-signature-hoodie",
@@ -56,7 +56,7 @@
     "pageErrors": 0,
     "requestFailures": 0,
     "frameworkOverlay": false,
-    "privateEvidenceFingerprint": "sha256:f3139083c6ca4768141247d1db960affa604bc68fcf10d50963b376f376df002"
+    "privateEvidenceFingerprint": "sha256:bfa25f171d28febf96e5baa9099be7892e29af7b4e1cfe4518c94b8f25cc1c43"
   },
   "authority": "candidate_build_and_quality_evidence_only_no_release_or_production_authority"
 }
