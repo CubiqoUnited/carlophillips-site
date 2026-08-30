@@ -39,6 +39,20 @@ function releasePresentation(decision: ReleaseDecision) {
   if (
     decision.source === 'shopify' &&
     decision.environment === 'production' &&
+    decision.reason ===
+      'PRODUCT_OWNER_APPROVED_PRODUCTION_PRESENTATION_NON_COMMERCE'
+  ) {
+    return {
+      sourceLabel: 'Product Owner-approved staging presentation',
+      truthHeading: 'Reviewed Shopify facts, approved presentation.',
+      story: 'No reviewed product story is available.',
+      commerceExplanation:
+        'The approved staging presentation is live. Purchasing remains disabled until the separate cart and checkout decision is ready.',
+    };
+  }
+  if (
+    decision.source === 'shopify' &&
+    decision.environment === 'production' &&
     decision.reason === 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED'
   ) {
     return {

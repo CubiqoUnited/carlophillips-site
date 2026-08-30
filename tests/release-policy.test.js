@@ -8,6 +8,21 @@ import {
 
 const fixtureProduct = { id: 'fixture-1', title: 'Layout Fixture' };
 
+function exactProductionPresentationAuthorization(releaseRecord) {
+  return {
+    status: 'approved',
+    owner: 'Product Owner',
+    releaseId: releaseRecord.releaseId,
+    handle: releaseRecord.shopify.handle,
+    candidateCommit: releaseRecord.candidate.gitCommit,
+    approvedTargetFingerprint:
+      releaseRecord.candidate.releaseEvidenceFingerprint,
+    environments: ['production'],
+    scopes: ['publish-reviewed-staging-presentation'],
+    evidence: 'Product Owner approved this exact candidate presentation.',
+  };
+}
+
 describe('release source policy', () => {
   it('allows an explicitly labeled non-commerce fixture locally', () => {
     const decision = resolveProductSource({
@@ -156,6 +171,50 @@ describe('release source policy', () => {
       }).reason
     ).toBe('PRODUCT_RELEASE_NOT_RELEASED');
   });
+
+  it.each(['staged', 'approved'])(
+    'allows only an exact Product Owner-authorized %s presentation in production without commerce',
+    (state) => {
+      const releaseRecord = createCompleteReleaseRecord(state, {
+        environment: 'production',
+      });
+      const shopifyProduct = createObservedShopifyProduct(
+        'test-product',
+        'production'
+      );
+      const productionPresentationAuthorization =
+        exactProductionPresentationAuthorization(releaseRecord);
+
+      expect(
+        resolveProductSource({
+          environment: 'production',
+          shopifyProduct,
+          releaseRecord,
+          mediaManifest: createCompleteMediaManifest(),
+          productionPresentationAuthorization,
+        })
+      ).toMatchObject({
+        status: 'available',
+        source: 'shopify',
+        visibilityAllowed: true,
+        commerceAllowed: false,
+        reason: 'PRODUCT_OWNER_APPROVED_PRODUCTION_PRESENTATION_NON_COMMERCE',
+      });
+
+      expect(
+        resolveProductSource({
+          environment: 'production',
+          shopifyProduct,
+          releaseRecord,
+          mediaManifest: createCompleteMediaManifest(),
+          productionPresentationAuthorization: {
+            ...productionPresentationAuthorization,
+            candidateCommit: 'different-candidate',
+          },
+        }).reason
+      ).toBe('PRODUCT_RELEASE_NOT_RELEASED');
+    }
+  );
 
   it('denies Preview when reviewed observation bindings are missing', () => {
     const releaseRecord = createCompleteReleaseRecord('staged');

@@ -27,6 +27,8 @@ function titleCase(value = ''): string {
 }
 
 function releaseStatusCopy(reason: string): string {
+  if (reason === 'PRODUCT_OWNER_APPROVED_PRODUCTION_PRESENTATION_NON_COMMERCE')
+    return 'Product Owner-approved presentation / purchasing unavailable';
   if (reason === 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED')
     return 'Released / purchasing unavailable';
   if (reason === 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE')
