@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   fingerprintStorefrontMedia,
   filterReleaseBoundMedia,
+  projectShopifyMedia,
 } from '../lib/commerce/media-visibility-policy.js';
 import { resolveProductSource } from '../lib/commerce/release-policy.js';
 import {
@@ -212,7 +213,7 @@ describe('release-bound storefront media', () => {
     ).toEqual([]);
   });
 
-  it('filters the active release decision before a Shopify payload reaches the view model', () => {
+  it('projects sanitized current Shopify media for private Preview review', () => {
     const shopifyProduct = createObservedShopifyProduct(
       'test-product',
       'preview'
@@ -231,10 +232,45 @@ describe('release-bound storefront media', () => {
     expect(decision.visibilityAllowed).toBe(true);
     expect(decision.commerceAllowed).toBe(false);
     expect(decision.reason).toBe('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
-    expect(decision.product.media).toHaveLength(1);
-    expect(decision.product.media[0].id).toBe('front-image');
-    expect(JSON.stringify(decision)).not.toContain('unapproved-detail');
+    expect(decision.product.media).toHaveLength(2);
+    expect(decision.product.media).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          approvalStatus: 'staging-review',
+          sourceAuthority: 'shopify-canonical-staging',
+        }),
+      ])
+    );
+    expect(decision.product.media[0].id).toMatch(/^sha256:[a-f0-9]{64}$/);
     expect(JSON.stringify(decision)).not.toContain('shopify-media:');
+  });
+
+  it('sanitizes Preview media and excludes unsafe or duplicate references', () => {
+    const safe = {
+      ...observedMedia('front-image'),
+      rawReference: 'opaque-admin-reference',
+      registryAssetId: 'untrusted-registry-id',
+    };
+    const unsafe = observedMedia('unsafe-image');
+    unsafe.url = 'http://cdn.example/unsafe-image';
+
+    const decision = projectShopifyMedia({
+      product: { media: [safe, structuredClone(safe), unsafe] },
+    });
+
+    expect(decision).toMatchObject({
+      includedCount: 1,
+      excludedCount: 2,
+      productionReady: false,
+    });
+    expect(decision.product.media[0]).toMatchObject({
+      approvalStatus: 'staging-review',
+      sourceAuthority: 'shopify-canonical-staging',
+    });
+    expect(decision.product.media[0]).not.toHaveProperty('rawReference');
+    expect(decision.product.media[0]).not.toHaveProperty('registryAssetId');
+    expect(JSON.stringify(decision)).not.toContain('opaque-admin-reference');
+    expect(JSON.stringify(decision)).not.toContain('untrusted-registry-id');
   });
 
   it('strips an unapproved extra without failing an otherwise complete Released set', () => {
@@ -291,7 +327,7 @@ describe('release-bound storefront media', () => {
     }
   });
 
-  it('keeps a private Staged product visible but media-empty when assets are candidates', () => {
+  it('keeps candidate assets visible only as staging-review media in private Preview', () => {
     const manifest = createCompleteMediaManifest();
     const frontRequirement = manifest.requirements.find(
       (item) => item.modality === 'front'
@@ -322,7 +358,13 @@ describe('release-bound storefront media', () => {
     expect(decision.visibilityAllowed).toBe(true);
     expect(decision.commerceAllowed).toBe(false);
     expect(decision.reason).toBe('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
-    expect(decision.product.media).toEqual([]);
-    expect(decision.product.heroImage).toBe('');
+    expect(decision.product.media).toHaveLength(1);
+    expect(decision.product.media[0]).toMatchObject({
+      approvalStatus: 'staging-review',
+      sourceAuthority: 'shopify-canonical-staging',
+    });
+    expect(decision.product.heroImage).toBe(
+      'https://cdn.example/front-image-preview'
+    );
   });
 });

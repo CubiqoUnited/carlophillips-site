@@ -1,5 +1,8 @@
 import { evaluateProductReleaseEvidence } from '../releases/product-release-transition';
-import { filterReleaseBoundMedia } from './media-visibility-policy';
+import {
+  filterReleaseBoundMedia,
+  projectShopifyMedia,
+} from './media-visibility-policy';
 import {
   evaluateObservationVisibility,
   toReleaseBoundProduct,
@@ -107,10 +110,13 @@ export function resolveProductSource({
         'PRODUCT_RELEASE_EVIDENCE_INCOMPLETE'
       );
     }
-    const mediaDecision = filterReleaseBoundMedia({
-      product: observationDecision.product,
-      manifest: mediaManifest as MediaManifest,
-    });
+    const mediaDecision =
+      environment === 'preview'
+        ? projectShopifyMedia({ product: observationDecision.product })
+        : filterReleaseBoundMedia({
+            product: observationDecision.product,
+            manifest: mediaManifest as MediaManifest,
+          });
     if (environment === 'production' && !mediaDecision.productionReady) {
       return deniedShopifyDecision(
         environment,

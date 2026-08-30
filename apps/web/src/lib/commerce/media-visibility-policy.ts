@@ -105,11 +105,12 @@ function sanitizeShopifyMedia(
     )
       continue;
     seen.add(referenceHash);
+    const safeItem = { ...item };
+    delete safeItem.registryAssetId;
+    delete safeItem.rawReference;
     media.push({
-      ...item,
+      ...safeItem,
       id: referenceHash,
-      registryAssetId: undefined,
-      rawReference: undefined,
       type: item.type as CustomerMediaType,
       url: url || '',
       previewUrl: previewUrl || '',
