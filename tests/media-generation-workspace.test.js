@@ -81,7 +81,6 @@ describe('feature-flagged Media Generation workspace', () => {
         mediaManifest: true,
         shopifyObservation: true,
         providerMapping: true,
-        releaseEvidence: true,
       },
     });
     expect(release).toEqual(beforeRelease);
@@ -108,6 +107,22 @@ describe('feature-flagged Media Generation workspace', () => {
         role: 'product_owner',
       })
     ).toThrow('MEDIA_GENERATION_BINDING_STALE');
+  });
+
+  it('does not duplicate the mutable aggregate release-evidence binding', () => {
+    const updatedRelease = structuredClone(release);
+    updatedRelease.candidate.releaseEvidenceFingerprint = `sha256:${'b'.repeat(64)}`;
+
+    expect(() =>
+      deriveMediaGenerationWorkspace({
+        workspace,
+        release: updatedRelease,
+        mediaManifest,
+        featureEnabled: true,
+        role: 'product_owner',
+      })
+    ).not.toThrow();
+    expect(workspace.bindings).not.toHaveProperty('releaseEvidenceFingerprint');
   });
 
   it('allows only read-only comparison and denies every mutation without durable authority', () => {
