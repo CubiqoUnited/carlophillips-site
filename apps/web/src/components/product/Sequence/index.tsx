@@ -88,7 +88,7 @@ export function ProductSequence({ sequence }: { sequence: PodpipeSection[] }) {
             <Text tone="muted" role="body">
               {section.status === 'not-applicable'
                 ? 'Not applicable — no verified GLB is claimed for this release.'
-                : 'Withheld until the required evidence is approved.'}
+                : 'No separate asset or additional fact is included in the approved 12-image and 2-video presentation.'}
             </Text>
           )}
         </article>

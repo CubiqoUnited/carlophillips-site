@@ -100,8 +100,12 @@ export function evaluateCartActivation({
       productCurrency: shopifyProduct.currency,
     })
   );
+  const capabilityStatusReady =
+    capabilityDecision?.status === 'ready' ||
+    (environment === 'preview' &&
+      capabilityDecision?.status === 'evidence_only');
   const capabilityReady =
-    capabilityDecision?.status === 'ready' &&
+    capabilityStatusReady &&
     capabilityDecision.capability === 'shopify-storefront-cart' &&
     capabilityDecision.adapter === 'shopify-storefront-cart' &&
     capabilityDecision.callableSurface === 'shopify_storefront' &&
