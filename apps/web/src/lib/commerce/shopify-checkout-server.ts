@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { createHash } from 'node:crypto';
+import productionLaunchAuthorization from '../../../../../config/product-owner-production-launch-authorization.json';
 import productOffer from '../../../../../config/shopify-product-offer.json';
 import storefrontRuntime from '../../../../../config/shopify-storefront-runtime.json';
 import {
@@ -39,6 +40,32 @@ export interface CheckoutAuthorization {
   handle: string;
   environments: string[];
   evidence: string;
+}
+
+interface ProductionCartProofAuthorization {
+  schemaVersion?: string;
+  status?: string;
+  owner?: string;
+  releaseId?: string;
+  handle?: string;
+  candidateCommit?: string;
+  approvedTargetFingerprint?: string;
+  environments?: string[];
+  scopes?: string[];
+  proofReferenceHash?: string;
+  proofQuantity?: number;
+  evidence?: string;
+}
+
+interface ReleaseApprovalEvidenceBinding {
+  candidateCommit?: string;
+  approvedTargetFingerprint?: string;
+}
+
+interface BoundReleaseApproval {
+  status?: string;
+  owner?: string;
+  evidence?: ReleaseApprovalEvidenceBinding | null;
 }
 
 export type CheckoutResult =
@@ -104,6 +131,56 @@ function checkoutAuthorizationReady({
   );
 }
 
+function exactProductionCartProofAuthorized({
+  authorization,
+  environment,
+  releaseRecord,
+  referenceHash,
+  quantity,
+}: {
+  authorization: ProductionCartProofAuthorization | null;
+  environment: CommerceEnvironment;
+  releaseRecord: ReleaseRecord;
+  referenceHash: string;
+  quantity: number;
+}): boolean {
+  const approvals = [
+    releaseRecord.approvals?.product,
+    releaseRecord.approvals?.media,
+    releaseRecord.approvals?.fulfillment,
+  ];
+  return Boolean(
+    environment === 'production' &&
+    ['staged', 'approved'].includes(releaseRecord.state) &&
+    authorization?.schemaVersion ===
+      'cp.product-owner-production-launch-authorization.v1' &&
+    authorization.status === 'approved' &&
+    authorization.owner === 'Product Owner' &&
+    authorization.releaseId === releaseRecord.releaseId &&
+    authorization.handle === releaseRecord.shopify.handle &&
+    authorization.candidateCommit === releaseRecord.candidate?.gitCommit &&
+    authorization.approvedTargetFingerprint ===
+      releaseRecord.candidate?.releaseEvidenceFingerprint &&
+    authorization.environments?.includes(environment) &&
+    authorization.scopes?.includes('acquire-one-medium-no-order-cart-proof') &&
+    authorization.proofReferenceHash === referenceHash &&
+    authorization.proofQuantity === quantity &&
+    typeof authorization.evidence === 'string' &&
+    authorization.evidence.trim().length > 0 &&
+    approvals.every((approval) => {
+      const boundApproval = approval as BoundReleaseApproval | undefined;
+      return (
+        boundApproval?.status === 'approved' &&
+        boundApproval.owner === 'Product Owner' &&
+        boundApproval.evidence?.candidateCommit ===
+          releaseRecord.candidate?.gitCommit &&
+        boundApproval.evidence?.approvedTargetFingerprint ===
+          releaseRecord.candidate?.releaseEvidenceFingerprint
+      );
+    })
+  );
+}
+
 /**
  * Preview revalidates the exact selection and returns a same-origin rehearsal.
  * Production performs the same checks, then creates the Shopify cart and
@@ -126,6 +203,7 @@ export async function createApprovedHoodieCheckout({
   loadProductImpl = null,
   capabilityRegistry = getCapabilityRegistry(),
   productOfferConfig = productOffer,
+  productionCartProofAuthorization = productionLaunchAuthorization,
 }: {
   handle: string;
   referenceHash: string;
@@ -141,6 +219,7 @@ export async function createApprovedHoodieCheckout({
   loadProductImpl?: ProductLoader | null;
   capabilityRegistry?: CapabilityRegistry;
   productOfferConfig?: ProductOffer;
+  productionCartProofAuthorization?: ProductionCartProofAuthorization | null;
 }): Promise<CheckoutResult> {
   if (
     !REFERENCE_PATTERN.test(referenceHash || '') ||
@@ -169,9 +248,17 @@ export async function createApprovedHoodieCheckout({
     return { ok: false, reason: 'VARIANT_OUTSIDE_APPROVED_OFFER' };
   }
 
-  const requiredState = environment === 'preview' ? 'staged' : 'released';
+  const cartProofAuthorized = exactProductionCartProofAuthorized({
+    authorization: productionCartProofAuthorization,
+    environment,
+    releaseRecord,
+    referenceHash,
+    quantity,
+  });
+  const requiredState =
+    environment === 'preview' || cartProofAuthorized ? 'staged' : 'released';
   const stateReady =
-    environment === 'preview'
+    environment === 'preview' || cartProofAuthorized
       ? ['staged', 'approved', 'released'].includes(releaseRecord.state)
       : releaseRecord.state === 'released';
   if (!stateReady) {
@@ -221,9 +308,12 @@ export async function createApprovedHoodieCheckout({
     const cartWrite = discoverCapability(
       capabilityRegistry,
       'shopify-storefront-cart',
-      'cart-write'
+      cartProofAuthorized ? 'cart-write-test' : 'cart-write'
     );
-    if (cartWrite.status !== 'ready') {
+    const cartCapabilityReady = cartProofAuthorized
+      ? cartWrite.status === 'evidence_only'
+      : cartWrite.status === 'ready';
+    if (!cartCapabilityReady) {
       return { ok: false, reason: 'SHOPIFY_CART_CAPABILITY_NOT_READY' };
     }
   }
