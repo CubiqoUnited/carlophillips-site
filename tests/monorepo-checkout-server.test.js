@@ -49,6 +49,39 @@ function authorization(record) {
   };
 }
 
+function cartProofAuthorization(record, overrides = {}) {
+  return {
+    schemaVersion: 'cp.product-owner-production-launch-authorization.v1',
+    status: 'approved',
+    owner: 'Product Owner',
+    releaseId: record.releaseId,
+    handle: record.shopify.handle,
+    candidateCommit: record.candidate.gitCommit,
+    approvedTargetFingerprint: record.candidate.releaseEvidenceFingerprint,
+    environments: ['production'],
+    scopes: ['acquire-one-medium-no-order-cart-proof'],
+    proofReferenceHash: referenceHash,
+    proofQuantity: 1,
+    evidence: 'Test-scoped exact no-order cart proof authorization',
+    ...overrides,
+  };
+}
+
+function cartProofCapabilityRegistry() {
+  const registry = capabilityRegistry();
+  registry.capabilities[1] = {
+    ...registry.capabilities[1],
+    accessState: 'write_test_verified',
+    allowedOperations: ['cart-write-test'],
+    blocker: {
+      code: 'CART_WRITE_TEST_EVIDENCE_ONLY',
+      humanAction: 'Capture a release-bound operational cart proof.',
+      resumePoint: 'Reclassify only after the exact proof passes.',
+    },
+  };
+  return registry;
+}
+
 function product(record) {
   return {
     handle: record.shopify.handle,
@@ -134,6 +167,42 @@ describe('monorepo checkout boundary', () => {
       mode: 'preview',
     });
     expect(input.loadProductImpl).toHaveBeenCalledTimes(1);
+    expect(input.fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('creates only the exact authorized Medium proof cart from Staged Production', async () => {
+    const input = options('staged', 'production');
+    input.releaseRecord.approvals.media.owner = 'Product Owner';
+    input.releaseRecord.approvals.fulfillment.owner = 'Product Owner';
+    input.capabilityRegistry = cartProofCapabilityRegistry();
+    input.productionCartProofAuthorization = cartProofAuthorization(
+      input.releaseRecord
+    );
+
+    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+      ok: true,
+      checkoutUrl: 'https://example.myshopify.com/checkouts/test',
+      mode: 'production',
+    });
+    expect(input.fetchImpl).toHaveBeenCalledTimes(1);
+    expect(input.fetchImpl.mock.calls[0][1].body).toContain(variantId);
+  });
+
+  it('denies a Staged Production proof when its exact reference binding differs', async () => {
+    const input = options('staged', 'production');
+    input.releaseRecord.approvals.media.owner = 'Product Owner';
+    input.releaseRecord.approvals.fulfillment.owner = 'Product Owner';
+    input.capabilityRegistry = cartProofCapabilityRegistry();
+    input.productionCartProofAuthorization = cartProofAuthorization(
+      input.releaseRecord,
+      { proofReferenceHash: `sha256:${'f'.repeat(64)}` }
+    );
+
+    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+      ok: false,
+      reason: 'PRODUCT_RELEASE_NOT_RELEASED',
+    });
+    expect(input.loadProductImpl).not.toHaveBeenCalled();
     expect(input.fetchImpl).not.toHaveBeenCalled();
   });
 
