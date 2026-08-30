@@ -3,11 +3,11 @@
   "releaseId": "cp-signature-hoodie-2026-001",
   "handle": "carlophillips-signature-hoodie",
   "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
-  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
   "productionCommit": "19dd333ee7d75480f27877092d0756859696204b",
   "environment": "production",
   "origin": "https://www.carlophillips.com",
-  "observedAt": "2026-08-30T12:40:39.848Z",
+  "observedAt": "2026-08-30T21:54:31.151Z",
   "request": {
     "size": "M",
     "referenceHash": "sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3",
@@ -28,7 +28,7 @@
     },
     "unapprovedProofQuantity": {
       "status": 409,
-      "reason": "PRODUCT_RELEASE_NOT_RELEASED"
+      "reason": "INVALID_CHECKOUT_SELECTION"
     }
   },
   "customerDataProvided": false,
@@ -36,5 +36,5 @@
   "orderSubmitted": false,
   "fulfillmentInvoked": false,
   "privateCheckoutUrlRetained": false,
-  "evidenceBoundary": "This sanitized record proves one exact same-origin server-side Shopify cart creation and trusted hosted-checkout handoff. It contains no Storefront token, raw variant ID, cart token, checkout URL, customer data, payment data, or order."
+  "evidenceBoundary": "This sanitized record proves the explicitly authorized exact local same-origin server-side Shopify handoff returned 303 to the trusted HTTPS Shopify host. The redirect was not followed or retained. It contains no Storefront token, raw variant ID, cart token, checkout URL, customer data, payment data, order, or fulfillment action."
 }

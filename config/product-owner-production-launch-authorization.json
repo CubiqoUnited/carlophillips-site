@@ -5,7 +5,7 @@
   "releaseId": "cp-signature-hoodie-2026-001",
   "handle": "carlophillips-signature-hoodie",
   "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
-  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
   "environments": ["production"],
   "scopes": [
     "publish-reviewed-staging-presentation",
@@ -21,6 +21,6 @@
     ],
     "maximumQuantity": 5
   },
-  "evidence": "Codex task 01a05144-adb3-7291-8957-67b4193ee7b7 on 2026-08-30: Product Owner directed the exact approved staging Hoodie presentation to Production, rejected the agent-authored sample launch requirement, and accepted that no physical sample was ordered or inspected.",
-  "limitations": "Applies only to this exact release, handle, candidate commit, release-evidence fingerprint, approved Product Owner product/media/fulfillment decisions, and the reviewed S/M/L reference hashes. Public cart creation requires the successful sanitized Production proof, existing release-bound cart/checkout approvals, same origin, current Shopify fingerprint and availability checks, server-only variant resolution, quantity 1-5, and a trusted HTTPS checkout host. It never submits payment, an order, fulfillment, or any future product automatically."
+  "evidence": "Boss exact approval in the active Codex task on 2026-08-30 for Shopify Production observation sha256:e667c2d1e0c9f292a5cbef27db094e8c992a4854760d692321db110f1b259bc6 and release fingerprint sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79: S/M/L only, USD 128.00, all available; approval artifacts rebound; same-origin quantity 1-5 and trusted Shopify HTTPS checkout hosts only.",
+  "limitations": "The exact local same-origin 303 handoff verification passed at 2026-08-30T21:54:31.151Z without following or retaining the checkout URL. No customer data, payment, order, fulfillment, or sample action is authorized."
 }

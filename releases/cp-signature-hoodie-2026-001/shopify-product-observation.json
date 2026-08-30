@@ -3,7 +3,7 @@
   "source": "shopify",
   "authority": "candidate",
   "environment": "production",
-  "observedAt": "2026-08-29T08:11:12.222Z",
+  "observedAt": "2026-08-30T20:03:51.368Z",
   "capabilityEvidence": "test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json",
   "product": {
     "handle": "carlophillips-signature-hoodie",
@@ -17,7 +17,7 @@
     ],
     "currency": "USD",
     "minimumPrice": 128,
-    "maximumPrice": 134,
+    "maximumPrice": 128,
     "availableForSale": true
   },
   "variants": [
@@ -37,101 +37,6 @@
       "availableForSale": true,
       "price": {
         "amount": "128.00",
-        "currency": "USD"
-      }
-    },
-    {
-      "referenceHash": "sha256:29275d3e9eff2c61cc1780c4d0f143979928877970349d9ee965a9d32e73d40f",
-      "title": "black / xxxl",
-      "selectedOptions": [
-        {
-          "name": "Color",
-          "value": "black"
-        },
-        {
-          "name": "Size",
-          "value": "xxxl"
-        }
-      ],
-      "availableForSale": true,
-      "price": {
-        "amount": "132.00",
-        "currency": "USD"
-      }
-    },
-    {
-      "referenceHash": "sha256:3f7b2ca8632c2a1304545b487da027b2450c7ff73dfc1cd6d041b12aac540685",
-      "title": "black / xl",
-      "selectedOptions": [
-        {
-          "name": "Color",
-          "value": "black"
-        },
-        {
-          "name": "Size",
-          "value": "xl"
-        }
-      ],
-      "availableForSale": true,
-      "price": {
-        "amount": "128.00",
-        "currency": "USD"
-      }
-    },
-    {
-      "referenceHash": "sha256:55a5912ee42cda18ea4192d25691570c50ddafa3fe46e9a28b74871929717ce0",
-      "title": "black / 5xl",
-      "selectedOptions": [
-        {
-          "name": "Color",
-          "value": "black"
-        },
-        {
-          "name": "Size",
-          "value": "5xl"
-        }
-      ],
-      "availableForSale": true,
-      "price": {
-        "amount": "134.00",
-        "currency": "USD"
-      }
-    },
-    {
-      "referenceHash": "sha256:632965eb7a867160a9f08e83ab809e9c8011aae6a840982e9a5bff5c51fbfead",
-      "title": "black / xs",
-      "selectedOptions": [
-        {
-          "name": "Color",
-          "value": "black"
-        },
-        {
-          "name": "Size",
-          "value": "xs"
-        }
-      ],
-      "availableForSale": true,
-      "price": {
-        "amount": "128.00",
-        "currency": "USD"
-      }
-    },
-    {
-      "referenceHash": "sha256:796e45aebd264bf23757d35eb97f9abd9d4a46358fd3fac4361caa790761d5b0",
-      "title": "black / xxl",
-      "selectedOptions": [
-        {
-          "name": "Color",
-          "value": "black"
-        },
-        {
-          "name": "Size",
-          "value": "xxl"
-        }
-      ],
-      "availableForSale": true,
-      "price": {
-        "amount": "130.00",
         "currency": "USD"
       }
     },
@@ -172,30 +77,11 @@
         "amount": "128.00",
         "currency": "USD"
       }
-    },
-    {
-      "referenceHash": "sha256:ebf91d85d308bc1dcb68371d7a443f9e36bba31404caa54fc69efb6d852fcd9b",
-      "title": "black / 4xl",
-      "selectedOptions": [
-        {
-          "name": "Color",
-          "value": "black"
-        },
-        {
-          "name": "Size",
-          "value": "4xl"
-        }
-      ],
-      "availableForSale": true,
-      "price": {
-        "amount": "133.00",
-        "currency": "USD"
-      }
     }
   ],
-  "variantFingerprint": "sha256:f7e89925f1119c324cc159444a2c90d645e910555d471bfe77fba2440e348db1",
-  "commerceFactsFingerprint": "sha256:c055e02227f425e36a72b7899a804b17bd270e7d22dd18c9fa119dd3840a77ec",
-  "observationFingerprint": "sha256:d999faf035a3716f3e01c274fcb6ccb25bc36206d1247f14d714ec9df68406a7",
+  "variantFingerprint": "sha256:404d113f69d8f7bdcb87939b6f654d3c613f616616efb9e2bd3fb90043c122da",
+  "commerceFactsFingerprint": "sha256:88ed300c4a4e94a7716aac742f1b13edd36477e125fa269967a2ba75f6bdde2a",
+  "observationFingerprint": "sha256:e667c2d1e0c9f292a5cbef27db094e8c992a4854760d692321db110f1b259bc6",
   "review": {
     "status": "pending",
     "owner": "Product Owner/designee",

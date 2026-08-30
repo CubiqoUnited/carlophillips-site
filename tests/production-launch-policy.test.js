@@ -65,7 +65,7 @@ function resolverDecision() {
     evidenceRef: 'tests/variant-resolution-policy.test.js',
     productReadEvidenceRef:
       'test_reports/cp-hoodie-production-activation-2026-08-04/storefront-observation.json',
-    mappedVariantCount: 9,
+    mappedVariantCount: 3,
     mappingComplete: true,
     rawReferenceExposed: false,
     cartMutationAuthorized: false,
@@ -75,7 +75,7 @@ function resolverDecision() {
 }
 
 describe('exact Product Owner Production launch policy', () => {
-  it('binds every reviewed S/M/L offer reference to the sanitized cart proof', () => {
+  it('authorizes every exact S/M/L reference for the rebound Shopify observation', () => {
     for (const offeredReference of productOffer.allowedReferenceHashes) {
       expect(
         isExactProductionCommerceLaunchAuthorized({
@@ -107,7 +107,7 @@ describe('exact Product Owner Production launch policy', () => {
     ).toBe(false);
   });
 
-  it('turns on the Product page cart and hosted checkout only for the exact launch', () => {
+  it('allows cart and hosted checkout for the exact approved Production offer', () => {
     const { summary } = getServerCartActivationDecision({
       environment: 'production',
       productDecision: productDecision(),

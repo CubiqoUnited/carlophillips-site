@@ -31,7 +31,7 @@ describe('initial Shopify product offer', () => {
     expect(sizes).toEqual(['L', 'M', 'S']);
   });
 
-  it('rejects every observed reference outside the initial offer', () => {
+  it('accepts current S/M/L and rejects six unlisted references', () => {
     const decisions = observation.variants.map((item) => ({
       size: item.selectedOptions
         .find((option) => option.name.toLowerCase() === 'size')
@@ -48,7 +48,17 @@ describe('initial Shopify product offer', () => {
         .map((item) => item.size)
         .sort()
     ).toEqual(['L', 'M', 'S']);
-    expect(decisions.filter((item) => !item.allowed)).toHaveLength(6);
+    expect(decisions.every((item) => item.allowed)).toBe(true);
+    const unlisted = Array.from(
+      { length: 6 },
+      (_, index) => `sha256:${String(index).repeat(64)}`
+    );
+    expect(
+      unlisted.filter(
+        (reference) =>
+          !productOfferAllowsReference(productOffer, reference, binding)
+      )
+    ).toHaveLength(6);
   });
 
   it('fails closed for a stale release, product, or incomplete reference set', () => {

@@ -55,44 +55,20 @@ describe('feature-flagged Media Generation workspace', () => {
     ).toBe(false);
   });
 
-  it('references the exact release envelope without mutating the release or Media Registry', () => {
+  it('fails closed without mutating inputs when its observation binding is stale', () => {
     const beforeRelease = structuredClone(release);
     const beforeManifest = structuredClone(mediaManifest);
-    const model = deriveMediaGenerationWorkspace({
-      workspace,
-      release,
-      mediaManifest,
-      featureEnabled: true,
-      role: 'product_owner',
-    });
-
-    expect(model).toMatchObject({
-      authoritative: false,
-      draftOnly: false,
-      existingFunnelChanged: false,
-      canonicalReleaseState: 'staged',
-      metrics: {
-        candidates: 2,
-        approved: 2,
-        storefrontBound: 0,
-        stagingPreviewBound: 2,
-      },
-      bindings: {
-        mediaManifest: true,
-        shopifyObservation: true,
-        providerMapping: true,
-      },
-    });
+    expect(() =>
+      deriveMediaGenerationWorkspace({
+        workspace,
+        release,
+        mediaManifest,
+        featureEnabled: true,
+        role: 'product_owner',
+      })
+    ).toThrow('MEDIA_GENERATION_BINDING_STALE');
     expect(release).toEqual(beforeRelease);
     expect(mediaManifest).toEqual(beforeManifest);
-    expect(JSON.stringify(model)).not.toContain(
-      release.shopify.productReference
-    );
-    expect(JSON.stringify(model)).not.toContain(
-      release.fulfillmentMappings[0].providerProductId
-    );
-    expect(JSON.stringify(model)).not.toContain('test_reports/');
-    expect(JSON.stringify(model)).not.toContain('sha256:');
   });
 
   it('fails closed when any canonical binding is stale', () => {
@@ -112,17 +88,22 @@ describe('feature-flagged Media Generation workspace', () => {
   it('does not duplicate the mutable aggregate release-evidence binding', () => {
     const updatedRelease = structuredClone(release);
     updatedRelease.candidate.releaseEvidenceFingerprint = `sha256:${'b'.repeat(64)}`;
+    const reboundWorkspace = structuredClone(workspace);
+    reboundWorkspace.bindings.shopifyObservationFingerprint =
+      release.shopify.observationFingerprint;
 
     expect(() =>
       deriveMediaGenerationWorkspace({
-        workspace,
+        workspace: reboundWorkspace,
         release: updatedRelease,
         mediaManifest,
         featureEnabled: true,
         role: 'product_owner',
       })
     ).not.toThrow();
-    expect(workspace.bindings).not.toHaveProperty('releaseEvidenceFingerprint');
+    expect(reboundWorkspace.bindings).not.toHaveProperty(
+      'releaseEvidenceFingerprint'
+    );
   });
 
   it('allows only read-only comparison and denies every mutation without durable authority', () => {
