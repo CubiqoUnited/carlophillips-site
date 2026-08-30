@@ -5,8 +5,8 @@
   "approval": "fulfillment",
   "status": "approved",
   "owner": "Product Owner",
-  "approvedAt": "2026-08-30T10:40:00Z",
-  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "approvedAt": "2026-08-30T21:47:39Z",
+  "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
   "scope": {
     "adapter": "apliiq",
     "providerProductId": "5958463",
@@ -14,9 +14,9 @@
     "mappingFingerprint": "sha256:99aceb3be41fa2ad918715b2af091456119a6ef39109bb266a3b0bd373e62a56"
   },
   "decisionEvidence": [
-    "codex-task:01a05146-d62b-72e2-8f27-bfb54a453296#explicit-production-go-live-2026-08-30"
+    "Boss exact approval in the active Codex task on 2026-08-30 to rebind the unchanged fulfillment mapping approval to release fingerprint sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79"
   ],
-  "statement": "The Product Owner approved using the existing reviewed Apliiq mapping for this exact release and directed that the hoodie be offered for sale.",
+  "statement": "The Product Owner rebound the unchanged reviewed Apliiq mapping approval to the current S/M/L-only release fingerprint; no provider state or fulfillment fact was changed.",
   "boundaries": {
     "sampleOrdered": false,
     "sampleInspected": false,

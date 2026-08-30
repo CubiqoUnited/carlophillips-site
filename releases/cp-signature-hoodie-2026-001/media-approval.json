@@ -5,8 +5,8 @@
   "approval": "media",
   "status": "approved",
   "owner": "Product Owner",
-  "approvedAt": "2026-08-30T10:40:00Z",
-  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "approvedAt": "2026-08-30T21:47:39Z",
+  "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
   "scope": {
     "canonicalStagingDeployment": "dpl_81EeMeruugZwzRF47zrfEPECp8fc",
     "approvedImageCount": 12,
@@ -26,9 +26,9 @@
   },
   "decisionEvidence": [
     "releases/cp-signature-hoodie-2026-001/approvals/2026-08-29-product-owner-staging-approval.md",
-    "codex-task:01a05146-d62b-72e2-8f27-bfb54a453296#verified-two-videos-twelve-images-2026-08-30"
+    "Boss exact approval in the active Codex task on 2026-08-30 to rebind the unchanged media approval to release fingerprint sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79"
   ],
-  "statement": "The Product Owner explicitly stated that the two videos and twelve images visible on canonical staging were verified and must be presented in Production.",
+  "statement": "The Product Owner rebound the unchanged approved media decision to the current S/M/L-only release fingerprint; no media fact or asset was changed by this rebind.",
   "boundaries": {
     "additionalMediaApproved": false,
     "physicalProductTruthInferredFromGeneratedMedia": false

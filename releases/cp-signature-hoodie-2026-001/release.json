@@ -6,20 +6,20 @@
     "productReference": "9432704909549",
     "handle": "carlophillips-signature-hoodie",
     "statusObserved": "ACTIVE",
-    "observedAt": "2026-08-17T00:21:38.203Z",
-    "variantFingerprint": "sha256:f7e89925f1119c324cc159444a2c90d645e910555d471bfe77fba2440e348db1",
+    "observedAt": "2026-08-30T20:03:51.368Z",
+    "variantFingerprint": "sha256:404d113f69d8f7bdcb87939b6f654d3c613f616616efb9e2bd3fb90043c122da",
     "variantFingerprintStatus": "observed",
-    "commerceFactsFingerprint": "sha256:c055e02227f425e36a72b7899a804b17bd270e7d22dd18c9fa119dd3840a77ec",
+    "commerceFactsFingerprint": "sha256:88ed300c4a4e94a7716aac742f1b13edd36477e125fa269967a2ba75f6bdde2a",
     "commerceFactsFingerprintStatus": "reviewed",
-    "observationFingerprint": "sha256:143a817c9a1d8898faeaee2aa81e05ccc05153f9dfa3ae9497411c44c1cf47f4",
+    "observationFingerprint": "sha256:e667c2d1e0c9f292a5cbef27db094e8c992a4854760d692321db110f1b259bc6",
     "observationFingerprintStatus": "reviewed",
-    "observationReviewEvidence": "codex-thread:01a0011f-5bd5-7cb1-83cf-669082120abb#shopify-observation-approval-2026-08-17",
+    "observationReviewEvidence": "Boss exact approval in the active Codex task on 2026-08-30 for Shopify Production observation sha256:e667c2d1e0c9f292a5cbef27db094e8c992a4854760d692321db110f1b259bc6.",
     "observationReviewBinding": {
       "reference": "releases/cp-signature-hoodie-2026-001/shopify-observation-approval.json",
-      "fingerprint": "sha256:68fa73714af33f2036927811959a3e117db3c4f810a7ab492d2bd7ed01506ec7",
+      "fingerprint": "sha256:5842ed259f55892c358cb25a48498bd247b2f91edbc57e96d35e0e9ed389a91a",
       "releaseId": "cp-signature-hoodie-2026-001",
       "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
-      "recordedAt": "2026-08-30T10:39:34Z"
+      "recordedAt": "2026-08-30T20:06:08Z"
     },
     "productionObservation": null
   },
@@ -54,11 +54,11 @@
       "owner": "Product Owner",
       "evidence": {
         "reference": "releases/cp-signature-hoodie-2026-001/product-approval.json",
-        "fingerprint": "sha256:3de407c80fb462ac5a7de9e538f883978e75dda0932969cb062341567f5d8014",
+        "fingerprint": "sha256:05962f1a888789431dd1b86dbcb45fbdf3c7cf851ec8ba9382e999a37d41793c",
         "releaseId": "cp-signature-hoodie-2026-001",
         "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
-        "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
-        "approvedAt": "2026-08-30T10:40:00Z"
+        "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
+        "approvedAt": "2026-08-30T21:47:39Z"
       }
     },
     "media": {
@@ -66,11 +66,11 @@
       "owner": "Product Owner",
       "evidence": {
         "reference": "releases/cp-signature-hoodie-2026-001/media-approval.json",
-        "fingerprint": "sha256:674b7f3f2b88a31ae5246b61fda9bd04689a360576685d323b1cb4f5bef912d6",
+        "fingerprint": "sha256:5d1b6f42e6a5547654881153578aa3dc875adc58ad451f59817934ab626a8baa",
         "releaseId": "cp-signature-hoodie-2026-001",
         "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
-        "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
-        "approvedAt": "2026-08-30T10:40:00Z"
+        "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
+        "approvedAt": "2026-08-30T21:47:39Z"
       }
     },
     "fulfillment": {
@@ -78,11 +78,11 @@
       "owner": "Product Owner",
       "evidence": {
         "reference": "releases/cp-signature-hoodie-2026-001/fulfillment-approval.json",
-        "fingerprint": "sha256:0b360fcf9628ba0fed618c0b02b291dfdf0656decabfa0a019979abde2f826ed",
+        "fingerprint": "sha256:d37329fb973ca439efcf9449b4576686b4d3478dbb0b1e0233470b911bedfaba",
         "releaseId": "cp-signature-hoodie-2026-001",
         "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
-        "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
-        "approvedAt": "2026-08-30T10:40:00Z"
+        "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
+        "approvedAt": "2026-08-30T21:47:39Z"
       }
     }
   },
@@ -102,7 +102,7 @@
       "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
       "recordedAt": "2026-08-30T10:39:31Z"
     },
-    "releaseEvidenceFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c"
+    "releaseEvidenceFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79"
   },
   "rollback": {
     "strategy": "withdraw-release",

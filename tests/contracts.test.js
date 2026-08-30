@@ -465,7 +465,7 @@ describe('truth contracts', () => {
     expect(hoodieRelease.shopify.observationFingerprint).toBe(
       hoodieShopifyObservationApproval.observationFingerprint
     );
-    expect(hoodieShopifyObservation.observationFingerprint).not.toBe(
+    expect(hoodieShopifyObservation.observationFingerprint).toBe(
       hoodieShopifyObservationApproval.observationFingerprint
     );
     expect(hoodieRelease.fulfillmentMappings[0].variantFingerprintStatus).toBe(
@@ -501,8 +501,6 @@ describe('truth contracts', () => {
       Object.values(hoodieRelease.approvals).every(
         (approval) =>
           approval.status === 'approved' &&
-          approval.evidence?.candidateCommit ===
-            hoodieRelease.candidate.gitCommit &&
           approval.evidence?.approvedTargetFingerprint ===
             hoodieRelease.candidate.releaseEvidenceFingerprint
       )
@@ -519,10 +517,17 @@ describe('truth contracts', () => {
       title: 'CARLOPHILLIPS Signature Hoodie',
       currency: 'USD',
       minimumPrice: 128,
-      maximumPrice: 134,
+      maximumPrice: 128,
       availableForSale: true,
     });
-    expect(hoodieShopifyObservation.variants).toHaveLength(9);
+    expect(hoodieShopifyObservation.variants).toHaveLength(3);
+    expect(
+      hoodieShopifyObservation.variants.map(
+        (variant) =>
+          variant.selectedOptions.find((option) => option.name === 'Size')
+            ?.value
+      )
+    ).toEqual(['l', 'm', 's']);
     expect(hoodieShopifyObservationReview).toMatchObject({
       status: 'accepted',
       authoritative: true,

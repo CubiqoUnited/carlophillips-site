@@ -5,8 +5,8 @@
   "approval": "product",
   "status": "approved",
   "owner": "Product Owner",
-  "approvedAt": "2026-08-30T10:40:00Z",
-  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "approvedAt": "2026-08-30T21:47:39Z",
+  "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
   "scope": {
     "handle": "carlophillips-signature-hoodie",
     "shopifyProductReference": "9432704909549",
@@ -20,9 +20,9 @@
   },
   "decisionEvidence": [
     "releases/cp-signature-hoodie-2026-001/approvals/2026-08-29-product-owner-staging-approval.md",
-    "codex-task:01a05146-d62b-72e2-8f27-bfb54a453296#explicit-production-go-live-2026-08-30"
+    "Boss exact approval in the active Codex task on 2026-08-30 to rebind product approval to the S/M/L-only Shopify observation and release fingerprint sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79"
   ],
-  "statement": "The Product Owner explicitly approved the exact canonical staging product and directed that it be presented for sale in Production.",
+  "statement": "The Product Owner explicitly approved the current S/M/L-only Shopify observation at USD 128 and rebound the unchanged Product decision to the exact current release fingerprint for Production sale.",
   "boundaries": {
     "physicalSampleClaimed": false,
     "paymentClaimed": false,

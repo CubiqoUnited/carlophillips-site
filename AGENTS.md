@@ -1,5 +1,23 @@
 # CARLOPHILLIPS Repository Rules
 
+## Current customer-ready delivery authority — 2026-08-30
+
+- Boss grants Sushma continuing project authority to complete the active
+  CARLOPHILLIPS customer-ready remediation without requesting repeated routine
+  confirmations. This includes the exact S/M/L Shopify observation and approval
+  rebinding, sanitized no-order checkout-handoff proof, temporary branch/PR,
+  canonical Preview, Pushpa Product Owner review, merge, Production deployment,
+  verification, rollback on failed verification, and temporary-branch cleanup.
+- Shopify Admin is the business source of truth for the live product, variants,
+  price, inventory, availability, cart, and hosted checkout. The current approved
+  offer is the Signature Hoodie in S/M/L at USD 128.
+- This standing project authority never permits submitting or exposing customer
+  data, following or retaining a private checkout URL during QA, submitting
+  payment or an order, invoking fulfillment, ordering a physical sample,
+  accepting paid-plan charges or third-party legal terms, weakening generic
+  same-origin/trusted-host security, printing secrets, or visibly taking over the
+  user's screen. Those boundaries remain hard stops.
+
 ## Source of truth
 
 - Canonical repository: `https://github.com/CubiqoUnited/carlophillips-site.git`.
