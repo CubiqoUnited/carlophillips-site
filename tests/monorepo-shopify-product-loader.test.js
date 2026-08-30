@@ -73,4 +73,59 @@ describe('monorepo Shopify public product loader fallback', () => {
       /^sha256:[a-f0-9]{64}$/
     );
   });
+
+  it('canonicalizes authenticated GraphQL customer copy identically', async () => {
+    const fetchImpl = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        data: {
+          product: {
+            id: 'gid://shopify/Product/10',
+            handle: 'observed-hoodie',
+            title: 'Observed Hoodie',
+            description: 'Line one\n\nLine two',
+            vendor: 'CARLOPHILLIPS',
+            productType: 'Hoodie',
+            tags: [],
+            priceRange: {
+              minVariantPrice: { amount: '128.00', currencyCode: 'USD' },
+              maxVariantPrice: { amount: '128.00', currencyCode: 'USD' },
+            },
+            media: { edges: [] },
+            variants: {
+              edges: [
+                {
+                  node: {
+                    id: 'gid://shopify/ProductVariant/100',
+                    title: 'black / m',
+                    availableForSale: true,
+                    price: { amount: '128.00', currencyCode: 'USD' },
+                    selectedOptions: [
+                      { name: 'Color', value: 'black' },
+                      { name: 'Size', value: 'm' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        },
+      }),
+    });
+    const loadProduct = createShopifyProductLoader({
+      storeDomain: 'example.myshopify.com',
+      storefrontToken: 'sanitized-test-token',
+      fetchImpl,
+      environment: 'preview',
+      observedAt: () => '2026-08-30T08:40:45Z',
+      capabilityEvidence: 'evidence/shopify-storefront-read.json',
+    });
+
+    const product = await loadProduct('observed-hoodie');
+
+    expect(product).toMatchObject({
+      description: 'Line one Line two',
+      details: ['Line one Line two'],
+    });
+  });
 });

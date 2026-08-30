@@ -104,6 +104,7 @@ function toObservedProduct(
   const colors = distinctOptions(product.variants, 'color');
   const sizes = distinctOptions(product.variants, 'size');
   const tagline = customerTagline(product.tags, product.productType);
+  const description = canonicalCustomerText(product.description);
 
   return {
     id: product.handle,
@@ -116,11 +117,8 @@ function toObservedProduct(
     compareAtPrice: Number(product.priceRange.maximum.amount),
     currency: product.priceRange.minimum.currency,
     tagline,
-    description: product.description,
-    details: product.description
-      .split(/\r?\n/)
-      .map((item) => item.trim())
-      .filter(Boolean),
+    description,
+    details: description ? [description] : [],
     images: product.media
       .filter((item) => item.type === 'image')
       .map((item) => item.url),
@@ -153,6 +151,10 @@ function toObservedProduct(
     productType: product.productType,
     tags: [...product.tags],
   };
+}
+
+function canonicalCustomerText(value: string): string {
+  return value.replace(/\s+/g, ' ').trim();
 }
 
 function distinctOptions(
