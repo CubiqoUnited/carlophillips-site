@@ -24,6 +24,32 @@ const variantPresentation = {
 };
 
 describe('product view model', () => {
+  it('labels the exact Product Owner-approved Production presentation without implying commerce', () => {
+    const decision = {
+      schemaVersion: 'cp.release-decision.v1',
+      environment: 'production',
+      status: 'available',
+      source: 'shopify',
+      visibilityAllowed: true,
+      commerceAllowed: false,
+      reason: 'PRODUCT_OWNER_APPROVED_PRODUCTION_PRESENTATION_NON_COMMERCE',
+      product: {
+        id: 'test-product',
+        handle: 'test-product',
+        title: 'Observed product',
+        price: 128,
+        currency: 'USD',
+        media: [],
+      },
+    };
+
+    expect(toProductViewModel(decision)).toMatchObject({
+      sourceLabel: 'Product Owner-approved staging presentation',
+      truthHeading: 'Reviewed Shopify facts, approved presentation.',
+      commerceAllowed: false,
+    });
+  });
+
   it('normalizes Shopify product and media fields without changing the source', () => {
     const sourceMedia = {
       id: 'front',

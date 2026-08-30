@@ -2,6 +2,29 @@
 
 Updated: 2026-08-30
 
+## Production deployment and exact presentation correction — 2026-08-30
+
+Canonical staging was merged through green PR #32 to Production. The first
+mandatory live desktop/mobile QA found a functional denial rather than a
+runtime crash: the home page showed `0 IMAGES / Price unavailable`, and the
+product page showed `This piece is currently unavailable.` Production was
+missing three non-secret commerce settings, so
+`NEXT_PUBLIC_SHOW_PRODUCTS=true`, `COMMERCE_DATA_MODE=shopify`, and
+`NEXT_PUBLIC_COMMERCE_ENVIRONMENT=production` were added and Production was
+rebuilt. The same denial remained because the repository release policy hides
+every non-`released` product in Production. Required screenshots and runtime
+evidence are retained locally outside Git and are intentionally excluded from
+the public repository.
+
+The safe follow-up is a single-product authorization bound to exact release
+`cp-signature-hoodie-2026-001`, handle
+`carlophillips-signature-hoodie`, candidate `ff0ab3b8...`, and release-evidence
+fingerprint `sha256:42fb174f...`. It permits the exact Product Owner-approved
+staging presentation to render publicly but does not permit cart, checkout,
+payment, an order, or any future staged product. Continue from branch
+`codex/production-visibility-20260830`; run staging desktop/mobile parity before
+merging it to Production.
+
 ## Immediate browser permission needed for the two approved Shopify videos
 
 An authenticated background Chrome tab is already open on **Products →

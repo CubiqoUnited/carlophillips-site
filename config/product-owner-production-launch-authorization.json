@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "cp.product-owner-production-launch-authorization.v1",
+  "status": "approved",
+  "owner": "Product Owner",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "handle": "carlophillips-signature-hoodie",
+  "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+  "approvedTargetFingerprint": "sha256:42fb174ff6a7a752e00769a67eb4ef024631bf4087730489ecc0af440ff8ec8c",
+  "environments": ["production"],
+  "scopes": ["publish-reviewed-staging-presentation"],
+  "evidence": "Codex task 01a05144-adb3-7291-8957-67b4193ee7b7 on 2026-08-30: Product Owner directed the exact approved staging Hoodie presentation to Production, rejected the agent-authored sample launch requirement, and accepted that no physical sample was ordered or inspected.",
+  "limitations": "Applies only to this exact release, handle, candidate commit, release-evidence fingerprint, and approved Product Owner product/media/fulfillment decisions. It authorizes public presentation only. It does not authorize a cart mutation, checkout redirect, payment, order, or any future product."
+}

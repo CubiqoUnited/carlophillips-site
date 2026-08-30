@@ -53,6 +53,7 @@ export interface ProductReleaseRecord {
     tokenEvidence?: string | null;
     shopifyMediaFingerprint?: string | null;
     shopifyMediaEvidence?: string | null;
+    releaseEvidenceFingerprint?: string | null;
   };
   rollback: {
     strategy?: string | null;
