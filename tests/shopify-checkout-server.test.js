@@ -54,7 +54,7 @@ function authorization(record) {
   };
 }
 
-function cartProofAuthorization(record, overrides = {}) {
+function productionLaunchAuthorization(record) {
   return {
     schemaVersion: 'cp.product-owner-production-launch-authorization.v1',
     status: 'approved',
@@ -64,11 +64,47 @@ function cartProofAuthorization(record, overrides = {}) {
     candidateCommit: record.candidate.gitCommit,
     approvedTargetFingerprint: record.candidate.releaseEvidenceFingerprint,
     environments: ['production'],
-    scopes: ['acquire-one-medium-no-order-cart-proof'],
-    proofReferenceHash: referenceHash,
-    proofQuantity: 1,
-    evidence: 'Test-scoped exact no-order cart proof authorization',
-    ...overrides,
+    scopes: ['activate-exact-reviewed-offer'],
+    commerceActivation: {
+      status: 'approved',
+      cartWriteEvidence:
+        'evidence/shopify/cp-signature-hoodie-production-cart-write-2026-08-30.json',
+      allowedReferenceHashes: [referenceHash],
+      maximumQuantity: 5,
+    },
+    evidence: 'Test-scoped exact Product Owner launch authorization',
+  };
+}
+
+function productionCartWriteProof(record) {
+  return {
+    schemaVersion: 'cp.shopify-cart-write-proof.v1',
+    releaseId: record.releaseId,
+    handle: record.shopify.handle,
+    candidateCommit: record.candidate.gitCommit,
+    approvedTargetFingerprint: record.candidate.releaseEvidenceFingerprint,
+    environment: 'production',
+    request: { referenceHash, quantity: 1 },
+    response: {
+      status: 303,
+      protocol: 'https:',
+      trustedCheckoutHost: 'carlophillips.myshopify.com',
+      redirectFollowed: false,
+      responseBodyBytes: 0,
+    },
+    negativeChecks: {
+      crossOrigin: { status: 403, reason: 'ORIGIN_REJECTED' },
+      unapprovedReference: {
+        status: 409,
+        reason: 'VARIANT_OUTSIDE_APPROVED_OFFER',
+      },
+    },
+    customerDataProvided: false,
+    paymentAttempted: false,
+    orderSubmitted: false,
+    fulfillmentInvoked: false,
+    privateCheckoutUrlRetained: false,
+    evidenceBoundary: 'Sanitized test proof without a private checkout URL.',
   };
 }
 
@@ -192,7 +228,7 @@ describe('release-bound Shopify checkout handoff', () => {
     expect(options.fetchImpl).toHaveBeenCalledTimes(1);
   });
 
-  it('creates only the exact authorized Medium proof cart from Staged Production', async () => {
+  it('creates carts only for the exact proof-bound offer from Staged Production', async () => {
     const releaseRecord = createCompleteReleaseRecord('staged');
     releaseRecord.approvals.media.owner = 'Product Owner';
     releaseRecord.approvals.fulfillment.owner = 'Product Owner';
@@ -200,7 +236,9 @@ describe('release-bound Shopify checkout handoff', () => {
       releaseRecord,
       checkoutAuthorization: authorization(releaseRecord),
       capabilityRegistry: cartProofCapabilityRegistry(),
-      productionCartProofAuthorization: cartProofAuthorization(releaseRecord),
+      productionLaunchAuthorization:
+        productionLaunchAuthorization(releaseRecord),
+      productionCartWriteProof: productionCartWriteProof(releaseRecord),
       loadProductImpl: vi.fn(async () => currentProduct(releaseRecord)),
     });
 
@@ -212,7 +250,7 @@ describe('release-bound Shopify checkout handoff', () => {
     expect(input.fetchImpl.mock.calls[0][1].body).toContain(variantId);
   });
 
-  it('denies a Staged Production proof when its exact quantity binding differs', async () => {
+  it('denies Staged Production when the proof is not bound to the candidate', async () => {
     const releaseRecord = createCompleteReleaseRecord('staged');
     releaseRecord.approvals.media.owner = 'Product Owner';
     releaseRecord.approvals.fulfillment.owner = 'Product Owner';
@@ -220,9 +258,12 @@ describe('release-bound Shopify checkout handoff', () => {
       releaseRecord,
       checkoutAuthorization: authorization(releaseRecord),
       capabilityRegistry: cartProofCapabilityRegistry(),
-      productionCartProofAuthorization: cartProofAuthorization(releaseRecord, {
-        proofQuantity: 2,
-      }),
+      productionLaunchAuthorization:
+        productionLaunchAuthorization(releaseRecord),
+      productionCartWriteProof: {
+        ...productionCartWriteProof(releaseRecord),
+        candidateCommit: 'different-candidate',
+      },
       loadProductImpl: vi.fn(async () => currentProduct(releaseRecord)),
     });
 

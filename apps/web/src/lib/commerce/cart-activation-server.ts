@@ -8,6 +8,12 @@ import {
   discoverCapability,
   getCapabilityRegistry,
 } from '../orchestration/capability-registry';
+import {
+  isExactProductionCommerceLaunchAuthorized,
+  type ProductionCartWriteProof,
+  type ProductionCommerceLaunchAuthorization,
+} from './production-launch-policy';
+import type { ProductOffer } from './product-offer-policy';
 import type {
   CartActivationDecision,
   CartActivationSummary,
@@ -34,6 +40,9 @@ export function getServerCartActivationDecision({
   variantResolverDecision = null,
   activationApproval = null,
   checkoutApproval = null,
+  productionLaunchAuthorization,
+  productionCartWriteProof,
+  productOfferConfig,
 }: {
   environment: CommerceEnvironment;
   productDecision?: ReleaseDecision | null;
@@ -41,11 +50,28 @@ export function getServerCartActivationDecision({
   variantResolverDecision?: VariantResolutionDecision | null;
   activationApproval?: ReleaseAuthorization | null;
   checkoutApproval?: ReleaseAuthorization | null;
+  productionLaunchAuthorization?: ProductionCommerceLaunchAuthorization | null;
+  productionCartWriteProof?: ProductionCartWriteProof | null;
+  productOfferConfig?: ProductOffer;
 }): { decision: CartActivationDecision; summary: CartActivationSummary } {
+  const exactProductionLaunchAuthorized = Boolean(
+    productDecision?.product?.handle &&
+    releaseRecord &&
+    isExactProductionCommerceLaunchAuthorized({
+      environment,
+      releaseRecord,
+      productHandle: productDecision.product.handle,
+      authorization: productionLaunchAuthorization,
+      cartWriteProof: productionCartWriteProof,
+      productOfferConfig,
+    })
+  );
   const capabilityDecision = discoverCapability(
     getCapabilityRegistry(),
     'shopify-storefront-cart',
-    environment === 'preview' ? 'cart-write-test' : 'cart-write'
+    environment === 'preview' || exactProductionLaunchAuthorized
+      ? 'cart-write-test'
+      : 'cart-write'
   );
   const decision = evaluateCartActivation({
     environment,
@@ -55,6 +81,9 @@ export function getServerCartActivationDecision({
     variantResolverDecision,
     activationApproval,
     checkoutApproval,
+    productionLaunchAuthorization,
+    productionCartWriteProof,
+    productOfferConfig,
   });
 
   return {
