@@ -64,4 +64,16 @@ describe('monorepo home commerce projection', () => {
     expect(source).not.toContain('ORDER CONFIRMED');
     expect(source).not.toContain("setSurface('cart')");
   });
+
+  it('keeps mandatory snap scrolling on the workbook without trapping commerce pages', () => {
+    const styles = readFileSync(
+      'packages/design-system/styles/globals.css',
+      'utf8'
+    );
+
+    expect(styles).toMatch(/html\s*\{[^}]*scroll-snap-type:\s*none;/s);
+    expect(styles).toMatch(
+      /html:has\(\.cp-workbook-site\)\s*\{[^}]*scroll-snap-type:\s*y mandatory;/s
+    );
+  });
 });
