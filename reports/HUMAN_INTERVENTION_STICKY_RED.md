@@ -2,6 +2,25 @@
 
 Updated: 2026-08-30
 
+## Immediate browser permission needed for the two approved Shopify videos
+
+An authenticated background Chrome tab is already open on **Products →
+CARLOPHILLIPS Signature Hoodie → Media**, and the product remains Active with the
+existing twelve images. Chrome refused the two-file upload before any file was sent
+because the ChatGPT browser extension does not currently have file-URL access.
+
+Boss must manually open `chrome://extensions`, click **Details** under the ChatGPT
+browser extension, and enable **Allow access to file URLs**. Do not send a password,
+verification code, API key, or Shopify credential. Signal completion with `Chrome file
+access enabled`; Codex can then retry the already-authorized upload of only:
+
+- `apps/web/public/media/signature-hoodie/videos/runway-motion-final.mp4`
+- `apps/web/public/media/signature-hoodie/videos/fit-silhouette-final.mp4`
+
+This permission allows the browser extension to upload local files. The immediate
+external effect of the retry will be creating two product-media records in the
+CARLOPHILLIPS Shopify account. It does not place an order or charge a payment method.
+
 The Product Owner has explicitly directed that the CARLOPHILLIPS Signature Hoodie be
 placed on Production and offered for sale with the exact staging presentation: two
 approved videos, twelve approved images, the reviewed Shopify product/variant facts,
@@ -38,12 +57,14 @@ images plus 2 processed videos`.
 
 ## Current implementation resume point
 
-Continue from canonical staging merge `3c2b6fee8a6adcf9da815370e378ee4dd1f6ca81`.
+Continue from canonical staging merge `ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0`.
 Preserve the design system and the exact approved staging presentation. Reconcile the
 release metadata and checkout capability with the Product Owner decision and observed
-live Shopify facts; verify a no-order cart/checkout redirect, a recoverable Production
-candidate, desktop/mobile screenshots, and then promote the exact reviewed source to
-`main` and `www.carlophillips.com`.
+live Shopify facts. Canonical staging desktop/mobile QA and the checkout-disabled
+Production-mode rollback artifact are now verified. Complete the two Shopify video
+uploads, refresh the release-bound media observation, and then promote the exact
+reviewed source to `main` and `www.carlophillips.com` only after the same-origin
+Production checkout path can create a no-order cart.
 
 ---
 
@@ -349,6 +370,7 @@ Status: **PR #10 is merged and the first `CI / Verify` run on `main` was reporte
 ## Resume point
 
 After `CI/CD protection configured`, verify the ruleset plus both environment reviewer/variable/secret-name configurations read-only. Do not reveal values. A release-candidate run must create distinct same-SHA/same-release `staged-production` and `safe-fallback` deployments with no CARLOPHILLIPS domain aliases. Production remains unchanged until a separately approved promotion dispatch.
+
 # RED — MEDIA GENERATION ACTIVATION DECISIONS REQUIRED
 
 The feature-flagged Admin review workspace can be tested in protected Staging without external effects. Do **not** enable paid generation, upload candidates, or activate any mutating control until the Product Owner records all of the following:

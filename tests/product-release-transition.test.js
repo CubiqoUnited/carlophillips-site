@@ -29,9 +29,7 @@ describe('Product Release Record transitions', () => {
     expect(blockerCodes(decision)).toEqual(
       expect.arrayContaining([
         'PHYSICAL_SAMPLE_APPROVAL_REQUIRED',
-        'PRODUCT_APPROVAL_REQUIRED',
-        'MEDIA_APPROVAL_REQUIRED',
-        'FULFILLMENT_APPROVAL_REQUIRED',
+        'MEDIA_MATRIX_INCOMPLETE',
       ])
     );
     expect(blockerCodes(decision)).not.toEqual(
@@ -42,6 +40,9 @@ describe('Product Release Record transitions', () => {
         'BUILD_EVIDENCE_MISSING',
         'STAGING_EVIDENCE_MISSING',
         'ROLLBACK_PLAN_BINDING_INVALID',
+        'PRODUCT_APPROVAL_REQUIRED',
+        'MEDIA_APPROVAL_REQUIRED',
+        'FULFILLMENT_APPROVAL_REQUIRED',
       ])
     );
     expect(hoodieRelease).toEqual(original);
