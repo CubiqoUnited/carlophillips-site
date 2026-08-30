@@ -21,6 +21,11 @@ test.describe('Local fixture checkout boundary', () => {
     const response = await page.goto('/', { waitUntil: 'networkidle' });
     expect(response?.ok()).toBe(true);
     await expect(page.locator('main#main-content')).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => getComputedStyle(document.documentElement).scrollSnapType
+      )
+    ).toBe('y mandatory');
     await expect(page.locator('form[action="/api/checkout"]')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText(/checkout\.shopify/i);
     await page.screenshot({
@@ -45,6 +50,11 @@ test.describe('Local fixture checkout boundary', () => {
       waitUntil: 'networkidle',
     });
     expect(response?.ok()).toBe(true);
+    expect(
+      await page.evaluate(
+        () => getComputedStyle(document.documentElement).scrollSnapType
+      )
+    ).toBe('none');
     const form = page.locator('form[action="/api/checkout"]');
     await expect(form).toHaveCount(0);
     await expect(page.locator('main#main-content')).toContainText(
