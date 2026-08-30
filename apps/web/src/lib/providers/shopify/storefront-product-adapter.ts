@@ -7,6 +7,7 @@ import {
   getCapabilityRegistry,
 } from '../../orchestration/capability-registry';
 import type { ProductLoader } from '../../commerce/runtime-types';
+import storefrontRuntime from '../../../../../../config/shopify-storefront-runtime.json';
 
 class ProductReadCapabilityError extends Error {
   readonly code = 'SHOPIFY_PRODUCT_READ_CAPABILITY_UNVERIFIED';
@@ -31,10 +32,12 @@ export async function loadShopifyProduct(
     throw new ProductReadCapabilityError(capabilityDecision.blocker);
   }
   const loadProduct = createShopifyProductLoader({
-    storeDomain: process.env.SHOPIFY_STORE_DOMAIN,
+    storeDomain:
+      process.env.SHOPIFY_STORE_DOMAIN || storefrontRuntime.storeDomain,
     storefrontToken: process.env.SHOPIFY_STOREFRONT_TOKEN,
     environment: getCommerceEnvironment(),
     capabilityEvidence: capabilityDecision.evidenceRef,
+    publicCurrency: storefrontRuntime.currency,
   });
   return loadProduct(handle);
 }

@@ -18,6 +18,7 @@ import type {
   ProductLoader,
   RuntimeProduct,
 } from '../../commerce/runtime-types';
+import { normalizePublicShopifyProduct } from './public-product-json-adapter';
 
 class ShopifyConfigurationError extends Error {
   readonly code = 'SHOPIFY_NOT_CONFIGURED';
@@ -30,6 +31,7 @@ export function createShopifyProductLoader({
   environment = 'local',
   observedAt = () => new Date().toISOString(),
   capabilityEvidence = null,
+  publicCurrency = 'USD',
 }: {
   storeDomain?: string;
   storefrontToken?: string;
@@ -37,29 +39,52 @@ export function createShopifyProductLoader({
   environment?: CommerceEnvironment;
   observedAt?: () => string;
   capabilityEvidence?: string | null;
+  publicCurrency?: string;
 }): ProductLoader {
-  if (!storeDomain || !storefrontToken) {
+  if (!storeDomain) {
     throw new ShopifyConfigurationError(
-      'Shopify Storefront API is not configured'
+      'Shopify Storefront domain is not configured'
     );
   }
 
-  const client = createStorefrontClient({
-    storeDomain,
-    storefrontAccessToken: storefrontToken,
-    fetchImpl,
-  });
+  const client = storefrontToken
+    ? createStorefrontClient({
+        storeDomain,
+        storefrontAccessToken: storefrontToken,
+        fetchImpl,
+      })
+    : null;
 
   return async function loadProduct(handle: string) {
-    const result = await client.query<
-      GetProductByHandleQuery,
-      { handle: string }
-    >({
-      document: GET_PRODUCT_BY_HANDLE,
-      variables: { handle },
-    });
-    const transport = normalizeStorefrontProduct(result);
-    const product = transport ? toObservedProduct(transport) : null;
+    let product: RuntimeProduct | null;
+    if (client) {
+      const result = await client.query<
+        GetProductByHandleQuery,
+        { handle: string }
+      >({
+        document: GET_PRODUCT_BY_HANDLE,
+        variables: { handle },
+      });
+      const transport = normalizeStorefrontProduct(result);
+      product = transport ? toObservedProduct(transport) : null;
+    } else {
+      const normalizedDomain = storeDomain
+        .replace(/^https?:\/\//i, '')
+        .replace(/\/$/, '');
+      const response = await fetchImpl(
+        `https://${normalizedDomain}/products/${encodeURIComponent(handle)}.js`,
+        { method: 'GET', cache: 'no-store' }
+      );
+      if (!response.ok) {
+        throw new Error(
+          `Shopify public product JSON returned HTTP ${response.status}`
+        );
+      }
+      product = normalizePublicShopifyProduct(await response.json(), {
+        currency: publicCurrency,
+        storeDomain: normalizedDomain,
+      });
+    }
     if (!product) return null;
 
     const observation = createProductObservation({

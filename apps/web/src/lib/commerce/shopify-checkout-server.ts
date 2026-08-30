@@ -2,6 +2,7 @@ import 'server-only';
 
 import { createHash } from 'node:crypto';
 import productOffer from '../../../../../config/shopify-product-offer.json';
+import storefrontRuntime from '../../../../../config/shopify-storefront-runtime.json';
 import {
   discoverCapability,
   getCapabilityRegistry,
@@ -52,6 +53,11 @@ function normalizeDomain(value: string | undefined): string {
   return String(value || '')
     .replace(/^https?:\/\//, '')
     .replace(/\/$/, '');
+}
+
+function numericVariantId(value: string): string | null {
+  const match = value.match(/^gid:\/\/shopify\/ProductVariant\/([1-9][0-9]*)$/);
+  return match?.[1] || null;
 }
 
 function trustedCheckoutUrl(
@@ -111,9 +117,11 @@ export async function createApprovedHoodieCheckout({
   releaseRecord = null,
   mediaManifest = null,
   checkoutAuthorization = null,
-  storeDomain = process.env.SHOPIFY_STORE_DOMAIN,
+  storeDomain = process.env.SHOPIFY_STORE_DOMAIN ||
+    storefrontRuntime.storeDomain,
   storefrontToken = process.env.SHOPIFY_STOREFRONT_TOKEN,
-  checkoutHosts = process.env.SHOPIFY_CHECKOUT_HOSTS,
+  checkoutHosts = process.env.SHOPIFY_CHECKOUT_HOSTS ||
+    storefrontRuntime.checkoutHosts.join(','),
   fetchImpl = fetch,
   loadProductImpl = null,
   capabilityRegistry = getCapabilityRegistry(),
@@ -197,7 +205,7 @@ export async function createApprovedHoodieCheckout({
   if (!['preview', 'production'].includes(environment)) {
     return { ok: false, reason: 'CHECKOUT_ENVIRONMENT_REJECTED' };
   }
-  if (!storeDomain || !storefrontToken) {
+  if (!storeDomain) {
     return { ok: false, reason: 'SHOPIFY_NOT_CONFIGURED' };
   }
 
@@ -228,6 +236,7 @@ export async function createApprovedHoodieCheckout({
       fetchImpl,
       environment,
       capabilityEvidence: productRead.evidenceRef,
+      publicCurrency: storefrontRuntime.currency,
     });
   let product;
   try {
@@ -238,14 +247,20 @@ export async function createApprovedHoodieCheckout({
   if (!product?.availableForSale) {
     return { ok: false, reason: 'SHOPIFY_PRODUCT_UNAVAILABLE' };
   }
+  if (product.handle !== releaseRecord.shopify.handle) {
+    return { ok: false, reason: 'SHOPIFY_RELEASE_HANDLE_STALE' };
+  }
   if (
-    product.handle !== releaseRecord.shopify.handle ||
     product.observation?.variantFingerprint !==
-      releaseRecord.shopify.variantFingerprint ||
-    product.observation?.commerceFactsFingerprint !==
-      releaseRecord.shopify.commerceFactsFingerprint
+    releaseRecord.shopify.variantFingerprint
   ) {
-    return { ok: false, reason: 'SHOPIFY_RELEASE_BINDING_STALE' };
+    return { ok: false, reason: 'SHOPIFY_RELEASE_VARIANTS_STALE' };
+  }
+  if (
+    product.observation?.commerceFactsFingerprint !==
+    releaseRecord.shopify.commerceFactsFingerprint
+  ) {
+    return { ok: false, reason: 'SHOPIFY_RELEASE_COMMERCE_FACTS_STALE' };
   }
 
   const variant = product.observedVariants?.find(
@@ -264,6 +279,20 @@ export async function createApprovedHoodieCheckout({
   }
 
   const normalizedDomain = normalizeDomain(storeDomain);
+  if (!storefrontToken) {
+    const variantId = numericVariantId(variant.id);
+    const checkoutUrl = variantId
+      ? trustedCheckoutUrl(
+          `https://${normalizedDomain}/cart/${variantId}:${quantity}?checkout`,
+          normalizedDomain,
+          checkoutHosts
+        )
+      : null;
+    return checkoutUrl
+      ? { ok: true, checkoutUrl, mode: 'production' }
+      : { ok: false, reason: 'SHOPIFY_CHECKOUT_URL_REJECTED' };
+  }
+
   let response: Response;
   try {
     response = await fetchImpl(

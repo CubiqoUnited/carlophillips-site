@@ -113,6 +113,18 @@ describe('monorepo checkout boundary', () => {
     expect(input.fetchImpl.mock.calls[0][1].body).toContain(variantId);
   });
 
+  it('uses a trusted Shopify cart permalink when no Storefront token exists', async () => {
+    const input = options();
+    input.storefrontToken = undefined;
+
+    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+      ok: true,
+      checkoutUrl: 'https://example.myshopify.com/cart/100:1?checkout',
+      mode: 'production',
+    });
+    expect(input.fetchImpl).not.toHaveBeenCalled();
+  });
+
   it('rehearses a Staged Preview without creating a Shopify cart', async () => {
     const input = options('staged', 'preview');
 

@@ -81,7 +81,7 @@ const checkoutApproval = {
 };
 
 describe('monorepo cart activation', () => {
-  it('authorizes only the no-write checkout rehearsal for a Staged Preview', () => {
+  it('authorizes the no-write rehearsal without a redundant environment switch', () => {
     const decision = evaluateCartActivation({
       environment: 'preview',
       productDecision,
@@ -89,7 +89,6 @@ describe('monorepo cart activation', () => {
       capabilityDecision,
       variantResolverDecision: resolver,
       activationApproval,
-      activationRequested: true,
       checkoutApproval,
     });
 

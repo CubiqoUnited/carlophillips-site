@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "cp.shopify-storefront-runtime.v1",
+  "storeDomain": "carlophillips.myshopify.com",
+  "currency": "USD",
+  "checkoutHosts": ["carlophillips.myshopify.com"]
+}

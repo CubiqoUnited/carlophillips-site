@@ -54,7 +54,6 @@ export function getServerCartActivationDecision({
     capabilityDecision,
     variantResolverDecision,
     activationApproval,
-    activationRequested: process.env.SHOPIFY_CART_UI_ENABLED === 'true',
     checkoutApproval,
   });
 
