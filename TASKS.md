@@ -1,5 +1,26 @@
 # Delivery Tasks
 
+## Shopify-only runtime remediation — 2026-08-31
+
+- [x] Diagnose project instructions, Git hooks, GitHub rulesets/environments,
+  Vercel project configuration, deployed runtime code, legacy duplicate code,
+  tests, and requirements documentation.
+- [x] Establish Shopify Admin as the sole public runtime authority in
+  `AGENTS.md` and deploy that governance change through PR #52.
+- [x] Remove release-record, fingerprint, sample, approval-JSON, and lifecycle
+  state inputs from the deployed public checkout.
+- [x] Make product/catalog visibility derive from current Shopify data and make
+  Preview use a dedicated Shopify staging-store configuration.
+- [x] Retire the controlled sample-order route and replace obsolete checkout
+  tests with the Shopify-authoritative contract.
+- [x] Replace the fake homepage Contact success and group hamburger navigation
+  into Discovery, Shop/categories, and Private & Support sections.
+- [ ] Provision the external Shopify staging store/test payments, monitored
+  support destination, and Shopify Checkout branding draft described in the
+  sticky-red handoff; these are service configuration tasks, not code gates.
+- [ ] Complete full CI, desktop/mobile screenshots, Pushpa review, merge,
+  Production deployment, and live verification for this runtime change.
+
 ## Production checkout interaction repair — 2026-08-30
 
 - [x] Reproduce the live Product failure and identify the global mandatory vertical snap as the interaction defect.

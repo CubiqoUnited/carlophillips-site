@@ -37,8 +37,6 @@ interface ProductPageDecisionInput {
   mode: CommerceDataMode;
   handle: string;
   fixtureProduct: FixtureProduct | null;
-  releaseRecord?: ProductReleaseEvidence['releaseRecord'];
-  mediaManifest?: ProductReleaseEvidence['mediaManifest'];
   loadShopifyProduct: (handle: string) => Promise<unknown>;
 }
 
@@ -99,7 +97,6 @@ export default async function ProductPage({
     mode,
     handle,
     fixtureProduct,
-    ...releaseEvidence,
     loadShopifyProduct: loadObservedShopifyProduct,
   });
 

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('server-only', () => ({}));
 vi.mock('@/lib/commerce/shopify-checkout-server', () => ({
-  createApprovedHoodieCheckout: vi.fn(async () => ({
+  createShopifyCheckout: vi.fn(async () => ({
     ok: true,
     checkoutUrl: 'https://example.myshopify.com/checkouts/test',
   })),
@@ -10,17 +10,7 @@ vi.mock('@/lib/commerce/shopify-checkout-server', () => ({
 vi.mock('@/lib/config/product-visibility', () => ({
   getCommerceEnvironment: () => 'production',
 }));
-vi.mock('@/lib/releases/product-release-registry', () => ({
-  getProductReleaseEvidence: () => ({
-    releaseRecord: { releaseId: 'release-1' },
-    mediaManifest: { releaseId: 'release-1' },
-  }),
-}));
-vi.mock('@/config/shopify-checkout-authorization.json', () => ({
-  default: { status: 'approved' },
-}));
-
-import { createApprovedHoodieCheckout } from '@/lib/commerce/shopify-checkout-server';
+import { createShopifyCheckout } from '@/lib/commerce/shopify-checkout-server';
 import { POST } from '../app/api/checkout/route.js';
 
 function checkoutRequest(origin) {
@@ -49,7 +39,7 @@ describe('checkout POST boundary', () => {
     await expect(response.json()).resolves.toEqual({
       error: 'ORIGIN_REJECTED',
     });
-    expect(createApprovedHoodieCheckout).not.toHaveBeenCalled();
+    expect(createShopifyCheckout).not.toHaveBeenCalled();
   });
 
   it('accepts the exact same origin and redirects to the sanitized hosted checkout URL', async () => {
@@ -59,7 +49,7 @@ describe('checkout POST boundary', () => {
     expect(response.headers.get('location')).toBe(
       'https://example.myshopify.com/checkouts/test'
     );
-    expect(createApprovedHoodieCheckout).toHaveBeenCalledWith(
+    expect(createShopifyCheckout).toHaveBeenCalledWith(
       expect.objectContaining({
         handle: 'carlophillips-signature-hoodie',
         environment: 'production',

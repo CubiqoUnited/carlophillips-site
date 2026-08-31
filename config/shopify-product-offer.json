@@ -8,5 +8,5 @@
     "sha256:a9e7278b69f56390e767c748682c37970a58b5abf9e4c47b612bebcb67cdf9c3",
     "sha256:bca824ce1a2583241b1785b1b655d7dd161c0dc18cdb56f05c528b2d2905e581"
   ],
-  "evidence": "Codex task 2026-08-17: Product Owner selected small, medium and large for the initial offer"
+  "evidence": "Deprecated legacy UI compatibility only. The deployed apps/web checkout ignores this reference list and re-resolves current Shopify variants server-side."
 }

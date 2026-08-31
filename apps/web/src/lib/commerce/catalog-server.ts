@@ -7,15 +7,12 @@ import {
   getCommerceEnvironment,
 } from '../config/product-visibility';
 import { loadShopifyProduct } from '../providers/shopify/storefront-product-adapter';
-import {
-  getProductReleaseEvidence,
-  listProductReleaseHandles,
-} from '../releases/product-release-registry';
 import type { CatalogDecision, RuntimeProduct } from './runtime-types';
+import productOffer from '../../../../../config/shopify-product-offer.json';
 
 export async function getServerCatalogDecision(): Promise<CatalogDecision> {
   const environment = getCommerceEnvironment();
-  const candidateHandles = listProductReleaseHandles();
+  const candidateHandles = [productOffer.handle];
 
   if (!canRenderProducts()) {
     return closedCatalogDecision(environment, candidateHandles.length);
@@ -37,7 +34,6 @@ export async function getServerCatalogDecision(): Promise<CatalogDecision> {
     mode,
     candidateHandles,
     fixtureProducts,
-    getReleaseEvidence: getProductReleaseEvidence,
     loadShopifyProduct,
   });
 }

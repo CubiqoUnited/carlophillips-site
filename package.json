@@ -24,6 +24,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test tests/e2e",
     "test:a11y": "playwright test tests/e2e/accessibility.spec.ts",
+    "test:privacy": "playwright test tests/e2e/privacy-network.spec.ts",
     "mock-assets": "node tools/mock-asset-factory.mjs",
     "mock-assets:ui": "node tools/mock-asset-factory-server.mjs",
     "audit:prod": "yarn audit --groups dependencies --level moderate",

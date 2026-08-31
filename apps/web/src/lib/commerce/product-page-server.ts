@@ -1,28 +1,21 @@
 import 'server-only';
 
-import { getServerCartActivationDecision } from './cart-activation-server';
 import { getProductDecision } from './product-gateway';
-import { getServerVariantResolutionReadiness } from './variant-resolution-server';
 import type {
   CartActivationSummary,
   CommerceEnvironment,
   CommerceMode,
-  MediaManifest,
   ProductLoader,
   ReleaseDecision,
-  ReleaseRecord,
   RuntimeProduct,
 } from './runtime-types';
-import cartActivationApproval from '../../../../../config/shopify-cart-activation-authorization.json';
-import checkoutApproval from '../../../../../config/shopify-checkout-authorization.json';
+import productOffer from '../../../../../config/shopify-product-offer.json';
 
 interface ProductPageOptions {
   environment: CommerceEnvironment;
   mode: CommerceMode;
   handle: string;
   fixtureProduct?: RuntimeProduct | null;
-  releaseRecord?: ReleaseRecord | null;
-  mediaManifest?: MediaManifest | null;
   loadShopifyProduct: ProductLoader;
   activationApproval?: {
     status: string;
@@ -50,31 +43,40 @@ export async function getProductPageDecision(
   decision: ReleaseDecision;
   cartActivation: CartActivationSummary;
 }> {
-  let rawProduct: RuntimeProduct | null = null;
   const decision = await getProductDecision({
     ...options,
-    loadShopifyProduct: async (handle: string) => {
-      rawProduct = await options.loadShopifyProduct(handle);
-      return rawProduct;
-    },
+    loadShopifyProduct: options.loadShopifyProduct,
   });
-  const releaseRecord = options.releaseRecord || null;
-  const resolver =
-    rawProduct && releaseRecord
-      ? getServerVariantResolutionReadiness({
-          environment: options.environment,
-          rawShopifyProduct: rawProduct,
-          productDecision: decision,
-          releaseRecord,
-        })
+  const allowedSizes = new Set(productOffer.allowedSizes);
+  const currentShopifyProduct =
+    decision.source === 'shopify' &&
+    decision.visibilityAllowed &&
+    decision.product?.handle === productOffer.handle
+      ? decision.product
       : null;
-  const cart = getServerCartActivationDecision({
-    environment: options.environment,
-    productDecision: decision,
-    releaseRecord,
-    variantResolverDecision: resolver,
-    activationApproval: options.activationApproval || cartActivationApproval,
-    checkoutApproval: options.checkoutApproval || checkoutApproval,
-  });
-  return { decision, cartActivation: cart.summary };
+  const sellable = Boolean(
+    currentShopifyProduct?.availableForSale &&
+    currentShopifyProduct.observedVariants?.some((variant) => {
+      const size = variant.selectedOptions.find(
+        (option) => option.name.toLowerCase() === 'size'
+      )?.value;
+      return (
+        variant.availableForSale && Boolean(size && allowedSizes.has(size))
+      );
+    })
+  );
+  const cartActivation: CartActivationSummary = {
+    schemaVersion: 'cp.cart-activation-decision.v1',
+    status: sellable ? 'eligible' : 'disabled',
+    cartAllowed: sellable,
+    checkoutAllowed: sellable,
+    reason: sellable
+      ? 'CURRENT_SHOPIFY_PRODUCT_AVAILABLE'
+      : 'CURRENT_SHOPIFY_PRODUCT_UNAVAILABLE',
+    checkoutReason: sellable
+      ? 'SHOPIFY_HOSTED_CHECKOUT_AVAILABLE'
+      : 'SHOPIFY_HOSTED_CHECKOUT_UNAVAILABLE',
+    prerequisites: [],
+  };
+  return { decision, cartActivation };
 }

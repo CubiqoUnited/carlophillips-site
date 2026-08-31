@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const routes = ['/', '/product/carlophillips-signature-hoodie'];
+const routes = ['/', '/product/carlophillips-signature-hoodie', '/contact'];
 
 for (const route of routes) {
   test(`WCAG A/AA and browser health: ${route}`, async ({ page }, testInfo) => {
@@ -33,7 +33,7 @@ for (const route of routes) {
 
     await page.screenshot({
       path: testInfo.outputPath(
-        `${route === '/' ? 'home' : 'pdp'}-accessibility.png`
+        `${route === '/' ? 'home' : route === '/contact' ? 'contact' : 'pdp'}-accessibility.png`
       ),
       fullPage: true,
     });

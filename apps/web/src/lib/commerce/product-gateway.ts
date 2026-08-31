@@ -3,10 +3,8 @@ import { canUseFixtureData } from '../config/product-visibility';
 import type {
   CommerceEnvironment,
   CommerceMode,
-  MediaManifest,
   ProductLoader,
   ReleaseDecision,
-  ReleaseRecord,
   RuntimeProduct,
 } from './runtime-types';
 
@@ -62,16 +60,12 @@ export async function getProductDecision({
   mode,
   handle,
   fixtureProduct = null,
-  releaseRecord = null,
-  mediaManifest = null,
   loadShopifyProduct,
 }: {
   environment: CommerceEnvironment;
   mode: CommerceMode;
   handle: string;
   fixtureProduct?: RuntimeProduct | null;
-  releaseRecord?: ReleaseRecord | null;
-  mediaManifest?: MediaManifest | null;
   loadShopifyProduct: ProductLoader;
 }): Promise<ReleaseDecision> {
   if (mode === COMMERCE_DATA_MODES.FIXTURE) {
@@ -103,8 +97,6 @@ export async function getProductDecision({
     return resolveProductSource({
       environment,
       shopifyProduct,
-      releaseRecord,
-      mediaManifest,
     });
   } catch (error) {
     return resolveProductSource({ environment, shopifyError: error });

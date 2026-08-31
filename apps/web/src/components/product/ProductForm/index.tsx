@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import productOffer from '../../../../../../config/shopify-product-offer.json';
-import { applyProductOffer } from '@/lib/commerce/product-offer-policy';
 import type {
   CommerceEnvironment,
   VariantCombination,
@@ -39,12 +38,9 @@ export default function ShopifyCheckoutForm({
   presentation: VariantPresentation;
   environment: CommerceEnvironment;
 }) {
-  const offeredPresentation = applyProductOffer(presentation, productOffer, {
-    releaseId: productOffer.releaseId,
-    handle,
-  });
-  const available = (offeredPresentation?.combinations || [])
-    .filter((item) => item.availableForSale)
+  const allowedSizes = new Set(productOffer.allowedSizes);
+  const available = (presentation.combinations || [])
+    .filter((item) => item.availableForSale && allowedSizes.has(sizeFor(item)))
     .slice()
     .sort(
       (left, right) =>
@@ -112,7 +108,7 @@ export default function ShopifyCheckoutForm({
       >
         {selected
           ? environment === 'preview'
-            ? 'REVIEW CHECKOUT'
+            ? 'OPEN TEST CHECKOUT'
             : 'CONTINUE TO CHECKOUT'
           : 'SELECT A SIZE'}{' '}
         {selected ? money(selected.price.amount, selected.price.currency) : ''}
@@ -140,8 +136,8 @@ export default function ShopifyCheckoutForm({
             </button>
           </div>
           <p className="mt-4 text-sm">
-            This piece is designed for a relaxed fit. Measurements and model
-            guidance are sourced from the approved product record.
+            This piece is designed for a relaxed fit. Select the size currently
+            offered by Shopify that works best for you.
           </p>
           <details className="mt-4">
             <summary className="cursor-pointer">
@@ -172,7 +168,7 @@ export default function ShopifyCheckoutForm({
       </div>
       <p className="mt-4 text-xs">
         {environment === 'preview'
-          ? 'Private staging rehearsal. No Shopify cart, payment, order, inventory, email, or fulfillment action is created.'
+          ? 'Private staging uses an isolated Shopify test checkout. Do not enter real customer or payment data.'
           : 'You will review delivery and payment in Shopify before placing the order.'}
       </p>
     </form>
