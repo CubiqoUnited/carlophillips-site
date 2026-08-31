@@ -36,66 +36,20 @@ function releasePresentation(decision: ReleaseDecision) {
         'This fixture is for local presentation review only. Purchasing is disabled.',
     };
   }
-  if (
-    decision.source === 'shopify' &&
-    decision.environment === 'production' &&
-    decision.reason ===
-      'PRODUCT_OWNER_APPROVED_PRODUCTION_PRESENTATION_NON_COMMERCE'
-  ) {
+  if (decision.source === 'shopify') {
     return {
-      sourceLabel: 'Product Owner-approved staging presentation',
-      truthHeading: 'Reviewed Shopify facts, approved presentation.',
-      story: 'No reviewed product story is available.',
+      sourceLabel: 'Shopify',
+      truthHeading: 'Current product information.',
+      story: decision.product?.description || '',
       commerceExplanation:
-        'The approved staging presentation is live. Purchasing remains disabled until the separate cart and checkout decision is ready.',
-    };
-  }
-  if (
-    decision.source === 'shopify' &&
-    decision.environment === 'production' &&
-    decision.reason === 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED'
-  ) {
-    return {
-      sourceLabel: 'Released product facts',
-      truthHeading: 'Reviewed facts, released product.',
-      story: 'No reviewed product story is available.',
-      commerceExplanation:
-        'Product facts are released. Purchasing remains disabled until the separate cart and checkout gates are proven.',
-    };
-  }
-  if (decision.source === 'shopify' && decision.environment === 'preview') {
-    if (decision.reason === 'PRIVATE_SHOPIFY_CANDIDATE_REVIEW_NON_COMMERCE') {
-      return {
-        sourceLabel: 'Private Shopify candidate review',
-        truthHeading: 'Shopify candidate facts, pending review.',
-        story: 'No reviewed product story is available.',
-        commerceExplanation:
-          'This is a private staging review. Purchasing remains disabled.',
-      };
-    }
-    return {
-      sourceLabel: 'Private product review',
-      truthHeading: 'Reviewed facts, private release review.',
-      story: 'No reviewed product story is available.',
-      commerceExplanation:
-        'This is a private release review. Purchasing remains disabled until the separate release and commerce gates pass.',
-    };
-  }
-  if (decision.source === 'shopify' && decision.environment === 'local') {
-    return {
-      sourceLabel: 'Local product review',
-      truthHeading: 'Observed facts, local review.',
-      story: 'No reviewed product story is available.',
-      commerceExplanation:
-        'This is a local observation review. Purchasing remains disabled.',
+        'Current price, variants, and availability are supplied by Shopify.',
     };
   }
   return {
-    sourceLabel: 'Commerce source — release state unavailable',
-    truthHeading: 'Release state unavailable.',
-    story: 'No reviewed product story is available.',
-    commerceExplanation:
-      'Purchasing remains disabled because the release context is unavailable.',
+    sourceLabel: 'Product unavailable',
+    truthHeading: 'Product information unavailable.',
+    story: '',
+    commerceExplanation: 'This product is currently unavailable.',
   };
 }
 

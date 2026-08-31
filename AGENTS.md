@@ -8,6 +8,8 @@
   rebinding, sanitized no-order checkout-handoff proof, temporary branch/PR,
   canonical Preview, Pushpa Product Owner review, merge, Production deployment,
   verification, rollback on failed verification, and temporary-branch cleanup.
+- This project authority applies to Claude and Codex agents and remains valid
+  until Aditya Vyas explicitly revokes or replaces it.
 - Shopify Admin is the business source of truth for the live product, variants,
   price, inventory, availability, cart, and hosted checkout. The current approved
   offer is the Signature Hoodie in S/M/L at USD 128.

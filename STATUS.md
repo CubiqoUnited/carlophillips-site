@@ -4,6 +4,26 @@ Updated: 2026-08-30
 Branch: `main`; verified Production storefront/checkout code anchor `4326385228ea7c7ec9a86b6e874e670ff584c261` (later evidence-only documentation descendants do not change storefront code)
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`
 
+## Shopify-only runtime remediation — 2026-08-31
+
+- PR #52 deployed the project authority declaring Shopify Admin the sole public
+  commerce authority and release records optional audit-only material.
+- The deployed `apps/web` product/catalog path no longer gates visibility on a
+  release record, state, fingerprint, sample, media manifest, or approval JSON.
+- The checkout API no longer receives any of those artifacts. It re-reads the
+  configured Shopify Hoodie, resolves the current S/M/L selection, checks
+  availability and quantity, creates a Shopify cart, and accepts only trusted
+  HTTPS Shopify checkout hosts.
+- Preview now targets dedicated `SHOPIFY_STAGING_*` configuration and creates a
+  real Shopify test cart instead of the internal `/checkout/confirm` rehearsal.
+- The duplicate controlled Medium/sample route is retired with HTTP 410.
+- The false-success Contact surface is removed from the homepage. A dedicated,
+  validated `/contact` route now returns a truthful unavailable response until
+  a monitored delivery destination is configured.
+- Diagnostic evidence is in
+  `reports/SYSTEM_RESTRICTION_DIAGNOSTIC_2026-08-31.md`; external setup is at the
+  top of `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+
 ## Production checkout interaction repair and payment-surface proof — 2026-08-30
 
 - Root cause was a global `scroll-snap-type: y mandatory` rule on `html`. It could snap the Product page past the size and checkout controls even though the same-origin POST and Shopify handoff were healthy. Mandatory snap is now scoped to the approved `.cp-workbook-site` homepage; Product pages use normal scrolling.

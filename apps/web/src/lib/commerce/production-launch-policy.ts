@@ -61,6 +61,11 @@ interface BoundReleaseApproval {
   } | null;
 }
 
+interface LegacyReleaseCandidate {
+  gitCommit?: string | null;
+  releaseEvidenceFingerprint?: string | null;
+}
+
 function sameReferences(left: string[], right: string[]): boolean {
   return (
     left.length === right.length &&
@@ -88,6 +93,11 @@ export function isExactProductionCommerceLaunchAuthorized({
   cartWriteProof?: ProductionCartWriteProof | null;
   productOfferConfig?: ProductOffer;
 }): boolean {
+  // This policy remains only for legacy, non-customer tooling. The runtime type
+  // intentionally no longer models the retired evidence binding, so keep the
+  // compatibility read local to this legacy module.
+  const legacyCandidate = releaseRecord.candidate as
+    LegacyReleaseCandidate | undefined;
   const activation = authorization?.commerceActivation;
   const allowedReferences = activation?.allowedReferenceHashes || [];
   const offerReferences = productOfferConfig.allowedReferenceHashes || [];
@@ -118,9 +128,9 @@ export function isExactProductionCommerceLaunchAuthorized({
     authorization.releaseId === releaseRecord.releaseId &&
     authorization.handle === releaseRecord.shopify.handle &&
     authorization.handle === productHandle &&
-    authorization.candidateCommit === releaseRecord.candidate?.gitCommit &&
+    authorization.candidateCommit === legacyCandidate?.gitCommit &&
     authorization.approvedTargetFingerprint ===
-      releaseRecord.candidate?.releaseEvidenceFingerprint &&
+      legacyCandidate?.releaseEvidenceFingerprint &&
     authorization.environments?.includes(environment) &&
     authorization.scopes?.includes('activate-exact-reviewed-offer') &&
     typeof authorization.evidence === 'string' &&
@@ -137,9 +147,9 @@ export function isExactProductionCommerceLaunchAuthorized({
     cartWriteProof?.schemaVersion === 'cp.shopify-cart-write-proof.v1' &&
     cartWriteProof.releaseId === releaseRecord.releaseId &&
     cartWriteProof.handle === productHandle &&
-    cartWriteProof.candidateCommit === releaseRecord.candidate?.gitCommit &&
+    cartWriteProof.candidateCommit === legacyCandidate?.gitCommit &&
     cartWriteProof.approvedTargetFingerprint ===
-      releaseRecord.candidate?.releaseEvidenceFingerprint &&
+      legacyCandidate?.releaseEvidenceFingerprint &&
     cartWriteProof.environment === environment &&
     allowedReferences.includes(cartWriteProof.request?.referenceHash || '') &&
     cartWriteProof.request?.quantity === 1 &&
@@ -166,9 +176,9 @@ export function isExactProductionCommerceLaunchAuthorized({
         boundApproval?.status === 'approved' &&
         boundApproval.owner === 'Product Owner' &&
         boundApproval.evidence?.candidateCommit ===
-          releaseRecord.candidate?.gitCommit &&
+          legacyCandidate?.gitCommit &&
         boundApproval.evidence?.approvedTargetFingerprint ===
-          releaseRecord.candidate?.releaseEvidenceFingerprint
+          legacyCandidate?.releaseEvidenceFingerprint
       );
     })
   );

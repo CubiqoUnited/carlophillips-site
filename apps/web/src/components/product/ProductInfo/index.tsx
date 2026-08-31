@@ -9,6 +9,7 @@ import type {
   ReleaseDecision,
   VariantPresentation as VariantPresentationData,
 } from '@/types';
+import productOffer from '../../../../../../config/shopify-product-offer.json';
 
 function formatPrice(value: number, currency: string): string {
   if (!Number.isFinite(value) || value <= 0) return 'Price unavailable';
@@ -24,16 +25,6 @@ function titleCase(value = ''): string {
   return value
     ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
     : '';
-}
-
-function releaseStatusCopy(reason: string): string {
-  if (reason === 'PRODUCT_OWNER_APPROVED_PRODUCTION_PRESENTATION_NON_COMMERCE')
-    return 'Product Owner-approved presentation / purchasing unavailable';
-  if (reason === 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED')
-    return 'Released / purchasing unavailable';
-  if (reason === 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE')
-    return 'Private product review';
-  return 'Product review';
 }
 
 function attributeEntries(product: ProductDetailProps['product']) {
@@ -135,7 +126,7 @@ export function CommerceProductUnavailable({
 
 export function CommerceProductDetail({
   product,
-  releaseReason = 'RELEASE_DECISION_UNAVAILABLE',
+  releaseReason: _releaseReason = 'SHOPIFY_PRODUCT_UNAVAILABLE',
   cartActivation = null,
   environment = 'local',
   podpipeSequence = [],
@@ -143,6 +134,7 @@ export function CommerceProductDetail({
   const liveProduct = Boolean(
     cartActivation?.cartAllowed && cartActivation?.checkoutAllowed
   );
+  const allowedSizes = new Set(productOffer.allowedSizes);
   const liveSizes =
     product.variantPresentation?.combinations
       ?.map(
@@ -151,7 +143,7 @@ export function CommerceProductDetail({
             (option) => option.name.toLowerCase() === 'size'
           )?.value
       )
-      .filter((size): size is string => Boolean(size))
+      .filter((size): size is string => Boolean(size && allowedSizes.has(size)))
       .sort((left, right) => {
         const order = [
           'XXS',
@@ -170,8 +162,8 @@ export function CommerceProductDetail({
         );
       }) || [];
   const facts = [
-    ['Source', product.sourceLabel],
-    ['Status', releaseStatusCopy(releaseReason)],
+    ['Source', product.source === 'shopify' ? 'Shopify' : product.sourceLabel],
+    ['Status', product.availableForSale ? 'Available' : 'Unavailable'],
     ['Availability', product.availableForSale ? 'Available' : 'Unavailable'],
     ['Maker', product.vendor],
     ['Category', product.productType],

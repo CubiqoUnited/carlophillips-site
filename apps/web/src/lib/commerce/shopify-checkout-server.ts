@@ -8,22 +8,10 @@ import {
   getCapabilityRegistry,
 } from '../orchestration/capability-registry';
 import { createShopifyProductLoader } from '../providers/shopify/product-loader';
-import { evaluateProductReleaseEvidence } from '../releases/product-release-transition';
-import {
-  productOfferAllowsReference,
-  type ProductOffer,
-} from './product-offer-policy';
-import {
-  isExactProductionCommerceLaunchAuthorized,
-  type ProductionCartWriteProof,
-  type ProductionCommerceLaunchAuthorization,
-} from './production-launch-policy';
 import type {
   CapabilityRegistry,
   CommerceEnvironment,
-  MediaManifest,
   ProductLoader,
-  ReleaseRecord,
 } from './runtime-types';
 
 const REFERENCE_PATTERN = /^sha256:[a-f0-9]{64}$/;
@@ -35,16 +23,6 @@ const CART_CREATE = `
     }
   }
 `;
-
-export interface CheckoutAuthorization {
-  status: string;
-  owner: string;
-  scope: string;
-  releaseId: string;
-  handle: string;
-  environments: string[];
-  evidence: string;
-}
 
 export type CheckoutResult =
   | { ok: true; checkoutUrl: string; mode: 'preview' | 'production' }
@@ -87,71 +65,37 @@ function trustedCheckoutUrl(
   }
 }
 
-function checkoutAuthorizationReady({
-  authorization,
-  environment,
-  releaseRecord,
-}: {
-  authorization: CheckoutAuthorization | null;
-  environment: CommerceEnvironment;
-  releaseRecord: ReleaseRecord;
-}): boolean {
-  return Boolean(
-    authorization?.status === 'approved' &&
-    authorization.owner === 'Product Owner' &&
-    authorization.scope === 'shopify-hosted-checkout-redirect' &&
-    authorization.releaseId === releaseRecord.releaseId &&
-    authorization.handle === releaseRecord.shopify.handle &&
-    Array.isArray(authorization.environments) &&
-    authorization.environments.includes(environment) &&
-    typeof authorization.evidence === 'string' &&
-    authorization.evidence.trim().length > 0
-  );
-}
-
 /**
- * Preview revalidates the exact selection and returns a same-origin rehearsal.
- * Production performs the same checks, then creates the Shopify cart and
- * returns only a trusted HTTPS checkout URL. Preview never mutates Shopify.
+ * Re-read the current Shopify product, resolve the submitted opaque selection
+ * to a current available S/M/L variant, create a Shopify cart, and return only
+ * a trusted HTTPS Shopify checkout URL. Release records and approval artifacts
+ * are intentionally not inputs to public commerce.
  */
-export async function createApprovedHoodieCheckout({
+export async function createShopifyCheckout({
   handle,
   referenceHash,
   quantity,
   environment,
-  releaseRecord = null,
-  mediaManifest = null,
-  checkoutAuthorization = null,
-  storeDomain = process.env.SHOPIFY_STORE_DOMAIN ||
-    storefrontRuntime.storeDomain,
-  storefrontToken = process.env.SHOPIFY_STOREFRONT_TOKEN,
-  checkoutHosts = process.env.SHOPIFY_CHECKOUT_HOSTS ||
-    storefrontRuntime.checkoutHosts.join(','),
+  storeDomain,
+  storefrontToken,
+  checkoutHosts,
   fetchImpl = fetch,
   loadProductImpl = null,
   capabilityRegistry = getCapabilityRegistry(),
-  productOfferConfig = productOffer,
-  productionLaunchAuthorization,
-  productionCartWriteProof,
 }: {
   handle: string;
   referenceHash: string;
   quantity: number;
   environment: CommerceEnvironment;
-  releaseRecord?: ReleaseRecord | null;
-  mediaManifest?: MediaManifest | null;
-  checkoutAuthorization?: CheckoutAuthorization | null;
   storeDomain?: string;
   storefrontToken?: string;
   checkoutHosts?: string;
   fetchImpl?: typeof fetch;
   loadProductImpl?: ProductLoader | null;
   capabilityRegistry?: CapabilityRegistry;
-  productOfferConfig?: ProductOffer;
-  productionLaunchAuthorization?: ProductionCommerceLaunchAuthorization | null;
-  productionCartWriteProof?: ProductionCartWriteProof | null;
 }): Promise<CheckoutResult> {
   if (
+    handle !== productOffer.handle ||
     !REFERENCE_PATTERN.test(referenceHash || '') ||
     !Number.isInteger(quantity) ||
     quantity < 1 ||
@@ -160,76 +104,35 @@ export async function createApprovedHoodieCheckout({
     return { ok: false, reason: 'INVALID_CHECKOUT_SELECTION' };
   }
 
-  if (
-    !releaseRecord ||
-    !mediaManifest ||
-    releaseRecord.shopify?.handle !== handle ||
-    releaseRecord.releaseId !== mediaManifest.releaseId
-  ) {
-    return { ok: false, reason: 'PRODUCT_RELEASE_EVIDENCE_REQUIRED' };
-  }
-
-  if (
-    !productOfferAllowsReference(productOfferConfig, referenceHash, {
-      releaseId: releaseRecord.releaseId,
-      handle,
-    })
-  ) {
-    return { ok: false, reason: 'VARIANT_OUTSIDE_APPROVED_OFFER' };
-  }
-
-  const exactProductionLaunchAuthorized =
-    isExactProductionCommerceLaunchAuthorized({
-      authorization: productionLaunchAuthorization,
-      cartWriteProof: productionCartWriteProof,
-      productOfferConfig,
-      environment,
-      releaseRecord,
-      productHandle: handle,
-      referenceHash,
-      quantity,
-    });
-  const requiredState =
-    environment === 'preview' || exactProductionLaunchAuthorized
-      ? 'staged'
-      : 'released';
-  const stateReady =
-    environment === 'preview' || exactProductionLaunchAuthorized
-      ? ['staged', 'approved', 'released'].includes(releaseRecord.state)
-      : releaseRecord.state === 'released';
-  if (!stateReady) {
-    return {
-      ok: false,
-      reason: `PRODUCT_RELEASE_NOT_${requiredState.toUpperCase()}`,
-    };
-  }
-
-  const releaseDecision = evaluateProductReleaseEvidence({
-    record: releaseRecord,
-    manifest: mediaManifest,
-    targetState: requiredState,
-  });
-  if (!releaseDecision.ready) {
-    return { ok: false, reason: 'PRODUCT_RELEASE_EVIDENCE_INCOMPLETE' };
-  }
-
-  if (
-    !checkoutAuthorizationReady({
-      authorization: checkoutAuthorization,
-      environment,
-      releaseRecord,
-    })
-  ) {
-    return {
-      ok: false,
-      reason: 'CHECKOUT_REQUIRES_SEPARATE_RELEASE_BOUND_AUTHORIZATION',
-    };
-  }
   if (!['preview', 'production'].includes(environment)) {
     return { ok: false, reason: 'CHECKOUT_ENVIRONMENT_REJECTED' };
   }
-  if (!storeDomain) {
-    return { ok: false, reason: 'SHOPIFY_NOT_CONFIGURED' };
+  const checkoutEnvironment =
+    environment === 'preview' ? 'preview' : 'production';
+  const resolvedStoreDomain =
+    storeDomain ||
+    (environment === 'preview'
+      ? process.env.SHOPIFY_STAGING_STORE_DOMAIN
+      : process.env.SHOPIFY_STORE_DOMAIN || storefrontRuntime.storeDomain);
+  const resolvedStorefrontToken =
+    storefrontToken ||
+    (environment === 'preview'
+      ? process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN
+      : process.env.SHOPIFY_STOREFRONT_TOKEN);
+  const resolvedCheckoutHosts =
+    checkoutHosts ||
+    (environment === 'preview'
+      ? process.env.SHOPIFY_STAGING_CHECKOUT_HOSTS
+      : process.env.SHOPIFY_CHECKOUT_HOSTS ||
+        storefrontRuntime.checkoutHosts.join(','));
+  if (!resolvedStoreDomain) {
+    return {
+      ok: false,
+      reason:
+        environment === 'preview'
+          ? 'SHOPIFY_STAGING_NOT_CONFIGURED'
+          : 'SHOPIFY_NOT_CONFIGURED',
+    };
   }
 
   const productRead = discoverCapability(
@@ -240,25 +143,20 @@ export async function createApprovedHoodieCheckout({
   if (productRead.status !== 'ready') {
     return { ok: false, reason: 'SHOPIFY_PRODUCT_READ_CAPABILITY_NOT_READY' };
   }
-  if (environment === 'production') {
-    const cartWrite = discoverCapability(
-      capabilityRegistry,
-      'shopify-storefront-cart',
-      exactProductionLaunchAuthorized ? 'cart-write-test' : 'cart-write'
-    );
-    const cartCapabilityReady = exactProductionLaunchAuthorized
-      ? cartWrite.status === 'evidence_only'
-      : cartWrite.status === 'ready';
-    if (!cartCapabilityReady) {
-      return { ok: false, reason: 'SHOPIFY_CART_CAPABILITY_NOT_READY' };
-    }
+  const cartWrite = discoverCapability(
+    capabilityRegistry,
+    'shopify-storefront-cart',
+    'cart-write-test'
+  );
+  if (!['ready', 'evidence_only'].includes(cartWrite.status)) {
+    return { ok: false, reason: 'SHOPIFY_CART_CAPABILITY_NOT_READY' };
   }
 
   const loadProduct =
     loadProductImpl ||
     createShopifyProductLoader({
-      storeDomain,
-      storefrontToken,
+      storeDomain: resolvedStoreDomain,
+      storefrontToken: resolvedStorefrontToken,
       fetchImpl,
       environment,
       capabilityEvidence: productRead.evidenceRef,
@@ -273,52 +171,36 @@ export async function createApprovedHoodieCheckout({
   if (!product?.availableForSale) {
     return { ok: false, reason: 'SHOPIFY_PRODUCT_UNAVAILABLE' };
   }
-  if (product.handle !== releaseRecord.shopify.handle) {
-    return { ok: false, reason: 'SHOPIFY_RELEASE_HANDLE_STALE' };
-  }
-  if (
-    product.observation?.variantFingerprint !==
-    releaseRecord.shopify.variantFingerprint
-  ) {
-    return { ok: false, reason: 'SHOPIFY_RELEASE_VARIANTS_STALE' };
-  }
-  if (
-    product.observation?.commerceFactsFingerprint !==
-    releaseRecord.shopify.commerceFactsFingerprint
-  ) {
-    return {
-      ok: false,
-      reason: 'SHOPIFY_RELEASE_COMMERCE_FACTS_STALE',
-    };
+  if (product.handle !== handle) {
+    return { ok: false, reason: 'SHOPIFY_PRODUCT_NOT_FOUND' };
   }
 
   const variant = product.observedVariants?.find(
     (item) => hashReference(item.id) === referenceHash
   );
-  if (!variant?.availableForSale) {
+  const selectedSize = variant?.selectedOptions.find(
+    (option) => option.name.toLowerCase() === 'size'
+  )?.value;
+  if (
+    !variant?.availableForSale ||
+    !selectedSize ||
+    !productOffer.allowedSizes.includes(selectedSize)
+  ) {
     return { ok: false, reason: 'VARIANT_UNAVAILABLE_OR_STALE' };
   }
 
-  if (environment === 'preview') {
-    return {
-      ok: true,
-      checkoutUrl: '/checkout/confirm?mode=preview',
-      mode: 'preview',
-    };
-  }
-
-  const normalizedDomain = normalizeDomain(storeDomain);
-  if (!storefrontToken) {
+  const normalizedDomain = normalizeDomain(resolvedStoreDomain);
+  if (!resolvedStorefrontToken) {
     const variantId = numericVariantId(variant.id);
     const checkoutUrl = variantId
       ? trustedCheckoutUrl(
           `https://${normalizedDomain}/cart/${variantId}:${quantity}?checkout`,
           normalizedDomain,
-          checkoutHosts
+          resolvedCheckoutHosts
         )
       : null;
     return checkoutUrl
-      ? { ok: true, checkoutUrl, mode: 'production' }
+      ? { ok: true, checkoutUrl, mode: checkoutEnvironment }
       : { ok: false, reason: 'SHOPIFY_CHECKOUT_URL_REJECTED' };
   }
 
@@ -330,7 +212,7 @@ export async function createApprovedHoodieCheckout({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Shopify-Storefront-Access-Token': storefrontToken,
+          'X-Shopify-Storefront-Access-Token': resolvedStorefrontToken,
         },
         body: JSON.stringify({
           query: CART_CREATE,
@@ -374,9 +256,9 @@ export async function createApprovedHoodieCheckout({
   const checkoutUrl = trustedCheckoutUrl(
     result?.cart?.checkoutUrl,
     normalizedDomain,
-    checkoutHosts
+    resolvedCheckoutHosts
   );
   return checkoutUrl
-    ? { ok: true, checkoutUrl, mode: 'production' }
+    ? { ok: true, checkoutUrl, mode: checkoutEnvironment }
     : { ok: false, reason: 'SHOPIFY_CHECKOUT_URL_REJECTED' };
 }

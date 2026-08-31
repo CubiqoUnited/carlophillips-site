@@ -3,11 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('server-only', () => ({}));
 
-import { createApprovedHoodieCheckout } from '../apps/web/src/lib/commerce/shopify-checkout-server';
-import {
-  createCompleteMediaManifest,
-  createCompleteReleaseRecord,
-} from './fixtures/release-fixtures.js';
+import { createShopifyCheckout } from '../apps/web/src/lib/commerce/shopify-checkout-server';
+import productOffer from '../config/shopify-product-offer.json';
 
 const variantId = 'gid://shopify/ProductVariant/100';
 const referenceHash = `sha256:${createHash('sha256')
@@ -28,130 +25,39 @@ function capabilityRegistry() {
       {
         capability: 'shopify-storefront-cart',
         selectedAdapter: 'shopify-storefront-cart',
-        accessState: 'write_verified',
+        accessState: 'write_test_verified',
         callableSurface: 'shopify_storefront',
         evidenceRef: 'evidence/cart-write.json',
-        allowedOperations: ['cart-write'],
+        allowedOperations: ['cart-write-test'],
       },
     ],
   };
 }
 
-function authorization(record) {
+function product({ size = 'M', available = true } = {}) {
   return {
-    status: 'approved',
-    owner: 'Product Owner',
-    scope: 'shopify-hosted-checkout-redirect',
-    releaseId: record.releaseId,
-    handle: record.shopify.handle,
-    environments: ['preview', 'production'],
-    evidence: 'Test-scoped Product Owner checkout approval',
-  };
-}
-
-function productionLaunchAuthorization(record) {
-  return {
-    schemaVersion: 'cp.product-owner-production-launch-authorization.v1',
-    status: 'approved',
-    owner: 'Product Owner',
-    releaseId: record.releaseId,
-    handle: record.shopify.handle,
-    candidateCommit: record.candidate.gitCommit,
-    approvedTargetFingerprint: record.candidate.releaseEvidenceFingerprint,
-    environments: ['production'],
-    scopes: ['activate-exact-reviewed-offer'],
-    commerceActivation: {
-      status: 'approved',
-      cartWriteEvidence:
-        'evidence/shopify/cp-signature-hoodie-production-cart-write-2026-08-30.json',
-      allowedReferenceHashes: [referenceHash],
-      maximumQuantity: 5,
-    },
-    evidence: 'Test-scoped exact Product Owner launch authorization',
-  };
-}
-
-function productionCartWriteProof(record) {
-  return {
-    schemaVersion: 'cp.shopify-cart-write-proof.v1',
-    releaseId: record.releaseId,
-    handle: record.shopify.handle,
-    candidateCommit: record.candidate.gitCommit,
-    approvedTargetFingerprint: record.candidate.releaseEvidenceFingerprint,
-    environment: 'production',
-    request: { referenceHash, quantity: 1 },
-    response: {
-      status: 303,
-      protocol: 'https:',
-      trustedCheckoutHost: 'carlophillips.myshopify.com',
-      redirectFollowed: false,
-      responseBodyBytes: 0,
-    },
-    negativeChecks: {
-      crossOrigin: { status: 403, reason: 'ORIGIN_REJECTED' },
-      unapprovedReference: {
-        status: 409,
-        reason: 'VARIANT_OUTSIDE_APPROVED_OFFER',
+    handle: productOffer.handle,
+    availableForSale: available,
+    observedVariants: [
+      {
+        id: variantId,
+        availableForSale: available,
+        selectedOptions: [{ name: 'Size', value: size }],
       },
-    },
-    customerDataProvided: false,
-    paymentAttempted: false,
-    orderSubmitted: false,
-    fulfillmentInvoked: false,
-    privateCheckoutUrlRetained: false,
-    evidenceBoundary: 'Sanitized test proof without a private checkout URL.',
+    ],
   };
 }
 
-function cartProofCapabilityRegistry() {
-  const registry = capabilityRegistry();
-  registry.capabilities[1] = {
-    ...registry.capabilities[1],
-    accessState: 'write_test_verified',
-    allowedOperations: ['cart-write-test'],
-    blocker: {
-      code: 'CART_WRITE_TEST_EVIDENCE_ONLY',
-      humanAction: 'Capture a release-bound operational cart proof.',
-      resumePoint: 'Reclassify only after the exact proof passes.',
-    },
-  };
-  return registry;
-}
-
-function product(record) {
+function options(environment = 'production', productOptions = {}) {
   return {
-    handle: record.shopify.handle,
-    availableForSale: true,
-    observedVariants: [{ id: variantId, availableForSale: true }],
-    observation: {
-      variantFingerprint: record.shopify.variantFingerprint,
-      commerceFactsFingerprint: record.shopify.commerceFactsFingerprint,
-    },
-  };
-}
-
-function options(state = 'released', environment = 'production') {
-  const releaseRecord = createCompleteReleaseRecord(state);
-  return {
-    handle: releaseRecord.shopify.handle,
+    handle: productOffer.handle,
     referenceHash,
     quantity: 1,
     environment,
-    releaseRecord,
-    mediaManifest: createCompleteMediaManifest(),
-    checkoutAuthorization: authorization(releaseRecord),
     storeDomain: 'example.myshopify.com',
     storefrontToken: 'test-token',
     capabilityRegistry: capabilityRegistry(),
-    productOfferConfig: {
-      schemaVersion: 'cp.shopify-product-offer.v1',
-      releaseId: releaseRecord.releaseId,
-      handle: releaseRecord.shopify.handle,
-      allowedSizes: ['M'],
-      allowedReferenceHashes: [referenceHash],
-      evidence: 'Test-scoped reviewed product offer',
-    },
-    loadProductImpl: vi.fn(async () => product(releaseRecord)),
+    loadProductImpl: vi.fn(async () => product(productOptions)),
     fetchImpl: vi.fn(async () => ({
       ok: true,
       json: async () => ({
@@ -170,10 +76,10 @@ function options(state = 'released', environment = 'production') {
 }
 
 describe('monorepo checkout boundary', () => {
-  it('creates a trusted Shopify cart only in authorized Production', async () => {
+  it('creates a trusted Shopify cart from a current Production variant', async () => {
     const input = options();
 
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+    await expect(createShopifyCheckout(input)).resolves.toEqual({
       ok: true,
       checkoutUrl: 'https://example.myshopify.com/checkouts/test',
       mode: 'production',
@@ -186,7 +92,7 @@ describe('monorepo checkout boundary', () => {
     const input = options();
     input.storefrontToken = undefined;
 
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+    await expect(createShopifyCheckout(input)).resolves.toEqual({
       ok: true,
       checkoutUrl: 'https://example.myshopify.com/cart/100:1?checkout',
       mode: 'production',
@@ -194,99 +100,54 @@ describe('monorepo checkout boundary', () => {
     expect(input.fetchImpl).not.toHaveBeenCalled();
   });
 
-  it('rehearses a Staged Preview without creating a Shopify cart', async () => {
-    const input = options('staged', 'preview');
+  it('creates a real isolated Shopify cart in Preview', async () => {
+    const input = options('preview');
 
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+    await expect(createShopifyCheckout(input)).resolves.toEqual({
       ok: true,
-      checkoutUrl: '/checkout/confirm?mode=preview',
+      checkoutUrl: 'https://example.myshopify.com/checkouts/test',
       mode: 'preview',
     });
     expect(input.loadProductImpl).toHaveBeenCalledTimes(1);
-    expect(input.fetchImpl).not.toHaveBeenCalled();
+    expect(input.fetchImpl).toHaveBeenCalledTimes(1);
   });
 
-  it('creates carts only for the exact proof-bound offer from Staged Production', async () => {
-    const input = options('staged', 'production');
-    input.releaseRecord.approvals.media.owner = 'Product Owner';
-    input.releaseRecord.approvals.fulfillment.owner = 'Product Owner';
-    input.capabilityRegistry = cartProofCapabilityRegistry();
-    input.productionLaunchAuthorization = productionLaunchAuthorization(
-      input.releaseRecord
-    );
-    input.productionCartWriteProof = productionCartWriteProof(
-      input.releaseRecord
-    );
+  it('does not require release records, fingerprints, or approval states', async () => {
+    const input = options();
+    input.releaseRecord = { state: 'draft' };
+    input.mediaManifest = null;
+    input.checkoutAuthorization = null;
 
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+    await expect(createShopifyCheckout(input)).resolves.toEqual({
       ok: true,
       checkoutUrl: 'https://example.myshopify.com/checkouts/test',
       mode: 'production',
     });
-    expect(input.fetchImpl).toHaveBeenCalledTimes(1);
-    expect(input.fetchImpl.mock.calls[0][1].body).toContain(variantId);
   });
 
-  it('denies Staged Production when its exact offer binding differs', async () => {
-    const input = options('staged', 'production');
-    input.releaseRecord.approvals.media.owner = 'Product Owner';
-    input.releaseRecord.approvals.fulfillment.owner = 'Product Owner';
-    input.capabilityRegistry = cartProofCapabilityRegistry();
-    input.productionLaunchAuthorization = productionLaunchAuthorization(
-      input.releaseRecord
-    );
-    input.productionLaunchAuthorization.commerceActivation.allowedReferenceHashes =
-      [`sha256:${'f'.repeat(64)}`];
-    input.productionCartWriteProof = productionCartWriteProof(
-      input.releaseRecord
-    );
-
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+  it('rejects a size outside the configured S/M/L product scope', async () => {
+    const input = options('production', { size: 'XL' });
+    await expect(createShopifyCheckout(input)).resolves.toEqual({
       ok: false,
-      reason: 'PRODUCT_RELEASE_NOT_RELEASED',
+      reason: 'VARIANT_UNAVAILABLE_OR_STALE',
     });
-    expect(input.loadProductImpl).not.toHaveBeenCalled();
     expect(input.fetchImpl).not.toHaveBeenCalled();
   });
 
-  it('denies Draft Preview before product reads or writes', async () => {
-    const input = options('draft', 'preview');
-
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+  it('rejects a variant Shopify currently marks unavailable', async () => {
+    const input = options('production', { available: false });
+    await expect(createShopifyCheckout(input)).resolves.toEqual({
       ok: false,
-      reason: 'PRODUCT_RELEASE_NOT_STAGED',
+      reason: 'SHOPIFY_PRODUCT_UNAVAILABLE',
     });
-    expect(input.loadProductImpl).not.toHaveBeenCalled();
     expect(input.fetchImpl).not.toHaveBeenCalled();
   });
 
-  it('denies Production when public cart capability is not evidence-backed', async () => {
+  it('denies checkout when the technical cart capability is unavailable', async () => {
     const input = options();
-    input.capabilityRegistry.capabilities[1].allowedOperations = [
-      'cart-write-test',
-    ];
+    input.capabilityRegistry.capabilities[1].allowedOperations = [];
 
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
-      ok: false,
-      reason: 'SHOPIFY_CART_CAPABILITY_NOT_READY',
-    });
-    expect(input.fetchImpl).not.toHaveBeenCalled();
-  });
-
-  it('does not treat write-test evidence as operational cart authority', async () => {
-    const input = options();
-    input.capabilityRegistry.capabilities[1] = {
-      ...input.capabilityRegistry.capabilities[1],
-      accessState: 'write_test_verified',
-      allowedOperations: ['cart-write-test'],
-      blocker: {
-        code: 'CART_WRITE_TEST_EVIDENCE_ONLY',
-        humanAction: 'Capture a release-bound operational cart proof.',
-        resumePoint: 'Reclassify only after the exact proof passes.',
-      },
-    };
-
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+    await expect(createShopifyCheckout(input)).resolves.toEqual({
       ok: false,
       reason: 'SHOPIFY_CART_CAPABILITY_NOT_READY',
     });
@@ -310,7 +171,7 @@ describe('monorepo checkout boundary', () => {
       }),
     }));
 
-    await expect(createApprovedHoodieCheckout(input)).resolves.toEqual({
+    await expect(createShopifyCheckout(input)).resolves.toEqual({
       ok: false,
       reason: 'SHOPIFY_CHECKOUT_URL_REJECTED',
     });

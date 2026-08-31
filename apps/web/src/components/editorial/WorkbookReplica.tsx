@@ -36,9 +36,7 @@ type Surface =
   | 'size-unavailable'
   | 'menu'
   | 'size'
-  | 'contact'
   | 'private-list'
-  | 'private-already'
   | 'categories'
   | 'hoodies';
 type StatusSurfaceName = Exclude<
@@ -56,9 +54,7 @@ const NAVIGABLE_SURFACES = new Set<Surface>([
   'size-unavailable',
   'menu',
   'size',
-  'contact',
   'private-list',
-  'private-already',
   'categories',
   'hoodies',
 ]);
@@ -233,10 +229,10 @@ function GridSurface({
   productTitle: string;
   productHref: string;
 }) {
-  const cards =
+  const cards: Array<{ label: string; available: boolean }> =
     kind === 'categories'
-      ? ['ALL HOODIES', 'TOPS', 'BOTTOMS', 'ACCESSORIES']
-      : [productTitle];
+      ? [{ label: 'HOODIES', available: true }]
+      : [{ label: productTitle, available: true }];
   return (
     <main className="cp-workbook-screen cp-workbook-grid-screen">
       <ScreenHeader
@@ -247,14 +243,15 @@ function GridSurface({
         <p className="cp-workbook-kicker">DISCOVERY</p>
         <h1>{kind === 'categories' ? 'ALL CATEGORIES' : 'ALL HOODIES'}</h1>
         <div className="cp-workbook-grid">
-          {cards.map((card, index) => (
+          {cards.map((card) => (
             <button
               type="button"
-              key={card}
+              key={card.label}
+              disabled={!card.available}
               onClick={() =>
                 kind === 'hoodies'
                   ? window.location.assign(productHref)
-                  : onNavigate(index === 0 ? 'hoodies' : 'discovery')
+                  : onNavigate('hoodies')
               }
             >
               <div className="cp-workbook-grid-image">
@@ -265,9 +262,13 @@ function GridSurface({
                   className="object-cover"
                 />
               </div>
-              <span>{card}</span>
+              <span>{card.label}</span>
               <small>
-                {kind === 'categories' ? 'VIEW CATEGORY' : 'VIEW PRODUCT'}
+                {kind === 'categories'
+                  ? card.available
+                    ? 'VIEW CATEGORY'
+                    : 'COMING SOON'
+                  : 'VIEW PRODUCT'}
               </small>
             </button>
           ))}
@@ -302,20 +303,10 @@ function StatusSurface({
       'This variant is no longer available. Choose another size to continue.',
       'RETURN TO ORDER',
     ],
-    contact: [
-      'CONTACT US',
-      'We will respond within 1–2 business days.',
-      'SUBMIT REQUEST',
-    ],
     'private-list': [
-      'JOIN THE LIST',
-      'Private releases, early access and selected notes.',
-      'JOIN LIST',
-    ],
-    'private-already': [
-      'ALREADY ON THE LIST',
-      'This email is already registered for private releases.',
-      'CONTINUE TO DISCOVERY',
+      'PRIVATE LIST',
+      'Early-access registration is being prepared.',
+      'RETURN TO DISCOVERY',
     ],
     categories: [
       'ALL CATEGORIES',
@@ -325,13 +316,11 @@ function StatusSurface({
     hoodies: ['ALL HOODIES', 'Signature Series / 001', 'VIEW ONE'],
   };
   const [title, body, action] = copy[state];
-  const [submitted, setSubmitted] = useState(false);
-  const [invalid, setInvalid] = useState(false);
   const next: Partial<Record<typeof state, Surface>> = {
     'video-unavailable': 'gallery',
     'gallery-unavailable': 'discovery',
     'size-unavailable': 'order',
-    'private-already': 'discovery',
+    'private-list': 'discovery',
     categories: 'hoodies',
     hoodies: 'discovery',
   };
@@ -343,85 +332,15 @@ function StatusSurface({
       />
       <div className="cp-workbook-state-card">
         <p className="cp-workbook-kicker">
-          {state === 'contact'
-            ? 'SUPPORT'
-            : state.startsWith('private')
-              ? 'PRIVATE LIST'
-              : 'PRODUCT'}
+          {state.startsWith('private') ? 'PRIVATE LIST' : 'PRODUCT'}
         </p>
-        <h1>
-          {submitted
-            ? state === 'contact'
-              ? 'REQUEST SENT'
-              : 'YOU ARE ON THE LIST'
-            : title}
-        </h1>
-        <p className="cp-workbook-copy">
-          {submitted
-            ? state === 'contact'
-              ? 'We will respond within 1–2 business days.'
-              : 'Your email has been registered for private releases.'
-            : body}
-        </p>
-        {state === 'contact' && !submitted && (
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              const f = new FormData(event.currentTarget);
-              setInvalid(
-                !f.get('name') || !f.get('email') || !f.get('message')
-              );
-              if (f.get('name') && f.get('email') && f.get('message'))
-                setSubmitted(true);
-            }}
-          >
-            <input name="name" placeholder="NAME" />
-            <input name="email" type="email" placeholder="EMAIL" />
-            <input name="order" placeholder="ORDER NUMBER (OPTIONAL)" />
-            <input name="subject" placeholder="SUBJECT" />
-            <textarea name="message" placeholder="MESSAGE" />
-            {invalid && (
-              <p className="cp-workbook-error">
-                CHECK REQUIRED FIELDS — Name, email and message are required.
-              </p>
-            )}
-            <ActionButton type="submit">{action}</ActionButton>
-          </form>
-        )}
-        {state === 'private-list' && !submitted && (
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              const email = String(
-                new FormData(event.currentTarget).get('email') || ''
-              );
-              if (email === 'already@carlophillips.com') {
-                onNavigate('private-already');
-                return;
-              }
-              setInvalid(!/^\S+@\S+\.\S+$/.test(email));
-              if (/^\S+@\S+\.\S+$/.test(email)) setSubmitted(true);
-            }}
-          >
-            <input name="email" type="email" placeholder="EMAIL ADDRESS" />
-            {invalid && (
-              <p className="cp-workbook-error">
-                ENTER A VALID EMAIL — Please check your email address and try
-                again.
-              </p>
-            )}
-            <ActionButton type="submit">{action}</ActionButton>
-          </form>
-        )}
-        {!['contact', 'private-list'].includes(state) && (
-          <>
-            <ActionButton
-              onClick={() => (next[state] ? onNavigate(next[state]!) : onBack)}
-            >
-              {action}
-            </ActionButton>
-          </>
-        )}
+        <h1>{title}</h1>
+        <p className="cp-workbook-copy">{body}</p>
+        <ActionButton
+          onClick={() => (next[state] ? onNavigate(next[state]!) : onBack)}
+        >
+          {action}
+        </ActionButton>
       </div>
     </main>
   );
@@ -854,20 +773,35 @@ export default function WorkbookReplica({
       {surface === 'menu' && (
         <Panel title="NAVIGATION" onClose={close}>
           <nav className="cp-workbook-menu">
-            {[
-              ['DISCOVERY', 'discovery'],
-              ['ALL CATEGORIES', 'categories'],
-              ['ALL HOODIES', 'hoodies'],
-              ['CONTACT US', 'contact'],
-              ['PRIVATE LIST', 'private-list'],
-            ].map(([label, state]) => (
-              <ActionButton
-                key={state}
-                onClick={() => setSurface(state as Surface)}
-              >
-                {label}
+            <ActionButton onClick={() => setSurface('discovery')}>
+              DISCOVERY
+            </ActionButton>
+            <section
+              className="cp-workbook-menu-group"
+              aria-labelledby="menu-shop"
+            >
+              <h2 id="menu-shop">SHOP</h2>
+              <ActionButton onClick={() => setSurface('categories')}>
+                ALL CATEGORIES
               </ActionButton>
-            ))}
+              <div className="cp-workbook-menu-categories">
+                <ActionButton onClick={() => setSurface('hoodies')}>
+                  HOODIES
+                </ActionButton>
+              </div>
+            </section>
+            <section
+              className="cp-workbook-menu-group is-separated"
+              aria-labelledby="menu-private-support"
+            >
+              <h2 id="menu-private-support">PRIVATE &amp; SUPPORT</h2>
+              <ActionButton onClick={() => setSurface('private-list')}>
+                PRIVATE LIST
+              </ActionButton>
+              <ActionButton onClick={() => window.location.assign('/contact')}>
+                CONTACT US
+              </ActionButton>
+            </section>
           </nav>
         </Panel>
       )}

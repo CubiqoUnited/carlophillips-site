@@ -6,11 +6,11 @@ interface OfferPresentation {
 
 export interface ProductOffer {
   schemaVersion: string;
-  releaseId: string;
+  releaseId?: string;
   handle: string;
   allowedSizes: string[];
-  allowedReferenceHashes: string[];
-  evidence: string;
+  allowedReferenceHashes?: string[];
+  evidence?: string;
 }
 
 export function validateProductOffer(
@@ -43,7 +43,7 @@ export function productOfferAllowsReference(
 ): boolean {
   return Boolean(
     validateProductOffer(offer, binding) &&
-    offer?.allowedReferenceHashes.includes(referenceHash)
+    offer?.allowedReferenceHashes?.includes(referenceHash)
   );
 }
 

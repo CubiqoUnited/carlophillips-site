@@ -20,6 +20,7 @@ class ProductReadCapabilityError extends Error {
 export async function loadShopifyProduct(
   handle: string
 ): ReturnType<ProductLoader> {
+  const environment = getCommerceEnvironment();
   const capabilityDecision = discoverCapability(
     getCapabilityRegistry(),
     'shopify-storefront-product-read',
@@ -33,9 +34,14 @@ export async function loadShopifyProduct(
   }
   const loadProduct = createShopifyProductLoader({
     storeDomain:
-      process.env.SHOPIFY_STORE_DOMAIN || storefrontRuntime.storeDomain,
-    storefrontToken: process.env.SHOPIFY_STOREFRONT_TOKEN,
-    environment: getCommerceEnvironment(),
+      environment === 'preview'
+        ? process.env.SHOPIFY_STAGING_STORE_DOMAIN
+        : process.env.SHOPIFY_STORE_DOMAIN || storefrontRuntime.storeDomain,
+    storefrontToken:
+      environment === 'preview'
+        ? process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN
+        : process.env.SHOPIFY_STOREFRONT_TOKEN,
+    environment,
     capabilityEvidence: capabilityDecision.evidenceRef,
     publicCurrency: storefrontRuntime.currency,
   });

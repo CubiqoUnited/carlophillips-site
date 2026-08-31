@@ -1,4 +1,59 @@
-# CURRENT PRODUCT OWNER DECISION — SIGNATURE HOODIE IS LIVE
+# RED — CURRENT CUSTOMER-READY EXTERNAL CONFIGURATION
+
+Updated: 2026-08-31
+
+Repository release-record, fingerprint, sample, and approval-JSON gates are no
+longer part of public commerce. Three external service actions remain before
+the full customer-ready claim can be signed off.
+
+## 1. Shopify Preview checkout parity
+
+Manually create or select a dedicated Shopify development/staging store, clone
+the Signature Hoodie S/M/L product and shipping configuration, and enable only
+Shopify test payments there. Add these encrypted Vercel Preview variables:
+`SHOPIFY_STAGING_STORE_DOMAIN`, `SHOPIFY_STAGING_STOREFRONT_TOKEN`, and
+`SHOPIFY_STAGING_CHECKOUT_HOSTS`. Never enable test mode on the Production
+store. Signal completion with `CP Shopify staging checkout ready`.
+
+Cost/risk: the intended development store and test gateway should not process a
+real charge; stop if a paid plan or real payment activation is requested.
+
+## 2. Contact delivery
+
+Manually accept the Resend terms for the CARLOPHILLIPS/Vercel project, verify a
+sending domain/address, nominate a monitored customer-support recipient, and
+add encrypted Production/Preview values for `RESEND_API_KEY`,
+`CP_SUPPORT_FROM_EMAIL`, and `CP_SUPPORT_TO_EMAIL`. Signal completion with
+`CP support delivery ready`.
+
+Cost/risk: customer email, message text, and an optional order number will be
+sent to the configured support mailbox after submission. Do not enable this
+until the monitored recipient and handling process are approved. No customer
+data is transmitted while the variables are absent; the API truthfully returns
+503.
+
+## 3. Shopify-hosted checkout appearance and fields
+
+Manually open Shopify Admin → Settings → Checkout → Customize, duplicate the
+active configuration, and edit the draft. Use the approved transparent
+CARLOPHILLIPS wordmark; keep one-page checkout; use the black/off-white brand
+palette, near-black primary button, high contrast, and minimal radius. Configure
+Email contact; first and last name required; Company omitted; shipping phone
+omitted unless the carrier requires it; Address line 2 optional; guest checkout
+and available accelerated wallets retained. Add approved Return, Shipping,
+Terms, and Privacy policies. Review desktop and mobile and signal
+`CP checkout draft ready for Pushpa` before publication.
+
+Cost/risk: Shopify's standard editor supports these changes on current plans;
+do not upgrade to Plus or accept a paid app solely for styling. Publishing the
+draft changes the live hosted checkout appearance.
+
+Do not foreground these dashboards. Boss opens them manually unless the active
+task explicitly approves that exact visible action.
+
+---
+
+# HISTORICAL RECORD — SIGNATURE HOODIE LIVE OBSERVATION
 
 Updated: 2026-08-30
 

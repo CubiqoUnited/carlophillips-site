@@ -1,79 +1,11 @@
-import { evaluateProductReleaseEvidence } from '../releases/product-release-transition';
-import {
-  filterReleaseBoundMedia,
-  projectShopifyMedia,
-} from './media-visibility-policy';
-import {
-  evaluateObservationVisibility,
-  toReleaseBoundProduct,
-} from './observation-visibility-policy';
+import { projectShopifyMedia } from './media-visibility-policy';
 import type {
   CommerceEnvironment,
-  MediaManifest,
   ReleaseDecision,
-  ReleaseRecord,
   RuntimeProduct,
 } from './runtime-types';
-import productionLaunchAuthorization from '../../../../../config/product-owner-production-launch-authorization.json';
 
 const SUPPORTED_ENVIRONMENTS = new Set(['local', 'preview', 'production']);
-
-interface ProductionPresentationAuthorization {
-  status?: string;
-  owner?: string;
-  releaseId?: string;
-  handle?: string;
-  candidateCommit?: string;
-  approvedTargetFingerprint?: string;
-  environments?: string[];
-  scopes?: string[];
-  evidence?: string;
-}
-
-function isExactProductionPresentationAuthorized({
-  authorization,
-  releaseRecord,
-  shopifyProduct,
-}: {
-  authorization: ProductionPresentationAuthorization | null;
-  releaseRecord: ReleaseRecord;
-  shopifyProduct: RuntimeProduct;
-}): boolean {
-  return Boolean(
-    authorization?.status === 'approved' &&
-    authorization.owner === 'Product Owner' &&
-    authorization.releaseId === releaseRecord.releaseId &&
-    authorization.handle === releaseRecord.shopify.handle &&
-    authorization.handle === shopifyProduct.handle &&
-    authorization.candidateCommit === releaseRecord.candidate?.gitCommit &&
-    authorization.approvedTargetFingerprint ===
-      releaseRecord.candidate?.releaseEvidenceFingerprint &&
-    authorization.environments?.includes('production') &&
-    authorization.scopes?.includes('publish-reviewed-staging-presentation') &&
-    typeof authorization.evidence === 'string' &&
-    authorization.evidence.trim().length > 0 &&
-    releaseRecord.approvals?.product?.status === 'approved' &&
-    releaseRecord.approvals?.product?.owner === 'Product Owner' &&
-    releaseRecord.approvals?.media?.status === 'approved' &&
-    releaseRecord.approvals?.fulfillment?.status === 'approved'
-  );
-}
-
-function deniedShopifyDecision(
-  environment: CommerceEnvironment,
-  reason: string
-): ReleaseDecision {
-  return {
-    schemaVersion: 'cp.release-decision.v1',
-    environment,
-    status: 'denied',
-    source: 'shopify',
-    visibilityAllowed: false,
-    commerceAllowed: false,
-    reason,
-    product: null,
-  };
-}
 
 /**
  * Resolve a product source without allowing fixtures to hide a Shopify failure.
@@ -82,105 +14,21 @@ function deniedShopifyDecision(
 export function resolveProductSource({
   environment,
   shopifyProduct = null,
-  releaseRecord = null,
-  mediaManifest = null,
   fixtureProduct = null,
   shopifyError = null,
-  productionPresentationAuthorization = productionLaunchAuthorization,
 }: {
   environment: CommerceEnvironment;
   shopifyProduct?: RuntimeProduct | null;
-  releaseRecord?: ReleaseRecord | null;
-  mediaManifest?: MediaManifest | null;
   fixtureProduct?: RuntimeProduct | null;
   shopifyError?: unknown;
-  productionPresentationAuthorization?: ProductionPresentationAuthorization | null;
+  productionPresentationAuthorization?: unknown;
 }): ReleaseDecision {
   if (!SUPPORTED_ENVIRONMENTS.has(environment)) {
     throw new Error(`Unsupported commerce environment: ${environment}`);
   }
 
   if (shopifyProduct) {
-    if (!releaseRecord) {
-      return deniedShopifyDecision(
-        environment,
-        'PRODUCT_RELEASE_RECORD_REQUIRED'
-      );
-    }
-    if (
-      releaseRecord.shopify.handle !== shopifyProduct.handle ||
-      releaseRecord.releaseId !== mediaManifest?.releaseId
-    ) {
-      return deniedShopifyDecision(
-        environment,
-        'PRODUCT_RELEASE_EVIDENCE_MISMATCH'
-      );
-    }
-    if (releaseRecord.state === 'withdrawn') {
-      return deniedShopifyDecision(environment, 'PRODUCT_RELEASE_WITHDRAWN');
-    }
-    if (
-      environment === 'preview' &&
-      !['staged', 'approved', 'released'].includes(releaseRecord.state)
-    ) {
-      return deniedShopifyDecision(environment, 'PRODUCT_RELEASE_NOT_STAGED');
-    }
-    const productionPresentationReview =
-      environment === 'production' &&
-      ['staged', 'approved'].includes(releaseRecord.state) &&
-      isExactProductionPresentationAuthorized({
-        authorization: productionPresentationAuthorization,
-        releaseRecord,
-        shopifyProduct,
-      });
-    const releasedProduction =
-      environment === 'production' && releaseRecord.state === 'released';
-    if (
-      environment === 'production' &&
-      !releasedProduction &&
-      !productionPresentationReview
-    ) {
-      return deniedShopifyDecision(environment, 'PRODUCT_RELEASE_NOT_RELEASED');
-    }
-
-    const observationDecision = evaluateObservationVisibility({
-      environment,
-      shopifyProduct,
-      releaseRecord,
-    });
-    if (!observationDecision.ready) {
-      return deniedShopifyDecision(environment, observationDecision.reason);
-    }
-
-    const evidenceDecision = evaluateProductReleaseEvidence({
-      record: releaseRecord,
-      manifest: mediaManifest,
-      targetState:
-        environment === 'preview' || productionPresentationReview
-          ? 'staged'
-          : environment === 'production'
-            ? 'released'
-            : releaseRecord.state,
-    });
-    if (!evidenceDecision.ready) {
-      return deniedShopifyDecision(
-        environment,
-        'PRODUCT_RELEASE_EVIDENCE_INCOMPLETE'
-      );
-    }
-    const mediaDecision =
-      environment === 'preview' || productionPresentationReview
-        ? projectShopifyMedia({ product: observationDecision.product })
-        : filterReleaseBoundMedia({
-            product: observationDecision.product,
-            manifest: mediaManifest as MediaManifest,
-          });
-    if (releasedProduction && !mediaDecision.productionReady) {
-      return deniedShopifyDecision(
-        environment,
-        'PRODUCT_RELEASE_MEDIA_BINDING_INCOMPLETE'
-      );
-    }
+    const mediaDecision = projectShopifyMedia({ product: shopifyProduct });
 
     return {
       schemaVersion: 'cp.release-decision.v1',
@@ -188,12 +36,10 @@ export function resolveProductSource({
       status: 'available',
       source: 'shopify',
       visibilityAllowed: true,
-      commerceAllowed: false,
-      reason: releasedProduction
-        ? 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED'
-        : productionPresentationReview
-          ? 'PRODUCT_OWNER_APPROVED_PRODUCTION_PRESENTATION_NON_COMMERCE'
-          : 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE',
+      commerceAllowed: Boolean(shopifyProduct.availableForSale),
+      reason: shopifyProduct.availableForSale
+        ? 'CURRENT_SHOPIFY_PRODUCT_AVAILABLE'
+        : 'CURRENT_SHOPIFY_PRODUCT_SOLD_OUT',
       product: { ...mediaDecision.product, source: 'shopify' },
     };
   }

@@ -2,6 +2,20 @@
 
 Status: working product definition, not a production-readiness claim. Updated 2026-07-23.
 
+## Canonical runtime authority — supersedes conflicting release-gate text
+
+Shopify Admin is the sole runtime authority for product visibility, customer
+copy, price, inventory, availability, variants, cart, and hosted checkout.
+Public product, catalog, cart, and checkout paths must not depend on a Product
+Release Record, Draft/Staged/Approved/Released state, sample status, approval
+JSON, media-manifest fingerprint, or product/commerce fingerprint. The
+Signature Hoodie remains scoped to S/M/L; the server resolves each opaque
+selection against a fresh Shopify response and requires current availability.
+Same-origin, quantity 1–5, secret handling, trusted HTTPS checkout hosts, QA,
+deployment approval, rollback, and truthful lifecycle verification remain.
+Product Release Records below are historical/optional audit material only and
+have no customer-runtime authority.
+
 ## Objective
 
 CARLOPHILLIPS is the first proof of concept for a reusable premium POD-to-publish system. The experience layer is Next.js; Shopify remains commerce truth; approved POD providers supply manufacturable products and fulfillment mappings. The Signature Hoodie is the first complete acceptance journey through that system, not permission to reduce the product to one static PDP. Reusable interfaces and evidence records must support later products and brands without rebuilding the pipeline.

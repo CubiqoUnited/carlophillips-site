@@ -6,7 +6,6 @@ import type {
   CommerceMode,
   ProductLoader,
   ReleaseDecision,
-  ReleaseEvidence,
   RuntimeProduct,
 } from './runtime-types';
 
@@ -41,14 +40,12 @@ async function resolveCatalogCandidate({
   mode,
   handle,
   fixtureProducts,
-  getReleaseEvidence,
   loadShopifyProduct,
 }: {
   environment: CommerceEnvironment;
   mode: CommerceMode;
   handle: string;
   fixtureProducts: RuntimeProduct[];
-  getReleaseEvidence: (handle: string) => ReleaseEvidence | null;
   loadShopifyProduct: ProductLoader;
 }): Promise<ReleaseDecision> {
   if (!isValidHandle(handle)) {
@@ -65,7 +62,6 @@ async function resolveCatalogCandidate({
       handle,
       fixtureProduct:
         fixtureProducts.find((product) => product.handle === handle) || null,
-      ...(getReleaseEvidence(handle) || {}),
       loadShopifyProduct,
     });
   } catch {
@@ -129,14 +125,12 @@ export async function getCatalogDecision({
   mode,
   candidateHandles,
   fixtureProducts = [],
-  getReleaseEvidence,
   loadShopifyProduct,
 }: {
   environment: CommerceEnvironment;
   mode: CommerceMode;
   candidateHandles: string[];
   fixtureProducts?: RuntimeProduct[];
-  getReleaseEvidence: (handle: string) => ReleaseEvidence | null;
   loadShopifyProduct: ProductLoader;
 }): Promise<CatalogDecision> {
   const handles = unique(candidateHandles);
@@ -147,7 +141,6 @@ export async function getCatalogDecision({
         mode,
         handle,
         fixtureProducts,
-        getReleaseEvidence,
         loadShopifyProduct,
       })
     )
@@ -197,7 +190,7 @@ export async function getCatalogDecision({
     reason:
       visibleCount > 0
         ? 'CATALOG_ITEMS_AVAILABLE'
-        : 'NO_RELEASE_ELIGIBLE_PRODUCTS',
+        : 'NO_SHOPIFY_PRODUCTS_AVAILABLE',
     excludedReasons,
     products,
   });
