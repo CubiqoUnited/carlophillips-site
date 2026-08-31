@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 const HANDLE = 'carlophillips-signature-hoodie';
 const APPROVED_REFERENCE =
   'sha256:0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d';
-const EXPECTED_LOCAL_BLOCK = 'PRODUCT_RELEASE_NOT_RELEASED';
+const EXPECTED_LOCAL_BLOCK = 'CHECKOUT_ENVIRONMENT_REJECTED';
 
 test.describe('Local fixture checkout boundary', () => {
   test('home remains truthful and cannot create a payment or order', async ({
@@ -66,7 +66,7 @@ test.describe('Local fixture checkout boundary', () => {
     });
   });
 
-  test('server checkout evaluation reaches the release-state boundary for an approved offer', async ({
+  test('server checkout evaluation rejects the local fixture environment', async ({
     request,
   }) => {
     const response = await request.post('/api/checkout', {
@@ -83,7 +83,7 @@ test.describe('Local fixture checkout boundary', () => {
     expect(response.headers()['location']).toBeUndefined();
   });
 
-  test('checkout rejects cross-origin requests before release evaluation', async ({
+  test('checkout rejects cross-origin requests before checkout evaluation', async ({
     request,
   }) => {
     const response = await request.post('/api/checkout', {
