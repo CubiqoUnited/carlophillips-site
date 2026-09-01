@@ -353,3 +353,48 @@ Added: 2026-08-31
 ## Resume point
 
 After both completion signals, rerun environment-name verification without printing values, execute protected Staging happy paths and screenshot comparison, capture the immutable deployment/SHA receipt, and request the separate Product Owner Production go/no-go decision.
+
+## 2026-08-31 progress and remaining owner actions
+
+The Product Owner authorized Cubiqo as the canonical Vercel project without
+exposing secret values. Codex completed these background-only changes:
+
+- Linked the clean PR worktree to Cubiqo project
+  `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`.
+- Added the non-secret `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` variables to
+  the GitHub `Preview` and `Production` environments.
+- Added the existing local Vercel CLI credential directly to the GitHub
+  `VERCEL_TOKEN` environment secrets without printing or reading its value.
+- Verified that the required dedicated Shopify Staging values do not exist in
+  the canonical Vercel Preview environment; no Production Shopify value was
+  copied or repurposed.
+- Selected Upstash Redis plan `free`, Preview only, with `autoUpgrade=false`
+  and `prodPack=false`. Vercel stopped before resource creation because the
+  Upstash Marketplace terms have not been accepted. No resource or charge was
+  created.
+
+Three human actions remain and must be completed without pasting any secret
+value into chat:
+
+1. A GitHub repository administrator must open
+   `CubiqoUnited/carlophillips-site` → Settings → Environments. Add a required
+   reviewer to both `Preview` and `Production`; limit Preview deployments to
+   `codex/*` and Production deployments to `main`. Codex's authenticated user
+   received HTTP 403 on these four policy changes, although variable and
+   secret configuration succeeded.
+2. A Cubiqo Vercel owner must manually open
+   `https://vercel.com/cubiqo-projects-d7156840/~/integrations/accept-terms/upstash?source=cli`,
+   review and accept the Upstash Marketplace terms. The prepared retry uses
+   only the free plan, Preview environment, `autoUpgrade=false`, and
+   `prodPack=false`. Signal: `CP Upstash terms accepted`.
+3. A Shopify owner must create or identify the dedicated development/test
+   store and app, then add these Preview-only encrypted values to the canonical
+   Cubiqo Vercel project: `SHOPIFY_STAGING_STORE_DOMAIN`,
+   `SHOPIFY_STAGING_STOREFRONT_TOKEN`, `SHOPIFY_STAGING_CHECKOUT_HOSTS`, and
+   `SHOPIFY_STAGING_WEBHOOK_SECRET`. The webhook secret must be the matching
+   Shopify app client secret; Codex must not invent it. Signal: `CP Shopify
+   staging environment ready`.
+
+Do not dispatch the manual Staging workflow until all three actions are
+verified. A Git-integrated Preview build is not the protected Staging release
+gate.

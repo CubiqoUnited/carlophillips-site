@@ -14,7 +14,7 @@ Current production and staging builds, verified 2026-08-31.
 
 ### [II. PR #54 Candidate — Code-Ready](#ii-pr-54-candidate--code-ready-for-staging)
 
-All implementation in place and verified by CI. Ready for protected Staging deployment.
+All code implementation is in place and verified by CI. Protected Staging remains blocked on the external gates in Section III.
 
 ### [III. Staging Gates — External Blockers](#iii-staging-gates--external-blockers-before-release)
 
@@ -69,7 +69,7 @@ Known-good commits, emergency revert procedure.
 
 **Branch:** `codex/shopify-authoritative-release-go`  
 **Implementation commit:** `dbd4eae` (later PR commits are documentation-only; use the live PR head for deployment)
-**Status:** ✅ **Code-approved.** CI green. All checks pass. Ready for protected Vercel Staging deployment.  
+**Status:** ✅ **Code-approved.** CI green. All checks pass. Infrastructure prerequisites still block protected Vercel Staging deployment.
 **Approval level:** Code implementation verified. NOT final release approval (pending live Staging test).
 
 ### Shipped Implementation
@@ -104,14 +104,16 @@ Known-good commits, emergency revert procedure.
 
 # III. Staging Gates — External Blockers Before Release
 
-PR #54 is code-ready, but these must be completed before staging deployment and live testing can begin.
+PR #54 is code-ready, but the remaining infrastructure gates below must be
+completed before staging deployment and live testing can begin.
 
 ### Prerequisite: Canonical Vercel Project Selection
 
-**Required decision:** Which Vercel project is the staging/production target?  
-**Current state:** Unknown. Two same-named projects exist; GitHub Preview variables not configured.
-
-**Action:** Select the canonical project and record its IDs.
+**Decision:** Cubiqo project `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`, organization
+`team_Q25fvpJOPiIeoG3hfxtCVkhW`, is the canonical staging/production target.
+It owns the public domains. The clean PR worktree is linked to this project.
+The other same-named Git-integrated project remains intact until consolidation
+is separately verified; it is build evidence only.
 
 ### GitHub Preview Environment Configuration
 
@@ -120,7 +122,12 @@ PR #54 is code-ready, but these must be completed before staging deployment and 
 - `VERCEL_PROJECT_ID` — canonical staging/production project ID
 - Secret: `VERCEL_TOKEN` — Vercel API authorization token
 
-**Status:** ❌ Not configured. Enables vercel-preview.yml to deploy PR head to Staging.
+**Status:** ✅ The two non-secret IDs and `VERCEL_TOKEN` secret are configured
+for both GitHub `Preview` and `Production` environments without exposing the
+token. ❌ Environment protection rules remain missing: the authenticated user
+received HTTP 403 when adding required reviewers and branch restrictions. A
+repository administrator must protect Preview for `codex/*` and Production for
+`main` before the workflow is treated as protected.
 
 ### Vercel Preview Environment Configuration (Staging)
 
@@ -133,7 +140,11 @@ PR #54 is code-ready, but these must be completed before staging deployment and 
 - `UPSTASH_REDIS_REST_URL` — Redis endpoint for durable webhook idempotency
 - `UPSTASH_REDIS_REST_TOKEN` — Redis authentication token
 
-**Status:** ❌ Not configured in canonical project. Blocks webhook idempotency and durable storage.
+**Status:** ❌ The dedicated Shopify Staging values are not configured in the
+canonical project. A free Preview-only Upstash resource was prepared with
+`autoUpgrade=false`, but Vercel requires a Cubiqo owner to accept the Upstash
+Marketplace terms before creation can finish. No resource or charge was
+created. These gaps block webhook idempotency and live Staging validation.
 
 ### Shopify Staging Webhook Subscriptions
 
@@ -205,10 +216,17 @@ PR #54 is code-ready, but these must be completed before staging deployment and 
 
 ### Phase 1: Vercel & Shopify Configuration (Prerequisites)
 
-1. **Select canonical Vercel project** (record IDs)
-2. **Configure GitHub Preview environment:** VERCEL_ORG_ID, VERCEL_PROJECT_ID, VERCEL_TOKEN
-3. **Configure Vercel Preview environment (staging):** 7 Shopify + Redis variables
-4. **Provision Upstash Redis** (or equivalent KV store)
+1. ✅ **Canonical Vercel project selected and linked:** Cubiqo
+   `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`
+2. ✅ **GitHub environment identity configured:** `VERCEL_ORG_ID`,
+   `VERCEL_PROJECT_ID`, and encrypted `VERCEL_TOKEN`
+3. ❌ **GitHub environment protections:** repository administrator must add
+   required reviewers and restrict Preview to `codex/*`, Production to `main`
+4. ❌ **Vercel Preview Shopify configuration:** add the seven dedicated
+   Shopify Staging, allowlist, and Redis values without reusing Production
+   credentials
+5. ❌ **Upstash Redis:** Cubiqo owner accepts Marketplace terms, then retry the
+   prepared `free` Preview-only resource with automatic upgrades disabled
 
 ### Phase 2: Protected Staging Deployment (PR #54 head)
 
@@ -328,7 +346,10 @@ PR #54 is code-ready, but these must be completed before staging deployment and 
 
 **Last updated:** 2026-08-31  
 **PR #54 status:** Code-approved, open, and mergeable; deploy only its live green head
-**Staging status:** ❌ Prerequisites not configured; gates pending configuration and live test
+**Staging status:** 🟡 Canonical project and GitHub deployment identity are
+configured. Repository-admin protections, isolated Shopify Staging credentials,
+free Redis terms/resource creation, deployment, webhooks, and the live test are
+still pending.
 
 ---
 
