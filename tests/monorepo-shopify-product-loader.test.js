@@ -83,6 +83,26 @@ describe('monorepo Shopify Storefront product loader', () => {
           price: { amount: '128.00', currencyCode: 'USD' },
         },
       ],
+      variantPresentation: {
+        schemaVersion: 'cp.variant-presentation.v1',
+        combinations: [
+          {
+            title: 'black / m',
+            availableForSale: true,
+            selectedOptions: [
+              { name: 'Color', value: 'black' },
+              { name: 'Size', value: 'm' },
+            ],
+            price: { amount: '128.00', currency: 'USD' },
+          },
+        ],
+      },
     });
+    expect(product.variantPresentation.combinations[0].referenceHash).toMatch(
+      /^sha256:[a-f0-9]{64}$/
+    );
+    expect(JSON.stringify(product.variantPresentation)).not.toContain(
+      'gid://shopify'
+    );
   });
 });

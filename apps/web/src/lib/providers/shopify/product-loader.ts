@@ -9,6 +9,7 @@ import {
   attachObservationToProduct,
   createProductObservation,
 } from '../../commerce/product-observation';
+import { createVariantPresentation } from '../../commerce/variant-presentation-policy';
 import type {
   GetProductByHandleQuery,
   GetProductsQuery,
@@ -71,7 +72,13 @@ export function createShopifyProductLoader({
       product,
       capabilityEvidence,
     });
-    return attachObservationToProduct(product, observation);
+    return attachObservationToProduct(
+      {
+        ...product,
+        variantPresentation: createVariantPresentation(observation),
+      },
+      observation
+    );
   };
 }
 
@@ -107,15 +114,19 @@ export function createShopifyCatalogLoader({
     });
     return normalizeStorefrontProducts(result).map((transport) => {
       const product = toObservedProduct(transport);
-      return attachObservationToProduct(
+      const observation = createProductObservation({
+        source: 'shopify',
+        environment,
+        observedAt: observedAt(),
         product,
-        createProductObservation({
-          source: 'shopify',
-          environment,
-          observedAt: observedAt(),
-          product,
-          capabilityEvidence,
-        })
+        capabilityEvidence,
+      });
+      return attachObservationToProduct(
+        {
+          ...product,
+          variantPresentation: createVariantPresentation(observation),
+        },
+        observation
       );
     });
   };
