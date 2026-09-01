@@ -1,10 +1,7 @@
 import { CommerceCatalogBoundary } from '@/components/commerce/catalog-boundary';
+import { routeMetadata } from '@/lib/site/site-config';
 
-export const metadata = {
-  title: 'Collections in Preparation | CARLOPHILLIPS',
-  description: 'CARLOPHILLIPS collections are withheld until approved release assets and product details are ready.',
-  robots: { index: false, follow: true },
-};
+export const metadata = routeMetadata({ title: 'Collections | CARLOPHILLIPS', description: 'Review the CARLOPHILLIPS collections. Product availability and checkout remain release-gated.', path: '/collections' });
 
 export const dynamic = 'force-dynamic';
 

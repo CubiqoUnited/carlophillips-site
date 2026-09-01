@@ -1,32 +1,60 @@
 # CARLOPHILLIPS Repository Rules
 
+## Current customer-ready delivery authority — 2026-08-30
+
+- Boss grants Sushma continuing project authority to complete the active
+  CARLOPHILLIPS customer-ready remediation without requesting repeated routine
+  confirmations. This includes the exact S/M/L Shopify observation and approval
+  rebinding, sanitized no-order checkout-handoff proof, temporary branch/PR,
+  canonical Preview, Pushpa Product Owner review, merge, Production deployment,
+  verification, rollback on failed verification, and temporary-branch cleanup.
+- This project authority applies to Claude and Codex agents and remains valid
+  until Aditya Vyas explicitly revokes or replaces it.
+- Shopify Admin is the business source of truth for the live product, variants,
+  price, inventory, availability, cart, and hosted checkout. The current approved
+  offer is the Signature Hoodie in S/M/L at USD 128.
+- Product Owner decisions govern product scope and launch requirements. Agents
+  must not invent sample, inspection, draft, approval, media-manifest, variant,
+  price, inventory, or release gates that the Product Owner did not request.
+- Shopify Admin is the sole runtime commerce authority. Customer-facing routes,
+  media, variant visibility, cart creation, and hosted checkout must use a fresh
+  Shopify read and must not be blocked by a code-level Product Release Record,
+  fingerprint, sample status, approval JSON, or agent-authored allowlist.
+- Product Release Records may remain as deployment audit and rollback evidence,
+  but they are non-runtime records and never override current Shopify ACTIVE,
+  price, inventory, availability, media, cart, or checkout state.
+- This standing project authority never permits submitting or exposing customer
+  data, following or retaining a private checkout URL during QA, submitting
+  payment or an order, invoking fulfillment, ordering a physical sample,
+  accepting paid-plan charges or third-party legal terms, weakening generic
+  same-origin/trusted-host security, printing secrets, or visibly taking over the
+  user's screen. Those boundaries remain hard stops.
+
 ## Source of truth
 
 - Canonical repository: `https://github.com/CubiqoUnited/carlophillips-site.git`.
 - `main` is the production-intent branch. Feature work uses temporary branches and pull requests.
+- **Branch Lifecycle Governance:** Only `main` (Production) and `staging` (Staging) may persist as long-lived branches on `origin`. Any temporary working/task branch created by an agent (e.g. `codex/*`, `copilot/*`, `feature/*`, `cp-staging-*`) MUST be deleted immediately after its pull request or changes are merged into `main` or `staging`. No unmerged, stale, or abandoned feature branches may be left on remote.
 - Current product requirements live in `PRD.md`; architecture lives in `ARCHITECTURE.md`; execution state lives in `STATUS.md` and `TASKS.md`.
 - Shopify is the intended source of truth for products, variants, prices, availability, cart, and checkout. Static or mock data must be visibly identified and must never be presented as proof of live commerce.
-- The Signature Hoodie is the first end-to-end POC for a reusable POD-to-publish system, not the final product scope or a static-page objective.
-- A versioned Product Release Record binds product/POD truth, media truth, Shopify truth, approvals, candidate build evidence, and rollback for each candidate.
-- Product Release Records advance only through Draft → Staged → Approved → Released. Staging requires immutable build/staging and rollback-plan evidence; approval additionally requires complete truth and approvals; release additionally requires an ACTIVE Shopify observation and verified rollback path.
-- Product observations keep variant identity, canonical commerce facts, and the immutable full review envelope as separate fingerprints. Preview/production compare current identity and facts to reviewed release bindings; the full fingerprint remains exact approval/audit evidence because legitimate fresh reads have new timestamps.
+only 1-2 original pod image - rest AI generated acceptable
+- Product Release Records are optional non-runtime audit/rollback evidence. Their
+  state, fingerprints, approvals, media bindings, and sample fields must not gate
+  the public storefront, cart, or checkout.
 - Canonical commerce facts include every Shopify-sourced customer copy field used by the storefront: title, description, vendor, product type, tagline, and details. Release views are whitelist-derived from the validated observation; outer adapter fields and `descriptionHtml` are never presentation authority.
-- System status copy derives from the release decision and environment. Preview is private review; a Released production decision says facts are released while cart/checkout remain separately disabled. No outer story/status text or generic “pending approval” fallback may contradict that state.
-- Shopify option presentation is a disabled, review-only projection of canonical observed combinations. It binds the current/release variant fingerprint and currency, preserves exact dimensions/availability/price, and carries only opaque hashes. Those hashes never grant cart mutation authority; a separately evidenced server-only resolver is an independent activation gate.
-- Variant-resolution readiness re-derives the current canonical observation from server-ephemeral raw references and proves one-to-one hash coverage without returning a raw ID. Registry surface `local` means the resolver implementation is locally verified; decision surface `server_only` means raw inputs and runtime evaluation never cross the server boundary. Readiness authorizes no selection, cart mutation, checkout, or order.
-- Shopify media may reach the PDP only through an approved Media Registry asset whose hashed storefront binding covers current identity, type, canonical URL, and preview facts. Preview may show a truthful partial approved set; production must cover every non-waived modality and required fallback.
-- Designer-led and trend-led inputs use the same ProductCreationJob and PipelineRun truth core. Inputs are candidate evidence only; trend signals are research-only and cannot become product/media/commerce truth or publication authority.
-- Every ProductCreationJob binds a validated ProductBrief. The job records on-demand/scheduled cadence and deterministic duplicate suppression; the brief owns attributed source provenance/freshness, binding brand constraints, and inspiration-only reference rules. A schedule is not authority to invoke external research or any restricted action.
+- Customer-visible system status derives from current Shopify state and the
+  environment. No release-record fallback may contradict current Shopify truth.
+all look and feel, UI, theme shape size font color and assets for componenets, all run by design system and hardcoded values in staging or production, every thing via tokens and componenets
 
 ## Safety
 
-- Keep products and purchasing fail-closed unless their release gates are explicitly enabled in the intended environment.
-- Do not publish Shopify products, alter catalog/order data, enable sales channels, purchase services, accept plans, merge to `main`, or promote production without Product Owner approval.
-- Do not invoke external product, media, research, or orchestration tools without approval for the exact access, cost/credit, and side-effect boundary. Keep every output Draft-only until its truth and release gates pass.
+
+- Do not promote production without Product Owner approval in staging - and only one staging 
+- staqging and production needs be same always, when a change request is submitted - agent makes the change and PO approve in the cannonical staging and then the change is deployed in production 
 - Never print, document, or commit secret values. Store local values only in ignored environment files.
 - Do not claim production readiness until the live domain, Shopify checkout, payment, POD fulfillment, tracking, support, and returns are directly verified.
 - Do not invent video, spin, 3D, AR, on-model, or lifestyle evidence. Render only media backed by real approved assets.
-
+the production payment shoud be enabled at all times fromn checkout to payment AND the staging will mimic the production checkout to payment - but the actual paym,ent only possible in production
 ## Tooling and verification
 
 - Use Yarn Classic 1.22.22, as declared by `package.json` and locked by `yarn.lock`. Do not add npm or pnpm lockfiles.
@@ -37,5 +65,7 @@
 ## Environment boundaries
 
 - Local development is disposable and may use a gated static fixture for review, but it must be labeled as such.
-- Vercel preview is the only staging target currently defined; it is not production and must keep draft product and checkout gates explicit.
+- Vercel Preview is the canonical web staging target. Its checkout must connect
+  to a dedicated Shopify staging/development store using test payments; it must
+  never enable test mode on the Production Shopify store.
 - Production is `www.carlophillips.com` from approved `main` changes only. Production actions remain blocked until explicitly authorized and verified.

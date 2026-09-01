@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "cp.release-approval.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+  "approval": "product",
+  "status": "approved",
+  "owner": "Product Owner",
+  "approvedAt": "2026-08-30T21:47:39Z",
+  "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
+  "scope": {
+    "handle": "carlophillips-signature-hoodie",
+    "shopifyProductReference": "9432704909549",
+    "approvedSizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "displayedStartingPrice": "$128",
+    "canonicalStagingDeployment": "dpl_81EeMeruugZwzRF47zrfEPECp8fc"
+  },
+  "decisionEvidence": [
+    "releases/cp-signature-hoodie-2026-001/approvals/2026-08-29-product-owner-staging-approval.md",
+    "Boss exact approval in the active Codex task on 2026-08-30 to rebind product approval to the S/M/L-only Shopify observation and release fingerprint sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79"
+  ],
+  "statement": "The Product Owner explicitly approved the current S/M/L-only Shopify observation at USD 128 and rebound the unchanged Product decision to the exact current release fingerprint for Production sale.",
+  "boundaries": {
+    "physicalSampleClaimed": false,
+    "paymentClaimed": false,
+    "orderClaimed": false
+  }
+}

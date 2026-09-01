@@ -2,8 +2,13 @@ import { describe, expect, it } from 'vitest';
 import {
   fingerprintStorefrontMedia,
   filterReleaseBoundMedia,
+  projectShopifyMedia,
 } from '../lib/commerce/media-visibility-policy.js';
 import { resolveProductSource } from '../lib/commerce/release-policy.js';
+import {
+  fingerprintReleaseApprovalTarget,
+  fingerprintReleaseArtifact,
+} from '../lib/releases/product-release-transition.js';
 import {
   createCompleteMediaManifest,
   createCompleteReleaseRecord,
@@ -36,14 +41,16 @@ describe('release-bound storefront media', () => {
       includedCount: 2,
       excludedCount: 1,
     });
-    expect(decision.product.media.map(item => item.id)).toEqual([
+    expect(decision.product.media.map((item) => item.id)).toEqual([
       'front-image',
       'film-asset',
     ]);
     expect(decision.product.media[0].alt).toBe('Exact product front-image');
     expect(decision.product.media[0].label).toBe('front');
     expect(JSON.stringify(decision.product)).not.toContain('shopify-media:');
-    expect(JSON.stringify(decision.product)).not.toContain('rogue-unapproved-media');
+    expect(JSON.stringify(decision.product)).not.toContain(
+      'rogue-unapproved-media'
+    );
   });
 
   it('renders the approved required set and approved fallbacks as production-complete', () => {
@@ -57,7 +64,7 @@ describe('release-bound storefront media', () => {
     expect(decision.missingModalities).toEqual([]);
     expect(decision.missingFallbackAssetIds).toEqual([]);
     expect(decision.coveredModalities).toHaveLength(9);
-    expect(decision.product.media.map(item => item.id)).toEqual([
+    expect(decision.product.media.map((item) => item.id)).toEqual([
       'front-image',
       'back-angle-image',
       'embroidery-detail-image',
@@ -70,14 +77,39 @@ describe('release-bound storefront media', () => {
   });
 
   it.each([
-    ['missing binding', asset => { asset.storefrontBinding = null; }],
-    ['pending approval', asset => { asset.approvalStatus = 'pending'; }],
-    ['unverified rights', asset => { asset.rightsStatus = 'pending'; }],
-    ['unverified product match', asset => { asset.exactProductMatch = 'unverified'; }],
-    ['unverified quality', asset => { asset.quality = { status: 'pending', evidence: null }; }],
+    [
+      'missing binding',
+      (asset) => {
+        asset.storefrontBinding = null;
+      },
+    ],
+    [
+      'pending approval',
+      (asset) => {
+        asset.approvalStatus = 'pending';
+      },
+    ],
+    [
+      'unverified rights',
+      (asset) => {
+        asset.rightsStatus = 'pending';
+      },
+    ],
+    [
+      'unverified product match',
+      (asset) => {
+        asset.exactProductMatch = 'unverified';
+      },
+    ],
+    [
+      'unverified quality',
+      (asset) => {
+        asset.quality = { status: 'pending', evidence: null };
+      },
+    ],
   ])('withholds an asset with %s', (_label, mutate) => {
     const manifest = createCompleteMediaManifest();
-    mutate(manifest.assets.find(asset => asset.assetId === 'front-image'));
+    mutate(manifest.assets.find((asset) => asset.assetId === 'front-image'));
     const decision = filterReleaseBoundMedia({
       product: { media: [observedMedia('front-image')] },
       manifest,
@@ -89,8 +121,12 @@ describe('release-bound storefront media', () => {
 
   it('withholds duplicate storefront bindings and kind mismatches', () => {
     const manifest = createCompleteMediaManifest();
-    const front = manifest.assets.find(asset => asset.assetId === 'front-image');
-    const back = manifest.assets.find(asset => asset.assetId === 'back-angle-image');
+    const front = manifest.assets.find(
+      (asset) => asset.assetId === 'front-image'
+    );
+    const back = manifest.assets.find(
+      (asset) => asset.assetId === 'back-angle-image'
+    );
     back.storefrontBinding = structuredClone(front.storefrontBinding);
 
     const duplicate = filterReleaseBoundMedia({
@@ -109,21 +145,31 @@ describe('release-bound storefront media', () => {
     expect(wrongKind.product.media).toEqual([]);
 
     const wrongModality = createCompleteMediaManifest();
-    wrongModality.requirements.find(item => item.modality === 'front').assetIds = ['film-asset'];
-    wrongModality.requirements.find(item => item.modality === 'video').assetIds = [];
-    expect(filterReleaseBoundMedia({
-      product: { media: [observedMedia('film-asset', 'video')] },
-      manifest: wrongModality,
-    }).product.media).toEqual([]);
+    wrongModality.requirements.find(
+      (item) => item.modality === 'front'
+    ).assetIds = ['film-asset'];
+    wrongModality.requirements.find(
+      (item) => item.modality === 'video'
+    ).assetIds = [];
+    expect(
+      filterReleaseBoundMedia({
+        product: { media: [observedMedia('film-asset', 'video')] },
+        manifest: wrongModality,
+      }).product.media
+    ).toEqual([]);
 
     const duplicateAsset = createCompleteMediaManifest();
-    duplicateAsset.assets.push(structuredClone(
-      duplicateAsset.assets.find(item => item.assetId === 'front-image')
-    ));
-    expect(filterReleaseBoundMedia({
-      product: { media: [observedMedia('front-image')] },
-      manifest: duplicateAsset,
-    }).product.media).toEqual([]);
+    duplicateAsset.assets.push(
+      structuredClone(
+        duplicateAsset.assets.find((item) => item.assetId === 'front-image')
+      )
+    );
+    expect(
+      filterReleaseBoundMedia({
+        product: { media: [observedMedia('front-image')] },
+        manifest: duplicateAsset,
+      }).product.media
+    ).toEqual([]);
   });
 
   it('withholds a stale URL even when the Shopify media ID is unchanged', () => {
@@ -141,28 +187,37 @@ describe('release-bound storefront media', () => {
 
   it('canonicalizes safe URL query order and rejects non-HTTPS media', () => {
     const manifest = createCompleteMediaManifest();
-    const front = manifest.assets.find(asset => asset.assetId === 'front-image');
+    const front = manifest.assets.find(
+      (asset) => asset.assetId === 'front-image'
+    );
     const bound = observedMedia('front-image');
     bound.url = 'https://cdn.example/front-image?width=1200&format=webp';
     front.storefrontBinding.referenceHash = fingerprintStorefrontMedia(bound);
 
     const reordered = observedMedia('front-image');
     reordered.url = 'https://cdn.example/front-image?format=webp&width=1200';
-    expect(filterReleaseBoundMedia({
-      product: { media: [reordered] },
-      manifest,
-    }).product.media).toHaveLength(1);
+    expect(
+      filterReleaseBoundMedia({
+        product: { media: [reordered] },
+        manifest,
+      }).product.media
+    ).toHaveLength(1);
 
     const unsafe = observedMedia('front-image');
     unsafe.url = 'http://cdn.example/front-image';
-    expect(filterReleaseBoundMedia({
-      product: { media: [unsafe] },
-      manifest: createCompleteMediaManifest(),
-    }).product.media).toEqual([]);
+    expect(
+      filterReleaseBoundMedia({
+        product: { media: [unsafe] },
+        manifest: createCompleteMediaManifest(),
+      }).product.media
+    ).toEqual([]);
   });
 
-  it('filters the active release decision before a Shopify payload reaches the view model', () => {
-    const shopifyProduct = createObservedShopifyProduct('test-product', 'preview');
+  it('projects sanitized current Shopify media for private Preview review', () => {
+    const shopifyProduct = createObservedShopifyProduct(
+      'test-product',
+      'preview'
+    );
     shopifyProduct.media = [
       observedMedia('front-image'),
       observedMedia('unapproved-detail'),
@@ -177,14 +232,52 @@ describe('release-bound storefront media', () => {
     expect(decision.visibilityAllowed).toBe(true);
     expect(decision.commerceAllowed).toBe(false);
     expect(decision.reason).toBe('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
-    expect(decision.product.media).toHaveLength(1);
-    expect(decision.product.media[0].id).toBe('front-image');
-    expect(JSON.stringify(decision)).not.toContain('unapproved-detail');
+    expect(decision.product.media).toHaveLength(2);
+    expect(decision.product.media).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          approvalStatus: 'staging-review',
+          sourceAuthority: 'shopify-canonical-staging',
+        }),
+      ])
+    );
+    expect(decision.product.media[0].id).toMatch(/^sha256:[a-f0-9]{64}$/);
     expect(JSON.stringify(decision)).not.toContain('shopify-media:');
   });
 
+  it('sanitizes Preview media and excludes unsafe or duplicate references', () => {
+    const safe = {
+      ...observedMedia('front-image'),
+      rawReference: 'opaque-admin-reference',
+      registryAssetId: 'untrusted-registry-id',
+    };
+    const unsafe = observedMedia('unsafe-image');
+    unsafe.url = 'http://cdn.example/unsafe-image';
+
+    const decision = projectShopifyMedia({
+      product: { media: [safe, structuredClone(safe), unsafe] },
+    });
+
+    expect(decision).toMatchObject({
+      includedCount: 1,
+      excludedCount: 2,
+      productionReady: false,
+    });
+    expect(decision.product.media[0]).toMatchObject({
+      approvalStatus: 'staging-review',
+      sourceAuthority: 'shopify-canonical-staging',
+    });
+    expect(decision.product.media[0]).not.toHaveProperty('rawReference');
+    expect(decision.product.media[0]).not.toHaveProperty('registryAssetId');
+    expect(JSON.stringify(decision)).not.toContain('opaque-admin-reference');
+    expect(JSON.stringify(decision)).not.toContain('untrusted-registry-id');
+  });
+
   it('strips an unapproved extra without failing an otherwise complete Released set', () => {
-    const shopifyProduct = createObservedShopifyProduct('test-product', 'production');
+    const shopifyProduct = createObservedShopifyProduct(
+      'test-product',
+      'production'
+    );
     shopifyProduct.media.push(observedMedia('unapproved-extra'));
     const decision = resolveProductSource({
       environment: 'production',
@@ -201,15 +294,21 @@ describe('release-bound storefront media', () => {
 
   it('denies production when a required current binding is missing or stale', () => {
     for (const mutate of [
-      product => {
-        product.media = product.media.filter(item => item.id !== 'shopify-media:front-image');
+      (product) => {
+        product.media = product.media.filter(
+          (item) => item.id !== 'shopify-media:front-image'
+        );
       },
-      product => {
-        product.media.find(item => item.id === 'shopify-media:film-asset').url =
-          'https://cdn.example/film-asset-replaced';
+      (product) => {
+        product.media.find(
+          (item) => item.id === 'shopify-media:film-asset'
+        ).url = 'https://cdn.example/film-asset-replaced';
       },
     ]) {
-      const shopifyProduct = createObservedShopifyProduct('test-product', 'production');
+      const shopifyProduct = createObservedShopifyProduct(
+        'test-product',
+        'production'
+      );
       mutate(shopifyProduct);
       const decision = resolveProductSource({
         environment: 'production',
@@ -228,26 +327,44 @@ describe('release-bound storefront media', () => {
     }
   });
 
-  it('keeps a private Staged product visible but media-empty when assets are candidates', () => {
+  it('keeps candidate assets visible only as staging-review media in private Preview', () => {
     const manifest = createCompleteMediaManifest();
-    const frontRequirement = manifest.requirements.find(item => item.modality === 'front');
+    const frontRequirement = manifest.requirements.find(
+      (item) => item.modality === 'front'
+    );
     frontRequirement.status = 'candidate';
-    const frontAsset = manifest.assets.find(item => item.assetId === 'front-image');
+    const frontAsset = manifest.assets.find(
+      (item) => item.assetId === 'front-image'
+    );
     frontAsset.approvalStatus = 'pending';
-    const shopifyProduct = createObservedShopifyProduct('test-product', 'preview');
+    const shopifyProduct = createObservedShopifyProduct(
+      'test-product',
+      'preview'
+    );
     shopifyProduct.media = [observedMedia('front-image')];
+    const releaseRecord = createCompleteReleaseRecord('staged');
+    releaseRecord.mediaManifestFingerprint =
+      fingerprintReleaseArtifact(manifest);
+    releaseRecord.candidate.releaseEvidenceFingerprint =
+      fingerprintReleaseApprovalTarget(releaseRecord);
 
     const decision = resolveProductSource({
       environment: 'preview',
       shopifyProduct,
-      releaseRecord: createCompleteReleaseRecord('staged'),
+      releaseRecord,
       mediaManifest: manifest,
     });
 
     expect(decision.visibilityAllowed).toBe(true);
     expect(decision.commerceAllowed).toBe(false);
     expect(decision.reason).toBe('PRIVATE_RELEASE_REVIEW_NON_COMMERCE');
-    expect(decision.product.media).toEqual([]);
-    expect(decision.product.heroImage).toBe('');
+    expect(decision.product.media).toHaveLength(1);
+    expect(decision.product.media[0]).toMatchObject({
+      approvalStatus: 'staging-review',
+      sourceAuthority: 'shopify-canonical-staging',
+    });
+    expect(decision.product.heroImage).toBe(
+      'https://cdn.example/front-image-preview'
+    );
   });
 });

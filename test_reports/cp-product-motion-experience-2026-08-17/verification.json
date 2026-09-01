@@ -1,0 +1,116 @@
+{
+  "generatedAt": "2026-08-17T17:24:55.477Z",
+  "results": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "mainAssertions": {
+        "price": 1,
+        "gallery": 1,
+        "galleryCount": 1,
+        "motionControl": 1,
+        "horizontalOverflow": false
+      },
+      "galleryAutoplay": {
+        "counterBefore": "01 / 12",
+        "counterAfter": "02 / 12",
+        "suspended": "false",
+        "advanced": true
+      },
+      "orderAssertions": {
+        "sizes": [
+          "S",
+          "M",
+          "L"
+        ],
+        "selected": "S",
+        "addToBag": true,
+        "buyNow": true
+      },
+      "bagAssertions": {
+        "title": 1,
+        "checkout": true,
+        "subtotal": 2
+      },
+      "consoleErrors": [],
+      "requestFailures": []
+    },
+    {
+      "viewport": {
+        "name": "tablet",
+        "width": 1024,
+        "height": 768
+      },
+      "mainAssertions": {
+        "price": 1,
+        "gallery": 1,
+        "galleryCount": 1,
+        "motionControl": 1,
+        "horizontalOverflow": false
+      },
+      "galleryAutoplay": {
+        "counterBefore": "01 / 12",
+        "counterAfter": "02 / 12",
+        "suspended": "false",
+        "advanced": true
+      },
+      "orderAssertions": {
+        "sizes": [
+          "S",
+          "M",
+          "L"
+        ],
+        "selected": "S",
+        "addToBag": true,
+        "buyNow": true
+      },
+      "bagAssertions": {
+        "title": 1,
+        "checkout": true,
+        "subtotal": 2
+      },
+      "consoleErrors": [],
+      "requestFailures": []
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "mainAssertions": {
+        "price": 1,
+        "gallery": 1,
+        "galleryCount": 1,
+        "motionControl": 1,
+        "horizontalOverflow": false
+      },
+      "galleryAutoplay": {
+        "counterBefore": "01 / 12",
+        "counterAfter": "02 / 12",
+        "suspended": "false",
+        "advanced": true
+      },
+      "orderAssertions": {
+        "sizes": [
+          "S",
+          "M",
+          "L"
+        ],
+        "selected": "S",
+        "addToBag": true,
+        "buyNow": true
+      },
+      "bagAssertions": {
+        "title": 1,
+        "checkout": true,
+        "subtotal": 2
+      },
+      "consoleErrors": [],
+      "requestFailures": []
+    }
+  ]
+}

@@ -1,9 +1,34 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { ArrowRight, Menu, ShoppingBag, X } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SIGNATURE_HOODIE_SHOWCASE_MEDIA } from '../../lib/media/signature-hoodie-showcase.js';
+import { designSystemRuntimeContract } from '../../lib/design-system/runtime-contract.js';
+import { discoveryCategoryCards, discoveryProductCards } from '../../lib/commerce/discovery-catalog.js';
+import { CatalogGridOverlay } from './catalog-overlays.jsx';
+import { DiscoverySection } from './discovery-section.jsx';
+import { LandingMorph } from './landing-morph.jsx';
+import { MenuOverlay, SiteHeader } from './site-navigation.jsx';
+import { AddedToBagWidget, CartDrawer } from '../commerce/cart-drawer.jsx';
+import { SizeGuideDrawer } from '../commerce/size-guide.jsx';
+import { useClientBag } from '../commerce/bag-store.jsx';
+import { bagCount } from '../../lib/commerce/client-bag.js';
+import { money, offeredVariants, sizeFor } from '../commerce/shopify-checkout-form.jsx';
+
+export { ProductMediaOverlay, galleryCategoryFor } from './gallery-overlay.jsx';
+import { ProductMediaOverlay } from './gallery-overlay.jsx';
+
+/*
+ * Screen Inventory Review Workbook — the customer storefront.
+ *
+ * The happy path lives on one route: Landing (01/02) morphs into Discovery (03/04), where the
+ * gallery (05/06), category grid (07), product grid (08) and cart (09/23/24) all open as overlays
+ * over a page that stays visible behind them. Checkout onward has its own routes because the
+ * workbook gives them their own chrome.
+ *
+ * Media is never chosen here. `mediaReadiness` is decided on the server by the readiness gate; this
+ * component only distributes the verdicts it is given.
+ */
 
 const fallbackSummary = {
   status: 'denied',
@@ -15,187 +40,387 @@ const fallbackSummary = {
   primaryProduct: null,
 };
 
-function Navigation({ onMenu }) {
-  return (
-    <>
-      <div className="fixed inset-x-0 top-0 z-40 h-7 border-b border-white/10 bg-black text-[8px] uppercase tracking-[0.34em] text-white/38">
-        <div className="mx-auto flex h-full max-w-[1800px] items-center justify-center gap-12">
-          <span className="text-white/70">CARLOPHILLIPS</span>
-          <span>loveCarlo</span>
-          <span>HouseOfCarlo</span>
-        </div>
-      </div>
-      <header className="fixed inset-x-0 top-7 z-40 border-b border-white/10 bg-black/72 backdrop-blur-md">
-        <div className="mx-auto grid h-16 max-w-[1800px] grid-cols-3 items-center px-5 sm:px-8 lg:h-20 lg:px-12">
-          <button
-            type="button"
-            onClick={onMenu}
-            className="inline-flex w-fit items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/70 transition hover:text-white"
-            aria-label="Open navigation"
-          >
-            <Menu className="h-4 w-4" strokeWidth={1.3} />
-            <span className="hidden sm:inline">Menu</span>
-          </button>
-          <Link href="/" className="justify-self-center text-xs uppercase tracking-[0.38em] text-white sm:text-sm">
-            CARLOPHILLIPS
-          </Link>
-          <Link
-            href="/bag"
-            className="inline-flex items-center gap-3 justify-self-end text-[10px] uppercase tracking-[0.28em] text-white/70 transition hover:text-white"
-          >
-            <span className="hidden sm:inline">Bag</span>
-            <ShoppingBag className="h-4 w-4" strokeWidth={1.3} />
-          </Link>
-        </div>
-      </header>
-    </>
-  );
+const emptyReadiness = {
+  landingHero: { decisions: [], renderable: false, motionAllowed: false },
+  productVideo: { decisions: [], renderable: false, motionAllowed: false, readyClipCount: 0, declaredClipCount: 0 },
+};
+
+const signaturePreviewReferenceMedia = [
+  ...SIGNATURE_HOODIE_SHOWCASE_MEDIA,
+  {
+    src: '/products/signature-hoodie/candidates/modelize/editorial-01.jpg',
+    alt: 'Editorial visualisation of the CARLOPHILLIPS Signature Hoodie in a dark studio setting',
+    label: 'Editorial study / one',
+    fit: 'cp-media-fit-contain',
+    position: 'cp-media-position-center',
+    disclosure: 'AI-assisted preview',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/modelize/editorial-02.jpg',
+    alt: 'Full-length editorial visualisation of the CARLOPHILLIPS Signature Hoodie',
+    label: 'Editorial study / two',
+    fit: 'cp-media-fit-contain',
+    position: 'cp-media-position-center',
+    disclosure: 'AI-assisted preview',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/ai-assisted/on-model-front-study.png',
+    alt: 'Front on-model visual study of the CARLOPHILLIPS Signature Hoodie',
+    label: 'On-body / front study',
+    fit: 'cp-media-fit-contain',
+    position: 'cp-media-position-center',
+    disclosure: 'AI-assisted preview',
+  },
+  {
+    src: '/products/signature-hoodie/candidates/ai-assisted/back-flatlay-hypothesis.png',
+    alt: 'Back flat-lay hypothesis of the CARLOPHILLIPS Signature Hoodie',
+    label: 'Back flat-lay study',
+    fit: 'cp-media-fit-contain',
+    position: 'cp-media-position-center',
+    disclosure: 'Unverified back visualisation',
+  },
+];
+
+const signatureHomepagePresentation = {
+  displayName: 'ONE',
+  description: 'Heavyweight black pullover hoodie with restrained CP chest embroidery.',
+  facts: [
+    { label: 'Color', value: 'Black' },
+    { label: 'Material', value: 'Structured fleece' },
+    { label: 'Feel', value: 'Heavyweight, soft interior' },
+  ],
+};
+
+const bagLineImage = {
+  src: '/products/signature-hoodie/candidates/moda/model-front-full.jpg',
+  alt: 'CARLOPHILLIPS Signature Hoodie in black',
+};
+
+export function isPreviewRunwayReference(summary) {
+  /*
+   * Returns true when the catalog reports a denied/empty state in the 'preview' commerce
+   * environment — this is the staging runway reference mode. For the staging Vercel deployment
+   * to show the full Signature Hoodie runway content, set:
+   *   NEXT_PUBLIC_COMMERCE_ENVIRONMENT=preview
+   * in the Vercel project environment variables.
+   */
+  return summary?.environment === 'preview'
+    && summary?.visibleCount === 0
+    && summary?.commerceAllowed === false;
 }
 
-function MenuOverlay({ onClose }) {
-  return (
-    <aside className="fixed inset-0 z-50 bg-black px-6 py-7 text-white" aria-label="Site navigation">
-      <div className="mx-auto flex max-w-[1700px] items-center justify-between">
-        <span className="text-xs uppercase tracking-[0.38em] text-white/70">CARLOPHILLIPS</span>
-        <button
-          type="button"
-          onClick={onClose}
-          className="inline-flex h-11 w-11 items-center justify-center border border-white/20 text-white/70"
-          aria-label="Close navigation"
-        >
-          <X className="h-5 w-5" strokeWidth={1.3} />
-        </button>
-      </div>
-      <nav className="mx-auto mt-24 grid max-w-[1700px] gap-4 text-5xl font-light tracking-[-0.05em] sm:text-7xl lg:text-8xl" aria-label="Main menu">
-        <Link onClick={onClose} href="/">Home</Link>
-        <Link onClick={onClose} href="/shop">Shop</Link>
-        <Link onClick={onClose} href="/collections">Collections</Link>
-        <Link onClick={onClose} href="/bag">Bag</Link>
-      </nav>
-    </aside>
-  );
+function firstSentence(value, fallback) {
+  const sentence = value?.trim().match(/^[^.!?]+[.!?]?/)?.[0];
+  return sentence || fallback;
 }
 
-function Hero({ summary }) {
-  const catalogLabel = summary.visibleCount > 0
-    ? `Review ${summary.visibleCount} ${summary.visibleCount === 1 ? 'product' : 'products'}`
-    : 'View release state';
+export function buildHomeGalleryMedia(summary) {
+  if (isPreviewRunwayReference(summary)) {
+    return signaturePreviewReferenceMedia
+      .filter(item => !item.gifHref)
+      .map(item => ({ ...item, type: 'image' }));
+  }
 
-  return (
-    <section className="relative min-h-screen overflow-hidden border-b border-white/10 bg-black px-5 pb-14 pt-28 sm:px-8 lg:px-12 lg:pb-20">
-      <div className="mx-auto grid min-h-[calc(100vh-9rem)] max-w-[1800px] items-end gap-10 lg:grid-cols-[0.92fr_1.08fr]">
-        <div className="relative z-10 pb-3 lg:pb-12">
-          <p className="mb-7 text-[10px] uppercase tracking-[0.34em] text-white/48">
-            Signature Hoodie · first reusable proof
-          </p>
-          <h1 className="max-w-4xl text-[19vw] font-light leading-[0.82] tracking-[-0.075em] sm:text-[14vw] lg:text-[7.7vw]">
-            Gesture of<br />Luxury
-          </h1>
-          <p className="mt-8 max-w-xl text-sm leading-relaxed text-white/56 sm:text-base">
-            Product-led presentation with Shopify-backed release truth. Nothing shown here grants purchase, publication, or fulfillment authority.
-          </p>
-          <Link
-            href="/shop"
-            className="mt-9 inline-flex items-center gap-4 border-b border-white/35 pb-2 text-[10px] uppercase tracking-[0.3em] text-white/80 transition hover:border-white hover:text-white"
-          >
-            {catalogLabel}
-            <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-          </Link>
-        </div>
+  const product = summary?.primaryProduct;
+  const signatureVisible = summary?.visibleCount > 0
+    && product?.href === '/products/carlophillips-signature-hoodie';
+  if (!signatureVisible) return [];
 
-        <figure className="relative min-h-[52vh] overflow-hidden lg:min-h-[78vh]">
-          <Image
-            src="/brand-boards/carlophillips-drop-board.png"
-            alt="Archived CARLOPHILLIPS visual-system reference board"
-            fill
-            priority
-            sizes="(min-width: 1024px) 58vw, 100vw"
-            className="object-contain object-center opacity-75"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/25" aria-hidden="true" />
-          <figcaption className="absolute bottom-4 right-4 bg-black/82 px-3 py-2 text-[8px] uppercase tracking-[0.24em] text-white/58">
-            Visual-system reference · not product or media proof
-          </figcaption>
-        </figure>
-      </div>
-    </section>
-  );
-}
-
-export function HomeReleaseStage({ summary }) {
-  const product = summary.primaryProduct;
-
-  return (
-    <section className="min-h-[82vh] border-b border-white/10 bg-black px-5 py-20 sm:px-8 lg:px-12 lg:py-28" aria-label="Current release">
-      <div className="mx-auto grid min-h-[62vh] max-w-[1700px] gap-px bg-white/10 lg:grid-cols-[1.12fr_0.88fr]">
-        <div className="flex flex-col justify-between bg-[#030303] p-7 sm:p-10 lg:p-14">
-          <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.28em] text-white/38">
-            <span>Current release</span>
-            <span>{summary.visibleCount > 0 ? 'Review visible' : 'Withheld'}</span>
-          </div>
-          <div className="py-20">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-white/42">
-              {product ? product.sourceLabel : 'No release-eligible product'}
-            </p>
-            <h2 className="mt-7 max-w-4xl text-5xl font-light leading-[0.92] tracking-[-0.055em] sm:text-7xl lg:text-8xl">
-              {product ? product.title : 'The product remains behind its release gate.'}
-            </h2>
-            <p className="mt-8 max-w-2xl text-sm leading-relaxed text-white/52 sm:text-base">{summary.message}</p>
-          </div>
-          <div className="flex flex-wrap gap-6">
-            {product && (
-              <Link href={product.href} className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/78">
-                Review product <ArrowRight className="h-4 w-4" strokeWidth={1.2} />
-              </Link>
-            )}
-            <Link href="/collections" className="text-[10px] uppercase tracking-[0.28em] text-white/46">
-              Collection state
-            </Link>
-          </div>
-        </div>
-        <aside className="grid bg-black sm:grid-cols-3 lg:grid-cols-1">
-          {[
-            ['Candidates', summary.candidateCount],
-            ['Visible', summary.visibleCount],
-            ['Withheld', summary.excludedCount],
-          ].map(([label, value]) => (
-            <div key={label} className="flex min-h-40 flex-col justify-between border-b border-white/10 p-7 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b lg:border-r-0">
-              <span className="text-[9px] uppercase tracking-[0.28em] text-white/36">{label}</span>
-              <strong className="text-5xl font-light text-white/75">{value}</strong>
-            </div>
-          ))}
-        </aside>
-      </div>
-    </section>
-  );
+  const releaseMedia = (product.media || []).filter(item => item.type === 'image').map((item, index) => {
+    let src = item.url || item.src;
+    if (src && src.startsWith('//')) src = `https:${src}`;
+    let previewUrl = item.previewUrl;
+    if (previewUrl && previewUrl.startsWith('//')) previewUrl = `https:${previewUrl}`;
+    return {
+      ...item,
+      src,
+      url: src,
+      previewUrl: previewUrl || src,
+      label: item.label || `Product view / ${String(index + 1).padStart(2, '0')}`,
+      disclosure: 'Product view',
+    };
+  });
+  const reviewMedia = summary.environment === 'production'
+    ? []
+    : SIGNATURE_HOODIE_SHOWCASE_MEDIA
+        .filter(item => !item.gifHref)
+        .map(item => ({ ...item, type: 'image' }));
+  const uniqueMedia = new Map();
+  [...releaseMedia, ...reviewMedia].forEach(item => {
+    const source = item.src || item.url;
+    if (source && !uniqueMedia.has(source)) uniqueMedia.set(source, item);
+  });
+  return [...uniqueMedia.values()];
 }
 
 function Footer() {
   return (
-    <footer className="border-t border-white/10 px-5 py-10 sm:px-8 lg:px-12">
-      <div className="mx-auto flex max-w-[1700px] flex-col gap-6 text-[9px] uppercase tracking-[0.28em] text-white/38 sm:flex-row sm:items-center sm:justify-between">
+    <footer className="cp-footer">
+      <div className="cp-footer-inner">
         <span>CARLOPHILLIPS</span>
-        <nav className="flex gap-6" aria-label="Footer">
+        <nav className="cp-footer-nav" aria-label="Footer">
           <Link href="/shop">Shop</Link>
           <Link href="/collections">Collections</Link>
+          <Link href="/contact">Contact</Link>
+          <Link href="/private-list">Private list</Link>
           <Link href="/bag">Bag</Link>
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms</Link>
+          <Link href="/cookie-policy">Cookies</Link>
         </nav>
       </div>
     </footer>
   );
 }
 
-export default function HomeStorefront({ catalogSummary }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function HomeStorefront({ catalogSummary, mediaReadiness }) {
   const summary = catalogSummary || fallbackSummary;
+  const readiness = mediaReadiness || emptyReadiness;
+  const bagStore = useClientBag();
+
+  const [entered, setEntered] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const [mediaIndex, setMediaIndex] = useState(0);
+  const [orderOpen, setOrderOpen] = useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [addedLine, setAddedLine] = useState(null);
+  const [selectedHash, setSelectedHash] = useState('');
+
+  const menuButtonRef = useRef(null);
+  const galleryButtonRef = useRef(null);
+  const wasMenuOpenRef = useRef(false);
+  const wasMediaOpenRef = useRef(false);
+
+  const galleryMedia = useMemo(() => buildHomeGalleryMedia(summary), [summary]);
+  const heroDecision = readiness.landingHero.decisions.find(decision => decision.viewport === 'desktop')
+    || readiness.landingHero.decisions[0]
+    || null;
+  const productClips = readiness.productVideo.decisions;
+  const posterOnly = readiness.productVideo.readyClipCount === 0;
+
+  const product = summary.primaryProduct;
+  const releaseVariants = useMemo(() => offeredVariants(
+    product?.handle || '',
+    product?.variantPresentation
+  ), [product?.handle, product?.variantPresentation]);
+  const previewVariants = useMemo(() => ['S', 'M', 'L'].map(size => ({
+    title: size,
+    referenceHash: `preview-${size.toLowerCase()}`,
+    availableForSale: true,
+    price: { amount: '180', currency: 'EUR' },
+    selectedOptions: [{ name: 'Size', value: size }],
+  })), []);
+  const activeVariants = useMemo(() => {
+    const source = releaseVariants.length > 0 ? releaseVariants : previewVariants;
+    return source.map(variant => ({ ...variant, sizeLabel: sizeFor(variant).toUpperCase() }));
+  }, [previewVariants, releaseVariants]);
+
+  const purchaseReady = activeVariants.length > 0;
+  const priceLabel = Number(product?.price) > 0
+    ? money(product.price, product.currency || 'USD')
+    : activeVariants[0] ? money(activeVariants[0].price.amount, activeVariants[0].price.currency) : 'EUR 180';
+  const description = firstSentence(product?.description, signatureHomepagePresentation.description);
+  const runwayVisualReady = (summary.visibleCount > 0 && product?.href === '/products/carlophillips-signature-hoodie')
+    || isPreviewRunwayReference(summary);
+
+  const categoryCards = useMemo(() => discoveryCategoryCards(summary), [summary]);
+  const productCards = useMemo(() => {
+    const cards = discoveryProductCards(summary, 'hoodies', product?.handle || 'carlophillips-signature-hoodie');
+    if (cards.length > 0) return cards;
+    return [{
+      id: 'carlophillips-signature-hoodie',
+      name: signatureHomepagePresentation.displayName,
+      href: '/products/carlophillips-signature-hoodie',
+      meta: priceLabel,
+      available: true,
+      viewing: true,
+      imageUrl: '/products/signature-hoodie/candidates/moda/model-front-full.jpg',
+      imageAlt: 'CARLOPHILLIPS Signature Hoodie in black',
+    }];
+  }, [priceLabel, product?.handle, summary]);
+
+  useEffect(() => {
+    if (!selectedHash && activeVariants[0]) setSelectedHash(activeVariants[0].referenceHash);
+  }, [activeVariants, selectedHash]);
+
+  useEffect(() => {
+    if (wasMenuOpenRef.current && !menuOpen) menuButtonRef.current?.focus();
+    wasMenuOpenRef.current = menuOpen;
+  }, [menuOpen]);
+
+  const handleEnter = useCallback(() => {
+    setEntered(true);
+    const target = document.getElementById('signature-runway');
+    if (!target) return;
+    const reducedMotion = window.matchMedia(designSystemRuntimeContract.media.reducedMotion).matches;
+    window.requestAnimationFrame(() => {
+      window.scrollTo({
+        top: target.offsetTop,
+        behavior: reducedMotion
+          ? designSystemRuntimeContract.behavior.instantScroll
+          : designSystemRuntimeContract.behavior.smoothScroll,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80 && !entered) {
+        setEntered(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [entered]);
+
+  useEffect(() => {
+    if (entered) return undefined;
+    const timer = setTimeout(() => {
+      if (!entered && window.scrollY < 50) {
+        handleEnter();
+      }
+    }, 6500);
+    return () => clearTimeout(timer);
+  }, [entered, handleEnter]);
+
+  const openGallery = useCallback(index => {
+    setMediaIndex(typeof index === 'number' ? index : 0);
+    setMediaOpen(true);
+  }, []);
+
+  const addToBag = useCallback(variant => {
+    if (!variant) return;
+    const line = {
+      handle: product?.handle || 'carlophillips-signature-hoodie',
+      referenceHash: variant.referenceHash,
+      title: signatureHomepagePresentation.displayName,
+      size: variant.sizeLabel || sizeFor(variant).toUpperCase(),
+      color: 'Black',
+      currency: variant.price.currency,
+      unitPrice: Number(variant.price.amount),
+      quantity: 1,
+      imageUrl: bagLineImage.src,
+      imageAlt: bagLineImage.alt,
+    };
+    bagStore.add(line);
+    setAddedLine(line);
+    setOrderOpen(false);
+  }, [bagStore, product?.handle]);
+
+  const overlayOpen = menuOpen || mediaOpen || categoriesOpen || productsOpen || cartOpen || sizeGuideOpen;
 
   return (
-    <main id="main-content" className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
-      <Navigation onMenu={() => setMenuOpen(true)} />
-      {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
-      <Hero summary={summary} />
-      <HomeReleaseStage summary={summary} />
-      <Footer />
+    <main id="main-content" className="cp-site">
+      <div inert={overlayOpen ? true : undefined}>
+        <SiteHeader
+          bagCount={bagCount(bagStore.bag)}
+          menuButtonRef={menuButtonRef}
+          menuOpen={menuOpen}
+          onBag={() => setCartOpen(true)}
+          onJoinList={null}
+          onMenu={() => setMenuOpen(true)}
+          showJoinList={!entered}
+        />
+        <LandingMorph entered={entered} hero={heroDecision} onEnter={handleEnter} />
+        <DiscoverySection
+          activeMediaIndex={mediaIndex}
+          description={runwayVisualReady ? description : 'A considered study in form, material and everyday utility.'}
+          displayName={runwayVisualReady ? signatureHomepagePresentation.displayName : 'Form. Function.'}
+          eyebrow={runwayVisualReady ? 'Signature Series / 001' : 'CARLOPHILLIPS / 001'}
+          facts={signatureHomepagePresentation.facts}
+          galleryButtonRef={galleryButtonRef}
+          galleryMedia={galleryMedia}
+          handle={product?.handle || 'carlophillips-signature-hoodie'}
+          onAddToBag={addToBag}
+          onCloseOrder={() => setOrderOpen(false)}
+          onOpenCategories={() => setCategoriesOpen(true)}
+          onOpenGallery={openGallery}
+          onOpenOrder={() => setOrderOpen(true)}
+          onOpenProducts={() => setProductsOpen(true)}
+          onOpenSizeGuide={() => setSizeGuideOpen(true)}
+          onSelectVariant={setSelectedHash}
+          orderOpen={orderOpen}
+          posterOnly={posterOnly}
+          priceLabel={priceLabel}
+          productClips={productClips}
+          purchaseReady={purchaseReady}
+          selectedHash={selectedHash}
+          suspended={overlayOpen}
+          variants={activeVariants}
+        />
+        <Footer />
+      </div>
+
+      {menuOpen && <MenuOverlay activeId="discovery" onClose={() => setMenuOpen(false)} />}
+
+      <ProductMediaOverlay
+        activeIndex={mediaIndex}
+        interactive={!cartOpen}
+        media={galleryMedia}
+        onActiveIndex={setMediaIndex}
+        onClose={() => setMediaOpen(false)}
+        onOrder={purchaseReady ? () => {
+          setMediaOpen(false);
+          setOrderOpen(true);
+        } : null}
+        open={mediaOpen}
+        priceLabel={priceLabel}
+        title={product?.title || 'Signature Hoodie'}
+      />
+
+      <CatalogGridOverlay
+        cards={categoryCards}
+        labelledById="discovery-categories-title"
+        meta={`${categoryCards.length} groups`}
+        onClose={() => setCategoriesOpen(false)}
+        onOrder={purchaseReady ? () => {
+          setCategoriesOpen(false);
+          setOrderOpen(true);
+        } : null}
+        open={categoriesOpen}
+        priceLabel={priceLabel}
+        title="Categories"
+      />
+
+      <CatalogGridOverlay
+        cards={productCards}
+        labelledById="discovery-products-title"
+        meta={`${productCards.length} ${productCards.length === 1 ? 'item' : 'items'}`}
+        onClose={() => setProductsOpen(false)}
+        onOrder={purchaseReady ? () => {
+          setProductsOpen(false);
+          setOrderOpen(true);
+        } : null}
+        open={productsOpen}
+        priceLabel={priceLabel}
+        title="Hoodies"
+      />
+
+      <SizeGuideDrawer open={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
+
+      <AddedToBagWidget
+        line={addedLine}
+        onContinue={() => setAddedLine(null)}
+        onViewBag={() => {
+          setAddedLine(null);
+          setCartOpen(true);
+        }}
+        open={Boolean(addedLine)}
+      />
+
+      <CartDrawer
+        bag={bagStore.bag}
+        onApplyDiscount={bagStore.applyDiscount}
+        onClose={() => setCartOpen(false)}
+        onContinue={() => setCartOpen(false)}
+        onQuantity={bagStore.setQuantity}
+        onRemove={bagStore.remove}
+        open={cartOpen}
+      />
     </main>
   );
 }

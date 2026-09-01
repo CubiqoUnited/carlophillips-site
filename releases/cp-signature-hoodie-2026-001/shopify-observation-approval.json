@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "cp.product-observation-approval.v1",
+  "status": "approved",
+  "owner": "Product Owner",
+  "scope": "accept-shopify-product-observation",
+  "handle": "carlophillips-signature-hoodie",
+  "observationFingerprint": "sha256:e667c2d1e0c9f292a5cbef27db094e8c992a4854760d692321db110f1b259bc6",
+  "evidence": "Boss exact approval in the active Codex task on 2026-08-30 for Shopify Production observation sha256:e667c2d1e0c9f292a5cbef27db094e8c992a4854760d692321db110f1b259bc6: S/M/L only, USD 128.00, all available; temporary restoration without sample, customer data, payment, order, or fulfillment action.",
+  "approvedAt": "2026-08-30T20:06:08Z"
+}

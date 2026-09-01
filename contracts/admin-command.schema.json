@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/schemas/admin-command.schema.json",
+  "title": "CARLOPHILLIPS reviewed admin command",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "commandId",
+    "idempotencyKey",
+    "actor",
+    "environment",
+    "capability",
+    "operation",
+    "target",
+    "authority",
+    "sideEffect",
+    "status",
+    "createdAt",
+    "expiresAt"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.admin-command.v1" },
+    "commandId": { "type": "string", "minLength": 1 },
+    "idempotencyKey": { "type": "string", "minLength": 1 },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "role"],
+      "properties": {
+        "subject": { "type": "string", "minLength": 1 },
+        "role": {
+          "enum": ["product_owner", "operator", "reviewer", "analyst", "support", "auditor"]
+        }
+      }
+    },
+    "environment": { "enum": ["local", "preview", "production"] },
+    "capability": { "type": "string", "minLength": 1 },
+    "operation": { "type": "string", "minLength": 1 },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "reference", "fingerprint"],
+      "properties": {
+        "type": { "type": "string", "minLength": 1 },
+        "reference": { "type": "string", "minLength": 1 },
+        "fingerprint": { "type": "string", "minLength": 1 }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approvalRefs", "evidenceRefs"],
+      "properties": {
+        "approvalRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "evidenceRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "sideEffect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "cost", "reversible", "rollbackRef"],
+      "properties": {
+        "kind": { "enum": ["none", "read", "write", "spend", "publish", "production"] },
+        "cost": { "type": ["number", "null"], "minimum": 0 },
+        "currency": { "type": ["string", "null"], "pattern": "^[A-Z]{3}$" },
+        "reversible": { "type": "boolean" },
+        "rollbackRef": { "type": ["string", "null"] }
+      }
+    },
+    "status": {
+      "enum": ["draft", "pending", "approved", "rejected", "expired", "executing", "succeeded", "failed", "rolled_back"]
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" }
+  }
+}

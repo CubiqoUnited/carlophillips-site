@@ -1,0 +1,157 @@
+[
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/443-bd0221b69e4f1e05.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/572-54a3e2e3996db30a.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/581e95ad-13d3bf2ae896e426.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/689d8280.ddcd017059333c0a.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/747-b043b3c8b0326d30.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/900.7f0a7f1d9192cd68.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/907-0f55882c65937212.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/app/(editorial)/page-51baddd01dc89371.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/app/contact/page-4f21d0eb1b002cc8.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/app/member/page-21591a982d85fad2.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/app/product/%5Bhandle%5D/page-20574a5cb21ee38a.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/main-app-05c88e31d7805d67.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/webpack-a21c345e07b1e983.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/css/1c07d87cdba31c27.css"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/css/db3678260099c743.css"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/css/ef46db3751d8e999.css"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/media/runway-editorial-realism-cross-frame-warm-entry-cachefix-v6.730be646.png"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/media/runway-editorial-realism-tablet-warm-entry-cachefix-v6.9c5d8ced.png"
+  },
+  {
+    "method": "POST",
+    "origin": "http://localhost:3000",
+    "path": "/api/contact"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/bag"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/contact"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/member"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/product/carlophillips-signature-hoodie"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/shop"
+  },
+  {
+    "method": "GET",
+    "origin": "https://chunk-oci-us-phoenix-1-vop1.edgemv.mux.com",
+    "path": "/v1/chunk/01Nsb9Zx02iBMF00029GLwvXPyp2Q02va4uFD6cxsEK006BRV201j1HsFJXgb6ucLgIUNuurdVho884SBTAP6mvYET00XDk01NwtiN02Hy/18446744073709551615.m4s"
+  },
+  {
+    "method": "GET",
+    "origin": "https://chunk-oci-us-phoenix-1-vop1.edgemv.mux.com",
+    "path": "/v1/chunk/W2FcOyxLo9W1EEPcjE7GAtbGucGQh202ASkwqPO6XTrZXJWrn5qsbCLfg6sHizVzaZqenC8301UpbAY4sHDvEMac19x97zN9aW/0.m4s"
+  },
+  {
+    "method": "GET",
+    "origin": "https://image.mux.com",
+    "path": "/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc/thumbnail.jpg"
+  },
+  {
+    "method": "GET",
+    "origin": "https://manifest-oci-us-phoenix-1-vop1.edgemv.mux.com",
+    "path": "/ctEASLYnRFvvyb00WTgGADd02APohkOF3pJ02Yx7KbvyPRMBZnzRtWRfTOtEjqU02eM19H02sjfxWbtjUZ9qt1EWZQ3F2Uu5OBYSv/rendition.m3u8"
+  },
+  {
+    "method": "GET",
+    "origin": "https://manifest-oci-us-phoenix-1-vop1.edgemv.mux.com",
+    "path": "/qFQUck02tGXDQ00omTz5wUD44gtDzKCo5QhwSs2ZK01XN9L7bn9bRWLcGIWnWeB61VB6ZpRlP2kxjTxCxBrn8ATrOpwNz00WYz02lcHSn6DkU6iM/rendition.m3u8"
+  },
+  {
+    "method": "GET",
+    "origin": "https://stream.mux.com",
+    "path": "/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc.m3u8"
+  }
+]

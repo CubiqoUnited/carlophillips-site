@@ -4,12 +4,7 @@ import {
   evaluateCorsRequest,
   parseAllowedCorsOrigins,
 } from '../lib/http/cors-policy';
-import {
-  DELETE,
-  GET,
-  OPTIONS,
-  POST,
-} from '../app/api/[[...path]]/route';
+import { DELETE, GET, OPTIONS, POST } from '../app/api/[[...path]]/route';
 
 const originalCorsOrigins = process.env.CORS_ORIGINS;
 const originalVercelEnvironment = process.env.VERCEL_ENV;
@@ -30,14 +25,17 @@ describe('page response security policy', () => {
   it('denies framing and does not attach global wildcard CORS', async () => {
     delete process.env.VERCEL_ENV;
     const [{ headers }] = await nextConfig.headers();
-    const values = Object.fromEntries(headers.map(({ key, value }) => [key, value]));
+    const values = Object.fromEntries(
+      headers.map(({ key, value }) => [key, value])
+    );
 
     expect(values).toMatchObject({
       'X-Frame-Options': 'DENY',
       'Content-Security-Policy': "frame-ancestors 'none';",
       'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), browsing-topics=()',
+      'Permissions-Policy':
+        'camera=(), microphone=(), geolocation=(), payment=(), browsing-topics=()',
     });
     expect(values['Access-Control-Allow-Origin']).toBeUndefined();
     expect(values['Access-Control-Allow-Headers']).toBeUndefined();
@@ -56,17 +54,17 @@ describe('page response security policy', () => {
 
 describe('API CORS policy', () => {
   it('normalizes exact HTTP origins and rejects wildcard or path entries', () => {
-    expect(parseAllowedCorsOrigins(
-      'https://preview.example.com, https://preview.example.com/, *, https://example.com/path, ftp://example.com'
-    )).toEqual(['https://preview.example.com']);
+    expect(
+      parseAllowedCorsOrigins(
+        'https://preview.example.com, https://preview.example.com/, *, https://example.com/path, ftp://example.com'
+      )
+    ).toEqual(['https://preview.example.com']);
   });
 
   it('allows same-origin requests without emitting a cross-origin grant', () => {
-    expect(evaluateCorsRequest(
-      'http://localhost:3000',
-      '',
-      'http://localhost:3000'
-    )).toMatchObject({
+    expect(
+      evaluateCorsRequest('http://localhost:3000', '', 'http://localhost:3000')
+    ).toMatchObject({
       status: 'same_origin',
       allowed: true,
       headers: { Vary: 'Origin' },
@@ -92,10 +90,12 @@ describe('API CORS policy', () => {
 
   it('denies an unlisted preflight without an allow-origin header', async () => {
     process.env.CORS_ORIGINS = 'https://preview.example.com';
-    const response = await OPTIONS(new Request('http://localhost:3000/api/health', {
-      method: 'OPTIONS',
-      headers: { Origin: 'https://attacker.example' },
-    }));
+    const response = await OPTIONS(
+      new Request('http://localhost:3000/api/health', {
+        method: 'OPTIONS',
+        headers: { Origin: 'https://attacker.example' },
+      })
+    );
 
     expect(response.status).toBe(403);
     expect(response.headers.get('access-control-allow-origin')).toBeNull();

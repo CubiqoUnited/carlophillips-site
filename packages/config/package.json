@@ -1,0 +1,13 @@
+{
+  "name": "@repo/config",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./eslint": "./eslint.cjs",
+    "./eslint-visual": "./eslint-visual.cjs",
+    "./prettier": "./prettier.cjs",
+    "./stylelint": "./stylelint.cjs",
+    "./tailwind": "./tailwind.cjs",
+    "./typescript": "./typescript.json"
+  }
+}

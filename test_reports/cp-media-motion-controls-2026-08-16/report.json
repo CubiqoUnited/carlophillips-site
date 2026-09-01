@@ -1,0 +1,39 @@
+{
+  "baseUrl": "http://127.0.0.1:3137",
+  "visibility": "headless/background",
+  "results": [
+    {
+      "viewport": {
+        "id": "desktop-1440x1000",
+        "width": 1440,
+        "height": 1000
+      },
+      "playingSource": "/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif",
+      "pausedSource": "/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+      "consoleErrors": [],
+      "requestFailures": []
+    },
+    {
+      "viewport": {
+        "id": "tablet-1024x768",
+        "width": 1024,
+        "height": 768
+      },
+      "playingSource": "/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif",
+      "pausedSource": "/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+      "consoleErrors": [],
+      "requestFailures": []
+    },
+    {
+      "viewport": {
+        "id": "mobile-390x844",
+        "width": 390,
+        "height": 844
+      },
+      "playingSource": "/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study.gif",
+      "pausedSource": "/products/signature-hoodie/candidates/ai-assisted/still-derived-motion-study-poster.webp",
+      "consoleErrors": [],
+      "requestFailures": []
+    }
+  ]
+}

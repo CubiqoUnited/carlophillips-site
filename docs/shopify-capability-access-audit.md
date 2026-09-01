@@ -1,15 +1,17 @@
 # Shopify Capability and Access Audit Backlog
 
-Status: Product Owner reports 30 installed apps. The current managed browser is blocked at Shopify login, and no programmatic or app-specific capability is proven. Updated 2026-07-23.
+Status: authenticated Shopify Admin read-only audit completed 2026-08-04. The live inventory contains 33 apps. Installation and browser access still do not prove a supported API or authorize writes. Detailed current evidence is in `test_reports/cp-shopify-audit-2026-08-04/audit-report.md`.
+
+The audit observed the Draft Signature Hoodie, active native Shopify Headless storefront connection, Modelize outputs/quota, inactive Flow gate, disabled Spin Studio state, permission-update gates for ZS-Spin-View/MyDesigns, Apliiq's separate sign-in boundary, and billing surfaces. No secret, setting, product, order, fulfillment, generation, publication, or charge was changed.
+
+The live inventory adds Printify, Printful, and ShineOn to the earlier 30-app Product Owner record. They are installed alternatives, not current Hoodie inventory or co-owners. Apliiq remains the selected Hoodie provider.
 
 Product Owner reconfirmed the same 30-app CP inventory on 2026-07-23 and
 reported that Shopify is logged in in the Product Owner's browser. That is
-installed-app evidence only. It does not establish an authenticated agent
-session, OAuth/Admin scopes, Storefront token access, app-private API access,
-or permission to read or change Shopify. The existing machine-readable
-inventory remains the normalized canonical list; shortened names in the new
-report (CJdropshipping, Zendrop, Tidio, Order Printer Pro, and teelaunch) map to
-their already recorded installed-app display names.
+historical installed-app evidence only. The 2026-08-04 audit supersedes its
+authentication and inventory-count findings, while the older machine-readable
+record remains the normalized snapshot of what the Product Owner reported at
+that time.
 
 Cycle 4 added a validated executable registry at `config/capability-registry.json`. Registry `ready` means the exact requested operation is evidence-listed for a verified callable surface; an installed name or selected adapter is insufficient.
 
@@ -21,29 +23,30 @@ reference, and authorizes no mutation. It is not a third-party app capability,
 not Storefront write access, and not wired into cart activation; the server
 activation boundary continues to pass a null resolver decision.
 
-## Live read-only attempt
+## Historical authentication attempts — superseded
 
 On 2026-07-22, the in-app browser had no open tab to claim, so Shopify Admin was opened in the same browser profile. Shopify presented its login screen. The existing Google account was available and selected without exposing its address. Shopify then stopped at “Verify your email to continue” and requested a six-digit email code.
 
 No Admin page, installed-app list, app settings, permission details, billing screen, product, order, customer, credential, or secret was opened. No code was read, entered, or recorded. No resend, charge, write, generation, publish, order, fulfillment, or message action was taken.
 
-Current handoff note: the earlier verification tab did not persist across the subsequent task-continuation boundary. Cycle 11 opened Shopify Admin in the managed browser and received the login lookup page with **Continue with Google**; no account was selected and no OTP was requested. This current result supersedes any assumption that the managed browser session is authenticated.
+The earlier verification tab did not persist across that task boundary. Cycle 11 later reached the login lookup page. Both authentication blockers were superseded on 2026-08-04 when the in-app Admin session was successfully audited.
 
-Exact human action: in the current Shopify login tab, choose **Continue with Google**, select the existing account, then enter Shopify's one-time code if prompted. Do not share or record the code.
+The current human action is Apliiq provider sign-in, recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
 
-Exact resume point: begin at Shopify installed-app inventory. Confirm the 30 Product Owner-reported names, then inspect Carlophillips Headless/Storefront-cart, Apliiq, Modelize, Spin Studio, ZS-Spin-View, MyDesigns, Flow, and CS Trending Products Finder read-only. Record each actual API/Admin/Flow/app-API/browser/human/unavailable surface, scopes by name only, billing boundary, Draft safety, and app-specific resume point. Stop before every mutation or charge.
+The current resume point is the Apliiq Hoodie mapping, followed by secure native Headless Storefront configuration and release-bound observation.
 
-The complete per-app Product Owner-observed matrix is machine-readable at `evidence/shopify/po-observed-installed-apps-2026-07-22.json` and validated by `contracts/shopify-app-inventory.schema.json`. Every entry records goal disposition, ownership/duplicate finding, access path to verify, agent authentication need, usage-fee risk, and safe next action. Every callable surface remains `none-auth-blocked`.
+The historical per-app Product Owner-observed matrix is machine-readable at `evidence/shopify/po-observed-installed-apps-2026-07-22.json` and validated by `contracts/shopify-app-inventory.schema.json`. Its `none-auth-blocked` values describe that dated snapshot, not the 2026-08-04 browser findings.
 
 ## Minimum-access model
 
 CP does not require direct agent access to every embedded app. The least-access
 target is:
 
-1. one Product Owner-approved CP custom app/connector for the exact Shopify
-   Admin read operations that cannot be served by Storefront;
-2. one server-only Storefront channel/token path for product, media, current
+1. the existing native Shopify Headless connection for the server-only
+   Storefront channel/token path covering product, media, current
    variant facts, and later separately approved cart operations;
+2. Shopify Admin or a narrow Product Owner-approved CP custom app only for an
+   exact operation that Storefront cannot serve;
 3. Shopify CLI Connector only for approved development diagnostics and scope
    inspection, never as production runtime authority;
 4. Apliiq read/mapping access for the Hoodie only when Shopify facts do not
@@ -54,10 +57,11 @@ target is:
    when a named PipelineRun job requires it and its source/cost/write boundary
    is separately approved.
 
-Carlophillips Headless is a storefront/channel candidate, CodexAutomation5 is a
-custom connector candidate, Shopify CLI Connector is development-only, and the
-Shopify Claude Connector is research-only until its scopes are proven. They are
-overlapping access candidates, not four simultaneous owners. CP's Commerce
+Native Shopify Headless is the storefront owner. The unlisted custom app also
+named Carlophillips Headless launched a dummy Example Domain and is not a
+storefront candidate. CodexAutomation5 and Shopify CLI Connector exposed only
+embedded extension shells, while Shopify Claude Connector is Claude-specific.
+None grants inferred Codex API authority. CP's Commerce
 Gateway, Product Release Record, Media Registry, and PipelineRun remain the
 canonical owners regardless of which connector is selected.
 
@@ -83,9 +87,9 @@ credit, or plan is approved for use by this record.
 
 Exact human gates:
 
-- The Product Owner authenticates the chosen CP custom app/connector and
-  Storefront channel, then permits read-only scope-name inspection without
-  sharing credential values.
+- The Product Owner permits secure configuration of the existing native
+  Headless Storefront connection and any exact Admin operation that Storefront
+  cannot serve, without sharing credential values in chat or reports.
 - The Product Owner separately places any approved server credential in an
   ignored local or Preview environment and records a durable evidence
   reference; installation or browser login is insufficient.
@@ -111,7 +115,9 @@ Every required capability must be verified as exactly one primary path:
 
 For each candidate, record authentication class (never values), least permissions, cost/credit boundary, Draft-versus-publish behavior, automation surface, read-only test result, exact human action, and exact code/workflow resume point. “Installed” means only that the Product Owner reported it in the Shopify UI.
 
-## Current Product Owner-supplied inventory
+## Historical Product Owner-supplied inventory — superseded by live audit
+
+The table below preserves the 2026-07-22 reported state. Its login-blocked findings are historical. Use the 2026-08-04 audit report for current browser capability findings.
 
 | Capability | Candidate apps currently reported installed | Current access finding | Audit action |
 |---|---|---|---|
@@ -122,11 +128,11 @@ For each candidate, record authentication class (never values), least permission
 | Customer / fulfillment operations | Messaging; Tidio; AfterShip Tracking; AfterShip Returns; Order Printer Pro; Loox Reviews | Unverified | Map tracking, support, returns, document, and review evidence paths; keep customer contact and order tests approval-gated |
 | Research | CS - Trending Products Finder | Product Owner reports installation; access remains unverified at Shopify login | Authenticate, then determine export/private API/browser access, cost, provenance, freshness, and suitability for trend-led briefs |
 
-Historical contradiction: Printify, Printful, and ShineOn appeared in an older conversation but are absent from the current Product Owner-supplied installed list. They remain **unavailable/unverified** until a current read-only observation proves otherwise.
+Historical note: Printify, Printful, and ShineOn appeared in an older conversation but were absent from the 2026-07-22 Product Owner list. The 2026-08-04 live inventory proves they are installed; it does not make any of them a current Hoodie provider or prove callable provider access.
 
-## Per-app candidate disposition
+## Historical per-app candidate disposition
 
-These are architecture recommendations pending live read-only verification, not procurement, configuration, uninstall, or access claims.
+These were architecture recommendations before live read-only verification. The current selected stack and observed surfaces are in the 2026-08-04 audit report; neither record authorizes procurement, configuration, uninstall, or writes.
 
 | Reported app | Build/reuse/buy disposition | Preferred access to verify | Current gate / ownership ruling |
 |---|---|---|---|

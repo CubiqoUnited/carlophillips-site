@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/schemas/end-to-end-capability-map.schema.json",
+  "title": "CARLOPHILLIPS end-to-end readiness index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "updatedAt", "authorityMode", "overallStatus", "canonicalTruth", "invariants", "stages"],
+  "properties": {
+    "schemaVersion": { "const": "cp.end-to-end-capability-map.v1" },
+    "updatedAt": { "type": "string", "format": "date" },
+    "authorityMode": { "const": "readiness-index-only" },
+    "overallStatus": { "enum": ["not_end_to_end_ready", "candidate", "verified"] },
+    "canonicalTruth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release", "media", "orchestration", "integrations"],
+      "properties": {
+        "release": { "type": "string", "minLength": 1 },
+        "media": { "type": "string", "minLength": 1 },
+        "orchestration": { "type": "string", "minLength": 1 },
+        "integrations": { "type": "string", "minLength": 1 }
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 13,
+      "items": { "$ref": "#/$defs/stage" }
+    }
+  },
+  "$defs": {
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "group", "status", "owner", "evidenceRefs", "blocker"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "group": { "enum": ["creation", "product", "media", "commerce", "display", "release", "sale", "post-sale", "learning", "operations"] },
+        "status": { "enum": ["blocked", "human_required", "partial", "succeeded", "verified"] },
+        "owner": { "type": "string", "minLength": 1 },
+        "evidenceRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "blocker": {
+          "type": ["object", "null"],
+          "required": ["code", "humanAction", "resumePoint"],
+          "additionalProperties": false,
+          "properties": {
+            "code": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+            "humanAction": { "type": "string", "minLength": 1 },
+            "resumePoint": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

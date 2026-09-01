@@ -44,7 +44,7 @@ function product(variantOrder = ['large', 'small']) {
     price: 128,
     compareAtPrice: 128,
     availableForSale: true,
-    observedVariants: variantOrder.map(key => variants[key]),
+    observedVariants: variantOrder.map((key) => variants[key]),
   };
 }
 
@@ -78,7 +78,7 @@ describe('product observation truth contract', () => {
       capabilityEvidence,
     });
     const reordered = product(['small', 'large']);
-    reordered.observedVariants = reordered.observedVariants.map(variant => ({
+    reordered.observedVariants = reordered.observedVariants.map((variant) => ({
       ...variant,
       selectedOptions: [...variant.selectedOptions].reverse(),
     }));
@@ -92,7 +92,11 @@ describe('product observation truth contract', () => {
 
     expect(first.variantFingerprint).toBe(second.variantFingerprint);
     expect(first.observationFingerprint).toBe(second.observationFingerprint);
-    expect(first.variants.every(variant => variant.referenceHash.startsWith('sha256:'))).toBe(true);
+    expect(
+      first.variants.every((variant) =>
+        variant.referenceHash.startsWith('sha256:')
+      )
+    ).toBe(true);
     expect(JSON.stringify(first)).not.toContain('gid://shopify');
   });
 
@@ -102,13 +106,15 @@ describe('product observation truth contract', () => {
       throw new Error('localeCompare must not be used for canonical ordering');
     };
     try {
-      expect(() => createProductObservation({
-        source: 'shopify',
-        environment: 'preview',
-        observedAt,
-        product: product(),
-        capabilityEvidence,
-      })).not.toThrow();
+      expect(() =>
+        createProductObservation({
+          source: 'shopify',
+          environment: 'preview',
+          observedAt,
+          product: product(),
+          capabilityEvidence,
+        })
+      ).not.toThrow();
     } finally {
       String.prototype.localeCompare = originalLocaleCompare;
     }
@@ -151,24 +157,28 @@ describe('product observation truth contract', () => {
       capabilityEvidence: null,
       review: { status: 'pending', evidence: null },
     });
-    expect(() => createProductObservation({
-      source: 'simulation',
-      environment: 'preview',
-      observedAt,
-      product: product(),
-    })).toThrow('simulation product observations are local-only');
-    expect(() => createProductObservation({
-      source: 'fixture',
-      environment: 'local',
-      observedAt,
-      product: product(),
-      capabilityEvidence,
-    })).toThrow('fixture product observations cannot carry capability evidence');
+    expect(() =>
+      createProductObservation({
+        source: 'simulation',
+        environment: 'preview',
+        observedAt,
+        product: product(),
+      })
+    ).toThrow('simulation product observations are local-only');
+    expect(() =>
+      createProductObservation({
+        source: 'fixture',
+        environment: 'local',
+        observedAt,
+        product: product(),
+        capabilityEvidence,
+      })
+    ).toThrow('fixture product observations cannot carry capability evidence');
   });
 
   it.each(['fixture', 'simulation'])(
     'blocks %s evidence without mutating a Draft release record',
-    source => {
+    (source) => {
       const releaseRecord = {
         state: 'draft',
         shopify: {
@@ -196,7 +206,7 @@ describe('product observation truth contract', () => {
         authoritative: false,
         candidateReleasePatch: null,
       });
-      expect(decision.blockers.map(item => item.code)).toContain(
+      expect(decision.blockers.map((item) => item.code)).toContain(
         'AUTHORITATIVE_SHOPIFY_OBSERVATION_REQUIRED'
       );
       expect(releaseRecord).toEqual(before);
@@ -220,7 +230,7 @@ describe('product observation truth contract', () => {
       reviewApproval: approvalFor(observation),
     });
 
-    expect(decision.blockers.map(item => item.code)).toContain(
+    expect(decision.blockers.map((item) => item.code)).toContain(
       'PRODUCT_OBSERVATION_INTEGRITY_MISMATCH'
     );
     expect(decision.candidateReleasePatch).toBeNull();
@@ -247,7 +257,7 @@ describe('product observation truth contract', () => {
       reviewApproval: approval,
     });
 
-    expect(decision.blockers.map(item => item.code)).toContain(
+    expect(decision.blockers.map((item) => item.code)).toContain(
       'PRODUCT_OBSERVATION_INTEGRITY_MISMATCH'
     );
     expect(decision.candidateReleasePatch).toBeNull();
@@ -262,7 +272,7 @@ describe('product observation truth contract', () => {
       capabilityEvidence,
     });
     const changedProduct = product();
-    changedProduct.observedVariants.forEach(variant => {
+    changedProduct.observedVariants.forEach((variant) => {
       variant.availableForSale = false;
     });
     changedProduct.availableForSale = false;
@@ -279,16 +289,45 @@ describe('product observation truth contract', () => {
     });
 
     expect(second.variantFingerprint).toBe(first.variantFingerprint);
-    expect(second.commerceFactsFingerprint).not.toBe(first.commerceFactsFingerprint);
-    expect(second.observationFingerprint).not.toBe(first.observationFingerprint);
+    expect(second.commerceFactsFingerprint).not.toBe(
+      first.commerceFactsFingerprint
+    );
+    expect(second.observationFingerprint).not.toBe(
+      first.observationFingerprint
+    );
   });
 
   it.each([
-    ['description', product => { product.description = 'Changed description.'; }],
-    ['vendor', product => { product.vendor = 'Changed vendor'; }],
-    ['product type', product => { product.productType = 'Changed type'; }],
-    ['tagline', product => { product.tagline = 'CHANGED'; }],
-    ['details', product => { product.details = ['Changed detail.']; }],
+    [
+      'description',
+      (product) => {
+        product.description = 'Changed description.';
+      },
+    ],
+    [
+      'vendor',
+      (product) => {
+        product.vendor = 'Changed vendor';
+      },
+    ],
+    [
+      'product type',
+      (product) => {
+        product.productType = 'Changed type';
+      },
+    ],
+    [
+      'tagline',
+      (product) => {
+        product.tagline = 'CHANGED';
+      },
+    ],
+    [
+      'details',
+      (product) => {
+        product.details = ['Changed detail.'];
+      },
+    ],
   ])('binds customer-visible %s into commerce facts', (_field, mutate) => {
     const reviewedProduct = product();
     const changedProduct = product();
@@ -309,8 +348,12 @@ describe('product observation truth contract', () => {
     });
 
     expect(changed.variantFingerprint).toBe(reviewed.variantFingerprint);
-    expect(changed.commerceFactsFingerprint).not.toBe(reviewed.commerceFactsFingerprint);
-    expect(changed.observationFingerprint).not.toBe(reviewed.observationFingerprint);
+    expect(changed.commerceFactsFingerprint).not.toBe(
+      reviewed.commerceFactsFingerprint
+    );
+    expect(changed.observationFingerprint).not.toBe(
+      reviewed.observationFingerprint
+    );
   });
 
   it('canonicalizes customer copy and rejects malformed reviewed-copy facts', () => {
@@ -333,15 +376,19 @@ describe('product observation truth contract', () => {
     });
 
     observation.product.details = [' valid-looking but non-canonical '];
-    expect(reviewProductObservation({
-      observation,
-      expectedHandle: 'test-product',
-      capabilityDecision: readyCapability,
-      reviewApproval: approvalFor(observation),
-    }).blockers.map(item => item.code)).toEqual(expect.arrayContaining([
-      'PRODUCT_OBSERVATION_INTEGRITY_MISMATCH',
-      'PRODUCT_OBSERVATION_FACTS_INVALID',
-    ]));
+    expect(
+      reviewProductObservation({
+        observation,
+        expectedHandle: 'test-product',
+        capabilityDecision: readyCapability,
+        reviewApproval: approvalFor(observation),
+      }).blockers.map((item) => item.code)
+    ).toEqual(
+      expect.arrayContaining([
+        'PRODUCT_OBSERVATION_INTEGRITY_MISMATCH',
+        'PRODUCT_OBSERVATION_FACTS_INVALID',
+      ])
+    );
   });
 
   it('requires capability evidence tied to the exact ready decision', () => {
@@ -364,19 +411,23 @@ describe('product observation truth contract', () => {
       },
     });
 
-    expect(decision.blockers.map(item => item.code)).toEqual(expect.arrayContaining([
-      'SHOPIFY_PRODUCT_READ_CAPABILITY_REQUIRED',
-      'PRODUCT_OBSERVATION_REVIEW_APPROVAL_REQUIRED',
-    ]));
+    expect(decision.blockers.map((item) => item.code)).toEqual(
+      expect.arrayContaining([
+        'SHOPIFY_PRODUCT_READ_CAPABILITY_REQUIRED',
+        'PRODUCT_OBSERVATION_REVIEW_APPROVAL_REQUIRED',
+      ])
+    );
   });
 
   it('does not create a Shopify candidate without durable capability evidence', () => {
-    expect(() => createProductObservation({
-      source: 'shopify',
-      environment: 'preview',
-      observedAt,
-      product: product(),
-    })).toThrow('durable product-read capability evidence');
+    expect(() =>
+      createProductObservation({
+        source: 'shopify',
+        environment: 'preview',
+        observedAt,
+        product: product(),
+      })
+    ).toThrow('durable product-read capability evidence');
   });
 
   it('rejects unrelated capability evidence and approval for another fingerprint or handle', () => {
@@ -398,66 +449,94 @@ describe('product observation truth contract', () => {
       },
     });
 
-    expect(decision.blockers.map(item => item.code)).toEqual(expect.arrayContaining([
-      'PRODUCT_OBSERVATION_CAPABILITY_EVIDENCE_MISMATCH',
-      'PRODUCT_OBSERVATION_REVIEW_APPROVAL_REQUIRED',
-    ]));
+    expect(decision.blockers.map((item) => item.code)).toEqual(
+      expect.arrayContaining([
+        'PRODUCT_OBSERVATION_CAPABILITY_EVIDENCE_MISMATCH',
+        'PRODUCT_OBSERVATION_REVIEW_APPROVAL_REQUIRED',
+      ])
+    );
     expect(decision.candidateReleasePatch).toBeNull();
   });
 
   it('rejects missing or duplicate raw variant references before hashing', () => {
     const missing = product();
     missing.observedVariants[0].id = '';
-    expect(() => createProductObservation({
-      source: 'shopify',
-      environment: 'preview',
-      observedAt,
-      product: missing,
-      capabilityEvidence,
-    })).toThrow('unique raw variant references');
+    expect(() =>
+      createProductObservation({
+        source: 'shopify',
+        environment: 'preview',
+        observedAt,
+        product: missing,
+        capabilityEvidence,
+      })
+    ).toThrow('unique raw variant references');
 
     const duplicate = product();
     duplicate.observedVariants[1].id = duplicate.observedVariants[0].id;
-    expect(() => createProductObservation({
-      source: 'shopify',
-      environment: 'preview',
-      observedAt,
-      product: duplicate,
-      capabilityEvidence,
-    })).toThrow('unique raw variant references');
+    expect(() =>
+      createProductObservation({
+        source: 'shopify',
+        environment: 'preview',
+        observedAt,
+        product: duplicate,
+        capabilityEvidence,
+      })
+    ).toThrow('unique raw variant references');
   });
 
   it.each([
-    ['duplicate Size/Color combination', value => {
-      value.observedVariants[1].selectedOptions = structuredClone(
-        value.observedVariants[0].selectedOptions
-      );
-    }],
-    ['missing option dimension', value => {
-      value.observedVariants[1].selectedOptions = [
-        value.observedVariants[1].selectedOptions.find(option => option.name === 'Color'),
-      ];
-    }],
-    ['extra option dimension', value => {
-      value.observedVariants[1].selectedOptions.push({ name: 'Material', value: 'Cotton' });
-    }],
-    ['duplicate option name', value => {
-      value.observedVariants[1].selectedOptions = [
-        { name: 'Color', value: 'Black' },
-        { name: 'color', value: 'Navy' },
-      ];
-    }],
-  ])('rejects %s before it can become a variant presentation', (_label, mutate) => {
-    const invalid = product();
-    mutate(invalid);
-    expect(() => createProductObservation({
-      source: 'shopify',
-      environment: 'preview',
-      observedAt,
-      product: invalid,
-      capabilityEvidence,
-    })).toThrow('Product observation facts invalid');
-  });
+    [
+      'duplicate Size/Color combination',
+      (value) => {
+        value.observedVariants[1].selectedOptions = structuredClone(
+          value.observedVariants[0].selectedOptions
+        );
+      },
+    ],
+    [
+      'missing option dimension',
+      (value) => {
+        value.observedVariants[1].selectedOptions = [
+          value.observedVariants[1].selectedOptions.find(
+            (option) => option.name === 'Color'
+          ),
+        ];
+      },
+    ],
+    [
+      'extra option dimension',
+      (value) => {
+        value.observedVariants[1].selectedOptions.push({
+          name: 'Material',
+          value: 'Cotton',
+        });
+      },
+    ],
+    [
+      'duplicate option name',
+      (value) => {
+        value.observedVariants[1].selectedOptions = [
+          { name: 'Color', value: 'Black' },
+          { name: 'color', value: 'Navy' },
+        ];
+      },
+    ],
+  ])(
+    'rejects %s before it can become a variant presentation',
+    (_label, mutate) => {
+      const invalid = product();
+      mutate(invalid);
+      expect(() =>
+        createProductObservation({
+          source: 'shopify',
+          environment: 'preview',
+          observedAt,
+          product: invalid,
+          capabilityEvidence,
+        })
+      ).toThrow('Product observation facts invalid');
+    }
+  );
 
   it('blocks duplicate hashes and inconsistent price, currency, and availability facts', () => {
     const observation = createProductObservation({
@@ -467,7 +546,8 @@ describe('product observation truth contract', () => {
       product: product(),
       capabilityEvidence,
     });
-    observation.variants[1].referenceHash = observation.variants[0].referenceHash;
+    observation.variants[1].referenceHash =
+      observation.variants[0].referenceHash;
     observation.variants[0].price = { amount: '-1', currency: 'usd' };
     observation.product.minimumPrice = 500;
     observation.product.maximumPrice = 100;
@@ -480,10 +560,12 @@ describe('product observation truth contract', () => {
       reviewApproval: approvalFor(observation),
     });
 
-    expect(decision.blockers.map(item => item.code)).toEqual(expect.arrayContaining([
-      'PRODUCT_OBSERVATION_INTEGRITY_MISMATCH',
-      'PRODUCT_OBSERVATION_FACTS_INVALID',
-    ]));
+    expect(decision.blockers.map((item) => item.code)).toEqual(
+      expect.arrayContaining([
+        'PRODUCT_OBSERVATION_INTEGRITY_MISMATCH',
+        'PRODUCT_OBSERVATION_FACTS_INVALID',
+      ])
+    );
     expect(decision.candidateReleasePatch).toBeNull();
   });
 
@@ -546,8 +628,10 @@ describe('product observation truth contract', () => {
     expect(attached.variantFingerprint).toBe(observation.variantFingerprint);
     expect(attached.observation).toEqual(observation);
     expect(JSON.stringify(attached.observation)).not.toContain('gid://');
-    expect(attached.observation.variants.every(variant => (
-      /^sha256:[a-f0-9]{64}$/.test(variant.referenceHash)
-    ))).toBe(true);
+    expect(
+      attached.observation.variants.every((variant) =>
+        /^sha256:[a-f0-9]{64}$/.test(variant.referenceHash)
+      )
+    ).toBe(true);
   });
 });

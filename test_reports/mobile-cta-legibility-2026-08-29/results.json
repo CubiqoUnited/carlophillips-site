@@ -1,0 +1,44 @@
+[
+  {
+    "viewport": {
+      "name": "stacked",
+      "width": 980,
+      "height": 1200
+    },
+    "gap": "20px",
+    "labels": [
+      {
+        "text": "View gallery11 images",
+        "fontSize": "12px",
+        "minHeight": "44px"
+      },
+      {
+        "text": "Order — €180",
+        "fontSize": "12px",
+        "minHeight": "44px"
+      }
+    ],
+    "consoleErrors": []
+  },
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    "gap": "12px",
+    "labels": [
+      {
+        "text": "View gallery11 images",
+        "fontSize": "9px",
+        "minHeight": "44px"
+      },
+      {
+        "text": "Order — €180",
+        "fontSize": "9px",
+        "minHeight": "44px"
+      }
+    ],
+    "consoleErrors": []
+  }
+]

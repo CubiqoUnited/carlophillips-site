@@ -12,7 +12,7 @@
     "candidateCount": { "type": "integer", "minimum": 0 },
     "visibleCount": { "type": "integer", "minimum": 0 },
     "excludedCount": { "type": "integer", "minimum": 0 },
-    "commerceAllowed": { "const": false },
+    "commerceAllowed": { "type": "boolean" },
     "reason": { "type": "string", "minLength": 1 },
     "excludedReasons": {
       "type": "array",

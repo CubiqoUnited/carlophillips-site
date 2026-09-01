@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "cp.release-approval.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+  "approval": "media",
+  "status": "approved",
+  "owner": "Product Owner",
+  "approvedAt": "2026-08-30T21:47:39Z",
+  "approvedTargetFingerprint": "sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79",
+  "scope": {
+    "canonicalStagingDeployment": "dpl_81EeMeruugZwzRF47zrfEPECp8fc",
+    "approvedImageCount": 12,
+    "approvedVideoCount": 2,
+    "browserEvidence": "test_reports/canonical-staging-ff0ab3b-2026-08-30/local-browser-evidence.json",
+    "browserEvidenceFingerprint": "sha256:36539c178a1e18bc3829739c635a1dfa8776bd7c090032a64d76c7d22b441253",
+    "approvedVideoFiles": [
+      {
+        "reference": "apps/web/public/media/signature-hoodie/videos/runway-motion-final.mp4",
+        "sha256": "385e641be6bcc2ac5b46eebdfae593d7c2eb38722f9a77beb22d30b60a4db22d"
+      },
+      {
+        "reference": "apps/web/public/media/signature-hoodie/videos/fit-silhouette-final.mp4",
+        "sha256": "3b63fb2e7dd343c5ee8abf7cdea56dda30b6676b5f186e1c56b1ace155fd2558"
+      }
+    ]
+  },
+  "decisionEvidence": [
+    "releases/cp-signature-hoodie-2026-001/approvals/2026-08-29-product-owner-staging-approval.md",
+    "Boss exact approval in the active Codex task on 2026-08-30 to rebind the unchanged media approval to release fingerprint sha256:a23e3d9da4319bcdf4eb71405afa0b90d3ff180f067d81e18d34dd7388f58d79"
+  ],
+  "statement": "The Product Owner rebound the unchanged approved media decision to the current S/M/L-only release fingerprint; no media fact or asset was changed by this rebind.",
+  "boundaries": {
+    "additionalMediaApproved": false,
+    "physicalProductTruthInferredFromGeneratedMedia": false
+  }
+}

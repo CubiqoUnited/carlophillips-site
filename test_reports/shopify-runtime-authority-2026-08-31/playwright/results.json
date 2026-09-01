@@ -1,0 +1,462 @@
+{
+  "config": {
+    "argv": [
+      "/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/private/tmp/cp-po-rule-agents-20260830/node_modules/.bin/playwright",
+      "test",
+      "tests/e2e/accessibility.spec.ts"
+    ],
+    "configFile": "/private/tmp/cp-po-rule-agents-20260830/playwright.config.ts",
+    "rootDir": "/private/tmp/cp-po-rule-agents-20260830/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/cp-po-rule-agents-20260830/test_reports/shopify-runtime-authority-2026-08-31/playwright/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop-chromium",
+        "name": "desktop-chromium",
+        "testDir": "/private/tmp/cp-po-rule-agents-20260830/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/private/tmp/cp-po-rule-agents-20260830/test_reports/shopify-runtime-authority-2026-08-31/playwright/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile-chromium",
+        "name": "mobile-chromium",
+        "testDir": "/private/tmp/cp-po-rule-agents-20260830/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "test_reports/shopify-runtime-authority-2026-08-31/playwright/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test_reports/shopify-runtime-authority-2026-08-31/playwright/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "yarn build && yarn start",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "npm_package_devDependencies_lint_staged": "15.5.2",
+        "CODEX_SANDBOX_NETWORK_DISABLED": "1",
+        "RUST_LOG": "warn",
+        "npm_package_devDependencies_prettier": "3.9.6",
+        "npm_package_scripts_audit_prod": "yarn audit --groups dependencies --level moderate",
+        "npm_package_scripts_test_e2e": "playwright test tests/e2e",
+        "npm_package_scripts_test_privacy": "playwright test tests/e2e/privacy-network.spec.ts",
+        "NODE": "/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "INIT_CWD": "/private/tmp/cp-po-rule-agents-20260830",
+        "npm_package_devDependencies_typescript": "5.9.3",
+        "npm_package_dependencies_lucide_react": "^0.516.0",
+        "npm_config_version_git_tag": "true",
+        "SHELL": "/bin/zsh",
+        "TERM": "dumb",
+        "TMPDIR": "/var/folders/n3/xq2x0d5j7klg9rfn9qxnrpfc0000gn/T/",
+        "npm_package_devDependencies_eslint_config_next": "15.5.21",
+        "npm_package_devDependencies__axe_core_playwright": "^4.13.0",
+        "npm_package_dependencies_server_only": "^0.0.1",
+        "npm_package_scripts_test_a11y": "playwright test tests/e2e/accessibility.spec.ts",
+        "npm_package_scripts_lint": "yarn lint:design-system && yarn lint:production-commerce && eslint . --max-warnings=0",
+        "npm_config_init_license": "MIT",
+        "npm_package_devDependencies_pdfjs_dist": "3.11.174",
+        "npm_package_scripts_dev": "yarn workspace @repo/web dev",
+        "MallocNanoZone": "0",
+        "npm_package_devDependencies__napi_rs_canvas": "^1.0.8",
+        "npm_package_dependencies__vercel_analytics": "2.0.1",
+        "npm_package_scripts_mock_assets": "node tools/mock-asset-factory.mjs",
+        "NO_COLOR": "1",
+        "npm_package_private": "true",
+        "npm_config_registry": "https://registry.yarnpkg.com",
+        "LC_ALL": "C.UTF-8",
+        "npm_package_devDependencies_stylelint_config_standard": "38.0.0",
+        "npm_package_dependencies_react_dom": "19.2.8",
+        "npm_package_dependencies__vercel_speed_insights": "2.0.0",
+        "npm_package_scripts_dev_webpack": "yarn workspace @repo/web dev",
+        "npm_package_readmeFilename": "README.md",
+        "npm_package_devDependencies_globals": "^16.2.0",
+        "USER": "edv",
+        "npm_package_description": "CARLOPHILLIPS is a Next.js 15 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.",
+        "npm_package_devDependencies_ajv": "^8.17.1",
+        "npm_package_scripts_verify": "yarn lint && yarn typecheck && yarn stylelint && yarn format:check && yarn verify:media-readiness && yarn test && yarn build-storybook && yarn audit:prod && yarn build",
+        "npm_package_scripts_lint_production_commerce": "node scripts/lint-production-commerce.mjs",
+        "npm_package_devDependencies__types_react": "19.2.18",
+        "COMMAND_MODE": "unix2003",
+        "npm_package_scripts_build_storybook": "yarn workspace @repo/design-system build-storybook",
+        "npm_package_scripts_mock_assets_ui": "node tools/mock-asset-factory-server.mjs",
+        "SSH_AUTH_SOCK": "/var/run/com.apple.launchd.3DopIHK9km/Listeners",
+        "npm_package_scripts_format_check": "prettier --check 'apps/**/*.{js,jsx,json,md,ts,tsx}' 'packages/**/*.{js,jsx,json,md,ts,tsx,css}' 'tests/**/*.{js,jsx,json,ts,tsx}' '.github/**/*.yml' '.lintstagedrc.json' '.eslintrc.cjs' '.prettierrc.cjs' '.stylelintrc.cjs' 'commitlint.config.cjs' 'tsconfig.json' 'turbo.json' 'vitest.config.ts'",
+        "CODEX_PERMISSION_PROFILE": ":workspace",
+        "__CF_USER_TEXT_ENCODING": "0x1F5:0x0:0x0",
+        "npm_package_resolutions_sharp": "0.35.3",
+        "npm_package_devDependencies_postcss": "8.5.25",
+        "npm_package_devDependencies_eslint": "8.57.1",
+        "npm_execpath": "/Users/edv/.cache/node/corepack/v1/yarn/1.22.22/bin/yarn.js",
+        "npm_package_devDependencies_turbo": "2.10.10",
+        "PAGER": "cat",
+        "npm_package_devDependencies__types_react_dom": "19.2.4",
+        "PATH": "/var/folders/n3/xq2x0d5j7klg9rfn9qxnrpfc0000gn/T/yarn--1788156159435-0.17082880958910251:/private/tmp/cp-po-rule-agents-20260830/node_modules/.bin:/Users/edv/.config/yarn/link/node_modules/.bin:/private/tmp/cp-po-rule-agents-20260830/node_modules/.bin:/Users/edv/.yarn/bin:/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/libexec/lib/node_modules/npm/bin/node-gyp-bin:/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/lib/node_modules/npm/bin/node-gyp-bin:/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node_modules/npm/bin/node-gyp-bin:/Users/edv/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Users/edv/.codex/tmp/arg0/codex-arg0YXjmVZ:/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/Users/edv/.local/bin:/Users/edv/.cargo/bin:/Users/edv/.lmstudio/bin:/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/Applications/ChatGPT.app/Contents/Resources",
+        "npm_config_argv": "{\"remain\":[],\"cooked\":[\"run\",\"test:a11y\"],\"original\":[\"test:a11y\"]}",
+        "ZSH_TMUX_AUTOSTART": "false",
+        "npm_package_scripts_typecheck": "tsc --noEmit",
+        "LaunchInstanceID": "F5562DE3-05D0-46E1-8500-C5A0CA028284",
+        "_": "/private/tmp/cp-po-rule-agents-20260830/node_modules/.bin/playwright",
+        "CODEX_THREAD_ID": "01a0536c-a911-73a0-9531-0aa9dbc59e11",
+        "npm_package_resolutions_nanoid": "3.3.18",
+        "PWD": "/private/tmp/cp-po-rule-agents-20260830",
+        "npm_package_devDependencies_tailwindcss": "^3.4.1",
+        "DISABLE_AUTO_UPDATE": "true",
+        "npm_package_scripts_test_watch": "vitest",
+        "npm_lifecycle_event": "test:a11y",
+        "LANG": "C.UTF-8",
+        "npm_package_packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+        "npm_package_name": "carlophillips-site",
+        "npm_package_scripts_verify_media_readiness": "node scripts/verify-media-readiness.mjs",
+        "npm_package_resolutions_lodash": "4.18.1",
+        "npm_package_scripts_start": "yarn workspace @repo/web start",
+        "npm_package_scripts_build": "yarn workspace @repo/web build",
+        "npm_config_version_commit_hooks": "true",
+        "XPC_FLAGS": "0x0",
+        "npm_package_devDependencies_vitest": "^2.1.9",
+        "CODEX_CI": "1",
+        "CP_A11Y_OUTPUT_DIR": "test_reports/shopify-runtime-authority-2026-08-31/playwright",
+        "npm_package_devDependencies_stylelint": "16.23.1",
+        "npm_config_bin_links": "true",
+        "ZSH_TMUX_AUTOSTARTED": "true",
+        "npm_package_dependencies_next": "15.5.21",
+        "XPC_SERVICE_NAME": "0",
+        "npm_package_version": "1.2.2",
+        "npm_package_devDependencies_autoprefixer": "^10.4.19",
+        "HOME": "/Users/edv",
+        "SHLVL": "3",
+        "npm_package_devDependencies_playwright": "1.55.0",
+        "npm_package_scripts_dev_no_reload": "yarn workspace @repo/web dev",
+        "CODEX_SHELL": "1",
+        "npm_package_scripts_test": "vitest run",
+        "npm_package_scripts_storybook": "yarn workspace @repo/design-system storybook",
+        "npm_package_devDependencies_pdfreader": "^3.0.8",
+        "npm_config_save_prefix": "^",
+        "npm_config_strict_ssl": "true",
+        "LOG_FORMAT": "json",
+        "npm_package_devDependencies_husky": "9.1.7",
+        "npm_package_devDependencies__commitlint_cli": "19.8.1",
+        "npm_package_dependencies__clerk_nextjs": "7.7.5",
+        "npm_package_scripts_verify_vercel_link": "node scripts/verify-vercel-link.mjs",
+        "npm_config_version_git_message": "v%s",
+        "GH_PAGER": "cat",
+        "npm_package_scripts_lint_design_system": "node scripts/lint-design-system.mjs",
+        "LOGNAME": "edv",
+        "YARN_WRAP_OUTPUT": "false",
+        "npm_lifecycle_script": "playwright test tests/e2e/accessibility.spec.ts",
+        "npm_package_devDependencies_ajv_formats": "^3.0.1",
+        "LC_CTYPE": "C.UTF-8",
+        "npm_package_dependencies_react": "19.2.8",
+        "NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S": "091a81603ff202a16ed56557709bf42d97caf8f0dd2e07ae9e26d7c014d71035",
+        "npm_config_version_git_sign": "",
+        "npm_config_ignore_scripts": "",
+        "npm_config_user_agent": "yarn/1.22.22 npm/? node/v24.19.0 darwin arm64",
+        "npm_package_devDependencies__types_node": "20.19.24",
+        "npm_package_devDependencies__playwright_test": "1.55.0",
+        "OSLogRateLimit": "64",
+        "npm_package_scripts_prepare": "husky",
+        "CODEX_SESSION_ID": "01a0536c-a911-73a0-9531-0aa9dbc59e11",
+        "GIT_PAGER": "cat",
+        "npm_package_resolutions_postcss": "8.5.25",
+        "npm_config_init_version": "1.0.0",
+        "npm_config_ignore_optional": "",
+        "SECURITYSESSIONID": "186b8",
+        "npm_package_devDependencies__commitlint_config_conventional": "19.8.1",
+        "npm_package_scripts_stylelint": "stylelint 'packages/design-system/styles/**/*.css'",
+        "npm_package_workspaces_0": "apps/*",
+        "CODEX_INTERNAL_ORIGINATOR_OVERRIDE": "Codex Desktop",
+        "COLORTERM": "",
+        "npm_node_execpath": "/Users/edv/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "npm_package_workspaces_1": "packages/*",
+        "npm_config_version_tag_prefix": "v",
+        "BROWSERSLIST_IGNORE_OLD_DATA": "true",
+        "COMMERCE_DATA_MODE": "fixture",
+        "NEXT_PUBLIC_COMMERCE_ENVIRONMENT": "local",
+        "NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS": "true",
+        "NEXT_PUBLIC_SHOW_PRODUCTS": "true",
+        "NEXT_PUBLIC_STAGING_REVIEW": "true",
+        "CP_ADMIN_REVIEW_TOKEN": "qa-review-token"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "accessibility.spec.ts",
+      "file": "accessibility.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "WCAG A/AA and browser health: /",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop-chromium",
+              "projectName": "desktop-chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2972,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-31T06:02:48.894Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddd864604af8a6a0198f-7e046f68e5d83525f0d5",
+          "file": "accessibility.spec.ts",
+          "line": 7,
+          "column": 7
+        },
+        {
+          "title": "WCAG A/AA and browser health: /product/carlophillips-signature-hoodie",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop-chromium",
+              "projectName": "desktop-chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 971,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-31T06:02:51.938Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddd864604af8a6a0198f-a5582b5f19be5b030763",
+          "file": "accessibility.spec.ts",
+          "line": 7,
+          "column": 7
+        },
+        {
+          "title": "WCAG A/AA and browser health: /contact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop-chromium",
+              "projectName": "desktop-chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 887,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-31T06:02:52.913Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddd864604af8a6a0198f-12d8cd073d2b8fd18cb4",
+          "file": "accessibility.spec.ts",
+          "line": 7,
+          "column": 7
+        },
+        {
+          "title": "WCAG A/AA and browser health: /",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chromium",
+              "projectName": "mobile-chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3148,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-31T06:02:53.984Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddd864604af8a6a0198f-2dde57d123b072b5bc12",
+          "file": "accessibility.spec.ts",
+          "line": 7,
+          "column": 7
+        },
+        {
+          "title": "WCAG A/AA and browser health: /product/carlophillips-signature-hoodie",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chromium",
+              "projectName": "mobile-chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1067,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-31T06:02:57.208Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddd864604af8a6a0198f-3e8862d656cfafbaf4d8",
+          "file": "accessibility.spec.ts",
+          "line": 7,
+          "column": 7
+        },
+        {
+          "title": "WCAG A/AA and browser health: /contact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chromium",
+              "projectName": "mobile-chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 914,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-31T06:02:58.279Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddd864604af8a6a0198f-800e7b597a162b0030a6",
+          "file": "accessibility.spec.ts",
+          "line": 7,
+          "column": 7
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-08-31T06:02:39.779Z",
+    "duration": 19448.183,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

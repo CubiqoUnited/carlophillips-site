@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/schemas/operational-event.schema.json",
+  "title": "CARLOPHILLIPS append-only operational event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "eventId",
+    "aggregateType",
+    "aggregateReference",
+    "eventType",
+    "status",
+    "environment",
+    "actor",
+    "occurredAt",
+    "recordedAt",
+    "evidenceRefs",
+    "dataClassification",
+    "previousEventHash",
+    "eventHash"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.operational-event.v1" },
+    "eventId": { "type": "string", "minLength": 1 },
+    "aggregateType": {
+      "enum": ["brief", "job", "run", "product", "sample", "media", "release", "order", "payment", "fulfillment", "shipment", "support", "return", "refund", "review", "analytics", "integration", "incident"]
+    },
+    "aggregateReference": { "type": "string", "minLength": 1 },
+    "eventType": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": ["observed", "attempted", "denied", "pending", "running", "human_required", "succeeded", "failed", "reconciled", "withdrawn", "rolled_back"]
+    },
+    "environment": { "enum": ["local", "preview", "production", "external"] },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "reference"],
+      "properties": {
+        "type": { "enum": ["human", "agent", "system", "provider"] },
+        "reference": { "type": "string", "minLength": 1 }
+      }
+    },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "recordedAt": { "type": "string", "format": "date-time" },
+    "commandId": { "type": ["string", "null"] },
+    "evidenceRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "dataClassification": { "enum": ["public", "internal", "confidential", "restricted"] },
+    "previousEventHash": { "type": ["string", "null"] },
+    "eventHash": { "type": "string", "minLength": 1 }
+  }
+}

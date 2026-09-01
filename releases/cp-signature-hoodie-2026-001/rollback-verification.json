@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "cp.rollback-verification.v1",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "candidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+  "recordedAt": "2026-08-30T10:39:34Z",
+  "strategy": "withdraw-release",
+  "actor": "Codex task /root under the Product Owner's explicit go-live authorization",
+  "productionBefore": {
+    "domain": "www.carlophillips.com",
+    "deploymentId": "dpl_6D6ekBNhZLJwvcMZxCzUoZLQ2mzr",
+    "gitCommit": "1b5c6ceb01699d622be1f4ade3ce172d4404991a",
+    "readyState": "READY"
+  },
+  "fallback": {
+    "deploymentId": "dpl_H62KvG3eV9MtyZCbYTAMAoL1vRt5",
+    "url": "https://carlophillips-site-fwu227m0p-cubiqo-projects-d7156840.vercel.app",
+    "target": "production",
+    "readyState": "READY",
+    "artifactKind": "safe-fallback",
+    "buildEnvironment": "production",
+    "checkoutEnabled": false,
+    "cartUiEnabled": false,
+    "metadataCandidateCommit": "ff0ab3b8bd8bd50339fb4437207754d93d1f0cd0",
+    "customerDomainsAssigned": false,
+    "genericProjectAlias": "https://carlophillips-site-cubiqo-projects-d7156840.vercel.app"
+  },
+  "verification": {
+    "productionUnchanged": true,
+    "desktopHomeHttp": 200,
+    "mobileHomeHttp": 200,
+    "desktopProductHttp": 200,
+    "mobileProductHttp": 200,
+    "productPurchasable": false,
+    "productStatusCopy": "This piece is currently unavailable.",
+    "checkoutProbeHttp": 409,
+    "checkoutProbeReason": "PRODUCT_RELEASE_NOT_RELEASED",
+    "shopifyCheckoutWritesInvoked": false,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestFailures": 0,
+    "frameworkOverlay": false,
+    "horizontalOverflow": false,
+    "browserEvidence": "test_reports/production-safe-fallback-ff0ab3b-2026-08-30/local-browser-evidence.json",
+    "browserEvidenceSha256": "sha256:4749ec6e66cbf4ad7744fc877bca5d8595f0b4e8569c08c15fc195780cb77d46",
+    "screenshots": {
+      "desktopHome": "sha256:552944b931a8ad612b4bc23d22f9bfafa8a11b519755b427898f59efd8373ffc",
+      "mobileHome": "sha256:6de645808e9cb87d7574005a7e7a3cf0a53f2fc9af2e2e2e684ff28247dc8f5a",
+      "desktopProduct": "sha256:27fe875a053e432997897a026454be8123c0e90b785477ffd51ac42dcd962054",
+      "mobileProduct": "sha256:83eb95bec52acbeba6a8f08fc031fbbd9455f751855b2e604e8741ce93783d3b"
+    }
+  },
+  "boundaries": {
+    "productionAliasChanged": false,
+    "shopifyProductStateChanged": false,
+    "orderCreated": false,
+    "paymentCreated": false,
+    "fulfillmentChanged": false
+  },
+  "authority": "rollback-path-verification-only_no-production-promotion-or-release-authority"
+}

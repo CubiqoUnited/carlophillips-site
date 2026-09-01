@@ -1,14 +1,25 @@
 import './globals.css';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
+import { designSystemRuntimeContract } from '@/lib/design-system/runtime-contract';
+import { SitePoliciesFooter } from '@/components/storefront/site-policies-footer';
+import { ThemeStyle } from '@/components/theme/theme-style';
+import { SiteObservability } from '@/components/analytics/site-observability';
+import { publicIndexingEnabled, siteConfig } from '@/lib/site/site-config';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600'],
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['300', '400', '500', '600'],
+});
 
 // SEO and Metadata Configuration
-const siteConfig = {
-  name: 'CARLOPHILLIPS',
-  tagline: 'Gesture of Luxury',
-  description: 'A product-led CARLOPHILLIPS storefront with release-gated Shopify commerce truth.',
-  url: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.carlophillips.com',
-  locale: 'en_US',
-  type: 'website',
-  twitterHandle: '@carlophillips',
+const metadataConfig = {
   keywords: [
     'premium essentials',
     'premium apparel',
@@ -23,10 +34,10 @@ export const metadata = {
   // Basic Metadata
   title: `${siteConfig.name} | ${siteConfig.tagline}`,
   description: siteConfig.description,
-  keywords: siteConfig.keywords,
+  keywords: metadataConfig.keywords,
   
   // Canonical URL
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(siteConfig.baseUrl),
   alternates: {
     canonical: '/',
   },
@@ -35,15 +46,15 @@ export const metadata = {
   openGraph: {
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
-    url: siteConfig.url,
+    url: siteConfig.baseUrl,
     siteName: siteConfig.name,
     locale: siteConfig.locale,
-    type: siteConfig.type,
+    type: 'website',
     images: [
       {
         url: '/opengraph-image',
-        width: 1200,
-        height: 630,
+        width: designSystemRuntimeContract.openGraph.size.width,
+        height: designSystemRuntimeContract.openGraph.size.height,
         alt: `${siteConfig.name} - ${siteConfig.tagline}`,
       },
     ],
@@ -54,18 +65,16 @@ export const metadata = {
     card: 'summary_large_image',
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
-    site: siteConfig.twitterHandle,
-    creator: siteConfig.twitterHandle,
     images: ['/opengraph-image'],
   },
   
   // Robots
   robots: {
-    index: true,
-    follow: true,
+    index: publicIndexingEnabled,
+    follow: publicIndexingEnabled,
     googleBot: {
-      index: true,
-      follow: true,
+      index: publicIndexingEnabled,
+      follow: publicIndexingEnabled,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
@@ -98,13 +107,13 @@ export const metadata = {
 
 // Viewport Configuration
 export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
+  width: designSystemRuntimeContract.viewport.width,
+  initialScale: designSystemRuntimeContract.viewport.initialScale,
+  maximumScale: designSystemRuntimeContract.viewport.maximumScale,
+  userScalable: designSystemRuntimeContract.viewport.userScalable,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#000000' },
-    { media: '(prefers-color-scheme: dark)', color: '#000000' },
+    { media: designSystemRuntimeContract.media.lightScheme, color: designSystemRuntimeContract.theme.canvas },
+    { media: designSystemRuntimeContract.media.darkScheme, color: designSystemRuntimeContract.theme.canvas },
   ],
 };
 
@@ -114,58 +123,43 @@ const organizationJsonLd = {
   '@type': 'Organization',
   name: siteConfig.name,
   description: siteConfig.description,
-  url: siteConfig.url,
-  logo: `${siteConfig.url}/icon.svg`,
-  sameAs: [
-    'https://instagram.com/carlophillips',
-    'https://tiktok.com/@carlophillips',
-    'https://pinterest.com/carlophillips',
-  ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    contactType: 'customer service',
-    availableLanguage: ['English'],
-  },
+  url: siteConfig.baseUrl,
+  logo: `${siteConfig.baseUrl}/icon.svg`,
 };
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: siteConfig.name,
-  url: siteConfig.url,
+  url: siteConfig.baseUrl,
   description: siteConfig.description,
   inLanguage: 'en-US',
 };
 
 export default function RootLayout({ children }) {
+  const observabilityEnabled = process.env.NEXT_PUBLIC_VERCEL_OBSERVABILITY_ENABLED === 'true';
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`${inter.className} ${cormorantGaramond.className}`}>
       <head>
-        {/* Preconnect to external resources */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://cdn.shopify.com" />
-        
-        {/* DNS Prefetch for performance */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://cdn.shopify.com" />
-        
+        <ThemeStyle />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationJsonLd, websiteJsonLd]) }}
         />
       </head>
-      <body className="min-h-screen bg-black text-white antialiased">
+      <body>
         {/* Skip to main content for accessibility */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:outline-none"
+          className="cp-visually-hidden cp-skip-link"
         >
           Skip to main content
         </a>
         
         {children}
+        <SitePoliciesFooter />
+        <SiteObservability enabled={observabilityEnabled} />
       </body>
     </html>
   );

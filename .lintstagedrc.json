@@ -1,0 +1,8 @@
+{
+  "*.{js,jsx,ts,tsx}": [
+    "eslint --max-warnings=0 --ignore-pattern '!packages/design-system/.storybook' --ignore-pattern '!packages/design-system/.storybook/**'",
+    "prettier --write"
+  ],
+  "*.css": ["stylelint --fix", "prettier --write"],
+  "*.{json,md,yml,yaml}": "prettier --write"
+}

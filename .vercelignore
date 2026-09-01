@@ -1,0 +1,49 @@
+# Local dependencies and framework output
+node_modules/
+.next/
+**/.next/
+out/
+coverage/
+
+# Local configuration and credentials
+.env
+.env.*
+.vercel/
+.git/
+.DS_Store
+.github/
+
+# Recovered design exports and temporary working files
+chat-images/
+tmp/
+tmp_make_chat_pdf.py
+
+# Local QA/governance evidence is committed but not runtime application input
+test_reports/
+tests/
+reports/
+docs/
+memory/
+test_result.md
+
+# Draft campaign studies are local-only and must not enter Preview/Production artifacts
+public/campaigns/draft-pod/
+
+# Local tool metadata
+.emergent/
+.vscode/
+.idea/
+*.log
+
+# Non-runtime design and production working files
+casting/
+design/
+design-deliverables/
+deliverables/
+downloads/
+drafts/
+outputs/
+runs/
+output/
+ASI_ARTIFACTS/
+apps/web/src/fixtures/unverified-media/

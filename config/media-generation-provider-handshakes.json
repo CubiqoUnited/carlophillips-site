@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "cp.media-provider-handshakes.v1",
+  "providers": [
+    {
+      "id": "modelize",
+      "label": "Modelize",
+      "lane": "fashion-imagery",
+      "accessMode": "browser-app",
+      "officialReference": "existing-reviewed-browser-evidence",
+      "credentialEnv": null
+    },
+    {
+      "id": "moda",
+      "label": "MODA",
+      "lane": "fashion-imagery",
+      "accessMode": "shopify-app",
+      "officialReference": "https://apps.shopify.com/moda-ai",
+      "credentialEnv": null
+    },
+    {
+      "id": "sugata",
+      "label": "Sugata",
+      "lane": "fashion-imagery",
+      "accessMode": "browser-app",
+      "officialReference": "https://sugatastudio.app/en",
+      "credentialEnv": null
+    },
+    {
+      "id": "tayla",
+      "label": "TAYLA",
+      "lane": "fashion-imagery",
+      "accessMode": "enterprise-contact",
+      "officialReference": "https://www.trytayla.ai/",
+      "credentialEnv": null
+    },
+    {
+      "id": "raspberry-ai",
+      "label": "Raspberry AI",
+      "lane": "fashion-imagery",
+      "accessMode": "api-documentation-required",
+      "officialReference": "provider-contract-required",
+      "credentialEnv": null
+    },
+    {
+      "id": "productspin-ai",
+      "label": "ProductSpin AI",
+      "lane": "spin",
+      "accessMode": "api-documentation-required",
+      "officialReference": "provider-contract-required",
+      "credentialEnv": null
+    },
+    {
+      "id": "instant-3d",
+      "label": "Instant 3D",
+      "lane": "model-3d",
+      "accessMode": "api-documentation-required",
+      "officialReference": "provider-contract-required",
+      "credentialEnv": null
+    },
+    {
+      "id": "spacecheck",
+      "label": "Spacecheck",
+      "lane": "model-3d",
+      "accessMode": "api-documentation-required",
+      "officialReference": "provider-contract-required",
+      "credentialEnv": null
+    },
+    {
+      "id": "runway",
+      "label": "Runway",
+      "lane": "runway-motion",
+      "accessMode": "official-api",
+      "officialReference": "https://docs.dev.runwayml.com/api/",
+      "credentialEnv": "RUNWAYML_API_SECRET"
+    }
+  ]
+}

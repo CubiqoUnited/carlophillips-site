@@ -2,7 +2,7 @@
 
 CARLOPHILLIPS is a Next.js 15 presentation layer intended to use Shopify as the source of truth for product, variant, price, availability, cart, and checkout data, with approved POD providers handling production and fulfillment.
 
-The repository is **not production-ready**. The product-led storefront keeps products hidden by default. Its home composition restores the restrained, full-height visual direction of the production-aligned `9e1f5c3` implementation without restoring that version's mock catalog, invented product media, or browser cart mutations. Home, product, catalog (`/shop` and `/collections`), and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. Home receives a minimized summary from the same catalog decision, so its featured link and counts cannot bypass catalog policy. A Shopify observation alone never authorizes visibility or commerce. Cart operations and checkout remain inactive. See `STATUS.md` for verified facts and blockers.
+The repository is **not production-ready**. The product-led storefront keeps products hidden by default. Its home composition restores the restrained, full-height visual direction of the production-aligned `9e1f5c3` implementation without restoring that version's mock catalog, invented product media, or browser cart mutations. Home, product, catalog (`/shop` and `/collections`), and bag routes use source-labeled server boundaries: explicit local fixture mode supports layout review, Preview permits only evidence-complete Staged-or-later private review, and production denies every product without a complete Released Product Release Record. Home receives a minimized summary from the same catalog decision, so its featured link and counts cannot bypass catalog policy. A Shopify observation alone never authorizes visibility or commerce. This candidate removes the historical single-product launch bypass and makes the checkout endpoint perform no Shopify read or mutation until a canonical Released record and independent checkout authorization exist. The currently deployed Production artifact predates that containment and was observed exposing checkout, so a separately approved hotfix or verified-safe rollback remains urgent. See `STATUS.md` for verified facts and blockers.
 
 Read-only Shopify results become `cp.product-observation.v1` candidates only
 when they carry the exact evidence reference of a verified product-read
@@ -51,15 +51,16 @@ a current approved match; unrelated or unapproved extras are discarded.
 
 ## Current product state
 
-- One real Apliiq/Shopify Signature Hoodie POC is documented as Draft with purchasing disabled.
+- One real Apliiq/Shopify Signature Hoodie POC is documented as Staged. Preview may rehearse checkout without a Shopify cart, payment, order, inventory, email, or fulfillment write; customer purchasing remains release-gated.
+- The currently deployed Production artifact predates the Staged candidate. It remains historical runtime evidence, not immutable approval or rollback evidence for the current candidate.
 - A prior Shopify audit recorded 12 products with image-only media, but the broader catalog is later reuse/scale input and is not active or release-proven in the current UI.
 - The resolved sequence is Signature Hoodie through the complete reusable system first, then a meaningfully different product, then approved catalog expansion.
-- Vercel production and preview were last observed returning HTTP 402 `DEPLOYMENT_DISABLED`; local work continues while hosting access is restored.
+- Vercel Production and the exact PR #9 Preview were read-only observed `READY` on 2026-08-14. GitHub still reports a failed blocked-account Vercel status on PR #9, and no merge or deployment is authorized by that observation.
 
 ## Stack
 
 - Next.js 15.5.21 Maintenance LTS App Router and React/React DOM 19.2.8
-- Tailwind CSS 3 and Framer Motion
+- A versioned Primitive → Semantic → Component CSS token system
 - Server-only Shopify Storefront GraphQL adapter for product/media reads
 - Yarn Classic 1.22.22
 - ESLint and Vitest
@@ -86,6 +87,23 @@ NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS=true
 ```
 
 This exposes a labeled, disabled review page. It does not fetch the Hoodie from Shopify and does not authorize publication or checkout.
+
+### Admin control plane
+
+The protected `/admin` prototype reads sanitized committed artifacts. It is absent from public navigation and emits `noindex`. All operational screens remain read-only. The Product Owner-only Theme screen is the sole bounded local exception: it may atomically save exactly four validated values to root `theme.json` on a local `codex/*` branch. That save is an uncommitted repository proposal only; it creates no commit, PR, Preview, merge, publication, or Production change.
+
+Use distinct random local tokens of at least 32 characters in an ignored `.env.local`:
+
+```bash
+CP_ADMIN_REVIEW_ENABLED=true
+CP_ADMIN_REVIEW_TOKEN=replace-with-a-random-local-token-at-least-32-characters
+CP_ADMIN_PRODUCT_OWNER_TOKEN=replace-with-a-different-random-local-token-at-least-32-characters
+CP_ADMIN_THEME_WRITES_ENABLED=false
+```
+
+Send `Authorization: Bearer <token>` from a local test client. General reviewers cannot see or open Theme. Theme writes additionally require `CP_ADMIN_THEME_WRITES_ENABLED=true`, same-origin POST, `NEXT_PUBLIC_COMMERCE_ENVIRONMENT=local`, and a temporary `codex/*` branch.
+
+The isolated remote-auth adapter accepts a Clerk session only on Vercel Preview or Production and only when the SDK keys and one immutable `user_...` Product Owner subject are all configured. Missing configuration, missing/expired sessions, every other identity, and every non-Vercel remote surface fail closed. After provisioning, the Product Owner entry point is `/admin/sign-in`, followed by `/admin/theme`. Remote Theme saves remain disabled: the current save implementation is local-filesystem-only and does not create a branch or pull request. “GitHub proposal adapter connected” means a reviewed server-side GitHub App credential can update only root `theme.json` on a new temporary `codex/*` branch, commit that one file, and open a draft PR without merge or Production rights. That adapter and real Preview QA are separate prerequisites before remote read/write can be called complete.
 
 ## Quality gates
 
@@ -121,6 +139,13 @@ Copy `.env.example` and supply values only in ignored local files or the appropr
 | `SHOPIFY_STOREFRONT_TOKEN` | Preferred server-only Storefront API token |
 | `SHOPIFY_CART_UI_ENABLED` | Server-only customer-cart UI gate; defaults false and grants no authority by itself |
 | `CORS_ORIGINS` | Exact comma-separated HTTP(S) origins allowed to call `/api` cross-origin; wildcards and paths are rejected |
+| `CP_ADMIN_REVIEW_ENABLED` | Enables the local-only read-only `/admin` review surface; every Vercel environment is denied |
+| `CP_ADMIN_REVIEW_TOKEN` | Server-only local bearer token with a minimum length of 32 characters; never use `NEXT_PUBLIC_` |
+| `CP_ADMIN_PRODUCT_OWNER_TOKEN` | Distinct server-only Product Owner bearer credential required to read or write Theme |
+| `CP_ADMIN_THEME_WRITES_ENABLED` | Explicit local feature-branch gate for atomic `theme.json` proposals; grants no commit/deploy authority |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk browser key provisioned by the approved Vercel integration; not an authorization decision by itself |
+| `CLERK_SECRET_KEY` | Server-only Clerk verification key; never expose or commit its value |
+| `CP_ADMIN_PRODUCT_OWNER_USER_ID` | Exact immutable Clerk `user_...` subject allowed to access the remote admin surface |
 
 ## Response security
 
@@ -132,13 +157,17 @@ Storefront pages deny third-party framing with both `X-Frame-Options: DENY` and 
 app/                 routes; home, product, catalog, and bag/cart have dedicated server boundaries
 components/storefront/ VOLLBAK-aligned home receiving minimized server truth
 components/commerce/ reusable, non-buyable product/catalog and truthful bag presentation
+components/admin/    local operational projection plus Product Owner-only Theme proposal UI
 contracts/           machine-readable truth, observation, review, and release schemas
+config/end-to-end-capability-map.json readiness index; never overrides canonical truth artifacts
 releases/            evidence-bound release records and media manifests
 lib/config/          environment/release visibility policy
 lib/commerce/        provider-neutral product/catalog/cart-activation gateways, policy, and view models
 lib/providers/       server-only provider adapters
 lib/shopify/         pure response normalization and read-only Storefront queries
 lib/orchestration/   creation jobs, PipelineRun state, capability policy
+lib/admin/           local access policy and sanitized server read model
+lib/theme/           exact four-token contract, CSS bridge, and local branch proposal boundary
 lib/releases/        non-mutating release-transition policy and exact blockers
 runs/                durable local simulations and blocker/resume evidence
 tests/               automated fitness and commerce-contract tests

@@ -3,9 +3,9 @@ import { createShopifyProductLoader } from '../lib/providers/shopify/product-loa
 
 describe('server Shopify product loader contract', () => {
   it('requires configuration before making a request', () => {
-    expect(() => createShopifyProductLoader({ storeDomain: '', storefrontToken: '' })).toThrowError(
-      expect.objectContaining({ code: 'SHOPIFY_NOT_CONFIGURED' }),
-    );
+    expect(() =>
+      createShopifyProductLoader({ storeDomain: '', storefrontToken: '' })
+    ).toThrowError(expect.objectContaining({ code: 'SHOPIFY_NOT_CONFIGURED' }));
   });
 
   it('requests one product by handle and normalizes the response', async () => {
@@ -27,15 +27,19 @@ describe('server Shopify product loader contract', () => {
             images: { edges: [] },
             media: { edges: [] },
             variants: {
-              edges: [{
-                node: {
-                  id: 'gid://shopify/ProductVariant/1',
-                  title: 'Default Title',
-                  availableForSale: true,
-                  price: { amount: '128.00', currencyCode: 'USD' },
-                  selectedOptions: [{ name: 'Title', value: 'Default Title' }],
+              edges: [
+                {
+                  node: {
+                    id: 'gid://shopify/ProductVariant/1',
+                    title: 'Default Title',
+                    availableForSale: true,
+                    price: { amount: '128.00', currencyCode: 'USD' },
+                    selectedOptions: [
+                      { name: 'Title', value: 'Default Title' },
+                    ],
+                  },
                 },
-              }],
+              ],
             },
           },
         },
@@ -66,10 +70,16 @@ describe('server Shopify product loader contract', () => {
       },
     });
     expect(product.variantFingerprint).toMatch(/^sha256:[a-f0-9]{64}$/);
-    expect(product.observation.commerceFactsFingerprint).toMatch(/^sha256:[a-f0-9]{64}$/);
+    expect(product.observation.commerceFactsFingerprint).toMatch(
+      /^sha256:[a-f0-9]{64}$/
+    );
     const request = fetchImpl.mock.calls[0];
-    expect(request[0]).toBe('https://example.myshopify.com/api/2024-01/graphql.json');
-    expect(JSON.parse(request[1].body).variables).toEqual({ handle: 'observed-hoodie' });
+    expect(request[0]).toBe(
+      'https://example.myshopify.com/api/2024-01/graphql.json'
+    );
+    expect(JSON.parse(request[1].body).variables).toEqual({
+      handle: 'observed-hoodie',
+    });
     expect(request[1].cache).toBe('no-store');
   });
 
@@ -83,6 +93,8 @@ describe('server Shopify product loader contract', () => {
       }),
     });
 
-    await expect(loadProduct('observed-hoodie')).rejects.toMatchObject({ code: 'SHOPIFY_GRAPHQL_ERROR' });
+    await expect(loadProduct('observed-hoodie')).rejects.toMatchObject({
+      code: 'SHOPIFY_GRAPHQL_ERROR',
+    });
   });
 });

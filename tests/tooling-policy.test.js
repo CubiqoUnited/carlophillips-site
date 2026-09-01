@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import packageDocument from '../package.json';
 
@@ -23,5 +23,23 @@ describe('tooling and supported-runtime policy', () => {
     });
     expect(packageDocument.dependencies.axios).toBeUndefined();
     expect(packageDocument.dependencies.uuid).toBeUndefined();
+  });
+
+  it('keeps recovered exports, evidence, and credentials outside Vercel uploads', () => {
+    const ignored = readFileSync('.vercelignore', 'utf8');
+
+    for (const path of [
+      '.github/',
+      '.env.*',
+      '.git/',
+      '.vercel/',
+      'chat-images/',
+      'node_modules/',
+      'test_reports/',
+      'tmp/',
+      'tmp_make_chat_pdf.py',
+    ]) {
+      expect(ignored).toContain(path);
+    }
   });
 });

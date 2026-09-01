@@ -2,6 +2,20 @@
 
 Status: working product definition, not a production-readiness claim. Updated 2026-07-23.
 
+## Canonical runtime authority — supersedes conflicting release-gate text
+
+Shopify Admin is the sole runtime authority for product visibility, customer
+copy, price, inventory, availability, variants, cart, and hosted checkout.
+Public product, catalog, cart, and checkout paths must not depend on a Product
+Release Record, Draft/Staged/Approved/Released state, sample status, approval
+JSON, media-manifest fingerprint, or product/commerce fingerprint. The
+Signature Hoodie remains scoped to S/M/L; the server resolves each opaque
+selection against a fresh Shopify response and requires current availability.
+Same-origin, quantity 1–5, secret handling, trusted HTTPS checkout hosts, QA,
+deployment approval, rollback, and truthful lifecycle verification remain.
+Product Release Records below are historical/optional audit material only and
+have no customer-runtime authority.
+
 ## Objective
 
 CARLOPHILLIPS is the first proof of concept for a reusable premium POD-to-publish system. The experience layer is Next.js; Shopify remains commerce truth; approved POD providers supply manufacturable products and fulfillment mappings. The Signature Hoodie is the first complete acceptance journey through that system, not permission to reduce the product to one static PDP. Reusable interfaces and evidence records must support later products and brands without rebuilding the pipeline.
@@ -32,6 +46,14 @@ No fallback mock product or local-only cart may masquerade as a successful bound
 - Shopify-native image, video, external-video, and 3D records are rendered when real approved assets exist; each production candidate must satisfy its approved media matrix before release.
 - Spin/360, AR, try-on, on-model, campaign, and product-film claims stay absent until their source assets and rights are verified.
 
+## Admin Theme requirements
+
+- Theme editing is Product Owner-only and changes exactly four values: accent colour, corner radius, base spacing, and base text weight.
+- The sole editable authority is root `theme.json`; storefront semantic/component CSS must derive those values from it. The screen must never expose layout, component, section, page-structure, commerce, or release controls.
+- Accent proposals must preserve at least 4.5:1 contrast against both canonical dark canvases, and status meaning must never rely on accent colour alone.
+- A save is a same-origin, local-only, atomic, optimistic-revision-checked, uncommitted `codex/*` branch proposal. QA, commit, pull request, immutable Vercel Preview, Product Owner review, merge, and Production approval remain separate gates.
+- General review credentials cannot discover or read the Theme route. Vercel and non-local commerce environments deny Theme reads/writes; no theme action may write Production directly.
+
 ## Release gates
 
 - Products are hidden by default.
@@ -45,11 +67,14 @@ No fallback mock product or local-only cart may masquerade as a successful bound
 - Shopify variants are presented only as exact reviewed combinations with canonical dimensions, current availability, price, and opaque reference hashes bound to the release variant fingerprint. Controls remain disabled review information. Raw adapter maps are discarded, and cart mutation additionally requires an evidence-backed server-only resolver for the same fingerprint.
 - Resolver readiness consumes raw Shopify references only inside a `server-only` entry, re-derives current observation identity/facts, and proves exact one-to-one coverage. Its sanitized decision exposes no raw reference or selected mutation target and explicitly denies cart, checkout, and order authority. A locally verified resolver implementation is not a verified Storefront write capability.
 - The existing Storefront loader necessarily receives raw references before hashing them into an observation. The readiness wrapper is the sole production entry for the resolver computation, not the sole raw-ID recipient. It remains unwired: cart activation passes a null resolver decision until future server orchestration can provide a fresh raw load under every approval gate.
-- Cart activation accepts only an exact, durable-evidence-bound `shopify-storefront-cart` capability decision on the Storefront callable surface; an unrelated ready capability is insufficient.
+- Cart activation accepts only an exact, current, operationally verified `shopify-storefront-cart` capability decision on the Storefront callable surface; an unrelated ready capability is insufficient. Historical no-order evidence is `cart-write-test` only and must return `evidence_only`, never operational `cart-write` readiness.
 - Preview and production withhold missing, malformed, tampered, stale-variant, or stale-commerce-facts observations per product without leaking their payloads or withholding an otherwise eligible catalog candidate.
 - Shopify media is independently matched to approved Media Registry assets by a deterministic hash over render-relevant identity, type, canonical URL, and preview/fallback facts. Preview may render only the matched approved subset and must identify missing modalities. Production denies the product unless current approved bindings cover every required non-waived modality and required accessible fallback.
 - Customer cart UI requires a visible Shopify Gateway decision, matching Released record, an exact match between the current and release-bound variant fingerprints, a sellable mapped variant, evidence-backed Storefront `cart-write` capability, explicit Product Owner activation approval, and the server-only environment gate. Credentials, flags, or installed apps cannot satisfy the other prerequisites.
 - Checkout, payment, and order authority remain separate from cart eligibility. A cart-eligible decision must still return checkout disabled until a separate approved live proof exists.
+- Order-to-post-sale events must bind opaque order identity to the exact release, variant fingerprint, and environment; reject PII/raw provider references; preserve idempotency, monotonic sequence, timestamp order, and a recomputed hash chain; and enforce valid payment/order/POD/shipment/support/return/refund/review/reconciliation transitions. Observing a lifecycle event cannot create release, checkout, refund, publication, or Production authority.
+- A provider webhook may enter quarantine only after verification over its exact raw bytes, provider signature, allowlisted source/topic, delivery identity, bounded trigger time, body limits, and a durable replay claim. The verifier's result must be fingerprint-only: it returns no payload, raw shop or delivery identity, customer data, or lifecycle/release/checkout/refund/publication authority. Verification cannot itself sanitize a provider payload, create a lifecycle event, or authorize an external side effect.
+- An admin command may become an execution candidate only through a deterministic decision bound to the exact command fingerprint, authenticated actor and least-privilege grant, target fingerprint, environment, capability/operation, required approvals and evidence, fresh idempotency claim, ready append-only audit, exact connector evidence, TTL, cost ceiling, rollback where possible, and Product Owner control for Production mutation. The decision exposes no actor subject or target reference, invokes no connector, and creates no release, checkout, refund, or publication authority.
 - Release records move sequentially through Draft, Staged, Approved, and Released. No state may be skipped. Staged requires immutable candidate/build/private-staging and rollback-plan evidence; Approved requires complete product/media/fulfillment truth and approvals; Released requires a current Active Shopify observation and verified rollback evidence.
 - Production requires Product Owner approval plus direct evidence for domain, product/variant truth, checkout, payment, POD mapping, fulfillment, tracking, support, and returns.
 
@@ -78,3 +103,6 @@ The sequence is resolved by Product Owner intent:
 - Local desktop/mobile browser evidence exists with no relevant console errors.
 - Preview and production are separately configured and tested.
 - External human actions and exact code resume points are recorded.
+- Lifecycle duplicate, conflicting replay, tamper, stale/out-of-order, cross-release/variant/environment, PII/raw-reference, missing-authority, payment-failure, POD-rejection, shipment-delay, support, return/refund, review, and reconciliation-variance paths fail closed in deterministic tests before any provider ingress is connected.
+- Provider webhook verification fails closed for missing configuration/secret/store, body or HMAC tamper, missing/malformed headers, denied shop/topic, invalid/stale/future time, invalid JSON, replay, and replay-store failure; no network listener or lifecycle mutation is enabled by those tests.
+- Admin command policy tests prove malformed/pending/stale/overlong commands, unverified identity, actor/grant mismatch, missing/blocked capability, wrong operation, target/evidence mismatch, replay/conflict/unavailable idempotency, missing audit/connector, approval mismatch, spend ceiling, rollback, and non-owner Production mutation all fail closed before any executor exists.

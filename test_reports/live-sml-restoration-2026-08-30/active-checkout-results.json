@@ -1,0 +1,202 @@
+[
+  {
+    "viewport": "desktop-active-checkout",
+    "status": 200,
+    "title": "Product Review | CARLOPHILLIPS",
+    "hasUnavailable": false,
+    "hasPrice": true,
+    "hasSmall": true,
+    "hasMedium": true,
+    "hasLarge": true,
+    "unsupportedSizes": [],
+    "buttons": [
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "VIEW GALLERY",
+        "disabled": false
+      },
+      {
+        "text": "S",
+        "disabled": false
+      },
+      {
+        "text": "M",
+        "disabled": false
+      },
+      {
+        "text": "L",
+        "disabled": false
+      },
+      {
+        "text": "CONTINUE TO CHECKOUT $128",
+        "disabled": false
+      },
+      {
+        "text": "Size guide",
+        "disabled": false
+      }
+    ],
+    "forms": [
+      {
+        "action": "/api/checkout",
+        "method": "post"
+      }
+    ],
+    "imageCount": 12,
+    "videoCount": 0,
+    "horizontalOverflow": 0,
+    "consoleErrors": [],
+    "failedRequests": [
+      "http://localhost:3210/?_rsc=up7hsyYH7R1XQIHD",
+      "http://localhost:3210/shop?_rsc=up7hsyYH7R1XQIHD",
+      "http://localhost:3210/bag?_rsc=up7hsyYH7R1XQIHD"
+    ]
+  },
+  {
+    "viewport": "mobile-active-checkout",
+    "status": 200,
+    "title": "Product Review | CARLOPHILLIPS",
+    "hasUnavailable": false,
+    "hasPrice": true,
+    "hasSmall": true,
+    "hasMedium": true,
+    "hasLarge": true,
+    "unsupportedSizes": [],
+    "buttons": [
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "",
+        "disabled": false
+      },
+      {
+        "text": "VIEW GALLERY",
+        "disabled": false
+      },
+      {
+        "text": "S",
+        "disabled": false
+      },
+      {
+        "text": "M",
+        "disabled": false
+      },
+      {
+        "text": "L",
+        "disabled": false
+      },
+      {
+        "text": "CONTINUE TO CHECKOUT $128",
+        "disabled": false
+      },
+      {
+        "text": "Size guide",
+        "disabled": false
+      }
+    ],
+    "forms": [
+      {
+        "action": "/api/checkout",
+        "method": "post"
+      }
+    ],
+    "imageCount": 12,
+    "videoCount": 0,
+    "horizontalOverflow": 0,
+    "consoleErrors": [],
+    "failedRequests": [
+      "http://localhost:3210/?_rsc=up7hsyYH7R1XQIHD",
+      "http://localhost:3210/shop?_rsc=up7hsyYH7R1XQIHD",
+      "http://localhost:3210/bag?_rsc=up7hsyYH7R1XQIHD"
+    ]
+  }
+]

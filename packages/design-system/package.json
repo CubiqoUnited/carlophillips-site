@@ -1,0 +1,29 @@
+{
+  "name": "@repo/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./serialized-tokens": "./tokens/serialized.ts",
+    "./styles": "./styles/index.css",
+    "./tokens": "./tokens/index.ts"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "scripts": {
+    "build-storybook": "storybook build -o storybook-static",
+    "storybook": "storybook dev -p 6006 --ci --no-open",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "8.6.18",
+    "@storybook/addon-essentials": "8.6.18",
+    "@storybook/react-vite": "8.6.18",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "storybook": "8.6.18",
+    "vite": "5.4.21"
+  }
+}

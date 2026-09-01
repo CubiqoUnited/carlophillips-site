@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "cp.shopify-controlled-order-authorization.v1",
+  "status": "approved",
+  "owner": "Product Owner",
+  "scope": "prepare-one-medium-shopify-checkout",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "handle": "carlophillips-signature-hoodie",
+  "size": "M",
+  "quantity": 1,
+  "maximumItemSubtotal": {
+    "amount": "128.00",
+    "currency": "USD"
+  },
+  "environments": ["preview", "production"],
+  "approvedAt": "2026-08-17T00:00:00Z",
+  "expiresAt": "2026-08-24T23:59:59Z",
+  "evidence": "Codex task 2026-08-17: stop the broken Apliiq sample-cart approach and use the existing Shopify-to-Apliiq process for one Medium controlled order",
+  "limitations": "Prepares one Shopify-hosted checkout only. It cannot submit contact, shipping, payment, an order, fulfillment, or public checkout activation. The Product Owner must review the final shipping, tax, total, and payment exposure before paying."
+}

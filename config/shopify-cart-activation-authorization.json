@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "cp.shopify-cart-activation-authorization.v1",
+  "status": "approved",
+  "owner": "Product Owner",
+  "scope": "activate-customer-cart",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "handle": "carlophillips-signature-hoodie",
+  "environments": ["preview", "production"],
+  "evidence": "Codex task 2026-08-16: make the Shopify payments jump from our frontend and make the payments work",
+  "limitations": "Authorizes the no-write rehearsal for a matching Staged Preview and customer cart UI for a matching Released Production record or the exact Product Owner launch authorization bound to a sanitized Production cart-write proof. Current reviewed offer, variant fingerprint, availability, server-only resolver, same-origin, and environment checks must still pass."
+}

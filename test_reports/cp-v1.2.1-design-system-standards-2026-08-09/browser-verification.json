@@ -1,0 +1,286 @@
+{
+  "schemaVersion": "cp.browser-verification.v1",
+  "generatedAt": "2026-08-09T20:00:32.491Z",
+  "baseUrl": "http://127.0.0.1:3012",
+  "results": [
+    {
+      "name": "home-landing-desktop",
+      "path": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 444,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "home-product-desktop",
+      "path": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "selector": "#signature-runway",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 444,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "BUTTON",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "home-landing-mobile",
+      "path": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 435,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "home-product-mobile",
+      "path": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "selector": "#signature-runway",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 435,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "BUTTON",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "shop-desktop",
+      "path": "/shop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 350,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "shop-mobile",
+      "path": "/shop",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 350,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "product-desktop",
+      "path": "/products/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 953,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "product-mobile",
+      "path": "/products/carlophillips-signature-hoodie",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 953,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "bag-mobile",
+      "path": "/bag",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 328,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "concept-desktop",
+      "path": "/concept-preview",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 841,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "concept-mobile",
+      "path": "/concept-preview",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "bodyTextLength": 817,
+      "horizontalOverflow": 0,
+      "providerMentions": 0,
+      "brokenImages": [],
+      "errorOverlay": false,
+      "activeElement": "A",
+      "tokens": {
+        "canvas": "#000000",
+        "gutter": "clamp(1.25rem, 3.35vw, 3rem)",
+        "radiusCard": "0",
+        "dialogLayer": "70"
+      }
+    },
+    {
+      "name": "home-overlay-mobile",
+      "path": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "closedByEscape": true,
+      "open": true,
+      "panelWidth": 358.796875,
+      "viewportWidth": 390,
+      "horizontalOverflow": 0,
+      "brokenImages": 0,
+      "dialogLayer": "70",
+      "slideCount": 11
+    },
+    {
+      "name": "reduced-motion-mobile",
+      "campaignAnimation": "none",
+      "scrollAnimation": "none"
+    }
+  ]
+}

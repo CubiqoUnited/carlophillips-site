@@ -20,15 +20,23 @@ function releaseEvidence(
   handle = 'test-product',
   environment = state === 'released' ? 'production' : 'preview'
 ) {
-  const releaseRecord = createCompleteReleaseRecord(state, { handle, environment });
+  const releaseRecord = createCompleteReleaseRecord(state, {
+    handle,
+    environment,
+  });
   const mediaManifest = createCompleteMediaManifest();
   return { releaseRecord, mediaManifest };
 }
 
 function expectValid(decision) {
-  expect(validateCatalogDecision(decision), JSON.stringify(validateCatalogDecision.errors)).toBe(true);
+  expect(
+    validateCatalogDecision(decision),
+    JSON.stringify(validateCatalogDecision.errors)
+  ).toBe(true);
   expect(validateCatalogDecisionInvariants(decision)).toEqual([]);
-  expect(decision.candidateCount).toBe(decision.visibleCount + decision.excludedCount);
+  expect(decision.candidateCount).toBe(
+    decision.visibleCount + decision.excludedCount
+  );
   expect(decision.products).toHaveLength(decision.visibleCount);
 }
 
@@ -51,7 +59,9 @@ describe('catalog gateway', () => {
       environment: 'local',
       mode: 'fixture',
       candidateHandles: ['test-product'],
-      fixtureProducts: [{ handle: 'test-product', title: 'Local fixture', price: 10 }],
+      fixtureProducts: [
+        { handle: 'test-product', title: 'Local fixture', price: 10 },
+      ],
       getReleaseEvidence: () => null,
       loadShopifyProduct: null,
     });
@@ -67,7 +77,7 @@ describe('catalog gateway', () => {
     expect(decision.products[0]).toMatchObject({
       handle: 'test-product',
       source: 'fixture',
-      sourceLabel: 'Local fixture review — not Shopify live data',
+      sourceLabel: 'Local presentation fixture — not live store data',
     });
   });
 
@@ -91,7 +101,9 @@ describe('catalog gateway', () => {
   });
 
   it('permits Preview only for a Staged-or-later Shopify observation', async () => {
-    const loadShopifyProduct = vi.fn(async handle => createObservedShopifyProduct(handle, 'preview'));
+    const loadShopifyProduct = vi.fn(async (handle) =>
+      createObservedShopifyProduct(handle, 'preview')
+    );
     const draft = await getCatalogDecision({
       environment: 'preview',
       mode: 'shopify',
@@ -119,7 +131,9 @@ describe('catalog gateway', () => {
   });
 
   it('permits production only for Released evidence and never purchasing', async () => {
-    const loadShopifyProduct = vi.fn(async handle => createObservedShopifyProduct(handle, 'production'));
+    const loadShopifyProduct = vi.fn(async (handle) =>
+      createObservedShopifyProduct(handle, 'production')
+    );
     const approved = await getCatalogDecision({
       environment: 'production',
       mode: 'shopify',
@@ -155,12 +169,13 @@ describe('catalog gateway', () => {
       environment: 'preview',
       mode: 'shopify',
       candidateHandles: ['staged-product', 'draft-product', 'staged-product'],
-      getReleaseEvidence: handle => releaseEvidence(states[handle], handle),
-      loadShopifyProduct: vi.fn(async handle => {
+      getReleaseEvidence: (handle) => releaseEvidence(states[handle], handle),
+      loadShopifyProduct: vi.fn(async (handle) => {
         const product = createObservedShopifyProduct(handle, 'preview');
-        product.name = handle === 'staged-product'
-          ? 'Visible staged candidate'
-          : 'Secret denied candidate';
+        product.name =
+          handle === 'staged-product'
+            ? 'Visible staged candidate'
+            : 'Secret denied candidate';
         return product;
       }),
     });
@@ -171,7 +186,9 @@ describe('catalog gateway', () => {
       excludedCount: 1,
       commerceAllowed: false,
     });
-    expect(decision.products.map(product => product.title)).toEqual(['Observed product']);
+    expect(decision.products.map((product) => product.title)).toEqual([
+      'Observed product',
+    ]);
     expect(JSON.stringify(decision)).not.toContain('Secret denied candidate');
   });
 
@@ -225,11 +242,14 @@ describe('catalog gateway', () => {
       environment: 'preview',
       mode: 'shopify',
       candidateHandles: ['broken-product', 'staged-product'],
-      getReleaseEvidence: handle => {
-        if (handle === 'broken-product') throw new Error('sanitized resolver failure');
+      getReleaseEvidence: (handle) => {
+        if (handle === 'broken-product')
+          throw new Error('sanitized resolver failure');
         return releaseEvidence('staged', handle);
       },
-      loadShopifyProduct: vi.fn(async handle => createObservedShopifyProduct(handle, 'preview')),
+      loadShopifyProduct: vi.fn(async (handle) =>
+        createObservedShopifyProduct(handle, 'preview')
+      ),
     });
     expectValid(decision);
     expect(decision).toMatchObject({
@@ -246,9 +266,10 @@ describe('catalog gateway', () => {
       environment: 'preview',
       mode: 'shopify',
       candidateHandles: ['broken-product', 'staged-product'],
-      getReleaseEvidence: handle => releaseEvidence('staged', handle),
-      loadShopifyProduct: vi.fn(async handle => {
-        if (handle === 'broken-product') throw new Error('sanitized adapter failure');
+      getReleaseEvidence: (handle) => releaseEvidence('staged', handle),
+      loadShopifyProduct: vi.fn(async (handle) => {
+        if (handle === 'broken-product')
+          throw new Error('sanitized adapter failure');
         return createObservedShopifyProduct(handle, 'preview');
       }),
     });
@@ -266,15 +287,19 @@ describe('catalog gateway', () => {
     const decision = await getCatalogDecision({
       environment: 'preview',
       mode: 'shopify',
-      candidateHandles: ['stale-product', 'tampered-product', 'eligible-product'],
-      getReleaseEvidence: handle => {
+      candidateHandles: [
+        'stale-product',
+        'tampered-product',
+        'eligible-product',
+      ],
+      getReleaseEvidence: (handle) => {
         const evidence = releaseEvidence('staged', handle);
         if (handle === 'stale-product') {
           evidence.releaseRecord.shopify.commerceFactsFingerprint = `sha256:${'f'.repeat(64)}`;
         }
         return evidence;
       },
-      loadShopifyProduct: vi.fn(async handle => {
+      loadShopifyProduct: vi.fn(async (handle) => {
         const product = createObservedShopifyProduct(handle, 'preview');
         if (handle === 'tampered-product') {
           product.observation.product.minimumPrice = 1;
@@ -296,8 +321,12 @@ describe('catalog gateway', () => {
       ],
     });
     expect(decision.products[0].handle).toBe('eligible-product');
-    expect(JSON.stringify(decision)).not.toContain('stale-product secret payload');
-    expect(JSON.stringify(decision)).not.toContain('tampered-product secret payload');
+    expect(JSON.stringify(decision)).not.toContain(
+      'stale-product secret payload'
+    );
+    expect(JSON.stringify(decision)).not.toContain(
+      'tampered-product secret payload'
+    );
   });
 
   it('withholds malformed media without denying an otherwise valid product candidate', async () => {
@@ -305,16 +334,16 @@ describe('catalog gateway', () => {
       environment: 'preview',
       mode: 'shopify',
       candidateHandles: ['malformed-product', 'staged-product'],
-      getReleaseEvidence: handle => releaseEvidence('staged', handle),
-      loadShopifyProduct: vi.fn(async handle => (
+      getReleaseEvidence: (handle) => releaseEvidence('staged', handle),
+      loadShopifyProduct: vi.fn(async (handle) =>
         handle === 'malformed-product'
           ? {
-            ...createObservedShopifyProduct(handle, 'preview'),
-            name: 'Malformed denied candidate',
-            media: {},
-          }
+              ...createObservedShopifyProduct(handle, 'preview'),
+              name: 'Malformed denied candidate',
+              media: {},
+            }
           : createObservedShopifyProduct(handle, 'preview')
-      )),
+      ),
     });
     expectValid(decision);
     expect(decision).toMatchObject({
@@ -324,6 +353,8 @@ describe('catalog gateway', () => {
       excludedCount: 0,
       excludedReasons: [],
     });
-    expect(JSON.stringify(decision)).not.toContain('Malformed denied candidate');
+    expect(JSON.stringify(decision)).not.toContain(
+      'Malformed denied candidate'
+    );
   });
 });

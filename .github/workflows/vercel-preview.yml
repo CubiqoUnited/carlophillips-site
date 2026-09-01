@@ -1,0 +1,234 @@
+name: Vercel Preview Review
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Full 40-character exact pull-request head SHA
+        required: true
+        type: string
+      pull_request:
+        description: Open same-repository pull-request number targeting main
+        required: true
+        type: string
+      release:
+        description: Review identifier recorded in immutable Preview metadata
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: vercel-preview-${{ inputs.pull_request }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    name: Deploy exact immutable Preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: Preview
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+      NEXT_PUBLIC_COMMERCE_ENVIRONMENT: preview
+      NEXT_PUBLIC_SHOW_PRODUCTS: 'true'
+      COMMERCE_DATA_MODE: shopify
+      SHOPIFY_CART_UI_ENABLED: 'true'
+
+    steps:
+      - name: Enforce PR-bound Preview environment and exact pull request
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          PULL_REQUEST: ${{ inputs.pull_request }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$PULL_REQUEST" =~ ^[1-9][0-9]*$ ]]
+          test "$EXPECTED_SHA" = "$GITHUB_SHA"
+          test "$GITHUB_REF" != "refs/heads/main"
+          gh api "repos/$GITHUB_REPOSITORY/environments/Preview" > preview-environment.json
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST" > pull-request.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const environment = JSON.parse(fs.readFileSync('preview-environment.json', 'utf8'));
+          const pullRequest = JSON.parse(fs.readFileSync('pull-request.json', 'utf8'));
+          if (pullRequest.state !== 'open' || pullRequest.base?.ref !== 'main') {
+            throw new Error('Preview requires an open pull request targeting main.');
+          }
+          if (pullRequest.head?.sha !== process.env.EXPECTED_SHA) {
+            throw new Error('Pull-request head SHA does not match the selected workflow SHA.');
+          }
+          if (pullRequest.head?.ref !== process.env.GITHUB_REF_NAME) {
+            throw new Error('Pull-request head branch does not match the selected workflow ref.');
+          }
+          if (pullRequest.head?.repo?.full_name !== process.env.GITHUB_REPOSITORY) {
+            throw new Error('Protected Preview credentials cannot execute fork-owned code.');
+          }
+          NODE
+
+      - name: Check out exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_sha }}
+
+      - name: Validate immutable Preview inputs
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          RELEASE: ${{ inputs.release }}
+        run: |
+          [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test -n "$VERCEL_ORG_ID"
+          test -n "$VERCEL_PROJECT_ID"
+          test "$NEXT_PUBLIC_COMMERCE_ENVIRONMENT" = "preview"
+          test "$NEXT_PUBLIC_SHOW_PRODUCTS" = "true"
+          test "$SHOPIFY_CART_UI_ENABLED" = "true"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Activate Yarn Classic
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          test "$(yarn --version)" = "1.22.22"
+
+      - name: Install locked dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Verify repository before Preview
+        run: yarn verify
+
+      - name: Install pinned Vercel CLI
+        run: |
+          yarn global add vercel@56.1.0
+          echo "$(yarn global bin)" >> "$GITHUB_PATH"
+          export PATH="$(yarn global bin):$PATH"
+          test "$(vercel --version | tail -1)" = "56.1.0"
+
+      - name: Pull Preview project settings
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
+
+      - name: Capture current Production before Preview
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: >-
+          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN"
+          > production-before-preview.json
+
+      - name: Build fail-closed Preview artifact
+        run: vercel build
+
+      - name: Deploy Preview and assign staging domain
+        id: preview
+        env:
+          PULL_REQUEST: ${{ inputs.pull_request }}
+          RELEASE: ${{ inputs.release }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          deployment_url="$(vercel deploy --prebuilt --archive=tgz --skip-domain --token="$VERCEL_TOKEN" \
+            --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=preview \
+            --env NEXT_PUBLIC_SHOW_PRODUCTS=true \
+            --env COMMERCE_DATA_MODE=shopify \
+            --env SHOPIFY_CART_UI_ENABLED=true \
+            --meta gitCommitSha="$GITHUB_SHA" \
+            --meta cpGitCommitSha="$GITHUB_SHA" \
+            --meta cpGitCommitRef="$GITHUB_REF_NAME" \
+            --meta cpPullRequest="$PULL_REQUEST" \
+            --meta cpRelease="$RELEASE" \
+            --meta cpArtifactKind=immutable-preview \
+            --meta cpBuildEnvironment=preview \
+            --meta cpCheckoutEnabled=false \
+            --meta cpWorkflowRun="$GITHUB_RUN_ID" \
+            --meta cpWorkflowAttempt="$GITHUB_RUN_ATTEMPT")"
+          vercel alias set "$deployment_url" staging.carlophillips.com --token="$VERCEL_TOKEN" || true
+          echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
+
+      - name: Capture immutable Preview evidence
+        env:
+          DEPLOYMENT_URL: ${{ steps.preview.outputs.url }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel inspect "$DEPLOYMENT_URL" --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > preview-inspect.json
+          vercel list --meta cpGitCommitSha="$GITHUB_SHA" --limit=20 --format=json --token="$VERCEL_TOKEN" > preview-deployments.json
+          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN" > production-after-preview.json
+
+      - name: Verify immutable Preview receipt without deployment credential
+        env:
+          PULL_REQUEST: ${{ inputs.pull_request }}
+          RELEASE: ${{ inputs.release }}
+        run: |
+          node .github/scripts/verify-vercel-receipt.mjs preview \
+            --preview-inspect preview-inspect.json \
+            --deployment-list preview-deployments.json \
+            --production-before production-before-preview.json \
+            --production-after production-after-preview.json \
+            --expected-sha "$GITHUB_SHA" \
+            --expected-release "$RELEASE" \
+            --expected-pull-request "$PULL_REQUEST" \
+            --output preview-release-receipt.json
+
+      - name: Run fail-closed Preview route smoke test
+        env:
+          DEPLOYMENT_URL: ${{ steps.preview.outputs.url }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
+            vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > /dev/null
+          done
+          vercel curl /products/carlophillips-signature-hoodie \
+            --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > preview-pdp.html
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const html = fs.readFileSync('preview-pdp.html', 'utf8');
+          if (!html.includes('ADD TO TEST BAG')) throw new Error('Preview Shopify test-bag action is missing.');
+          if (!html.includes('action="/api/cart"')) throw new Error('Preview Shopify cart endpoint is missing.');
+          if (!html.includes('isolated Shopify test checkout')) throw new Error('Preview test-checkout disclosure is missing.');
+          NODE
+
+      - name: Remove pulled Preview environment data
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          fs.rmSync('.vercel', { recursive: true, force: true });
+          NODE
+
+      - name: Publish Preview receipt
+        env:
+          DEPLOYMENT_URL: ${{ steps.preview.outputs.url }}
+        run: |
+          {
+            echo "## Immutable Vercel Preview receipt"
+            echo "- Deployment: $DEPLOYMENT_URL"
+            echo "- Commit: $GITHUB_SHA"
+            echo "- Pull request: #${{ inputs.pull_request }}"
+            echo "- Production domains assigned: no"
+            echo "- Commerce: fail-closed"
+            echo "- Receipt artifact: preview-release-receipt"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload immutable Preview receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-release-receipt-${{ github.sha }}
+          path: |
+            preview-environment.json
+            pull-request.json
+            preview-inspect.json
+            preview-deployments.json
+            production-before-preview.json
+            production-after-preview.json
+            preview-release-receipt.json
+            preview-pdp.html
+          if-no-files-found: error
+          retention-days: 90

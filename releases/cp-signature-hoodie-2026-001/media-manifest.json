@@ -2,15 +2,15 @@
   "schemaVersion": "cp.product-media-manifest.v1",
   "releaseId": "cp-signature-hoodie-2026-001",
   "requirements": [
-    { "modality": "front", "requirement": "required", "status": "candidate", "assetIds": ["apliiq-5958463-black-front-original"], "infeasibilityBlocker": null },
+    { "modality": "front", "requirement": "required", "status": "candidate", "assetIds": ["apliiq-5958463-black-front-original", "modelize-137843f7-front-portrait"], "infeasibilityBlocker": null },
     { "modality": "back-angle", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
-    { "modality": "embroidery-detail", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "embroidery-detail", "requirement": "required", "status": "candidate", "assetIds": ["modelize-137843f7-embroidery-detail-quarantined"], "infeasibilityBlocker": null },
     { "modality": "material-detail", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "on-model", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
-    { "modality": "lifestyle", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
+    { "modality": "lifestyle", "requirement": "required", "status": "candidate", "assetIds": ["modelize-137843f7-editorial-chair"], "infeasibilityBlocker": null },
     { "modality": "spin-360", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
     { "modality": "model-3d-ar", "requirement": "where-feasible", "status": "missing", "assetIds": [], "infeasibilityBlocker": null },
-    { "modality": "video", "requirement": "required", "status": "missing", "assetIds": [], "infeasibilityBlocker": null }
+    { "modality": "video", "requirement": "required", "status": "candidate", "assetIds": ["signature-hoodie-runway-motion-gen45", "signature-hoodie-fit-silhouette-gen45"], "infeasibilityBlocker": null }
   ],
   "assets": [
     {
@@ -30,6 +30,66 @@
         "evidence": null
       },
       "alt": "Apliiq black IND4000 Hoodie candidate with CP front chest mark",
+      "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "modelize-137843f7-editorial-chair",
+      "kind": "image",
+      "source": {
+        "type": "generated",
+        "reference": "public/products/signature-hoodie/candidates/modelize/editorial-01.jpg",
+        "method": "Modelize completed job 137843f7 observed 2026-08-04"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "pending",
+      "approvalStatus": "pending",
+      "quality": {
+        "status": "pending",
+        "evidence": "test_reports/cp-shopify-audit-2026-08-04/audit-report.md"
+      },
+      "alt": "Modelize-generated editorial candidate showing the Signature Hoodie on a chair",
+      "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "modelize-137843f7-front-portrait",
+      "kind": "image",
+      "source": {
+        "type": "generated",
+        "reference": "public/products/signature-hoodie/candidates/modelize/editorial-02.jpg",
+        "method": "Modelize completed job 137843f7 observed 2026-08-04"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "pending",
+      "approvalStatus": "pending",
+      "quality": {
+        "status": "pending",
+        "evidence": "test_reports/cp-shopify-audit-2026-08-04/audit-report.md"
+      },
+      "alt": "Modelize-generated front product portrait candidate of the Signature Hoodie",
+      "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "modelize-137843f7-embroidery-detail-quarantined",
+      "kind": "image",
+      "source": {
+        "type": "generated",
+        "reference": "fixtures/unverified-media/modelize-137843f7-embroidery-detail-quarantined.jpg",
+        "method": "Modelize completed job 137843f7 observed 2026-08-04"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "pending",
+      "approvalStatus": "quarantined",
+      "quality": {
+        "status": "failed",
+        "evidence": "Visible white layout artifact in lower-right area during 2026-08-04 visual review"
+      },
+      "alt": "Quarantined Modelize-generated CP embroidery macro candidate",
       "fallbackAssetId": null
     },
     {
@@ -69,6 +129,40 @@
       },
       "alt": "Unverified hoodie pocket and cuff concept detail",
       "fallbackAssetId": null
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "signature-hoodie-runway-motion-gen45",
+      "kind": "video",
+      "source": {
+        "type": "generated",
+        "reference": "apps/web/public/media/signature-hoodie/videos/runway-motion.mp4",
+        "method": "Approved Gen-4.5 runway video supplied 2026-08-19"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "verified",
+      "approvalStatus": "pending",
+      "quality": { "status": "pending", "evidence": null },
+      "alt": "Signature Hoodie runway motion",
+      "fallbackAssetId": "apliiq-5958463-black-front-original"
+    },
+    {
+      "schemaVersion": "cp.product-media-asset.v1",
+      "assetId": "signature-hoodie-fit-silhouette-gen45",
+      "kind": "video",
+      "source": {
+        "type": "generated",
+        "reference": "apps/web/public/media/signature-hoodie/videos/fit-silhouette.mp4",
+        "method": "Approved Gen-4.5 showcase video supplied 2026-08-19"
+      },
+      "storefrontBinding": null,
+      "exactProductMatch": "unverified",
+      "rightsStatus": "verified",
+      "approvalStatus": "pending",
+      "quality": { "status": "pending", "evidence": null },
+      "alt": "Signature Hoodie fit and silhouette motion",
+      "fallbackAssetId": "apliiq-5958463-black-front-original"
     }
   ]
 }

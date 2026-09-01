@@ -1,0 +1,56 @@
+[
+  {
+    "viewport": "desktop",
+    "status": 200,
+    "title": "Product Review | CARLOPHILLIPS",
+    "hasUnavailable": false,
+    "has128": true,
+    "sizes": [
+      {
+        "size": "S",
+        "count": 0
+      },
+      {
+        "size": "M",
+        "count": 0
+      },
+      {
+        "size": "L",
+        "count": 0
+      }
+    ],
+    "overflow": 0,
+    "errors": [
+      "request:http://127.0.0.1:3210/?_rsc=up7hsyYH7R1XQIHD",
+      "request:http://127.0.0.1:3210/shop?_rsc=up7hsyYH7R1XQIHD",
+      "request:http://127.0.0.1:3210/bag?_rsc=up7hsyYH7R1XQIHD"
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "status": 200,
+    "title": "Product Review | CARLOPHILLIPS",
+    "hasUnavailable": false,
+    "has128": true,
+    "sizes": [
+      {
+        "size": "S",
+        "count": 0
+      },
+      {
+        "size": "M",
+        "count": 0
+      },
+      {
+        "size": "L",
+        "count": 0
+      }
+    ],
+    "overflow": 0,
+    "errors": [
+      "request:http://127.0.0.1:3210/bag?_rsc=up7hsyYH7R1XQIHD",
+      "request:http://127.0.0.1:3210/?_rsc=up7hsyYH7R1XQIHD",
+      "request:http://127.0.0.1:3210/shop?_rsc=up7hsyYH7R1XQIHD"
+    ]
+  }
+]

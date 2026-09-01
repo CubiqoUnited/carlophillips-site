@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "cp.shopify-checkout-authorization.v1",
+  "status": "approved",
+  "owner": "Product Owner",
+  "scope": "shopify-hosted-checkout-redirect",
+  "releaseId": "cp-signature-hoodie-2026-001",
+  "handle": "carlophillips-signature-hoodie",
+  "environments": ["preview", "production"],
+  "evidence": "Codex task 2026-08-16: make the Shopify payments jump from our frontend and make the payments work",
+  "limitations": "Authorizes a same-origin no-write checkout rehearsal for a matching Staged Preview and the Shopify-hosted checkout redirect for a matching Released Production record or the exact Product Owner launch authorization bound to a sanitized Production cart-write proof. It does not waive reviewed-offer, current-variant, availability, trusted-host, or same-origin checks and cannot submit payment or an order."
+}

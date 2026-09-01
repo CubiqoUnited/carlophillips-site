@@ -72,17 +72,22 @@ function createContext({
     capabilityEvidence: productReadEvidence,
   });
   const rawShopifyProduct = attachObservationToProduct(facts, observation);
-  const releaseRecord = createCompleteReleaseRecord(releaseState, { environment });
+  const releaseRecord = createCompleteReleaseRecord(releaseState, {
+    environment,
+  });
   releaseRecord.shopify.handle = facts.handle;
   releaseRecord.shopify.variantFingerprint = observation.variantFingerprint;
-  releaseRecord.shopify.commerceFactsFingerprint = observation.commerceFactsFingerprint;
-  releaseRecord.shopify.observationFingerprint = observation.observationFingerprint;
+  releaseRecord.shopify.commerceFactsFingerprint =
+    observation.commerceFactsFingerprint;
+  releaseRecord.shopify.observationFingerprint =
+    observation.observationFingerprint;
   const visibility = evaluateObservationVisibility({
     environment,
     shopifyProduct: rawShopifyProduct,
     releaseRecord,
   });
-  if (!visibility.ready) throw new Error(`Fixture visibility failed: ${visibility.reason}`);
+  if (!visibility.ready)
+    throw new Error(`Fixture visibility failed: ${visibility.reason}`);
 
   return {
     environment,
@@ -94,9 +99,10 @@ function createContext({
       source: 'shopify',
       visibilityAllowed: true,
       commerceAllowed: false,
-      reason: environment === 'production'
-        ? 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED'
-        : 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE',
+      reason:
+        environment === 'production'
+          ? 'RELEASED_PRODUCT_PURCHASE_FLOW_UNVERIFIED'
+          : 'PRIVATE_RELEASE_REVIEW_NON_COMMERCE',
       product: visibility.product,
     },
     releaseRecord,
@@ -171,6 +177,9 @@ describe('server-ephemeral variant resolution readiness', () => {
         status: 'approved',
         owner: 'Product Owner',
         scope: 'activate-customer-cart',
+        releaseId: context.releaseRecord.releaseId,
+        handle: 'test-product',
+        environments: ['production'],
         evidence: 'approval/cart-activation-001',
       },
       activationRequested: true,
@@ -198,52 +207,68 @@ describe('server-ephemeral variant resolution readiness', () => {
     ['mapping count', { mappedVariantCount: 0 }],
     ['resolver evidence', { evidenceRef: null }],
     ['mutation authority', { cartMutationAuthorized: true }],
-    ['blockers', { blockers: [{
-      code: 'UNRESOLVED',
-      humanAction: 'Resolve it.',
-      resumePoint: 'Resume after resolution.',
-    }] }],
-  ])('does not satisfy the cart resolver gate after tampering with real %s output', (_label, patch) => {
-    const context = createContext({ environment: 'production' });
-    const realDecision = evaluateVariantResolutionReadiness(context);
-    const cartDecision = evaluateCartActivation({
-      environment: 'production',
-      productDecision: context.productDecision,
-      releaseRecord: context.releaseRecord,
-      capabilityDecision: {
-        status: 'ready',
-        capability: 'shopify-storefront-cart',
-        adapter: 'shopify-storefront-cart',
-        callableSurface: 'shopify_storefront',
-        evidenceRef: 'evidence/shopify-storefront-cart-no-order-001',
+    [
+      'blockers',
+      {
+        blockers: [
+          {
+            code: 'UNRESOLVED',
+            humanAction: 'Resolve it.',
+            resumePoint: 'Resume after resolution.',
+          },
+        ],
       },
-      variantResolverDecision: { ...realDecision, ...patch },
-      activationApproval: {
-        status: 'approved',
-        owner: 'Product Owner',
-        scope: 'activate-customer-cart',
-        evidence: 'approval/cart-activation-001',
-      },
-      activationRequested: true,
-    });
+    ],
+  ])(
+    'does not satisfy the cart resolver gate after tampering with real %s output',
+    (_label, patch) => {
+      const context = createContext({ environment: 'production' });
+      const realDecision = evaluateVariantResolutionReadiness(context);
+      const cartDecision = evaluateCartActivation({
+        environment: 'production',
+        productDecision: context.productDecision,
+        releaseRecord: context.releaseRecord,
+        capabilityDecision: {
+          status: 'ready',
+          capability: 'shopify-storefront-cart',
+          adapter: 'shopify-storefront-cart',
+          callableSurface: 'shopify_storefront',
+          evidenceRef: 'evidence/shopify-storefront-cart-no-order-001',
+        },
+        variantResolverDecision: { ...realDecision, ...patch },
+        activationApproval: {
+          status: 'approved',
+          owner: 'Product Owner',
+          scope: 'activate-customer-cart',
+          releaseId: context.releaseRecord.releaseId,
+          handle: 'test-product',
+          environments: ['production'],
+          evidence: 'approval/cart-activation-001',
+        },
+        activationRequested: true,
+      });
 
-    expect(cartDecision).toMatchObject({
-      status: 'blocked',
-      cartAllowed: false,
-      reason: 'SERVER_VARIANT_RESOLVER_REQUIRED',
-    });
-  });
+      expect(cartDecision).toMatchObject({
+        status: 'blocked',
+        cartAllowed: false,
+        reason: 'SERVER_VARIANT_RESOLVER_REQUIRED',
+      });
+    }
+  );
 
   it('withholds changed raw identity even if the outer reviewed presentation is untouched', () => {
     const context = createContext();
-    context.rawShopifyProduct.observedVariants[0].id = 'gid://shopify/ProductVariant/changed';
+    context.rawShopifyProduct.observedVariants[0].id =
+      'gid://shopify/ProductVariant/changed';
     const decision = evaluateVariantResolutionReadiness(context);
 
     expect(decision.status).toBe('blocked');
-    expect(decision.blockers.map(item => item.code)).toEqual(expect.arrayContaining([
-      'VARIANT_RESOLVER_IDENTITY_STALE',
-      'VARIANT_RESOLVER_MAPPING_INCOMPLETE',
-    ]));
+    expect(decision.blockers.map((item) => item.code)).toEqual(
+      expect.arrayContaining([
+        'VARIANT_RESOLVER_IDENTITY_STALE',
+        'VARIANT_RESOLVER_MAPPING_INCOMPLETE',
+      ])
+    );
     expect(JSON.stringify(decision)).not.toContain(
       'gid://shopify/ProductVariant/changed'
     );
@@ -253,25 +278,34 @@ describe('server-ephemeral variant resolution readiness', () => {
     const context = createContext();
     context.rawShopifyProduct.price = 129;
     context.rawShopifyProduct.compareAtPrice = 129;
-    context.rawShopifyProduct.observedVariants.forEach(variant => {
+    context.rawShopifyProduct.observedVariants.forEach((variant) => {
       variant.price.amount = '129.00';
     });
     const decision = evaluateVariantResolutionReadiness(context);
 
     expect(decision.status).toBe('blocked');
-    expect(decision.blockers.map(item => item.code)).toContain('VARIANT_RESOLVER_FACTS_STALE');
-    expect(decision.blockers.map(item => item.code)).not.toContain('VARIANT_RESOLVER_IDENTITY_STALE');
+    expect(decision.blockers.map((item) => item.code)).toContain(
+      'VARIANT_RESOLVER_FACTS_STALE'
+    );
+    expect(decision.blockers.map((item) => item.code)).not.toContain(
+      'VARIANT_RESOLVER_IDENTITY_STALE'
+    );
   });
 
   it('rejects duplicate or missing raw variants rather than using a legacy outer map', () => {
     const duplicate = createContext();
-    duplicate.rawShopifyProduct.observedVariants[1].id
-      = duplicate.rawShopifyProduct.observedVariants[0].id;
-    expect(evaluateVariantResolutionReadiness(duplicate).blockers.map(item => item.code))
-      .toEqual(expect.arrayContaining([
+    duplicate.rawShopifyProduct.observedVariants[1].id =
+      duplicate.rawShopifyProduct.observedVariants[0].id;
+    expect(
+      evaluateVariantResolutionReadiness(duplicate).blockers.map(
+        (item) => item.code
+      )
+    ).toEqual(
+      expect.arrayContaining([
         'VARIANT_RESOLVER_RAW_FACTS_INVALID',
         'VARIANT_RESOLVER_MAPPING_INCOMPLETE',
-      ]));
+      ])
+    );
 
     const missing = createContext();
     missing.rawShopifyProduct.observedVariants = [];
@@ -286,33 +320,42 @@ describe('server-ephemeral variant resolution readiness', () => {
   });
 
   it.each([
-    ['wrong product-read capability', {
-      productReadCapabilityDecision: {
-        status: 'ready',
-        capability: 'shopify-storefront-cart',
-        adapter: 'shopify-storefront-product',
-        callableSurface: 'shopify_storefront',
-        evidenceRef: productReadEvidence,
+    [
+      'wrong product-read capability',
+      {
+        productReadCapabilityDecision: {
+          status: 'ready',
+          capability: 'shopify-storefront-cart',
+          adapter: 'shopify-storefront-product',
+          callableSurface: 'shopify_storefront',
+          evidenceRef: productReadEvidence,
+        },
       },
-    }],
-    ['mismatched product-read evidence', {
-      productReadCapabilityDecision: {
-        status: 'ready',
-        capability: 'shopify-storefront-product-read',
-        adapter: 'shopify-storefront-product',
-        callableSurface: 'shopify_storefront',
-        evidenceRef: 'evidence/unrelated-read',
+    ],
+    [
+      'mismatched product-read evidence',
+      {
+        productReadCapabilityDecision: {
+          status: 'ready',
+          capability: 'shopify-storefront-product-read',
+          adapter: 'shopify-storefront-product',
+          callableSurface: 'shopify_storefront',
+          evidenceRef: 'evidence/unrelated-read',
+        },
       },
-    }],
-    ['wrong resolver surface', {
-      resolverCapabilityDecision: {
-        status: 'ready',
-        capability: 'shopify-storefront-variant-resolver',
-        adapter: 'server-only-shopify-variant-resolver',
-        callableSurface: 'shopify_storefront',
-        evidenceRef: 'evidence/unrelated-resolver',
+    ],
+    [
+      'wrong resolver surface',
+      {
+        resolverCapabilityDecision: {
+          status: 'ready',
+          capability: 'shopify-storefront-variant-resolver',
+          adapter: 'server-only-shopify-variant-resolver',
+          callableSurface: 'shopify_storefront',
+          evidenceRef: 'evidence/unrelated-resolver',
+        },
       },
-    }],
+    ],
   ])('blocks %s', (_label, override) => {
     const decision = evaluate(override);
     expect(decision.status).toBe('blocked');
@@ -324,26 +367,34 @@ describe('server-ephemeral variant resolution readiness', () => {
     const local = createContext();
     local.environment = 'local';
     local.productDecision.environment = 'local';
-    expect(evaluateVariantResolutionReadiness(local).blockers.map(item => item.code))
-      .toContain('VARIANT_RESOLVER_ENVIRONMENT_INVALID');
+    expect(
+      evaluateVariantResolutionReadiness(local).blockers.map(
+        (item) => item.code
+      )
+    ).toContain('VARIANT_RESOLVER_ENVIRONMENT_INVALID');
 
     const mismatch = createContext();
     mismatch.releaseRecord.shopify.variantFingerprint = `sha256:${'e'.repeat(64)}`;
-    expect(evaluateVariantResolutionReadiness(mismatch).blockers.map(item => item.code))
-      .toEqual(expect.arrayContaining([
+    expect(
+      evaluateVariantResolutionReadiness(mismatch).blockers.map(
+        (item) => item.code
+      )
+    ).toEqual(
+      expect.arrayContaining([
         'VARIANT_RESOLVER_RELEASE_FINGERPRINT_MISMATCH',
         'VARIANT_RESOLVER_OBSERVATION_FINGERPRINT_MISMATCH',
-      ]));
+      ])
+    );
   });
 
   it('rejects commerce facts that do not match the reviewed release binding', () => {
     const context = createContext();
-    context.releaseRecord.shopify.commerceFactsFingerprint
-      = `sha256:${'d'.repeat(64)}`;
+    context.releaseRecord.shopify.commerceFactsFingerprint = `sha256:${'d'.repeat(64)}`;
     const decision = evaluateVariantResolutionReadiness(context);
 
     expect(decision.status).toBe('blocked');
-    expect(decision.blockers.map(item => item.code))
-      .toContain('VARIANT_RESOLVER_RELEASE_FACTS_MISMATCH');
+    expect(decision.blockers.map((item) => item.code)).toContain(
+      'VARIANT_RESOLVER_RELEASE_FACTS_MISMATCH'
+    );
   });
 });

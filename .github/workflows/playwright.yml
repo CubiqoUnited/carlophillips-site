@@ -1,0 +1,67 @@
+name: Playwright checkout gate
+
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  checkout-e2e:
+    name: Checkout E2E and accessibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out pull request head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Require latest target branch
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          git fetch --no-tags origin "$BASE_REF"
+          git merge-base --is-ancestor "origin/$BASE_REF" HEAD
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Activate Yarn Classic
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          test "$(yarn --version)" = "1.22.22"
+
+      - name: Install locked dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install headless Chromium
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run checkout and accessibility gate
+        env:
+          CP_A11Y_OUTPUT_DIR: test_reports/ci/playwright
+        run: yarn test:e2e
+
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-evidence-${{ github.sha }}
+          path: test_reports/ci/playwright/
+          if-no-files-found: error
+          retention-days: 30
