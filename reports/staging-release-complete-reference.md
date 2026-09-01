@@ -2,7 +2,7 @@
 
 **Single source of truth for Shopify-authoritative release. Records deployed state, PR #54 candidate, pending Staging gates, and deployment sequence.**
 
-**Baseline:** `origin/main@e31eb59` (pre-PR #54) → PR #54 code-approved at `2d32e3a` → Staging deployment → live happy-path test → release approval.
+**Baseline:** `origin/main@e31eb59` (pre-PR #54) → PR #54 implementation at `dbd4eae` plus documentation-only follow-ups → protected Staging deployment → live happy-path test → release approval.
 
 ---
 
@@ -68,7 +68,7 @@ Known-good commits, emergency revert procedure.
 # II. PR #54 Candidate — Code-Ready for Staging
 
 **Branch:** `codex/shopify-authoritative-release-go`  
-**Head:** `2d32e3a` (docs: distinguish implementation commit from PR head)  
+**Implementation commit:** `dbd4eae` (later PR commits are documentation-only; use the live PR head for deployment)
 **Status:** ✅ **Code-approved.** CI green. All checks pass. Ready for protected Vercel Staging deployment.  
 **Approval level:** Code implementation verified. NOT final release approval (pending live Staging test).
 
@@ -283,7 +283,7 @@ PR #54 is code-ready, but these must be completed before staging deployment and 
 | Commit | Branch | Status | Notes |
 |---|---|---|---|
 | e31eb59 | origin/main | Previous production (pre-PR #54) | Recovery anchor for emergency rollback only; Shopify-authoritative foundation; cart/checkout not wired |
-| 2d32e3a | codex/shopify-authoritative-release-go | Code-approved candidate | PR #54; CI green; pending Staging gates |
+| PR #54 (`dbd4eae` implementation) | codex/shopify-authoritative-release-go | Code-approved candidate | Deploy the live PR head; CI must be green; Staging gates remain pending |
 
 ## Emergency Rollback
 
@@ -327,15 +327,15 @@ PR #54 is code-ready, but these must be completed before staging deployment and 
 ---
 
 **Last updated:** 2026-08-31  
-**PR #54 status:** Code-approved, open, mergeable (2d32e3a)  
+**PR #54 status:** Code-approved, open, and mergeable; deploy only its live green head
 **Staging status:** ❌ Prerequisites not configured; gates pending configuration and live test
 
 ---
 
 **⚠️ Repository Status**
 
-Both reference documents remain **untracked**:
+Both reference documents are **tracked in PR #54**:
 - `staging-release-complete-reference.md` (post-PR #54 canonical)
 - `staging-release-pre-pr54-analysis-2026-08-31.md` (historical archive)
 
-Until committed to the repository, these are not repository-level sources of truth. They should be reviewed, approved, and committed before Phase 1 (configuration) begins.
+They are the reviewed working reference on the release branch. They become the repository-level source of truth only after PR #54 is reviewed and merged; no document commit by itself satisfies the protected Staging gates.
