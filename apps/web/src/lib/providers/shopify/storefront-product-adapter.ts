@@ -5,21 +5,16 @@ import {
   createShopifyProductLoader,
 } from './product-loader';
 import { getCommerceEnvironment } from '../../config/product-visibility';
+import { resolveShopifyStorefrontConfig } from '../../config/shopify-environment';
 import type { ProductLoader } from '../../commerce/runtime-types';
-import storefrontRuntime from '../../../../../../config/shopify-storefront-runtime.json';
 
 function storefrontConfig() {
   const environment = getCommerceEnvironment();
+  const config = resolveShopifyStorefrontConfig(environment);
   return {
     environment,
-    storeDomain:
-      environment === 'preview'
-        ? process.env.SHOPIFY_STAGING_STORE_DOMAIN
-        : process.env.SHOPIFY_STORE_DOMAIN || storefrontRuntime.storeDomain,
-    storefrontToken:
-      environment === 'preview'
-        ? process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN
-        : process.env.SHOPIFY_STOREFRONT_TOKEN,
+    storeDomain: config.storeDomain,
+    storefrontToken: config.storefrontAccessToken,
   };
 }
 

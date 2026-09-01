@@ -4,6 +4,7 @@ import {
   verifyShopifyWebhook,
 } from '@repo/shopify';
 import { getCommerceEnvironment } from '@/lib/config/product-visibility';
+import { resolveShopifyWebhookConfig } from '@/lib/config/shopify-environment';
 import { createDurableWebhookStore } from '@/lib/commerce/webhook-idempotency';
 
 export const dynamic = 'force-dynamic';
@@ -22,12 +23,10 @@ const TOPICS = new Set([
 
 export async function POST(request: Request) {
   const environment = getCommerceEnvironment();
-  const secret =
-    environment === 'preview'
-      ? process.env.SHOPIFY_STAGING_WEBHOOK_SECRET || ''
-      : process.env.SHOPIFY_WEBHOOK_SECRET || '';
+  const webhookConfig = resolveShopifyWebhookConfig(environment);
+  const secret = webhookConfig.secret;
   const allowedShops = new Set(
-    (process.env.SHOPIFY_WEBHOOK_ALLOWED_SHOPS || '')
+    webhookConfig.allowedShops
       .split(',')
       .map((value) => value.trim().toLowerCase())
       .filter(Boolean)

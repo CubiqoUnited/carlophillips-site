@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 
 const workflow = readFileSync('.github/workflows/vercel-release-candidate.yml', 'utf8');
 const cartServer = readFileSync('apps/web/src/lib/commerce/shopify-cart-server.ts', 'utf8');
+const shopifyEnvironment = readFileSync('apps/web/src/lib/config/shopify-environment.ts', 'utf8');
 const cartRoute = readFileSync('apps/web/src/app/api/cart/route.ts', 'utf8');
 const storefrontQueries = readFileSync('packages/shopify/src/queries.ts', 'utf8');
 const productPage = readFileSync('apps/web/src/app/product/[handle]/page.tsx', 'utf8');
@@ -22,7 +23,10 @@ requireText(workflow, '--meta cpArtifactKind=safe-fallback', 'A distinct checkou
 requireText(workflow, '--env SHOPIFY_CHECKOUT_ENABLED=false', 'The emergency fallback must remain checkout-disabled.');
 requireText(workflow, 'action="/api/cart"', 'The release smoke test must verify the Shopify cart handoff.');
 requireText(cartServer, 'createStorefrontClient', 'Cart and checkout must use the shared Storefront client.');
-requireText(cartServer, "environment === 'preview'", 'Cart and checkout must support isolated Preview and Production stores.');
+requireText(cartServer, 'resolveShopifyStorefrontConfig', 'Cart and checkout must use the centralized Shopify environment boundary.');
+requireText(shopifyEnvironment, "environment === 'preview'", 'Cart and checkout must support Preview-specific overrides.');
+requireText(shopifyEnvironment, 'SHOPIFY_STAGING_STORE_DOMAIN', 'Preview must support an isolated Shopify store override.');
+requireText(shopifyEnvironment, 'SHOPIFY_STORE_DOMAIN', 'Preview and Production must support Vercel environment-scoped Shopify values.');
 requireText(storefrontQueries, "'2026-07'", 'Storefront reads and cart mutations must use the supported shared API version.');
 requireText(productPageServer, 'SHOPIFY_CART_UI_ENABLED', 'The emergency fallback must hide cart activation.');
 requireText(productPageServer, 'SHOPIFY_CHECKOUT_ENABLED', 'The emergency fallback must hide checkout activation.');

@@ -40,7 +40,7 @@ jobs:
       SHOPIFY_CART_UI_ENABLED: 'true'
 
     steps:
-      - name: Enforce protected Preview environment and exact pull request
+      - name: Enforce PR-bound Preview environment and exact pull request
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
           PULL_REQUEST: ${{ inputs.pull_request }}
@@ -178,7 +178,7 @@ jobs:
             --expected-pull-request "$PULL_REQUEST" \
             --output preview-release-receipt.json
 
-      - name: Run fail-closed protected Preview route smoke test
+      - name: Run fail-closed Preview route smoke test
         env:
           DEPLOYMENT_URL: ${{ steps.preview.outputs.url }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

@@ -90,6 +90,10 @@ describe('active commerce boundary policy', () => {
       'utf8'
     );
     const route = readFileSync('apps/web/src/app/api/cart/route.ts', 'utf8');
+    const environmentConfig = readFileSync(
+      'apps/web/src/lib/config/shopify-environment.ts',
+      'utf8'
+    );
     const form = readFileSync(
       'apps/web/src/components/product/ProductForm/index.tsx',
       'utf8'
@@ -104,7 +108,10 @@ describe('active commerce boundary policy', () => {
     expect(serverEntry).not.toContain('variantFingerprint');
     expect(serverEntry).toContain('candidate.availableForSale');
     expect(serverEntry).toContain('trustedCartCheckoutUrl');
-    expect(serverEntry).toContain("environment === 'preview'");
+    expect(serverEntry).toContain('resolveShopifyStorefrontConfig');
+    expect(environmentConfig).toContain("environment === 'preview'");
+    expect(environmentConfig).toContain('SHOPIFY_STAGING_STORE_DOMAIN');
+    expect(environmentConfig).toContain('SHOPIFY_STORE_DOMAIN');
     expect(serverEntry).not.toContain('console.');
     expect(route).toContain("const CART_COOKIE = 'cp_shopify_cart'");
     expect(route).toContain('response.cookies.set(CART_COOKIE');

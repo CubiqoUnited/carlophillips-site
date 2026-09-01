@@ -418,3 +418,23 @@ listed above. For Upstash, ensure the terms are accepted while signed into the
 same Cubiqo member account represented by the CLI authorization. Do not send
 secret values. Resume only after the dashboard itself shows the policies and
 variable names and the terms page reports acceptance.
+
+### Product Owner simplification — supersedes the three-signal Staging block
+
+The Product Owner subsequently directed: every release candidate goes to
+Staging; the Product Owner reviews Staging and separately tells the agent when
+to promote. GitHub environment reviewers are therefore not a Staging blocker.
+The PR-bound workflow must still prove an open same-repository PR, exact head
+SHA, immutable receipt, and no Production-domain assignment.
+
+The application now accepts Vercel environment-scoped `SHOPIFY_STORE_DOMAIN`,
+`SHOPIFY_STOREFRONT_TOKEN`, `SHOPIFY_CHECKOUT_HOSTS`, and
+`SHOPIFY_WEBHOOK_SECRET` in Preview. The `SHOPIFY_STAGING_*` names remain
+optional overrides, not required duplicates. This lets Codex use sensitive
+Vercel values without retrieving or displaying them.
+
+Staging UI, catalog, bag, and checkout-handoff review may proceed before Redis
+and webhook registration. Webhook ingress continues to fail closed until the
+Shopify signing secret and a durable Redis store exist. Upstash still reports
+that its Marketplace terms are unaccepted for CLI user `aditya-7307`; Codex
+cannot create that resource until the account-level acceptance is observable.

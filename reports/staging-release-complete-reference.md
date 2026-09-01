@@ -2,7 +2,7 @@
 
 **Single source of truth for Shopify-authoritative release. Records deployed state, PR #54 candidate, pending Staging gates, and deployment sequence.**
 
-**Baseline:** `origin/main@e31eb59` (pre-PR #54) → PR #54 implementation at `dbd4eae` plus documentation-only follow-ups → protected Staging deployment → live happy-path test → release approval.
+**Baseline:** `origin/main@e31eb59` (pre-PR #54) → PR #54 live head → Staging deployment → Product Owner review → explicit Production promotion instruction.
 
 ---
 
@@ -69,7 +69,7 @@ Known-good commits, emergency revert procedure.
 
 **Branch:** `codex/shopify-authoritative-release-go`  
 **Implementation commit:** `dbd4eae` (later PR commits are documentation-only; use the live PR head for deployment)
-**Status:** ✅ **Code-approved.** CI green. All checks pass. Infrastructure prerequisites still block protected Vercel Staging deployment.
+**Status:** ✅ **Code-approved.** Deploy every live green candidate to Staging first. Production promotion requires the Product Owner's explicit instruction.
 **Approval level:** Code implementation verified. NOT final release approval (pending live Staging test).
 
 ### Shipped Implementation
@@ -124,27 +124,32 @@ is separately verified; it is build evidence only.
 
 **Status:** ✅ The two non-secret IDs and `VERCEL_TOKEN` secret are configured
 for both GitHub `Preview` and `Production` environments without exposing the
-token. ❌ Environment protection rules remain missing: the authenticated user
-received HTTP 403 when adding required reviewers and branch restrictions. A
-repository administrator must protect Preview for `codex/*` and Production for
-`main` before the workflow is treated as protected.
+token. Per Product Owner direction, GitHub environment reviewers are not a
+Staging prerequisite. The workflow itself requires an open same-repository PR,
+the exact PR head SHA, and no Production-domain assignment. Production remains
+separately instruction-gated.
 
 ### Vercel Preview Environment Configuration (Staging)
 
-**Required variables:**
-- `SHOPIFY_STAGING_STORE_DOMAIN` — test store domain
-- `SHOPIFY_STAGING_STOREFRONT_TOKEN` — test store Storefront API token
-- `SHOPIFY_STAGING_CHECKOUT_HOSTS` — trusted checkout hosts (test store)
-- `SHOPIFY_STAGING_WEBHOOK_SECRET` — shared secret for incoming webhooks
-- `SHOPIFY_WEBHOOK_ALLOWED_SHOPS` — comma-separated list of allowed shop domains
+**Storefront variables:**
+- `SHOPIFY_STORE_DOMAIN` and `SHOPIFY_STOREFRONT_TOKEN` are scoped by Vercel
+  environment and are sufficient for Preview/Staging and Production.
+- `SHOPIFY_STAGING_STORE_DOMAIN`, `SHOPIFY_STAGING_STOREFRONT_TOKEN`, and
+  `SHOPIFY_STAGING_CHECKOUT_HOSTS` remain optional Preview-only overrides.
+
+**Webhook variables:**
+- `SHOPIFY_WEBHOOK_SECRET` is scoped by Vercel environment;
+  `SHOPIFY_STAGING_WEBHOOK_SECRET` is an optional Preview-only override.
+- `SHOPIFY_WEBHOOK_ALLOWED_SHOPS` is optional; the configured store domain is
+  the fail-closed default allowlist.
 - `UPSTASH_REDIS_REST_URL` — Redis endpoint for durable webhook idempotency
 - `UPSTASH_REDIS_REST_TOKEN` — Redis authentication token
 
-**Status:** ❌ The dedicated Shopify Staging values are not configured in the
-canonical project. A free Preview-only Upstash resource was prepared with
-`autoUpgrade=false`, but Vercel requires a Cubiqo owner to accept the Upstash
-Marketplace terms before creation can finish. No resource or charge was
-created. These gaps block webhook idempotency and live Staging validation.
+**Status:** ✅ Standard environment-scoped Shopify Storefront values exist in
+the canonical project; the release candidate supports them without copying or
+exposing values. ❌ Shopify webhook signing and durable Redis remain required
+before lifecycle-delivery validation. Their absence fails webhook ingress
+closed but does not block Staging UI, catalog, bag, or checkout-handoff review.
 
 ### Shopify Staging Webhook Subscriptions
 
@@ -220,18 +225,18 @@ created. These gaps block webhook idempotency and live Staging validation.
    `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`
 2. ✅ **GitHub environment identity configured:** `VERCEL_ORG_ID`,
    `VERCEL_PROJECT_ID`, and encrypted `VERCEL_TOKEN`
-3. ❌ **GitHub environment protections:** repository administrator must add
-   required reviewers and restrict Preview to `codex/*`, Production to `main`
-4. ❌ **Vercel Preview Shopify configuration:** add the seven dedicated
-   Shopify Staging, allowlist, and Redis values without reusing Production
-   credentials
-5. ❌ **Upstash Redis:** Cubiqo owner accepts Marketplace terms, then retry the
+3. ✅ **Staging gate:** exact open PR head, same-repository source, immutable
+   deployment receipt, and no Production-domain assignment
+4. ✅ **Vercel Storefront configuration:** environment-scoped standard Shopify
+   values are supported; staging aliases are optional
+5. ❌ **Webhook completion:** add the Shopify signing secret and provision
+   durable Redis. A Cubiqo owner accepts Marketplace terms, then retry the
    prepared `free` Preview-only resource with automatic upgrades disabled
 
-### Phase 2: Protected Staging Deployment (PR #54 head)
+### Phase 2: Staging Deployment (PR #54 head)
 
 1. Keep PR #54 **open** (required by vercel-preview.yml CI)
-2. Manually dispatch protected Staging workflow with exact PR head commit
+2. Dispatch the PR-bound Staging workflow with the exact PR head commit
    - Automatic Vercel preview branch is build evidence only (not the Staging deployment)
    - Protected workflow explicitly deploys to isolated Staging environment
 3. Verify build succeeds and site loads at staging domain
@@ -240,7 +245,8 @@ created. These gaps block webhook idempotency and live Staging validation.
 
 1. **Register all 8 webhook topics** in staging Shopify store
    - Endpoint: `https://<staging-domain>/api/webhooks/shopify`
-   - HMAC secret: `SHOPIFY_STAGING_WEBHOOK_SECRET`
+   - HMAC secret: environment-scoped `SHOPIFY_WEBHOOK_SECRET` or the optional
+     `SHOPIFY_STAGING_WEBHOOK_SECRET` override
 2. **Test webhook delivery** by creating a test order in staging store
 
 ### Phase 4: Live Happy-Path Test (Staging)
@@ -346,10 +352,10 @@ created. These gaps block webhook idempotency and live Staging validation.
 
 **Last updated:** 2026-08-31  
 **PR #54 status:** Code-approved, open, and mergeable; deploy only its live green head
-**Staging status:** 🟡 Canonical project and GitHub deployment identity are
-configured. Repository-admin protections, isolated Shopify Staging credentials,
-free Redis terms/resource creation, deployment, webhooks, and the live test are
-still pending.
+**Staging status:** 🟡 Canonical project, deployment identity, and Storefront
+configuration are available. Deploy the live green PR head for Product Owner
+review. Redis, webhook signing/subscriptions, the complete lifecycle test, and
+Production promotion remain pending.
 
 ---
 
@@ -359,4 +365,4 @@ Both reference documents are **tracked in PR #54**:
 - `staging-release-complete-reference.md` (post-PR #54 canonical)
 - `staging-release-pre-pr54-analysis-2026-08-31.md` (historical archive)
 
-They are the reviewed working reference on the release branch. They become the repository-level source of truth only after PR #54 is reviewed and merged; no document commit by itself satisfies the protected Staging gates.
+They are the reviewed working reference on the release branch. They become the repository-level source of truth only after PR #54 is reviewed and merged; no document commit by itself satisfies the Staging review or Production-promotion gates.

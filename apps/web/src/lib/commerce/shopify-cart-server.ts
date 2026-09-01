@@ -9,7 +9,7 @@ import {
   createStorefrontClient,
 } from '@repo/shopify';
 import type { StorefrontCart } from '@repo/shopify';
-import storefrontRuntime from '../../../../../config/shopify-storefront-runtime.json';
+import { resolveShopifyStorefrontConfig } from '../config/shopify-environment';
 import { createShopifyProductLoader } from '../providers/shopify/product-loader';
 import type { CommerceEnvironment } from './runtime-types';
 import { createHash } from 'node:crypto';
@@ -27,19 +27,8 @@ export class ShopifyCartError extends Error {
 }
 
 function environmentConfig(environment: CommerceEnvironment) {
-  const storeDomain =
-    environment === 'preview'
-      ? process.env.SHOPIFY_STAGING_STORE_DOMAIN
-      : process.env.SHOPIFY_STORE_DOMAIN || storefrontRuntime.storeDomain;
-  const storefrontAccessToken =
-    environment === 'preview'
-      ? process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN
-      : process.env.SHOPIFY_STOREFRONT_TOKEN;
-  const checkoutHosts =
-    environment === 'preview'
-      ? process.env.SHOPIFY_STAGING_CHECKOUT_HOSTS
-      : process.env.SHOPIFY_CHECKOUT_HOSTS ||
-        storefrontRuntime.checkoutHosts.join(',');
+  const { storeDomain, storefrontAccessToken, checkoutHosts } =
+    resolveShopifyStorefrontConfig(environment);
   if (!storeDomain || !storefrontAccessToken) {
     throw new ShopifyCartError('SHOPIFY_CART_NOT_CONFIGURED');
   }
