@@ -398,3 +398,23 @@ value into chat:
 Do not dispatch the manual Staging workflow until all three actions are
 verified. A Git-integrated Preview build is not the protected Staging release
 gate.
+
+### Verification after reported completion signals
+
+At 2026-08-31, Codex rechecked all three signals without reading values. None
+was observable at the required target:
+
+- GitHub environments `Preview`, `Preview – carlophillips-site`, `Production`,
+  and `Production – carlophillips-site` all report zero protection rules and no
+  deployment branch policy.
+- Cubiqo Vercel project `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` Preview still has
+  none of the four required `SHOPIFY_STAGING_*` variable names.
+- Retrying the Upstash free-plan install as Vercel CLI user `aditya-7307`
+  still returns `integration_terms_acceptance_required`; installation and
+  resource counts remain zero.
+
+Repeat the actions in the exact GitHub environments and Cubiqo Vercel team
+listed above. For Upstash, ensure the terms are accepted while signed into the
+same Cubiqo member account represented by the CLI authorization. Do not send
+secret values. Resume only after the dashboard itself shows the policies and
+variable names and the terms page reports acceptance.
