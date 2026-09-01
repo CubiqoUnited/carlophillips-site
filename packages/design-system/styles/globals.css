@@ -110,6 +110,10 @@
 }
 
 @media (min-width: 64rem) and (max-height: 52rem) {
+  .cp-bag-section {
+    padding-block: var(--cp-space-8);
+  }
+
   .cp-commerce-buy-column {
     padding-block: var(--cp-space-6);
   }
@@ -139,6 +143,16 @@
   .cp-commerce-buy-panel .cp-variant-list {
     margin-top: var(--cp-space-5);
     padding-top: var(--cp-space-4);
+  }
+}
+
+@media (max-width: 63.999rem) {
+  .cp-commerce-detail > div:first-child {
+    order: 2;
+  }
+
+  .cp-commerce-buy-column {
+    order: 1;
   }
 }
 

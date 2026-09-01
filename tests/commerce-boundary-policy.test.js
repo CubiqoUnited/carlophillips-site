@@ -147,6 +147,9 @@ describe('active commerce boundary policy', () => {
     expect(styles).toContain('scroll-snap-stop: normal');
     expect(product).toContain('cp-commerce-buy-panel');
     expect(styles).toContain('(max-height: 52rem)');
+    expect(styles).toMatch(
+      /\.cp-commerce-detail\s*>\s*div:first-child\s*\{[^}]*order:\s*2/s
+    );
     expect(bag).toContain('cp-bag-checkout-form');
     expect(styles).toMatch(
       /\.cp-bag-checkout-form\s*\{[^}]*position:\s*sticky/s
