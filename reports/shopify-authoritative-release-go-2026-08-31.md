@@ -39,8 +39,10 @@ Baseline: `origin/main@e31eb59`
 ## External release blockers
 
 Pull request [#54](https://github.com/CubiqoUnited/carlophillips-site/pull/54)
-is open at `dbd4eae6cfe3027536c5223146817cc2c3813528`. Repository verification,
-checkout E2E/accessibility, and the Vercel build check pass.
+is open. The implementation commit is
+`dbd4eae6cfe3027536c5223146817cc2c3813528`; later commits contain release
+evidence only. Repository verification, checkout E2E/accessibility, and the
+Vercel build check pass.
 
 The automatic PR Preview is `READY`, but it belongs to the Git-integrated
 `aditya's projects` Vercel project (`prj_i51hiKpEKrwaqblD2vaO6zhXUDCs`),
