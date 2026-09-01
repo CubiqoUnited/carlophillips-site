@@ -38,6 +38,22 @@ Baseline: `origin/main@e31eb59`
 
 ## External release blockers
 
-Staging deployment is intentionally withheld until the dedicated Shopify test-store variables and durable webhook store exist in Vercel. Exact actions and risks are recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md` under “SHOPIFY-AUTHORITATIVE STAGING ENVIRONMENT AND WEBHOOK DELIVERY.”
+Pull request [#54](https://github.com/CubiqoUnited/carlophillips-site/pull/54)
+is open at `dbd4eae6cfe3027536c5223146817cc2c3813528`. Repository verification,
+checkout E2E/accessibility, and the Vercel build check pass.
+
+The automatic PR Preview is `READY`, but it belongs to the Git-integrated
+`aditya's projects` Vercel project (`prj_i51hiKpEKrwaqblD2vaO6zhXUDCs`),
+which has no Preview or Production environment variables. The public domains
+currently resolve through the separate Cubiqo project
+(`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`). Therefore the automatic Preview is valid
+build evidence, not a Shopify Staging deployment.
+
+Staging deployment is intentionally withheld until the Product Owner/platform
+owner chooses one canonical Vercel project, the Git integration and domains are
+aligned to it, and dedicated Shopify test-store variables plus the durable
+webhook store exist there. Exact actions and risks are recorded in
+`reports/HUMAN_INTERVENTION_STICKY_RED.md` under
+“SHOPIFY-AUTHORITATIVE STAGING ENVIRONMENT AND WEBHOOK DELIVERY.”
 
 Production promotion remains separately gated by immutable Staging evidence and an explicit Product Owner decision.

@@ -2,6 +2,16 @@
 
 Updated: 2026-08-31
 
+> **CURRENT VERCEL IDENTITY WARNING (supersedes older same-name project
+> assumptions below):** two different Vercel projects are named
+> `carlophillips-site`. The GitHub PR integration currently deploys to
+> `aditya's projects` / `prj_i51hiKpEKrwaqblD2vaO6zhXUDCs`, while
+> `carlophillips.com` is currently served by the Cubiqo project
+> `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`. Do not add, copy, delete, or rotate
+> credentials and do not move domains until the Product Owner/platform owner
+> selects one canonical project. The detailed safe handoff is in the final
+> section of this file.
+
 Repository release-record, fingerprint, sample, and approval-JSON gates are no
 longer part of public commerce. Three external service actions remain before
 the full customer-ready claim can be signed off.
@@ -269,21 +279,73 @@ Added: 2026-08-31
 
 - Branch `codex/shopify-authoritative-release-go` implements Shopify-authoritative catalog/PDP data, current-variant validation, a persistent Storefront Cart API bag, hosted checkout handoff, Storefront API `2026-07` response verification, and signed durable webhook ingress.
 - Full repository verification and 20/20 headless desktop/mobile browser checks pass locally.
-- The Vercel CLI is authenticated and linked to project `carlophillips-site` (`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`).
+- Pull request #54 is open from the release branch. Repository verification,
+  checkout E2E/accessibility, and the Git-integrated Vercel build all pass.
+- Vercel currently contains two different projects named
+  `carlophillips-site`:
+  - `aditya's projects` (`team_8ABMxicIAtMyzgNYsJawFad0`) /
+    `prj_i51hiKpEKrwaqblD2vaO6zhXUDCs` receives the GitHub PR Preview. That
+    Preview is `READY`, but the project has no Preview or Production
+    environment variables, so it is build evidence only and is **not** a
+    Shopify Staging deployment.
+  - Cubiqo (`cubiqo-projects-d7156840`) /
+    `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` currently serves
+    `carlophillips.com` and `www.carlophillips.com`. It has existing
+    environment configuration, but the dedicated Staging and durable webhook
+    values required below are not complete.
 
 ## Exact human actions required before Staging deployment
 
-1. In Vercel Dashboard → `carlophillips-site` → Settings → Environment Variables, add the following **Preview-only** encrypted values from a dedicated Shopify development/test store: `SHOPIFY_STAGING_STORE_DOMAIN`, `SHOPIFY_STAGING_STOREFRONT_TOKEN`, `SHOPIFY_STAGING_CHECKOUT_HOSTS`, and `SHOPIFY_STAGING_WEBHOOK_SECRET`. Do not point these names at the Production store and do not paste values into Codex, GitHub, screenshots, or reports.
-2. In that Shopify test store, keep test payments enabled and confirm no real customer/payment data will be used. The store must expose the intended test products, variants, images/video, and the `custom.tagline`, `custom.material`, `custom.fit`, `custom.care`, and `custom.size_guide` product metafields to the Storefront API.
-3. Provision a durable Redis-compatible REST store for webhook idempotency. Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (or the corresponding `KV_REST_API_*` names) to Vercel Preview and Production. Do not accept a paid plan until Boss approves its exact price and ceiling.
-4. Add `SHOPIFY_WEBHOOK_ALLOWED_SHOPS` to Preview and Production with only the exact test and Production `*.myshopify.com` domains. Add `SHOPIFY_WEBHOOK_SECRET` to Production. Add `SHOPIFY_CHECKOUT_ENABLED=true` to Production; the release workflow still creates a separate checkout-disabled emergency artifact.
-5. Signal `CP Shopify staging environment ready`. Codex will deploy the exact branch SHA to protected Staging, test catalog → PDP → selected Shopify variant → bag add/update/remove → isolated Shopify checkout, and verify the executed API version header.
-6. Only after the Staging endpoint exists, register signed Shopify webhook subscriptions for `orders/create`, `orders/paid`, `orders/cancelled`, `orders/fulfilled`, `orders/updated`, `fulfillments/create`, `fulfillments/update`, and `refunds/create` against `/api/webhooks/shopify`. Signal `CP Shopify webhooks registered` after a signed test delivery reaches the correct environment exactly once.
-7. In Shopify/Apliiq Admin, verify the current product/variant fulfillment mapping without placing an order or enabling a new paid service. A real controlled order, payment, POD intake, fulfillment, cancellation, or refund requires separate approval for its exact product, shipping destination, tax, total cost, and rollback plan.
+1. Manually open Vercel Dashboard and select one canonical project. The safest
+   consolidation direction is to retain the Cubiqo project that already owns
+   the public domains and move/fix the GitHub Preview integration there, but
+   the Product Owner/platform owner must approve the choice because it changes
+   deployment authority. Do not delete the other project until domains,
+   variables, Git integration, Preview, and Production are verified on the
+   chosen project. Signal `CP canonical Vercel project selected` with the team
+   slug and project ID only—never secret values.
+2. In the selected canonical project → Settings → Environment Variables, add
+   these **Preview-only** encrypted values from a dedicated Shopify
+   development/test store: `SHOPIFY_STAGING_STORE_DOMAIN`,
+   `SHOPIFY_STAGING_STOREFRONT_TOKEN`, `SHOPIFY_STAGING_CHECKOUT_HOSTS`, and
+   `SHOPIFY_STAGING_WEBHOOK_SECRET`. Do not point these names at the Production
+   store and do not paste values into Codex, GitHub, screenshots, or reports.
+3. In that Shopify test store, keep test payments enabled and confirm no real
+   customer/payment data will be used. The store must expose the intended test
+   products, variants, images/video, and the `custom.tagline`,
+   `custom.material`, `custom.fit`, `custom.care`, and `custom.size_guide`
+   product metafields to the Storefront API.
+4. Provision a durable Redis-compatible REST store for webhook idempotency.
+   Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (or the
+   corresponding `KV_REST_API_*` names) to Vercel Preview and Production. Do
+   not accept a paid plan until Boss approves its exact price and ceiling.
+5. Add `SHOPIFY_WEBHOOK_ALLOWED_SHOPS` to Preview and Production with only the
+   exact test and Production `*.myshopify.com` domains. Add
+   `SHOPIFY_WEBHOOK_SECRET` to Production. Add
+   `SHOPIFY_CHECKOUT_ENABLED=true` to Production; the release workflow still
+   creates a separate checkout-disabled emergency artifact.
+6. Signal `CP Shopify staging environment ready`. Codex will deploy the exact
+   branch SHA to protected Staging, test catalog → PDP → selected Shopify
+   variant → bag add/update/remove → isolated Shopify checkout, and verify the
+   executed API version header.
+7. Only after the Staging endpoint exists, register signed Shopify webhook
+   subscriptions for `orders/create`, `orders/paid`, `orders/cancelled`,
+   `orders/fulfilled`, `orders/updated`, `fulfillments/create`,
+   `fulfillments/update`, and `refunds/create` against
+   `/api/webhooks/shopify`. Signal `CP Shopify webhooks registered` after a
+   signed test delivery reaches the correct environment exactly once.
+8. In Shopify/Apliiq Admin, verify the current product/variant fulfillment
+   mapping without placing an order or enabling a new paid service. A real
+   controlled order, payment, POD intake, fulfillment, cancellation, or refund
+   requires separate approval for its exact product, shipping destination,
+   tax, total cost, and rollback plan.
 
 ## Cost and risk
 
 - Creating or using a test store and a durable Redis service may be plan-dependent. Report any non-zero price before purchase or upgrade.
+- Copying credentials or moving domains between the two same-named Vercel
+  projects can expose Production data or route public traffic to the wrong
+  artifact. Consolidate one resource at a time and retain rollback evidence.
 - Using Production Shopify credentials in Preview could create real carts/orders or expose customer data. Keep the stores isolated.
 - Registering subscriptions before the endpoint is deployed creates a false configured state; deploy first, register second, then prove signed delivery.
 - Production promotion remains separately Product Owner-approved. These setup actions do not authorize a purchase, fulfillment, refund, merge, Production deployment, or branch deletion.
