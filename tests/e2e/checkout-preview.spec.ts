@@ -1,9 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 const HANDLE = 'carlophillips-signature-hoodie';
-const APPROVED_REFERENCE =
-  'sha256:0938f4582f512244658066942f269c16cca1efdec1e197868c05cfdb8fa5859d';
-const EXPECTED_LOCAL_BLOCK = 'CHECKOUT_ENVIRONMENT_REJECTED';
+const OPAQUE_REFERENCE = `sha256:${'0'.repeat(64)}`;
+const EXPECTED_LOCAL_BLOCK = 'SHOPIFY_CART_NOT_CONFIGURED';
 
 test.describe('Local fixture checkout boundary', () => {
   test('home remains truthful and cannot create a payment or order', async ({
@@ -26,7 +25,7 @@ test.describe('Local fixture checkout boundary', () => {
         () => getComputedStyle(document.documentElement).scrollSnapType
       )
     ).toBe('y mandatory');
-    await expect(page.locator('form[action="/api/checkout"]')).toHaveCount(0);
+    await expect(page.locator('form[action="/api/cart"]')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText(/checkout\.shopify/i);
     await page.screenshot({
       path: testInfo.outputPath('01-home-fail-closed.png'),
@@ -55,7 +54,7 @@ test.describe('Local fixture checkout boundary', () => {
         () => getComputedStyle(document.documentElement).scrollSnapType
       )
     ).toBe('none');
-    const form = page.locator('form[action="/api/checkout"]');
+    const form = page.locator('form[action="/api/cart"]');
     await expect(form).toHaveCount(0);
     await expect(page.locator('main#main-content')).toContainText(
       /purchasing is disabled|unavailable/i
@@ -66,13 +65,14 @@ test.describe('Local fixture checkout boundary', () => {
     });
   });
 
-  test('server checkout evaluation rejects the local fixture environment', async ({
+  test('server cart evaluation rejects the unconfigured local fixture environment', async ({
     request,
   }) => {
-    const response = await request.post('/api/checkout', {
+    const response = await request.post('/api/cart', {
       form: {
+        cartAction: 'add',
         handle: HANDLE,
-        referenceHash: APPROVED_REFERENCE,
+        referenceHash: OPAQUE_REFERENCE,
         quantity: '1',
       },
     });
@@ -83,14 +83,15 @@ test.describe('Local fixture checkout boundary', () => {
     expect(response.headers()['location']).toBeUndefined();
   });
 
-  test('checkout rejects cross-origin requests before checkout evaluation', async ({
+  test('cart rejects cross-origin requests before Shopify evaluation', async ({
     request,
   }) => {
-    const response = await request.post('/api/checkout', {
+    const response = await request.post('/api/cart', {
       headers: { Origin: 'https://attacker.invalid' },
       form: {
+        cartAction: 'add',
         handle: HANDLE,
-        referenceHash: APPROVED_REFERENCE,
+        referenceHash: OPAQUE_REFERENCE,
         quantity: '1',
       },
     });

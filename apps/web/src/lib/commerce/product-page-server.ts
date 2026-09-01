@@ -9,7 +9,6 @@ import type {
   ReleaseDecision,
   RuntimeProduct,
 } from './runtime-types';
-import productOffer from '../../../../../config/shopify-product-offer.json';
 
 interface ProductPageOptions {
   environment: CommerceEnvironment;
@@ -47,35 +46,38 @@ export async function getProductPageDecision(
     ...options,
     loadShopifyProduct: options.loadShopifyProduct,
   });
-  const allowedSizes = new Set(productOffer.allowedSizes);
   const currentShopifyProduct =
     decision.source === 'shopify' &&
     decision.visibilityAllowed &&
-    decision.product?.handle === productOffer.handle
+    decision.product?.handle === options.handle
       ? decision.product
       : null;
   const sellable = Boolean(
     currentShopifyProduct?.availableForSale &&
-    currentShopifyProduct.observedVariants?.some((variant) => {
-      const size = variant.selectedOptions.find(
-        (option) => option.name.toLowerCase() === 'size'
-      )?.value;
-      return (
-        variant.availableForSale && Boolean(size && allowedSizes.has(size))
-      );
-    })
+    currentShopifyProduct.observedVariants?.some(
+      (variant) => variant.availableForSale
+    )
   );
+  const cartEnabled = process.env.SHOPIFY_CART_UI_ENABLED !== 'false';
+  const checkoutEnabled =
+    options.environment !== 'production' ||
+    process.env.SHOPIFY_CHECKOUT_ENABLED === 'true';
+  const commerceEnabled = sellable && cartEnabled && checkoutEnabled;
   const cartActivation: CartActivationSummary = {
     schemaVersion: 'cp.cart-activation-decision.v1',
-    status: sellable ? 'eligible' : 'disabled',
-    cartAllowed: sellable,
-    checkoutAllowed: sellable,
-    reason: sellable
+    status: commerceEnabled ? 'eligible' : 'disabled',
+    cartAllowed: commerceEnabled,
+    checkoutAllowed: commerceEnabled,
+    reason: commerceEnabled
       ? 'CURRENT_SHOPIFY_PRODUCT_AVAILABLE'
-      : 'CURRENT_SHOPIFY_PRODUCT_UNAVAILABLE',
-    checkoutReason: sellable
+      : sellable
+        ? 'SHOPIFY_CART_SAFETY_DISABLED'
+        : 'CURRENT_SHOPIFY_PRODUCT_UNAVAILABLE',
+    checkoutReason: commerceEnabled
       ? 'SHOPIFY_HOSTED_CHECKOUT_AVAILABLE'
-      : 'SHOPIFY_HOSTED_CHECKOUT_UNAVAILABLE',
+      : sellable
+        ? 'SHOPIFY_CHECKOUT_SAFETY_DISABLED'
+        : 'SHOPIFY_HOSTED_CHECKOUT_UNAVAILABLE',
     prerequisites: [],
   };
   return { decision, cartActivation };

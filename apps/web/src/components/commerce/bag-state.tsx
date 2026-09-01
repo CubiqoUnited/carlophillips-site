@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import type { BagDecision } from '@/types';
+import type { StorefrontCart } from '@repo/shopify';
 import { StorefrontHeader } from '../layout/StorefrontHeader';
 
 const copyByStatus: Record<
@@ -25,12 +26,25 @@ const copyByStatus: Record<
   ready: {
     eyebrow: 'Your bag',
     title: 'Bag review',
-    body: 'Cart lines are available. Checkout remains disabled until the release and checkout gates pass.',
+    body: 'Cart lines, current pricing and hosted checkout are provided by Shopify.',
   },
 };
 
-export function CommerceBagState({ decision }: { decision: BagDecision }) {
-  const copy = copyByStatus[decision.status];
+export function CommerceBagState({
+  decision,
+  cart,
+}: {
+  decision: BagDecision;
+  cart?: StorefrontCart | null;
+}) {
+  const hasLines = Boolean(cart?.lines.edges.length);
+  const copy = hasLines
+    ? {
+        eyebrow: 'Your bag',
+        title: 'Bag review',
+        body: 'Current price, availability and checkout are provided by Shopify.',
+      }
+    : copyByStatus[decision.status];
 
   return (
     <main
@@ -75,9 +89,81 @@ export function CommerceBagState({ decision }: { decision: BagDecision }) {
             <p className="cp-label">{copy.eyebrow}</p>
             <h1 className="cp-heading-section mt-8 max-w-4xl">{copy.title}</h1>
             <p className="cp-body-large mt-8 max-w-2xl">{copy.body}</p>
+            {cart && hasLines && (
+              <div className="mt-10 grid gap-6" aria-label="Shopify cart lines">
+                {cart.lines.edges.map(({ node }) => (
+                  <article key={node.id} className="border-t pt-5">
+                    <p className="cp-label-small">
+                      {node.merchandise.product.title}
+                    </p>
+                    <p className="cp-text-copy mt-2">
+                      {node.merchandise.selectedOptions
+                        .map((option) => `${option.name}: ${option.value}`)
+                        .join(' · ')}
+                    </p>
+                    <p className="cp-text-copy mt-2">
+                      {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: node.merchandise.price.currencyCode,
+                      }).format(Number(node.merchandise.price.amount))}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      <form method="post" action="/api/cart">
+                        <input type="hidden" name="cartAction" value="update" />
+                        <input type="hidden" name="lineId" value={node.id} />
+                        <label
+                          className="cp-label-small"
+                          htmlFor={`quantity-${node.id}`}
+                        >
+                          Quantity
+                        </label>
+                        <input
+                          id={`quantity-${node.id}`}
+                          name="quantity"
+                          type="number"
+                          min="1"
+                          max="5"
+                          defaultValue={node.quantity}
+                          className="ml-3 w-16 border p-2"
+                        />
+                        <button
+                          className="cp-action cp-action-quiet ml-3"
+                          type="submit"
+                        >
+                          Update
+                        </button>
+                      </form>
+                      <form method="post" action="/api/cart">
+                        <input type="hidden" name="cartAction" value="remove" />
+                        <input type="hidden" name="lineId" value={node.id} />
+                        <button
+                          className="cp-action cp-action-quiet"
+                          type="submit"
+                        >
+                          Remove
+                        </button>
+                      </form>
+                    </div>
+                  </article>
+                ))}
+                <p className="cp-body-large">
+                  Subtotal:{' '}
+                  {new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: cart.cost.subtotalAmount.currencyCode,
+                  }).format(Number(cart.cost.subtotalAmount.amount))}
+                </p>
+                <form method="post" action="/api/cart">
+                  <input type="hidden" name="cartAction" value="checkout" />
+                  <button className="cp-action cp-action-solid" type="submit">
+                    Continue to checkout
+                  </button>
+                </form>
+              </div>
+            )}
             <div className="mt-10 flex flex-wrap gap-3">
               <Link href="/collections" className="cp-action cp-action-outline">
-                View release state
+                Continue shopping
               </Link>
               <Link href="/" className="cp-action cp-action-quiet">
                 Return home

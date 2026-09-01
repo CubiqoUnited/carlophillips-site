@@ -1,12 +1,12 @@
 /*
  * AUTO-GENERATED-STYLE STOREFRONT TYPES — DO NOT EDIT BY HAND.
- * Schema pin: Shopify Storefront API 2025-10.
+ * Schema pin: Shopify Storefront API 2026-07.
  * Regenerate from the pinned Storefront schema before changing the API version.
  * This deliberately contains transport shapes only; it grants no release,
  * media-approval, cart, checkout, or publication authority.
  */
 
-export type StorefrontApiVersion = '2025-10';
+export type StorefrontApiVersion = '2026-07';
 
 export interface MoneyV2 {
   readonly amount: string;
@@ -29,6 +29,10 @@ export interface ProductOption {
   readonly id: string;
   readonly name: string;
   readonly values: readonly string[];
+}
+
+export interface MetafieldValue {
+  readonly value: string;
 }
 
 export interface ProductVariant {
@@ -96,6 +100,11 @@ export interface Product {
   readonly productType: string;
   readonly tags: readonly string[];
   readonly vendor: string;
+  readonly tagline?: MetafieldValue | null;
+  readonly material?: MetafieldValue | null;
+  readonly fit?: MetafieldValue | null;
+  readonly care?: MetafieldValue | null;
+  readonly sizeGuide?: MetafieldValue | null;
   readonly priceRange: {
     readonly minVariantPrice: MoneyV2;
     readonly maxVariantPrice: MoneyV2;
@@ -114,6 +123,10 @@ export interface GetProductByHandleQuery {
   readonly product: Product | null;
 }
 
+export interface GetProductsQuery {
+  readonly products: Connection<Product>;
+}
+
 export interface GraphqlError {
   readonly message: string;
   readonly extensions?: Readonly<Record<string, unknown>>;
@@ -122,4 +135,29 @@ export interface GraphqlError {
 export interface GraphqlResponse<TData> {
   readonly data?: TData;
   readonly errors?: readonly GraphqlError[];
+}
+
+export interface StorefrontCartLine {
+  readonly id: string;
+  readonly quantity: number;
+  readonly merchandise: {
+    readonly id: string;
+    readonly title: string;
+    readonly availableForSale: boolean;
+    readonly selectedOptions: readonly SelectedOption[];
+    readonly product: { readonly handle: string; readonly title: string };
+    readonly price: MoneyV2;
+    readonly image: Pick<Image, 'url' | 'altText'> | null;
+  };
+}
+
+export interface StorefrontCart {
+  readonly id: string;
+  readonly checkoutUrl: string;
+  readonly totalQuantity: number;
+  readonly cost: {
+    readonly subtotalAmount: MoneyV2;
+    readonly totalAmount: MoneyV2;
+  };
+  readonly lines: Connection<StorefrontCartLine>;
 }

@@ -1,36 +1,55 @@
 import { CommerceBagState } from '@/components/commerce/bag-state';
-import { resolveBagDecision } from '@/lib/commerce/bag-decision';
-import { getServerCartActivationDecision } from '@/lib/commerce/cart-activation-server';
 import { getCommerceEnvironment } from '@/lib/config/product-visibility';
-import type {
-  BagDecision,
-  CartActivationSummary,
-  CommerceEnvironment,
-} from '@/types';
+import type { BagDecision, CommerceEnvironment } from '@/types';
+import { cookies } from 'next/headers';
+import { readShopifyCart } from '@/lib/commerce/shopify-cart-server';
 
 const readCommerceEnvironment =
   getCommerceEnvironment as () => CommerceEnvironment;
-const readCartActivation = getServerCartActivationDecision as (input: {
-  environment: CommerceEnvironment;
-}) => { decision: unknown; summary: CartActivationSummary };
-const decideBag = resolveBagDecision as (input: {
-  environment: CommerceEnvironment;
-  activationDecision: unknown;
-}) => BagDecision;
-
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Bag | CARLOPHILLIPS',
-  description:
-    'A source-labeled CARLOPHILLIPS bag state. Checkout remains fail-closed until commerce evidence passes.',
+  description: 'Your Shopify-backed CARLOPHILLIPS bag and checkout.',
   robots: { index: false, follow: true },
 };
 
-export default function BagPage() {
+export default async function BagPage() {
   const environment = readCommerceEnvironment();
-  const { decision: activationDecision } = readCartActivation({ environment });
-  const decision = decideBag({ environment, activationDecision });
+  let cart = null;
+  let available = true;
+  try {
+    const cartId = (await cookies()).get('cp_shopify_cart')?.value || null;
+    cart = await readShopifyCart({ cartId, environment });
+  } catch {
+    cart = null;
+    available = false;
+  }
+  const localFixture =
+    environment === 'local' && process.env.COMMERCE_DATA_MODE === 'fixture';
+  const decision: BagDecision = localFixture
+    ? {
+        schemaVersion: 'cp.bag-decision.v1',
+        status: 'local_preview',
+        source: 'fixture',
+        environment,
+        commerceAllowed: false,
+        checkoutAllowed: false,
+        reason: 'LOCAL_NON_COMMERCE_FIXTURE',
+        cart: null,
+      }
+    : {
+        schemaVersion: 'cp.bag-decision.v1',
+        status: !available ? 'unavailable' : cart ? 'ready' : 'empty',
+        source: available ? 'shopify' : 'unavailable',
+        environment,
+        commerceAllowed: available,
+        checkoutAllowed: available,
+        reason: available
+          ? 'SHOPIFY_CART_AUTHORITY'
+          : 'SHOPIFY_CART_UNAVAILABLE',
+        cart,
+      };
 
-  return <CommerceBagState decision={decision} />;
+  return <CommerceBagState decision={decision} cart={cart} />;
 }

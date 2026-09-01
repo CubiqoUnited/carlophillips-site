@@ -1,7 +1,9 @@
 import {
   createStorefrontClient,
   GET_PRODUCT_BY_HANDLE,
+  GET_PRODUCTS,
   normalizeStorefrontProduct,
+  normalizeStorefrontProducts,
 } from '@repo/shopify';
 import {
   attachObservationToProduct,
@@ -9,6 +11,7 @@ import {
 } from '../../commerce/product-observation';
 import type {
   GetProductByHandleQuery,
+  GetProductsQuery,
   StorefrontFetch,
   StorefrontProductTransportInput,
   StorefrontVariantTransportInput,
@@ -18,8 +21,6 @@ import type {
   ProductLoader,
   RuntimeProduct,
 } from '../../commerce/runtime-types';
-import { normalizePublicShopifyProduct } from './public-product-json-adapter';
-
 class ShopifyConfigurationError extends Error {
   readonly code = 'SHOPIFY_NOT_CONFIGURED';
 }
@@ -31,7 +32,6 @@ export function createShopifyProductLoader({
   environment = 'local',
   observedAt = () => new Date().toISOString(),
   capabilityEvidence = null,
-  publicCurrency = 'USD',
 }: {
   storeDomain?: string;
   storefrontToken?: string;
@@ -39,52 +39,29 @@ export function createShopifyProductLoader({
   environment?: CommerceEnvironment;
   observedAt?: () => string;
   capabilityEvidence?: string | null;
-  publicCurrency?: string;
 }): ProductLoader {
-  if (!storeDomain) {
+  if (!storeDomain || !storefrontToken) {
     throw new ShopifyConfigurationError(
       'Shopify Storefront domain is not configured'
     );
   }
 
-  const client = storefrontToken
-    ? createStorefrontClient({
-        storeDomain,
-        storefrontAccessToken: storefrontToken,
-        fetchImpl,
-      })
-    : null;
+  const client = createStorefrontClient({
+    storeDomain,
+    storefrontAccessToken: storefrontToken,
+    fetchImpl,
+  });
 
   return async function loadProduct(handle: string) {
-    let product: RuntimeProduct | null;
-    if (client) {
-      const result = await client.query<
-        GetProductByHandleQuery,
-        { handle: string }
-      >({
-        document: GET_PRODUCT_BY_HANDLE,
-        variables: { handle },
-      });
-      const transport = normalizeStorefrontProduct(result);
-      product = transport ? toObservedProduct(transport) : null;
-    } else {
-      const normalizedDomain = storeDomain
-        .replace(/^https?:\/\//i, '')
-        .replace(/\/$/, '');
-      const response = await fetchImpl(
-        `https://${normalizedDomain}/products/${encodeURIComponent(handle)}.js`,
-        { method: 'GET', cache: 'no-store' }
-      );
-      if (!response.ok) {
-        throw new Error(
-          `Shopify public product JSON returned HTTP ${response.status}`
-        );
-      }
-      product = normalizePublicShopifyProduct(await response.json(), {
-        currency: publicCurrency,
-        storeDomain: normalizedDomain,
-      });
-    }
+    const result = await client.query<
+      GetProductByHandleQuery,
+      { handle: string }
+    >({
+      document: GET_PRODUCT_BY_HANDLE,
+      variables: { handle },
+    });
+    const transport = normalizeStorefrontProduct(result);
+    const product = transport ? toObservedProduct(transport) : null;
     if (!product) return null;
 
     const observation = createProductObservation({
@@ -98,13 +75,69 @@ export function createShopifyProductLoader({
   };
 }
 
-function toObservedProduct(
+export function createShopifyCatalogLoader({
+  storeDomain,
+  storefrontToken,
+  fetchImpl = fetch,
+  environment = 'local',
+  observedAt = () => new Date().toISOString(),
+  capabilityEvidence = null,
+}: {
+  storeDomain?: string;
+  storefrontToken?: string;
+  fetchImpl?: StorefrontFetch;
+  environment?: CommerceEnvironment;
+  observedAt?: () => string;
+  capabilityEvidence?: string | null;
+}) {
+  if (!storeDomain || !storefrontToken) {
+    throw new ShopifyConfigurationError(
+      'Shopify Storefront domain and token are required'
+    );
+  }
+  const client = createStorefrontClient({
+    storeDomain,
+    storefrontAccessToken: storefrontToken,
+    fetchImpl,
+  });
+  return async function loadProducts(first = 50): Promise<RuntimeProduct[]> {
+    const result = await client.query<GetProductsQuery, { first: number }>({
+      document: GET_PRODUCTS,
+      variables: { first },
+    });
+    return normalizeStorefrontProducts(result).map((transport) => {
+      const product = toObservedProduct(transport);
+      return attachObservationToProduct(
+        product,
+        createProductObservation({
+          source: 'shopify',
+          environment,
+          observedAt: observedAt(),
+          product,
+          capabilityEvidence,
+        })
+      );
+    });
+  };
+}
+
+export function toObservedProduct(
   product: StorefrontProductTransportInput
 ): RuntimeProduct {
   const colors = distinctOptions(product.variants, 'color');
   const sizes = distinctOptions(product.variants, 'size');
-  const tagline = customerTagline(product.tags, product.productType);
+  const tagline =
+    canonicalCustomerText(product.content.tagline) ||
+    canonicalCustomerText(product.productType).toUpperCase();
   const description = canonicalCustomerText(product.description);
+  const details = [
+    ['Material', product.content.material],
+    ['Fit', product.content.fit],
+    ['Care', product.content.care],
+    ['Size guide', product.content.sizeGuide],
+  ]
+    .filter(([, value]) => canonicalCustomerText(value))
+    .map(([label, value]) => [label, canonicalCustomerText(value)]);
 
   return {
     id: product.handle,
@@ -118,7 +151,7 @@ function toObservedProduct(
     currency: product.priceRange.minimum.currency,
     tagline,
     description,
-    details: description ? [description] : [],
+    details,
     images: product.media
       .filter((item) => item.type === 'image')
       .map((item) => item.url),
@@ -177,22 +210,4 @@ function distinctOptions(
         .map((option) => option.value)
     ),
   ];
-}
-
-function customerTagline(tags: readonly string[], productType: string): string {
-  const blocked = [
-    'apliiq',
-    'printful',
-    'printify',
-    'supplier',
-    'lane',
-    'qa',
-    'review',
-    'candidate',
-    'drop-',
-  ];
-  const tag = tags.find(
-    (value) => !blocked.some((term) => value.toLowerCase().includes(term))
-  );
-  return (tag || productType).toUpperCase();
 }

@@ -9,7 +9,6 @@ import type {
   ReleaseDecision,
   VariantPresentation as VariantPresentationData,
 } from '@/types';
-import productOffer from '../../../../../../config/shopify-product-offer.json';
 
 function formatPrice(value: number, currency: string): string {
   if (!Number.isFinite(value) || value <= 0) return 'Price unavailable';
@@ -134,7 +133,6 @@ export function CommerceProductDetail({
   const liveProduct = Boolean(
     cartActivation?.cartAllowed && cartActivation?.checkoutAllowed
   );
-  const allowedSizes = new Set(productOffer.allowedSizes);
   const liveSizes =
     product.variantPresentation?.combinations
       ?.map(
@@ -143,7 +141,7 @@ export function CommerceProductDetail({
             (option) => option.name.toLowerCase() === 'size'
           )?.value
       )
-      .filter((size): size is string => Boolean(size && allowedSizes.has(size)))
+      .filter((size): size is string => Boolean(size))
       .sort((left, right) => {
         const order = [
           'XXS',
@@ -169,6 +167,9 @@ export function CommerceProductDetail({
     ['Category', product.productType],
   ];
   const attributes = attributeEntries(product);
+  const sizeGuide = attributes.find(
+    ([label]) => label.toLowerCase() === 'size guide'
+  )?.[1];
 
   return (
     <main id="main-content" className="cp-commerce-page">
@@ -216,6 +217,7 @@ export function CommerceProductDetail({
                 handle={product.handle}
                 presentation={product.variantPresentation}
                 environment={environment}
+                sizeGuide={sizeGuide}
               />
             ) : (
               <VariantPresentation presentation={product.variantPresentation} />

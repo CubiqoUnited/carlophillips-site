@@ -6,16 +6,16 @@ import {
   canRenderProducts,
   getCommerceEnvironment,
 } from '../config/product-visibility';
-import { loadShopifyProduct } from '../providers/shopify/storefront-product-adapter';
+import {
+  loadShopifyCatalog,
+  loadShopifyProduct,
+} from '../providers/shopify/storefront-product-adapter';
 import type { CatalogDecision, RuntimeProduct } from './runtime-types';
-import productOffer from '../../../../../config/shopify-product-offer.json';
 
 export async function getServerCatalogDecision(): Promise<CatalogDecision> {
   const environment = getCommerceEnvironment();
-  const candidateHandles = [productOffer.handle];
-
   if (!canRenderProducts()) {
-    return closedCatalogDecision(environment, candidateHandles.length);
+    return closedCatalogDecision(environment);
   }
 
   const mode = resolveCommerceDataMode({
@@ -23,17 +23,32 @@ export async function getServerCatalogDecision(): Promise<CatalogDecision> {
     environment,
   });
   let fixtureProducts: RuntimeProduct[] = [];
+  let shopifyProducts: RuntimeProduct[] = [];
   if (mode === 'fixture' && canRenderDraftProductPreviews()) {
     const fixtureModule =
       await import('../../fixtures/signature-hoodie-preview');
     fixtureProducts = [fixtureModule.signatureHoodiePreview];
+  } else {
+    try {
+      shopifyProducts = await loadShopifyCatalog();
+    } catch {
+      return closedCatalogDecision(environment);
+    }
   }
+
+  const candidateProducts =
+    mode === 'fixture' ? fixtureProducts : shopifyProducts;
+  const candidateHandles = candidateProducts.map((product) => product.handle);
 
   return getCatalogDecision({
     environment,
     mode,
     candidateHandles,
     fixtureProducts,
-    loadShopifyProduct,
+    loadShopifyProduct:
+      mode === 'shopify'
+        ? async (handle) =>
+            shopifyProducts.find((product) => product.handle === handle) || null
+        : loadShopifyProduct,
   });
 }

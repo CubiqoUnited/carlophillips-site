@@ -21,6 +21,9 @@ export interface StorefrontQueryOptions<TVariables> {
   readonly signal?: AbortSignal;
 }
 
+export type StorefrontMutationOptions<TVariables> =
+  StorefrontQueryOptions<TVariables>;
+
 export class StorefrontTransportError extends Error {
   readonly code: string;
   readonly status: number | null;
@@ -60,15 +63,19 @@ function normalizeStoreDomain(value: string): string {
   return url.hostname.toLowerCase();
 }
 
-function assertQueryDocument(document: string): void {
+function assertOperationDocument(
+  document: string,
+  operation: 'query' | 'mutation'
+): void {
   const withoutComments = document.replace(/#[^\n\r]*/g, '').trim();
-  if (!withoutComments || /\bmutation\b/i.test(withoutComments)) {
+  const forbidden = operation === 'query' ? /\bmutation\b/i : /\bquery\b/i;
+  if (!withoutComments || forbidden.test(withoutComments)) {
     throw new StorefrontTransportError(
-      'SHOPIFY_QUERY_ONLY_BOUNDARY',
-      'This Storefront client accepts read-only GraphQL queries only.'
+      'SHOPIFY_OPERATION_BOUNDARY',
+      `This Storefront method accepts ${operation} documents only.`
     );
   }
-  if (!/\bquery\b/i.test(withoutComments)) {
+  if (!new RegExp(`\\b${operation}\\b`, 'i').test(withoutComments)) {
     throw new StorefrontTransportError(
       'SHOPIFY_QUERY_DOCUMENT_INVALID',
       'A named Storefront GraphQL query is required.'
@@ -95,60 +102,83 @@ export function createStorefrontClient(config: StorefrontClientConfig) {
     async query<TData, TVariables extends Readonly<Record<string, unknown>>>(
       options: StorefrontQueryOptions<TVariables>
     ): Promise<TData> {
-      assertQueryDocument(options.document);
-      const requestInit: RequestInit = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Shopify-Storefront-Access-Token': token,
-        },
-        body: JSON.stringify({
-          query: options.document,
-          variables: options.variables,
-        }),
-        cache: 'no-store',
-      };
-      if (options.signal) requestInit.signal = options.signal;
-
-      let response: Response;
-      try {
-        response = await fetchImpl(endpoint, requestInit);
-      } catch {
-        throw new StorefrontTransportError(
-          'SHOPIFY_NETWORK_ERROR',
-          'Shopify Storefront transport failed.'
-        );
-      }
-      if (!response.ok) {
-        throw new StorefrontTransportError(
-          'SHOPIFY_HTTP_ERROR',
-          `Shopify Storefront returned HTTP ${response.status}.`,
-          response.status
-        );
-      }
-
-      let payload: GraphqlResponse<TData>;
-      try {
-        payload = (await response.json()) as GraphqlResponse<TData>;
-      } catch {
-        throw new StorefrontTransportError(
-          'SHOPIFY_RESPONSE_INVALID',
-          'Shopify Storefront returned an invalid response.'
-        );
-      }
-      if (payload.errors?.length) {
-        throw new StorefrontTransportError(
-          'SHOPIFY_GRAPHQL_ERROR',
-          'Shopify Storefront rejected the query.'
-        );
-      }
-      if (payload.data === undefined) {
-        throw new StorefrontTransportError(
-          'SHOPIFY_DATA_MISSING',
-          'Shopify Storefront returned no query data.'
-        );
-      }
-      return payload.data;
+      return execute('query', options);
+    },
+    async mutate<TData, TVariables extends Readonly<Record<string, unknown>>>(
+      options: StorefrontMutationOptions<TVariables>
+    ): Promise<TData> {
+      return execute('mutation', options);
     },
   });
+
+  async function execute<
+    TData,
+    TVariables extends Readonly<Record<string, unknown>>,
+  >(
+    operation: 'query' | 'mutation',
+    options: StorefrontQueryOptions<TVariables>
+  ): Promise<TData> {
+    assertOperationDocument(options.document, operation);
+    const requestInit: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': token,
+      },
+      body: JSON.stringify({
+        query: options.document,
+        variables: options.variables,
+      }),
+      cache: 'no-store',
+    };
+    if (options.signal) requestInit.signal = options.signal;
+
+    let response: Response;
+    try {
+      response = await fetchImpl(endpoint, requestInit);
+    } catch {
+      throw new StorefrontTransportError(
+        'SHOPIFY_NETWORK_ERROR',
+        'Shopify Storefront transport failed.'
+      );
+    }
+    if (!response.ok) {
+      throw new StorefrontTransportError(
+        'SHOPIFY_HTTP_ERROR',
+        `Shopify Storefront returned HTTP ${response.status}.`,
+        response.status
+      );
+    }
+
+    const executedVersion = response.headers?.get('x-shopify-api-version');
+    if (executedVersion !== apiVersion) {
+      throw new StorefrontTransportError(
+        'SHOPIFY_API_VERSION_MISMATCH',
+        'Shopify executed a different Storefront API version.'
+      );
+    }
+
+    let payload: GraphqlResponse<TData>;
+    try {
+      payload = (await response.json()) as GraphqlResponse<TData>;
+    } catch {
+      throw new StorefrontTransportError(
+        'SHOPIFY_RESPONSE_INVALID',
+        'Shopify Storefront returned an invalid response.'
+      );
+    }
+    if (payload.errors?.length) {
+      throw new StorefrontTransportError(
+        'SHOPIFY_GRAPHQL_ERROR',
+        'Shopify Storefront rejected the query.'
+      );
+    }
+    if (payload.data === undefined) {
+      throw new StorefrontTransportError(
+        'SHOPIFY_DATA_MISSING',
+        'Shopify Storefront returned no query data.'
+      );
+    }
+    return payload.data;
+  }
 }

@@ -84,34 +84,33 @@ describe('active commerce boundary policy', () => {
     ).toContain('variantResolverDecision = null');
   });
 
-  it('keeps the Shopify-authoritative checkout mutation server-only and sanitized', () => {
+  it('keeps the Shopify-authoritative cart and checkout server-only and sanitized', () => {
     const serverEntry = readFileSync(
-      'apps/web/src/lib/commerce/shopify-checkout-server.ts',
+      'apps/web/src/lib/commerce/shopify-cart-server.ts',
       'utf8'
     );
-    const route = readFileSync(
-      'apps/web/src/app/api/checkout/route.ts',
-      'utf8'
-    );
+    const route = readFileSync('apps/web/src/app/api/cart/route.ts', 'utf8');
     const form = readFileSync(
-      'components/commerce/shopify-checkout-form.jsx',
+      'apps/web/src/components/product/ProductForm/index.tsx',
       'utf8'
     );
 
     expect(serverEntry).toContain("import 'server-only'");
-    expect(serverEntry).toContain('cartCreate');
-    expect(serverEntry).not.toContain('PRODUCT_RELEASE_NOT_RELEASED');
+    expect(serverEntry).toContain('CREATE_CART');
+    expect(serverEntry).toContain('ADD_CART_LINES');
+    expect(serverEntry).toContain('UPDATE_CART_LINES');
+    expect(serverEntry).toContain('REMOVE_CART_LINES');
     expect(serverEntry).not.toContain('releaseRecord');
     expect(serverEntry).not.toContain('variantFingerprint');
-    expect(serverEntry).toContain('variant?.availableForSale');
-    expect(serverEntry).toContain('trustedCheckoutUrl');
-    expect(serverEntry).not.toContain('SHOPIFY_CHECKOUT_ENABLED');
+    expect(serverEntry).toContain('candidate.availableForSale');
+    expect(serverEntry).toContain('trustedCartCheckoutUrl');
     expect(serverEntry).toContain("environment === 'preview'");
     expect(serverEntry).not.toContain('console.');
-    expect(route).not.toContain('getProductReleaseEvidence');
-    expect(route).not.toContain('shopify-checkout-authorization.json');
+    expect(route).toContain("const CART_COOKIE = 'cp_shopify_cart'");
+    expect(route).toContain('response.cookies.set(CART_COOKIE');
+    expect(route).toContain('httpOnly: true');
     expect(route).not.toContain('SHOPIFY_STOREFRONT_TOKEN');
-    expect(route).not.toContain('merchandiseId');
+    expect(route).not.toContain('gid://');
     expect(form).not.toContain('gid://');
     expect(form).not.toContain('variantId');
   });

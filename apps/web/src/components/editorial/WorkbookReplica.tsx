@@ -59,8 +59,6 @@ const NAVIGABLE_SURFACES = new Set<Surface>([
   'hoodies',
 ]);
 
-const FALLBACK_SIZES = ['S', 'M', 'L'];
-
 export function formatCatalogPrice(
   price: number | undefined,
   currency: string | undefined
@@ -364,7 +362,14 @@ export default function WorkbookReplica({
   const priceLabel = formatCatalogPrice(product?.price, product?.currency);
   const sizeOptions = product?.sizes?.length
     ? product.sizes.map((value) => value.toUpperCase())
-    : FALLBACK_SIZES;
+    : [];
+  const sizeGuide = (product?.details || []).find(
+    (detail) =>
+      Array.isArray(detail) && String(detail[0]).toLowerCase() === 'size guide'
+  );
+  const sizeGuideText = Array.isArray(sizeGuide)
+    ? String(sizeGuide[1] || '')
+    : '';
   const productHref = product?.href || `/product/${productHandle}`;
   const [entered, setEntered] = useState(false);
   const [surface, setSurface] = useState<Surface>('discovery');
@@ -381,7 +386,7 @@ export default function WorkbookReplica({
   const [progress, setProgress] = useState(0);
   const [productFrameReady, setProductFrameReady] = useState(false);
   const [size, setSize] = useState(
-    sizeOptions.includes('M') ? 'M' : sizeOptions[0] || 'M'
+    sizeOptions.includes('M') ? 'M' : sizeOptions[0] || ''
   );
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [videoExpanded, setVideoExpanded] = useState(false);
@@ -916,30 +921,9 @@ export default function WorkbookReplica({
       )}
       {surface === 'size' && (
         <Panel title="SIZE GUIDE" onClose={() => setSurface('order')}>
-          <table className="cp-workbook-size-table">
-            <thead>
-              <tr>
-                <th>SIZE</th>
-                <th>CHEST</th>
-                <th>LENGTH</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ['S', '48 cm', '66 cm'],
-                ['M', '52 cm', '69 cm'],
-                ['L', '56 cm', '72 cm'],
-              ].map((row) => (
-                <tr key={row[0]}>
-                  {row.map((cell) => (
-                    <td key={cell}>{cell}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
           <p className="cp-workbook-copy">
-            Measurements are garment measurements.
+            {sizeGuideText ||
+              'Size guidance is currently unavailable in Shopify. Available sizes remain visible on the product page.'}
           </p>
           <ActionButton onClick={() => setSurface('order')}>CLOSE</ActionButton>
         </Panel>

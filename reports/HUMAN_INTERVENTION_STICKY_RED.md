@@ -258,3 +258,36 @@ The code path for Vercel Web Analytics and Speed Insights is prepared for public
 If the Staging deployment does not start accepting the Vercel analytics beacons automatically, manually open Vercel Dashboard → `aditya's projects` → `carlophillips-site` → Analytics and enable Web Analytics and Speed Insights for that exact project. Do not accept a paid upgrade without reporting the exact price first. Signal `CP Vercel analytics enabled` after the dashboard confirms data collection. No consent banner should be added for this technical implementation.
 
 Resume by verifying the public beacon responses, confirming Admin exclusion at desktop/mobile, and checking that Shopify order analytics remain separate from Vercel traffic/performance analytics.
+
+---
+
+# RED — SHOPIFY-AUTHORITATIVE STAGING ENVIRONMENT AND WEBHOOK DELIVERY
+
+Added: 2026-08-31
+
+## What Codex completed
+
+- Branch `codex/shopify-authoritative-release-go` implements Shopify-authoritative catalog/PDP data, current-variant validation, a persistent Storefront Cart API bag, hosted checkout handoff, Storefront API `2026-07` response verification, and signed durable webhook ingress.
+- Full repository verification and 20/20 headless desktop/mobile browser checks pass locally.
+- The Vercel CLI is authenticated and linked to project `carlophillips-site` (`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`).
+
+## Exact human actions required before Staging deployment
+
+1. In Vercel Dashboard → `carlophillips-site` → Settings → Environment Variables, add the following **Preview-only** encrypted values from a dedicated Shopify development/test store: `SHOPIFY_STAGING_STORE_DOMAIN`, `SHOPIFY_STAGING_STOREFRONT_TOKEN`, `SHOPIFY_STAGING_CHECKOUT_HOSTS`, and `SHOPIFY_STAGING_WEBHOOK_SECRET`. Do not point these names at the Production store and do not paste values into Codex, GitHub, screenshots, or reports.
+2. In that Shopify test store, keep test payments enabled and confirm no real customer/payment data will be used. The store must expose the intended test products, variants, images/video, and the `custom.tagline`, `custom.material`, `custom.fit`, `custom.care`, and `custom.size_guide` product metafields to the Storefront API.
+3. Provision a durable Redis-compatible REST store for webhook idempotency. Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (or the corresponding `KV_REST_API_*` names) to Vercel Preview and Production. Do not accept a paid plan until Boss approves its exact price and ceiling.
+4. Add `SHOPIFY_WEBHOOK_ALLOWED_SHOPS` to Preview and Production with only the exact test and Production `*.myshopify.com` domains. Add `SHOPIFY_WEBHOOK_SECRET` to Production. Add `SHOPIFY_CHECKOUT_ENABLED=true` to Production; the release workflow still creates a separate checkout-disabled emergency artifact.
+5. Signal `CP Shopify staging environment ready`. Codex will deploy the exact branch SHA to protected Staging, test catalog → PDP → selected Shopify variant → bag add/update/remove → isolated Shopify checkout, and verify the executed API version header.
+6. Only after the Staging endpoint exists, register signed Shopify webhook subscriptions for `orders/create`, `orders/paid`, `orders/cancelled`, `orders/fulfilled`, `orders/updated`, `fulfillments/create`, `fulfillments/update`, and `refunds/create` against `/api/webhooks/shopify`. Signal `CP Shopify webhooks registered` after a signed test delivery reaches the correct environment exactly once.
+7. In Shopify/Apliiq Admin, verify the current product/variant fulfillment mapping without placing an order or enabling a new paid service. A real controlled order, payment, POD intake, fulfillment, cancellation, or refund requires separate approval for its exact product, shipping destination, tax, total cost, and rollback plan.
+
+## Cost and risk
+
+- Creating or using a test store and a durable Redis service may be plan-dependent. Report any non-zero price before purchase or upgrade.
+- Using Production Shopify credentials in Preview could create real carts/orders or expose customer data. Keep the stores isolated.
+- Registering subscriptions before the endpoint is deployed creates a false configured state; deploy first, register second, then prove signed delivery.
+- Production promotion remains separately Product Owner-approved. These setup actions do not authorize a purchase, fulfillment, refund, merge, Production deployment, or branch deletion.
+
+## Resume point
+
+After both completion signals, rerun environment-name verification without printing values, execute protected Staging happy paths and screenshot comparison, capture the immutable deployment/SHA receipt, and request the separate Product Owner Production go/no-go decision.

@@ -285,7 +285,8 @@ describe('CI/CD policy', () => {
     expect(preview).toContain('--meta cpBuildEnvironment=preview');
     expect(preview).toContain('--meta cpCheckoutEnabled=false');
     expect(preview).toContain('--env SHOPIFY_CART_UI_ENABLED=true');
-    expect(preview).toContain('Preview checkout rehearsal action is missing.');
+    expect(preview).toContain('Preview Shopify test-bag action is missing.');
+    expect(preview).toContain('action="/api/cart"');
     expect(preview).toContain('verify-vercel-receipt.mjs preview');
     expect(preview).toContain('vercel curl');
     expect(preview).not.toContain('vercel promote');
@@ -316,7 +317,8 @@ describe('CI/CD policy', () => {
     expect(candidate).toContain(
       "SHOPIFY_CHECKOUT_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}"
     );
-    expect(candidate).toContain('verify-production-commerce-release.mjs');
+    expect(candidate).not.toContain('verify-production-commerce-release.mjs');
+    expect(candidate).toContain('action="/api/cart"');
     expect(candidate).toContain('vercel build --prod');
     expect(
       candidate.match(
@@ -372,7 +374,8 @@ describe('CI/CD policy', () => {
     expect(production).toContain('expected_production_anchor:');
     expect(production).toContain('expected_candidate_checkout:');
     expect(production).toContain('fetch-depth: 0');
-    expect(production).toContain('verify-production-commerce-release.mjs');
+    expect(production).not.toContain('verify-production-commerce-release.mjs');
+    expect(production).toContain('action="/api/cart"');
     expect(production).toContain(
       '--expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT"'
     );

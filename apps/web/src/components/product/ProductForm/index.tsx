@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import productOffer from '../../../../../../config/shopify-product-offer.json';
 import type {
   CommerceEnvironment,
   VariantCombination,
@@ -33,14 +32,15 @@ export default function ShopifyCheckoutForm({
   handle,
   presentation,
   environment,
+  sizeGuide,
 }: {
   handle: string;
   presentation: VariantPresentation;
   environment: CommerceEnvironment;
+  sizeGuide?: string;
 }) {
-  const allowedSizes = new Set(productOffer.allowedSizes);
   const available = (presentation.combinations || [])
-    .filter((item) => item.availableForSale && allowedSizes.has(sizeFor(item)))
+    .filter((item) => item.availableForSale)
     .slice()
     .sort(
       (left, right) =>
@@ -60,10 +60,11 @@ export default function ShopifyCheckoutForm({
   return (
     <form
       method="post"
-      action="/api/checkout"
+      action="/api/cart"
       className="cp-variant-list mt-10 border-t pt-7"
     >
       <input type="hidden" name="handle" value={handle} />
+      <input type="hidden" name="cartAction" value="add" />
       <label htmlFor="product-variant" className="cp-label mb-4 block">
         Select size
       </label>
@@ -108,8 +109,8 @@ export default function ShopifyCheckoutForm({
       >
         {selected
           ? environment === 'preview'
-            ? 'OPEN TEST CHECKOUT'
-            : 'CONTINUE TO CHECKOUT'
+            ? 'ADD TO TEST BAG'
+            : 'ADD TO BAG'
           : 'SELECT A SIZE'}{' '}
         {selected ? money(selected.price.amount, selected.price.currency) : ''}
       </button>
@@ -136,18 +137,9 @@ export default function ShopifyCheckoutForm({
             </button>
           </div>
           <p className="mt-4 text-sm">
-            This piece is designed for a relaxed fit. Select the size currently
-            offered by Shopify that works best for you.
+            {sizeGuide ||
+              'Size guidance is currently unavailable in Shopify. Select from the current Shopify size options above.'}
           </p>
-          <details className="mt-4">
-            <summary className="cursor-pointer">
-              Measurements & how to measure
-            </summary>
-            <p className="mt-3 text-sm">
-              Measure chest at the fullest point and keep the tape level.
-              Compare against the size information returned by Shopify.
-            </p>
-          </details>
         </div>
       )}
       <div className="mt-4 flex items-center gap-3">

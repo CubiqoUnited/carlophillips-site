@@ -35,6 +35,7 @@ jobs:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
       NEXT_PUBLIC_COMMERCE_ENVIRONMENT: preview
+      NEXT_PUBLIC_SHOW_PRODUCTS: 'true'
       COMMERCE_DATA_MODE: shopify
       SHOPIFY_CART_UI_ENABLED: 'true'
 
@@ -84,6 +85,7 @@ jobs:
           test -n "$VERCEL_ORG_ID"
           test -n "$VERCEL_PROJECT_ID"
           test "$NEXT_PUBLIC_COMMERCE_ENVIRONMENT" = "preview"
+          test "$NEXT_PUBLIC_SHOW_PRODUCTS" = "true"
           test "$SHOPIFY_CART_UI_ENABLED" = "true"
 
       - name: Set up Node.js
@@ -136,6 +138,7 @@ jobs:
         run: |
           deployment_url="$(vercel deploy --prebuilt --archive=tgz --skip-domain --token="$VERCEL_TOKEN" \
             --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=preview \
+            --env NEXT_PUBLIC_SHOW_PRODUCTS=true \
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED=true \
             --meta gitCommitSha="$GITHUB_SHA" \
@@ -188,11 +191,9 @@ jobs:
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('preview-pdp.html', 'utf8');
-          if (!html.includes('REVIEW CHECKOUT')) throw new Error('Preview checkout rehearsal action is missing.');
-          if (!html.includes('action="/api/checkout"')) throw new Error('Preview checkout rehearsal endpoint is missing.');
-          if (!html.includes('No Shopify cart, payment, order, inventory, email, or fulfillment action is created.')) {
-            throw new Error('Preview checkout rehearsal disclosure is missing.');
-          }
+          if (!html.includes('ADD TO TEST BAG')) throw new Error('Preview Shopify test-bag action is missing.');
+          if (!html.includes('action="/api/cart"')) throw new Error('Preview Shopify cart endpoint is missing.');
+          if (!html.includes('isolated Shopify test checkout')) throw new Error('Preview test-checkout disclosure is missing.');
           NODE
 
       - name: Remove pulled Preview environment data

@@ -315,16 +315,17 @@ try {
   check(rejectedOriginPayload.code === 'ORIGIN_REJECTED', 'Cross-origin Theme denial names the origin gate.', { code: rejectedOriginPayload.code });
   check(await fs.readFile(canonicalThemePath, 'utf8') === themeBefore, 'Rejected-origin Theme POST leaves the canonical file byte-for-byte unchanged.', {});
 
-  const checkoutResponse = await apiContext.request.post(`${baseUrl}/api/checkout`, {
+  const checkoutResponse = await apiContext.request.post(`${baseUrl}/api/cart`, {
     form: {
+      cartAction: 'add',
       handle: 'carlophillips-signature-hoodie',
       referenceHash: `sha256:${'a'.repeat(64)}`,
       quantity: '1',
     },
   });
   const checkoutPayload = await checkoutResponse.json();
-  check(checkoutResponse.status() === 409, 'Checkout endpoint denies the canonical Staged release in Production.', { status: checkoutResponse.status() });
-  check(checkoutPayload.error === 'PRODUCT_RELEASE_NOT_RELEASED', 'Checkout denial names the canonical release-state gate.', { error: checkoutPayload.error });
+  check(checkoutResponse.status() === 409, 'Cart endpoint fails closed when Shopify is not configured in local visual QA.', { status: checkoutResponse.status() });
+  check(checkoutPayload.error === 'SHOPIFY_CART_NOT_CONFIGURED', 'Cart denial names the missing Shopify runtime configuration.', { error: checkoutPayload.error });
   await apiContext.close();
 } finally {
   await browser.close();

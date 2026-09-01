@@ -21,6 +21,10 @@
     "storybook": "yarn workspace @repo/design-system storybook",
     "build-storybook": "yarn workspace @repo/design-system build-storybook",
     "test": "vitest run",
+    "test:shipped": "node scripts/run-test-category.mjs shipped",
+    "test:tooling": "node scripts/run-test-category.mjs tooling",
+    "test:contracts": "node scripts/run-test-category.mjs contracts",
+    "test:categories": "yarn test:shipped && yarn test:tooling && yarn test:contracts",
     "test:watch": "vitest",
     "test:e2e": "playwright test tests/e2e",
     "test:a11y": "playwright test tests/e2e/accessibility.spec.ts",
@@ -30,7 +34,8 @@
     "audit:prod": "yarn audit --groups dependencies --level moderate",
     "verify:media-readiness": "node scripts/verify-media-readiness.mjs",
     "verify:vercel-link": "node scripts/verify-vercel-link.mjs",
-    "verify": "yarn lint && yarn typecheck && yarn stylelint && yarn format:check && yarn verify:media-readiness && yarn test && yarn build-storybook && yarn audit:prod && yarn build",
+    "verify:source-boundaries": "node scripts/verify-source-boundaries.mjs",
+    "verify": "yarn verify:source-boundaries && yarn lint && yarn typecheck && yarn stylelint && yarn format:check && yarn verify:media-readiness && yarn test:categories && yarn build-storybook && yarn audit:prod && yarn build",
     "prepare": "husky"
   },
   "dependencies": {

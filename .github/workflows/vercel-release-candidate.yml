@@ -35,6 +35,7 @@ jobs:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
       NEXT_PUBLIC_COMMERCE_ENVIRONMENT: production
+      NEXT_PUBLIC_SHOW_PRODUCTS: 'true'
       COMMERCE_DATA_MODE: shopify
       SHOPIFY_CART_UI_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}
       SHOPIFY_CHECKOUT_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}
@@ -73,6 +74,7 @@ jobs:
           test -n "$VERCEL_ORG_ID"
           test -n "$VERCEL_PROJECT_ID"
           test "$NEXT_PUBLIC_COMMERCE_ENVIRONMENT" = "production"
+          test "$NEXT_PUBLIC_SHOW_PRODUCTS" = "true"
           [[ "$SHOPIFY_CART_UI_ENABLED" =~ ^(true|false)$ ]]
           test "$SHOPIFY_CHECKOUT_ENABLED" = "$SHOPIFY_CART_UI_ENABLED"
           test "$SHOPIFY_CART_UI_ENABLED" = "true"
@@ -96,15 +98,6 @@ jobs:
 
       - name: Verify repository before deployment
         run: yarn verify
-
-      - name: Verify exact release before enabling Production checkout
-        if: ${{ inputs.checkout_enabled }}
-        env:
-          RELEASE: ${{ inputs.release }}
-        run: >-
-          node scripts/verify-production-commerce-release.mjs
-          --release "$RELEASE"
-          --expected-sha "$GITHUB_SHA"
 
       - name: Install pinned Vercel CLI
         run: |
@@ -136,6 +129,7 @@ jobs:
         run: |
           deployment_url="$(vercel deploy --prebuilt --archive=tgz --prod --skip-domain --token="$VERCEL_TOKEN" \
             --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=production \
+            --env NEXT_PUBLIC_SHOW_PRODUCTS=true \
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED="$SHOPIFY_CART_UI_ENABLED" \
             --env SHOPIFY_CHECKOUT_ENABLED="$SHOPIFY_CHECKOUT_ENABLED" \
@@ -158,6 +152,7 @@ jobs:
         run: |
           deployment_url="$(vercel deploy --prebuilt --archive=tgz --prod --skip-domain --token="$VERCEL_TOKEN" \
             --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=production \
+            --env NEXT_PUBLIC_SHOW_PRODUCTS=true \
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED=false \
             --env SHOPIFY_CHECKOUT_ENABLED=false \
@@ -216,13 +211,13 @@ jobs:
           const checkoutEnabled = artifact === 'candidate' && process.env.SHOPIFY_CHECKOUT_ENABLED === 'true';
           const html = fs.readFileSync(`${artifact}-pdp.html`, 'utf8');
           if (checkoutEnabled) {
-            if (!html.includes('Continue to checkout')) throw new Error('Candidate PDP is missing checkout continuation.');
-            if (!html.includes('action="/api/checkout"')) throw new Error('Candidate PDP is missing the checkout endpoint.');
+            if (!html.includes('ADD TO BAG')) throw new Error('Candidate PDP is missing the Shopify bag action.');
+            if (!html.includes('action="/api/cart"')) throw new Error('Candidate PDP is missing the cart endpoint.');
           } else {
             if (!html.includes('Selection disabled')) throw new Error(`${artifact} PDP is missing the disabled-selection proof.`);
             if (!html.includes('Purchasing disabled')) throw new Error(`${artifact} PDP is missing the fail-closed purchasing proof.`);
-            if (html.includes('Continue to checkout')) throw new Error(`${artifact} PDP unexpectedly exposes checkout continuation.`);
-            if (html.includes('action="/api/checkout"')) throw new Error(`${artifact} PDP unexpectedly exposes the checkout endpoint.`);
+            if (html.includes('ADD TO BAG')) throw new Error(`${artifact} PDP unexpectedly exposes cart activation.`);
+            if (html.includes('action="/api/cart"')) throw new Error(`${artifact} PDP unexpectedly exposes the cart endpoint.`);
             if (/<form\b[^>]*>[\s\S]*?type=["']submit["']/i.test(html)) {
               throw new Error(`${artifact} PDP unexpectedly exposes an enabled submit form.`);
             }

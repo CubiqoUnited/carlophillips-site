@@ -65,6 +65,15 @@ export function toProductViewModel(
     product.variants?.colors ||
     (typeof product.color === 'string' ? [product.color] : []);
   const localSizes = product.variants?.sizes || product.sizes || [];
+  const observedOptions = (name: string) =>
+    Array.from(
+      new Set(
+        (product.variantPresentation?.combinations || [])
+          .flatMap((combination) => combination.selectedOptions)
+          .filter((option) => option.name.toLowerCase() === name)
+          .map((option) => option.value)
+      )
+    );
 
   const media = (product.media || []).map((item, index) =>
     normalizeMediaItem(item, index, title)
@@ -85,8 +94,9 @@ export function toProductViewModel(
     story: presentation.story,
     truthHeading: presentation.truthHeading,
     commerceExplanation: presentation.commerceExplanation,
-    colors: decision.source === 'fixture' ? localColors : [],
-    sizes: decision.source === 'fixture' ? localSizes : [],
+    colors:
+      decision.source === 'fixture' ? localColors : observedOptions('color'),
+    sizes: decision.source === 'fixture' ? localSizes : observedOptions('size'),
     variantPresentation:
       decision.source === 'shopify' && product.variantPresentation
         ? product.variantPresentation

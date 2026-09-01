@@ -1,6 +1,12 @@
 import 'server-only';
 
-import type { GetProductByHandleQuery, Image, ProductMedia } from './types';
+import type {
+  GetProductByHandleQuery,
+  GetProductsQuery,
+  Image,
+  Product,
+  ProductMedia,
+} from './types';
 
 export interface StorefrontMediaTransportInput {
   readonly rawReference: string;
@@ -35,6 +41,13 @@ export interface StorefrontProductTransportInput {
   readonly vendor: string;
   readonly productType: string;
   readonly tags: readonly string[];
+  readonly content: {
+    readonly tagline: string;
+    readonly material: string;
+    readonly fit: string;
+    readonly care: string;
+    readonly sizeGuide: string;
+  };
   readonly priceRange: {
     readonly minimum: {
       readonly amount: string;
@@ -111,7 +124,22 @@ function normalizeMedia(
 export function normalizeStorefrontProduct(
   result: GetProductByHandleQuery
 ): StorefrontProductTransportInput | null {
-  const product = result.product;
+  return normalizeProduct(result.product);
+}
+
+export function normalizeStorefrontProducts(
+  result: GetProductsQuery
+): StorefrontProductTransportInput[] {
+  return result.products.edges
+    .map(({ node }) => normalizeProduct(node))
+    .filter(
+      (product): product is StorefrontProductTransportInput => product !== null
+    );
+}
+
+function normalizeProduct(
+  product: Product | null
+): StorefrontProductTransportInput | null {
   if (!product?.id || !product.handle || !product.title) return null;
 
   return {
@@ -125,6 +153,13 @@ export function normalizeStorefrontProduct(
     vendor: product.vendor,
     productType: product.productType,
     tags: [...product.tags],
+    content: {
+      tagline: product.tagline?.value ?? '',
+      material: product.material?.value ?? '',
+      fit: product.fit?.value ?? '',
+      care: product.care?.value ?? '',
+      sizeGuide: product.sizeGuide?.value ?? '',
+    },
     priceRange: {
       minimum: {
         amount: product.priceRange.minVariantPrice.amount,
