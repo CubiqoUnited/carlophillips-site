@@ -438,3 +438,31 @@ and webhook registration. Webhook ingress continues to fail closed until the
 Shopify signing secret and a durable Redis store exist. Upstash still reports
 that its Marketplace terms are unaccepted for CLI user `aditya-7307`; Codex
 cannot create that resource until the account-level acceptance is observable.
+
+### Staging implementation receipt and remaining Vercel-owner actions
+
+Implementation commit `00695b949a12d84e7b06dbc1db77261c6503bfb6` passed
+repository CI, checkout/accessibility, Vercel build, and headless desktop visual
+QA. Its Cubiqo Preview deployment is
+`carlophillips-site-o31q3r9gj-cubiqo-projects-d7156840.vercel.app`. Live testing
+proved Shopify S/M/L selector → test bag → `$128` line → Shopify-hosted checkout
+redirect. Testing stopped before payment. Production remained on deployment
+`dpl_CTG5gJCWVhCimCPb5a8qadS5hMdp`.
+
+The Cubiqo CLI member can deploy Preview but received HTTP 403 when creating a
+project-scoped CI token and lacks permission to assign
+`staging.carlophillips.com`. A Cubiqo Vercel owner must:
+
+1. Create a project-scoped token for `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` at
+   Vercel Account Settings → Tokens and replace GitHub environment secret
+   `VERCEL_TOKEN` in `Preview` and `Production` without exposing the value.
+2. Assign `staging.carlophillips.com` to the exact reviewed Cubiqo deployment,
+   or grant the CLI member domain-alias permission. Do not alter
+   `carlophillips.com` or `www.carlophillips.com`.
+3. Accept the Upstash terms in the Cubiqo team, then allow Codex to retry the
+   free Preview-only resource with `autoUpgrade=false`.
+4. Add the environment-scoped Shopify app signing secret directly in Vercel so
+   Codex can register and prove webhook delivery. Do not paste it into chat.
+
+Signal: `CP Vercel staging owner actions complete`. Production promotion still
+requires the Product Owner's separate explicit instruction after review.
