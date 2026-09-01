@@ -42,6 +42,7 @@
   --cp-size-body: 1rem;
   --cp-size-body-large: clamp(1rem, 1.35vw, 1.15rem);
   --cp-size-heading-product: clamp(2.5rem, 5vw, 4.5rem);
+  --cp-size-heading-product-short: clamp(2.5rem, 4vw, 3.5rem);
   --cp-size-heading-section: clamp(3.25rem, 8vw, 8rem);
   --cp-size-heading-commerce: clamp(3.75rem, 9vw, 8rem);
   --cp-size-heading-concept: clamp(4rem, 9vw, 9rem);

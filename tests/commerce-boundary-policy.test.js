@@ -122,6 +122,37 @@ describe('active commerce boundary policy', () => {
     expect(form).not.toContain('variantId');
   });
 
+  it('keeps the mobile commerce entry and bag checkout actions discoverable', () => {
+    const home = readFileSync(
+      'apps/web/src/components/editorial/WorkbookReplica.tsx',
+      'utf8'
+    );
+    const product = readFileSync(
+      'apps/web/src/components/product/ProductInfo/index.tsx',
+      'utf8'
+    );
+    const bag = readFileSync(
+      'apps/web/src/components/commerce/bag-state.tsx',
+      'utf8'
+    );
+    const styles = readFileSync(
+      'packages/design-system/styles/globals.css',
+      'utf8'
+    );
+
+    expect(home).toContain('cp-workbook-order-cta');
+    expect(styles).not.toMatch(
+      /\.cp-workbook-order-cta\s*\{[^}]*display:\s*none/s
+    );
+    expect(styles).toContain('scroll-snap-stop: normal');
+    expect(product).toContain('cp-commerce-buy-panel');
+    expect(styles).toContain('(max-height: 52rem)');
+    expect(bag).toContain('cp-bag-checkout-form');
+    expect(styles).toMatch(
+      /\.cp-bag-checkout-form\s*\{[^}]*position:\s*sticky/s
+    );
+  });
+
   it('retires the agent-authored controlled sample-order route', () => {
     const route = readFileSync(
       'app/api/admin/controlled-order/route.js',

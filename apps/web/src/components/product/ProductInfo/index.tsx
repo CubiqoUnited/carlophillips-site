@@ -184,8 +184,8 @@ export function CommerceProductDetail({
             productOnly
           />
         </div>
-        <div className="flex items-start px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
-          <div className="w-full max-w-3xl lg:sticky lg:top-32">
+        <div className="cp-commerce-buy-column flex items-start px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
+          <div className="cp-commerce-buy-panel w-full max-w-3xl lg:sticky lg:top-32">
             <p className="cp-label mb-7">
               {product.tagline || product.productType || 'Product'}
             </p>
@@ -208,7 +208,7 @@ export function CommerceProductDetail({
                 ))}
               </dl>
             )}
-            <p className="cp-text-copy mt-7 text-2xl font-light">
+            <p className="cp-product-price cp-text-copy mt-7 text-2xl font-light">
               {formatPrice(product.price, product.currency)}
             </p>
 

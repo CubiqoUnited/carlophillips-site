@@ -94,6 +94,52 @@
     z-index: var(--cp-layer-control);
     box-shadow: var(--cp-shadow-dialog);
   }
+
+  .cp-bag-checkout-form {
+    position: sticky;
+    bottom: var(--cp-space-3);
+    z-index: var(--cp-layer-control);
+    background: var(--cp-color-canvas);
+    padding-block: var(--cp-space-3);
+    box-shadow: var(--cp-shadow-dialog);
+  }
+
+  .cp-bag-checkout-form .cp-action {
+    width: 100%;
+  }
+}
+
+@media (min-width: 64rem) and (max-height: 52rem) {
+  .cp-commerce-buy-column {
+    padding-block: var(--cp-space-6);
+  }
+
+  .cp-commerce-buy-panel {
+    top: calc(var(--cp-header-height) + var(--cp-space-4));
+  }
+
+  .cp-commerce-buy-panel > .cp-label {
+    margin-bottom: var(--cp-space-3);
+  }
+
+  .cp-commerce-buy-panel .cp-heading-product {
+    font-size: var(--cp-size-heading-product-short);
+  }
+
+  .cp-commerce-buy-panel .cp-product-description,
+  .cp-commerce-buy-panel .cp-product-attributes,
+  .cp-commerce-buy-panel .cp-product-price {
+    margin-top: var(--cp-space-4);
+  }
+
+  .cp-commerce-buy-panel .cp-product-description {
+    font-size: var(--cp-size-body);
+  }
+
+  .cp-commerce-buy-panel .cp-variant-list {
+    margin-top: var(--cp-space-5);
+    padding-top: var(--cp-space-4);
+  }
 }
 
 .cp-landing-motion {
@@ -4158,12 +4204,20 @@ a:focus-visible {
   }
 
   .cp-workbook-discovery-grid {
-    height: calc(var(--cp-viewport-height) - var(--cp-header-height));
+    height: auto;
+    min-height: calc(var(--cp-viewport-height) - var(--cp-header-height));
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1fr) auto auto auto auto;
+    grid-template-rows: minmax(20rem, 1fr) auto auto auto auto;
     gap: var(--cp-space-2);
-    overflow: hidden;
-    padding: var(--cp-space-3) var(--cp-page-gutter);
+    overflow: visible;
+    padding: var(--cp-space-3) var(--cp-page-gutter) var(--cp-space-6);
+  }
+
+  .cp-workbook-discovery {
+    height: auto;
+    min-height: var(--cp-viewport-height);
+    overflow: visible;
+    scroll-snap-stop: normal;
   }
 
   .cp-workbook-video-stage {
@@ -4207,7 +4261,7 @@ a:focus-visible {
   }
 
   .cp-workbook-order-cta {
-    display: none;
+    display: flex;
   }
 
   .cp-workbook-discovery-tray,

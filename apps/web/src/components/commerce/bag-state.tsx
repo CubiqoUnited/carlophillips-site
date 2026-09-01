@@ -153,7 +153,11 @@ export function CommerceBagState({
                     currency: cart.cost.subtotalAmount.currencyCode,
                   }).format(Number(cart.cost.subtotalAmount.amount))}
                 </p>
-                <form method="post" action="/api/cart">
+                <form
+                  method="post"
+                  action="/api/cart"
+                  className="cp-bag-checkout-form"
+                >
                   <input type="hidden" name="cartAction" value="checkout" />
                   <button className="cp-action cp-action-solid" type="submit">
                     Continue to checkout

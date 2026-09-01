@@ -27,6 +27,22 @@ test.describe('Local fixture checkout boundary', () => {
     ).toBe('y mandatory');
     await expect(page.locator('form[action="/api/cart"]')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText(/checkout\.shopify/i);
+    await page.locator('#signature-runway').evaluate((element) =>
+      element.scrollIntoView({
+        behavior: 'instant',
+        block: 'start',
+      })
+    );
+    const orderButton = page.locator('.cp-workbook-order-cta');
+    await expect(orderButton).toBeVisible();
+    const orderBox = await orderButton.boundingBox();
+    const viewport = page.viewportSize();
+    expect(orderBox).not.toBeNull();
+    expect(viewport).not.toBeNull();
+    expect(orderBox!.y).toBeGreaterThanOrEqual(0);
+    expect(orderBox!.y + orderBox!.height).toBeLessThanOrEqual(
+      viewport!.height
+    );
     await page.screenshot({
       path: testInfo.outputPath('01-home-fail-closed.png'),
       fullPage: true,
