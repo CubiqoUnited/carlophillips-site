@@ -24,7 +24,9 @@ test.describe('Local fixture checkout boundary', () => {
       await page.evaluate(
         () => getComputedStyle(document.documentElement).scrollSnapType
       )
-    ).toBe('y mandatory');
+    ).toBe(
+      testInfo.project.name === 'mobile-chromium' ? 'none' : 'y mandatory'
+    );
     await expect(page.locator('form[action="/api/cart"]')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText(/checkout\.shopify/i);
     await page.locator('#signature-runway').evaluate((element) =>
@@ -35,6 +37,7 @@ test.describe('Local fixture checkout boundary', () => {
     );
     const orderButton = page.locator('.cp-workbook-order-cta');
     await expect(orderButton).toBeVisible();
+    await orderButton.scrollIntoViewIfNeeded();
     const orderBox = await orderButton.boundingBox();
     const viewport = page.viewportSize();
     expect(orderBox).not.toBeNull();

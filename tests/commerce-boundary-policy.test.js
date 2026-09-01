@@ -144,6 +144,9 @@ describe('active commerce boundary policy', () => {
     expect(styles).not.toMatch(
       /\.cp-workbook-order-cta\s*\{[^}]*display:\s*none/s
     );
+    expect(styles).toMatch(
+      /html:has\(\.cp-workbook-site\)\s*\{[^}]*scroll-snap-type:\s*none/s
+    );
     expect(styles).toContain('scroll-snap-stop: normal');
     expect(product).toContain('cp-commerce-buy-panel');
     expect(styles).toContain('(max-height: 52rem)');

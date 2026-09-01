@@ -4207,6 +4207,10 @@ a:focus-visible {
 }
 
 @media (max-width: 48rem) {
+  html:has(.cp-workbook-site) {
+    scroll-snap-type: none;
+  }
+
   .cp-workbook-morph.is-entered {
     transform: translateX(-25%);
   }
