@@ -23,5 +23,21 @@ const response = await fetch(endpoint, {
   },
   body,
 });
-if (!response.ok) throw new Error(`WEBHOOK_PROBE_REJECTED_${response.status}`);
+if (!response.ok) {
+  let code = 'UNKNOWN';
+  try {
+    const payload = await response.json();
+    if (
+      payload &&
+      typeof payload === 'object' &&
+      typeof payload.error === 'string' &&
+      /^[A-Z0-9_]+$/.test(payload.error)
+    ) {
+      code = payload.error;
+    }
+  } catch {
+    // Keep diagnostics PII-free when an upstream returns a non-JSON response.
+  }
+  throw new Error(`WEBHOOK_PROBE_REJECTED_${response.status}_${code}`);
+}
 process.stdout.write('Signed PII-free Shopify webhook probe accepted.\n');
