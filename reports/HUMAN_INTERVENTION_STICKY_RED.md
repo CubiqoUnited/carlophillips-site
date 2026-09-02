@@ -569,3 +569,10 @@ Vercel build. A separate workflow defect was exposed: Vercel CLI 56 rejects
 `--skip-domain` on non-Production deployments. The Preview and protected
 Staging workflows and their CI contract tests were corrected to omit that flag;
 the Production candidate retains `--prod --skip-domain`.
+# STAGING CATALOG ACTION CONFIRMATION — 2026-09-02
+
+The isolated Shopify development store is connected correctly, but it contains only Shopify sample snowboard products. The canonical CARLOPHILLIPS handle therefore renders unavailable and cannot expose Add to Bag.
+
+Required external action: create and publish a Staging-only `CARLOPHILLIPS Signature Hoodie` product to the Headless sales channel with handle `carlophillips-signature-hoodie`, black S/M/L variants, `$128.00` test pricing, and clearly test-only SKUs. Do not install or trigger the Production Apliiq handoff for this record.
+
+Risk: saving/publishing changes the external Shopify Staging catalog. It does not touch Production, charge a customer, or create an Apliiq production job. Signal completion by explicitly confirming the Staging-only Shopify Save/Publish action in the active Codex task.

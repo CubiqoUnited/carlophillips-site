@@ -291,6 +291,8 @@ describe('CI/CD policy', () => {
     expect(preview).toContain('--env SHOPIFY_CART_UI_ENABLED=true');
     expect(preview).toContain('--env SHOPIFY_CHECKOUT_ENABLED=true');
     expect(preview).toContain('Preview Shopify test-bag action is missing.');
+    expect(preview).toContain('/product/carlophillips-signature-hoodie');
+    expect(preview).not.toContain('/products/carlophillips-signature-hoodie');
     expect(preview).toContain('action="/api/cart"');
     expect(preview).toContain('verify-vercel-receipt.mjs preview');
     expect(preview).toContain('vercel curl "$route"');

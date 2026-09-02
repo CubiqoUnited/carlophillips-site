@@ -185,10 +185,10 @@ jobs:
           DEPLOYMENT_URL: ${{ steps.preview.outputs.url }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
+          for route in / /shop /collections /product/carlophillips-signature-hoodie /bag; do
             vercel curl "$route" --deployment "$DEPLOYMENT_URL" > /dev/null
           done
-          vercel curl /products/carlophillips-signature-hoodie \
+          vercel curl /product/carlophillips-signature-hoodie \
             --deployment "$DEPLOYMENT_URL" > preview-pdp.html
           node - <<'NODE'
           const fs = require('node:fs');
