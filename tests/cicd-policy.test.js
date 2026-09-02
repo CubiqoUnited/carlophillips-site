@@ -420,6 +420,7 @@ describe('CI/CD policy', () => {
         // Vercel CLI 56 list JSON omits deployment IDs; the verifier must use
         // the exact immutable provider URL as the list-to-inspect join key.
         listed: { id: undefined },
+        productionBefore: { aliases: [] },
       });
       const output = join(directory, 'receipt.json');
       const result = runVerifier([
