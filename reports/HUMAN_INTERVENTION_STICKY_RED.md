@@ -16,6 +16,8 @@ Protected Staging still cannot deploy because two browser permission boundaries 
 - The existing `CodexAutomation5` app must be installed on the development store before Staging webhook subscriptions can be registered.
 - GitHub has no `Staging` environment. The authenticated CLI identity is not repository admin, and the available Chrome session is not signed into GitHub.
 
+Current authentication handoff: Shopify accepted the authorized Google identity and is waiting at **Verify with your passkey**. Boss must open the preserved Chrome tab and complete the device fingerprint, face recognition, or PIN prompt; Sushma cannot read or bypass that local authenticator. After Shopify returns to `CARLOPHILLIPS Staging`, tell Sushma `CP Shopify passkey complete`. GitHub owner authentication follows after the Shopify tab is released.
+
 The new runtime correctly refuses this unsafe configuration. Do not point Staging at the Production Shopify store, enable Shopify test mode on Production, or share the Production durable store.
 
 ## Exact human action
