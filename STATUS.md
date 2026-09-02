@@ -1,5 +1,15 @@
 # Current Status
 
+## Shopify closure safety candidate — 2026-09-02
+
+- Implementation branch `codex/shopify-closure-safety` is based exactly on `origin/main@6bb273f` in the isolated worktree `/Users/edv/Documents/cp-shopify-closure`; no file was taken from `codex/WTF`.
+- Preview no longer falls back to Production Shopify credentials. Startup, product reads, cart operations and webhook ingress now reject incomplete or cross-environment configuration before an external request.
+- Shopify webhook observations remain HMAC-verified, zero-PII and atomically deduplicated; event keys are environment namespaced and separate physical stores remain required.
+- PR previews no longer assign `staging.carlophillips.com`. A separate protected workflow deploys only the exact merged `main` SHA, verifies it before aliasing, keeps cart/checkout enabled and runs a signed PII-free webhook probe.
+- Production candidate and rollback workflows no longer create or promote a checkout-disabled artifact. Normal rollback restores the previous verified checkout-enabled Production deployment.
+- Local evidence is green: 77 Vitest files / 649 tests, lint, typecheck, stylelint, format and optimized build; 26/26 Playwright desktop/mobile checks including six screenshot comparisons.
+- External Staging isolation, GitHub protections, PR review/merge, the exact merged-SHA Staging deployment, Shopify-origin test order, Shopify notification branding and Apliiq handoff remain unverified until the branch is pushed and the protected external configuration is completed.
+
 Updated: 2026-08-30
 Branch: `main`; verified Production storefront/checkout code anchor `4326385228ea7c7ec9a86b6e874e670ff584c261` (later evidence-only documentation descendants do not change storefront code)
 Canonical remote: `https://github.com/CubiqoUnited/carlophillips-site.git`

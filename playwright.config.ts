@@ -15,6 +15,7 @@ export default defineConfig({
     ['json', { outputFile: `${outputDir}/results.json` }],
   ],
   outputDir: `${outputDir}/artifacts`,
+  snapshotPathTemplate: '{testDir}/visual-baselines/{projectName}/{arg}{ext}',
   use: {
     baseURL: 'http://localhost:3000',
     screenshot: 'only-on-failure',

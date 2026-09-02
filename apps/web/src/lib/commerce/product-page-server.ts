@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { assertRuntimePreflight } from '../config/runtime-preflight';
 import { getProductDecision } from './product-gateway';
 import type {
   CartActivationSummary,
@@ -42,6 +43,9 @@ export async function getProductPageDecision(
   decision: ReleaseDecision;
   cartActivation: CartActivationSummary;
 }> {
+  if (options.environment !== 'local') {
+    assertRuntimePreflight(options.environment);
+  }
   const decision = await getProductDecision({
     ...options,
     loadShopifyProduct: options.loadShopifyProduct,

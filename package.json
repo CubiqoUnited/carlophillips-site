@@ -35,7 +35,9 @@
     "verify:media-readiness": "node scripts/verify-media-readiness.mjs",
     "verify:vercel-link": "node scripts/verify-vercel-link.mjs",
     "verify:source-boundaries": "node scripts/verify-source-boundaries.mjs",
-    "verify": "yarn verify:source-boundaries && yarn lint && yarn typecheck && yarn stylelint && yarn format:check && yarn verify:media-readiness && yarn test:categories && yarn build-storybook && yarn audit:prod && yarn build",
+    "verify:commerce-contract": "node scripts/verify-commerce-contract.mjs",
+    "verify:webhook-endpoint": "node scripts/verify-shopify-webhook-endpoint.mjs",
+    "verify": "yarn verify:source-boundaries && yarn verify:commerce-contract && yarn lint && yarn typecheck && yarn stylelint && yarn format:check && yarn verify:media-readiness && yarn test:categories && yarn build-storybook && yarn audit:prod && yarn build",
     "prepare": "husky"
   },
   "dependencies": {

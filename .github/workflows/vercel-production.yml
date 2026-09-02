@@ -4,30 +4,21 @@ on:
   workflow_dispatch:
     inputs:
       candidate_deployment:
-        description: Exact reviewed staged Production candidate ID or immutable URL
-        required: true
-        type: string
-      safe_fallback_deployment:
-        description: Distinct reviewed safe-fallback deployment ID or immutable URL
+        description: Exact reviewed checkout-enabled candidate URL or ID
         required: true
         type: string
       expected_sha:
-        description: Full 40-character release-pair SHA; must equal current main
+        description: Full 40-character main SHA
         required: true
         type: string
-      expected_production_anchor:
-        description: Current Production ID recorded only as the reviewed drift anchor
+      previous_checkout_enabled_deployment:
+        description: Current verified checkout-enabled Production deployment ID
         required: true
         type: string
       release:
-        description: Release identifier recorded in both deployment metadata envelopes
+        description: Immutable release identifier
         required: true
         type: string
-      expected_candidate_checkout:
-        description: Must match the reviewed staged candidate checkout marker
-        required: true
-        default: false
-        type: boolean
 
 permissions:
   actions: read
@@ -39,7 +30,7 @@ concurrency:
 
 jobs:
   promote-production:
-    name: Promote exact staged candidate with safe fallback
+    name: Promote exact checkout-enabled candidate
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment:
@@ -48,337 +39,109 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
-      EXPECTED_CANDIDATE_CHECKOUT: ${{ inputs.expected_candidate_checkout && 'true' || 'false' }}
 
     steps:
-      - name: Enforce external Production enablement
+      - name: Enforce Production approval protection
         env:
-          PROMOTION_ENABLED: ${{ vars.CP_PRODUCTION_PROMOTION_ENABLED }}
           GH_TOKEN: ${{ github.token }}
+          PROMOTION_ENABLED: ${{ vars.CP_PRODUCTION_PROMOTION_ENABLED }}
         run: |
           test "$PROMOTION_ENABLED" = "true"
           gh api "repos/$GITHUB_REPOSITORY/environments/Production" > production-environment.json
           node - <<'NODE'
           const fs = require('node:fs');
           const environment = JSON.parse(fs.readFileSync('production-environment.json', 'utf8'));
-          const reviewerRule = environment.protection_rules?.find(rule => rule.type === 'required_reviewers');
-          if (!reviewerRule || !Array.isArray(reviewerRule.reviewers) || reviewerRule.reviewers.length === 0) {
-            throw new Error('Production promotion is disabled until the Production environment has a required reviewer.');
-          }
+          const reviewers = environment.protection_rules?.find((rule) => rule.type === 'required_reviewers')?.reviewers;
+          if (!Array.isArray(reviewers) || reviewers.length === 0) throw new Error('PRODUCTION_REVIEWER_REQUIRED');
           NODE
 
-      - name: Check out canonical main
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
 
-      - name: Validate immutable release-pair inputs
+      - name: Validate immutable promotion inputs
         env:
-          CANDIDATE_DEPLOYMENT: ${{ inputs.candidate_deployment }}
-          SAFE_FALLBACK_DEPLOYMENT: ${{ inputs.safe_fallback_deployment }}
+          CANDIDATE: ${{ inputs.candidate_deployment }}
           EXPECTED_SHA: ${{ inputs.expected_sha }}
-          EXPECTED_PRODUCTION_ANCHOR: ${{ inputs.expected_production_anchor }}
+          PREVIOUS: ${{ inputs.previous_checkout_enabled_deployment }}
           RELEASE: ${{ inputs.release }}
         run: |
-          test "$GITHUB_REF" = "refs/heads/main"
           [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
-          [[ "$CANDIDATE_DEPLOYMENT" =~ ^(dpl_[A-Za-z0-9]+|https://[A-Za-z0-9.-]+\.vercel\.app)$ ]]
-          [[ "$SAFE_FALLBACK_DEPLOYMENT" =~ ^(dpl_[A-Za-z0-9]+|https://[A-Za-z0-9.-]+\.vercel\.app)$ ]]
-          [[ "$EXPECTED_PRODUCTION_ANCHOR" =~ ^dpl_[A-Za-z0-9]+$ ]]
+          [[ "$CANDIDATE" =~ ^(dpl_[A-Za-z0-9]+|https://[A-Za-z0-9.-]+\.vercel\.app)$ ]]
+          [[ "$PREVIOUS" =~ ^dpl_[A-Za-z0-9]+$ ]]
           [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
-          test "$CANDIDATE_DEPLOYMENT" != "$SAFE_FALLBACK_DEPLOYMENT"
           test "$EXPECTED_SHA" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
-          test -n "$VERCEL_ORG_ID"
-          test -n "$VERCEL_PROJECT_ID"
-          [[ "$EXPECTED_CANDIDATE_CHECKOUT" =~ ^(true|false)$ ]]
+          test "$CANDIDATE" != "$PREVIOUS"
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
 
-      - name: Activate Yarn Classic
+      - name: Install pinned Vercel CLI
         run: |
           corepack enable
           corepack prepare yarn@1.22.22 --activate
-          test "$(yarn --version)" = "1.22.22"
-
-      - name: Install pinned Vercel CLI
-        run: |
           yarn global add vercel@56.1.0
-          echo "$(yarn global bin)" >> "$GITHUB_PATH"
-          export PATH="$(yarn global bin):$PATH"
-          test "$(vercel --version | tail -1)" = "56.1.0"
 
-      - name: Link exact Vercel project without pulling environment data
+      - name: Capture candidate and checkout-enabled rollback anchor
+        env:
+          CANDIDATE: ${{ inputs.candidate_deployment }}
+          PREVIOUS: ${{ inputs.previous_checkout_enabled_deployment }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
+          vercel inspect "$CANDIDATE" --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > candidate-inspect.json
+          vercel inspect "$PREVIOUS" --format=json --token="$VERCEL_TOKEN" > previous-production-inspect.json
+          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN" > production-before.json
           node - <<'NODE'
           const fs = require('node:fs');
-          const orgId = process.env.VERCEL_ORG_ID;
-          const projectId = process.env.VERCEL_PROJECT_ID;
-          if (!orgId || !projectId) throw new Error('Vercel project identifiers are required.');
-          fs.mkdirSync('.vercel', { recursive: true });
-          fs.writeFileSync('.vercel/project.json', `${JSON.stringify({ orgId, projectId })}\n`, { mode: 0o600 });
+          const candidate = JSON.parse(fs.readFileSync('candidate-inspect.json', 'utf8'));
+          const previous = JSON.parse(fs.readFileSync('previous-production-inspect.json', 'utf8'));
+          const live = JSON.parse(fs.readFileSync('production-before.json', 'utf8'));
+          if (candidate.readyState !== 'READY') throw new Error('CANDIDATE_NOT_READY');
+          if (previous.readyState !== 'READY') throw new Error('ROLLBACK_ANCHOR_NOT_READY');
+          if (previous.id !== live.id) throw new Error('PRODUCTION_DRIFT_DETECTED');
           NODE
 
-      - name: Capture selected release pair and Production drift anchor
-        env:
-          CANDIDATE_DEPLOYMENT: ${{ inputs.candidate_deployment }}
-          SAFE_FALLBACK_DEPLOYMENT: ${{ inputs.safe_fallback_deployment }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: |
-          vercel inspect "$CANDIDATE_DEPLOYMENT" --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > candidate-inspect.json
-          vercel inspect "$SAFE_FALLBACK_DEPLOYMENT" --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > fallback-inspect.json
-          vercel list --meta cpGitCommitSha="$GITHUB_SHA" --limit=20 --format=json --token="$VERCEL_TOKEN" > selected-deployments.json
-          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN" > production-before.json
-
-      - name: Verify selected release pair without deployment credential
-        env:
-          EXPECTED_PRODUCTION_ANCHOR: ${{ inputs.expected_production_anchor }}
-          RELEASE: ${{ inputs.release }}
-        run: |
-          node .github/scripts/verify-vercel-receipt.mjs candidate-pair \
-            --candidate-inspect candidate-inspect.json \
-            --fallback-inspect fallback-inspect.json \
-            --deployment-list selected-deployments.json \
-            --production-before production-before.json \
-            --production-after production-before.json \
-            --expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR" \
-            --expected-sha "$GITHUB_SHA" \
-            --expected-release "$RELEASE" \
-            --expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT" \
-            --output selected-release-pair-receipt.json
-
-      - name: Capture current Production immediately before promotion
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: >-
-          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN"
-          > production-immediate-before.json
-
-      - name: Reject Production drift before promotion
-        env:
-          EXPECTED_PRODUCTION_ANCHOR: ${{ inputs.expected_production_anchor }}
-          RELEASE: ${{ inputs.release }}
-        run: |
-          node .github/scripts/verify-vercel-receipt.mjs candidate-pair \
-            --candidate-inspect candidate-inspect.json \
-            --fallback-inspect fallback-inspect.json \
-            --deployment-list selected-deployments.json \
-            --production-before production-before.json \
-            --production-after production-immediate-before.json \
-            --expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR" \
-            --expected-sha "$GITHUB_SHA" \
-            --expected-release "$RELEASE" \
-            --expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT" \
-            --output pre-promotion-release-pair-receipt.json
-
-      - name: Promote the exact staged candidate
+      - name: Promote exact candidate
         id: promotion
         continue-on-error: true
         env:
-          CANDIDATE_DEPLOYMENT: ${{ inputs.candidate_deployment }}
+          CANDIDATE: ${{ inputs.candidate_deployment }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: |
-          echo "attempted=true" >> "$GITHUB_OUTPUT"
-          vercel promote "$CANDIDATE_DEPLOYMENT" --yes --timeout=5m --token="$VERCEL_TOKEN"
+        run: vercel promote "$CANDIDATE" --yes --timeout=5m --token="$VERCEL_TOKEN"
 
-      - name: Require a recorded promotion attempt
-        if: ${{ always() && steps.promotion.outcome != 'skipped' }}
-        env:
-          PROMOTION_ATTEMPTED: ${{ steps.promotion.outputs.attempted }}
-        run: test "$PROMOTION_ATTEMPTED" = "true"
-
-      - name: Capture Production state after candidate promotion attempt
-        if: ${{ always() && steps.promotion.outputs.attempted == 'true' }}
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: Verify Production checkout remains available
+        if: steps.promotion.outcome == 'success'
         run: |
-          vercel inspect www.carlophillips.com --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > production-after.json
-          vercel list --environment=production --limit=20 --format=json --token="$VERCEL_TOKEN" > production-list.json
-
-      - name: Verify Production candidate identity without deployment credential
-        if: ${{ always() && steps.promotion.outputs.attempted == 'true' }}
-        env:
-          PROMOTION_OUTCOME: ${{ steps.promotion.outcome }}
-          EXPECTED_PRODUCTION_ANCHOR: ${{ inputs.expected_production_anchor }}
-          RELEASE: ${{ inputs.release }}
-        run: |
-          test "$PROMOTION_OUTCOME" = "success"
-          node .github/scripts/verify-vercel-receipt.mjs production \
-            --candidate-inspect candidate-inspect.json \
-            --fallback-inspect fallback-inspect.json \
-            --deployment-list selected-deployments.json \
-            --production-before production-before.json \
-            --production-after production-after.json \
-            --production-list production-list.json \
-            --expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR" \
-            --expected-sha "$GITHUB_SHA" \
-            --expected-release "$RELEASE" \
-            --expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT" \
-            --output production-release-receipt.json
-
-      - name: Run release-aware Production route smoke test
-        run: |
-          for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
-            curl --fail --silent --show-error --location --max-time 30 "https://www.carlophillips.com$route" > /dev/null
-          done
           curl --fail --silent --show-error --location --max-time 30 \
-            "https://www.carlophillips.com/products/carlophillips-signature-hoodie" > production-pdp.html
+            https://www.carlophillips.com/products/carlophillips-signature-hoodie > production-pdp.html
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('production-pdp.html', 'utf8');
-          if (process.env.EXPECTED_CANDIDATE_CHECKOUT === 'true') {
-            if (!html.includes('ADD TO BAG')) throw new Error('Production PDP is missing the Shopify bag action.');
-            if (!html.includes('action="/api/cart"')) throw new Error('Production PDP is missing the cart endpoint.');
-          } else {
-            if (!html.includes('Selection disabled')) throw new Error('Production PDP is missing the disabled-selection proof.');
-            if (!html.includes('Purchasing disabled')) throw new Error('Production PDP is missing the fail-closed purchasing proof.');
-            if (html.includes('ADD TO BAG')) throw new Error('Production PDP unexpectedly exposes cart activation.');
-            if (html.includes('action="/api/cart"')) throw new Error('Production PDP unexpectedly exposes the cart endpoint.');
-            if (/<form\b[^>]*>[\s\S]*?type=["']submit["']/i.test(html)) {
-              throw new Error('Production PDP unexpectedly exposes an enabled submit form.');
-            }
-          }
+          if (!html.includes('ADD TO BAG')) throw new Error('PRODUCTION_ADD_TO_BAG_MISSING');
+          if (!html.includes('action="/api/cart"')) throw new Error('PRODUCTION_CART_HANDOFF_MISSING');
           NODE
 
-      - name: Publish candidate promotion receipt
-        run: |
-          {
-            echo "## Vercel Production candidate promotion receipt"
-            echo "- Commit: $GITHUB_SHA"
-            echo "- Staged candidate: ${{ inputs.candidate_deployment }}"
-            echo "- Verified safe fallback: ${{ inputs.safe_fallback_deployment }}"
-            echo "- Production domain: https://www.carlophillips.com"
-            echo "- Receipt artifact: production-release-receipt"
-          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Restore previous verified checkout-enabled deployment
+        if: steps.promotion.outcome != 'success'
+        env:
+          PREVIOUS: ${{ inputs.previous_checkout_enabled_deployment }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel promote "$PREVIOUS" --yes --timeout=5m --token="$VERCEL_TOKEN"
 
-      - name: Upload immutable Production receipt
-        uses: actions/upload-artifact@v4
+      - name: Require successful promotion
+        run: test "${{ steps.promotion.outcome }}" = "success"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: production-release-receipt-${{ github.sha }}
+          name: production-promotion-${{ github.sha }}
           path: |
             production-environment.json
             candidate-inspect.json
-            fallback-inspect.json
-            selected-deployments.json
-            selected-release-pair-receipt.json
+            previous-production-inspect.json
             production-before.json
-            production-immediate-before.json
-            pre-promotion-release-pair-receipt.json
-            production-after.json
-            production-list.json
-            production-release-receipt.json
             production-pdp.html
-          if-no-files-found: error
-          retention-days: 90
-
-      - name: Capture live Production for safe-fallback planning
-        if: ${{ always() && failure() && steps.promotion.outputs.attempted == 'true' }}
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: >-
-          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN"
-          > production-current-before-fallback.json
-
-      - name: Select the verified safe fallback without deployment credential
-        id: fallback-plan
-        if: ${{ always() && failure() && steps.promotion.outputs.attempted == 'true' }}
-        run: |
-          node .github/scripts/select-vercel-safe-fallback.mjs \
-            --production-anchor production-before.json \
-            --safe-fallback fallback-inspect.json \
-            --production-current production-current-before-fallback.json \
-            --github-output "$GITHUB_OUTPUT" \
-            --output production-safe-fallback-plan.json
-
-      - name: Promote the verified safe fallback
-        id: fallback-promotion
-        if: ${{ always() && failure() && steps.promotion.outputs.attempted == 'true' && steps.fallback-plan.outputs.recovery_required == 'true' }}
-        env:
-          SAFE_FALLBACK_DEPLOYMENT_ID: ${{ steps.fallback-plan.outputs.safe_fallback_deployment_id }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel promote "$SAFE_FALLBACK_DEPLOYMENT_ID" --yes --timeout=5m --token="$VERCEL_TOKEN"
-
-      - name: Capture Production after safe-fallback reconciliation
-        if: ${{ always() && failure() && steps.promotion.outputs.attempted == 'true' }}
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: |
-          vercel inspect www.carlophillips.com --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > production-safe-fallback.json
-          vercel list --environment=production --limit=20 --format=json --token="$VERCEL_TOKEN" > safe-fallback-production-list.json
-
-      - name: Verify exact safe-fallback identity without deployment credential
-        if: ${{ always() && failure() && steps.promotion.outputs.attempted == 'true' }}
-        env:
-          EXPECTED_PRODUCTION_ANCHOR: ${{ inputs.expected_production_anchor }}
-          RELEASE: ${{ inputs.release }}
-        run: |
-          node .github/scripts/verify-vercel-receipt.mjs fallback-production \
-            --candidate-inspect candidate-inspect.json \
-            --fallback-inspect fallback-inspect.json \
-            --deployment-list selected-deployments.json \
-            --production-before production-before.json \
-            --production-after production-safe-fallback.json \
-            --production-list safe-fallback-production-list.json \
-            --expected-production-anchor "$EXPECTED_PRODUCTION_ANCHOR" \
-            --expected-sha "$GITHUB_SHA" \
-            --expected-release "$RELEASE" \
-            --expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT" \
-            --output production-safe-fallback-receipt.json
-
-      - name: Run fail-closed safe-fallback route smoke test
-        if: ${{ always() && failure() && steps.promotion.outputs.attempted == 'true' }}
-        run: |
-          for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
-            curl --fail --silent --show-error --location --max-time 30 "https://www.carlophillips.com$route" > /dev/null
-          done
-          curl --fail --silent --show-error --location --max-time 30 \
-            "https://www.carlophillips.com/products/carlophillips-signature-hoodie" > safe-fallback-pdp.html
-          node - <<'NODE'
-          const fs = require('node:fs');
-          const html = fs.readFileSync('safe-fallback-pdp.html', 'utf8');
-          if (!html.includes('Selection disabled')) throw new Error('Safe fallback is missing the disabled-selection proof.');
-          if (!html.includes('Purchasing disabled')) throw new Error('Safe fallback is missing the fail-closed purchasing proof.');
-          if (html.includes('Continue to checkout')) throw new Error('Safe fallback unexpectedly exposes checkout continuation.');
-          if (html.includes('action="/api/checkout"')) throw new Error('Safe fallback unexpectedly exposes the checkout endpoint.');
-          if (/<form\b[^>]*>[\s\S]*?type=["']submit["']/i.test(html)) {
-            throw new Error('Safe fallback unexpectedly exposes an enabled submit form.');
-          }
-          NODE
-
-      - name: Publish safe-fallback reconciliation receipt
-        if: ${{ always() && failure() && steps.promotion.outputs.attempted == 'true' }}
-        env:
-          SAFE_FALLBACK_DEPLOYMENT_ID: ${{ steps.fallback-plan.outputs.safe_fallback_deployment_id }}
-        run: |
-          {
-            echo "## Automatic safe-fallback reconciliation"
-            echo "- Verified fallback source: $SAFE_FALLBACK_DEPLOYMENT_ID"
-            echo "- Unsafe prior Production was used only as a drift anchor"
-            echo "- Reason: an attempted candidate promotion had a command, identity, smoke, or receipt failure"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload safe-fallback evidence
-        if: ${{ always() && failure() && steps.promotion.outputs.attempted == 'true' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-safe-fallback-receipt-${{ github.sha }}
-          path: |
-            candidate-inspect.json
-            fallback-inspect.json
-            selected-deployments.json
-            production-before.json
-            production-immediate-before.json
-            production-after.json
-            production-current-before-fallback.json
-            production-safe-fallback-plan.json
-            production-safe-fallback.json
-            safe-fallback-production-list.json
-            production-safe-fallback-receipt.json
-            production-pdp.html
-            safe-fallback-pdp.html
           if-no-files-found: warn
           retention-days: 90

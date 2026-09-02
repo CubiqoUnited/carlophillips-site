@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 
 const ci = readFileSync('.github/workflows/ci.yml', 'utf8');
 const preview = readFileSync('.github/workflows/vercel-preview.yml', 'utf8');
+const staging = readFileSync('.github/workflows/vercel-staging.yml', 'utf8');
 const candidate = readFileSync(
   '.github/workflows/vercel-release-candidate.yml',
   'utf8'
@@ -283,13 +284,15 @@ describe('CI/CD policy', () => {
     );
     expect(preview).toContain('--meta cpArtifactKind=immutable-preview');
     expect(preview).toContain('--meta cpBuildEnvironment=preview');
-    expect(preview).toContain('--meta cpCheckoutEnabled=false');
+    expect(preview).toContain('--meta cpCheckoutEnabled=true');
     expect(preview).toContain('--env SHOPIFY_CART_UI_ENABLED=true');
+    expect(preview).toContain('--env SHOPIFY_CHECKOUT_ENABLED=true');
     expect(preview).toContain('Preview Shopify test-bag action is missing.');
     expect(preview).toContain('action="/api/cart"');
     expect(preview).toContain('verify-vercel-receipt.mjs preview');
     expect(preview).toContain('vercel curl');
     expect(preview).not.toContain('vercel promote');
+    expect(preview).not.toContain('staging.carlophillips.com');
     expect(preview).not.toMatch(
       /vercel\s+(?:build|deploy)[^\n]*--prod(?:\s|$)/
     );
@@ -305,54 +308,54 @@ describe('CI/CD policy', () => {
     ).not.toContain('VERCEL_TOKEN');
   });
 
-  it('stages a distinct same-SHA Production candidate and safe fallback without aliases', () => {
+  it('deploys only the exact merged main SHA to protected Staging', () => {
+    expect(staging).toContain('workflow_dispatch:');
+    expect(staging).toContain('name: Staging');
+    expect(staging).toContain('STAGING_REVIEWER_REQUIRED');
+    expect(staging).toContain(
+      'test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"'
+    );
+    expect(staging).toContain('vercel pull --yes --environment=preview');
+    expect(staging).toContain(
+      'vercel deploy --prebuilt --archive=tgz --skip-domain'
+    );
+    expect(staging).toContain('--meta cpArtifactKind=protected-staging');
+    expect(staging).toContain('--meta cpCheckoutEnabled=true');
+    expect(staging).toContain('yarn test:e2e');
+    expect(staging).toContain('Verify deployment before aliasing');
+    expect(staging).toContain(
+      'vercel alias set "$DEPLOYMENT_URL" staging.carlophillips.com'
+    );
+    expect(staging.indexOf('Verify deployment before aliasing')).toBeLessThan(
+      staging.indexOf('Assign protected Staging domain')
+    );
+    expect(staging).toContain('yarn verify:webhook-endpoint');
+    expect(staging).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
+  });
+
+  it('stages one checkout-enabled Production candidate without aliases', () => {
     expect(candidate).toContain('workflow_dispatch:');
     expect(candidate).toContain('environment: Production');
     expect(candidate).toContain('fetch-depth: 0');
     expect(candidate).toContain('NEXT_PUBLIC_COMMERCE_ENVIRONMENT: production');
-    expect(candidate).toContain('checkout_enabled:');
-    expect(candidate).toContain(
-      "SHOPIFY_CART_UI_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}"
-    );
-    expect(candidate).toContain(
-      "SHOPIFY_CHECKOUT_ENABLED: ${{ inputs.checkout_enabled && 'true' || 'false' }}"
-    );
-    expect(candidate).not.toContain('verify-production-commerce-release.mjs');
+    expect(candidate).toMatch(/SHOPIFY_CART_UI_ENABLED: ['"]true['"]/);
+    expect(candidate).toMatch(/SHOPIFY_CHECKOUT_ENABLED: ['"]true['"]/);
     expect(candidate).toContain('action="/api/cart"');
     expect(candidate).toContain('vercel build --prod');
     expect(
       candidate.match(
         /vercel deploy --prebuilt --archive=tgz --prod --skip-domain/g
       )
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     expect(candidate).toContain('--meta cpArtifactKind=staged-production');
-    expect(candidate).toContain('--meta cpArtifactKind=safe-fallback');
-    expect(
-      candidate.match(/--meta cpBuildEnvironment=production/g)
-    ).toHaveLength(2);
-    expect(candidate).toContain(
-      '--meta cpCheckoutEnabled="$SHOPIFY_CHECKOUT_ENABLED"'
-    );
-    expect(candidate).toContain('--meta cpCheckoutEnabled=false');
-    expect(candidate).toContain(
-      '--expected-candidate-checkout "$SHOPIFY_CHECKOUT_ENABLED"'
-    );
-    expect(candidate).toContain('verify-vercel-receipt.mjs candidate-pair');
-    expect(candidate).toContain('candidate-release-pair-receipt.json');
-    expect(candidate).toContain('fallback-pdp.html');
+    expect(candidate).toContain('--meta cpBuildEnvironment=production');
+    expect(candidate).toContain('--meta cpCheckoutEnabled=true');
+    expect(candidate).not.toContain('safe-fallback');
+    expect(candidate).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
     expect(candidate).not.toMatch(/vercel\s+(promote|rollback)/);
     expect(
-      workflowStep(candidate, 'Verify repository before deployment')
-    ).not.toContain('VERCEL_TOKEN');
-    expect(
       workflowStep(candidate, 'Build exact Production artifact')
-    ).not.toContain('VERCEL_TOKEN');
-    expect(
-      workflowStep(
-        candidate,
-        'Verify staged candidate and safe fallback without deployment credential'
-      )
-    ).not.toContain('VERCEL_TOKEN');
+    ).toContain('VERCEL_TOKEN');
   });
 
   it('verifies evidence-only ancestry from full Git history without rename or symlink ambiguity', () => {
@@ -369,52 +372,16 @@ describe('CI/CD policy', () => {
     );
   });
 
-  it('promotes only the reviewed candidate and recovers only to the reviewed safe fallback', () => {
-    expect(production).toContain('safe_fallback_deployment:');
-    expect(production).toContain('expected_production_anchor:');
-    expect(production).toContain('expected_candidate_checkout:');
+  it('promotes only the reviewed candidate and restores only the prior checkout-enabled deployment', () => {
+    expect(production).toContain('previous_checkout_enabled_deployment:');
     expect(production).toContain('fetch-depth: 0');
-    expect(production).not.toContain('verify-production-commerce-release.mjs');
     expect(production).toContain('action="/api/cart"');
-    expect(production).toContain(
-      '--expected-candidate-checkout "$EXPECTED_CANDIDATE_CHECKOUT"'
-    );
-    expect(production).toContain(
-      'test "$CANDIDATE_DEPLOYMENT" != "$SAFE_FALLBACK_DEPLOYMENT"'
-    );
-    expect(production).toContain('verify-vercel-receipt.mjs candidate-pair');
-    expect(production).toContain('vercel promote "$CANDIDATE_DEPLOYMENT"');
-    expect(production).toContain('select-vercel-safe-fallback.mjs');
-    expect(production).toContain(
-      'steps.fallback-plan.outputs.safe_fallback_deployment_id'
-    );
-    expect(production).toContain(
-      'vercel promote "$SAFE_FALLBACK_DEPLOYMENT_ID"'
-    );
-    expect(production).toContain(
-      'verify-vercel-receipt.mjs fallback-production'
-    );
-    expect(production).toContain('production-safe-fallback-receipt.json');
-    expect(production).not.toContain('reconcile-vercel-rollback.mjs');
+    expect(production).toContain('vercel promote "$CANDIDATE"');
+    expect(production).toContain('vercel promote "$PREVIOUS"');
+    expect(production).toContain('previous.id !== live.id');
+    expect(production).not.toContain('safe-fallback');
+    expect(production).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
     expect(production).not.toMatch(/vercel\s+rollback/);
-    expect(
-      workflowStep(
-        production,
-        'Verify selected release pair without deployment credential'
-      )
-    ).not.toContain('VERCEL_TOKEN');
-    expect(
-      workflowStep(
-        production,
-        'Verify Production candidate identity without deployment credential'
-      )
-    ).not.toContain('VERCEL_TOKEN');
-    expect(
-      workflowStep(
-        production,
-        'Verify exact safe-fallback identity without deployment credential'
-      )
-    ).not.toContain('VERCEL_TOKEN');
     expect(production).not.toMatch(/vercel\s+(build|deploy)/);
     expect(production).not.toContain('pull_request_target');
   });

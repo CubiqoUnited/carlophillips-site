@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCommerceEnvironment } from '@/lib/config/product-visibility';
+import { assertRuntimePreflight } from '@/lib/config/runtime-preflight';
 import {
   addShopifyCartLine,
   readShopifyCart,
@@ -34,16 +35,7 @@ export async function POST(request: Request) {
   const decodedCartId = cartId ? decodeURIComponent(cartId) : null;
   const environment = getCommerceEnvironment();
   try {
-    if (process.env.SHOPIFY_CART_UI_ENABLED === 'false') {
-      throw new Error('SHOPIFY_CART_SAFETY_DISABLED');
-    }
-    if (
-      action === 'checkout' &&
-      environment === 'production' &&
-      process.env.SHOPIFY_CHECKOUT_ENABLED !== 'true'
-    ) {
-      throw new Error('SHOPIFY_CHECKOUT_SAFETY_DISABLED');
-    }
+    if (environment !== 'local') assertRuntimePreflight(environment);
     if (action === 'checkout') {
       const cart = await readShopifyCart({
         cartId: decodedCartId,

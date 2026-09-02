@@ -5,6 +5,7 @@ import {
 } from '@repo/shopify';
 import { getCommerceEnvironment } from '@/lib/config/product-visibility';
 import { resolveShopifyWebhookConfig } from '@/lib/config/shopify-environment';
+import { assertRuntimePreflight } from '@/lib/config/runtime-preflight';
 import { createDurableWebhookStore } from '@/lib/commerce/webhook-idempotency';
 
 export const dynamic = 'force-dynamic';
@@ -23,6 +24,14 @@ const TOPICS = new Set([
 
 export async function POST(request: Request) {
   const environment = getCommerceEnvironment();
+  try {
+    if (environment === 'local') throw new Error('WEBHOOK_LOCAL_REJECTED');
+    assertRuntimePreflight(environment);
+  } catch (error) {
+    const code =
+      error instanceof Error ? error.message : 'RUNTIME_CONFIG_INVALID';
+    return NextResponse.json({ error: code }, { status: 503 });
+  }
   const webhookConfig = resolveShopifyWebhookConfig(environment);
   const secret = webhookConfig.secret;
   const allowedShops = new Set(
@@ -33,7 +42,7 @@ export async function POST(request: Request) {
   );
   let store;
   try {
-    store = createDurableWebhookStore();
+    store = createDurableWebhookStore(environment);
   } catch {
     return NextResponse.json(
       { error: 'DURABLE_IDEMPOTENCY_REQUIRED' },

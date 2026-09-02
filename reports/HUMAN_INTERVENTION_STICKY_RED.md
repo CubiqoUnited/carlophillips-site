@@ -1,3 +1,38 @@
+# RED — SHOPIFY CLOSURE STAGING ISOLATION (CURRENT)
+
+Updated: 2026-09-02
+
+## What is blocked
+
+The `codex/shopify-closure-safety` implementation is locally green, but protected Staging cannot be deployed safely yet:
+
+- Vercel Preview still uses the same `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_TOKEN`, and KV/Redis resource bindings as Production.
+- The required Preview-only `SHOPIFY_STAGING_*` values and non-secret durable-store identity receipts are absent.
+- Shopify Admin exposes only the Production `carlophillips` store. The account menu offers **Create store**; no dedicated development store is currently available.
+- GitHub has no `Staging` environment. Existing Preview and Production environments have no required reviewers, and no active repository ruleset was returned.
+
+The new runtime correctly refuses this unsafe configuration. Do not point Staging at the Production Shopify store, enable Shopify test mode on Production, or share the Production durable store.
+
+## Exact human action
+
+1. In Shopify Admin, use **Create store** to create a dedicated CARLOPHILLIPS development store only if Shopify confirms it is a development/test store with no paid-plan charge. Configure the Signature Hoodie, S/M/L variants, shipping, Shopify test payments, Shopify notification branding, and the supported Apliiq hold/manual-review behavior. Stop if a paid plan, provider production job, or legal/partner-program acceptance is requested.
+2. In Vercel project `cubiqo-projects-d7156840/carlophillips-site`, provision a distinct Preview KV/Upstash database. Do not reuse the Production integration. Record a non-secret resource identifier for each database.
+3. Add Preview-only encrypted values for `SHOPIFY_STAGING_STORE_DOMAIN`, `SHOPIFY_STAGING_STOREFRONT_TOKEN`, `SHOPIFY_STAGING_CHECKOUT_HOSTS`, `SHOPIFY_STAGING_WEBHOOK_SECRET`, and an allowed-shop value containing only the development store. Add Preview-only durable-store credentials.
+4. Add non-secret Preview values `CP_COMMERCE_ENVIRONMENT=preview`, `CP_DURABLE_STORE_ID=<preview-resource-id>`, `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID=<same-preview-resource-id>`, and `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID=<different-production-resource-id>`. Keep both purchase flags `true`.
+5. In GitHub, protect `main` with pull-request review and required checks `Verify` and `Checkout E2E and accessibility`. Create protected environment `Staging` with a required reviewer, `VERCEL_TOKEN` secret, `VERCEL_ORG_ID`/`VERCEL_PROJECT_ID` variables, `SHOPIFY_STAGING_WEBHOOK_SECRET` secret, and non-secret `SHOPIFY_STAGING_STORE_DOMAIN` variable. Restrict retained `staging` from force-push/deletion without requiring checks that never run on it.
+
+Signal completion with: `CP isolated Staging bindings ready`.
+
+## Cost and risk
+
+The intended development store and test gateway must not process a real payment. A Shopify paid plan, Apliiq production submission, Vercel/Upstash paid upgrade, or broader access grant is not included in this authorization. Shared Production credentials can create real carts/orders or mix webhook evidence, so the strict runtime will remain blocked until isolation is proven.
+
+## Resume point
+
+Push/open the reviewed PR, merge only after both required checks and review pass, then dispatch `Protected Vercel Staging` for the exact merged `main` SHA. Register the eight implemented topics only after endpoint/probe success. Complete the test-payment, branded Shopify notification, duplicate delivery, refund/cancel and supported Apliiq hold/manual-review evidence without a real Production charge.
+
+---
+
 # RED — CURRENT CUSTOMER-READY EXTERNAL CONFIGURATION
 
 Updated: 2026-08-31
@@ -39,8 +74,7 @@ add encrypted Production/Preview values for `RESEND_API_KEY`,
 Cost/risk: customer email, message text, and an optional order number will be
 sent to the configured support mailbox after submission. Do not enable this
 until the monitored recipient and handling process are approved. No customer
-data is transmitted while the variables are absent; the API truthfully returns
-503.
+data is transmitted while the variables are absent; the API truthfully returns 503.
 
 ## 3. Shopify-hosted checkout appearance and fields
 
@@ -393,7 +427,7 @@ value into chat:
    `SHOPIFY_STAGING_STOREFRONT_TOKEN`, `SHOPIFY_STAGING_CHECKOUT_HOSTS`, and
    `SHOPIFY_STAGING_WEBHOOK_SECRET`. The webhook secret must be the matching
    Shopify app client secret; Codex must not invent it. Signal: `CP Shopify
-   staging environment ready`.
+staging environment ready`.
 
 Do not dispatch the manual Staging workflow until all three actions are
 verified. A Git-integrated Preview build is not the protected Staging release
