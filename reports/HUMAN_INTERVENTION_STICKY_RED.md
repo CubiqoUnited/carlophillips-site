@@ -14,7 +14,7 @@ Protected Staging still cannot deploy because two browser permission boundaries 
 
 - Shopify's official free Headless channel is ready to install on the development store, after which a persistent Storefront API token must be created and bound to Preview.
 - The existing `CodexAutomation5` app must be installed on the development store before Staging webhook subscriptions can be registered.
-- GitHub has no `Staging` environment. The authenticated CLI identity is not repository admin, and the available Chrome session is not signed into GitHub.
+- GitHub has no `Staging` environment. Chrome and CLI are authenticated as `avloy07-eng`, which GitHub does not permit to open repository Environment settings. The repository collaborator API identifies `CubiqoUnited` as the administrator, and no second GitHub account is currently connected in the browser account switcher.
 
 Current authentication handoff: Shopify accepted the authorized Google identity and is waiting at **Verify with your passkey**. Boss must open the preserved Chrome tab and complete the device fingerprint, face recognition, or PIN prompt; Sushma cannot read or bypass that local authenticator. After Shopify returns to `CARLOPHILLIPS Staging`, tell Sushma `CP Shopify passkey complete`. GitHub owner authentication follows after the Shopify tab is released.
 
@@ -23,7 +23,7 @@ The new runtime correctly refuses this unsafe configuration. Do not point Stagin
 ## Exact human action
 
 1. Give action-time confirmation in the active task for Sushma to install Shopify's official Headless channel and the existing `CodexAutomation5` app on **CARLOPHILLIPS Staging only**, and to create the Staging Storefront API token. These are persistent app/access grants; no Production store is in scope.
-2. Sign into GitHub in Chrome, open `CubiqoUnited/carlophillips-site` → Settings → Environments, and tell Sushma `CP GitHub owner session ready`. Sushma will then create `Staging`, add the required reviewer, and bind only the required environment secrets/variables. Alternatively, a repository admin can create it manually with `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `SHOPIFY_STAGING_WEBHOOK_SECRET`, and `SHOPIFY_STAGING_STORE_DOMAIN`.
+2. In the preserved GitHub Chrome tab, choose **Add account** and authenticate as repository administrator `CubiqoUnited`; then tell Sushma `CP GitHub owner session ready`. Sushma will create `Staging`, add the required reviewer, and bind only the required environment secrets/variables. Alternatively, that administrator can create it manually with `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `SHOPIFY_STAGING_WEBHOOK_SECRET`, and `SHOPIFY_STAGING_STORE_DOMAIN`.
 3. After the protected deployment is live, configure the Signature Hoodie S/M/L test product, Shopify notification branding, eight webhook subscriptions, and the Apliiq hold/manual-review test behavior in the development store. No provider production job or real payment is authorized.
 
 Signal completion with: `CP isolated Staging bindings ready`.
