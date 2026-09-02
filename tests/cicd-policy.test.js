@@ -415,7 +415,12 @@ describe('CI/CD policy', () => {
   it('executes a valid immutable Preview receipt fixture', () => {
     const directory = mkdtempSync(join(tmpdir(), 'cp-preview-'));
     try {
-      const fixtures = previewFixtures(directory);
+      const fixtures = previewFixtures(directory, {
+        metadata: { cpCheckoutEnabled: 'true' },
+        // Vercel CLI 56 list JSON omits deployment IDs; the verifier must use
+        // the exact immutable provider URL as the list-to-inspect join key.
+        listed: { id: undefined },
+      });
       const output = join(directory, 'receipt.json');
       const result = runVerifier([
         'preview',
@@ -443,7 +448,7 @@ describe('CI/CD policy', () => {
         pullRequest: 42,
         artifactKind: 'immutable-preview',
         buildEnvironment: 'preview',
-        checkoutEnabled: false,
+        checkoutEnabled: true,
         productionDomainsAssigned: false,
         productionBeforeDeploymentId: 'dpl_old',
         productionAfterPreviewDeploymentId: 'dpl_old',
@@ -459,7 +464,7 @@ describe('CI/CD policy', () => {
     ['wrong pull request', { metadata: { cpPullRequest: '41' } }],
     ['wrong role', { metadata: { cpArtifactKind: 'staged-production' } }],
     ['wrong environment', { metadata: { cpBuildEnvironment: 'production' } }],
-    ['checkout enabled', { metadata: { cpCheckoutEnabled: 'true' } }],
+    ['checkout disabled', { metadata: { cpCheckoutEnabled: 'false' } }],
     ['alias leakage', { inspect: { aliases: ['www.carlophillips.com'] } }],
     ['Production drift', { productionAfter: { id: 'dpl_other' } }],
   ])('rejects immutable Preview tampering: %s', (_label, overrides) => {

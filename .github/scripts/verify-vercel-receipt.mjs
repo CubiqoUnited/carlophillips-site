@@ -60,7 +60,13 @@ function metadataSha(metadata = {}) {
 
 function findListedDeployment(list, inspect, subject) {
   const deployments = Array.isArray(list?.deployments) ? list.deployments : [];
-  const listed = deployments.find(deployment => deployment.id === inspect.id) || null;
+  // Vercel CLI 56 list JSON omits deployment IDs. Join the authenticated list
+  // to the inspected deployment by ID when present, otherwise by immutable URL.
+  const inspectedUrl = deploymentUrl(inspect.url);
+  const listed = deployments.find(deployment => (
+    (deployment.id && deployment.id === inspect.id)
+    || deploymentUrl(deployment.url) === inspectedUrl
+  )) || null;
   requireValue(listed, `${subject} is absent from the linked Vercel project deployment list.`);
   requireValue(
     deploymentUrl(listed.url) === deploymentUrl(inspect.url),
@@ -276,6 +282,7 @@ if (mode === 'preview') {
     expectedPullRequest,
     role: 'preview',
     subject: 'Immutable Preview',
+    expectedCheckoutEnabled: true,
   });
   const productionBefore = verifyProductionAnchor(readJson(options['production-before']));
   const productionAfter = readJson(options['production-after']);
@@ -292,7 +299,7 @@ if (mode === 'preview') {
     pullRequest: Number(expectedPullRequest),
     artifactKind: ARTIFACTS.preview.artifactKind,
     buildEnvironment: ARTIFACTS.preview.buildEnvironment,
-    checkoutEnabled: false,
+    checkoutEnabled: true,
     productionDomainsAssigned: false,
     productionBeforeDeploymentId: productionBefore.id,
     productionAfterPreviewDeploymentId: productionAfter.id,
