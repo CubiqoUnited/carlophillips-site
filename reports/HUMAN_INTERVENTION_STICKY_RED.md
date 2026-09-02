@@ -539,3 +539,33 @@ continue Shopify Staging webhook registration and happy-path validation.
 
 Do not merge PR #55, change Production, or clean release branches during this
 handoff.
+
+### 2026-09-02 — GitHub owner re-authentication required for Vercel token repair
+
+The failed Preview deployment proved that the encrypted `VERCEL_TOKEN` in the
+GitHub `Preview` environment is invalid. The local Vercel CLI credential was
+validated successfully without displaying its value. Sushma attempted to
+replace `VERCEL_TOKEN` in GitHub environments `Preview` and `Production`, but
+GitHub stopped both updates at an owner `Confirm access` dialog requiring the
+`CubiqoUnited` passkey. The old secret timestamps remain unchanged; no token
+replacement was saved.
+
+Human action required:
+
+1. In the already-open Chrome GitHub tab, complete the `Confirm access` dialog
+   for `@CubiqoUnited` using the passkey. This authorizes access to repository
+   secret settings; it does not deploy, merge, or promote anything.
+2. Return to this Codex task and signal: `CP GitHub passkey confirmed`.
+
+After the signal, Sushma will immediately replace only the encrypted
+`VERCEL_TOKEN` secrets in `Preview` and `Production`, verify their update
+timestamps, clear transient clipboard/runtime values, and rerun the failed
+Preview deployment gate. Never paste the token into chat.
+
+Resolution: Boss completed the GitHub passkey confirmation. Sushma replaced
+both encrypted secrets and verified current update timestamps. The rerun then
+proved the credential by passing `vercel pull`, Production inspection, and the
+Vercel build. A separate workflow defect was exposed: Vercel CLI 56 rejects
+`--skip-domain` on non-Production deployments. The Preview and protected
+Staging workflows and their CI contract tests were corrected to omit that flag;
+the Production candidate retains `--prod --skip-domain`.

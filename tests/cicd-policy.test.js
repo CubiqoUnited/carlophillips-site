@@ -283,9 +283,8 @@ describe('CI/CD policy', () => {
     expect(preview).toMatch(/SHOPIFY_CART_UI_ENABLED: ['"]true['"]/);
     expect(preview).toContain('vercel pull --yes --environment=preview');
     expect(preview).toContain('run: vercel build');
-    expect(preview).toContain(
-      'vercel deploy --prebuilt --archive=tgz --skip-domain'
-    );
+    expect(preview).toContain('vercel deploy --prebuilt --archive=tgz --token');
+    expect(preview).not.toContain('--skip-domain');
     expect(preview).toContain('--meta cpArtifactKind=immutable-preview');
     expect(preview).toContain('--meta cpBuildEnvironment=preview');
     expect(preview).toContain('--meta cpCheckoutEnabled=true');
@@ -322,9 +321,8 @@ describe('CI/CD policy', () => {
     expect(staging).toContain("pull.base?.ref !== 'main'");
     expect(staging).toContain('pull.head?.sha !== process.env.EXPECTED_SHA');
     expect(staging).toContain('vercel pull --yes --environment=preview');
-    expect(staging).toContain(
-      'vercel deploy --prebuilt --archive=tgz --skip-domain'
-    );
+    expect(staging).toContain('vercel deploy --prebuilt --archive=tgz --token');
+    expect(staging).not.toContain('--skip-domain');
     expect(staging).toContain('--meta cpArtifactKind=protected-staging');
     expect(staging).toContain('--meta cpCheckoutEnabled=true');
     expect(staging).toContain('yarn test:e2e');
