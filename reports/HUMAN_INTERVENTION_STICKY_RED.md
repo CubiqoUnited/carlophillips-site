@@ -613,3 +613,27 @@ values in chat:
 Signal completion with: `CP Production bindings restored and candidate verified`.
 This Production blocker does not prevent merging PR #56 or deploying the open
 PR #55 head to isolated Staging.
+
+Update: the Production Shopify domain, Storefront token, commerce marker,
+matching durable-store IDs, and Production-only Upstash bindings have been
+restored without exposing values. The Production application build succeeds.
+No Production deployment or promotion has occurred.
+
+# GITHUB STAGING BRANCH-POLICY CORRECTION — 2026-09-02
+
+PR #56 is merged and the protected Staging workflow is callable from `main`.
+Two exact-head dispatches for PR #55 failed before any job step because the
+GitHub `Staging` environment permits only branch
+`codex/shopify-closure-safety`, while `workflow_dispatch` must execute from
+the default branch `main`. The workflow itself separately enforces the open
+same-repository PR, target branch, and exact PR head SHA.
+
+Required owner action: add `main` to the GitHub `Staging` environment's custom
+deployment branches. Do not remove the existing PR-branch rule until the
+successful Staging receipt is captured. The local `gh` identity received HTTP
+403 for this repository-admin operation; an authenticated GitHub owner session
+is required.
+
+After correction, rerun `.github/workflows/vercel-staging.yml` with PR `55`,
+expected SHA `3a28d6540927881d4083dd9e2be86adfa877df1e`, and a new immutable release
+identifier. No Production action is authorized by this correction.
