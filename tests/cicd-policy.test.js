@@ -312,13 +312,15 @@ describe('CI/CD policy', () => {
     ).not.toContain('VERCEL_TOKEN');
   });
 
-  it('deploys only the exact merged main SHA to protected Staging', () => {
+  it('deploys only the exact open-PR head SHA to protected Staging', () => {
     expect(staging).toContain('workflow_dispatch:');
+    expect(staging).toContain('pr_number:');
     expect(staging).toContain('name: Staging');
     expect(staging).toContain('STAGING_REVIEWER_REQUIRED');
-    expect(staging).toContain(
-      'test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"'
-    );
+    expect(staging).toContain('test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"');
+    expect(staging).toContain("pull.state !== 'open'");
+    expect(staging).toContain("pull.base?.ref !== 'main'");
+    expect(staging).toContain('pull.head?.sha !== process.env.EXPECTED_SHA');
     expect(staging).toContain('vercel pull --yes --environment=preview');
     expect(staging).toContain(
       'vercel deploy --prebuilt --archive=tgz --skip-domain'
