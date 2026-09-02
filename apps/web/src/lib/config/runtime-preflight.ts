@@ -41,12 +41,20 @@ export function evaluateRuntimePreflight(
     'CP_COMMERCE_ENVIRONMENT',
     'CP_DURABLE_STORE_ID',
     `${prefix}STORE_DOMAIN`,
-    `${prefix}STOREFRONT_TOKEN`,
     `${prefix}CHECKOUT_HOSTS`,
     `${prefix}WEBHOOK_SECRET`,
     'SHOPIFY_WEBHOOK_ALLOWED_SHOPS',
   ];
   requireNames(env, required, errors);
+  if (
+    preview &&
+    !present(env.SHOPIFY_STAGING_STOREFRONT_PRIVATE_TOKEN) &&
+    !present(env.SHOPIFY_STAGING_STOREFRONT_TOKEN)
+  ) {
+    errors.push('RUNTIME_CONFIG_MISSING_SHOPIFY_STAGING_STOREFRONT_TOKEN');
+  } else if (!preview && !present(env.SHOPIFY_STOREFRONT_TOKEN)) {
+    errors.push('RUNTIME_CONFIG_MISSING_SHOPIFY_STOREFRONT_TOKEN');
+  }
 
   if (env.CP_COMMERCE_ENVIRONMENT !== environment) {
     errors.push('RUNTIME_CONFIG_COMMERCE_ENVIRONMENT_MISMATCH');

@@ -12,15 +12,28 @@ export function resolveShopifyStorefrontConfig(
     ? process.env.SHOPIFY_STAGING_STORE_DOMAIN || ''
     : process.env.SHOPIFY_STORE_DOMAIN ||
       (local ? storefrontRuntime.storeDomain : '');
-  const storefrontAccessToken = preview
-    ? process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN
-    : process.env.SHOPIFY_STOREFRONT_TOKEN;
+  const privateStorefrontAccessToken = preview
+    ? process.env.SHOPIFY_STAGING_STOREFRONT_PRIVATE_TOKEN
+    : undefined;
+  const storefrontAccessToken =
+    privateStorefrontAccessToken ||
+    (preview
+      ? process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN
+      : process.env.SHOPIFY_STOREFRONT_TOKEN);
+  const storefrontAccessTokenType = privateStorefrontAccessToken
+    ? ('private' as const)
+    : ('public' as const);
   const checkoutHosts = preview
     ? process.env.SHOPIFY_STAGING_CHECKOUT_HOSTS || ''
     : process.env.SHOPIFY_CHECKOUT_HOSTS ||
       (local ? storefrontRuntime.checkoutHosts.join(',') : '');
 
-  return { storeDomain, storefrontAccessToken, checkoutHosts };
+  return {
+    storeDomain,
+    storefrontAccessToken,
+    storefrontAccessTokenType,
+    checkoutHosts,
+  };
 }
 
 export function resolveShopifyWebhookConfig(environment: CommerceEnvironment) {

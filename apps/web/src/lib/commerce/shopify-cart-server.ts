@@ -27,12 +27,21 @@ export class ShopifyCartError extends Error {
 }
 
 function environmentConfig(environment: CommerceEnvironment) {
-  const { storeDomain, storefrontAccessToken, checkoutHosts } =
-    resolveShopifyStorefrontConfig(environment);
+  const {
+    storeDomain,
+    storefrontAccessToken,
+    storefrontAccessTokenType,
+    checkoutHosts,
+  } = resolveShopifyStorefrontConfig(environment);
   if (!storeDomain || !storefrontAccessToken) {
     throw new ShopifyCartError('SHOPIFY_CART_NOT_CONFIGURED');
   }
-  return { storeDomain, storefrontAccessToken, checkoutHosts };
+  return {
+    storeDomain,
+    storefrontAccessToken,
+    storefrontAccessTokenType,
+    checkoutHosts,
+  };
 }
 
 function referenceHash(value: string) {
@@ -53,6 +62,7 @@ function clientFor(environment: CommerceEnvironment, fetchImpl = fetch) {
     client: createStorefrontClient({
       storeDomain: config.storeDomain,
       storefrontAccessToken: config.storefrontAccessToken,
+      storefrontAccessTokenType: config.storefrontAccessTokenType,
       fetchImpl,
     }),
   };
@@ -107,6 +117,7 @@ export async function addShopifyCartLine({
   const product = await createShopifyProductLoader({
     storeDomain: config.storeDomain,
     storefrontToken: config.storefrontAccessToken,
+    storefrontTokenType: config.storefrontAccessTokenType,
     fetchImpl,
     environment,
     capabilityEvidence: 'shopify-storefront-runtime',

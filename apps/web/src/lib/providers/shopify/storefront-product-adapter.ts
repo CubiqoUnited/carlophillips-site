@@ -15,6 +15,7 @@ function storefrontConfig() {
     environment,
     storeDomain: config.storeDomain,
     storefrontToken: config.storefrontAccessToken,
+    storefrontTokenType: config.storefrontAccessTokenType,
   };
 }
 

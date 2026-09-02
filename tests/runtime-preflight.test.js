@@ -28,6 +28,18 @@ describe('runtime commerce preflight', () => {
     });
   });
 
+  it('accepts a private token instead of a public token in Preview', () => {
+    const env = {
+      ...previewEnvironment,
+      SHOPIFY_STAGING_STOREFRONT_PRIVATE_TOKEN: 'private-token',
+    };
+    delete env.SHOPIFY_STAGING_STOREFRONT_TOKEN;
+    expect(evaluateRuntimePreflight('preview', env)).toEqual({
+      ok: true,
+      environment: 'preview',
+    });
+  });
+
   it('rejects Preview when only Production Shopify names are present', () => {
     const env = {
       ...previewEnvironment,

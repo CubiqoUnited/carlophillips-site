@@ -16,6 +16,7 @@ beforeEach(() => {
   process.env.SHOPIFY_WEBHOOK_SECRET = 'shared-webhook-secret';
   delete process.env.SHOPIFY_STAGING_STORE_DOMAIN;
   delete process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN;
+  delete process.env.SHOPIFY_STAGING_STOREFRONT_PRIVATE_TOKEN;
   delete process.env.SHOPIFY_STAGING_CHECKOUT_HOSTS;
   delete process.env.SHOPIFY_STAGING_WEBHOOK_SECRET;
   delete process.env.SHOPIFY_WEBHOOK_ALLOWED_SHOPS;
@@ -30,6 +31,7 @@ describe('Shopify environment configuration', () => {
     expect(resolveShopifyStorefrontConfig('preview')).toEqual({
       storeDomain: '',
       storefrontAccessToken: undefined,
+      storefrontAccessTokenType: 'public',
       checkoutHosts: '',
     });
     expect(resolveShopifyWebhookConfig('preview')).toEqual({
@@ -48,11 +50,23 @@ describe('Shopify environment configuration', () => {
     expect(resolveShopifyStorefrontConfig('preview')).toEqual({
       storeDomain: 'staging.myshopify.com',
       storefrontAccessToken: 'staging-token',
+      storefrontAccessTokenType: 'public',
       checkoutHosts: 'checkout.staging.test',
     });
     expect(resolveShopifyWebhookConfig('preview')).toEqual({
       secret: 'staging-webhook-secret',
       allowedShops: 'staging.myshopify.com',
+    });
+  });
+
+  it('prefers the server-only private token for a locked staging development store', () => {
+    process.env.SHOPIFY_STAGING_STORE_DOMAIN = 'staging.myshopify.com';
+    process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN = 'public-token';
+    process.env.SHOPIFY_STAGING_STOREFRONT_PRIVATE_TOKEN = 'private-token';
+
+    expect(resolveShopifyStorefrontConfig('preview')).toMatchObject({
+      storefrontAccessToken: 'private-token',
+      storefrontAccessTokenType: 'private',
     });
   });
 });

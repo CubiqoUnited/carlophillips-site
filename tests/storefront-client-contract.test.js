@@ -49,6 +49,34 @@ describe('Storefront client contract', () => {
     });
   });
 
+  it('uses Shopify private-token authentication only when explicitly selected', async () => {
+    const fetchImpl = vi.fn(
+      async () =>
+        new Response(JSON.stringify({ data: { shop: { name: 'CP' } } }), {
+          headers: { 'x-shopify-api-version': STOREFRONT_API_VERSION },
+        })
+    );
+    const client = createStorefrontClient({
+      storeDomain: 'example.myshopify.com',
+      storefrontAccessToken: 'private-token',
+      storefrontAccessTokenType: 'private',
+      fetchImpl,
+    });
+
+    await client.query({
+      document: 'query Shop { shop { name } }',
+      variables: {},
+    });
+    expect(fetchImpl.mock.calls[0][1]?.headers).toEqual(
+      expect.objectContaining({
+        'Shopify-Storefront-Private-Token': 'private-token',
+      })
+    );
+    expect(fetchImpl.mock.calls[0][1]?.headers).not.toHaveProperty(
+      'X-Shopify-Storefront-Access-Token'
+    );
+  });
+
   it('keeps queries and mutations on separate typed methods', async () => {
     const client = createStorefrontClient({
       storeDomain: 'example.myshopify.com',
