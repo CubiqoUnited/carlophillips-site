@@ -293,8 +293,8 @@ describe('CI/CD policy', () => {
     expect(preview).toContain('Preview Shopify test-bag action is missing.');
     expect(preview).toContain('action="/api/cart"');
     expect(preview).toContain('verify-vercel-receipt.mjs preview');
-    expect(preview).toContain('vercel --token="$VERCEL_TOKEN" curl');
-    expect(preview).not.toMatch(/vercel curl[^\n]*--token/);
+    expect(preview).toContain('vercel curl --token="$VERCEL_TOKEN"');
+    expect(preview).not.toMatch(/vercel curl "\$route"[^\n]*--token/);
     expect(preview).not.toContain('vercel promote');
     expect(preview).not.toContain('staging.carlophillips.com');
     expect(preview).not.toMatch(
