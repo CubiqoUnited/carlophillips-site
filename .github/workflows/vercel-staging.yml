@@ -139,10 +139,11 @@ jobs:
         run: |
           vercel inspect "$DEPLOYMENT_URL" --wait --timeout=5m --format=json --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" > staging-inspect.json
           for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
-            curl --fail --silent --show-error --location --max-time 30 "$DEPLOYMENT_URL$route" > /dev/null
+            vercel curl "$DEPLOYMENT_URL$route" -- \
+              --fail --silent --show-error --location --max-time 30 > /dev/null
           done
-          curl --fail --silent --show-error --location --max-time 30 \
-            "$DEPLOYMENT_URL/products/carlophillips-signature-hoodie" > staging-pdp.html
+          vercel curl "$DEPLOYMENT_URL/products/carlophillips-signature-hoodie" -- \
+            --fail --silent --show-error --location --max-time 30 > staging-pdp.html
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('staging-pdp.html', 'utf8');
