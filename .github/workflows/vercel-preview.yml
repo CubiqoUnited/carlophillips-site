@@ -186,10 +186,10 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
-            vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > /dev/null
+            vercel --token="$VERCEL_TOKEN" curl "$route" --deployment "$DEPLOYMENT_URL" > /dev/null
           done
-          vercel curl /products/carlophillips-signature-hoodie \
-            --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > preview-pdp.html
+          vercel --token="$VERCEL_TOKEN" curl /products/carlophillips-signature-hoodie \
+            --deployment "$DEPLOYMENT_URL" > preview-pdp.html
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('preview-pdp.html', 'utf8');
