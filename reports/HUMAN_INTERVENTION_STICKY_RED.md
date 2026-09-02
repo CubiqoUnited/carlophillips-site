@@ -576,3 +576,40 @@ The isolated Shopify development store is connected correctly, but it contains o
 Required external action: create and publish a Staging-only `CARLOPHILLIPS Signature Hoodie` product to the Headless sales channel with handle `carlophillips-signature-hoodie`, black S/M/L variants, `$128.00` test pricing, and clearly test-only SKUs. Do not install or trigger the Production Apliiq handoff for this record.
 
 Risk: saving/publishing changes the external Shopify Staging catalog. It does not touch Production, charge a customer, or create an Apliiq production job. Signal completion by explicitly confirming the Staging-only Shopify Save/Publish action in the active Codex task.
+
+# PRODUCTION CONFIGURATION NO-GO — 2026-09-02
+
+Do not build or promote PR #55 to Production yet. A read-only check of the
+canonical Cubiqo Vercel project confirmed that Production is missing runtime
+bindings required by PR #55's fail-closed startup preflight:
+
+- `SHOPIFY_STORE_DOMAIN`
+- `SHOPIFY_STOREFRONT_TOKEN`
+- `CP_COMMERCE_ENVIRONMENT=production`
+- `CP_DURABLE_STORE_ID`
+- `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`
+- one complete Production durable-store credential pair (`KV_REST_API_URL` +
+  `KV_REST_API_TOKEN`, or the supported Upstash equivalent)
+
+The current live deployment remains available because Vercel captured its
+environment at build time. The next Production build from PR #55 would fail
+startup preflight or lose Shopify/durable webhook connectivity if promoted
+without provisioning these bindings.
+
+Required owner action, performed in Vercel Production scope without exposing
+values in chat:
+
+1. Restore the Production Shopify domain and a valid Production Storefront
+   token.
+2. Set the Production commerce marker and matching durable-store identity
+   markers.
+3. Attach a Production-only durable KV/Upstash resource and credentials.
+4. Build a new immutable Production candidate without assigning live domains.
+5. Prove startup preflight, product visibility, Add to Bag, `/api/cart`, and
+   durable signed-webhook ingestion on that candidate.
+6. Preserve the current checkout-enabled live deployment ID as the rollback
+   anchor. Promotion still requires separate Product Owner approval.
+
+Signal completion with: `CP Production bindings restored and candidate verified`.
+This Production blocker does not prevent merging PR #56 or deploying the open
+PR #55 head to isolated Staging.
