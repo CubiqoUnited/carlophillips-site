@@ -3,8 +3,12 @@ name: Protected Vercel Staging
 on:
   workflow_dispatch:
     inputs:
+      pr_number:
+        description: Open pull request number targeting main
+        required: true
+        type: number
       expected_sha:
-        description: Full 40-character merged main SHA
+        description: Full 40-character pull-request head SHA
         required: true
         type: string
       release:
@@ -55,15 +59,25 @@ jobs:
           ref: ${{ inputs.expected_sha }}
           fetch-depth: 0
 
-      - name: Validate exact merged-main input
+      - name: Validate exact open-PR input
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
+          PR_NUMBER: ${{ inputs.pr_number }}
           RELEASE: ${{ inputs.release }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
           [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
-          test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > staging-pr.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const pull = JSON.parse(fs.readFileSync('staging-pr.json', 'utf8'));
+          if (pull.state !== 'open') throw new Error('STAGING_PR_MUST_BE_OPEN');
+          if (pull.base?.ref !== 'main') throw new Error('STAGING_PR_BASE_MUST_BE_MAIN');
+          if (pull.head?.sha !== process.env.EXPECTED_SHA) throw new Error('STAGING_PR_HEAD_MISMATCH');
+          NODE
           test "$SHOPIFY_CART_UI_ENABLED" = "true"
           test "$SHOPIFY_CHECKOUT_ENABLED" = "true"
           test -n "$VERCEL_ORG_ID"
@@ -162,6 +176,7 @@ jobs:
           name: staging-receipt-${{ github.sha }}
           path: |
             staging-environment.json
+            staging-pr.json
             staging-inspect.json
             staging-pdp.html
             test_reports/**
