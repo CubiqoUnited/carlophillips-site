@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 
 const ci = readFileSync('.github/workflows/ci.yml', 'utf8');
 const preview = readFileSync('.github/workflows/vercel-preview.yml', 'utf8');
+const staging = readFileSync('.github/workflows/vercel-staging.yml', 'utf8');
 const candidate = readFileSync(
   '.github/workflows/vercel-release-candidate.yml',
   'utf8'
@@ -35,6 +36,19 @@ const fallbackSelectorPath = join(
   '.github/scripts/select-vercel-safe-fallback.mjs'
 );
 const testSha = 'a'.repeat(40);
+
+describe('protected Staging workflow', () => {
+  it('uses authenticated Vercel requests before assigning the Staging alias', () => {
+    expect(staging).toContain('vercel curl "$DEPLOYMENT_URL$route"');
+    expect(staging).toContain(
+      'vercel curl "$DEPLOYMENT_URL/products/carlophillips-signature-hoodie"'
+    );
+    expect(staging).not.toMatch(/(^|\s)curl\s+--fail/);
+    expect(staging.indexOf('Verify deployment before aliasing')).toBeLessThan(
+      staging.indexOf('Assign protected Staging domain')
+    );
+  });
+});
 
 function writeJson(directory, name, value) {
   const path = join(directory, name);
