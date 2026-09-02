@@ -505,3 +505,36 @@ project-scoped CI token and lacks permission to assign
 
 Signal: `CP Vercel staging owner actions complete`. Production promotion still
 requires the Product Owner's separate explicit instruction after review.
+
+### 2026-09-02 — current protected-Staging handoff (supersedes earlier setup blockers)
+
+The dedicated Shopify development store, isolated Preview Upstash resource,
+Preview-only Shopify/Vercel configuration, and protected GitHub `Staging`
+environment now exist. GitHub `Staging` requires reviewer `avloy07-eng` and
+permits deployments only from `codex/shopify-closure-safety`. PR #55 is open at
+exact head `cb052a759443426256e93938f38c507b4dc33cf1`; repository verification,
+checkout/accessibility, and Vercel build checks are green.
+
+GitHub rejected the protected-Staging dispatch before execution because a
+`workflow_dispatch` workflow must first exist on the default branch. The
+minimal bootstrap is isolated in PR #56:
+
+`https://github.com/CubiqoUnited/carlophillips-site/pull/56`
+
+Human action required:
+
+1. Independently review PR #56. It must contain only
+   `.github/workflows/vercel-staging.yml`.
+2. Confirm it requires an open same-repository PR targeting `main`, exact PR
+   head SHA, the protected `Staging` environment, isolated Preview settings,
+   verification before domain aliasing, and the signed PII-free webhook probe.
+3. Merge PR #56 only after its own required checks pass.
+4. Signal: `CP staging workflow bootstrap merged`.
+
+After that signal, Codex can dispatch the workflow from
+`codex/shopify-closure-safety` for PR #55, wait for the Staging reviewer gate,
+verify the immutable deployment, assign only `staging.carlophillips.com`, and
+continue Shopify Staging webhook registration and happy-path validation.
+
+Do not merge PR #55, change Production, or clean release branches during this
+handoff.
