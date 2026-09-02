@@ -511,9 +511,10 @@ requires the Product Owner's separate explicit instruction after review.
 The dedicated Shopify development store, isolated Preview Upstash resource,
 Preview-only Shopify/Vercel configuration, and protected GitHub `Staging`
 environment now exist. GitHub `Staging` requires reviewer `avloy07-eng` and
-permits deployments only from `codex/shopify-closure-safety`. PR #55 is open at
-exact head `cb052a759443426256e93938f38c507b4dc33cf1`; repository verification,
-checkout/accessibility, and Vercel build checks are green.
+permits deployments only from `codex/shopify-closure-safety`. PR #55 remains
+open; its exact head SHA must be read from GitHub immediately before dispatch.
+The implementation checks were green before this handoff-only documentation
+update, and the updated head must complete the same required checks.
 
 GitHub rejected the protected-Staging dispatch before execution because a
 `workflow_dispatch` workflow must first exist on the default branch. The
