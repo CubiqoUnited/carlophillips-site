@@ -139,11 +139,11 @@ jobs:
         run: |
           vercel inspect "$DEPLOYMENT_URL" --wait --timeout=5m --format=json --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" > staging-inspect.json
           for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
-            vercel curl "$route" --deployment "$DEPLOYMENT_URL" --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" \
+            vercel --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" curl "$route" --deployment "$DEPLOYMENT_URL" \
               --fail --silent --show-error --location --max-time 30 > /dev/null
           done
-          vercel curl /products/carlophillips-signature-hoodie --deployment "$DEPLOYMENT_URL" \
-            --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" \
+          vercel --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" curl \
+            /products/carlophillips-signature-hoodie --deployment "$DEPLOYMENT_URL" \
             --fail --silent --show-error --location --max-time 30 > staging-pdp.html
           node - <<'NODE'
           const fs = require('node:fs');
