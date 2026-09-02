@@ -258,6 +258,10 @@ describe('CI/CD policy', () => {
     expect(ci).toContain('yarn install --frozen-lockfile');
     expect(ci).toContain('run: yarn verify');
     expect(ci).toContain('yarn test:a11y');
+    expect(ci.match(/NEXT_PUBLIC_COMMERCE_ENVIRONMENT: local/g)).toHaveLength(
+      2
+    );
+    expect(ci.match(/COMMERCE_DATA_MODE: fixture/g)).toHaveLength(2);
     expect(ci).toContain('name: ci-evidence-${{ github.sha }}');
     expect(ci).not.toContain('pull_request_target');
     expect(ci).not.toMatch(/npm\s+(ci|install)|pnpm/);
