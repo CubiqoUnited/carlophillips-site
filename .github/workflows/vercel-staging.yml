@@ -1,0 +1,184 @@
+name: Protected Vercel Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Open pull request number targeting main
+        required: true
+        type: number
+      expected_sha:
+        description: Full 40-character pull-request head SHA
+        required: true
+        type: string
+      release:
+        description: Immutable Staging review identifier
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: protected-vercel-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy-staging:
+    name: Deploy exact merged SHA to staging.carlophillips.com
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment:
+      name: Staging
+      url: https://staging.carlophillips.com
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+      NEXT_PUBLIC_COMMERCE_ENVIRONMENT: preview
+      NEXT_PUBLIC_SHOW_PRODUCTS: 'true'
+      COMMERCE_DATA_MODE: shopify
+      SHOPIFY_CART_UI_ENABLED: 'true'
+      SHOPIFY_CHECKOUT_ENABLED: 'true'
+
+    steps:
+      - name: Enforce protected Staging environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/environments/Staging" > staging-environment.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const environment = JSON.parse(fs.readFileSync('staging-environment.json', 'utf8'));
+          const reviewers = environment.protection_rules?.find((rule) => rule.type === 'required_reviewers')?.reviewers;
+          if (!Array.isArray(reviewers) || reviewers.length === 0) throw new Error('STAGING_REVIEWER_REQUIRED');
+          NODE
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_sha }}
+          fetch-depth: 0
+
+      - name: Validate exact open-PR input
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          RELEASE: ${{ inputs.release }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
+          [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > staging-pr.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const pull = JSON.parse(fs.readFileSync('staging-pr.json', 'utf8'));
+          if (pull.state !== 'open') throw new Error('STAGING_PR_MUST_BE_OPEN');
+          if (pull.base?.ref !== 'main') throw new Error('STAGING_PR_BASE_MUST_BE_MAIN');
+          if (pull.head?.sha !== process.env.EXPECTED_SHA) throw new Error('STAGING_PR_HEAD_MISMATCH');
+          NODE
+          test "$SHOPIFY_CART_UI_ENABLED" = "true"
+          test "$SHOPIFY_CHECKOUT_ENABLED" = "true"
+          test -n "$VERCEL_ORG_ID"
+          test -n "$VERCEL_PROJECT_ID"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+
+      - name: Install and verify repository
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          yarn install --frozen-lockfile
+          yarn verify
+          yarn test:e2e
+
+      - name: Install pinned Vercel CLI
+        run: yarn global add vercel@56.1.0
+
+      - name: Pull isolated Preview settings
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
+
+      - name: Build immutable Staging artifact
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token="$VERCEL_TOKEN"
+
+      - name: Deploy without aliases
+        id: staging
+        env:
+          RELEASE: ${{ inputs.release }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          deployment_url="$(vercel deploy --prebuilt --archive=tgz --skip-domain --token="$VERCEL_TOKEN" \
+            --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=preview \
+            --env NEXT_PUBLIC_SHOW_PRODUCTS=true \
+            --env COMMERCE_DATA_MODE=shopify \
+            --env SHOPIFY_CART_UI_ENABLED=true \
+            --env SHOPIFY_CHECKOUT_ENABLED=true \
+            --meta gitCommitSha="$GITHUB_SHA" \
+            --meta cpGitCommitSha="$GITHUB_SHA" \
+            --meta cpRelease="$RELEASE" \
+            --meta cpArtifactKind=protected-staging \
+            --meta cpBuildEnvironment=preview \
+            --meta cpCheckoutEnabled=true)"
+          echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
+
+      - name: Verify deployment before aliasing
+        env:
+          DEPLOYMENT_URL: ${{ steps.staging.outputs.url }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel inspect "$DEPLOYMENT_URL" --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > staging-inspect.json
+          for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
+            curl --fail --silent --show-error --location --max-time 30 "$DEPLOYMENT_URL$route" > /dev/null
+          done
+          curl --fail --silent --show-error --location --max-time 30 \
+            "$DEPLOYMENT_URL/products/carlophillips-signature-hoodie" > staging-pdp.html
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const html = fs.readFileSync('staging-pdp.html', 'utf8');
+          if (!html.includes('ADD TO TEST BAG')) throw new Error('STAGING_ADD_TO_TEST_BAG_MISSING');
+          if (!html.includes('action="/api/cart"')) throw new Error('STAGING_CART_HANDOFF_MISSING');
+          NODE
+
+      - name: Assign protected Staging domain
+        env:
+          DEPLOYMENT_URL: ${{ steps.staging.outputs.url }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel alias set "$DEPLOYMENT_URL" staging.carlophillips.com --token="$VERCEL_TOKEN"
+
+      - name: Run signed PII-free webhook probe
+        env:
+          CP_WEBHOOK_BASE_URL: https://staging.carlophillips.com
+          SHOPIFY_WEBHOOK_SECRET: ${{ secrets.SHOPIFY_STAGING_WEBHOOK_SECRET }}
+          SHOPIFY_WEBHOOK_ALLOWED_SHOPS: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
+        run: yarn verify:webhook-endpoint
+
+      - name: Publish Staging receipt
+        run: |
+          {
+            echo "## Protected Staging deployment"
+            echo "- URL: https://staging.carlophillips.com"
+            echo "- Immutable deployment: ${{ steps.staging.outputs.url }}"
+            echo "- Commit: $GITHUB_SHA"
+            echo "- Checkout enabled: true"
+            echo "- Shopify-origin test order remains a separate closure check"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: staging-receipt-${{ github.sha }}
+          path: |
+            staging-environment.json
+            staging-pr.json
+            staging-inspect.json
+            staging-pdp.html
+            test_reports/**
+          if-no-files-found: error
+          retention-days: 90
