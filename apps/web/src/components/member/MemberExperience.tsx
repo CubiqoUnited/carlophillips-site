@@ -1,37 +1,34 @@
-'use client';
-
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import type { PostPurchaseCapabilities } from '@/lib/commerce/post-purchase-policy';
+import { postPurchaseJourney } from '@/lib/commerce/post-purchase-policy';
+import { FitMemory } from './FitMemory';
 
-const memberBenefits = [
-  ['Private access', 'See selected releases before they open publicly.'],
-  [
-    'Saved pieces',
-    'Keep your pieces, sizes, and future reservations together.',
-  ],
-  [
-    'CP Credit',
-    'Receive clear account credit for selected moments, not points.',
-  ],
-  [
-    'Fit memory',
-    'Remember your preferred size and fit across future releases.',
-  ],
-];
+function CapabilityAction({
+  capability,
+  label,
+}: {
+  capability: PostPurchaseCapabilities[keyof PostPurchaseCapabilities];
+  label: string;
+}) {
+  if (!capability.available || !capability.href)
+    return <p className="cp-member-note">{capability.reason}</p>;
 
-const ledger = [
-  ['Private list welcome', '+€15.00', 'Available for a future piece'],
-  ['Member credit', '€15.00', 'Current preview balance'],
-];
+  return (
+    <a
+      className="cp-member-text-button"
+      href={capability.href}
+      rel="noreferrer"
+    >
+      {label} →
+    </a>
+  );
+}
 
-export function MemberExperience() {
-  const [joined, setJoined] = useState(false);
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setJoined(true);
-  }
-
+export function MemberExperience({
+  capabilities,
+}: {
+  capabilities: PostPurchaseCapabilities;
+}) {
   return (
     <main id="main-content" className="cp-commerce-page cp-member-page">
       <header className="cp-commerce-header cp-commerce-header-fixed">
@@ -39,9 +36,9 @@ export function MemberExperience() {
           <Link href="/" className="cp-commerce-brand">
             CARLOPHILLIPS
           </Link>
-          <nav className="cp-commerce-nav" aria-label="Member navigation">
+          <nav className="cp-commerce-nav" aria-label="Aftercare navigation">
             <Link href="/shop">Collection</Link>
-            <span aria-current="page">Member</span>
+            <span aria-current="page">Aftercare</span>
             <Link href="/bag">Bag</Link>
           </nav>
         </div>
@@ -49,187 +46,124 @@ export function MemberExperience() {
 
       <section className="cp-member-hero">
         <div className="cp-member-hero-copy">
-          <p className="cp-member-kicker">CARLOPHILLIPS / CP MEMBER</p>
-          <h1 className="cp-member-title">A private layer around the brand.</h1>
+          <p className="cp-member-kicker">CARLOPHILLIPS / AFTERCARE</p>
+          <h1 className="cp-member-title">
+            From confirmation to what comes next.
+          </h1>
           <p className="cp-member-lede">
-            Join the private list for access, recognition, and a closer
-            relationship with CP. Membership is not a points club and it is not
-            a discount promise.
+            Shopify remains the live authority for your order, payment,
+            tracking, cancellation and refund. CP adds a clear service path
+            without copying or inventing those facts.
           </p>
           <p className="cp-member-note">
-            Preview surface — this local review does not create a live Shopify
-            customer account, send marketing, or issue real credit.
+            This page never asks for payment details and does not display an
+            order unless Shopify authenticates it.
           </p>
         </div>
 
-        <div className="cp-member-signup cp-card-panel">
-          <p className="cp-member-section-label">01 / Become known to CP</p>
-          {joined ? (
-            <div className="cp-member-confirmation" role="status">
-              <p className="cp-member-confirmation-mark" aria-hidden="true">
-                ✓
-              </p>
-              <h2>You are on the private list.</h2>
-              <p>
-                This review fixture has captured the intended welcome state.
-                Live Customer Account and consent wiring remain a Shopify
-                integration gate.
-              </p>
-              <button
-                type="button"
-                className="cp-member-button"
-                onClick={() => setJoined(false)}
-              >
-                Review the form again
-              </button>
-            </div>
-          ) : (
-            <form className="cp-member-form" onSubmit={handleSubmit}>
-              <h2>Join before the next release.</h2>
-              <label>
-                Email address
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                />
-              </label>
-              <label>
-                First name <span>(optional)</span>
-                <input
-                  name="firstName"
-                  type="text"
-                  placeholder="Your first name"
-                />
-              </label>
-              <label className="cp-member-checkbox">
-                <input name="marketingConsent" type="checkbox" required />
-                <span>
-                  I want CP private-list updates. I can unsubscribe anytime.
-                </span>
-              </label>
-              <button type="submit" className="cp-member-button">
-                Join the private list
-              </button>
-              <p className="cp-member-form-footnote">
-                Service/account communication and marketing consent will be
-                stored separately when the live integration is enabled.
-              </p>
-            </form>
-          )}
-        </div>
+        <article className="cp-member-signup cp-card-panel">
+          <p className="cp-member-section-label">Live order status</p>
+          <h2>Your order truth stays in Shopify.</h2>
+          <CapabilityAction
+            capability={capabilities.account}
+            label="Open secure order status"
+          />
+          <Link className="cp-member-text-button" href="/contact">
+            Ask CP support →
+          </Link>
+        </article>
       </section>
 
-      <section
-        className="cp-member-section"
-        aria-labelledby="member-benefits-title"
-      >
+      <section className="cp-member-section" aria-labelledby="journey-title">
         <div className="cp-member-section-heading">
-          <p className="cp-member-section-label">02 / What membership means</p>
-          <h2 id="member-benefits-title">Access before promotion.</h2>
+          <p className="cp-member-section-label">The complete journey</p>
+          <h2 id="journey-title">One source of truth at every step.</h2>
         </div>
-        <div className="cp-member-benefit-grid">
-          {memberBenefits.map(([title, copy], index) => (
-            <article className="cp-member-benefit cp-card-panel" key={title}>
+        <ol className="cp-member-benefit-grid cp-journey-grid">
+          {postPurchaseJourney.map((step, index) => (
+            <li className="cp-member-benefit cp-card-panel" key={step.id}>
               <p className="cp-member-index">0{index + 1}</p>
-              <h3>{title}</h3>
-              <p>{copy}</p>
-            </article>
+              <h3>{step.label}</h3>
+              <p>{step.copy}</p>
+              <small>{step.authority}</small>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
-      <section
-        className="cp-member-dashboard"
-        aria-labelledby="member-dashboard-title"
-      >
+      <section className="cp-member-dashboard" aria-labelledby="service-title">
         <div className="cp-member-dashboard-header">
           <div>
-            <p className="cp-member-section-label">03 / Account direction</p>
-            <h2 id="member-dashboard-title">CP Member</h2>
+            <p className="cp-member-section-label">Service and relationship</p>
+            <h2 id="service-title">Continue with confidence.</h2>
           </div>
-          <span className="cp-member-preview-badge">
-            Private review fixture
-          </span>
+          <span className="cp-member-preview-badge">Shopify authoritative</span>
         </div>
 
-        <div className="cp-member-card-row">
-          <article
-            className="cp-stone-card"
-            aria-label="CP Member card preview"
-          >
-            <p>CP MEMBER</p>
+        <div className="cp-member-lower-grid cp-aftercare-grid">
+          <article className="cp-card-panel cp-member-saved">
+            <p className="cp-member-section-label">Return or exchange</p>
+            <h3>Start with the verified order.</h3>
+            <CapabilityAction
+              capability={capabilities.returns}
+              label="Open returns"
+            />
+            {!capabilities.returns.available && (
+              <Link className="cp-member-text-button" href="/contact">
+                Contact CP support →
+              </Link>
+            )}
+          </article>
+
+          <article className="cp-card-panel cp-member-saved">
+            <p className="cp-member-section-label">Review eligibility</p>
+            <h3>Only after verified delivery.</h3>
+            <CapabilityAction
+              capability={capabilities.reviews}
+              label="Review your piece"
+            />
+          </article>
+
+          <article className="cp-card-panel cp-member-saved">
+            <p className="cp-member-section-label">CP Credit</p>
+            <h3>No invented balance.</h3>
+            <CapabilityAction
+              capability={capabilities.credit}
+              label="View CP Credit"
+            />
+          </article>
+
+          <article className="cp-card-panel cp-member-saved">
+            <p className="cp-member-section-label">Continue the relationship</p>
+            <h3>Return to the collection.</h3>
+            <p>
+              Explore current pieces without interrupting your service journey.
+            </p>
+            <Link className="cp-member-text-button" href="/shop">
+              Continue shopping →
+            </Link>
+          </article>
+        </div>
+
+        <div className="cp-member-card-row cp-fit-memory-row">
+          <div className="cp-member-profile cp-card-panel">
+            <FitMemory />
+          </div>
+          <article className="cp-stone-card">
+            <p>CP AFTERCARE</p>
             <div className="cp-stone-card-mark" aria-hidden="true">
               CP
             </div>
             <div className="cp-stone-card-footer">
-              <span>PRIVATE PREVIEW</span>
-              <span>NO. 000184</span>
+              <span>ORDER FACTS BY SHOPIFY</span>
+              <span>SERVICE BY CP</span>
             </div>
-          </article>
-          <div className="cp-member-profile cp-card-panel">
-            <dl className="cp-member-definition-list">
-              <div>
-                <dt>Member since</dt>
-                <dd>2026</dd>
-              </div>
-              <div>
-                <dt>Preferred fit</dt>
-                <dd>Relaxed</dd>
-              </div>
-              <div>
-                <dt>Your CP size</dt>
-                <dd>Not set</dd>
-              </div>
-              <div>
-                <dt>Saved pieces</dt>
-                <dd>0</dd>
-              </div>
-            </dl>
-            <button type="button" className="cp-member-text-button">
-              Complete your profile →
-            </button>
-          </div>
-        </div>
-
-        <div className="cp-member-lower-grid">
-          <article className="cp-card-panel cp-member-ledger">
-            <div className="cp-member-panel-heading">
-              <div>
-                <p className="cp-member-section-label">04 / CP Credit</p>
-                <h3>Clear value, no points.</h3>
-              </div>
-              <strong>€15.00</strong>
-            </div>
-            <div className="cp-member-ledger-rows">
-              {ledger.map(([label, amount, detail]) => (
-                <div className="cp-member-ledger-row" key={label}>
-                  <span>
-                    <strong>{label}</strong>
-                    <small>{detail}</small>
-                  </span>
-                  <b>{amount}</b>
-                </div>
-              ))}
-            </div>
-          </article>
-          <article className="cp-card-panel cp-member-saved">
-            <p className="cp-member-section-label">05 / Saved Pieces</p>
-            <h3>Keep a quiet record of what stays with you.</h3>
-            <p>
-              Your saved pieces, reservations, sizes, and restock alerts will
-              live here.
-            </p>
-            <Link className="cp-member-text-button" href="/shop">
-              Explore the collection →
-            </Link>
           </article>
         </div>
       </section>
 
       <footer className="cp-member-footer">
-        <p>CP Member is the beginning of the relationship.</p>
+        <p>Shopify holds the order. CP stays with the customer.</p>
         <Link href="/">Return to CARLOPHILLIPS</Link>
       </footer>
     </main>

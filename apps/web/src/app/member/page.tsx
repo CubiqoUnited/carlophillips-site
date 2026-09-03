@@ -1,11 +1,16 @@
 import { MemberExperience } from '@/components/member/MemberExperience';
+import { resolvePostPurchaseCapabilities } from '@/lib/commerce/post-purchase-policy';
 
 export const metadata = {
-  title: 'CP Member | CARLOPHILLIPS',
+  title: 'Aftercare | CARLOPHILLIPS',
   description:
-    'A private customer layer for early access, saved pieces, fit memory, and CP Credit.',
+    'Order status, support, returns, fit memory and post-purchase care from CARLOPHILLIPS.',
 };
 
 export default function MemberPage() {
-  return <MemberExperience />;
+  return (
+    <MemberExperience
+      capabilities={resolvePostPurchaseCapabilities(process.env)}
+    />
+  );
 }
