@@ -373,7 +373,11 @@ describe('CI/CD policy', () => {
     );
     expect(staging).not.toContain('--meta cpGitCommitSha="$GITHUB_SHA"');
     expect(staging).toContain('yarn test:e2e');
-    expect(staging).toContain('collect-protected-shopify-proof.mjs snapshot');
+    expect(staging).not.toContain(
+      'collect-protected-shopify-proof.mjs snapshot'
+    );
+    expect(staging).not.toContain('SHOPIFY_STAGING_ADMIN_TOKEN');
+    expect(staging).not.toContain('SHOPIFY_PRODUCTION_STORE_DOMAIN');
     expect(staging).toContain('playwright.release.config.ts');
     expect(releasePlaywright).toContain('width: 1440');
     expect(releasePlaywright).toContain('width: 390');

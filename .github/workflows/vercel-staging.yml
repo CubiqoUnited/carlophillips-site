@@ -107,19 +107,6 @@ jobs:
           yarn verify
           yarn test:e2e
 
-      - name: Capture isolated Shopify development-store inventory baseline
-        env:
-          SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
-          SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
-          SHOPIFY_STAGING_ADMIN_TOKEN: ${{ secrets.SHOPIFY_STAGING_ADMIN_TOKEN }}
-          CP_EXPECTED_PREVIEW_DURABLE_STORE_ID: ${{ vars.CP_EXPECTED_PREVIEW_DURABLE_STORE_ID }}
-          CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID: ${{ vars.CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID }}
-        run: >-
-          node scripts/collect-protected-shopify-proof.mjs snapshot
-          --expected-sha "${{ inputs.expected_sha }}"
-          --release "${{ inputs.release }}"
-          --output staging-shopify-snapshot.json
-
       - name: Install pinned Vercel CLI
         run: yarn global add vercel@56.1.0
 
@@ -259,7 +246,7 @@ jobs:
             echo "- Immutable deployment: ${{ steps.staging.outputs.url }}"
             echo "- Commit: ${{ inputs.expected_sha }}"
             echo "- Checkout enabled: true"
-            echo "- Shopify-origin test order remains a separate closure check"
+            echo "- Shopify-origin test order and Admin API audit are deferred follow-up checks"
             echo "- Production remained healthy and checkout-enabled: true"
             echo "- Receipt is preliminary until the protected test-order lifecycle proof passes"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -275,7 +262,6 @@ jobs:
             staging-deployments.json
             staging-pdp.html
             protected-staging-deployment-receipt.json
-            staging-shopify-snapshot.json
             staging-webhook-probe.json
             production-before-staging.json
             production-after-staging.json
