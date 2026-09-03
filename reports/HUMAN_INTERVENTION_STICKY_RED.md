@@ -1,3 +1,67 @@
+# CURRENT — POST-SALE CAPABILITY ACTIVATION (HUMAN-OWNED)
+
+Updated: 2026-09-03 00:25 EDT
+
+## What the application now does
+
+PR #67 adds a truthful `/aftercare` customer journey. Shopify remains the
+authority for order, payment, fulfillment, tracking, cancellation, refund and
+credit. When a Shopify-owned destination is not configured, the corresponding
+action is visibly unavailable and the customer is directed to CP support or
+the secure order-status link in Shopify's notification email. The application
+does not simulate an order state, delivery, refund, review eligibility or
+credit balance.
+
+## Exact human actions still required
+
+1. In **CARLOPHILLIPS Staging** Shopify Admin, activate Customer Accounts and
+   verify the public HTTPS account/order-status destination. Add that URL to
+   Vercel Preview as `NEXT_PUBLIC_SHOPIFY_ACCOUNT_URL`, rebuild protected
+   Staging, sign in with a synthetic non-PII customer, and prove only that
+   customer's test order is visible. Signal: `CP Staging customer account proven`.
+2. Configure Shopify-native self-service returns for the Staging development
+   store, including the approved return policy and operator routing. Put only
+   its public HTTPS entry URL in Vercel Preview as
+   `NEXT_PUBLIC_SHOPIFY_RETURNS_URL`; submit and close one zero-charge test
+   return. Signal: `CP Staging returns proven`.
+3. Product Owner selects and approves a Shopify-integrated reviews provider,
+   including price and data access. Configure delivered-order eligibility in
+   Staging, then set `NEXT_PUBLIC_SHOPIFY_REVIEW_URL`. Do not accept or display
+   reviews before a Shopify-backed delivered-order check. Signal:
+   `CP Staging verified reviews proven`.
+4. Product Owner decides whether CP Credit is offered. If approved, configure
+   Shopify store credit/customer-account visibility in Staging and set
+   `NEXT_PUBLIC_SHOPIFY_CREDIT_ENABLED=true` only after an authenticated
+   balance can be read in Shopify. Signal: `CP Staging credit proven`.
+5. Apliiq production, tracking and delivery cannot be proved in Shopify's
+   development-store test payment alone. Under separate real-order authority,
+   place one low-risk Production order using a mapped Production SKU, verify
+   Apliiq acceptance/hold, production, tracking returned to Shopify and
+   Shopify's CP-branded dispatch/delivery communication. Signal:
+   `CP Production Apliiq lifecycle proven`.
+
+## Cost and risk
+
+- Customer Accounts and Shopify-native returns should not create a real charge,
+  but publishing policy or account changes affects customer behavior; verify in
+  Staging first.
+- A reviews app may request customer/order data or a paid subscription. No app,
+  data grant or charge is authorized until the Product Owner selects it.
+- Store credit is a financial liability. Do not invent, issue or migrate a
+  balance without Product Owner approval and Shopify records.
+- Apliiq has no complete production sandbox. The final provider proof may create
+  a real garment, charge and customer/provider communication, so it remains a
+  separately approved Production action.
+
+## Resume point
+
+After each exact signal, bind only the corresponding public capability to
+Preview, rerun its protected Staging journey, and retain Shopify/Vercel evidence
+without customer PII. Production remains unchanged until a separate release is
+approved.
+
+---
+
 # CURRENT — RELEASE CLOSURE STATUS (AUTHORITATIVE)
 
 Updated: 2026-09-02 22:45 EDT
