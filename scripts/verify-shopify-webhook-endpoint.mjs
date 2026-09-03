@@ -44,7 +44,17 @@ if (process.env.VERCEL_TOKEN && process.env.VERCEL_SCOPE) {
   }
   const result = spawnSync('vercel', args, { encoding: 'utf8' });
   if (result.error || result.status !== 0) {
-    throw new Error('WEBHOOK_PROBE_TRANSPORT_FAILED');
+    const diagnostic = `${result.error?.message ?? ''}\n${result.stderr ?? ''}`;
+    const reason = /credentials|logged in|unauthorized|authentication/i.test(
+      diagnostic
+    )
+      ? 'AUTH'
+      : /option .*unknown|unknown option/i.test(diagnostic)
+        ? 'OPTION'
+        : /deployment.*not found|project.*not found/i.test(diagnostic)
+          ? 'TARGET'
+          : 'UNKNOWN';
+    throw new Error(`WEBHOOK_PROBE_TRANSPORT_FAILED_${reason}`);
   }
   const lines = result.stdout.trimEnd().split('\n');
   status = Number(lines.pop());
