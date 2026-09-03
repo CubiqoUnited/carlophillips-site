@@ -729,3 +729,40 @@
 - [ ] Merge the reviewed PR and deploy that exact merged `main` SHA to `staging.carlophillips.com`.
 - [ ] Complete the Shopify test-payment journey, branded Shopify notification checks, webhook delivery/replay evidence and supported Apliiq hold/manual-review proof in Staging.
 - [ ] After Product Owner Staging acceptance, reconcile every worktree and delete only proven merged/archived/discarded temporary branches; retain only `main` and `staging`.
+
+# Release-protection gate — 2026-09-03
+
+- [x] Preserve PR #67 lifecycle ownership and recognize the authoritative
+      remote head `fcc836e3b7b33fe6bf7c917ee52abb46d6a5557c`; do not certify either
+      earlier application SHA.
+- [x] Record failed protected Staging run `33733157896` as a hard, safe gate
+      failure before Vercel build/deploy/alias and keep Production/cleanup locked.
+- [x] Add exact release/SHA cart attributes and deny checkout for stale carts.
+- [x] Persist only signed, PII-free Shopify lifecycle observations with opaque
+      shop/delivery/order references and zero webhook mutation authority.
+- [x] Add duplicate-delivery probe evidence requiring one durable observation
+      and zero external action.
+- [x] Define and test the HMAC-signed protected Staging receipt covering S/M/L,
+      USD 128, bag/checkout/test payment, paid order, redacted confirmation/status,
+      cancellation/refund/restock, a11y/browser health, isolation, unchanged
+      Production and rollback.
+- [x] Make Production candidate and promotion reject any missing, unsigned,
+      tampered or wrong-SHA protected Staging receipt; restore and verify the last
+      checkout-enabled Production deployment after any promotion acceptance or
+      receipt-publication failure.
+- [x] Pass the local Yarn 1.22.22 frozen install, 678 Vitest tests, lint,
+      typecheck, stylelint, format, Storybook, audit, build, and 26/26 headless
+      Playwright checks with 1440/390 screenshot comparisons under
+      `test_reports/`.
+- [ ] Rebind the GitHub Staging `VERCEL_TOKEN` to canonical Cubiqo team/project
+      access and signal `CP canonical Staging Vercel token ready`.
+- [ ] Merge PR #67, rebase the release-gate branch onto that merged `main`, open
+      its PR, pass all local/PR checks, and deploy only the resulting combined
+      `main` merge SHA to protected Staging.
+- [ ] Complete the fresh protected synthetic Shopify test order only after the
+      separate payment-entry intervention is recorded; capture redacted
+      confirmation/status evidence, cancel/refund/restock and prove no Apliiq job.
+- [ ] Obtain Product Owner Staging review, issue the signed receipt, then obtain
+      separate Production approval. Do not promote from build/Add-to-Bag evidence.
+
+---

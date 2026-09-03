@@ -30,6 +30,8 @@ function configureRuntime(environment) {
   process.env.UPSTASH_REDIS_REST_TOKEN = 'redis-token';
   process.env.SHOPIFY_CART_UI_ENABLED = 'true';
   process.env.SHOPIFY_CHECKOUT_ENABLED = 'true';
+  process.env.CP_RELEASE_ID = 'runtime-authority-test';
+  process.env.CP_RELEASE_COMMIT_SHA = 'a'.repeat(40);
 }
 
 function shopifyProduct() {

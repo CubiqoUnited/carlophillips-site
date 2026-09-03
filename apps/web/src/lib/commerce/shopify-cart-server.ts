@@ -48,6 +48,39 @@ function referenceHash(value: string) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
 
+function releaseCartAttributes(environment: CommerceEnvironment) {
+  const gitCommitSha =
+    process.env.CP_RELEASE_COMMIT_SHA ||
+    process.env.VERCEL_GIT_COMMIT_SHA ||
+    '';
+  const release = process.env.CP_RELEASE_ID || '';
+  if (environment === 'local') return [];
+  if (
+    !/^[a-f0-9]{40}$/.test(gitCommitSha) ||
+    !/^[A-Za-z0-9._-]+$/.test(release)
+  ) {
+    throw new ShopifyCartError('CART_RELEASE_BINDING_MISSING');
+  }
+  return [
+    { key: '_cp_release', value: release },
+    { key: '_cp_commit_sha', value: gitCommitSha },
+    { key: '_cp_commerce_environment', value: environment },
+  ];
+}
+
+function releaseCartBindingMatches(
+  cart: StorefrontCart,
+  environment: CommerceEnvironment
+) {
+  const expected = releaseCartAttributes(environment);
+  const actual = new Map(
+    (cart.attributes || []).map((attribute) => [attribute.key, attribute.value])
+  );
+  return expected.every(
+    (attribute) => actual.get(attribute.key) === attribute.value
+  );
+}
+
 function checkedCart(payload: CartMutationPayload | null | undefined) {
   if (!payload?.cart || payload.userErrors?.length) {
     throw new ShopifyCartError('SHOPIFY_CART_MUTATION_REJECTED');
@@ -68,6 +101,21 @@ function clientFor(environment: CommerceEnvironment, fetchImpl = fetch) {
   };
 }
 
+async function requireReleaseBoundCart(
+  client: ReturnType<typeof createStorefrontClient>,
+  cartId: string,
+  environment: CommerceEnvironment
+) {
+  const result = await client.query<
+    { cart?: StorefrontCart | null },
+    { id: string }
+  >({ document: GET_CART, variables: { id: cartId } });
+  if (!result.cart || !releaseCartBindingMatches(result.cart, environment)) {
+    throw new ShopifyCartError('CART_RELEASE_BINDING_STALE');
+  }
+  return result.cart;
+}
+
 export async function readShopifyCart({
   cartId,
   environment,
@@ -79,14 +127,17 @@ export async function readShopifyCart({
 }): Promise<StorefrontCart | null> {
   if (!cartId) return null;
   const { client } = clientFor(environment, fetchImpl);
-  const result = await client.query<
-    { cart?: StorefrontCart | null },
-    { id: string }
-  >({
-    document: GET_CART,
-    variables: { id: cartId },
-  });
-  return result.cart || null;
+  try {
+    return await requireReleaseBoundCart(client, cartId, environment);
+  } catch (error) {
+    if (
+      error instanceof ShopifyCartError &&
+      error.code === 'CART_RELEASE_BINDING_STALE'
+    ) {
+      return null;
+    }
+    throw error;
+  }
 }
 
 export async function addShopifyCartLine({
@@ -133,18 +184,40 @@ export async function addShopifyCartLine({
 
   const lines = [{ merchandiseId: variant.id, quantity }];
   if (cartId) {
-    const result = await client.mutate<
-      { cartLinesAdd?: CartMutationPayload },
-      { cartId: string; lines: typeof lines }
-    >({ document: ADD_CART_LINES, variables: { cartId, lines } });
-    if (result.cartLinesAdd?.cart && !result.cartLinesAdd.userErrors?.length) {
-      return result.cartLinesAdd.cart;
+    const existing = await client.query<
+      { cart?: StorefrontCart | null },
+      { id: string }
+    >({ document: GET_CART, variables: { id: cartId } });
+    if (
+      existing.cart &&
+      releaseCartBindingMatches(existing.cart, environment)
+    ) {
+      const result = await client.mutate<
+        { cartLinesAdd?: CartMutationPayload },
+        { cartId: string; lines: typeof lines }
+      >({ document: ADD_CART_LINES, variables: { cartId, lines } });
+      if (
+        result.cartLinesAdd?.cart &&
+        !result.cartLinesAdd.userErrors?.length
+      ) {
+        return result.cartLinesAdd.cart;
+      }
     }
   }
   const created = await client.mutate<
     { cartCreate?: CartMutationPayload },
-    { input: { lines: typeof lines } }
-  >({ document: CREATE_CART, variables: { input: { lines } } });
+    {
+      input: {
+        lines: typeof lines;
+        attributes: Array<{ key: string; value: string }>;
+      };
+    }
+  >({
+    document: CREATE_CART,
+    variables: {
+      input: { lines, attributes: releaseCartAttributes(environment) },
+    },
+  });
   return checkedCart(created.cartCreate);
 }
 
@@ -171,6 +244,7 @@ export async function updateShopifyCartLine({
     throw new ShopifyCartError('INVALID_CART_LINE_UPDATE');
   }
   const { client } = clientFor(environment, fetchImpl);
+  await requireReleaseBoundCart(client, cartId, environment);
   const result = await client.mutate<
     { cartLinesUpdate?: CartMutationPayload },
     { cartId: string; lines: Array<{ id: string; quantity: number }> }
@@ -195,6 +269,7 @@ export async function removeShopifyCartLine({
   if (!cartId || !lineId)
     throw new ShopifyCartError('INVALID_CART_LINE_REMOVE');
   const { client } = clientFor(environment, fetchImpl);
+  await requireReleaseBoundCart(client, cartId, environment);
   const result = await client.mutate<
     { cartLinesRemove?: CartMutationPayload },
     { cartId: string; lineIds: string[] }
@@ -210,6 +285,9 @@ export function trustedCartCheckoutUrl(
   environment: CommerceEnvironment
 ) {
   const config = environmentConfig(environment);
+  if (!releaseCartBindingMatches(cart, environment)) {
+    throw new ShopifyCartError('CART_RELEASE_BINDING_STALE');
+  }
   const storeHost = config.storeDomain
     .replace(/^https?:\/\//, '')
     .replace(/\/$/, '');

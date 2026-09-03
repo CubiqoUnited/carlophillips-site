@@ -36,27 +36,27 @@ describe('durable Shopify webhook idempotency', () => {
     await expect(store.release('webhook-1')).resolves.toBeUndefined();
 
     const claim = JSON.parse(fetchImpl.mock.calls[0][1].body);
-    expect(claim.slice(0, 5)).toEqual([
-      'SET',
-      'cp:preview:shopify:webhook:webhook-1',
-      'claimed',
-      'NX',
-      'PX',
-    ]);
-    expect(claim[5]).toBeGreaterThan(0);
+    expect(claim[0]).toBe('SET');
+    expect(claim[1]).toMatch(/^cp:preview:shopify:webhook:[a-f0-9]{64}$/);
+    expect(claim.slice(2, 5)).toEqual(['claimed', 'NX', 'PX']);
+    expect(claim[5]).toBeGreaterThanOrEqual(60 * 60 * 24 * 30 * 1000);
     const record = JSON.parse(fetchImpl.mock.calls[1][1].body);
     expect(record[0]).toBe('SET');
-    expect(record[1]).toBe('cp:preview:shopify:webhook-event:webhook-1');
+    expect(record[1]).toMatch(
+      /^cp:preview:shopify:webhook-event:[a-f0-9]{64}$/
+    );
     expect(record[3]).toBe('EX');
     expect(record[4]).toBe(60 * 60 * 24 * 30);
     expect(JSON.parse(record[2])).toEqual({
       topic: 'orders/paid',
       payloadHash: 'hash',
     });
-    expect(JSON.parse(fetchImpl.mock.calls[2][1].body)).toEqual([
-      'DEL',
-      'cp:preview:shopify:webhook:webhook-1',
-    ]);
+    const release = JSON.parse(fetchImpl.mock.calls[2][1].body);
+    expect(release[0]).toBe('DEL');
+    expect(release[1]).toMatch(/^cp:preview:shopify:webhook:[a-f0-9]{64}$/);
+    expect(release[1].slice('cp:preview:shopify:webhook:'.length)).toBe(
+      claim[1].slice('cp:preview:shopify:webhook:'.length)
+    );
   });
 
   it('does not treat a previously claimed delivery as new', async () => {

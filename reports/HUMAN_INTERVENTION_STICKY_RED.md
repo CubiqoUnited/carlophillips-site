@@ -1,3 +1,64 @@
+# RED — PROTECTED STAGING VERCEL AUTHORITY BLOCKS THE RELEASE GATE
+
+Updated: 2026-09-03 EDT
+
+## What is blocked
+
+Protected Staging run `33733157896` for PR #67 at exact lifecycle candidate
+`3bff804b1a55691a38e9406eb1f97d21b5b21a3c` passed pull-request/SHA
+validation and the full repository verification, then failed safely at
+`vercel pull --environment=preview --scope=cubiqo-projects-d7156840` with
+`You do not have access to the specified account`.
+
+No Vercel build, deployment, alias change, webhook probe, Shopify test order,
+or protected release receipt occurred. Production and the cleanup work item
+remain locked. The 2026-09-02 test-gateway order is historical evidence only;
+it is not bound to the new combined lifecycle-plus-gate commit and must not be
+reused as this release's receipt.
+
+PR #67 has since advanced to the authoritative remote head
+`fcc836e3b7b33fe6bf7c917ee52abb46d6a5557c`; CI run `33734041715` and
+Playwright run `33734041704` passed. The earlier `3bff804…` attempt is a
+historical failure record only. Any PR #67 retry before merge must bind exactly
+to `fcc836e3b7b33fe6bf7c917ee52abb46d6a5557c`; the final release-gate proof
+must instead bind the combined lifecycle-plus-gate merge commit on `main`.
+
+## Exact human action
+
+1. Manually open GitHub → `CubiqoUnited/carlophillips-site` → Settings →
+   Environments → **Staging**. Do not ask Codex to foreground this screen.
+2. Replace or reauthorize only the Staging environment secret `VERCEL_TOKEN`
+   so it can access canonical team `team_Q25fvpJOPiIeoG3hfxtCVkhW`, project
+   `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`, and scope
+   `cubiqo-projects-d7156840`. Keep the token environment-scoped and do not
+   paste its value into chat, source, workflow inputs, logs, or this file.
+3. Do not point the workflow at another same-named Vercel project and do not
+   bypass the Staging reviewer protection. Confirm the configured non-secret
+   `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, and `VERCEL_SCOPE` still identify the
+   canonical values above.
+4. Signal completion in the active task with:
+   `CP canonical Staging Vercel token ready`.
+
+## Cost and risk
+
+No charge is intended. A Vercel token can deploy and change aliases within its
+scope, so grant only the minimum canonical Cubiqo project/team access and keep
+Production approval and promotion disabled. Using a different project/token
+would produce invalid evidence and is not an authorized workaround.
+
+## Resume point
+
+After the completion signal, rebase the release-gate work onto the merged PR
+#67 lifecycle candidate, run the protected workflow for the exact combined
+`main` SHA, and require the immutable deployment/alias, isolated Shopify
+development-store snapshot, 1440/390 browser/a11y evidence, signed duplicate
+probe, and unchanged checkout-enabled Production receipt. Only then may the
+protected synthetic test payment, confirmation/order-status capture,
+cancellation/refund, and inventory restoration be performed. Record that
+separate human payment intervention before entering test checkout data.
+
+---
+
 # CURRENT — RELEASE CLOSURE STATUS (AUTHORITATIVE)
 
 Updated: 2026-09-02 22:45 EDT

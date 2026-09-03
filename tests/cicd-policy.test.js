@@ -7,6 +7,10 @@ import { describe, expect, it } from 'vitest';
 const ci = readFileSync('.github/workflows/ci.yml', 'utf8');
 const preview = readFileSync('.github/workflows/vercel-preview.yml', 'utf8');
 const staging = readFileSync('.github/workflows/vercel-staging.yml', 'utf8');
+const protectedProof = readFileSync(
+  '.github/workflows/protected-release-proof.yml',
+  'utf8'
+);
 const candidate = readFileSync(
   '.github/workflows/vercel-release-candidate.yml',
   'utf8'
@@ -31,6 +35,15 @@ const webhookEndpointVerifier = readFileSync(
   'scripts/verify-shopify-webhook-endpoint.mjs',
   'utf8'
 );
+const checkoutHealthVerifier = readFileSync(
+  'scripts/verify-checkout-health.mjs',
+  'utf8'
+);
+const protectedProofCollector = readFileSync(
+  'scripts/collect-protected-shopify-proof.mjs',
+  'utf8'
+);
+const releasePlaywright = readFileSync('playwright.release.config.ts', 'utf8');
 const verifierPath = join(
   process.cwd(),
   '.github/scripts/verify-vercel-receipt.mjs'
@@ -77,14 +90,18 @@ function artifactMetadata(role, overrides = {}) {
       ? { kind: 'staged-production', environment: 'production' }
       : role === 'fallback'
         ? { kind: 'safe-fallback', environment: 'production' }
-        : { kind: 'immutable-preview', environment: 'preview' };
+        : role === 'staging'
+          ? { kind: 'protected-staging', environment: 'preview' }
+          : { kind: 'immutable-preview', environment: 'preview' };
   return {
     cpGitCommitSha: testSha,
     cpRelease: 'v-test',
     cpArtifactKind: contract.kind,
     cpBuildEnvironment: contract.environment,
     cpCheckoutEnabled: 'false',
-    ...(role === 'preview' ? { cpPullRequest: '42' } : {}),
+    ...(role === 'preview' || role === 'staging'
+      ? { cpPullRequest: '42' }
+      : {}),
     ...overrides,
   };
 }
@@ -331,16 +348,21 @@ describe('CI/CD policy', () => {
     ).not.toContain('VERCEL_TOKEN');
   });
 
-  it('deploys only the exact open-PR head SHA to protected Staging', () => {
+  it('deploys only the exact merged-main SHA to protected Staging', () => {
     expect(staging).toContain('workflow_dispatch:');
     expect(staging).toContain('pr_number:');
     expect(staging).toContain('name: Staging');
     expect(staging).toContain('STAGING_REVIEWER_REQUIRED');
     expect(staging).toContain('test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"');
-    expect(staging).toContain("pull.state !== 'open'");
+    expect(staging).toContain("pull.state !== 'closed' || !pull.merged_at");
     expect(staging).toContain("pull.base?.ref !== 'main'");
-    expect(staging).toContain('pull.head?.sha !== process.env.EXPECTED_SHA');
+    expect(staging).toContain(
+      'pull.merge_commit_sha !== process.env.EXPECTED_SHA'
+    );
+    expect(staging).toContain('git rev-parse origin/main');
     expect(staging).toContain('vercel pull --yes --environment=preview');
+    expect(staging).toContain('VERCEL_PROJECT_LINK_MISMATCH');
+    expect(staging).toContain('VERCEL_ORG_LINK_MISMATCH');
     expect(staging).toContain('vercel deploy --prebuilt --archive=tgz --token');
     expect(staging).not.toContain('--skip-domain');
     expect(staging).toContain('--meta cpArtifactKind=protected-staging');
@@ -351,6 +373,13 @@ describe('CI/CD policy', () => {
     );
     expect(staging).not.toContain('--meta cpGitCommitSha="$GITHUB_SHA"');
     expect(staging).toContain('yarn test:e2e');
+    expect(staging).toContain('collect-protected-shopify-proof.mjs snapshot');
+    expect(staging).toContain('playwright.release.config.ts');
+    expect(releasePlaywright).toContain("reporter: [['list']]");
+    expect(releasePlaywright).not.toContain("['json'");
+    expect(releasePlaywright).not.toContain("['html'");
+    expect(staging).toContain('verify-checkout-health.mjs');
+    expect(staging).toContain('verify-vercel-receipt.mjs staging');
     expect(staging).toContain('Verify deployment before aliasing');
     expect(staging).toContain(
       'vercel alias set "$DEPLOYMENT_URL" staging.carlophillips.com'
@@ -364,7 +393,33 @@ describe('CI/CD policy', () => {
     );
     expect(staging).toContain('VERCEL_AUTOMATION_BYPASS_SECRET');
     expect(webhookEndpointVerifier).not.toContain('spawnSync');
+    expect(webhookEndpointVerifier).toContain(
+      'WEBHOOK_DUPLICATE_NOT_SUPPRESSED'
+    );
     expect(staging).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
+  });
+
+  it('creates a signed PII-free lifecycle proof only for the same successful Staging SHA', () => {
+    expect(protectedProof).toContain('environment: Staging');
+    expect(protectedProof).toContain('git rev-parse origin/main');
+    expect(protectedProof).toContain('STAGING_RUN_NOT_SUCCESSFUL');
+    expect(protectedProof).toContain('STAGING_RUN_SHA_MISMATCH');
+    expect(protectedProof).toContain('staging-receipt-$EXPECTED_SHA');
+    expect(protectedProof).toContain(
+      'collect-protected-shopify-proof.mjs finalize'
+    );
+    expect(protectedProof).toContain('CP_RELEASE_RECEIPT_SIGNING_SECRET');
+    expect(protectedProof).toContain(
+      'protected-release-proof-${{ inputs.expected_sha }}'
+    );
+    expect(protectedProof).not.toContain('vercel promote');
+    expect(protectedProofCollector).toContain('partnerDevelopment');
+    expect(protectedProofCollector).toContain("'orders/cancelled'");
+    expect(protectedProofCollector).toContain("'refunds/create'");
+    expect(protectedProofCollector).toContain(
+      "fulfillmentOrder.requestStatus !== 'UNSUBMITTED'"
+    );
+    expect(protectedProofCollector).toContain('noApliiqProductionJob: true');
   });
 
   it('stages one checkout-enabled Production candidate without aliases', () => {
@@ -375,6 +430,9 @@ describe('CI/CD policy', () => {
     expect(candidate).toMatch(/SHOPIFY_CART_UI_ENABLED: ['"]true['"]/);
     expect(candidate).toMatch(/SHOPIFY_CHECKOUT_ENABLED: ['"]true['"]/);
     expect(candidate).toContain('action="/api/cart"');
+    expect(candidate).toContain('protected-release-receipt.mjs verify');
+    expect(candidate).toContain('VERCEL_PROJECT_LINK_MISMATCH');
+    expect(candidate).toContain('VERCEL_ORG_LINK_MISMATCH');
     expect(candidate).toContain('vercel build --prod');
     expect(
       candidate.match(
@@ -409,10 +467,15 @@ describe('CI/CD policy', () => {
   it('promotes only the reviewed candidate and restores only the prior checkout-enabled deployment', () => {
     expect(production).toContain('previous_checkout_enabled_deployment:');
     expect(production).toContain('fetch-depth: 0');
-    expect(production).toContain('action="/api/cart"');
+    expect(production).toContain('verify-checkout-health.mjs');
+    expect(checkoutHealthVerifier).toContain('action="/api/cart"');
+    expect(production).toContain('protected-release-receipt.mjs verify');
     expect(production).toContain('vercel promote "$CANDIDATE"');
     expect(production).toContain('vercel promote "$PREVIOUS"');
     expect(production).toContain('previous.id !== live.id');
+    expect(production).toContain("steps.receipt.outcome != 'success'");
+    expect(production).toContain("steps.receipt_upload.outcome != 'success'");
+    expect(production).toContain('ROLLBACK_SOURCE_IDENTITY_MISMATCH');
     expect(production).not.toContain('safe-fallback');
     expect(production).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
     expect(production).not.toMatch(/vercel\s+rollback/);
@@ -481,6 +544,58 @@ describe('CI/CD policy', () => {
         buildEnvironment: 'preview',
         checkoutEnabled: true,
         productionDomainsAssigned: false,
+        productionBeforeDeploymentId: 'dpl_old',
+        productionAfterPreviewDeploymentId: 'dpl_old',
+      });
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it('executes a valid protected Staging deployment receipt fixture', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'cp-staging-'));
+    try {
+      const fixtures = previewFixtures(directory, {
+        metadata: {
+          cpArtifactKind: 'protected-staging',
+          cpCheckoutEnabled: 'true',
+        },
+        productionBefore: { aliases: [] },
+      });
+      const stagingInspect = JSON.parse(readFileSync(fixtures.inspect, 'utf8'));
+      const aliasInspect = writeJson(directory, 'staging-alias.json', {
+        ...stagingInspect,
+        readyState: 'READY',
+      });
+      const output = join(directory, 'receipt.json');
+      const result = runVerifier([
+        'staging',
+        '--staging-inspect',
+        fixtures.inspect,
+        '--staging-alias-inspect',
+        aliasInspect,
+        '--deployment-list',
+        fixtures.deploymentList,
+        '--production-before',
+        fixtures.before,
+        '--production-after',
+        fixtures.after,
+        '--expected-sha',
+        testSha,
+        '--expected-release',
+        'v-test',
+        '--expected-pull-request',
+        '42',
+        '--output',
+        output,
+      ]);
+      expect(result.status, result.stderr).toBe(0);
+      expect(JSON.parse(readFileSync(output, 'utf8'))).toMatchObject({
+        schemaVersion: 'cp.protected-staging-deployment-receipt.v1',
+        gitCommitSha: testSha,
+        artifactKind: 'protected-staging',
+        alias: 'staging.carlophillips.com',
+        checkoutEnabled: true,
         productionBeforeDeploymentId: 'dpl_old',
         productionAfterPreviewDeploymentId: 'dpl_old',
       });

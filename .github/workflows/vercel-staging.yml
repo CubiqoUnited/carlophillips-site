@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: Open pull request number targeting main
+        description: Merged source pull request number targeting main
         required: true
         type: number
       expected_sha:
-        description: Full 40-character pull-request head SHA
+        description: Full 40-character merged main SHA
         required: true
         type: string
       release:
@@ -19,6 +19,7 @@ on:
 permissions:
   actions: read
   contents: read
+  pull-requests: read
 
 concurrency:
   group: protected-vercel-staging
@@ -41,6 +42,8 @@ jobs:
       COMMERCE_DATA_MODE: shopify
       SHOPIFY_CART_UI_ENABLED: 'true'
       SHOPIFY_CHECKOUT_ENABLED: 'true'
+      CP_RELEASE_ID: ${{ inputs.release }}
+      CP_RELEASE_COMMIT_SHA: ${{ inputs.expected_sha }}
 
     steps:
       - name: Enforce protected Staging environment
@@ -60,7 +63,7 @@ jobs:
           ref: ${{ inputs.expected_sha }}
           fetch-depth: 0
 
-      - name: Validate exact open-PR input
+      - name: Validate exact merged-main input
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
           PR_NUMBER: ${{ inputs.pr_number }}
@@ -71,16 +74,20 @@ jobs:
           [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
           [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git fetch --no-tags origin main
+          test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > staging-pr.json
           node - <<'NODE'
           const fs = require('node:fs');
           const pull = JSON.parse(fs.readFileSync('staging-pr.json', 'utf8'));
-          if (pull.state !== 'open') throw new Error('STAGING_PR_MUST_BE_OPEN');
+          if (pull.state !== 'closed' || !pull.merged_at) throw new Error('STAGING_PR_MUST_BE_MERGED');
           if (pull.base?.ref !== 'main') throw new Error('STAGING_PR_BASE_MUST_BE_MAIN');
-          if (pull.head?.sha !== process.env.EXPECTED_SHA) throw new Error('STAGING_PR_HEAD_MISMATCH');
+          if (pull.merge_commit_sha !== process.env.EXPECTED_SHA) throw new Error('STAGING_MERGE_SHA_MISMATCH');
           NODE
           test "$SHOPIFY_CART_UI_ENABLED" = "true"
           test "$SHOPIFY_CHECKOUT_ENABLED" = "true"
+          test "$CP_RELEASE_ID" = "$RELEASE"
+          test "$CP_RELEASE_COMMIT_SHA" = "$EXPECTED_SHA"
           test -n "$VERCEL_ORG_ID"
           test -n "$VERCEL_PROJECT_ID"
           test -n "$VERCEL_SCOPE"
@@ -89,6 +96,7 @@ jobs:
         with:
           node-version: 24
           cache: yarn
+          cache-dependency-path: yarn.lock
 
       - name: Install and verify repository
         run: |
@@ -99,6 +107,19 @@ jobs:
           yarn verify
           yarn test:e2e
 
+      - name: Capture isolated Shopify development-store inventory baseline
+        env:
+          SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
+          SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
+          SHOPIFY_STAGING_ADMIN_TOKEN: ${{ secrets.SHOPIFY_STAGING_ADMIN_TOKEN }}
+          CP_EXPECTED_PREVIEW_DURABLE_STORE_ID: ${{ vars.CP_EXPECTED_PREVIEW_DURABLE_STORE_ID }}
+          CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID: ${{ vars.CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID }}
+        run: >-
+          node scripts/collect-protected-shopify-proof.mjs snapshot
+          --expected-sha "${{ inputs.expected_sha }}"
+          --release "${{ inputs.release }}"
+          --output staging-shopify-snapshot.json
+
       - name: Install pinned Vercel CLI
         run: yarn global add vercel@56.1.0
 
@@ -106,6 +127,24 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel pull --yes --environment=preview --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN"
+
+      - name: Verify canonical Vercel project link
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const link = JSON.parse(fs.readFileSync('.vercel/project.json', 'utf8'));
+          if (link.projectId !== process.env.VERCEL_PROJECT_ID) throw new Error('VERCEL_PROJECT_LINK_MISMATCH');
+          if (link.orgId !== process.env.VERCEL_ORG_ID) throw new Error('VERCEL_ORG_LINK_MISMATCH');
+          NODE
+
+      - name: Capture healthy checkout-enabled Production before Staging
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel inspect www.carlophillips.com --format=json --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" > production-before-staging.json
+          node scripts/verify-checkout-health.mjs \
+            --url https://www.carlophillips.com \
+            --output production-before-health.json
 
       - name: Build immutable Staging artifact
         env:
@@ -125,9 +164,12 @@ jobs:
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED=true \
             --env SHOPIFY_CHECKOUT_ENABLED=true \
+            --env CP_RELEASE_ID="$RELEASE" \
+            --env CP_RELEASE_COMMIT_SHA="$EXPECTED_SHA" \
             --meta gitCommitSha="$EXPECTED_SHA" \
             --meta cpGitCommitSha="$EXPECTED_SHA" \
             --meta cpRelease="$RELEASE" \
+            --meta cpPullRequest="${{ inputs.pr_number }}" \
             --meta cpArtifactKind=protected-staging \
             --meta cpBuildEnvironment=preview \
             --meta cpCheckoutEnabled=true)"
@@ -152,6 +194,14 @@ jobs:
           if (!html.includes('action="/api/cart"')) throw new Error('STAGING_CART_HANDOFF_MISSING');
           NODE
 
+      - name: Capture project identity for the immutable receipt
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: >-
+          vercel list --meta cpGitCommitSha="${{ inputs.expected_sha }}"
+          --limit=20 --format=json --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN"
+          > staging-deployments.json
+
       - name: Assign protected Staging domain
         env:
           DEPLOYMENT_URL: ${{ steps.staging.outputs.url }}
@@ -164,7 +214,42 @@ jobs:
           SHOPIFY_WEBHOOK_SECRET: ${{ secrets.SHOPIFY_STAGING_WEBHOOK_SECRET }}
           SHOPIFY_WEBHOOK_ALLOWED_SHOPS: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          CP_WEBHOOK_PROBE_OUTPUT: staging-webhook-probe.json
         run: yarn verify:webhook-endpoint
+
+      - name: Run exact-width Staging functional, a11y and screenshot checks
+        env:
+          CP_RELEASE_GATE_BASE_URL: ${{ steps.staging.outputs.url }}
+          CP_RELEASE_GATE_OUTPUT_DIR: test_reports/protected-staging
+          SHOPIFY_STAGING_CHECKOUT_HOSTS: ${{ vars.SHOPIFY_STAGING_CHECKOUT_HOSTS }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: yarn playwright test --config=playwright.release.config.ts
+
+      - name: Capture unchanged healthy Production and exact Staging alias
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel inspect www.carlophillips.com --format=json --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" > production-after-staging.json
+          vercel inspect staging.carlophillips.com --format=json --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN" > staging-alias-inspect.json
+          node scripts/verify-checkout-health.mjs \
+            --url https://www.carlophillips.com \
+            --output production-after-health.json
+
+      - name: Verify and publish immutable Staging deployment receipt
+        env:
+          RELEASE: ${{ inputs.release }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          node .github/scripts/verify-vercel-receipt.mjs staging \
+            --staging-inspect staging-inspect.json \
+            --staging-alias-inspect staging-alias-inspect.json \
+            --deployment-list staging-deployments.json \
+            --production-before production-before-staging.json \
+            --production-after production-after-staging.json \
+            --expected-sha "$GITHUB_SHA" \
+            --expected-release "$RELEASE" \
+            --expected-pull-request "$PR_NUMBER" \
+            --output protected-staging-deployment-receipt.json
 
       - name: Publish Staging receipt
         run: |
@@ -175,6 +260,8 @@ jobs:
             echo "- Commit: ${{ inputs.expected_sha }}"
             echo "- Checkout enabled: true"
             echo "- Shopify-origin test order remains a separate closure check"
+            echo "- Production remained healthy and checkout-enabled: true"
+            echo "- Receipt is preliminary until the protected test-order lifecycle proof passes"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
@@ -184,7 +271,16 @@ jobs:
             staging-environment.json
             staging-pr.json
             staging-inspect.json
+            staging-alias-inspect.json
+            staging-deployments.json
             staging-pdp.html
+            protected-staging-deployment-receipt.json
+            staging-shopify-snapshot.json
+            staging-webhook-probe.json
+            production-before-staging.json
+            production-after-staging.json
+            production-before-health.json
+            production-after-health.json
             test_reports/**
           if-no-files-found: error
           retention-days: 90

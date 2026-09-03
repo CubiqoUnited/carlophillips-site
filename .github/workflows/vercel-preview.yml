@@ -39,6 +39,8 @@ jobs:
       COMMERCE_DATA_MODE: shopify
       SHOPIFY_CART_UI_ENABLED: 'true'
       SHOPIFY_CHECKOUT_ENABLED: 'true'
+      CP_RELEASE_ID: ${{ inputs.release }}
+      CP_RELEASE_COMMIT_SHA: ${{ inputs.expected_sha }}
 
     steps:
       - name: Enforce PR-bound Preview environment and exact pull request
@@ -89,6 +91,8 @@ jobs:
           test "$NEXT_PUBLIC_SHOW_PRODUCTS" = "true"
           test "$SHOPIFY_CART_UI_ENABLED" = "true"
           test "$SHOPIFY_CHECKOUT_ENABLED" = "true"
+          test "$CP_RELEASE_ID" = "$RELEASE"
+          test "$CP_RELEASE_COMMIT_SHA" = "$EXPECTED_SHA"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -144,6 +148,8 @@ jobs:
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED=true \
             --env SHOPIFY_CHECKOUT_ENABLED=true \
+            --env CP_RELEASE_ID="$RELEASE" \
+            --env CP_RELEASE_COMMIT_SHA="$GITHUB_SHA" \
             --meta gitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitRef="$GITHUB_REF_NAME" \

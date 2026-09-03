@@ -15,6 +15,8 @@ function configureIncompletePreview() {
   process.env.VERCEL_ENV = 'preview';
   process.env.SHOPIFY_CART_UI_ENABLED = 'true';
   process.env.SHOPIFY_CHECKOUT_ENABLED = 'true';
+  process.env.CP_RELEASE_ID = 'cp-test-release';
+  process.env.CP_RELEASE_COMMIT_SHA = 'a'.repeat(40);
   delete process.env.SHOPIFY_STAGING_STORE_DOMAIN;
   delete process.env.SHOPIFY_STAGING_STOREFRONT_TOKEN;
   delete process.env.SHOPIFY_STAGING_CHECKOUT_HOSTS;

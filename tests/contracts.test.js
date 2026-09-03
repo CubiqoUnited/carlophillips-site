@@ -19,6 +19,7 @@ import releaseDecisionSchema from '../contracts/release-decision.schema.json';
 import releaseTransitionDecisionSchema from '../contracts/release-transition-decision.schema.json';
 import orderLifecycleEventSchema from '../contracts/order-lifecycle-event.schema.json';
 import providerWebhookVerificationSchema from '../contracts/provider-webhook-verification.schema.json';
+import protectedStagingReleaseReceiptSchema from '../contracts/protected-staging-release-receipt.schema.json';
 import adminCommandDecisionSchema from '../contracts/admin-command-decision.schema.json';
 import hoodieRelease from '../releases/cp-signature-hoodie-2026-001/release.json';
 import hoodieApliiqObservation from '../releases/cp-signature-hoodie-2026-001/apliiq-variant-observation.json';
@@ -885,6 +886,27 @@ describe('truth contracts', () => {
     );
     expect(providerWebhookVerificationSchema.properties).not.toHaveProperty(
       'webhookId'
+    );
+  });
+
+  it('keeps protected release receipts PII-free and exact-SHA bound', () => {
+    expect(protectedStagingReleaseReceiptSchema.additionalProperties).toBe(
+      false
+    );
+    expect(protectedStagingReleaseReceiptSchema.required).toEqual(
+      expect.arrayContaining([
+        'gitCommitSha',
+        'staging',
+        'shopify',
+        'customerPath',
+        'lifecycle',
+        'production',
+        'rollback',
+        'signature',
+      ])
+    );
+    expect(JSON.stringify(protectedStagingReleaseReceiptSchema)).not.toMatch(
+      /customerEmail|customerName|shippingAddress|checkoutUrl|orderId/
     );
   });
 

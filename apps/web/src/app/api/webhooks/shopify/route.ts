@@ -7,6 +7,7 @@ import { getCommerceEnvironment } from '@/lib/config/product-visibility';
 import { resolveShopifyWebhookConfig } from '@/lib/config/shopify-environment';
 import { assertRuntimePreflight } from '@/lib/config/runtime-preflight';
 import { createDurableWebhookStore } from '@/lib/commerce/webhook-idempotency';
+import { createSanitizedWebhookObservation } from '@/lib/commerce/shopify-webhook-observation';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -65,7 +66,11 @@ export async function POST(request: Request) {
       error instanceof ShopifyWebhookVerificationError &&
       error.code === 'SHOPIFY_WEBHOOK_REPLAYED'
     ) {
-      return NextResponse.json({ ok: true, duplicate: true });
+      return NextResponse.json({
+        ok: true,
+        duplicate: true,
+        externalActionApplied: false,
+      });
     }
     const code =
       error instanceof ShopifyWebhookVerificationError
@@ -75,14 +80,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    await store.record(verified.webhookId, {
-      schemaVersion: 'cp.shopify-webhook-event.v1',
-      topic: verified.topic,
-      shop: verified.shop,
-      triggeredAt: verified.triggeredAt,
-      observedAt: verified.observedAt,
-      payloadHash: verified.payloadHash,
-    });
+    await store.record(
+      verified.webhookId,
+      createSanitizedWebhookObservation(verified)
+    );
   } catch {
     await store.release(verified.webhookId).catch(() => undefined);
     return NextResponse.json(
@@ -90,5 +91,9 @@ export async function POST(request: Request) {
       { status: 503 }
     );
   }
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({
+    ok: true,
+    duplicate: false,
+    externalActionApplied: false,
+  });
 }

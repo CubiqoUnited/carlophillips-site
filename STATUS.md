@@ -1,5 +1,33 @@
 # Current Status
 
+## End-to-end release-protection gate — 2026-09-03
+
+- PR #67's authoritative remote head is
+  `fcc836e3b7b33fe6bf7c917ee52abb46d6a5557c`; CI run `33734041715` and
+  Playwright run `33734041704` passed. Release-gate work does not modify its
+  member/Aftercare UI or certify either earlier application SHA.
+- Protected Staging run `33733157896` passed source/SHA and repository checks,
+  then failed safely at canonical `vercel pull` because the Staging token lacks
+  access to the Cubiqo account. No build, deployment, alias, webhook receipt,
+  test order or Production change occurred.
+- The release-gate implementation is locally complete on the temporary
+  `codex/release-protection-gate` branch. It binds carts/orders to a release and
+  exact commit, stores HMAC-verified lifecycle observations with opaque
+  references, proves duplicate delivery causes zero external actions, defines
+  a signed PII-free protected receipt, and makes Production
+  candidate/promotion reject missing or mismatched proof.
+- Local verification passed with Yarn Classic 1.22.22: 678 Vitest tests, lint,
+  typecheck, stylelint, format, Storybook, dependency audit, optimized build and
+  26/26 Playwright checks at 1440 px and 390 px. The six updated visual
+  baselines passed an independent comparison and were inspected offscreen.
+- The 2026-09-02 test-gateway order is now explicitly stale for this release:
+  it predates the combined application-plus-gate commit and cannot provide its
+  immutable signed receipt.
+- PR creation remains deferred until PR #67 is merged so its customer UI is
+  reconciled once without a competing lifecycle PR. Production promotion and
+  cleanup remain locked. Current human action and resume point are at the top of
+  `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+
 ## Shopify closure safety candidate — 2026-09-02
 
 - Implementation branch `codex/shopify-closure-safety` is based exactly on `origin/main@6bb273f` in the isolated worktree `/Users/edv/Documents/cp-shopify-closure`; no file was taken from `codex/WTF`.
