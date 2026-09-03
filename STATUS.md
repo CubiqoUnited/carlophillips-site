@@ -1,5 +1,31 @@
 # Current Status
 
+## PR #69 Shopify-mimic Staging closure — 2026-09-03
+
+- Product Owner scope is now explicit: finish the combined application and
+  release-protection candidate through the complete Shopify-mimic digital
+  Staging journey; defer real Apliiq manufacture, dispatch, carrier tracking and
+  physical delivery to a later research/delivery iteration.
+- Draft PR #69 targets `staging` from `codex/staging-integration-closure` and
+  contains current `main`, current `staging`, PR #67 Aftercare, PR #68 release
+  protection and the integration corrections. Production and `main` remain
+  unchanged.
+- GitHub `Verify` passes at `0cd0cbc`; `Checkout E2E and accessibility` fails
+  only because the prior agent fixed the mobile PDP blank-space defect without
+  refreshing the reviewed Darwin/Linux PDP baselines. The new 390 px rendering
+  removes 336 px of empty space without clipping, collision or overflow; the
+  homepage and bag comparisons remain unchanged and green.
+- Shopify supports the required QA architecture through the existing dedicated
+  development store and test gateway. Historical protected Staging evidence
+  already proves a zero-charge payment/order, confirmation, webhook,
+  cancellation, refund, restock and notification path, but that evidence is not
+  bound to the new PR #69 candidate and must be repeated for its exact merged
+  Staging commit.
+- The current candidate is not yet merged to `staging`, not yet assigned to
+  `staging.carlophillips.com`, and has not received final Product Owner Staging
+  acceptance. Customer Account/order visibility, self-serve returns and the
+  exact-candidate synthetic order remain open external Staging proofs.
+
 ## End-to-end release-protection gate — 2026-09-03
 
 - PR #67's authoritative remote head is

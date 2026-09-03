@@ -1,3 +1,22 @@
+# CURRENT SCOPE — SHOPIFY-MIMIC STAGING; APLIIQ PHYSICAL PROOF DEFERRED
+
+Updated: 2026-09-03 EDT
+
+The Product Owner directed delivery through the complete Shopify-mimic digital
+Staging journey and deferred real Apliiq manufacture, dispatch, carrier tracking
+and physical delivery to the next research/delivery iteration. Staging must use
+the dedicated Shopify development store and test gateway to prove a successful
+zero-charge order, confirmation, authenticated order view, signed webhook,
+cancellation or eligible return, refund, inventory restoration and notifications.
+It must not submit a fulfilment request to Apliiq Production.
+
+This decision removes Apliiq physical lifecycle proof from the current closure
+blockers. It does not waive the Shopify digital QA journey, exact-candidate
+Staging deployment, Product Owner Staging acceptance or the separate future
+Production POD proof.
+
+---
+
 # RED — PROTECTED STAGING VERCEL AUTHORITY BLOCKS THE RELEASE GATE
 
 Updated: 2026-09-03 EDT

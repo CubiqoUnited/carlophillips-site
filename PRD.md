@@ -1,6 +1,6 @@
 # CARLOPHILLIPS Product Requirements
 
-Status: working product definition, not a production-readiness claim. Updated 2026-07-23.
+Status: working product definition, not a production-readiness claim. Updated 2026-09-03.
 
 ## Canonical runtime authority — supersedes conflicting release-gate text
 
@@ -40,6 +40,32 @@ have no customer-runtime authority.
 - Staging uses its separate Shopify development store and test payments. It must
   not submit a job to Apliiq Production. A complete Production provider journey
   requires separate real-order authority and evidence.
+
+### Shopify-mimic Staging digital QA boundary
+
+- `staging.carlophillips.com` must use only the dedicated Shopify development
+  store, its Storefront credentials, Customer Account destination, return rules,
+  webhook secret and test payment gateway. Missing Staging configuration fails
+  closed; it never falls back to Production Shopify values.
+- The exact release candidate must complete a zero-charge Shopify test journey:
+  fresh product read, S/M/L at USD 128, bag, hosted checkout, simulated successful
+  payment, Shopify order and confirmation, authenticated customer order view,
+  signed webhook observation, cancellation or eligible return request, refund,
+  inventory restoration and the configured Shopify notifications.
+- Test identities, addresses and messages must be synthetic. Evidence must redact
+  private checkout/order-status URLs, customer data, credentials and raw Shopify
+  identifiers.
+- Fulfilment, production, dispatch, tracking and delivery presentation must be
+  exercised in Staging with Shopify test/manual fulfilment facts or a dedicated
+  simulator. Staging must not send a fulfilment request to Apliiq Production.
+- Real Apliiq manufacture, carrier handoff and physical delivery are deferred to
+  a later research/delivery iteration and are not blockers for accepting the
+  Shopify-mimic Staging digital journey. They remain required before claiming
+  complete Production POD fulfilment readiness.
+- Production promotion remains blocked until this exact Staging candidate passes
+  repository checks, desktop/mobile visual comparison, browser/accessibility and
+  console/network QA, the complete zero-charge Shopify test journey, rollback
+  verification and Product Owner review.
 
 ## Objective
 

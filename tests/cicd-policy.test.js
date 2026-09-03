@@ -311,7 +311,7 @@ describe('CI/CD policy', () => {
     expect(preview).toContain(
       'pullRequest.head?.repo?.full_name !== process.env.GITHUB_REPOSITORY'
     );
-    expect(preview).toContain("pullRequest.base?.ref !== 'main'");
+    expect(preview).toContain("pullRequest.base?.ref !== 'staging'");
     expect(preview).toContain('test "$EXPECTED_SHA" = "$GITHUB_SHA"');
     expect(preview).toContain('NEXT_PUBLIC_COMMERCE_ENVIRONMENT: preview');
     expect(preview).toMatch(/SHOPIFY_CART_UI_ENABLED: ['"]true['"]/);
@@ -348,18 +348,18 @@ describe('CI/CD policy', () => {
     ).not.toContain('VERCEL_TOKEN');
   });
 
-  it('deploys only the exact merged-main SHA to protected Staging', () => {
+  it('deploys only the exact merged-staging SHA to protected Staging', () => {
     expect(staging).toContain('workflow_dispatch:');
     expect(staging).toContain('pr_number:');
     expect(staging).toContain('name: Staging');
     expect(staging).toContain('STAGING_REVIEWER_REQUIRED');
     expect(staging).toContain('test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"');
     expect(staging).toContain("pull.state !== 'closed' || !pull.merged_at");
-    expect(staging).toContain("pull.base?.ref !== 'main'");
+    expect(staging).toContain("pull.base?.ref !== 'staging'");
     expect(staging).toContain(
       'pull.merge_commit_sha !== process.env.EXPECTED_SHA'
     );
-    expect(staging).toContain('git rev-parse origin/main');
+    expect(staging).toContain('git rev-parse origin/staging');
     expect(staging).toContain('vercel pull --yes --environment=preview');
     expect(staging).toContain('VERCEL_PROJECT_LINK_MISMATCH');
     expect(staging).toContain('VERCEL_ORG_LINK_MISMATCH');
@@ -403,7 +403,7 @@ describe('CI/CD policy', () => {
 
   it('creates a signed PII-free lifecycle proof only for the same successful Staging SHA', () => {
     expect(protectedProof).toContain('environment: Staging');
-    expect(protectedProof).toContain('git rev-parse origin/main');
+    expect(protectedProof).toContain('git rev-parse origin/staging');
     expect(protectedProof).toContain('STAGING_RUN_NOT_SUCCESSFUL');
     expect(protectedProof).toContain('STAGING_RUN_SHA_MISMATCH');
     expect(protectedProof).toContain('staging-receipt-$EXPECTED_SHA');

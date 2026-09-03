@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: Merged source pull request number targeting main
+        description: Merged source pull request number targeting staging
         required: true
         type: number
       expected_sha:
-        description: Full 40-character merged main SHA
+        description: Full 40-character merged staging SHA
         required: true
         type: string
       release:
@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   deploy-staging:
-    name: Deploy exact merged SHA to staging.carlophillips.com
+    name: Deploy exact merged staging SHA to staging.carlophillips.com
     runs-on: ubuntu-latest
     timeout-minutes: 60
     environment:
@@ -63,7 +63,7 @@ jobs:
           ref: ${{ inputs.expected_sha }}
           fetch-depth: 0
 
-      - name: Validate exact merged-main input
+      - name: Validate exact merged-staging input
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
           PR_NUMBER: ${{ inputs.pr_number }}
@@ -74,14 +74,14 @@ jobs:
           [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
           [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
-          git fetch --no-tags origin main
-          test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"
+          git fetch --no-tags origin staging
+          test "$(git rev-parse origin/staging)" = "$EXPECTED_SHA"
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > staging-pr.json
           node - <<'NODE'
           const fs = require('node:fs');
           const pull = JSON.parse(fs.readFileSync('staging-pr.json', 'utf8'));
           if (pull.state !== 'closed' || !pull.merged_at) throw new Error('STAGING_PR_MUST_BE_MERGED');
-          if (pull.base?.ref !== 'main') throw new Error('STAGING_PR_BASE_MUST_BE_MAIN');
+          if (pull.base?.ref !== 'staging') throw new Error('STAGING_PR_BASE_MUST_BE_STAGING');
           if (pull.merge_commit_sha !== process.env.EXPECTED_SHA) throw new Error('STAGING_MERGE_SHA_MISMATCH');
           NODE
           test "$SHOPIFY_CART_UI_ENABLED" = "true"

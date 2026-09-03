@@ -1,5 +1,34 @@
 # Delivery Tasks
 
+## PR #69 Shopify-mimic Staging closure — 2026-09-03
+
+- [x] Combine current `main`, `staging`, PR #67 and PR #68 on the temporary
+      `codex/staging-integration-closure` branch with PR #69 targeting `staging`.
+- [x] Preserve Shopify as sole runtime commerce authority and retain strict
+      Preview/Staging-to-Production credential isolation.
+- [x] Inspect the failed GitHub browser artifacts and confirm the PDP delta is
+      the intended removal of the mobile blank-space defect, not clipping,
+      overlap, broken media or an unrelated visual regression.
+- [ ] Refresh only the reviewed Darwin/Linux PDP baselines, retain before/after
+      evidence, and pass the complete local and GitHub verification matrix.
+- [ ] Merge the exact green PR #69 commit into `staging` and deploy that exact
+      merged commit to `staging.carlophillips.com` without touching `main` or
+      either Production domain.
+- [ ] Prove the exact Staging candidate against the dedicated Shopify
+      development store: fresh S/M/L at USD 128, bag, trusted hosted checkout,
+      zero-charge successful test payment/order, confirmation, authenticated
+      customer order view, signed webhook, cancellation or eligible return,
+      refund, inventory restoration and notifications using synthetic data.
+- [ ] Verify desktop/mobile layout, accessibility, console/network health,
+      no Production credential fallback, no private URL retention and no Apliiq
+      Production fulfilment request.
+- [ ] Obtain Product Owner acceptance on canonical Staging, close superseded
+      PRs #67/#68, then delete all temporary remote branches and worktrees so
+      only `main` and `staging` remain.
+- [x] Defer real Apliiq manufacture, dispatch, tracking and physical-delivery
+      proof to the next research/delivery iteration; do not treat it as a blocker
+      for the Shopify-mimic digital Staging acceptance.
+
 ## PR #67 customer purchase and post-purchase closure — 2026-09-03
 
 - [x] Reconcile PR #67, `main`, `staging`, the 2026-09-02 release closure and

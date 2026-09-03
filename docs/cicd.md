@@ -5,14 +5,17 @@ build or Add-to-Bag check alone is not a release.
 
 ## Release invariant
 
-One exact combined commit must be all of the following:
+One exact Staging commit must be all of the following through Product Owner
+review:
 
-- current `main` and the merge commit of the reviewed source PR;
+- current `staging` and the merge commit of the reviewed source PR;
 - the source of the protected, immutable Staging deployment;
 - the commit stamped into every new Shopify Staging cart and test order;
 - the commit in the signed PII-free protected Staging receipt;
-- the source of the unaliased Production candidate; and
-- the only candidate accepted by Production promotion.
+
+Production promotion remains a later, separately approved operation. Before
+that operation, the release tooling must prove how the accepted Staging tree is
+transferred to `main` without changing the reviewed application content.
 
 The protected receipt requires the Shopify-authoritative Signature Hoodie in
 Black S/M/L at USD 128, bag truth, a trusted HTTPS hosted Staging checkout,
@@ -26,7 +29,7 @@ cancellation, full refund, inventory restoration and no Apliiq Production job.
 - `CI / Verify` and `Playwright checkout gate` run on pull requests. They use
   Yarn Classic 1.22.22, frozen dependencies, lint, typecheck, stylelint, tests,
   build, E2E, accessibility, privacy/network checks and screenshot comparisons.
-- `Protected Vercel Staging` runs only for the exact current `main` merge SHA
+- `Protected Vercel Staging` runs only for the exact current `staging` merge SHA
   of the supplied PR. It requires the protected `Staging` environment, reads
   the isolated Shopify development store, captures its initial S/M/L
   inventory, proves Production is healthy and checkout-enabled, deploys one
@@ -86,9 +89,9 @@ promotion window.
 
 ## Operator order
 
-1. Merge the fully green source PR without rewriting the reviewed history and
-   wait for `CI / Verify` on the exact resulting `main` SHA.
-2. Dispatch `Protected Vercel Staging` from that `main` SHA with its merged PR
+1. Merge the fully green source PR into `staging` without rewriting the reviewed
+   history and wait for `CI / Verify` on the exact resulting `staging` SHA.
+2. Dispatch `Protected Vercel Staging` from that `staging` SHA with its merged PR
    number and release ID. Stop on any Vercel account/project mismatch; never
    substitute a same-named project or broader token.
 3. Review the immutable deployment, 1440/390 screenshots and preliminary

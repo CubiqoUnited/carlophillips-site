@@ -109,10 +109,10 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   const axe = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze();
-  const previewToolbarProbes = httpFailures.filter((failure) =>
-    failure.startsWith(
-      `400 OPTIONS ${new URL(process.env.CP_RELEASE_GATE_BASE_URL!).origin}/ `
-    )
+  const previewToolbarProbes = httpFailures.filter(
+    (failure) =>
+      failure ===
+      `400 OPTIONS ${new URL(process.env.CP_RELEASE_GATE_BASE_URL!).origin}/`
   );
   const unexpectedHttpFailures = httpFailures.filter(
     (failure) => !previewToolbarProbes.includes(failure)

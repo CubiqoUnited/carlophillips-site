@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       expected_sha:
-        description: Exact current main SHA deployed and tested on protected Staging
+        description: Exact current staging SHA deployed and tested on protected Staging
         required: true
         type: string
       source_pr:
@@ -54,7 +54,7 @@ jobs:
           ref: ${{ inputs.expected_sha }}
           fetch-depth: 0
 
-      - name: Validate exact combined main commit and merged source pull request
+      - name: Validate exact combined staging commit and merged source pull request
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
           SOURCE_PR: ${{ inputs.source_pr }}
@@ -71,13 +71,13 @@ jobs:
           [[ "$CONFIRMATION_HASH" =~ ^sha256:[a-f0-9]{64}$ ]]
           [[ "$ORDER_STATUS_HASH" =~ ^sha256:[a-f0-9]{64}$ ]]
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
-          git fetch --no-tags origin main
-          test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"
+          git fetch --no-tags origin staging
+          test "$(git rev-parse origin/staging)" = "$EXPECTED_SHA"
           gh api "repos/$GITHUB_REPOSITORY/pulls/$SOURCE_PR" > source-pr.json
           node - <<'NODE'
           const fs = require('node:fs');
           const pull = JSON.parse(fs.readFileSync('source-pr.json', 'utf8'));
-          if (!pull.merged_at || pull.base?.ref !== 'main') throw new Error('SOURCE_PR_NOT_MERGED_TO_MAIN');
+          if (!pull.merged_at || pull.base?.ref !== 'staging') throw new Error('SOURCE_PR_NOT_MERGED_TO_STAGING');
           if (pull.merge_commit_sha !== process.env.EXPECTED_SHA) throw new Error('SOURCE_PR_MERGE_SHA_MISMATCH');
           NODE
 
