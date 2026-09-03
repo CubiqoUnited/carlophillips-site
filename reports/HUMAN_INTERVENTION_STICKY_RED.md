@@ -1,5 +1,35 @@
 # CURRENT SCOPE — SHOPIFY-MIMIC STAGING; APLIIQ PHYSICAL PROOF DEFERRED
 
+## Current external proof bindings — 2026-09-03
+
+Protected Staging run `33809465340` is successful on exact
+`staging@9daa799cdd40be495584456a59a8efaea539ed65`; the earlier Vercel-token
+blocker is resolved. Production remained unchanged. Before the protected
+pre-order Shopify snapshot can run, the Staging environment still requires:
+
+1. `SHOPIFY_STAGING_ADMIN_TOKEN`: a read-only custom-app token from
+   `carlophillips-staging.myshopify.com` with products, inventory, locations,
+   orders, merchant-managed fulfillment-order and third-party
+   fulfillment-order read access. Do not grant writes or use Production.
+2. `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` and
+   `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`: the existing distinct environment
+   store identifiers. Do not invent or copy one environment's ID to the other.
+
+`SHOPIFY_PRODUCTION_STORE_DOMAIN` is already set to the independently evidenced
+Production shop. Cost: none intended. Risk: the Admin token exposes test-store
+order metadata, so keep it read-only and only in GitHub's protected `Staging`
+environment. Signal completion with: `CP Shopify Staging proof bindings ready`.
+
+After that signal, enable the repository configuration variable
+`CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=true`, dispatch Protected Vercel Staging
+for the current exact Staging SHA, and reset the flag after the run. Before
+entering synthetic checkout or test-payment data, record and obtain the separate
+explicit test-order action.
+No Production payment, Production order, Apliiq request or Production promotion
+is authorized.
+
+---
+
 Updated: 2026-09-03 EDT
 
 The Product Owner directed delivery through the complete Shopify-mimic digital

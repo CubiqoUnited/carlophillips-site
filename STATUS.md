@@ -1,5 +1,22 @@
 # Current Status
 
+## Protected Shopify snapshot handoff correction — 2026-09-03
+
+- Protected Staging run `33809465340` passed on exact
+  `staging@9daa799cdd40be495584456a59a8efaea539ed65`, deployed READY Preview
+  `dpl_E3APM7kY6X9TDcKUVLJNCYgqkixk`, assigned
+  `staging.carlophillips.com`, passed signed duplicate suppression and 1440/390
+  browser/a11y/screenshots, and proved Production remained on
+  `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ`.
+- Receipt inspection found the later release-proof workflow still expected a
+  pre-order Shopify Admin snapshot inside the deployment artifact even though
+  PR #70 correctly removed Admin access from deployment. A separate opt-in,
+  read-only job now supplies that immutable evidence in the exact protected
+  Staging run without exposing the deployment job to Admin credentials or
+  paying or ordering.
+- The Vercel credential was rebound without exposing its value. The redundant
+  queued rerun was cancelled before execution. Production was not changed.
+
 ## PR #69 Shopify-mimic Staging closure — 2026-09-03
 
 - Product Owner scope is now explicit: finish the combined application and
@@ -56,6 +73,7 @@
   can leave draft. Production promotion and cleanup remain locked. Current
   human action and resume point are at the top of
   `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+
 ## PR #67 customer lifecycle candidate — 2026-09-03
 
 - Existing PR #67 is the sole Aftercare implementation; no duplicate member or

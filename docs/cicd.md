@@ -36,14 +36,19 @@ cancellation, full refund, inventory restoration and no Apliiq Production job.
   `staging.carlophillips.com`, runs 1440 px and 390 px functional/a11y/browser
   checks against the dedicated Shopify Staging Storefront API and hosted
   checkout, sends a signed PII-free webhook twice to prove duplicate
-  suppression, and proves Production remained unchanged. This deployment gate
-  does not request Shopify Admin, order, customer, payment or fulfillment data.
+  suppression, and proves Production remained unchanged. An opt-in second job,
+  isolated from the deployment job and its Vercel credential, can then use the
+  read-only Staging Admin credential to capture the exact pre-order S/M/L
+  inventory state in the same successful workflow run. The snapshot job is
+  bound to the release ID and current `staging` SHA and creates no
+  cart/order/payment, deployment or alias change.
 - `Protected Staging Release Proof` runs after the synthetic order has been
   paid through Shopify's test gateway, reviewed, cancelled and refunded with
-  restock. It downloads the exact Staging artifact, queries only non-customer
-  Shopify order fields, correlates the order to the cart's release/SHA
-  attributes, reads the separate Staging durable event store, confirms the
-  required signed topics and final state, and HMAC-signs a PII-free receipt.
+  restock. It downloads the exact Staging artifact and pre-order snapshot,
+  queries only non-customer Shopify order fields, correlates the order to the
+  cart's release/SHA attributes, reads the separate Staging durable event
+  store, confirms the required signed topics and final state, and HMAC-signs a
+  PII-free receipt.
 - `Vercel Production Candidate` accepts current `main` only after it downloads
   and verifies that signed receipt. It builds one checkout-enabled Production
   artifact with `--prod --skip-domain`, leaves Production unchanged and records
@@ -76,6 +81,11 @@ read-only Shopify Admin credential, the isolated Upstash REST URL/token,
 `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID`, and
 `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`.
 
+Set the repository configuration variable
+`CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=true` only for the protected Staging run
+that must produce the pre-order snapshot, then reset it to `false` after the
+run. When the flag is absent or false, the read-only snapshot job is skipped.
+
 The two Shopify domains and durable-store IDs must differ. Preview must use a
 Shopify partner development store, test-only product/inventory/payment and its
 own webhooks/records. Production customer data, real payment, Production order
@@ -101,21 +111,24 @@ promotion window.
    substitute a same-named project or broader token.
 3. Review the immutable deployment, 1440/390 screenshots and preliminary
    artifact. Do not use the 2026-09-02 order for a later SHA.
-4. Before any payment entry, record the human action, risk, signal and resume
+4. Enable the repository snapshot flag, dispatch `Protected Vercel Staging` for
+   that exact SHA/release/source PR, confirm the same successful run contains
+   both named artifacts, and immediately reset the flag to `false`.
+5. Before any payment entry, record the human action, risk, signal and resume
    point in `reports/HUMAN_INTERVENTION_STICKY_RED.md`. Use synthetic data and
    Shopify Test Payment Gateway only. Capture redacted confirmation and
    order/status evidence hashes, then cancel/refund/restock and archive the
    test order. Never trigger fulfillment.
-5. After Product Owner Staging review, dispatch `Protected Staging Release
+6. After Product Owner Staging review, dispatch `Protected Staging Release
 Proof` with the exact Staging run and evidence hashes. Accept only a passing
    signed artifact named `protected-release-proof-<sha>`.
-6. Dispatch `Vercel Production Candidate` for the same current `main` SHA,
+7. Dispatch `Vercel Production Candidate` for the same current `main` SHA,
    release, PR and proof run. Review the unaliased candidate and recorded
    checkout-enabled rollback anchor.
-7. Obtain the separate Production approval, briefly enable the promotion
+8. Obtain the separate Production approval, briefly enable the promotion
    switch and dispatch `Vercel Production Promotion` with those exact inputs.
    Disable the switch immediately after the attempt.
-8. Verify public Production health, checkout controls, promoted source and
+9. Verify public Production health, checkout controls, promoted source and
    receipt. If any acceptance step failed, treat a verified rollback as the
    outcome and do not describe the release as successful.
 

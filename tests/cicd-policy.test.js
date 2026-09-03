@@ -373,11 +373,18 @@ describe('CI/CD policy', () => {
     );
     expect(staging).not.toContain('--meta cpGitCommitSha="$GITHUB_SHA"');
     expect(staging).toContain('yarn test:e2e');
-    expect(staging).not.toContain(
-      'collect-protected-shopify-proof.mjs snapshot'
+    expect(staging).toContain('snapshot-shopify:');
+    expect(staging).toContain('needs: deploy-staging');
+    expect(staging).toContain('CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT');
+    expect(staging).toContain('collect-protected-shopify-proof.mjs snapshot');
+    expect(staging).toContain('SHOPIFY_STAGING_ADMIN_TOKEN');
+    expect(staging).toContain('SHOPIFY_PRODUCTION_STORE_DOMAIN');
+    expect(staging).toContain(
+      'staging-shopify-snapshot-${{ inputs.expected_sha }}'
     );
-    expect(staging).not.toContain('SHOPIFY_STAGING_ADMIN_TOKEN');
-    expect(staging).not.toContain('SHOPIFY_PRODUCTION_STORE_DOMAIN');
+    const deployJob = staging.slice(0, staging.indexOf('  snapshot-shopify:'));
+    expect(deployJob).not.toContain('SHOPIFY_STAGING_ADMIN_TOKEN');
+    expect(deployJob).not.toContain('SHOPIFY_PRODUCTION_STORE_DOMAIN');
     expect(staging).toContain('playwright.release.config.ts');
     expect(releasePlaywright).toContain('width: 1440');
     expect(releasePlaywright).toContain('width: 390');
@@ -411,6 +418,11 @@ describe('CI/CD policy', () => {
     expect(protectedProof).toContain('STAGING_RUN_NOT_SUCCESSFUL');
     expect(protectedProof).toContain('STAGING_RUN_SHA_MISMATCH');
     expect(protectedProof).toContain('staging-receipt-$EXPECTED_SHA');
+    expect(protectedProof).not.toContain('snapshot_run_id:');
+    expect(protectedProof).toContain('staging-shopify-snapshot-$EXPECTED_SHA');
+    expect(protectedProof).toContain(
+      '--snapshot shopify-snapshot/staging-shopify-snapshot.json'
+    );
     expect(protectedProof).toContain(
       'collect-protected-shopify-proof.mjs finalize'
     );
