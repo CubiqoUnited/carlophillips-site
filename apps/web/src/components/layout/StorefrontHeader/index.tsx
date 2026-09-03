@@ -31,10 +31,10 @@ export function StorefrontHeader({
           ) : (
             <span aria-current="page">{pageLabel}</span>
           )}
-          {pageLabel === 'Member' ? (
+          {pageLabel === 'Member' || pageLabel === 'Aftercare' ? (
             <span aria-current="page">Member</span>
           ) : (
-            <Link href="/member">Member</Link>
+            <Link href="/aftercare">Member</Link>
           )}
           {pageLabel === 'Bag' ? (
             <span aria-current="page">Bag</span>

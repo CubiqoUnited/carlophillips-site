@@ -59,6 +59,128 @@ separate human payment intervention before entering test checkout data.
 
 ---
 
+# CURRENT — POST-SALE CAPABILITY ACTIVATION (HUMAN-OWNED)
+
+Updated: 2026-09-03 04:31 EDT
+
+## Blocking protected Staging credential binding
+
+Protected Staging run `33733157896` validated open PR #67 and exact candidate
+`3bff804b1a55691a38e9406eb1f97d21b5b21a3c`, then passed the complete
+repository/E2E gate. It failed safely before Vercel build, deployment, alias,
+webhook probe or receipt when `vercel pull` returned `You do not have access to
+the specified account` for scope `cubiqo-projects-d7156840`, organization
+`team_Q25fvpJOPiIeoG3hfxtCVkhW` and project
+`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`. Production was not changed.
+
+Exact human action:
+
+1. Manually open **Vercel → Cubiqo team → Account Settings → Tokens** and
+   create or select a least-privilege automation token that can access only the
+   canonical Cubiqo project above. Do not paste the token into Codex, a report,
+   a shell command, a screenshot or Git.
+2. Manually open **GitHub → CubiqoUnited/carlophillips-site → Settings →
+   Environments → Staging → Environment secrets** and replace `VERCEL_TOKEN`
+   with that encrypted value. Keep `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` and
+   `VERCEL_SCOPE` bound to the exact identifiers above; do not broaden the
+   token to another team or project.
+3. Signal completion with: `CP Staging Vercel token rebound`.
+
+Risk/cost: this token can create Preview deployments and move the protected
+Staging alias in the canonical project. A wrong team/project binding can deploy
+to or expose the wrong environment. No paid-plan acceptance is authorized; stop
+if Vercel requests payment, Production access or a broader account grant.
+
+Resume point: release-gate work item
+`01a06651-0436-7a21-ac5e-e7ef913e3f9f` reruns **Protected Vercel Staging** for
+PR `67`, exact SHA `3bff804b1a55691a38e9406eb1f97d21b5b21a3c` and release
+`cp-post-sale-lifecycle-2026-09-03`. Require READY immutable deployment, protected
+alias, route checks, signed PII-free webhook probe and retained receipt before
+claiming Staging complete. Do not retry with a different SHA or change the
+workflow/lifecycle implementation to bypass the credential boundary.
+
+## What the application now does
+
+PR #67 adds a truthful `/aftercare` customer journey. Shopify remains the
+authority for order, payment, fulfillment, tracking, cancellation, refund and
+credit. Preview reads only dedicated `SHOPIFY_STAGING_ACCOUNT_URL` and
+`SHOPIFY_STAGING_RETURNS_URL` destinations and never falls back to Production.
+Query-bearing, fragment-bearing, credential-bearing or non-HTTPS destinations
+are rejected. Reviews cannot be enabled by a URL or environment flag: the CTA
+requires an authenticated Shopify customer fact that the order is delivered.
+CP Credit is absent from the page unless an authenticated Shopify credit
+account exists. The support form delivers through Resend only when its three
+server-side settings are valid, and reports success only after the provider
+accepts the message.
+
+## Exact human actions still required
+
+1. Manually open **CARLOPHILLIPS Staging Shopify Admin → Settings → Customer
+   accounts**. Activate the intended customer-account experience and obtain its
+   public account entry URL. Add it only to Vercel Preview as the encrypted
+   server variable `SHOPIFY_STAGING_ACCOUNT_URL`, redeploy the exact protected
+   candidate, sign in as a synthetic test customer and prove that only that
+   customer's test order/status is visible. Do not paste or retain a private
+   order-status URL. Signal: `CP Staging customer account proven`.
+2. Manually open **CARLOPHILLIPS Staging Shopify Admin → Settings → Policies /
+   Customer accounts returns**. Approve the return rules and operator routing,
+   enable Shopify-native self-service returns, and add only the public entry URL
+   to Vercel Preview as `SHOPIFY_STAGING_RETURNS_URL`. Use an already fulfilled
+   zero-charge Staging test order to submit and close one return. Signal:
+   `CP Staging returns proven`.
+3. Manually open **Vercel → Cubiqo → carlophillips-site → Settings → Environment
+   Variables** and the approved **Resend** project. Verify a CP sending identity
+   and monitored support recipient, then add encrypted Preview values for
+   `RESEND_API_KEY`, `CP_SUPPORT_FROM_EMAIL`, and `CP_SUPPORT_TO_EMAIL`. Submit
+   one synthetic no-PII Staging support message and confirm receipt in the
+   monitored mailbox. Signal: `CP Staging support delivery proven`.
+4. Product Owner selects and approves a Shopify-integrated reviews provider,
+   including price and protected customer/order data access. Configure
+   delivered-order eligibility in Staging. The application must then complete
+   Shopify Customer Account API authentication and pass an authenticated
+   delivered-order fact to the existing policy; a public review URL alone will
+   remain rejected. Signal: `CP Staging verified reviews authority ready`.
+5. Product Owner decides whether CP Credit is offered. If approved, configure
+   Shopify store credit and Customer Account API access in Staging. The
+   application must then pass authenticated `StoreCreditAccount` availability
+   to the existing policy; there is deliberately no enable flag. Signal:
+   `CP Staging credit authority ready`.
+6. Apliiq production, tracking and delivery cannot be proved in Shopify's
+   development-store test payment alone. Under separate real-order authority,
+   place one low-risk Production order using a mapped Production SKU, verify
+   Apliiq acceptance/hold, production, tracking returned to Shopify and
+   Shopify's CP-branded dispatch/delivery communication. Signal:
+   `CP Production Apliiq lifecycle proven`.
+
+## Cost and risk
+
+- Customer Accounts and Shopify-native returns should not create a real charge,
+  but publishing policy/account changes affects customer behavior; verify in
+  Staging first. A fulfilled test order is required for Shopify return
+  eligibility; do not create a Production order for this proof.
+- Resend may process customer email, order reference and message content. Use
+  synthetic data for Staging proof, confirm the recipient is monitored and stop
+  if setup requests a paid plan or broader data/project access.
+- A reviews app may request customer/order data or a paid subscription. No app,
+  data grant or charge is authorized until the Product Owner selects it.
+- Store credit is a financial liability. Do not invent, issue or migrate a
+  balance without Product Owner approval and Shopify records.
+- Apliiq has no complete production sandbox. The final provider proof may create
+  a real garment, charge and customer/provider communication, so it remains a
+  separately approved Production action.
+
+## Resume point
+
+After each exact signal, resume PR #67 at its current head, bind only the
+corresponding Staging capability, rerun protected Staging plus desktop/mobile
+and console/network QA, and retain Shopify/Vercel evidence without customer PII.
+Reviews and credit additionally require a server-authenticated Customer Account
+API implementation; do not substitute public flags. Production remains
+unchanged until Product Owner reviews canonical Staging and separately approves
+promotion.
+
+---
+
 # CURRENT — RELEASE CLOSURE STATUS (AUTHORITATIVE)
 
 Updated: 2026-09-02 22:45 EDT

@@ -30,6 +30,40 @@
   can leave draft. Production promotion and cleanup remain locked. Current
   human action and resume point are at the top of
   `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+## PR #67 customer lifecycle candidate — 2026-09-03
+
+- Existing PR #67 is the sole Aftercare implementation; no duplicate member or
+  post-sale PR was created. The immutable application candidate is
+  `3bff804b1a55691a38e9406eb1f97d21b5b21a3c` on
+  `codex/post-sale-funnel`, based on `origin/main@eb0e519`.
+- Main already contains the fresh Shopify product/cart/checkout boundary and
+  protected Staging isolation. The 2026-09-02 closure evidence proves the
+  Signature Hoodie S/M/L at USD 128, Staging test payment, Shopify confirmation,
+  cancellation/refund/restock and branded cancellation notice.
+- PR #67 now uses environment-specific server account/returns URLs with no
+  Preview-to-Production fallback and rejects non-HTTPS, credential-bearing,
+  query-bearing and fragment-bearing destinations.
+- Reviews require an authenticated Shopify delivered-order fact. CP Credit is
+  absent unless authenticated Shopify credit-account availability is supplied;
+  neither can be enabled by a public URL or flag.
+- `/api/contact` now delivers through Resend only when the API key, verified
+  sender and monitored recipient are configured. Success is returned only after
+  provider acceptance; unavailable and failed delivery remain explicit.
+- Local verification is green: Yarn Classic frozen install; full `yarn verify`
+  with 78 Vitest files / 664 tests; lint, typecheck, stylelint, formatting,
+  Storybook, zero production dependency vulnerabilities and optimized build;
+  12/12 relevant Playwright accessibility/privacy/Aftercare checks.
+- Desktop 1440 px and mobile 390 px current captures plus inspected before/after
+  comparisons are under `test_reports/post-sale-lifecycle-2026-09-03/`.
+- Protected Staging run `33733157896` validated the exact application SHA and
+  passed the complete repository/E2E gate, then failed safely at `vercel pull`
+  because the Staging `VERCEL_TOKEN` cannot access the canonical Cubiqo scope.
+  No build, deployment, alias, webhook probe or receipt occurred; the existing
+  Staging and Production URLs still return HTTP 200. Production remains
+  unchanged. Customer-account/order visibility,
+  Shopify-native returns, monitored support receipt, authenticated reviews and
+  optional credit remain external proof/configuration gaps; Production Apliiq
+  lifecycle proof remains separately authorized real-order work.
 
 ## Shopify closure safety candidate — 2026-09-02
 

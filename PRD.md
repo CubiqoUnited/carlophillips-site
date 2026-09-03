@@ -16,6 +16,31 @@ deployment approval, rollback, and truthful lifecycle verification remain.
 Product Release Records below are historical/optional audit material only and
 have no customer-runtime authority.
 
+## Customer purchase and aftercare acceptance — 2026-09-03
+
+- The customer journey is Shopify-authoritative from the fresh S/M/L product
+  read through cart, hosted checkout, payment, confirmation, order status,
+  fulfilment, tracking, cancellation, return/exchange and refund. CP must not
+  reconstruct or predict a customer lifecycle state.
+- The bag must preserve the selected Signature Hoodie size, quantity and current
+  Shopify USD 128 price; checkout must use the environment-owned Shopify store.
+- Preview/Staging customer-account and returns destinations use only dedicated
+  `SHOPIFY_STAGING_*` server configuration. They never fall back to Production
+  destinations and never contain a private order-status token.
+- A review action is eligible only when an authenticated Shopify customer order
+  confirms delivery. A public URL or environment flag is insufficient.
+- CP Credit is absent unless an authenticated Shopify customer credit account
+  is available. No balance, entitlement or enable flag may be invented.
+- Support may report success only after the configured delivery provider accepts
+  the validated request. Missing configuration, provider rejection and provider
+  outage remain distinct fail-closed outcomes.
+- Fit memory may store only the customer's explicit size/fit preference on that
+  device; it is not an order fact and stores no identity, address, payment or
+  order data.
+- Staging uses its separate Shopify development store and test payments. It must
+  not submit a job to Apliiq Production. A complete Production provider journey
+  requires separate real-order authority and evidence.
+
 ## Objective
 
 CARLOPHILLIPS is the first proof of concept for a reusable premium POD-to-publish system. The experience layer is Next.js; Shopify remains commerce truth; approved POD providers supply manufacturable products and fulfillment mappings. The Signature Hoodie is the first complete acceptance journey through that system, not permission to reduce the product to one static PDP. Reusable interfaces and evidence records must support later products and brands without rebuilding the pipeline.
@@ -35,7 +60,12 @@ The system has two creation modes: designer-led inputs (brand rules, ideas, mock
 2. Product title, variant, price, availability, and media resolve from Shopify.
 3. Variant selection creates or updates a Shopify cart.
 4. Checkout redirects to Shopify Checkout.
-5. A test order proves payment, POD handoff, fulfillment, tracking, support, and returns in an approved non-production or controlled production exercise.
+5. A Staging test order proves test payment, Shopify confirmation, customer
+   order status, cancellation/refund messaging and eligible Shopify-native
+   return behavior without a real charge or Production fulfilment.
+6. POD acceptance, production, dispatch, tracking and delivery are proved only
+   with separately authorized Production evidence when the provider has no safe
+   sandbox. Support delivery is proved independently with synthetic data.
 
 No fallback mock product or local-only cart may masquerade as a successful boundary in this path.
 
