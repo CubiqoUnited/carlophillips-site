@@ -1,5 +1,17 @@
 # Delivery Tasks
 
+## Protected Shopify snapshot handoff correction — 2026-09-03
+
+- [x] Rebind the GitHub Staging Vercel secret from the authenticated canonical
+      Cubiqo CLI credential without printing or retaining the value.
+- [x] Pass exact-SHA protected Staging deployment, alias, webhook duplicate,
+      1440/390 browser/a11y/screenshot, Production-health and receipt checks.
+- [x] Isolate read-only pre-order Shopify inventory capture in an opt-in job
+      after deployment and bind it to the same SHA/release/source PR/run.
+- [ ] Add the read-only Shopify Admin token and distinct durable-store IDs,
+      run the protected snapshot, then obtain explicit human authorization for
+      the synthetic test payment/order/cancel/refund/restock journey.
+
 ## PR #69 Shopify-mimic Staging closure — 2026-09-03
 
 - [x] Combine current `main`, `staging`, PR #67 and PR #68 on the temporary
