@@ -38,7 +38,7 @@ export function MemberExperience({
           </Link>
           <nav className="cp-commerce-nav" aria-label="Aftercare navigation">
             <Link href="/shop">Collection</Link>
-            <span aria-current="page">Aftercare</span>
+            <span aria-current="page">Member</span>
             <Link href="/bag">Bag</Link>
           </nav>
         </div>
