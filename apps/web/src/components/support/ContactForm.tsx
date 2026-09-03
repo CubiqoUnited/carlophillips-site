@@ -6,6 +6,7 @@ const topics = [
   ['order-status', 'Order status'],
   ['shipping-delivery', 'Shipping & delivery'],
   ['return-exchange', 'Return or exchange'],
+  ['cancellation-refund', 'Cancellation or refund'],
   ['product-fit', 'Product & fit'],
   ['payment-checkout', 'Payment or checkout'],
   ['other', 'Other'],
@@ -15,10 +16,12 @@ const orderTopics = new Set([
   'order-status',
   'shipping-delivery',
   'return-exchange',
+  'cancellation-refund',
   'payment-checkout',
 ]);
 
-type FormStatus = 'idle' | 'sending' | 'sent' | 'invalid' | 'failed';
+type FormStatus =
+  'idle' | 'sending' | 'sent' | 'invalid' | 'unavailable' | 'failed';
 
 export function ContactForm() {
   const [email, setEmail] = useState('');
@@ -56,7 +59,13 @@ export function ContactForm() {
         setRequestId(result.requestId);
         setStatus('sent');
       } else {
-        setStatus(response.status === 400 ? 'invalid' : 'failed');
+        setStatus(
+          response.status === 400
+            ? 'invalid'
+            : response.status === 503
+              ? 'unavailable'
+              : 'failed'
+        );
       }
     } catch {
       setStatus('failed');
@@ -143,6 +152,12 @@ export function ContactForm() {
         )}
         {status === 'failed' && (
           <p>Your request was not sent. Please try again shortly.</p>
+        )}
+        {status === 'unavailable' && (
+          <p>
+            Email support is not configured yet. Use the secure order-status
+            link in your Shopify email for order updates.
+          </p>
         )}
       </div>
       <button

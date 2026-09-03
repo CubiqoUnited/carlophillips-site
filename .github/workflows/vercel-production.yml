@@ -19,10 +19,19 @@ on:
         description: Immutable release identifier
         required: true
         type: string
+      source_pr:
+        description: Merged pull request bound to the protected Staging receipt
+        required: true
+        type: number
+      proof_run_id:
+        description: Successful Protected Staging Release Proof workflow run ID
+        required: true
+        type: string
 
 permissions:
   actions: read
   contents: read
+  pull-requests: read
 
 concurrency:
   group: vercel-production-release
@@ -41,7 +50,7 @@ jobs:
       VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
 
     steps:
-      - name: Enforce Production approval protection
+      - name: Enforce separate Production approval protection
         env:
           GH_TOKEN: ${{ github.token }}
           PROMOTION_ENABLED: ${{ vars.CP_PRODUCTION_PROMOTION_ENABLED }}
@@ -72,6 +81,7 @@ jobs:
           [[ "$PREVIOUS" =~ ^dpl_[A-Za-z0-9]+$ ]]
           [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
           test "$EXPECTED_SHA" = "$GITHUB_SHA"
+          test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"
           test "$CANDIDATE" != "$PREVIOUS"
 
       - uses: actions/setup-node@v4
@@ -82,12 +92,38 @@ jobs:
         run: |
           corepack enable
           corepack prepare yarn@1.22.22 --activate
+          test "$(yarn --version)" = "1.22.22"
           yarn global add vercel@56.1.0
+
+      - name: Download and verify signed protected Staging receipt
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROOF_RUN_ID: ${{ inputs.proof_run_id }}
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          CP_RELEASE_RECEIPT_SIGNING_SECRET: ${{ secrets.CP_RELEASE_RECEIPT_SIGNING_SECRET }}
+        run: |
+          [[ "$PROOF_RUN_ID" =~ ^[1-9][0-9]*$ ]]
+          gh run view "$PROOF_RUN_ID" --repo "$GITHUB_REPOSITORY" --json conclusion,headSha,event > proof-run.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const run = JSON.parse(fs.readFileSync('proof-run.json', 'utf8'));
+          if (run.conclusion !== 'success' || run.event !== 'workflow_dispatch') throw new Error('PROTECTED_PROOF_RUN_NOT_SUCCESSFUL');
+          if (run.headSha !== process.env.EXPECTED_SHA) throw new Error('PROTECTED_PROOF_SHA_MISMATCH');
+          NODE
+          gh run download "$PROOF_RUN_ID" --repo "$GITHUB_REPOSITORY" \
+            --name "protected-release-proof-$EXPECTED_SHA" --dir protected-proof
+          node .github/scripts/protected-release-receipt.mjs verify \
+            --input protected-proof/protected-release-receipt.json \
+            --expected-sha "$EXPECTED_SHA" \
+            --expected-release "${{ inputs.release }}" \
+            --source-pull-request "${{ inputs.source_pr }}"
 
       - name: Capture candidate and checkout-enabled rollback anchor
         env:
           CANDIDATE: ${{ inputs.candidate_deployment }}
           PREVIOUS: ${{ inputs.previous_checkout_enabled_deployment }}
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          RELEASE: ${{ inputs.release }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           vercel inspect "$CANDIDATE" --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > candidate-inspect.json
@@ -101,7 +137,12 @@ jobs:
           if (candidate.readyState !== 'READY') throw new Error('CANDIDATE_NOT_READY');
           if (previous.readyState !== 'READY') throw new Error('ROLLBACK_ANCHOR_NOT_READY');
           if (previous.id !== live.id) throw new Error('PRODUCTION_DRIFT_DETECTED');
+          if (candidate.meta?.cpGitCommitSha !== process.env.EXPECTED_SHA) throw new Error('CANDIDATE_SHA_MISMATCH');
+          if (candidate.meta?.cpRelease !== process.env.RELEASE) throw new Error('CANDIDATE_RELEASE_MISMATCH');
+          if (candidate.meta?.cpArtifactKind !== 'staged-production') throw new Error('CANDIDATE_ROLE_MISMATCH');
+          if (candidate.meta?.cpCheckoutEnabled !== 'true') throw new Error('CANDIDATE_CHECKOUT_DISABLED');
           NODE
+          node scripts/verify-checkout-health.mjs --url https://www.carlophillips.com --output production-before-health.json
 
       - name: Promote exact candidate
         id: promotion
@@ -111,27 +152,91 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel promote "$CANDIDATE" --yes --timeout=5m --token="$VERCEL_TOKEN"
 
-      - name: Verify Production checkout remains available
+      - name: Verify exact promoted identity and Production checkout
+        id: verification
+        continue-on-error: true
         if: steps.promotion.outcome == 'success'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          curl --fail --silent --show-error --location --max-time 30 \
-            https://www.carlophillips.com/products/carlophillips-signature-hoodie > production-pdp.html
+          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN" > production-after.json
           node - <<'NODE'
           const fs = require('node:fs');
-          const html = fs.readFileSync('production-pdp.html', 'utf8');
-          if (!html.includes('ADD TO BAG')) throw new Error('PRODUCTION_ADD_TO_BAG_MISSING');
-          if (!html.includes('action="/api/cart"')) throw new Error('PRODUCTION_CART_HANDOFF_MISSING');
+          const candidate = JSON.parse(fs.readFileSync('candidate-inspect.json', 'utf8'));
+          const live = JSON.parse(fs.readFileSync('production-after.json', 'utf8'));
+          const source = live.originalDeploymentId || live.meta?.originalDeploymentId;
+          if (live.id !== candidate.id && source !== candidate.id) throw new Error('PROMOTED_SOURCE_IDENTITY_MISMATCH');
+          if (live.readyState !== 'READY' || live.target !== 'production') throw new Error('PROMOTED_PRODUCTION_NOT_READY');
+          NODE
+          node scripts/verify-checkout-health.mjs --url https://www.carlophillips.com --output production-after-health.json
+
+      - name: Prepare exact promotion receipt
+        id: receipt
+        continue-on-error: true
+        if: steps.promotion.outcome == 'success' && steps.verification.outcome == 'success'
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          RELEASE: ${{ inputs.release }}
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const before = JSON.parse(fs.readFileSync('production-before.json', 'utf8'));
+          const after = JSON.parse(fs.readFileSync('production-after.json', 'utf8'));
+          const candidate = JSON.parse(fs.readFileSync('candidate-inspect.json', 'utf8'));
+          fs.writeFileSync('production-promotion-receipt.json', `${JSON.stringify({
+            schemaVersion: 'cp.production-promotion-receipt.v1',
+            release: process.env.RELEASE,
+            gitCommitSha: process.env.EXPECTED_SHA,
+            reviewedCandidateDeploymentId: candidate.id,
+            previousCheckoutEnabledDeploymentId: before.id,
+            productionAfterDeploymentId: after.id,
+            exactReviewedSourcePromoted: true,
+            checkoutEnabled: true,
+            protectedStagingReceiptVerified: true,
+          }, null, 2)}\n`);
           NODE
 
+      - name: Publish success receipt before final acceptance
+        id: receipt_upload
+        continue-on-error: true
+        if: steps.promotion.outcome == 'success' && steps.verification.outcome == 'success' && steps.receipt.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-success-${{ github.sha }}
+          path: production-promotion-receipt.json
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Restore previous verified checkout-enabled deployment
-        if: steps.promotion.outcome != 'success'
+        id: rollback
+        if: always() && (steps.promotion.outcome != 'success' || steps.verification.outcome != 'success' || steps.receipt.outcome != 'success' || steps.receipt_upload.outcome != 'success')
         env:
           PREVIOUS: ${{ inputs.previous_checkout_enabled_deployment }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel promote "$PREVIOUS" --yes --timeout=5m --token="$VERCEL_TOKEN"
 
-      - name: Require successful promotion
-        run: test "${{ steps.promotion.outcome }}" = "success"
+      - name: Verify failed release restored the checkout-enabled anchor
+        if: always() && steps.rollback.outcome == 'success'
+        env:
+          PREVIOUS: ${{ inputs.previous_checkout_enabled_deployment }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN" > production-after-rollback.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const live = JSON.parse(fs.readFileSync('production-after-rollback.json', 'utf8'));
+          const source = live.originalDeploymentId || live.meta?.originalDeploymentId;
+          if (live.id !== process.env.PREVIOUS && source !== process.env.PREVIOUS) throw new Error('ROLLBACK_SOURCE_IDENTITY_MISMATCH');
+          NODE
+          node scripts/verify-checkout-health.mjs --url https://www.carlophillips.com --output production-after-rollback-health.json
+
+      - name: Require complete successful promotion
+        if: always()
+        run: |
+          test "${{ steps.promotion.outcome }}" = "success"
+          test "${{ steps.verification.outcome }}" = "success"
+          test "${{ steps.receipt.outcome }}" = "success"
+          test "${{ steps.receipt_upload.outcome }}" = "success"
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -142,6 +247,12 @@ jobs:
             candidate-inspect.json
             previous-production-inspect.json
             production-before.json
-            production-pdp.html
+            production-before-health.json
+            production-after.json
+            production-after-health.json
+            production-promotion-receipt.json
+            production-after-rollback.json
+            production-after-rollback-health.json
+            protected-proof/protected-release-receipt.json
           if-no-files-found: warn
           retention-days: 90

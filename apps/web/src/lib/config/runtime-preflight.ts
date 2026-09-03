@@ -40,6 +40,8 @@ export function evaluateRuntimePreflight(
   const required = [
     'CP_COMMERCE_ENVIRONMENT',
     'CP_DURABLE_STORE_ID',
+    'CP_RELEASE_ID',
+    'CP_RELEASE_COMMIT_SHA',
     `${prefix}STORE_DOMAIN`,
     `${prefix}CHECKOUT_HOSTS`,
     `${prefix}WEBHOOK_SECRET`,
@@ -58,6 +60,12 @@ export function evaluateRuntimePreflight(
 
   if (env.CP_COMMERCE_ENVIRONMENT !== environment) {
     errors.push('RUNTIME_CONFIG_COMMERCE_ENVIRONMENT_MISMATCH');
+  }
+  if (!/^[A-Za-z0-9._-]+$/.test(env.CP_RELEASE_ID || '')) {
+    errors.push('RUNTIME_CONFIG_RELEASE_ID_INVALID');
+  }
+  if (!/^[a-f0-9]{40}$/.test(env.CP_RELEASE_COMMIT_SHA || '')) {
+    errors.push('RUNTIME_CONFIG_RELEASE_COMMIT_SHA_INVALID');
   }
   if (env.SHOPIFY_CART_UI_ENABLED !== 'true') {
     errors.push('RUNTIME_CONFIG_CART_NOT_ENABLED');

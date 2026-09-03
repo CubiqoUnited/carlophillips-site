@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: Open pull request number targeting main
+        description: Open pull request number targeting staging
         required: true
         type: number
       expected_sha:
@@ -53,7 +53,7 @@ jobs:
           const fs = require('node:fs');
           const pull = JSON.parse(fs.readFileSync('pull.json', 'utf8'));
           if (pull.state !== 'open') throw new Error('STAGING_PR_MUST_BE_OPEN');
-          if (pull.base?.ref !== 'main') throw new Error('STAGING_PR_BASE_MUST_BE_MAIN');
+          if (pull.base?.ref !== 'staging') throw new Error('STAGING_PR_BASE_MUST_BE_STAGING');
           if (pull.head?.sha !== process.env.EXPECTED_SHA) throw new Error('STAGING_PR_HEAD_MISMATCH');
           NODE
 

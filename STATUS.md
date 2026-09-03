@@ -1,5 +1,96 @@
 # Current Status
 
+## PR #69 Shopify-mimic Staging closure — 2026-09-03
+
+- Product Owner scope is now explicit: finish the combined application and
+  release-protection candidate through the complete Shopify-mimic digital
+  Staging journey; defer real Apliiq manufacture, dispatch, carrier tracking and
+  physical delivery to a later research/delivery iteration.
+- Draft PR #69 targets `staging` from `codex/staging-integration-closure` and
+  contains current `main`, current `staging`, PR #67 Aftercare, PR #68 release
+  protection and the integration corrections. Production and `main` remain
+  unchanged.
+- GitHub `Verify` passes at `0cd0cbc`; `Checkout E2E and accessibility` fails
+  only because the prior agent fixed the mobile PDP blank-space defect without
+  refreshing the reviewed Darwin/Linux PDP baselines. The new 390 px rendering
+  removes 336 px of empty space without clipping, collision or overflow; the
+  homepage and bag comparisons remain unchanged and green.
+- Shopify supports the required QA architecture through the existing dedicated
+  development store and test gateway. Historical protected Staging evidence
+  already proves a zero-charge payment/order, confirmation, webhook,
+  cancellation, refund, restock and notification path, but that evidence is not
+  bound to the new PR #69 candidate and must be repeated for its exact merged
+  Staging commit.
+- The current candidate is not yet merged to `staging`, not yet assigned to
+  `staging.carlophillips.com`, and has not received final Product Owner Staging
+  acceptance. Customer Account/order visibility, self-serve returns and the
+  exact-candidate synthetic order remain open external Staging proofs.
+
+## End-to-end release-protection gate — 2026-09-03
+
+- PR #67's authoritative remote head is
+  `fcc836e3b7b33fe6bf7c917ee52abb46d6a5557c`; CI run `33734041715` and
+  Playwright run `33734041704` passed. Release-gate work does not modify its
+  member/Aftercare UI or certify either earlier application SHA.
+- Protected Staging run `33733157896` passed source/SHA and repository checks,
+  then failed safely at canonical `vercel pull` because the Staging token lacks
+  access to the Cubiqo account. No build, deployment, alias, webhook receipt,
+  test order or Production change occurred.
+- The release-gate implementation is locally complete on the temporary
+  `codex/release-protection-gate` branch. It binds carts/orders to a release and
+  exact commit, stores HMAC-verified lifecycle observations with opaque
+  references, proves duplicate delivery causes zero external actions, defines
+  a signed PII-free protected receipt, and makes Production
+  candidate/promotion reject missing or mismatched proof.
+- Local verification passed with Yarn Classic 1.22.22: 678 Vitest tests, lint,
+  typecheck, stylelint, format, Storybook, dependency audit, optimized build and
+  26/26 Playwright checks at 1440 px and 390 px. The six macOS visual baselines
+  passed an independent comparison and were inspected offscreen. The matching
+  Linux captures from PR #68 were byte-identical across the initial run and
+  retry, inspected offscreen, and retained as the cross-platform expectations.
+- The 2026-09-02 test-gateway order is now explicitly stale for this release:
+  it predates the combined application-plus-gate commit and cannot provide its
+  immutable signed receipt.
+- Draft PR #68 carries this gate and remains dependent on PR #67; it must be
+  reconciled with the merged lifecycle candidate and fully retested before it
+  can leave draft. Production promotion and cleanup remain locked. Current
+  human action and resume point are at the top of
+  `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+## PR #67 customer lifecycle candidate — 2026-09-03
+
+- Existing PR #67 is the sole Aftercare implementation; no duplicate member or
+  post-sale PR was created. The immutable application candidate is
+  `3bff804b1a55691a38e9406eb1f97d21b5b21a3c` on
+  `codex/post-sale-funnel`, based on `origin/main@eb0e519`.
+- Main already contains the fresh Shopify product/cart/checkout boundary and
+  protected Staging isolation. The 2026-09-02 closure evidence proves the
+  Signature Hoodie S/M/L at USD 128, Staging test payment, Shopify confirmation,
+  cancellation/refund/restock and branded cancellation notice.
+- PR #67 now uses environment-specific server account/returns URLs with no
+  Preview-to-Production fallback and rejects non-HTTPS, credential-bearing,
+  query-bearing and fragment-bearing destinations.
+- Reviews require an authenticated Shopify delivered-order fact. CP Credit is
+  absent unless authenticated Shopify credit-account availability is supplied;
+  neither can be enabled by a public URL or flag.
+- `/api/contact` now delivers through Resend only when the API key, verified
+  sender and monitored recipient are configured. Success is returned only after
+  provider acceptance; unavailable and failed delivery remain explicit.
+- Local verification is green: Yarn Classic frozen install; full `yarn verify`
+  with 78 Vitest files / 664 tests; lint, typecheck, stylelint, formatting,
+  Storybook, zero production dependency vulnerabilities and optimized build;
+  12/12 relevant Playwright accessibility/privacy/Aftercare checks.
+- Desktop 1440 px and mobile 390 px current captures plus inspected before/after
+  comparisons are under `test_reports/post-sale-lifecycle-2026-09-03/`.
+- Protected Staging run `33733157896` validated the exact application SHA and
+  passed the complete repository/E2E gate, then failed safely at `vercel pull`
+  because the Staging `VERCEL_TOKEN` cannot access the canonical Cubiqo scope.
+  No build, deployment, alias, webhook probe or receipt occurred; the existing
+  Staging and Production URLs still return HTTP 200. Production remains
+  unchanged. Customer-account/order visibility,
+  Shopify-native returns, monitored support receipt, authenticated reviews and
+  optional credit remain external proof/configuration gaps; Production Apliiq
+  lifecycle proof remains separately authorized real-order work.
+
 ## Shopify closure safety candidate — 2026-09-02
 
 - Implementation branch `codex/shopify-closure-safety` is based exactly on `origin/main@6bb273f` in the isolated worktree `/Users/edv/Documents/cp-shopify-closure`; no file was taken from `codex/WTF`.

@@ -1,0 +1,379 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlophillips.com/contracts/protected-staging-release-receipt.schema.json",
+  "title": "CARLOPHILLIPS protected Staging release receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "release",
+    "gitCommitSha",
+    "sourcePullRequest",
+    "staging",
+    "shopify",
+    "customerPath",
+    "lifecycle",
+    "quality",
+    "production",
+    "rollback",
+    "safeguards",
+    "approval",
+    "signature"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "cp.protected-staging-release-receipt.v1" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "release": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+    "gitCommitSha": { "$ref": "#/$defs/sha" },
+    "sourcePullRequest": { "type": "integer", "minimum": 1 },
+    "staging": { "$ref": "#/$defs/staging" },
+    "shopify": { "$ref": "#/$defs/shopify" },
+    "customerPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shopifyAuthoritativeProduct",
+        "sizeSelection",
+        "bagTruth",
+        "hostedStagingCheckout",
+        "testPayment",
+        "paidOrder",
+        "brandedConfirmation",
+        "confirmationEvidenceHash",
+        "orderStatus",
+        "orderStatusEvidenceHash"
+      ],
+      "properties": {
+        "shopifyAuthoritativeProduct": { "const": true },
+        "sizeSelection": { "const": true },
+        "bagTruth": { "const": true },
+        "hostedStagingCheckout": { "const": true },
+        "testPayment": { "const": true },
+        "paidOrder": { "const": true },
+        "brandedConfirmation": { "const": true },
+        "confirmationEvidenceHash": { "$ref": "#/$defs/fingerprint" },
+        "orderStatus": { "const": true },
+        "orderStatusEvidenceHash": { "$ref": "#/$defs/fingerprint" }
+      }
+    },
+    "lifecycle": { "$ref": "#/$defs/lifecycle" },
+    "quality": { "$ref": "#/$defs/quality" },
+    "production": { "$ref": "#/$defs/production" },
+    "rollback": { "$ref": "#/$defs/rollback" },
+    "safeguards": { "$ref": "#/$defs/safeguards" },
+    "approval": { "$ref": "#/$defs/approval" },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": { "const": "hmac-sha256" },
+        "value": { "$ref": "#/$defs/fingerprint" }
+      }
+    }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "deployment": { "type": "string", "pattern": "^dpl_[A-Za-z0-9]+$" },
+    "staging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deploymentId",
+        "deploymentUrl",
+        "alias",
+        "readyState",
+        "checkoutEnabled",
+        "gitCommitSha",
+        "release",
+        "immutable",
+        "productionBeforeDeploymentId",
+        "productionAfterDeploymentId"
+      ],
+      "properties": {
+        "deploymentId": { "$ref": "#/$defs/deployment" },
+        "deploymentUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://[A-Za-z0-9.-]+\\.vercel\\.app/?$"
+        },
+        "alias": { "const": "staging.carlophillips.com" },
+        "readyState": { "const": "READY" },
+        "checkoutEnabled": { "const": true },
+        "gitCommitSha": { "$ref": "#/$defs/sha" },
+        "release": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+        "immutable": { "const": true },
+        "productionBeforeDeploymentId": { "$ref": "#/$defs/deployment" },
+        "productionAfterDeploymentId": { "$ref": "#/$defs/deployment" }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "size",
+        "price",
+        "currency",
+        "availableBefore",
+        "availableAfter",
+        "inventoryBefore",
+        "inventoryAfter",
+        "inventoryRestored"
+      ],
+      "properties": {
+        "size": { "enum": ["S", "M", "L"] },
+        "price": { "const": "128.00" },
+        "currency": { "const": "USD" },
+        "availableBefore": { "const": true },
+        "availableAfter": { "const": true },
+        "inventoryBefore": { "type": "integer", "minimum": 1 },
+        "inventoryAfter": { "type": "integer", "minimum": 1 },
+        "inventoryRestored": { "const": true }
+      }
+    },
+    "shopify": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "environment",
+        "storeKind",
+        "storeReferenceHash",
+        "productionStoreReferenceHash",
+        "storeIsolated",
+        "paymentMode",
+        "durableStoreReferenceHash",
+        "productionDurableStoreReferenceHash",
+        "durableStoreIsolated",
+        "handle",
+        "variants",
+        "cartBinding",
+        "hostedCheckout"
+      ],
+      "properties": {
+        "source": { "const": "shopify" },
+        "environment": { "const": "preview" },
+        "storeKind": { "const": "development" },
+        "storeReferenceHash": { "$ref": "#/$defs/fingerprint" },
+        "productionStoreReferenceHash": { "$ref": "#/$defs/fingerprint" },
+        "storeIsolated": { "const": true },
+        "paymentMode": { "const": "test" },
+        "durableStoreReferenceHash": { "$ref": "#/$defs/fingerprint" },
+        "productionDurableStoreReferenceHash": {
+          "$ref": "#/$defs/fingerprint"
+        },
+        "durableStoreIsolated": { "const": true },
+        "handle": { "const": "carlophillips-signature-hoodie" },
+        "variants": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/variant" }
+        },
+        "cartBinding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["gitCommitSha", "release"],
+          "properties": {
+            "gitCommitSha": { "$ref": "#/$defs/sha" },
+            "release": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" }
+          }
+        },
+        "hostedCheckout": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["https", "trustedHost"],
+          "properties": {
+            "https": { "const": true },
+            "trustedHost": { "const": true }
+          }
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "orderReferenceHash",
+        "signatureVerified",
+        "signatureAlgorithm",
+        "durableIdempotency",
+        "requiredTopics",
+        "observedTopics",
+        "duplicateDelivery",
+        "cancelled",
+        "refunded",
+        "inventoryRestored",
+        "finalFinancialStatus",
+        "finalFulfillmentStatus",
+        "fulfillmentRequestSubmitted",
+        "apliiqLocationAssigned",
+        "noApliiqProductionJob"
+      ],
+      "properties": {
+        "orderReferenceHash": { "$ref": "#/$defs/fingerprint" },
+        "signatureVerified": { "const": true },
+        "signatureAlgorithm": { "const": "shopify-hmac-sha256" },
+        "durableIdempotency": { "const": true },
+        "requiredTopics": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "orders/create",
+              "orders/paid",
+              "orders/cancelled",
+              "refunds/create"
+            ]
+          }
+        },
+        "observedTopics": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        },
+        "duplicateDelivery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "attempted",
+            "suppressed",
+            "observationCount",
+            "externalActionCount"
+          ],
+          "properties": {
+            "attempted": { "const": true },
+            "suppressed": { "const": true },
+            "observationCount": { "const": 1 },
+            "externalActionCount": { "const": 0 }
+          }
+        },
+        "cancelled": { "const": true },
+        "refunded": { "const": true },
+        "inventoryRestored": { "const": true },
+        "finalFinancialStatus": { "const": "REFUNDED" },
+        "finalFulfillmentStatus": { "const": "UNFULFILLED" },
+        "fulfillmentRequestSubmitted": { "const": false },
+        "apliiqLocationAssigned": { "const": false },
+        "noApliiqProductionJob": { "const": true }
+      }
+    },
+    "screenshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "screenshotHash", "comparisonPassed"],
+      "properties": {
+        "width": { "type": "integer" },
+        "screenshotHash": { "$ref": "#/$defs/fingerprint" },
+        "comparisonPassed": { "const": true }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "desktop",
+        "mobile",
+        "accessibilityPassed",
+        "consoleErrors",
+        "networkFailures"
+      ],
+      "properties": {
+        "desktop": {
+          "allOf": [
+            { "$ref": "#/$defs/screenshot" },
+            {
+              "type": "object",
+              "properties": { "width": { "const": 1440 } }
+            }
+          ]
+        },
+        "mobile": {
+          "allOf": [
+            { "$ref": "#/$defs/screenshot" },
+            {
+              "type": "object",
+              "properties": { "width": { "const": 390 } }
+            }
+          ]
+        },
+        "accessibilityPassed": { "const": true },
+        "consoleErrors": { "const": 0 },
+        "networkFailures": { "const": 0 }
+      }
+    },
+    "health": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deploymentId", "healthy", "checkoutEnabled"],
+      "properties": {
+        "deploymentId": { "$ref": "#/$defs/deployment" },
+        "healthy": { "const": true },
+        "checkoutEnabled": { "const": true }
+      }
+    },
+    "production": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["before", "after", "unchangedDuringStaging"],
+      "properties": {
+        "before": { "$ref": "#/$defs/health" },
+        "after": { "$ref": "#/$defs/health" },
+        "unchangedDuringStaging": { "const": true }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lastVerifiedDeploymentId",
+        "checkoutEnabled",
+        "restoreOnFailure",
+        "postRestoreHealthRequired"
+      ],
+      "properties": {
+        "lastVerifiedDeploymentId": { "$ref": "#/$defs/deployment" },
+        "checkoutEnabled": { "const": true },
+        "restoreOnFailure": { "const": true },
+        "postRestoreHealthRequired": { "const": true }
+      }
+    },
+    "safeguards": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "piiFree",
+        "realPaymentUsed",
+        "productionOrderCreated",
+        "privateCheckoutUrlRetained",
+        "productionStoreMutated"
+      ],
+      "properties": {
+        "piiFree": { "const": true },
+        "realPaymentUsed": { "const": false },
+        "productionOrderCreated": { "const": false },
+        "privateCheckoutUrlRetained": { "const": false },
+        "productionStoreMutated": { "const": false }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stagingEnvironmentProtected",
+        "stagingProductOwnerReviewed",
+        "productionApproved"
+      ],
+      "properties": {
+        "stagingEnvironmentProtected": { "const": true },
+        "stagingProductOwnerReviewed": { "const": true },
+        "productionApproved": { "const": false }
+      }
+    }
+  }
+}

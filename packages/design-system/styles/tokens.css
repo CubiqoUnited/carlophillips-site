@@ -118,6 +118,8 @@
   --cp-radius-medium: 0.5rem;
   --cp-radius-large: 1rem;
   --cp-radius-full: 9999px;
+  --cp-layout-auto: auto;
+  --cp-text-transform-uppercase: uppercase;
   --cp-border-width-hairline: 1px;
   --cp-border-style-default: solid;
 
@@ -277,6 +279,7 @@
   --cp-content-wide: 106.25rem;
   --cp-content-medium: 93.75rem;
   --cp-content-compact: 29rem;
+  --cp-content-reading: 42rem;
   --cp-content-control: 15rem;
   --cp-content-action: 12rem;
   --cp-content-xl: 36rem;

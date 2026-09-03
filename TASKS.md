@@ -1,5 +1,72 @@
 # Delivery Tasks
 
+## PR #69 Shopify-mimic Staging closure — 2026-09-03
+
+- [x] Combine current `main`, `staging`, PR #67 and PR #68 on the temporary
+      `codex/staging-integration-closure` branch with PR #69 targeting `staging`.
+- [x] Preserve Shopify as sole runtime commerce authority and retain strict
+      Preview/Staging-to-Production credential isolation.
+- [x] Inspect the failed GitHub browser artifacts and confirm the PDP delta is
+      the intended removal of the mobile blank-space defect, not clipping,
+      overlap, broken media or an unrelated visual regression.
+- [ ] Refresh only the reviewed Darwin/Linux PDP baselines, retain before/after
+      evidence, and pass the complete local and GitHub verification matrix.
+- [ ] Merge the exact green PR #69 commit into `staging` and deploy that exact
+      merged commit to `staging.carlophillips.com` without touching `main` or
+      either Production domain.
+- [ ] Prove the exact Staging candidate against the dedicated Shopify
+      development store: fresh S/M/L at USD 128, bag, trusted hosted checkout,
+      zero-charge successful test payment/order, confirmation, authenticated
+      customer order view, signed webhook, cancellation or eligible return,
+      refund, inventory restoration and notifications using synthetic data.
+- [ ] Verify desktop/mobile layout, accessibility, console/network health,
+      no Production credential fallback, no private URL retention and no Apliiq
+      Production fulfilment request.
+- [ ] Obtain Product Owner acceptance on canonical Staging, close superseded
+      PRs #67/#68, then delete all temporary remote branches and worktrees so
+      only `main` and `staging` remain.
+- [x] Defer real Apliiq manufacture, dispatch, tracking and physical-delivery
+      proof to the next research/delivery iteration; do not treat it as a blocker
+      for the Shopify-mimic digital Staging acceptance.
+
+## PR #67 customer purchase and post-purchase closure — 2026-09-03
+
+- [x] Reconcile PR #67, `main`, `staging`, the 2026-09-02 release closure and
+      the human-intervention record without creating a competing member/Aftercare
+      implementation.
+- [x] Preserve fresh Shopify S/M/L, bag, USD 128 and hosted-checkout authority
+      already shipped by `main`; keep Preview on the separate Staging store.
+- [x] Bind customer account/order-status and returns to environment-specific
+      server configuration with strict HTTPS/token rejection and no Preview
+      fallback.
+- [x] Make support operational only when Resend sender/recipient/key are valid;
+      return success only after provider acceptance and add cancellation/refund
+      intake without inventing an outcome.
+- [x] Require authenticated delivered-order truth for review eligibility and
+      authenticated credit-account truth for CP Credit; keep credit absent
+      otherwise.
+- [x] Complete Yarn frozen install, full repository verification, relevant E2E,
+      accessibility, privacy/network, desktop 1440 px and mobile 390 px
+      screenshots, and inspected before/after comparison for application SHA
+      `3bff804`.
+- [ ] Complete protected Staging run `33733157896`, record immutable deployment,
+      receipt, route/browser evidence and rollback anchor, and receive Product
+      Owner review before merge or any Production action.
+- [ ] Configure and prove the Staging Shopify customer account/order view and
+      Shopify-native return using synthetic test data only.
+- [ ] Configure Resend with an approved monitored mailbox and prove one
+      synthetic no-PII Staging support delivery.
+- [ ] Select/authorize a reviews provider and Customer Account API protected-data
+      access before adding the authenticated delivered-order adapter.
+- [ ] Offer CP Credit only after a Product Owner decision and authenticated
+      Shopify `StoreCreditAccount` authority; otherwise leave it absent.
+- [ ] Under separate real-order authority only, prove Production Apliiq
+      acceptance, production, dispatch, tracking and delivery. Never trigger
+      Apliiq from Staging.
+- [ ] After PR #67 is merged and verified, let cleanup work item
+      `01a06651-0436-7a21-ac5e-e80e89f0b40c` remove the temporary
+      branch/worktree; retain only long-lived `main` and `staging`.
+
 ## Shopify-only runtime remediation — 2026-08-31
 
 - [x] Diagnose project instructions, Git hooks, GitHub rulesets/environments,
@@ -723,9 +790,48 @@
 - [x] Replace checkout-disabled Production fallback with previous verified checkout-enabled rollback.
 - [x] Add desktop/mobile homepage, PDP and bag screenshot comparison gates.
 - [x] Pass 77/77 Vitest files (649 tests), lint, typecheck, stylelint, format, build and 26/26 Playwright checks locally.
-- [ ] Push the explicit candidate commit, open the PR to `main`, and receive required green checks/review.
+- [x] Push the explicit gate candidate and open draft PR #68 to `main`.
+- [ ] Receive required green checks/review after reconciling PR #68 with merged
+      PR #67.
 - [ ] Verify distinct Staging Shopify and durable-store bindings without exposing secrets.
 - [ ] Protect `main` with PR review plus required `Verify` and `Checkout E2E and accessibility` checks; restrict retained `staging`; configure protected `Staging` environment reviewer and deployment credentials.
 - [ ] Merge the reviewed PR and deploy that exact merged `main` SHA to `staging.carlophillips.com`.
 - [ ] Complete the Shopify test-payment journey, branded Shopify notification checks, webhook delivery/replay evidence and supported Apliiq hold/manual-review proof in Staging.
 - [ ] After Product Owner Staging acceptance, reconcile every worktree and delete only proven merged/archived/discarded temporary branches; retain only `main` and `staging`.
+
+# Release-protection gate — 2026-09-03
+
+- [x] Preserve PR #67 lifecycle ownership and recognize the authoritative
+      remote head `fcc836e3b7b33fe6bf7c917ee52abb46d6a5557c`; do not certify either
+      earlier application SHA.
+- [x] Record failed protected Staging run `33733157896` as a hard, safe gate
+      failure before Vercel build/deploy/alias and keep Production/cleanup locked.
+- [x] Add exact release/SHA cart attributes and deny checkout for stale carts.
+- [x] Persist only signed, PII-free Shopify lifecycle observations with opaque
+      shop/delivery/order references and zero webhook mutation authority.
+- [x] Add duplicate-delivery probe evidence requiring one durable observation
+      and zero external action.
+- [x] Define and test the HMAC-signed protected Staging receipt covering S/M/L,
+      USD 128, bag/checkout/test payment, paid order, redacted confirmation/status,
+      cancellation/refund/restock, a11y/browser health, isolation, unchanged
+      Production and rollback.
+- [x] Make Production candidate and promotion reject any missing, unsigned,
+      tampered or wrong-SHA protected Staging receipt; restore and verify the last
+      checkout-enabled Production deployment after any promotion acceptance or
+      receipt-publication failure.
+- [x] Pass the local Yarn 1.22.22 frozen install, 678 Vitest tests, lint,
+      typecheck, stylelint, format, Storybook, audit, build, and 26/26 headless
+      Playwright checks with 1440/390 screenshot comparisons under
+      `test_reports/`.
+- [ ] Rebind the GitHub Staging `VERCEL_TOKEN` to canonical Cubiqo team/project
+      access and signal `CP canonical Staging Vercel token ready`.
+- [ ] Merge PR #67, rebase the release-gate branch onto that merged `main`,
+      update draft PR #68, pass all local/PR checks, and deploy only the
+      resulting combined `main` merge SHA to protected Staging.
+- [ ] Complete the fresh protected synthetic Shopify test order only after the
+      separate payment-entry intervention is recorded; capture redacted
+      confirmation/status evidence, cancel/refund/restock and prove no Apliiq job.
+- [ ] Obtain Product Owner Staging review, issue the signed receipt, then obtain
+      separate Production approval. Do not promote from build/Add-to-Bag evidence.
+
+---

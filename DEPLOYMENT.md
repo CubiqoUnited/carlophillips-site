@@ -4,11 +4,12 @@ No deployment action is authorized by this document. It records the safe path an
 
 ## Environments
 
-| Environment | Source | Purpose | Required policy |
-|---|---|---|---|
-| Local | temporary feature branch | implementation and local evidence | fail closed by default; secrets only in ignored `.env.local` |
-| Vercel Preview | pull-request branch | private staging and review | environment-scoped values; no production aliases; no Shopify writes |
-| Production | approved `main` | customer storefront | explicit Product Owner approval and all commerce/operations gates proven |
+| Environment       | Source                          | Purpose                                                                | Required policy                                                          |
+| ----------------- | ------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Local             | temporary feature branch        | implementation and local evidence                                      | fail closed by default; secrets only in ignored `.env.local`             |
+| Vercel Preview    | pull-request branch             | private review                                                         | environment-scoped values; no Production aliases                         |
+| Protected Staging | exact reviewed `main` merge SHA | isolated Shopify development-store test order and Product Owner review | test payment only; separate webhooks/records; signed PII-free receipt    |
+| Production        | approved `main`                 | customer storefront                                                    | explicit Product Owner approval and all commerce/operations gates proven |
 
 The canonical repository is `https://github.com/CubiqoUnited/carlophillips-site.git`. `main` is production intent. Feature branches must be temporary and reviewed through pull requests; do not merge or promote without approval.
 
@@ -30,13 +31,21 @@ Also require:
 - explicit product/media provenance;
 - a rollback point and reviewer approval.
 
-## Verified Vercel target and current release boundary
+## Canonical Vercel target and current release boundary
 
-Read-only inspection on 2026-08-14 supersedes the historical 2026-07-22 HTTP 402 diagnosis. The production target is team `aditya's projects` (`team_8ABMxicIAtMyzgNYsJawFad0`), project `carlophillips-site` (`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`). `www.carlophillips.com` was observed on deployment `dpl_2s61reh2JATSRMCYfXYHnFnXT2bH`, commit `bb9568f46bd60b587f3fc16b82513ae5ea220026`.
+The canonical target is Cubiqo team `team_Q25fvpJOPiIeoG3hfxtCVkhW`, project
+`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`, scope
+`cubiqo-projects-d7156840`. A same-named project is never an acceptable
+substitute.
 
-A separate same-named Cubiqo-team project is not the live-domain target. Before any Vercel command capable of deployment, run `yarn verify:vercel-link --require-link`; it aborts unless ignored local linkage matches the exact verified organization and project IDs.
+Protected Staging run `33733157896` for PR #67 at
+`3bff804b1a55691a38e9406eb1f97d21b5b21a3c` failed before build/deploy because
+its environment-scoped token could not access that canonical account. No
+deployment, alias, webhook, test order or receipt resulted. See the top of
+`reports/HUMAN_INTERVENTION_STICKY_RED.md`; Production and cleanup remain
+locked.
 
-PR #9 was observed open and mergeable with a READY Preview for head `f82733c`, but neither status grants merge or Production authority. Resume at exact-commit cross-functional Preview QA and Product Owner review. Do not attach production aliases, merge, or promote without the explicit approval and gates in `docs/production-closure-brief.md`.
+The full release sequence and exact receipt inputs are in `docs/cicd.md`.
 
 ## Production gates
 
@@ -44,9 +53,12 @@ Production cannot be described as ready until directly proven:
 
 - `www.carlophillips.com` serves the approved commit;
 - product, variants, prices, availability, and media match Shopify;
-- a controlled approved checkout proves payment and order creation;
-- the correct POD provider receives the correct order mapping;
-- fulfillment, tracking, support, and returns are exercised;
+- a protected isolated Staging checkout proves test payment, order creation,
+  branded confirmation, order status, cancellation/refund and restock;
+- signed lifecycle events and durable duplicate suppression are bound to the
+  exact release SHA;
+- Production candidate and last checkout-enabled rollback identities are
+  verified before promotion;
 - monitoring and rollback ownership are documented.
 
 Shopify writes, product activation, paid services, test orders with external impact, `main` merges, and production promotion each require explicit Product Owner approval.

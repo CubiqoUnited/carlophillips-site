@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cp.local-release-gate-evidence.v1",
+  "date": "2026-09-03",
+  "baseCommitSha": "eb0e519860222eea700f0968a6e34461991af832",
+  "releaseReceipt": false,
+  "protectedStaging": false,
+  "yarnVersion": "1.22.22",
+  "frozenInstallPassed": true,
+  "verifyPassed": true,
+  "vitest": {
+    "shipped": 78,
+    "tooling": 515,
+    "contracts": 85,
+    "total": 678
+  },
+  "playwright": {
+    "updateRunPassed": 26,
+    "finalComparisonRunPassed": 26,
+    "desktopWidth": 1440,
+    "mobileWidth": 390,
+    "accessibilityPassed": true,
+    "consoleErrors": 0,
+    "networkFailures": 0
+  },
+  "screenshots": {
+    "desktopHome": "sha256:2a0cf806c34c5af919675ce15116daaa421f219c9a5334ece3e79d2db8cc1984",
+    "desktopProduct": "sha256:55b5d265a55dc6f4d915b189aed6a532d0d8e5c5debdb88d6c3cba643a70a933",
+    "desktopBag": "sha256:4bf3591538a45359bfffb7d7a7693f50c5a57889359036e9997355ddf145c920",
+    "mobileHome": "sha256:0c89f6f33a78d2abc2c459e584c071b0006d582af7b9802482daf0ea012ba535",
+    "mobileProduct": "sha256:42ba14beabd1f88bf6e4df827abc7b91896bc093bf40b9e25733defbd5165e54",
+    "mobileBag": "sha256:9d0d39d3582827235c31eaa73881f2d6ad4408ac4315e07f3d96fe7d28a107cc"
+  },
+  "safeguards": {
+    "piiFree": true,
+    "paymentAttempted": false,
+    "orderSubmitted": false,
+    "productionChanged": false
+  }
+}

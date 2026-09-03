@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "cp.protected-staging-browser-proof.v1",
+  "viewportWidth": 390,
+  "shopifyAuthoritativeProduct": true,
+  "sizeSelection": true,
+  "bagTruth": true,
+  "hostedStagingCheckout": true,
+  "accessibilityPassed": true,
+  "consoleErrors": 0,
+  "networkFailures": 0,
+  "screenshotHash": "sha256:98c81f67c8a474a6275de32df6d6d9fc4551acfe2adc7819ea76a6647b6c4570",
+  "privateCheckoutUrlRetained": false,
+  "paymentAttempted": false,
+  "orderSubmitted": false
+}

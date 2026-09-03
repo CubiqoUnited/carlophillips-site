@@ -175,7 +175,7 @@ export function CommerceProductDetail({
     <main id="main-content" className="cp-commerce-page">
       <StorefrontHeader fixed navigationAriaLabel="Product navigation" />
       <section className="cp-commerce-detail grid border-b">
-        <div className="cp-commerce-detail border-b lg:border-b-0 lg:border-r">
+        <div className="cp-commerce-gallery-column border-b lg:border-b-0 lg:border-r">
           <ProductGallery
             media={product.media}
             mediaReview={product.mediaReview}
