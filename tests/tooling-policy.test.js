@@ -25,6 +25,23 @@ describe('tooling and supported-runtime policy', () => {
     expect(packageDocument.dependencies.uuid).toBeUndefined();
   });
 
+  it('retries transient dependency-audit failures without weakening the gate', () => {
+    const auditRunner = readFileSync(
+      'scripts/run-yarn-audit-with-retry.mjs',
+      'utf8'
+    );
+
+    expect(packageDocument.scripts['audit:prod']).toBe(
+      'node scripts/run-yarn-audit-with-retry.mjs'
+    );
+    expect(auditRunner).toContain("'audit'");
+    expect(auditRunner).toContain("'dependencies'");
+    expect(auditRunner).toContain("'moderate'");
+    expect(auditRunner).toContain("'--network-timeout'");
+    expect(auditRunner).toContain('const attempts = 3');
+    expect(auditRunner).toContain('process.exitCode = lastStatus');
+  });
+
   it('keeps recovered exports, evidence, and credentials outside Vercel uploads', () => {
     const ignored = readFileSync('.vercelignore', 'utf8');
 
