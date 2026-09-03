@@ -341,9 +341,11 @@ describe('CI/CD policy', () => {
       staging.indexOf('Assign protected Staging domain')
     );
     expect(staging).toContain('yarn verify:webhook-endpoint');
-    expect(webhookEndpointVerifier).toContain("'--deployment'");
-    expect(webhookEndpointVerifier).not.toContain("'--scope'");
-    expect(webhookEndpointVerifier).not.toContain("'--token'");
+    expect(webhookEndpointVerifier).toContain(
+      "headers['x-vercel-protection-bypass']"
+    );
+    expect(staging).toContain('VERCEL_AUTOMATION_BYPASS_SECRET');
+    expect(webhookEndpointVerifier).not.toContain('spawnSync');
     expect(staging).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
   });
 
