@@ -25,21 +25,27 @@ describe('tooling and supported-runtime policy', () => {
     expect(packageDocument.dependencies.uuid).toBeUndefined();
   });
 
-  it('retries transient dependency-audit failures without weakening the gate', () => {
+  it('audits exact Yarn production versions against reviewed advisories', () => {
     const auditRunner = readFileSync(
-      'scripts/run-yarn-audit-with-retry.mjs',
+      'scripts/audit-production-dependencies.mjs',
       'utf8'
     );
 
     expect(packageDocument.scripts['audit:prod']).toBe(
-      'node scripts/run-yarn-audit-with-retry.mjs'
+      'node scripts/audit-production-dependencies.mjs'
     );
-    expect(auditRunner).toContain("'audit'");
-    expect(auditRunner).toContain("'dependencies'");
-    expect(auditRunner).toContain("'moderate'");
-    expect(auditRunner).toContain("'--network-timeout'");
+    expect(auditRunner).toContain(
+      "rootManifest.packageManager?.startsWith('yarn@1.22.22')"
+    );
+    expect(auditRunner).toContain(
+      "existsSync(join(rootDirectory, 'yarn.lock'))"
+    );
+    expect(auditRunner).toContain('findInstalledManifest');
+    expect(auditRunner).toContain('https://api.github.com/advisories');
+    expect(auditRunner).toContain("url.searchParams.set('type', 'reviewed')");
+    expect(auditRunner).toContain("'medium', 'moderate', 'high', 'critical'");
     expect(auditRunner).toContain('const attempts = 3');
-    expect(auditRunner).toContain('process.exitCode = lastStatus');
+    expect(auditRunner).toContain('process.exitCode = 1');
   });
 
   it('keeps recovered exports, evidence, and credentials outside Vercel uploads', () => {
