@@ -1,6 +1,42 @@
 # CURRENT — POST-SALE CAPABILITY ACTIVATION (HUMAN-OWNED)
 
-Updated: 2026-09-03 04:15 EDT
+Updated: 2026-09-03 04:31 EDT
+
+## Blocking protected Staging credential binding
+
+Protected Staging run `33733157896` validated open PR #67 and exact candidate
+`3bff804b1a55691a38e9406eb1f97d21b5b21a3c`, then passed the complete
+repository/E2E gate. It failed safely before Vercel build, deployment, alias,
+webhook probe or receipt when `vercel pull` returned `You do not have access to
+the specified account` for scope `cubiqo-projects-d7156840`, organization
+`team_Q25fvpJOPiIeoG3hfxtCVkhW` and project
+`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`. Production was not changed.
+
+Exact human action:
+
+1. Manually open **Vercel → Cubiqo team → Account Settings → Tokens** and
+   create or select a least-privilege automation token that can access only the
+   canonical Cubiqo project above. Do not paste the token into Codex, a report,
+   a shell command, a screenshot or Git.
+2. Manually open **GitHub → CubiqoUnited/carlophillips-site → Settings →
+   Environments → Staging → Environment secrets** and replace `VERCEL_TOKEN`
+   with that encrypted value. Keep `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` and
+   `VERCEL_SCOPE` bound to the exact identifiers above; do not broaden the
+   token to another team or project.
+3. Signal completion with: `CP Staging Vercel token rebound`.
+
+Risk/cost: this token can create Preview deployments and move the protected
+Staging alias in the canonical project. A wrong team/project binding can deploy
+to or expose the wrong environment. No paid-plan acceptance is authorized; stop
+if Vercel requests payment, Production access or a broader account grant.
+
+Resume point: release-gate work item
+`01a06651-0436-7a21-ac5e-e7ef913e3f9f` reruns **Protected Vercel Staging** for
+PR `67`, exact SHA `3bff804b1a55691a38e9406eb1f97d21b5b21a3c` and release
+`cp-post-sale-lifecycle-2026-09-03`. Require READY immutable deployment, protected
+alias, route checks, signed PII-free webhook probe and retained receipt before
+claiming Staging complete. Do not retry with a different SHA or change the
+workflow/lifecycle implementation to bypass the credential boundary.
 
 ## What the application now does
 

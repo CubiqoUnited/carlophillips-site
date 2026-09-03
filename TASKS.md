@@ -1,5 +1,43 @@
 # Delivery Tasks
 
+## PR #67 customer purchase and post-purchase closure — 2026-09-03
+
+- [x] Reconcile PR #67, `main`, `staging`, the 2026-09-02 release closure and
+      the human-intervention record without creating a competing member/Aftercare
+      implementation.
+- [x] Preserve fresh Shopify S/M/L, bag, USD 128 and hosted-checkout authority
+      already shipped by `main`; keep Preview on the separate Staging store.
+- [x] Bind customer account/order-status and returns to environment-specific
+      server configuration with strict HTTPS/token rejection and no Preview
+      fallback.
+- [x] Make support operational only when Resend sender/recipient/key are valid;
+      return success only after provider acceptance and add cancellation/refund
+      intake without inventing an outcome.
+- [x] Require authenticated delivered-order truth for review eligibility and
+      authenticated credit-account truth for CP Credit; keep credit absent
+      otherwise.
+- [x] Complete Yarn frozen install, full repository verification, relevant E2E,
+      accessibility, privacy/network, desktop 1440 px and mobile 390 px
+      screenshots, and inspected before/after comparison for application SHA
+      `3bff804`.
+- [ ] Complete protected Staging run `33733157896`, record immutable deployment,
+      receipt, route/browser evidence and rollback anchor, and receive Product
+      Owner review before merge or any Production action.
+- [ ] Configure and prove the Staging Shopify customer account/order view and
+      Shopify-native return using synthetic test data only.
+- [ ] Configure Resend with an approved monitored mailbox and prove one
+      synthetic no-PII Staging support delivery.
+- [ ] Select/authorize a reviews provider and Customer Account API protected-data
+      access before adding the authenticated delivered-order adapter.
+- [ ] Offer CP Credit only after a Product Owner decision and authenticated
+      Shopify `StoreCreditAccount` authority; otherwise leave it absent.
+- [ ] Under separate real-order authority only, prove Production Apliiq
+      acceptance, production, dispatch, tracking and delivery. Never trigger
+      Apliiq from Staging.
+- [ ] After PR #67 is merged and verified, let cleanup work item
+      `01a06651-0436-7a21-ac5e-e80e89f0b40c` remove the temporary
+      branch/worktree; retain only long-lived `main` and `staging`.
+
 ## Shopify-only runtime remediation — 2026-08-31
 
 - [x] Diagnose project instructions, Git hooks, GitHub rulesets/environments,
