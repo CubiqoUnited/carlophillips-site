@@ -38,6 +38,7 @@ jobs:
       NEXT_PUBLIC_SHOW_PRODUCTS: 'true'
       COMMERCE_DATA_MODE: shopify
       SHOPIFY_CART_UI_ENABLED: 'true'
+      SHOPIFY_CHECKOUT_ENABLED: 'true'
 
     steps:
       - name: Enforce PR-bound Preview environment and exact pull request
@@ -87,6 +88,7 @@ jobs:
           test "$NEXT_PUBLIC_COMMERCE_ENVIRONMENT" = "preview"
           test "$NEXT_PUBLIC_SHOW_PRODUCTS" = "true"
           test "$SHOPIFY_CART_UI_ENABLED" = "true"
+          test "$SHOPIFY_CHECKOUT_ENABLED" = "true"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -129,18 +131,19 @@ jobs:
       - name: Build fail-closed Preview artifact
         run: vercel build
 
-      - name: Deploy Preview and assign staging domain
+      - name: Deploy PR Preview without shared Staging alias
         id: preview
         env:
           PULL_REQUEST: ${{ inputs.pull_request }}
           RELEASE: ${{ inputs.release }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          deployment_url="$(vercel deploy --prebuilt --archive=tgz --skip-domain --token="$VERCEL_TOKEN" \
+          deployment_url="$(vercel deploy --prebuilt --archive=tgz --token="$VERCEL_TOKEN" \
             --env NEXT_PUBLIC_COMMERCE_ENVIRONMENT=preview \
             --env NEXT_PUBLIC_SHOW_PRODUCTS=true \
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED=true \
+            --env SHOPIFY_CHECKOUT_ENABLED=true \
             --meta gitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitRef="$GITHUB_REF_NAME" \
@@ -148,10 +151,9 @@ jobs:
             --meta cpRelease="$RELEASE" \
             --meta cpArtifactKind=immutable-preview \
             --meta cpBuildEnvironment=preview \
-            --meta cpCheckoutEnabled=false \
+            --meta cpCheckoutEnabled=true \
             --meta cpWorkflowRun="$GITHUB_RUN_ID" \
             --meta cpWorkflowAttempt="$GITHUB_RUN_ATTEMPT")"
-          vercel alias set "$deployment_url" staging.carlophillips.com --token="$VERCEL_TOKEN" || true
           echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
 
       - name: Capture immutable Preview evidence
@@ -183,11 +185,11 @@ jobs:
           DEPLOYMENT_URL: ${{ steps.preview.outputs.url }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          for route in / /shop /collections /products/carlophillips-signature-hoodie /bag; do
-            vercel curl "$route" --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > /dev/null
+          for route in / /shop /collections /product/carlophillips-signature-hoodie /bag; do
+            vercel curl "$route" --deployment "$DEPLOYMENT_URL" > /dev/null
           done
-          vercel curl /products/carlophillips-signature-hoodie \
-            --deployment "$DEPLOYMENT_URL" --token="$VERCEL_TOKEN" > preview-pdp.html
+          vercel curl /product/carlophillips-signature-hoodie \
+            --deployment "$DEPLOYMENT_URL" > preview-pdp.html
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('preview-pdp.html', 'utf8');
@@ -213,7 +215,7 @@ jobs:
             echo "- Commit: $GITHUB_SHA"
             echo "- Pull request: #${{ inputs.pull_request }}"
             echo "- Production domains assigned: no"
-            echo "- Commerce: fail-closed"
+            echo "- Commerce: isolated and checkout-enabled"
             echo "- Receipt artifact: preview-release-receipt"
           } >> "$GITHUB_STEP_SUMMARY"
 

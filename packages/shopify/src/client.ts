@@ -11,6 +11,7 @@ export type StorefrontFetch = (
 export interface StorefrontClientConfig {
   readonly storeDomain: string;
   readonly storefrontAccessToken: string;
+  readonly storefrontAccessTokenType?: 'public' | 'private';
   readonly apiVersion?: StorefrontApiVersion;
   readonly fetchImpl?: StorefrontFetch;
 }
@@ -95,6 +96,10 @@ export function createStorefrontClient(config: StorefrontClientConfig) {
   const apiVersion = config.apiVersion ?? STOREFRONT_API_VERSION;
   const fetchImpl = config.fetchImpl ?? fetch;
   const endpoint = `https://${storeDomain}/api/${apiVersion}/graphql.json`;
+  const tokenHeader =
+    config.storefrontAccessTokenType === 'private'
+      ? 'Shopify-Storefront-Private-Token'
+      : 'X-Shopify-Storefront-Access-Token';
 
   return Object.freeze({
     apiVersion,
@@ -123,7 +128,7 @@ export function createStorefrontClient(config: StorefrontClientConfig) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': token,
+        [tokenHeader]: token,
       },
       body: JSON.stringify({
         query: options.document,

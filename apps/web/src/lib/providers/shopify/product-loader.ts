@@ -29,6 +29,7 @@ class ShopifyConfigurationError extends Error {
 export function createShopifyProductLoader({
   storeDomain,
   storefrontToken,
+  storefrontTokenType = 'public',
   fetchImpl = fetch,
   environment = 'local',
   observedAt = () => new Date().toISOString(),
@@ -36,6 +37,7 @@ export function createShopifyProductLoader({
 }: {
   storeDomain?: string;
   storefrontToken?: string;
+  storefrontTokenType?: 'public' | 'private';
   fetchImpl?: StorefrontFetch;
   environment?: CommerceEnvironment;
   observedAt?: () => string;
@@ -50,6 +52,7 @@ export function createShopifyProductLoader({
   const client = createStorefrontClient({
     storeDomain,
     storefrontAccessToken: storefrontToken,
+    storefrontAccessTokenType: storefrontTokenType,
     fetchImpl,
   });
 
@@ -85,6 +88,7 @@ export function createShopifyProductLoader({
 export function createShopifyCatalogLoader({
   storeDomain,
   storefrontToken,
+  storefrontTokenType = 'public',
   fetchImpl = fetch,
   environment = 'local',
   observedAt = () => new Date().toISOString(),
@@ -92,6 +96,7 @@ export function createShopifyCatalogLoader({
 }: {
   storeDomain?: string;
   storefrontToken?: string;
+  storefrontTokenType?: 'public' | 'private';
   fetchImpl?: StorefrontFetch;
   environment?: CommerceEnvironment;
   observedAt?: () => string;
@@ -105,6 +110,7 @@ export function createShopifyCatalogLoader({
   const client = createStorefrontClient({
     storeDomain,
     storefrontAccessToken: storefrontToken,
+    storefrontAccessTokenType: storefrontTokenType,
     fetchImpl,
   });
   return async function loadProducts(first = 50): Promise<RuntimeProduct[]> {

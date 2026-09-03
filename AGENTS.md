@@ -32,29 +32,31 @@
 
 ## Source of truth
 
+- Do not divide CARLOPHILLIPS work into phases, timelines, or future batches unless the Product Owner explicitly requests that format. Define and execute the approved requirement start-to-finish, and report only completed work or concrete blockers.
+
 - Canonical repository: `https://github.com/CubiqoUnited/carlophillips-site.git`.
 - `main` is the production-intent branch. Feature work uses temporary branches and pull requests.
 - **Branch Lifecycle Governance:** Only `main` (Production) and `staging` (Staging) may persist as long-lived branches on `origin`. Any temporary working/task branch created by an agent (e.g. `codex/*`, `copilot/*`, `feature/*`, `cp-staging-*`) MUST be deleted immediately after its pull request or changes are merged into `main` or `staging`. No unmerged, stale, or abandoned feature branches may be left on remote.
 - Current product requirements live in `PRD.md`; architecture lives in `ARCHITECTURE.md`; execution state lives in `STATUS.md` and `TASKS.md`.
 - Shopify is the intended source of truth for products, variants, prices, availability, cart, and checkout. Static or mock data must be visibly identified and must never be presented as proof of live commerce.
-only 1-2 original pod image - rest AI generated acceptable
+  only 1-2 original pod image - rest AI generated acceptable
 - Product Release Records are optional non-runtime audit/rollback evidence. Their
   state, fingerprints, approvals, media bindings, and sample fields must not gate
   the public storefront, cart, or checkout.
 - Canonical commerce facts include every Shopify-sourced customer copy field used by the storefront: title, description, vendor, product type, tagline, and details. Release views are whitelist-derived from the validated observation; outer adapter fields and `descriptionHtml` are never presentation authority.
 - Customer-visible system status derives from current Shopify state and the
   environment. No release-record fallback may contradict current Shopify truth.
-all look and feel, UI, theme shape size font color and assets for componenets, all run by design system and hardcoded values in staging or production, every thing via tokens and componenets
+  all look and feel, UI, theme shape size font color and assets for componenets, all run by design system and hardcoded values in staging or production, every thing via tokens and componenets
 
 ## Safety
 
-
-- Do not promote production without Product Owner approval in staging - and only one staging 
-- staqging and production needs be same always, when a change request is submitted - agent makes the change and PO approve in the cannonical staging and then the change is deployed in production 
+- Do not promote production without Product Owner approval in staging - and only one staging
+- staqging and production needs be same always, when a change request is submitted - agent makes the change and PO approve in the cannonical staging and then the change is deployed in production
 - Never print, document, or commit secret values. Store local values only in ignored environment files.
 - Do not claim production readiness until the live domain, Shopify checkout, payment, POD fulfillment, tracking, support, and returns are directly verified.
 - Do not invent video, spin, 3D, AR, on-model, or lifestyle evidence. Render only media backed by real approved assets.
-the production payment shoud be enabled at all times fromn checkout to payment AND the staging will mimic the production checkout to payment - but the actual paym,ent only possible in production
+  the production payment shoud be enabled at all times fromn checkout to payment AND the staging will mimic the production checkout to payment - but the actual paym,ent only possible in production
+
 ## Tooling and verification
 
 - Use Yarn Classic 1.22.22, as declared by `package.json` and locked by `yarn.lock`. Do not add npm or pnpm lockfiles.

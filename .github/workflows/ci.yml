@@ -48,6 +48,10 @@ jobs:
       - name: Run accessibility and browser-health audit
         env:
           CP_A11Y_OUTPUT_DIR: test_reports/ci/accessibility
+          COMMERCE_DATA_MODE: fixture
+          NEXT_PUBLIC_COMMERCE_ENVIRONMENT: local
+          NEXT_PUBLIC_STAGING_REVIEW: 'true'
+          NEXT_PUBLIC_SHOW_PRODUCTS: 'true'
         run: |
           mkdir -p test_reports/ci
           yarn start > /tmp/cp-next-start.log 2>&1 &
@@ -66,6 +70,10 @@ jobs:
       - name: Run privacy network audit
         env:
           CP_A11Y_OUTPUT_DIR: test_reports/ci/privacy-network
+          COMMERCE_DATA_MODE: fixture
+          NEXT_PUBLIC_COMMERCE_ENVIRONMENT: local
+          NEXT_PUBLIC_STAGING_REVIEW: 'true'
+          NEXT_PUBLIC_SHOW_PRODUCTS: 'true'
         run: |
           mkdir -p test_reports/ci
           yarn start > /tmp/cp-next-start.log 2>&1 &

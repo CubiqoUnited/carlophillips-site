@@ -1,11 +1,15 @@
 import 'server-only';
 
 import type { WebhookIdempotencyStore } from '@repo/shopify';
+import type { CommerceEnvironment } from './runtime-types';
+
+type DurableEnvironment = Exclude<CommerceEnvironment, 'local'>;
 
 export class DurableWebhookStore implements WebhookIdempotencyStore {
   constructor(
     private readonly url: string,
     private readonly token: string,
+    private readonly namespace: DurableEnvironment,
     private readonly fetchImpl: typeof fetch = fetch
   ) {
     if (!url.startsWith('https://') || !token) {
@@ -31,7 +35,7 @@ export class DurableWebhookStore implements WebhookIdempotencyStore {
     const ttl = Math.max(1, expiresAt.getTime() - Date.now());
     const result = await this.command([
       'SET',
-      `cp:shopify:webhook:${webhookId}`,
+      `cp:${this.namespace}:shopify:webhook:${webhookId}`,
       'claimed',
       'NX',
       'PX',
@@ -43,7 +47,7 @@ export class DurableWebhookStore implements WebhookIdempotencyStore {
   async record(webhookId: string, observation: object) {
     const result = await this.command([
       'SET',
-      `cp:shopify:webhook-event:${webhookId}`,
+      `cp:${this.namespace}:shopify:webhook-event:${webhookId}`,
       JSON.stringify(observation),
       'EX',
       60 * 60 * 24 * 30,
@@ -52,14 +56,20 @@ export class DurableWebhookStore implements WebhookIdempotencyStore {
   }
 
   async release(webhookId: string) {
-    await this.command(['DEL', `cp:shopify:webhook:${webhookId}`]);
+    await this.command([
+      'DEL',
+      `cp:${this.namespace}:shopify:webhook:${webhookId}`,
+    ]);
   }
 }
 
-export function createDurableWebhookStore(fetchImpl: typeof fetch = fetch) {
+export function createDurableWebhookStore(
+  environment: DurableEnvironment,
+  fetchImpl: typeof fetch = fetch
+) {
   const url =
     process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '';
   const token =
     process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '';
-  return new DurableWebhookStore(url, token, fetchImpl);
+  return new DurableWebhookStore(url, token, environment, fetchImpl);
 }

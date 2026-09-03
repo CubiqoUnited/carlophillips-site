@@ -1,3 +1,43 @@
+# RED — SHOPIFY CLOSURE STAGING ISOLATION (CURRENT)
+
+Updated: 2026-09-02
+
+## What is blocked
+
+The isolated infrastructure now exists:
+
+- Shopify development store `carlophillips-staging.myshopify.com` was created with Shopify test data and its bogus test gateway.
+- Vercel Upstash resource `cp-commerce-webhooks-staging` was created and bound only to Preview; Production KV associations were removed from Preview without changing Production.
+- Preview-only store identity, checkout-host, allowed-shop, durable-store identity, webhook-secret, and purchase-enable variables were added.
+
+Protected Staging still cannot deploy because two browser permission boundaries and one GitHub owner action remain:
+
+- Shopify's official free Headless channel is ready to install on the development store, after which a persistent Storefront API token must be created and bound to Preview.
+- The existing `CodexAutomation5` app must be installed on the development store before Staging webhook subscriptions can be registered.
+- GitHub has no `Staging` environment. Chrome and CLI are authenticated as `avloy07-eng`, which GitHub does not permit to open repository Environment settings. The repository collaborator API identifies `CubiqoUnited` as the administrator, and no second GitHub account is currently connected in the browser account switcher.
+
+Current authentication handoff: Shopify accepted the authorized Google identity and is waiting at **Verify with your passkey**. Boss must open the preserved Chrome tab and complete the device fingerprint, face recognition, or PIN prompt; Sushma cannot read or bypass that local authenticator. After Shopify returns to `CARLOPHILLIPS Staging`, tell Sushma `CP Shopify passkey complete`. GitHub owner authentication follows after the Shopify tab is released.
+
+The new runtime correctly refuses this unsafe configuration. Do not point Staging at the Production Shopify store, enable Shopify test mode on Production, or share the Production durable store.
+
+## Exact human action
+
+1. Give action-time confirmation in the active task for Sushma to install Shopify's official Headless channel and the existing `CodexAutomation5` app on **CARLOPHILLIPS Staging only**, and to create the Staging Storefront API token. These are persistent app/access grants; no Production store is in scope.
+2. In the preserved GitHub Chrome tab, choose **Add account** and authenticate as repository administrator `CubiqoUnited`; then tell Sushma `CP GitHub owner session ready`. Sushma will create `Staging`, add the required reviewer, and bind only the required environment secrets/variables. Alternatively, that administrator can create it manually with `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `SHOPIFY_STAGING_WEBHOOK_SECRET`, and `SHOPIFY_STAGING_STORE_DOMAIN`.
+3. After the protected deployment is live, configure the Signature Hoodie S/M/L test product, Shopify notification branding, eight webhook subscriptions, and the Apliiq hold/manual-review test behavior in the development store. No provider production job or real payment is authorized.
+
+Signal completion with: `CP isolated Staging bindings ready`.
+
+## Cost and risk
+
+The development store cannot process a real payment. The dedicated Upstash resource uses the authorized Pay As You Go plan ($0.20 per 100,000 commands) with automatic upgrades disabled. Shopify app installation creates persistent access to the development store, which is why action-time confirmation is required. Apliiq production submission, a Shopify paid plan, real payment, Production promotion, or broader Production access remains excluded.
+
+## Resume point
+
+After the two confirmations above, finish the Preview token binding, protect the GitHub environment, dispatch `Protected Vercel Staging` for the exact head SHA of open PR #55, register the eight implemented topics only after endpoint/probe success, and complete the test-payment, branded Shopify notification, duplicate delivery, refund/cancel and supported Apliiq hold/manual-review evidence. Keep PR #55 open for the independent reviewer and merger.
+
+---
+
 # RED — CURRENT CUSTOMER-READY EXTERNAL CONFIGURATION
 
 Updated: 2026-08-31
@@ -39,8 +79,7 @@ add encrypted Production/Preview values for `RESEND_API_KEY`,
 Cost/risk: customer email, message text, and an optional order number will be
 sent to the configured support mailbox after submission. Do not enable this
 until the monitored recipient and handling process are approved. No customer
-data is transmitted while the variables are absent; the API truthfully returns
-503.
+data is transmitted while the variables are absent; the API truthfully returns 503.
 
 ## 3. Shopify-hosted checkout appearance and fields
 
@@ -393,7 +432,7 @@ value into chat:
    `SHOPIFY_STAGING_STOREFRONT_TOKEN`, `SHOPIFY_STAGING_CHECKOUT_HOSTS`, and
    `SHOPIFY_STAGING_WEBHOOK_SECRET`. The webhook secret must be the matching
    Shopify app client secret; Codex must not invent it. Signal: `CP Shopify
-   staging environment ready`.
+staging environment ready`.
 
 Do not dispatch the manual Staging workflow until all three actions are
 verified. A Git-integrated Preview build is not the protected Staging release
@@ -466,3 +505,135 @@ project-scoped CI token and lacks permission to assign
 
 Signal: `CP Vercel staging owner actions complete`. Production promotion still
 requires the Product Owner's separate explicit instruction after review.
+
+### 2026-09-02 — current protected-Staging handoff (supersedes earlier setup blockers)
+
+The dedicated Shopify development store, isolated Preview Upstash resource,
+Preview-only Shopify/Vercel configuration, and protected GitHub `Staging`
+environment now exist. GitHub `Staging` requires reviewer `avloy07-eng` and
+permits deployments only from `codex/shopify-closure-safety`. PR #55 remains
+open; its exact head SHA must be read from GitHub immediately before dispatch.
+The implementation checks were green before this handoff-only documentation
+update, and the updated head must complete the same required checks.
+
+GitHub rejected the protected-Staging dispatch before execution because a
+`workflow_dispatch` workflow must first exist on the default branch. The
+minimal bootstrap is isolated in PR #56:
+
+`https://github.com/CubiqoUnited/carlophillips-site/pull/56`
+
+Human action required:
+
+1. Independently review PR #56. It must contain only
+   `.github/workflows/vercel-staging.yml`.
+2. Confirm it requires an open same-repository PR targeting `main`, exact PR
+   head SHA, the protected `Staging` environment, isolated Preview settings,
+   verification before domain aliasing, and the signed PII-free webhook probe.
+3. Merge PR #56 only after its own required checks pass.
+4. Signal: `CP staging workflow bootstrap merged`.
+
+After that signal, Codex can dispatch the workflow from
+`codex/shopify-closure-safety` for PR #55, wait for the Staging reviewer gate,
+verify the immutable deployment, assign only `staging.carlophillips.com`, and
+continue Shopify Staging webhook registration and happy-path validation.
+
+Do not merge PR #55, change Production, or clean release branches during this
+handoff.
+
+### 2026-09-02 — GitHub owner re-authentication required for Vercel token repair
+
+The failed Preview deployment proved that the encrypted `VERCEL_TOKEN` in the
+GitHub `Preview` environment is invalid. The local Vercel CLI credential was
+validated successfully without displaying its value. Sushma attempted to
+replace `VERCEL_TOKEN` in GitHub environments `Preview` and `Production`, but
+GitHub stopped both updates at an owner `Confirm access` dialog requiring the
+`CubiqoUnited` passkey. The old secret timestamps remain unchanged; no token
+replacement was saved.
+
+Human action required:
+
+1. In the already-open Chrome GitHub tab, complete the `Confirm access` dialog
+   for `@CubiqoUnited` using the passkey. This authorizes access to repository
+   secret settings; it does not deploy, merge, or promote anything.
+2. Return to this Codex task and signal: `CP GitHub passkey confirmed`.
+
+After the signal, Sushma will immediately replace only the encrypted
+`VERCEL_TOKEN` secrets in `Preview` and `Production`, verify their update
+timestamps, clear transient clipboard/runtime values, and rerun the failed
+Preview deployment gate. Never paste the token into chat.
+
+Resolution: Boss completed the GitHub passkey confirmation. Sushma replaced
+both encrypted secrets and verified current update timestamps. The rerun then
+proved the credential by passing `vercel pull`, Production inspection, and the
+Vercel build. A separate workflow defect was exposed: Vercel CLI 56 rejects
+`--skip-domain` on non-Production deployments. The Preview and protected
+Staging workflows and their CI contract tests were corrected to omit that flag;
+the Production candidate retains `--prod --skip-domain`.
+# STAGING CATALOG ACTION CONFIRMATION — 2026-09-02
+
+The isolated Shopify development store is connected correctly, but it contains only Shopify sample snowboard products. The canonical CARLOPHILLIPS handle therefore renders unavailable and cannot expose Add to Bag.
+
+Required external action: create and publish a Staging-only `CARLOPHILLIPS Signature Hoodie` product to the Headless sales channel with handle `carlophillips-signature-hoodie`, black S/M/L variants, `$128.00` test pricing, and clearly test-only SKUs. Do not install or trigger the Production Apliiq handoff for this record.
+
+Risk: saving/publishing changes the external Shopify Staging catalog. It does not touch Production, charge a customer, or create an Apliiq production job. Signal completion by explicitly confirming the Staging-only Shopify Save/Publish action in the active Codex task.
+
+# PRODUCTION CONFIGURATION NO-GO — 2026-09-02
+
+Do not build or promote PR #55 to Production yet. A read-only check of the
+canonical Cubiqo Vercel project confirmed that Production is missing runtime
+bindings required by PR #55's fail-closed startup preflight:
+
+- `SHOPIFY_STORE_DOMAIN`
+- `SHOPIFY_STOREFRONT_TOKEN`
+- `CP_COMMERCE_ENVIRONMENT=production`
+- `CP_DURABLE_STORE_ID`
+- `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`
+- one complete Production durable-store credential pair (`KV_REST_API_URL` +
+  `KV_REST_API_TOKEN`, or the supported Upstash equivalent)
+
+The current live deployment remains available because Vercel captured its
+environment at build time. The next Production build from PR #55 would fail
+startup preflight or lose Shopify/durable webhook connectivity if promoted
+without provisioning these bindings.
+
+Required owner action, performed in Vercel Production scope without exposing
+values in chat:
+
+1. Restore the Production Shopify domain and a valid Production Storefront
+   token.
+2. Set the Production commerce marker and matching durable-store identity
+   markers.
+3. Attach a Production-only durable KV/Upstash resource and credentials.
+4. Build a new immutable Production candidate without assigning live domains.
+5. Prove startup preflight, product visibility, Add to Bag, `/api/cart`, and
+   durable signed-webhook ingestion on that candidate.
+6. Preserve the current checkout-enabled live deployment ID as the rollback
+   anchor. Promotion still requires separate Product Owner approval.
+
+Signal completion with: `CP Production bindings restored and candidate verified`.
+This Production blocker does not prevent merging PR #56 or deploying the open
+PR #55 head to isolated Staging.
+
+Update: the Production Shopify domain, Storefront token, commerce marker,
+matching durable-store IDs, and Production-only Upstash bindings have been
+restored without exposing values. The Production application build succeeds.
+No Production deployment or promotion has occurred.
+
+# GITHUB STAGING BRANCH-POLICY CORRECTION — 2026-09-02
+
+PR #56 is merged and the protected Staging workflow is callable from `main`.
+Two exact-head dispatches for PR #55 failed before any job step because the
+GitHub `Staging` environment permits only branch
+`codex/shopify-closure-safety`, while `workflow_dispatch` must execute from
+the default branch `main`. The workflow itself separately enforces the open
+same-repository PR, target branch, and exact PR head SHA.
+
+Required owner action: add `main` to the GitHub `Staging` environment's custom
+deployment branches. Do not remove the existing PR-branch rule until the
+successful Staging receipt is captured. The local `gh` identity received HTTP
+403 for this repository-admin operation; an authenticated GitHub owner session
+is required.
+
+After correction, rerun `.github/workflows/vercel-staging.yml` with PR `55`,
+expected SHA `3a28d6540927881d4083dd9e2be86adfa877df1e`, and a new immutable release
+identifier. No Production action is authorized by this correction.

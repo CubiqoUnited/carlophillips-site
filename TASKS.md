@@ -3,23 +3,23 @@
 ## Shopify-only runtime remediation — 2026-08-31
 
 - [x] Diagnose project instructions, Git hooks, GitHub rulesets/environments,
-  Vercel project configuration, deployed runtime code, legacy duplicate code,
-  tests, and requirements documentation.
+      Vercel project configuration, deployed runtime code, legacy duplicate code,
+      tests, and requirements documentation.
 - [x] Establish Shopify Admin as the sole public runtime authority in
-  `AGENTS.md` and deploy that governance change through PR #52.
+      `AGENTS.md` and deploy that governance change through PR #52.
 - [x] Remove release-record, fingerprint, sample, approval-JSON, and lifecycle
-  state inputs from the deployed public checkout.
+      state inputs from the deployed public checkout.
 - [x] Make product/catalog visibility derive from current Shopify data and make
-  Preview use a dedicated Shopify staging-store configuration.
+      Preview use a dedicated Shopify staging-store configuration.
 - [x] Retire the controlled sample-order route and replace obsolete checkout
-  tests with the Shopify-authoritative contract.
+      tests with the Shopify-authoritative contract.
 - [x] Replace the fake homepage Contact success and group hamburger navigation
-  into Discovery, Shop/categories, and Private & Support sections.
+      into Discovery, Shop/categories, and Private & Support sections.
 - [ ] Provision the external Shopify staging store/test payments, monitored
-  support destination, and Shopify Checkout branding draft described in the
-  sticky-red handoff; these are service configuration tasks, not code gates.
+      support destination, and Shopify Checkout branding draft described in the
+      sticky-red handoff; these are service configuration tasks, not code gates.
 - [ ] Complete full CI, desktop/mobile screenshots, Pushpa review, merge,
-  Production deployment, and live verification for this runtime change.
+      Production deployment, and live verification for this runtime change.
 
 ## Production checkout interaction repair — 2026-08-30
 
@@ -711,3 +711,21 @@
 - [ ] Select and approve private Draft storage, provider access, exact per-run/monthly credit ceilings, numerical product tolerances, rights evidence, and mutation-role ownership before enabling generation.
 - [ ] Create the 7–8 second Hoodie runway derivative only after the exact playback interpretation and edit are approved; keep both video binaries private and Draft-only until Media Registry approval.
 - [ ] Connect durable command/audit storage and separately reviewed provider adapters before enabling any mutating Admin control.
+
+# Shopify closure safety — active start-to-finish record (2026-09-02)
+
+- [x] Create clean branch `codex/shopify-closure-safety` from `origin/main@6bb273f` without touching `codex/WTF`.
+- [x] Add strict Preview/Production runtime preflight and remove Preview-to-Production Shopify fallback.
+- [x] Guard product, cart and webhook boundaries before external requests.
+- [x] Namespace zero-PII durable webhook claims and prove two-instance atomic claiming.
+- [x] Add shipped-runtime commerce contract and signed PII-free webhook probe.
+- [x] Separate PR Preview from protected merged-SHA Staging deployment.
+- [x] Replace checkout-disabled Production fallback with previous verified checkout-enabled rollback.
+- [x] Add desktop/mobile homepage, PDP and bag screenshot comparison gates.
+- [x] Pass 77/77 Vitest files (649 tests), lint, typecheck, stylelint, format, build and 26/26 Playwright checks locally.
+- [ ] Push the explicit candidate commit, open the PR to `main`, and receive required green checks/review.
+- [ ] Verify distinct Staging Shopify and durable-store bindings without exposing secrets.
+- [ ] Protect `main` with PR review plus required `Verify` and `Checkout E2E and accessibility` checks; restrict retained `staging`; configure protected `Staging` environment reviewer and deployment credentials.
+- [ ] Merge the reviewed PR and deploy that exact merged `main` SHA to `staging.carlophillips.com`.
+- [ ] Complete the Shopify test-payment journey, branded Shopify notification checks, webhook delivery/replay evidence and supported Apliiq hold/manual-review proof in Staging.
+- [ ] After Product Owner Staging acceptance, reconcile every worktree and delete only proven merged/archived/discarded temporary branches; retain only `main` and `staging`.

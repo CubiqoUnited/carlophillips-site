@@ -60,7 +60,13 @@ function metadataSha(metadata = {}) {
 
 function findListedDeployment(list, inspect, subject) {
   const deployments = Array.isArray(list?.deployments) ? list.deployments : [];
-  const listed = deployments.find(deployment => deployment.id === inspect.id) || null;
+  // Vercel CLI 56 list JSON omits deployment IDs. Join the authenticated list
+  // to the inspected deployment by ID when present, otherwise by immutable URL.
+  const inspectedUrl = deploymentUrl(inspect.url);
+  const listed = deployments.find(deployment => (
+    (deployment.id && deployment.id === inspect.id)
+    || deploymentUrl(deployment.url) === inspectedUrl
+  )) || null;
   requireValue(listed, `${subject} is absent from the linked Vercel project deployment list.`);
   requireValue(
     deploymentUrl(listed.url) === deploymentUrl(inspect.url),
@@ -146,13 +152,15 @@ function verifyArtifact({
   return { inspect, listed };
 }
 
-function verifyProductionAnchor(deployment, expectedProductionAnchor = null) {
+function verifyProductionAnchor(deployment, expectedProductionAnchor = null, requireDomainAliases = true) {
   requireValue(DEPLOYMENT_ID.test(deployment?.id || ''), 'Production drift anchor lacks a valid deployment ID.');
   requireValue(deployment.readyState === 'READY', 'Production drift anchor is not READY.');
   requireValue(deployment.target === 'production', 'Production drift anchor is not a Production deployment.');
-  const aliases = new Set(deploymentAliases(deployment));
-  for (const domain of PRODUCTION_DOMAINS) {
-    requireValue(aliases.has(domain), `Production drift anchor is missing the ${domain} alias.`);
+  if (requireDomainAliases) {
+    const aliases = new Set(deploymentAliases(deployment));
+    for (const domain of PRODUCTION_DOMAINS) {
+      requireValue(aliases.has(domain), `Production drift anchor is missing the ${domain} alias.`);
+    }
   }
   if (expectedProductionAnchor) {
     requireValue(deployment.id === expectedProductionAnchor, 'Current Production does not match the reviewed drift anchor.');
@@ -160,8 +168,8 @@ function verifyProductionAnchor(deployment, expectedProductionAnchor = null) {
   return deployment;
 }
 
-function verifyProductionUnchanged(productionBefore, productionAfter) {
-  verifyProductionAnchor(productionAfter);
+function verifyProductionUnchanged(productionBefore, productionAfter, requireDomainAliases = true) {
+  verifyProductionAnchor(productionAfter, null, requireDomainAliases);
   requireValue(
     productionAfter.id === productionBefore.id,
     'Current Production changed while immutable artifacts were being staged or selected.',
@@ -276,10 +284,15 @@ if (mode === 'preview') {
     expectedPullRequest,
     role: 'preview',
     subject: 'Immutable Preview',
+    expectedCheckoutEnabled: true,
   });
-  const productionBefore = verifyProductionAnchor(readJson(options['production-before']));
+  // `vercel inspect <custom-domain> --format=json` proves resolution to a
+  // READY Production deployment but omits the queried custom domain from its
+  // aliases array in CLI 56.1.0. Preserve the stronger alias rule for actual
+  // promotion, while Preview drift protection compares the resolved IDs.
+  const productionBefore = verifyProductionAnchor(readJson(options['production-before']), null, false);
   const productionAfter = readJson(options['production-after']);
-  verifyProductionUnchanged(productionBefore, productionAfter);
+  verifyProductionUnchanged(productionBefore, productionAfter, false);
 
   writeFileSync(options.output, `${JSON.stringify({
     schemaVersion: 'cp.vercel-preview-receipt.v1',
@@ -292,7 +305,7 @@ if (mode === 'preview') {
     pullRequest: Number(expectedPullRequest),
     artifactKind: ARTIFACTS.preview.artifactKind,
     buildEnvironment: ARTIFACTS.preview.buildEnvironment,
-    checkoutEnabled: false,
+    checkoutEnabled: true,
     productionDomainsAssigned: false,
     productionBeforeDeploymentId: productionBefore.id,
     productionAfterPreviewDeploymentId: productionAfter.id,

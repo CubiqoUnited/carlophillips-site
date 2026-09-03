@@ -6,11 +6,11 @@ import { DurableWebhookStore } from '../apps/web/src/lib/commerce/webhook-idempo
 
 describe('durable Shopify webhook idempotency', () => {
   it('fails closed without a durable HTTPS store', () => {
-    expect(() => new DurableWebhookStore('', 'token')).toThrowError(
+    expect(() => new DurableWebhookStore('', 'token', 'preview')).toThrowError(
       'DURABLE_WEBHOOK_STORE_NOT_CONFIGURED'
     );
     expect(
-      () => new DurableWebhookStore('https://redis.example', '')
+      () => new DurableWebhookStore('https://redis.example', '', 'preview')
     ).toThrowError('DURABLE_WEBHOOK_STORE_NOT_CONFIGURED');
   });
 
@@ -23,6 +23,7 @@ describe('durable Shopify webhook idempotency', () => {
     const store = new DurableWebhookStore(
       'https://redis.example',
       'secret-token',
+      'preview',
       fetchImpl
     );
 
@@ -37,7 +38,7 @@ describe('durable Shopify webhook idempotency', () => {
     const claim = JSON.parse(fetchImpl.mock.calls[0][1].body);
     expect(claim.slice(0, 5)).toEqual([
       'SET',
-      'cp:shopify:webhook:webhook-1',
+      'cp:preview:shopify:webhook:webhook-1',
       'claimed',
       'NX',
       'PX',
@@ -45,7 +46,7 @@ describe('durable Shopify webhook idempotency', () => {
     expect(claim[5]).toBeGreaterThan(0);
     const record = JSON.parse(fetchImpl.mock.calls[1][1].body);
     expect(record[0]).toBe('SET');
-    expect(record[1]).toBe('cp:shopify:webhook-event:webhook-1');
+    expect(record[1]).toBe('cp:preview:shopify:webhook-event:webhook-1');
     expect(record[3]).toBe('EX');
     expect(record[4]).toBe(60 * 60 * 24 * 30);
     expect(JSON.parse(record[2])).toEqual({
@@ -54,7 +55,7 @@ describe('durable Shopify webhook idempotency', () => {
     });
     expect(JSON.parse(fetchImpl.mock.calls[2][1].body)).toEqual([
       'DEL',
-      'cp:shopify:webhook:webhook-1',
+      'cp:preview:shopify:webhook:webhook-1',
     ]);
   });
 
@@ -65,10 +66,41 @@ describe('durable Shopify webhook idempotency', () => {
     const store = new DurableWebhookStore(
       'https://redis.example',
       'token',
+      'production',
       fetchImpl
     );
     await expect(
       store.claim('webhook-1', new Date(Date.now() + 60_000))
     ).resolves.toBe(false);
+  });
+
+  it('allows only one of two runtime instances to claim a delivery', async () => {
+    let claimed = false;
+    const fetchImpl = vi.fn(async (_url, init) => {
+      const command = JSON.parse(init.body);
+      if (command[0] !== 'SET' || !command.includes('NX')) {
+        return new Response(JSON.stringify({ result: 'OK' }));
+      }
+      if (claimed) return new Response(JSON.stringify({ result: null }));
+      claimed = true;
+      return new Response(JSON.stringify({ result: 'OK' }));
+    });
+    const first = new DurableWebhookStore(
+      'https://redis.example',
+      'token',
+      'preview',
+      fetchImpl
+    );
+    const second = new DurableWebhookStore(
+      'https://redis.example',
+      'token',
+      'preview',
+      fetchImpl
+    );
+    const results = await Promise.all([
+      first.claim('shared-id', new Date(Date.now() + 60_000)),
+      second.claim('shared-id', new Date(Date.now() + 60_000)),
+    ]);
+    expect(results.sort()).toEqual([false, true]);
   });
 });
