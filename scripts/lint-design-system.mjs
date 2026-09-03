@@ -1,9 +1,19 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
-const sourceRoots = ['app', 'components'];
-const authorities = new Set(['app/design-tokens.css', 'app/opengraph-image.js']);
-const extensions = /\.(?:css|js|jsx)$/;
+const sourceRoots = [
+  'app',
+  'components',
+  'apps/web/src/app',
+  'apps/web/src/components',
+  'packages/design-system/components',
+];
+const authorities = new Set([
+  'app/design-tokens.css',
+  'app/opengraph-image.js',
+  'apps/web/src/app/opengraph-image.tsx',
+]);
+const extensions = /\.(?:css|js|jsx|ts|tsx)$/;
 const violations = [];
 const governedProperty = String.raw`(?:background(?:-color)?|border(?:-[a-z]+)?|box-shadow|text-shadow|color|filter|backdrop-filter|opacity|transform|text-transform|font(?:-[a-z]+)?|line-height|letter-spacing|border-radius|(?:margin|padding|gap|row-gap|column-gap)(?:-[a-z]+)?)`;
 

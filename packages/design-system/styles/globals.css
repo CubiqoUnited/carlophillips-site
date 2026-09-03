@@ -75,6 +75,87 @@
   background: var(--cp-color-rule);
 }
 
+.cp-checkout-confirmation {
+  display: flex;
+  min-height: var(--cp-viewport-height);
+  flex-direction: column;
+  background: var(--cp-color-canvas);
+  color: var(--cp-color-ink);
+  font-weight: var(--cp-weight-light);
+}
+
+.cp-checkout-confirmation-banner {
+  background: var(--cp-color-ink);
+  color: var(--cp-color-canvas);
+  padding: var(--cp-space-2);
+  text-align: center;
+  font-size: var(--cp-size-label);
+  font-weight: var(--cp-weight-semibold);
+  letter-spacing: var(--cp-tracking-label);
+  text-transform: uppercase;
+}
+
+.cp-checkout-confirmation-main {
+  display: flex;
+  width: var(--cp-size-full);
+  max-width: var(--cp-content-reading);
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cp-space-8);
+  padding: var(--cp-space-6);
+  text-align: center;
+}
+
+.cp-checkout-confirmation-muted,
+.cp-checkout-confirmation-copy {
+  color: var(--cp-color-copy);
+}
+
+.cp-checkout-confirmation-panel {
+  display: flex;
+  width: var(--cp-size-full);
+  flex-direction: column;
+  gap: var(--cp-space-4);
+  border: var(--cp-border-rule);
+  border-radius: var(--cp-shape-card);
+  background: var(--cp-color-panel-raised);
+  padding: var(--cp-space-8);
+  text-align: left;
+}
+
+.cp-checkout-confirmation-panel-title {
+  border-bottom: var(--cp-border-rule);
+  padding-bottom: var(--cp-space-4);
+  color: var(--cp-color-ink-muted);
+}
+
+.cp-checkout-confirmation-actions {
+  display: flex;
+  width: var(--cp-size-full);
+  gap: var(--cp-space-4);
+}
+
+.cp-checkout-confirmation-actions .cp-action {
+  flex: 1;
+}
+
+.cp-checkout-confirmation-primary {
+  background: var(--cp-color-ink);
+  color: var(--cp-color-canvas);
+}
+
+.cp-checkout-confirmation-secondary {
+  border: var(--cp-border-rule-strong);
+}
+
+@media (max-width: 39rem) {
+  .cp-checkout-confirmation-actions {
+    flex-direction: column;
+  }
+}
+
 .cp-variant-list > .cp-checkout-select {
   margin-top: var(--cp-space-3);
 }
