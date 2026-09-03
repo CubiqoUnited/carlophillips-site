@@ -27,6 +27,10 @@ const productionCommerceVerifier = readFileSync(
   'scripts/verify-production-commerce-release.mjs',
   'utf8'
 );
+const webhookEndpointVerifier = readFileSync(
+  'scripts/verify-shopify-webhook-endpoint.mjs',
+  'utf8'
+);
 const verifierPath = join(
   process.cwd(),
   '.github/scripts/verify-vercel-receipt.mjs'
@@ -337,6 +341,8 @@ describe('CI/CD policy', () => {
       staging.indexOf('Assign protected Staging domain')
     );
     expect(staging).toContain('yarn verify:webhook-endpoint');
+    expect(webhookEndpointVerifier).toContain("'--deployment'");
+    expect(webhookEndpointVerifier).not.toContain("'--scope'");
     expect(staging).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
   });
 

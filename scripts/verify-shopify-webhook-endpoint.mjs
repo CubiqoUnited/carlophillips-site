@@ -29,8 +29,6 @@ if (process.env.VERCEL_TOKEN && process.env.VERCEL_SCOPE) {
     endpoint.pathname,
     '--deployment',
     baseUrl,
-    '--scope',
-    process.env.VERCEL_SCOPE,
     '--token',
     process.env.VERCEL_TOKEN,
     '--',
