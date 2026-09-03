@@ -18,14 +18,17 @@
   candidate/promotion reject missing or mismatched proof.
 - Local verification passed with Yarn Classic 1.22.22: 678 Vitest tests, lint,
   typecheck, stylelint, format, Storybook, dependency audit, optimized build and
-  26/26 Playwright checks at 1440 px and 390 px. The six updated visual
-  baselines passed an independent comparison and were inspected offscreen.
+  26/26 Playwright checks at 1440 px and 390 px. The six macOS visual baselines
+  passed an independent comparison and were inspected offscreen. The matching
+  Linux captures from PR #68 were byte-identical across the initial run and
+  retry, inspected offscreen, and retained as the cross-platform expectations.
 - The 2026-09-02 test-gateway order is now explicitly stale for this release:
   it predates the combined application-plus-gate commit and cannot provide its
   immutable signed receipt.
-- PR creation remains deferred until PR #67 is merged so its customer UI is
-  reconciled once without a competing lifecycle PR. Production promotion and
-  cleanup remain locked. Current human action and resume point are at the top of
+- Draft PR #68 carries this gate and remains dependent on PR #67; it must be
+  reconciled with the merged lifecycle candidate and fully retested before it
+  can leave draft. Production promotion and cleanup remain locked. Current
+  human action and resume point are at the top of
   `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
 
 ## Shopify closure safety candidate — 2026-09-02

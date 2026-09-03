@@ -723,7 +723,9 @@
 - [x] Replace checkout-disabled Production fallback with previous verified checkout-enabled rollback.
 - [x] Add desktop/mobile homepage, PDP and bag screenshot comparison gates.
 - [x] Pass 77/77 Vitest files (649 tests), lint, typecheck, stylelint, format, build and 26/26 Playwright checks locally.
-- [ ] Push the explicit candidate commit, open the PR to `main`, and receive required green checks/review.
+- [x] Push the explicit gate candidate and open draft PR #68 to `main`.
+- [ ] Receive required green checks/review after reconciling PR #68 with merged
+      PR #67.
 - [ ] Verify distinct Staging Shopify and durable-store bindings without exposing secrets.
 - [ ] Protect `main` with PR review plus required `Verify` and `Checkout E2E and accessibility` checks; restrict retained `staging`; configure protected `Staging` environment reviewer and deployment credentials.
 - [ ] Merge the reviewed PR and deploy that exact merged `main` SHA to `staging.carlophillips.com`.
@@ -756,9 +758,9 @@
       `test_reports/`.
 - [ ] Rebind the GitHub Staging `VERCEL_TOKEN` to canonical Cubiqo team/project
       access and signal `CP canonical Staging Vercel token ready`.
-- [ ] Merge PR #67, rebase the release-gate branch onto that merged `main`, open
-      its PR, pass all local/PR checks, and deploy only the resulting combined
-      `main` merge SHA to protected Staging.
+- [ ] Merge PR #67, rebase the release-gate branch onto that merged `main`,
+      update draft PR #68, pass all local/PR checks, and deploy only the
+      resulting combined `main` merge SHA to protected Staging.
 - [ ] Complete the fresh protected synthetic Shopify test order only after the
       separate payment-entry intervention is recorded; capture redacted
       confirmation/status evidence, cancel/refund/restock and prove no Apliiq job.

@@ -375,6 +375,8 @@ describe('CI/CD policy', () => {
     expect(staging).toContain('yarn test:e2e');
     expect(staging).toContain('collect-protected-shopify-proof.mjs snapshot');
     expect(staging).toContain('playwright.release.config.ts');
+    expect(releasePlaywright).toContain('width: 1440');
+    expect(releasePlaywright).toContain('width: 390');
     expect(releasePlaywright).toContain("reporter: [['list']]");
     expect(releasePlaywright).not.toContain("['json'");
     expect(releasePlaywright).not.toContain("['html'");
