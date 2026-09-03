@@ -51,9 +51,13 @@ if (process.env.VERCEL_TOKEN && process.env.VERCEL_SCOPE) {
       ? 'AUTH'
       : /option .*unknown|unknown option/i.test(diagnostic)
         ? 'OPTION'
-        : /deployment.*not found|project.*not found/i.test(diagnostic)
-          ? 'TARGET'
-          : 'UNKNOWN';
+        : /curl:/i.test(diagnostic)
+          ? `CURL_${result.status ?? 'SPAWN'}`
+          : /error:/i.test(diagnostic)
+            ? `VERCEL_${result.status ?? 'SPAWN'}`
+            : diagnostic.trim()
+              ? `OTHER_${result.status ?? 'SPAWN'}`
+              : `EMPTY_${result.status ?? 'SPAWN'}`;
     throw new Error(`WEBHOOK_PROBE_TRANSPORT_FAILED_${reason}`);
   }
   const lines = result.stdout.trimEnd().split('\n');
