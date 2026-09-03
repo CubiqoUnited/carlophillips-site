@@ -1,0 +1,67 @@
+name: Protected Staging Webhook Probe
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Open pull request number targeting main
+        required: true
+        type: number
+      expected_sha:
+        description: Full pull-request head SHA containing the probe
+        required: true
+        type: string
+      deployment_url:
+        description: Immutable protected Vercel deployment URL
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: Staging
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+      VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE }}
+      CP_WEBHOOK_BASE_URL: ${{ inputs.deployment_url }}
+      SHOPIFY_WEBHOOK_SECRET: ${{ secrets.SHOPIFY_STAGING_WEBHOOK_SECRET }}
+      SHOPIFY_WEBHOOK_ALLOWED_SHOPS: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_sha }}
+
+      - name: Validate exact open-PR and immutable deployment inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          DEPLOYMENT_URL: ${{ inputs.deployment_url }}
+        run: |
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$DEPLOYMENT_URL" =~ ^https://[a-z0-9-]+\.vercel\.app$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > pull.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const pull = JSON.parse(fs.readFileSync('pull.json', 'utf8'));
+          if (pull.state !== 'open') throw new Error('STAGING_PR_MUST_BE_OPEN');
+          if (pull.base?.ref !== 'main') throw new Error('STAGING_PR_BASE_MUST_BE_MAIN');
+          if (pull.head?.sha !== process.env.EXPECTED_SHA) throw new Error('STAGING_PR_HEAD_MISMATCH');
+          NODE
+
+      - name: Install pinned Vercel CLI
+        run: yarn global add vercel@56.1.0
+
+      - name: Link canonical isolated Preview project
+        run: vercel pull --yes --environment=preview --scope="$VERCEL_SCOPE" --token="$VERCEL_TOKEN"
+
+      - name: Run signed PII-free webhook probe only
+        run: node scripts/verify-shopify-webhook-endpoint.mjs
