@@ -1,4 +1,45 @@
-# RED — SHOPIFY CLOSURE STAGING ISOLATION (CURRENT)
+# CURRENT — RELEASE CLOSURE STATUS (AUTHORITATIVE)
+
+Updated: 2026-09-02 22:36 EDT
+
+## Completed
+
+- PR #55 merged to `main` as `9f991c8bf4f1f1488e2772e8fe1f807aae28fdb1`.
+- Protected Staging run `33707837695` passed for exact commit
+  `24cec94478fb5cd0ae68da436d1a594da29c7e48` and deployed
+  `dpl_DrP9kq8zMPjJttc1GekzG56WmXH9` to `staging.carlophillips.com` in the
+  canonical Cubiqo project. Its signed zero-PII webhook probe passed.
+- The isolated Shopify development-store product has 12 ready media assets,
+  approved description, Black S/M/L variants, USD 128 pricing, test-only SKUs,
+  and 25 units per size.
+- A zero-charge Shopify Test Payment Gateway order proved cart, checkout,
+  payment, native confirmation, signed webhook ingestion, cancellation,
+  bogus-gateway refund, inventory restock, and native cancellation notice.
+  The order is canceled, refunded, archived, and requires no fulfillment.
+- Local and remote Git now retain only `main` and `staging`; exactly two clean
+  worktrees remain. All removed work is recoverable from
+  `/Users/edv/Documents/CARLOPHILLIPS-ARCHIVE-2026-09-02`.
+- Production was restored after an unintended Git deployment returned HTTP 500.
+  `www.carlophillips.com` is healthy on checkout-enabled deployment
+  `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ`.
+
+## External convergence completed
+
+The canonical Cubiqo project is `team_Q25fvpJOPiIeoG3hfxtCVkhW` /
+`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` and now owns Production plus isolated
+protected Staging. After exact-domain, environment, deployment, workflow and
+Git-link inventory, redundant Aditya project
+`prj_i51hiKpEKrwaqblD2vaO6zhXUDCs` was deleted by ID. Staging and Production
+both returned HTTP 200 after deletion; apex and `www` remained on verified
+checkout-enabled Production deployment `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ`.
+
+No Apliiq Staging handoff was configured or triggered. Production Apliiq
+intake/tracking still requires a separately approved real Production order;
+the development store cannot prove provider production fulfillment.
+
+---
+
+# SUPERSEDED — SHOPIFY CLOSURE STAGING ISOLATION
 
 Updated: 2026-09-02
 
@@ -569,6 +610,7 @@ Vercel build. A separate workflow defect was exposed: Vercel CLI 56 rejects
 `--skip-domain` on non-Production deployments. The Preview and protected
 Staging workflows and their CI contract tests were corrected to omit that flag;
 the Production candidate retains `--prod --skip-domain`.
+
 # STAGING CATALOG ACTION CONFIRMATION — 2026-09-02
 
 The isolated Shopify development store is connected correctly, but it contains only Shopify sample snowboard products. The canonical CARLOPHILLIPS handle therefore renders unavailable and cannot expose Add to Bag.
