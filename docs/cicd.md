@@ -30,13 +30,14 @@ cancellation, full refund, inventory restoration and no Apliiq Production job.
   Yarn Classic 1.22.22, frozen dependencies, lint, typecheck, stylelint, tests,
   build, E2E, accessibility, privacy/network checks and screenshot comparisons.
 - `Protected Vercel Staging` runs only for the exact current `staging` merge SHA
-  of the supplied PR. It requires the protected `Staging` environment, reads
-  the isolated Shopify development store, captures its initial S/M/L
-  inventory, proves Production is healthy and checkout-enabled, deploys one
+  of the supplied PR. It requires the protected `Staging` environment, proves
+  Production is healthy and checkout-enabled, deploys one
   unaliased immutable Preview artifact, verifies it before assigning
   `staging.carlophillips.com`, runs 1440 px and 390 px functional/a11y/browser
-  checks, sends a signed webhook twice to prove duplicate suppression, and
-  proves Production remained unchanged.
+  checks against the dedicated Shopify Staging Storefront API and hosted
+  checkout, sends a signed PII-free webhook twice to prove duplicate
+  suppression, and proves Production remained unchanged. This deployment gate
+  does not request Shopify Admin, order, customer, payment or fulfillment data.
 - `Protected Staging Release Proof` runs after the synthetic order has been
   paid through Shopify's test gateway, reviewed, cancelled and refunded with
   restock. It downloads the exact Staging artifact, queries only non-customer
@@ -61,15 +62,19 @@ Never print or commit secret values. The canonical Vercel identity is team
 `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`, scope
 `cubiqo-projects-d7156840`.
 
-The `Staging` GitHub environment requires a Product Owner reviewer and:
+The `Staging` GitHub environment requires a Product Owner reviewer. The
+Shopify-mimic deployment gate requires:
 
-- secrets: `VERCEL_TOKEN`, `VERCEL_AUTOMATION_BYPASS_SECRET`,
-  `SHOPIFY_STAGING_WEBHOOK_SECRET`, `SHOPIFY_STAGING_ADMIN_TOKEN`, the isolated
-  Upstash REST URL/token, and `CP_RELEASE_RECEIPT_SIGNING_SECRET`;
+- secrets: `VERCEL_TOKEN`, `VERCEL_AUTOMATION_BYPASS_SECRET`, and
+  `SHOPIFY_STAGING_WEBHOOK_SECRET`;
 - variables: canonical `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `VERCEL_SCOPE`,
-  `SHOPIFY_STAGING_STORE_DOMAIN`, `SHOPIFY_STAGING_CHECKOUT_HOSTS`,
-  `SHOPIFY_PRODUCTION_STORE_DOMAIN`, `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID`,
-  and `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`.
+  `SHOPIFY_STAGING_STORE_DOMAIN`, and `SHOPIFY_STAGING_CHECKOUT_HOSTS`.
+
+The later protected synthetic-order release proof additionally requires a
+read-only Shopify Admin credential, the isolated Upstash REST URL/token,
+`CP_RELEASE_RECEIPT_SIGNING_SECRET`, `SHOPIFY_PRODUCTION_STORE_DOMAIN`,
+`CP_EXPECTED_PREVIEW_DURABLE_STORE_ID`, and
+`CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`.
 
 The two Shopify domains and durable-store IDs must differ. Preview must use a
 Shopify partner development store, test-only product/inventory/payment and its
