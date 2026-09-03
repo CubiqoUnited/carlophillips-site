@@ -1,13 +1,14 @@
 # CURRENT — RELEASE CLOSURE STATUS (AUTHORITATIVE)
 
-Updated: 2026-09-02 22:10 EDT
+Updated: 2026-09-02 22:36 EDT
 
 ## Completed
 
 - PR #55 merged to `main` as `9f991c8bf4f1f1488e2772e8fe1f807aae28fdb1`.
-- Protected Staging run `33704738003` passed for candidate
-  `09146d3521f0e2fbfc0283e7fab7e63597225c02` and deployed
-  `dpl_Gra4nSHwvGDCvpqHuefhtwJUGoxZ` to `staging.carlophillips.com`.
+- Protected Staging run `33707837695` passed for exact commit
+  `24cec94478fb5cd0ae68da436d1a594da29c7e48` and deployed
+  `dpl_DrP9kq8zMPjJttc1GekzG56WmXH9` to `staging.carlophillips.com` in the
+  canonical Cubiqo project. Its signed zero-PII webhook probe passed.
 - The isolated Shopify development-store product has 12 ready media assets,
   approved description, Black S/M/L variants, USD 128 pricing, test-only SKUs,
   and 25 units per size.
@@ -22,20 +23,15 @@ Updated: 2026-09-02 22:10 EDT
   `www.carlophillips.com` is healthy on checkout-enabled deployment
   `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ`.
 
-## Remaining external convergence
+## External convergence completed
 
-Two Vercel projects are still active and therefore neither may be deleted yet:
-
-- Production/public domains: Cubiqo `team_Q25fvpJOPiIeoG3hfxtCVkhW` /
-  `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`.
-- Protected Staging: Aditya `team_8ABMxicIAtMyzgNYsJawFad0` /
-  `prj_i51hiKpEKrwaqblD2vaO6zhXUDCs`.
-
-The smallest safe closure is to deploy and verify protected Staging in the
-Cubiqo project using its isolated Preview bindings, move only
-`staging.carlophillips.com`, then delete the Aditya project after its domains,
-environment resources, and deployments have no remaining dependency. Never
-delete either project by display name alone.
+The canonical Cubiqo project is `team_Q25fvpJOPiIeoG3hfxtCVkhW` /
+`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` and now owns Production plus isolated
+protected Staging. After exact-domain, environment, deployment, workflow and
+Git-link inventory, redundant Aditya project
+`prj_i51hiKpEKrwaqblD2vaO6zhXUDCs` was deleted by ID. Staging and Production
+both returned HTTP 200 after deletion; apex and `www` remained on verified
+checkout-enabled Production deployment `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ`.
 
 No Apliiq Staging handoff was configured or triggered. Production Apliiq
 intake/tracking still requires a separately approved real Production order;
@@ -614,6 +610,7 @@ Vercel build. A separate workflow defect was exposed: Vercel CLI 56 rejects
 `--skip-domain` on non-Production deployments. The Preview and protected
 Staging workflows and their CI contract tests were corrected to omit that flag;
 the Production candidate retains `--prod --skip-domain`.
+
 # STAGING CATALOG ACTION CONFIRMATION — 2026-09-02
 
 The isolated Shopify development store is connected correctly, but it contains only Shopify sample snowboard products. The canonical CARLOPHILLIPS handle therefore renders unavailable and cannot expose Add to Bag.

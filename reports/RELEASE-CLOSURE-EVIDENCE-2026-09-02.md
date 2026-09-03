@@ -28,13 +28,14 @@
 
 ## Protected Staging
 
-- Workflow run: `33704738003`
-- Job: `100491352259`
-- Deployment: `dpl_Gra4nSHwvGDCvpqHuefhtwJUGoxZ`
+- Workflow run: `33707837695`
+- Job: `100500743638`
+- Exact source commit: `24cec94478fb5cd0ae68da436d1a594da29c7e48`
+- Deployment: `dpl_DrP9kq8zMPjJttc1GekzG56WmXH9`
 - Immutable URL:
-  `https://carlophillips-site-k7x8uu5ad-adityas-projects-261b17a9.vercel.app`
+  `https://carlophillips-site-ko2edpg6s-cubiqo-projects-d7156840.vercel.app`
 - Review URL: `https://staging.carlophillips.com`
-- Receipt artifact: `9874936641`
+- Receipt artifact: `9875962864`
 - Signed zero-PII webhook probe: passed.
 - Eight Shopify subscriptions: registered and read back.
 
@@ -65,13 +66,16 @@
 
 ## Vercel project disposition
 
-- Cubiqo/public Production:
+- Canonical Cubiqo Production and protected Staging project:
   `team_Q25fvpJOPiIeoG3hfxtCVkhW` /
   `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`.
-- Aditya/protected Staging:
+- Removed redundant Aditya project:
   `team_8ABMxicIAtMyzgNYsJawFad0` /
   `prj_i51hiKpEKrwaqblD2vaO6zhXUDCs`.
 
-Both are active dependencies. Deletion is blocked until protected Staging is
-migrated and verified on Cubiqo, its domain is moved, and Aditya has zero
-remaining domain/environment/deployment dependency.
+The root Vercel domain ownership and `staging.carlophillips.com` alias were
+moved to Cubiqo only after the Cubiqo immutable deployment passed pre-alias
+verification. The Aditya project was then verified to have no custom domain or
+workflow dependency and deleted by exact project ID. `www` and apex remained
+on Production deployment `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ` throughout the
+final convergence.
