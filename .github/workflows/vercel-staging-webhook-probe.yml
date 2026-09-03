@@ -32,6 +32,7 @@ jobs:
       SHOPIFY_WEBHOOK_SECRET: ${{ secrets.SHOPIFY_STAGING_WEBHOOK_SECRET }}
       SHOPIFY_WEBHOOK_ALLOWED_SHOPS: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
     steps:
       - uses: actions/checkout@v4
         with:
