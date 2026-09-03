@@ -343,6 +343,7 @@ describe('CI/CD policy', () => {
     expect(staging).toContain('yarn verify:webhook-endpoint');
     expect(webhookEndpointVerifier).toContain("'--deployment'");
     expect(webhookEndpointVerifier).not.toContain("'--scope'");
+    expect(webhookEndpointVerifier).not.toContain("'--token'");
     expect(staging).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
   });
 
