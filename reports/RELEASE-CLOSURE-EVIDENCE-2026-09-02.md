@@ -2,9 +2,9 @@
 
 ## Repository
 
-- Production branch: `main@9f991c8bf4f1f1488e2772e8fe1f807aae28fdb1`
-- Staging branch: `staging@09146d3521f0e2fbfc0283e7fab7e63597225c02`
-- PR #55: merged
+- Production application baseline: `main@7cbde6b43526428ec2dd40a1a9b9099a4364b2d6`
+- Staging branch: `staging@ff011904e01b6e803239769cdbb302f89c508ec4`
+- PRs #55 and #65: merged
 - Local branches: `main`, `staging`
 - Remote branches: `main`, `staging`
 - Worktrees: `/Users/edv/Documents/cp`, `/Users/edv/Documents/cp-staging`
@@ -28,14 +28,14 @@
 
 ## Protected Staging
 
-- Workflow run: `33707837695`
-- Job: `100500743638`
-- Exact source commit: `24cec94478fb5cd0ae68da436d1a594da29c7e48`
-- Deployment: `dpl_DrP9kq8zMPjJttc1GekzG56WmXH9`
+- Workflow run: `33708272754`
+- Job: `100502059981`
+- Exact source commit: `ff011904e01b6e803239769cdbb302f89c508ec4`
+- Deployment: `dpl_7jwf7wZrgWdgi4wmNoGfSSGkDXDQ`
 - Immutable URL:
-  `https://carlophillips-site-ko2edpg6s-cubiqo-projects-d7156840.vercel.app`
+  `https://carlophillips-site-2loyz0gbd-cubiqo-projects-d7156840.vercel.app`
 - Review URL: `https://staging.carlophillips.com`
-- Receipt artifact: `9875962864`
+- Receipt artifact: `9876117774`
 - Signed zero-PII webhook probe: passed.
 - Eight Shopify subscriptions: registered and read back.
 
@@ -61,8 +61,12 @@
   `dpl_8fyW9UJDMMs97pTwV6F7w5aKfgHi` returned HTTP 500 at the public domains.
 - Immediate rollback promoted verified checkout-enabled deployment
   `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ`.
+- Evidence-only PR #65 caused Vercel to start Production-target deployment
+  `dpl_9v24z9tSApfdBy1qtL8hiQyFM7EE`; it was canceled while Building and never
+  received the apex or `www` aliases.
 - Final public health: `https://www.carlophillips.com` HTTP 200.
-- Cubiqo project Git deployment creation is disabled.
+- Cubiqo project Git integration is disconnected: `link: null`,
+  `gitRepository: null`, and `gitProviderOptions.createDeployments: disabled`.
 
 ## Vercel project disposition
 
@@ -79,3 +83,12 @@ verification. The Aditya project was then verified to have no custom domain or
 workflow dependency and deleted by exact project ID. `www` and apex remained
 on Production deployment `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ` throughout the
 final convergence.
+
+## Final visual evidence
+
+- Absolute directory:
+  `/Users/edv/Documents/CARLOPHILLIPS-ARCHIVE-2026-09-02/verification-2026-09-02/final-cubiqo-staging`
+- Verified files: `desktop-home.png`, `desktop-pdp.png`,
+  `desktop-pdp-fold.png`, `mobile-home.png`, `mobile-pdp.png`, and
+  `mobile-pdp-fold.png`.
+- Desktop viewport: 1440 px. Mobile viewport: 390 px.

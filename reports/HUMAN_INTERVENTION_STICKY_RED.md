@@ -1,13 +1,15 @@
 # CURRENT — RELEASE CLOSURE STATUS (AUTHORITATIVE)
 
-Updated: 2026-09-02 22:36 EDT
+Updated: 2026-09-02 22:45 EDT
 
 ## Completed
 
-- PR #55 merged to `main` as `9f991c8bf4f1f1488e2772e8fe1f807aae28fdb1`.
-- Protected Staging run `33707837695` passed for exact commit
-  `24cec94478fb5cd0ae68da436d1a594da29c7e48` and deployed
-  `dpl_DrP9kq8zMPjJttc1GekzG56WmXH9` to `staging.carlophillips.com` in the
+- PRs #55 and #65 are merged; the Production application baseline is
+  `main@7cbde6b43526428ec2dd40a1a9b9099a4364b2d6` and protected Staging is
+  `staging@ff011904e01b6e803239769cdbb302f89c508ec4`.
+- Protected Staging run `33708272754` passed for exact commit
+  `ff011904e01b6e803239769cdbb302f89c508ec4` and deployed
+  `dpl_7jwf7wZrgWdgi4wmNoGfSSGkDXDQ` to `staging.carlophillips.com` in the
   canonical Cubiqo project. Its signed zero-PII webhook probe passed.
 - The isolated Shopify development-store product has 12 ready media assets,
   approved description, Black S/M/L variants, USD 128 pricing, test-only SKUs,
@@ -22,6 +24,10 @@ Updated: 2026-09-02 22:36 EDT
 - Production was restored after an unintended Git deployment returned HTTP 500.
   `www.carlophillips.com` is healthy on checkout-enabled deployment
   `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ`.
+- Production-target deployment `dpl_9v24z9tSApfdBy1qtL8hiQyFM7EE`, started by
+  the evidence-only merge, was canceled before it became live. The canonical
+  Vercel project now has `link: null`, `gitRepository: null`, and Git deployment
+  creation disabled.
 
 ## External convergence completed
 
