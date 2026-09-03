@@ -115,6 +115,7 @@ jobs:
       - name: Deploy without aliases
         id: staging
         env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
           RELEASE: ${{ inputs.release }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
@@ -124,8 +125,8 @@ jobs:
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED=true \
             --env SHOPIFY_CHECKOUT_ENABLED=true \
-            --meta gitCommitSha="$GITHUB_SHA" \
-            --meta cpGitCommitSha="$GITHUB_SHA" \
+            --meta gitCommitSha="$EXPECTED_SHA" \
+            --meta cpGitCommitSha="$EXPECTED_SHA" \
             --meta cpRelease="$RELEASE" \
             --meta cpArtifactKind=protected-staging \
             --meta cpBuildEnvironment=preview \
@@ -171,14 +172,14 @@ jobs:
             echo "## Protected Staging deployment"
             echo "- URL: https://staging.carlophillips.com"
             echo "- Immutable deployment: ${{ steps.staging.outputs.url }}"
-            echo "- Commit: $GITHUB_SHA"
+            echo "- Commit: ${{ inputs.expected_sha }}"
             echo "- Checkout enabled: true"
             echo "- Shopify-origin test order remains a separate closure check"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: staging-receipt-${{ github.sha }}
+          name: staging-receipt-${{ inputs.expected_sha }}
           path: |
             staging-environment.json
             staging-pr.json

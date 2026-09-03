@@ -345,6 +345,11 @@ describe('CI/CD policy', () => {
     expect(staging).not.toContain('--skip-domain');
     expect(staging).toContain('--meta cpArtifactKind=protected-staging');
     expect(staging).toContain('--meta cpCheckoutEnabled=true');
+    expect(staging).toContain('--meta cpGitCommitSha="$EXPECTED_SHA"');
+    expect(staging).toContain(
+      'name: staging-receipt-${{ inputs.expected_sha }}'
+    );
+    expect(staging).not.toContain('--meta cpGitCommitSha="$GITHUB_SHA"');
     expect(staging).toContain('yarn test:e2e');
     expect(staging).toContain('Verify deployment before aliasing');
     expect(staging).toContain(
