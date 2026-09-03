@@ -1,4 +1,49 @@
-# RED — SHOPIFY CLOSURE STAGING ISOLATION (CURRENT)
+# CURRENT — RELEASE CLOSURE STATUS (AUTHORITATIVE)
+
+Updated: 2026-09-02 22:10 EDT
+
+## Completed
+
+- PR #55 merged to `main` as `9f991c8bf4f1f1488e2772e8fe1f807aae28fdb1`.
+- Protected Staging run `33704738003` passed for candidate
+  `09146d3521f0e2fbfc0283e7fab7e63597225c02` and deployed
+  `dpl_Gra4nSHwvGDCvpqHuefhtwJUGoxZ` to `staging.carlophillips.com`.
+- The isolated Shopify development-store product has 12 ready media assets,
+  approved description, Black S/M/L variants, USD 128 pricing, test-only SKUs,
+  and 25 units per size.
+- A zero-charge Shopify Test Payment Gateway order proved cart, checkout,
+  payment, native confirmation, signed webhook ingestion, cancellation,
+  bogus-gateway refund, inventory restock, and native cancellation notice.
+  The order is canceled, refunded, archived, and requires no fulfillment.
+- Local and remote Git now retain only `main` and `staging`; exactly two clean
+  worktrees remain. All removed work is recoverable from
+  `/Users/edv/Documents/CARLOPHILLIPS-ARCHIVE-2026-09-02`.
+- Production was restored after an unintended Git deployment returned HTTP 500.
+  `www.carlophillips.com` is healthy on checkout-enabled deployment
+  `dpl_GTkysazmXPKnwK7rHGTYhaWVJYLZ`.
+
+## Remaining external convergence
+
+Two Vercel projects are still active and therefore neither may be deleted yet:
+
+- Production/public domains: Cubiqo `team_Q25fvpJOPiIeoG3hfxtCVkhW` /
+  `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`.
+- Protected Staging: Aditya `team_8ABMxicIAtMyzgNYsJawFad0` /
+  `prj_i51hiKpEKrwaqblD2vaO6zhXUDCs`.
+
+The smallest safe closure is to deploy and verify protected Staging in the
+Cubiqo project using its isolated Preview bindings, move only
+`staging.carlophillips.com`, then delete the Aditya project after its domains,
+environment resources, and deployments have no remaining dependency. Never
+delete either project by display name alone.
+
+No Apliiq Staging handoff was configured or triggered. Production Apliiq
+intake/tracking still requires a separately approved real Production order;
+the development store cannot prove provider production fulfillment.
+
+---
+
+# SUPERSEDED — SHOPIFY CLOSURE STAGING ISOLATION
 
 Updated: 2026-09-02
 
