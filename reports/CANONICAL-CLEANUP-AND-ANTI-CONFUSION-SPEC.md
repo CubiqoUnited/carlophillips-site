@@ -1,7 +1,7 @@
 # CARLOPHILLIPS — Canonical Cleanup and Anti-Confusion Specification
 
-**Status:** Required cleanup contract; destructive actions remain approval-gated  
-**Verified:** 2026-09-02  
+**Status:** Required cleanup contract; destructive actions remain approval-gated
+**Verified:** 2026-09-02
 **Repository:** `CubiqoUnited/carlophillips-site`
 
 ## Table of contents
