@@ -162,6 +162,7 @@ jobs:
           CP_WEBHOOK_BASE_URL: https://staging.carlophillips.com
           SHOPIFY_WEBHOOK_SECRET: ${{ secrets.SHOPIFY_STAGING_WEBHOOK_SECRET }}
           SHOPIFY_WEBHOOK_ALLOWED_SHOPS: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: yarn verify:webhook-endpoint
 
       - name: Publish Staging receipt
