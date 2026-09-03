@@ -2624,6 +2624,10 @@ mux-video.cp-product-motion-video {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .cp-aftercare-continuation-wide {
+    grid-column: 1 / -1;
+  }
+
   .cp-fit-memory-row .cp-member-form {
     margin-top: 0;
   }

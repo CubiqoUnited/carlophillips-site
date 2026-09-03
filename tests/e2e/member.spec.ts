@@ -42,13 +42,19 @@ for (const viewport of [
     await expect(
       page.getByText('Self-service returns are not configured')
     ).toBeVisible();
-    await expect(page.getByText('No CP Credit balance is shown')).toBeVisible();
+    await expect(page.getByText('CP Credit')).toHaveCount(0);
     await expect(
       page.getByRole('link', { name: 'Ask CP support' })
     ).toHaveAttribute('href', '/contact');
     await expect(
       page.getByRole('link', { name: 'Continue shopping' })
     ).toHaveAttribute('href', '/shop');
+
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({
+      path: testInfo.outputPath(`aftercare-${viewport.name}.png`),
+      fullPage: true,
+    });
 
     await page.getByLabel('Preferred size').selectOption('M');
     await page.getByLabel('Preferred fit').selectOption('Relaxed');
@@ -72,11 +78,5 @@ for (const viewport of [
     expect(results.violations).toEqual([]);
     expect(consoleErrors).toEqual([]);
     expect(unexpectedFailedRequests).toEqual([]);
-
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.screenshot({
-      path: testInfo.outputPath(`aftercare-${viewport.name}.png`),
-      fullPage: true,
-    });
   });
 }

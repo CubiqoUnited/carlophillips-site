@@ -1,0 +1,137 @@
+[
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/18-dc036a1abbadaf05.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/343.7e1aedf320522b55.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/489-86b8de776cbbeb0b.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/664-6d821dc1aacb6b48.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/85582243.ccb77e5d25a9cf58.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/87c73c54-0375ba195de27293.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/90-31ef2cd00197613d.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/app/(editorial)/page-b2d7f9310a28cac9.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/app/aftercare/page-aadcec069e29f935.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/app/contact/page-fae1303e2ba14b5f.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/app/product/%5Bhandle%5D/page-9421f63868810116.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/main-app-0d1311bccaec9d98.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/chunks/webpack-3ac1e715d455fcb9.js"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/css/3d9e9fdc31edfd95.css"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/css/dec76e11c81c41ef.css"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/css/ef46db3751d8e999.css"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/media/runway-editorial-realism-cross-frame-warm-entry-cachefix-v6.730be646.png"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/_next/static/media/runway-editorial-realism-tablet-warm-entry-cachefix-v6.9c5d8ced.png"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/aftercare"
+  },
+  {
+    "method": "POST",
+    "origin": "http://localhost:3000",
+    "path": "/api/contact"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/bag"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/contact"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/product/carlophillips-signature-hoodie"
+  },
+  {
+    "method": "GET",
+    "origin": "http://localhost:3000",
+    "path": "/shop"
+  },
+  {
+    "method": "GET",
+    "origin": "https://image.mux.com",
+    "path": "/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc/thumbnail.jpg"
+  },
+  {
+    "method": "GET",
+    "origin": "https://stream.mux.com",
+    "path": "/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc.m3u8"
+  }
+]

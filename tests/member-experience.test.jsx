@@ -16,12 +16,25 @@ describe('CP Aftercare experience', () => {
     expect(html).toContain('Dispatched');
     expect(html).toContain('Delivered');
     expect(html).toContain('Return or refund');
-    expect(html).toContain('CP Credit');
     expect(html).toContain('Fit memory');
     expect(html).toContain('Shopify authoritative');
     expect(html).toContain('Self-service returns are not configured');
-    expect(html).toContain('No CP Credit balance is shown');
+    expect(html).not.toContain('CP Credit');
     expect(html).not.toContain('€15.00');
     expect(html).not.toContain('PRIVATE PREVIEW');
+  });
+
+  it('shows CP Credit only when authenticated Shopify truth enables it', () => {
+    const capabilities = resolvePostPurchaseCapabilities({}, 'production', {
+      authenticated: true,
+      reviewEligibility: 'unknown',
+      creditAccountAvailable: true,
+      creditUrl: 'https://shop.example.com/account/credit',
+    });
+    const html = renderToStaticMarkup(
+      <MemberExperience capabilities={capabilities} />
+    );
+    expect(html).toContain('CP Credit');
+    expect(html).toContain('View CP Credit');
   });
 });

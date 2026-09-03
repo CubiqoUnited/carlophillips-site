@@ -124,16 +124,24 @@ export function MemberExperience({
             />
           </article>
 
-          <article className="cp-card-panel cp-member-saved">
-            <p className="cp-member-section-label">CP Credit</p>
-            <h3>No invented balance.</h3>
-            <CapabilityAction
-              capability={capabilities.credit}
-              label="View CP Credit"
-            />
-          </article>
+          {capabilities.credit.available && (
+            <article className="cp-card-panel cp-member-saved">
+              <p className="cp-member-section-label">CP Credit</p>
+              <h3>Your balance stays in Shopify.</h3>
+              <CapabilityAction
+                capability={capabilities.credit}
+                label="View CP Credit"
+              />
+            </article>
+          )}
 
-          <article className="cp-card-panel cp-member-saved">
+          <article
+            className={`cp-card-panel cp-member-saved${
+              capabilities.credit.available
+                ? ''
+                : ' cp-aftercare-continuation-wide'
+            }`}
+          >
             <p className="cp-member-section-label">Continue the relationship</p>
             <h3>Return to the collection.</h3>
             <p>

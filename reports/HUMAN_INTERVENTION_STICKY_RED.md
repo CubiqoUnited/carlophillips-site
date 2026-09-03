@@ -1,39 +1,54 @@
 # CURRENT — POST-SALE CAPABILITY ACTIVATION (HUMAN-OWNED)
 
-Updated: 2026-09-03 00:25 EDT
+Updated: 2026-09-03 04:15 EDT
 
 ## What the application now does
 
 PR #67 adds a truthful `/aftercare` customer journey. Shopify remains the
 authority for order, payment, fulfillment, tracking, cancellation, refund and
-credit. When a Shopify-owned destination is not configured, the corresponding
-action is visibly unavailable and the customer is directed to CP support or
-the secure order-status link in Shopify's notification email. The application
-does not simulate an order state, delivery, refund, review eligibility or
-credit balance.
+credit. Preview reads only dedicated `SHOPIFY_STAGING_ACCOUNT_URL` and
+`SHOPIFY_STAGING_RETURNS_URL` destinations and never falls back to Production.
+Query-bearing, fragment-bearing, credential-bearing or non-HTTPS destinations
+are rejected. Reviews cannot be enabled by a URL or environment flag: the CTA
+requires an authenticated Shopify customer fact that the order is delivered.
+CP Credit is absent from the page unless an authenticated Shopify credit
+account exists. The support form delivers through Resend only when its three
+server-side settings are valid, and reports success only after the provider
+accepts the message.
 
 ## Exact human actions still required
 
-1. In **CARLOPHILLIPS Staging** Shopify Admin, activate Customer Accounts and
-   verify the public HTTPS account/order-status destination. Add that URL to
-   Vercel Preview as `NEXT_PUBLIC_SHOPIFY_ACCOUNT_URL`, rebuild protected
-   Staging, sign in with a synthetic non-PII customer, and prove only that
-   customer's test order is visible. Signal: `CP Staging customer account proven`.
-2. Configure Shopify-native self-service returns for the Staging development
-   store, including the approved return policy and operator routing. Put only
-   its public HTTPS entry URL in Vercel Preview as
-   `NEXT_PUBLIC_SHOPIFY_RETURNS_URL`; submit and close one zero-charge test
-   return. Signal: `CP Staging returns proven`.
-3. Product Owner selects and approves a Shopify-integrated reviews provider,
-   including price and data access. Configure delivered-order eligibility in
-   Staging, then set `NEXT_PUBLIC_SHOPIFY_REVIEW_URL`. Do not accept or display
-   reviews before a Shopify-backed delivered-order check. Signal:
-   `CP Staging verified reviews proven`.
-4. Product Owner decides whether CP Credit is offered. If approved, configure
-   Shopify store credit/customer-account visibility in Staging and set
-   `NEXT_PUBLIC_SHOPIFY_CREDIT_ENABLED=true` only after an authenticated
-   balance can be read in Shopify. Signal: `CP Staging credit proven`.
-5. Apliiq production, tracking and delivery cannot be proved in Shopify's
+1. Manually open **CARLOPHILLIPS Staging Shopify Admin → Settings → Customer
+   accounts**. Activate the intended customer-account experience and obtain its
+   public account entry URL. Add it only to Vercel Preview as the encrypted
+   server variable `SHOPIFY_STAGING_ACCOUNT_URL`, redeploy the exact protected
+   candidate, sign in as a synthetic test customer and prove that only that
+   customer's test order/status is visible. Do not paste or retain a private
+   order-status URL. Signal: `CP Staging customer account proven`.
+2. Manually open **CARLOPHILLIPS Staging Shopify Admin → Settings → Policies /
+   Customer accounts returns**. Approve the return rules and operator routing,
+   enable Shopify-native self-service returns, and add only the public entry URL
+   to Vercel Preview as `SHOPIFY_STAGING_RETURNS_URL`. Use an already fulfilled
+   zero-charge Staging test order to submit and close one return. Signal:
+   `CP Staging returns proven`.
+3. Manually open **Vercel → Cubiqo → carlophillips-site → Settings → Environment
+   Variables** and the approved **Resend** project. Verify a CP sending identity
+   and monitored support recipient, then add encrypted Preview values for
+   `RESEND_API_KEY`, `CP_SUPPORT_FROM_EMAIL`, and `CP_SUPPORT_TO_EMAIL`. Submit
+   one synthetic no-PII Staging support message and confirm receipt in the
+   monitored mailbox. Signal: `CP Staging support delivery proven`.
+4. Product Owner selects and approves a Shopify-integrated reviews provider,
+   including price and protected customer/order data access. Configure
+   delivered-order eligibility in Staging. The application must then complete
+   Shopify Customer Account API authentication and pass an authenticated
+   delivered-order fact to the existing policy; a public review URL alone will
+   remain rejected. Signal: `CP Staging verified reviews authority ready`.
+5. Product Owner decides whether CP Credit is offered. If approved, configure
+   Shopify store credit and Customer Account API access in Staging. The
+   application must then pass authenticated `StoreCreditAccount` availability
+   to the existing policy; there is deliberately no enable flag. Signal:
+   `CP Staging credit authority ready`.
+6. Apliiq production, tracking and delivery cannot be proved in Shopify's
    development-store test payment alone. Under separate real-order authority,
    place one low-risk Production order using a mapped Production SKU, verify
    Apliiq acceptance/hold, production, tracking returned to Shopify and
@@ -43,8 +58,12 @@ credit balance.
 ## Cost and risk
 
 - Customer Accounts and Shopify-native returns should not create a real charge,
-  but publishing policy or account changes affects customer behavior; verify in
-  Staging first.
+  but publishing policy/account changes affects customer behavior; verify in
+  Staging first. A fulfilled test order is required for Shopify return
+  eligibility; do not create a Production order for this proof.
+- Resend may process customer email, order reference and message content. Use
+  synthetic data for Staging proof, confirm the recipient is monitored and stop
+  if setup requests a paid plan or broader data/project access.
 - A reviews app may request customer/order data or a paid subscription. No app,
   data grant or charge is authorized until the Product Owner selects it.
 - Store credit is a financial liability. Do not invent, issue or migrate a
@@ -55,10 +74,13 @@ credit balance.
 
 ## Resume point
 
-After each exact signal, bind only the corresponding public capability to
-Preview, rerun its protected Staging journey, and retain Shopify/Vercel evidence
-without customer PII. Production remains unchanged until a separate release is
-approved.
+After each exact signal, resume PR #67 at its current head, bind only the
+corresponding Staging capability, rerun protected Staging plus desktop/mobile
+and console/network QA, and retain Shopify/Vercel evidence without customer PII.
+Reviews and credit additionally require a server-authenticated Customer Account
+API implementation; do not substitute public flags. Production remains
+unchanged until Product Owner reviews canonical Staging and separately approves
+promotion.
 
 ---
 
