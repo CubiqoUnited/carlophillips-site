@@ -25,7 +25,8 @@ Pull request: #76 targeting `staging`
 - `yarn lint`: passed, including design-system and Production-commerce policy.
 - `yarn typecheck`: passed.
 - `yarn stylelint`: passed.
-- `yarn test`: 81 files, 699 tests passed.
+- `yarn test`: 81 files, 698 tests passed after merging current `staging`
+  through PR #75.
 - `yarn build`: passed; 13 static pages generated and dynamic routes compiled.
 - `yarn test:e2e`: 28/28 passed across desktop and mobile projects.
 - Screenshot comparisons passed for homepage, product detail and bag at both
