@@ -56,24 +56,24 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     .getByRole('group', { name: 'Select size' })
     .getByRole('button');
   await expect(sizeButtons).toHaveText(['S', 'M', 'L']);
-  await expect(page.locator('#product-variant option')).toHaveText([
-    'S — $128',
-    'M — $128',
-    'L — $128',
-  ]);
-  await page
+  const mediumButton = page
     .getByRole('group', { name: 'Select size' })
-    .getByRole('button', { name: 'M', exact: true })
-    .click();
-  await expect(page.locator('#product-variant')).toHaveValue(
+    .getByRole('button', { name: 'Size M', exact: true });
+  await expect(mediumButton).toHaveAttribute('aria-pressed', 'false');
+  await mediumButton.click();
+  await expect(mediumButton).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('input[name="referenceHash"]')).toHaveValue(
     /^sha256:[a-f0-9]{64}$/
   );
+  await expect(
+    page.getByRole('button', { name: 'ADD TO BAG $128', exact: true })
+  ).toBeEnabled();
   await page.screenshot({
     path: testInfo.outputPath('01-shopify-product-sml.png'),
     fullPage: true,
   });
 
-  await page.getByRole('button', { name: 'ADD TO TEST BAG $128' }).click();
+  await page.getByRole('button', { name: 'ADD TO BAG $128' }).click();
   await page.waitForURL('**/bag');
   await expect(page.locator('main#main-content')).toHaveAttribute(
     'data-commerce-source',
@@ -82,7 +82,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(page.getByText('Size: M')).toBeVisible();
   await expect(page.getByText('$128.00', { exact: true })).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'Continue to checkout' })
+    page.getByRole('button', { name: 'Checkout', exact: true })
   ).toBeEnabled();
   await page.screenshot({
     path: testInfo.outputPath('02-shopify-bag-truth.png'),
