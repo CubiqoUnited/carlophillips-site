@@ -1,6 +1,6 @@
 'use client';
 
-import { RefObject, useEffect } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -11,6 +11,8 @@ export function useModalDialog(
   triggerRef: RefObject<HTMLElement | null>,
   close: () => void
 ) {
+  const closeRef = useRef(close);
+  closeRef.current = close;
   useEffect(() => {
     if (!open) return;
     const priorOverflow = document.body.style.overflow;
@@ -27,7 +29,7 @@ export function useModalDialog(
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        close();
+        closeRef.current();
         return;
       }
       if (event.key !== 'Tab') return;
@@ -53,5 +55,5 @@ export function useModalDialog(
       window.removeEventListener('keydown', handleKey);
       (trigger || priorFocus)?.focus();
     };
-  }, [open, dialogRef, triggerRef, close]);
+  }, [open, dialogRef, triggerRef]);
 }

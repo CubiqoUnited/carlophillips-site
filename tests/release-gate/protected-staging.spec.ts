@@ -79,6 +79,10 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     )
     .toBe(true);
   await page.screenshot({ path: testInfo.outputPath('00-home-gallery.png') });
+  await expect(page.getByRole('dialog', { name: 'Gallery' })).toHaveScreenshot(
+    'staging-home-gallery.png',
+    { animations: 'disabled', maxDiffPixelRatio: 0.01 }
+  );
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeHidden();
 
@@ -93,13 +97,15 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
       name: 'CARLOPHILLIPS Signature Hoodie',
     })
   ).toBeVisible();
-  await expect(page.getByRole('group', { name: 'Select size' })).toBeVisible();
+  await expect(
+    page.getByRole('group', { name: 'Choose a size' })
+  ).toBeVisible();
   const sizeButtons = page
-    .getByRole('group', { name: 'Select size' })
+    .getByRole('group', { name: 'Choose a size' })
     .getByRole('button');
   await expect(sizeButtons).toHaveText(['S', 'M', 'L']);
   const mediumButton = page
-    .getByRole('group', { name: 'Select size' })
+    .getByRole('group', { name: 'Choose a size' })
     .getByRole('button', { name: 'Size M', exact: true });
   await expect(mediumButton).toHaveAttribute('aria-pressed', 'false');
   await mediumButton.click();
@@ -108,22 +114,28 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     /^sha256:[a-f0-9]{64}$/
   );
   await expect(
-    page.getByRole('button', { name: 'ADD TO BAG $128', exact: true })
+    page.getByRole('button', { name: 'ADD TO BAG - $128', exact: true })
   ).toBeEnabled();
   await page.screenshot({
     path: testInfo.outputPath('01-shopify-product-sml.png'),
     fullPage: true,
   });
+  await expect(page.locator('main#main-content')).toHaveScreenshot(
+    'staging-product-selected.png',
+    { animations: 'disabled', fullPage: true, maxDiffPixelRatio: 0.01 }
+  );
 
-  await page.getByRole('button', { name: 'ADD TO BAG $128' }).click();
-  await page.waitForURL('**/bag?added=1');
+  await page.getByRole('button', { name: 'ADD TO BAG - $128' }).click();
+  await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Bag (1)' })).toBeVisible();
+  await page.getByRole('link', { name: 'VIEW BAG' }).click();
+  await page.waitForURL('**/bag');
   await expect(page.locator('main#main-content')).toHaveAttribute(
     'data-commerce-source',
     'store'
   );
   await expect(page.getByText('Size: M')).toBeVisible();
-  await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: /^Bag 1$/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /^Bag \(1\)$/i })).toBeVisible();
   await expect(page.getByText('$128.00', { exact: true })).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Checkout', exact: true })
@@ -132,6 +144,10 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     path: testInfo.outputPath('02-shopify-bag-truth.png'),
     fullPage: true,
   });
+  await expect(page.locator('main#main-content')).toHaveScreenshot(
+    'staging-bag.png',
+    { animations: 'disabled', fullPage: true, maxDiffPixelRatio: 0.01 }
+  );
 
   const cookies = await context.cookies();
   const checkoutResponse = await page.request.post('/api/cart', {

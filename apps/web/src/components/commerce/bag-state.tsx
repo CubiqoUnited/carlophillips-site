@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { BagDecision } from '@/types';
 import type { StorefrontCart } from '@repo/shopify';
 import { StorefrontHeader } from '../layout/StorefrontHeader';
@@ -66,9 +67,9 @@ export function CommerceBagState({
         navigationAriaLabel="Bag navigation"
       />
 
-      <section className="cp-bag-section cp-section flex items-center">
-        <div className="cp-bag-layout cp-shell-medium cp-grid-rule grid px-0">
-          <div className="cp-bag-copy flex flex-col justify-center">
+      <section className="cp-bag-section cp-section">
+        <div className="cp-bag-layout cp-shell-medium">
+          <div className="cp-bag-copy">
             {copy.eyebrow && <p className="cp-label">{copy.eyebrow}</p>}
             {added && hasLines && (
               <div className="cp-added-to-bag" role="status" aria-live="polite">
@@ -80,90 +81,146 @@ export function CommerceBagState({
                 </span>
               </div>
             )}
-            <h1 className="cp-heading-section mt-8 max-w-4xl">{copy.title}</h1>
-            <p className="cp-body-large mt-8 max-w-2xl">{copy.body}</p>
+            <h1 className="cp-heading-section cp-bag-title">{copy.title}</h1>
+            <p className="cp-body-large cp-bag-description">{copy.body}</p>
             {cart && hasLines && (
-              <div className="mt-10 grid gap-6" aria-label="Shopify cart lines">
+              <div className="cp-bag-lines" aria-label="Shopify cart lines">
                 {cart.lines.edges.map(({ node }) => (
-                  <article key={node.id} className="border-t pt-5">
-                    <p className="cp-label-small">
-                      {node.merchandise.product.title}
-                    </p>
-                    <p className="cp-text-copy mt-2">
-                      {node.merchandise.selectedOptions
-                        .map((option) => `${option.name}: ${option.value}`)
-                        .join(' · ')}
-                    </p>
-                    <p className="cp-text-copy mt-2">
-                      {new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: node.merchandise.price.currencyCode,
-                      }).format(Number(node.merchandise.price.amount))}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-3">
-                      <form method="post" action="/api/cart">
-                        <input type="hidden" name="cartAction" value="update" />
-                        <input type="hidden" name="lineId" value={node.id} />
-                        <label
-                          className="cp-label-small"
-                          htmlFor={`quantity-${node.id}`}
-                        >
-                          Quantity
-                        </label>
-                        <input
-                          id={`quantity-${node.id}`}
-                          name="quantity"
-                          type="number"
-                          min="1"
-                          max="5"
-                          defaultValue={node.quantity}
-                          className="ml-3 w-16 border p-2"
+                  <article key={node.id} className="cp-bag-line">
+                    <div className="cp-bag-line-media">
+                      {node.merchandise.image?.url ? (
+                        <Image
+                          src={node.merchandise.image.url}
+                          alt={
+                            node.merchandise.image.altText ||
+                            node.merchandise.product.title
+                          }
+                          fill
+                          sizes="(max-width: 430px) 28vw, 9rem"
+                          className="cp-bag-line-image"
                         />
-                        <button
-                          className="cp-action cp-action-quiet ml-3"
-                          type="submit"
+                      ) : (
+                        <span className="cp-label-small">
+                          Image unavailable
+                        </span>
+                      )}
+                    </div>
+                    <div className="cp-bag-line-content">
+                      <div className="cp-bag-line-heading">
+                        <div>
+                          <p className="cp-label-small">
+                            {node.merchandise.product.title}
+                          </p>
+                          <p className="cp-text-copy cp-bag-line-options">
+                            {node.merchandise.selectedOptions
+                              .map(
+                                (option) => `${option.name}: ${option.value}`
+                              )
+                              .join(' · ')}
+                          </p>
+                        </div>
+                        <p className="cp-text-copy cp-bag-line-price">
+                          {new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: node.merchandise.price.currencyCode,
+                          }).format(Number(node.merchandise.price.amount))}
+                        </p>
+                      </div>
+                      <div className="cp-bag-line-actions">
+                        <form
+                          method="post"
+                          action="/api/cart"
+                          className="cp-bag-quantity-form"
                         >
-                          Update
-                        </button>
-                      </form>
-                      <form method="post" action="/api/cart">
-                        <input type="hidden" name="cartAction" value="remove" />
-                        <input type="hidden" name="lineId" value={node.id} />
-                        <button
-                          className="cp-action cp-action-quiet"
-                          type="submit"
+                          <input
+                            type="hidden"
+                            name="cartAction"
+                            value="update"
+                          />
+                          <input type="hidden" name="lineId" value={node.id} />
+                          <span
+                            id={`quantity-${node.id}-label`}
+                            className="cp-label-small"
+                          >
+                            Quantity
+                          </span>
+                          <div
+                            className="cp-bag-stepper"
+                            role="group"
+                            aria-labelledby={`quantity-${node.id}-label`}
+                          >
+                            <button
+                              type="submit"
+                              name="quantity"
+                              value={Math.max(1, node.quantity - 1)}
+                              disabled={node.quantity <= 1}
+                              aria-label="Decrease quantity"
+                            >
+                              -
+                            </button>
+                            <output>{node.quantity}</output>
+                            <button
+                              type="submit"
+                              name="quantity"
+                              value={Math.min(5, node.quantity + 1)}
+                              disabled={node.quantity >= 5}
+                              aria-label="Increase quantity"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </form>
+                        <form
+                          method="post"
+                          action="/api/cart"
+                          className="cp-bag-remove-form"
                         >
-                          Remove
-                        </button>
-                      </form>
+                          <input
+                            type="hidden"
+                            name="cartAction"
+                            value="remove"
+                          />
+                          <input type="hidden" name="lineId" value={node.id} />
+                          <button
+                            className="cp-action cp-action-quiet"
+                            type="submit"
+                          >
+                            Remove
+                          </button>
+                        </form>
+                      </div>
                     </div>
                   </article>
                 ))}
-                <p className="cp-body-large">
-                  Subtotal:{' '}
-                  {new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: cart.cost.subtotalAmount.currencyCode,
-                  }).format(Number(cart.cost.subtotalAmount.amount))}
-                </p>
-                <form
-                  method="post"
-                  action="/api/cart"
-                  className="cp-bag-checkout-form"
-                >
-                  <input type="hidden" name="cartAction" value="checkout" />
-                  <button className="cp-action cp-action-solid" type="submit">
-                    Checkout
-                  </button>
-                </form>
+                <div className="cp-bag-summary">
+                  <p className="cp-body-large">
+                    <span>Subtotal</span>
+                    <strong>
+                      {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: cart.cost.subtotalAmount.currencyCode,
+                      }).format(Number(cart.cost.subtotalAmount.amount))}
+                    </strong>
+                  </p>
+                  <form
+                    method="post"
+                    action="/api/cart"
+                    className="cp-bag-checkout-form"
+                  >
+                    <input type="hidden" name="cartAction" value="checkout" />
+                    <button
+                      className="cp-action cp-action-solid cp-action-full"
+                      type="submit"
+                    >
+                      Checkout
+                    </button>
+                  </form>
+                </div>
               </div>
             )}
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="cp-bag-secondary-actions">
               <Link href="/shop" className="cp-action cp-action-outline">
                 Continue shopping
-              </Link>
-              <Link href="/" className="cp-action cp-action-quiet">
-                Return home
               </Link>
             </div>
           </div>

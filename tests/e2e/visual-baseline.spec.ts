@@ -9,7 +9,7 @@ test.describe('corrected storefront visual evidence', () => {
     await page.goto('/', { waitUntil: 'networkidle' });
     await expect(page.locator('main#main-content')).toBeVisible();
     await expect(page.locator('.cp-workbook-order-cta')).toHaveText(
-      /view product/i
+      /shop the hoodie/i
     );
     await expect(page.locator('main#main-content')).toHaveScreenshot(
       'home-storefront.png',
@@ -25,6 +25,9 @@ test.describe('corrected storefront visual evidence', () => {
     await expect(page.locator('main#main-content')).not.toContainText(
       'Sizes observed'
     );
+    await expect(
+      page.getByRole('button', { name: 'Purchasing disabled' })
+    ).toBeVisible();
     await expect(page.locator('main#main-content')).toHaveScreenshot(
       'product-detail.png',
       { animations: 'disabled' }

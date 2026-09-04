@@ -73,12 +73,18 @@ describe('monorepo home commerce projection', () => {
       'apps/web/src/components/product/ProductForm/index.tsx',
       'utf8'
     );
+    const stepperSource = readFileSync(
+      'packages/design-system/components/QuantityStepper/index.tsx',
+      'utf8'
+    );
 
     expect(source).toContain('name="referenceHash"');
     expect(source).not.toContain('<select');
-    expect(source).toContain('Decrease quantity');
-    expect(source).toContain('Increase quantity');
-    expect(source).toContain("'ADD TO BAG'");
+    expect(source).toContain('<QuantityStepper');
+    expect(stepperSource).toContain('Decrease quantity');
+    expect(stepperSource).toContain('Increase quantity');
+    expect(source).toContain('ADD TO BAG -');
+    expect(source).toContain("'CHOOSE A SIZE'");
     expect(source).not.toContain('ADD TO TEST BAG');
   });
 

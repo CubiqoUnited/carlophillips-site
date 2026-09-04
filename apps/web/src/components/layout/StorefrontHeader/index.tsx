@@ -29,6 +29,14 @@ export function StorefrontHeader({
       .catch(() => undefined);
     return () => controller.abort();
   }, []);
+  useEffect(() => {
+    const updateCount = (event: Event) => {
+      const count = (event as CustomEvent<{ count?: number }>).detail?.count;
+      if (typeof count === 'number') setCurrentBagCount(count);
+    };
+    window.addEventListener('cp:bag-count', updateCount);
+    return () => window.removeEventListener('cp:bag-count', updateCount);
+  }, []);
   useModalDialog(menuOpen, menuRef, triggerRef, () => setMenuOpen(false));
   return (
     <header
@@ -61,14 +69,14 @@ export function StorefrontHeader({
           )}
           {pageLabel === 'Bag' ? (
             <Link href="/bag" aria-current="page">
-              Bag {currentBagCount}
+              Bag ({currentBagCount})
             </Link>
           ) : (
-            <Link href="/bag">Bag {currentBagCount}</Link>
+            <Link href="/bag">Bag ({currentBagCount})</Link>
           )}
         </nav>
         <Link href="/bag" className="cp-commerce-mobile-bag">
-          Bag {currentBagCount}
+          Bag ({currentBagCount})
         </Link>
       </div>
       {menuOpen && (
@@ -98,17 +106,22 @@ export function StorefrontHeader({
               </button>
             </div>
             <nav aria-label="Mobile storefront navigation">
+              <p className="cp-mobile-menu-label">Explore</p>
               <Link href="/" onClick={() => setMenuOpen(false)}>
                 Home
               </Link>
               <Link href="/shop" onClick={() => setMenuOpen(false)}>
                 Shop
               </Link>
+              <p className="cp-mobile-menu-label">Customer care</p>
+              <Link href="/aftercare" onClick={() => setMenuOpen(false)}>
+                Aftercare
+              </Link>
               <Link href="/contact" onClick={() => setMenuOpen(false)}>
                 Contact
               </Link>
-              <Link href="/aftercare" onClick={() => setMenuOpen(false)}>
-                Aftercare
+              <Link href="/member" onClick={() => setMenuOpen(false)}>
+                Account
               </Link>
             </nav>
           </div>

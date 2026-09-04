@@ -44,7 +44,10 @@ test.describe('Local fixture checkout boundary', () => {
     expect(orderBox!.y + orderBox!.height).toBeLessThanOrEqual(
       viewport!.height
     );
-    await expect(orderButton).toHaveText(/view product/i);
+    await expect(orderButton).toHaveText(/shop the hoodie/i);
+    await expect(page.locator('main#main-content')).not.toContainText(
+      /add to cart|order now/i
+    );
     await page.screenshot({
       path: testInfo.outputPath('01-home-fail-closed.png'),
       fullPage: true,

@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import Link from 'next/link';
+import React, { useEffect, useRef, useState, type FormEvent } from 'react';
+import { Button, QuantityStepper } from '@repo/design-system';
 import type {
   CommerceEnvironment,
   VariantCombination,
@@ -48,43 +50,86 @@ export default function ShopifyCheckoutForm({
         (SIZE_ORDER.get(sizeFor(left).toUpperCase()) ?? 999) -
         (SIZE_ORDER.get(sizeFor(right).toUpperCase()) ?? 999)
     );
-  const [referenceHash, setReferenceHash] = useState(
-    available[0]?.referenceHash || ''
-  );
+  const [referenceHash, setReferenceHash] = useState('');
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const sizeGuideRef = useRef<HTMLDivElement>(null);
   const sizeGuideTriggerRef = useRef<HTMLButtonElement>(null);
+  const sizeGroupRef = useRef<HTMLDivElement>(null);
   const [quantity, setQuantity] = useState(1);
+  const [status, setStatus] = useState<
+    'idle' | 'size-required' | 'adding' | 'added' | 'failed'
+  >('idle');
   const selected = available.find(
     (item) => item.referenceHash === referenceHash
   );
   useModalDialog(sizeGuideOpen, sizeGuideRef, sizeGuideTriggerRef, () =>
     setSizeGuideOpen(false)
   );
+  useEffect(() => {
+    if (window.location.hash !== '#product-options') return;
+    requestAnimationFrame(() =>
+      sizeGroupRef.current?.querySelector<HTMLButtonElement>('button')?.focus()
+    );
+  }, []);
   if (!available.length) return null;
+
+  async function addToBag(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!selected) {
+      setStatus('size-required');
+      sizeGroupRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+      return;
+    }
+    setStatus('adding');
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        body: new FormData(event.currentTarget),
+        headers: { accept: 'application/json' },
+      });
+      const result = (await response.json()) as {
+        ok?: boolean;
+        count?: number;
+      };
+      if (!response.ok || !result.ok || typeof result.count !== 'number')
+        throw new Error('ADD_TO_BAG_FAILED');
+      window.dispatchEvent(
+        new CustomEvent('cp:bag-count', { detail: { count: result.count } })
+      );
+      setStatus('added');
+    } catch {
+      setStatus('failed');
+    }
+  }
 
   return (
     <form
       method="post"
       action="/api/cart"
-      className="cp-variant-list mt-10 border-t pt-7"
+      className="cp-purchase-form"
+      id="product-options"
+      onSubmit={addToBag}
     >
       <input type="hidden" name="handle" value={handle} />
       <input type="hidden" name="cartAction" value="add" />
-      <p className="cp-label mb-4 block">Select size</p>
+      <p className="cp-label cp-purchase-size-label">Choose a size</p>
       <div
-        className="grid grid-cols-3 gap-2"
+        ref={sizeGroupRef}
+        className="cp-size-options"
         role="group"
-        aria-label="Select size"
+        aria-label="Choose a size"
       >
         {available.map((item) => (
           <button
             key={item.referenceHash}
             type="button"
-            className={`cp-choice-disabled h-12 text-xs ${
+            className={`cp-choice-disabled ${
               referenceHash === item.referenceHash ? 'cp-choice-selected' : ''
             }`}
-            onClick={() => setReferenceHash(item.referenceHash)}
+            onClick={() => {
+              setReferenceHash(item.referenceHash);
+              setStatus('idle');
+            }}
             aria-pressed={referenceHash === item.referenceHash}
             aria-label={`Size ${sizeFor(item).toUpperCase()}`}
           >
@@ -94,15 +139,49 @@ export default function ShopifyCheckoutForm({
       </div>
       <input type="hidden" name="referenceHash" value={referenceHash} />
       <input type="hidden" name="quantity" value={quantity} />
-      <button
-        type="submit"
-        disabled={!selected}
-        className="cp-action cp-action-solid mt-4 h-14 w-full disabled:opacity-40"
-      >
-        {selected ? 'ADD TO BAG' : 'SELECT A SIZE'}{' '}
-        {selected ? money(selected.price.amount, selected.price.currency) : ''}
-      </button>
-      <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
+      <QuantityStepper
+        id="product-quantity"
+        min={1}
+        max={5}
+        value={quantity}
+        onChange={setQuantity}
+      />
+      {status !== 'added' ? (
+        <Button
+          type="submit"
+          variant="solid"
+          size="large"
+          width="full"
+          busy={status === 'adding'}
+        >
+          {status === 'adding'
+            ? 'ADDING...'
+            : selected
+              ? `ADD TO BAG - ${money(selected.price.amount, selected.price.currency)}`
+              : 'CHOOSE A SIZE'}
+        </Button>
+      ) : (
+        <div className="cp-purchase-success">
+          <p role="status" aria-live="polite">
+            <strong>Added to bag.</strong> Your selected size and quantity are
+            saved.
+          </p>
+          <Link
+            href="/bag"
+            className="cp-action cp-action-solid cp-action-full"
+          >
+            VIEW BAG
+          </Link>
+          <button
+            type="button"
+            className="cp-action cp-action-quiet cp-action-full"
+            onClick={() => setStatus('idle')}
+          >
+            Continue shopping
+          </button>
+        </div>
+      )}
+      <div className="cp-purchase-support">
         <button
           type="button"
           ref={sizeGuideTriggerRef}
@@ -127,7 +206,7 @@ export default function ShopifyCheckoutForm({
             tabIndex={-1}
             onMouseDown={(event) => event.stopPropagation()}
           >
-            <div className="flex items-center justify-between">
+            <div className="cp-drawer-header">
               <strong>Size & fit</strong>
               <button
                 type="button"
@@ -141,36 +220,22 @@ export default function ShopifyCheckoutForm({
                 Close
               </button>
             </div>
-            <p className="mt-4 text-sm">
+            <p className="cp-drawer-copy">
               {sizeGuide ||
                 'Size guidance is currently unavailable in Shopify. Select from the current Shopify size options above.'}
             </p>
           </div>
         </div>
       )}
-      <div className="cp-quantity-control mt-5">
-        <span id="quantity-label">Quantity</span>
-        <div role="group" aria-labelledby="quantity-label">
-          <button
-            type="button"
-            onClick={() => setQuantity((value) => Math.max(1, value - 1))}
-            disabled={quantity === 1}
-            aria-label="Decrease quantity"
-          >
-            −
-          </button>
-          <output aria-live="polite">{quantity}</output>
-          <button
-            type="button"
-            onClick={() => setQuantity((value) => Math.min(5, value + 1))}
-            disabled={quantity === 5}
-            aria-label="Increase quantity"
-          >
-            +
-          </button>
-        </div>
+      <div className="cp-purchase-feedback" aria-live="polite">
+        {status === 'size-required' && (
+          <p>Choose S, M or L before adding this hoodie to your bag.</p>
+        )}
+        {status === 'failed' && (
+          <p>This item was not added. Check availability and try again.</p>
+        )}
       </div>
-      <p className="mt-4 text-sm">
+      <p className="cp-purchase-note">
         You will review delivery and payment securely in Shopify before placing
         the order.
       </p>

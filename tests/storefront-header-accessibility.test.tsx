@@ -10,7 +10,7 @@ describe('StorefrontHeader accessibility', () => {
     );
 
     expect(html).toMatch(
-      /<a (?=[^>]*href="\/bag")(?=[^>]*aria-current="page")[^>]*>Bag 1<\/a>/
+      /<a (?=[^>]*href="\/bag")(?=[^>]*aria-current="page")[^>]*>Bag \(1\)<\/a>/
     );
   });
 });
