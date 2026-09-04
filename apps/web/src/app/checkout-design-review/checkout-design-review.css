@@ -10,7 +10,7 @@
 .cp-checkout-review-gallery,
 .cp-checkout-review-note {
   width: min(100%, var(--cp-content-wide));
-  margin-inline: auto;
+  margin-inline: var(--cp-layout-auto);
   padding-inline: var(--cp-page-gutter);
 }
 
@@ -27,7 +27,7 @@
 .cp-checkout-review-figure figcaption {
   font-size: var(--cp-size-label);
   letter-spacing: var(--cp-tracking-action);
-  text-transform: uppercase;
+  text-transform: var(--cp-text-transform-uppercase);
 }
 
 .cp-checkout-review-brand {
@@ -46,17 +46,17 @@
 }
 
 .cp-checkout-review-intro .cp-label {
-  margin: 0 0 var(--cp-space-5);
+  margin: var(--cp-radius-none) var(--cp-radius-none) var(--cp-space-5);
 }
 
 .cp-checkout-review-intro h1 {
   max-width: var(--cp-content-3xl);
-  margin: 0;
+  margin: var(--cp-radius-none);
 }
 
 .cp-checkout-review-copy {
   max-width: var(--cp-copy-max);
-  margin: var(--cp-space-6) 0 0;
+  margin: var(--cp-space-6) var(--cp-radius-none) var(--cp-radius-none);
 }
 
 .cp-checkout-review-methods {
@@ -68,11 +68,11 @@
 
 .cp-checkout-review-methods .cp-label,
 .cp-checkout-review-note .cp-label {
-  margin: 0 0 var(--cp-space-3);
+  margin: var(--cp-radius-none) var(--cp-radius-none) var(--cp-space-3);
 }
 
 .cp-checkout-review-heading {
-  margin: 0;
+  margin: var(--cp-radius-none);
   color: var(--cp-color-copy-strong);
   font-size: var(--cp-size-copy-xl);
   font-weight: var(--cp-weight-light);
@@ -82,8 +82,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--cp-space-2);
-  margin: 0;
-  padding: 0;
+  margin: var(--cp-radius-none);
+  padding: var(--cp-radius-none);
   list-style: none;
 }
 
@@ -93,7 +93,7 @@
   color: var(--cp-color-copy-strong);
   font-size: var(--cp-size-caption);
   letter-spacing: var(--cp-tracking-detail);
-  text-transform: uppercase;
+  text-transform: var(--cp-text-transform-uppercase);
 }
 
 .cp-checkout-review-gallery {
@@ -103,7 +103,7 @@
 }
 
 .cp-checkout-review-figure {
-  margin: 0;
+  margin: var(--cp-radius-none);
 }
 
 .cp-checkout-review-figure img {
@@ -123,12 +123,12 @@
 
 .cp-checkout-review-note {
   max-width: var(--cp-content-3xl);
-  margin-left: 0;
+  margin-left: var(--cp-radius-none);
   padding-bottom: var(--cp-section-space);
 }
 
 .cp-checkout-review-note .cp-body {
-  margin: 0;
+  margin: var(--cp-radius-none);
 }
 
 @media (min-width: 768px) {

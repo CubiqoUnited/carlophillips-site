@@ -1,10 +1,18 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
-const PRODUCTION_DOMAINS = new Set(['carlophillips.com', 'www.carlophillips.com']);
+const PRODUCTION_DOMAINS = new Set([
+  'carlophillips.com',
+  'www.carlophillips.com',
+]);
 const DEPLOYMENT_ID = /^dpl_[A-Za-z0-9]+$/;
 const ARTIFACTS = Object.freeze({
   preview: Object.freeze({
     artifactKind: 'immutable-preview',
+    buildEnvironment: 'preview',
+    target: 'preview',
+  }),
+  staging: Object.freeze({
+    artifactKind: 'protected-staging',
     buildEnvironment: 'preview',
     target: 'preview',
   }),
@@ -40,13 +48,17 @@ function readJson(path) {
 }
 
 function deploymentUrl(value) {
-  return String(value || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
+  return String(value || '')
+    .replace(/^https?:\/\//, '')
+    .replace(/\/$/, '');
 }
 
 function deploymentAliases(deployment = {}) {
   const values = Array.isArray(deployment.aliases)
     ? deployment.aliases
-    : (Array.isArray(deployment.alias) ? deployment.alias : []);
+    : Array.isArray(deployment.alias)
+      ? deployment.alias
+      : [];
   return values.map(deploymentUrl);
 }
 
@@ -55,7 +67,12 @@ function requireValue(condition, message) {
 }
 
 function metadataSha(metadata = {}) {
-  return metadata.cpGitCommitSha || metadata.gitCommitSha || metadata.githubCommitSha || null;
+  return (
+    metadata.cpGitCommitSha ||
+    metadata.gitCommitSha ||
+    metadata.githubCommitSha ||
+    null
+  );
 }
 
 function findListedDeployment(list, inspect, subject) {
@@ -63,14 +80,19 @@ function findListedDeployment(list, inspect, subject) {
   // Vercel CLI 56 list JSON omits deployment IDs. Join the authenticated list
   // to the inspected deployment by ID when present, otherwise by immutable URL.
   const inspectedUrl = deploymentUrl(inspect.url);
-  const listed = deployments.find(deployment => (
-    (deployment.id && deployment.id === inspect.id)
-    || deploymentUrl(deployment.url) === inspectedUrl
-  )) || null;
-  requireValue(listed, `${subject} is absent from the linked Vercel project deployment list.`);
+  const listed =
+    deployments.find(
+      (deployment) =>
+        (deployment.id && deployment.id === inspect.id) ||
+        deploymentUrl(deployment.url) === inspectedUrl
+    ) || null;
+  requireValue(
+    listed,
+    `${subject} is absent from the linked Vercel project deployment list.`
+  );
   requireValue(
     deploymentUrl(listed.url) === deploymentUrl(inspect.url),
-    `${subject} deployment URL does not match its project-list identity.`,
+    `${subject} deployment URL does not match its project-list identity.`
   );
   return listed;
 }
@@ -79,7 +101,9 @@ function requireNoAliases(deployment, subject) {
   const aliases = deploymentAliases(deployment);
   for (const alias of aliases) {
     if (PRODUCTION_DOMAINS.has(alias)) {
-      throw new Error(`${subject} contains a production domain alias (${alias}).`);
+      throw new Error(
+        `${subject} contains a production domain alias (${alias}).`
+      );
     }
   }
 }
@@ -87,12 +111,17 @@ function requireNoAliases(deployment, subject) {
 function requireTarget(deployment, expected, subject) {
   if (expected === 'preview') {
     requireValue(
-      deployment.target === null || deployment.target === undefined || deployment.target === 'preview',
-      `${subject} is not a Preview-target deployment.`,
+      deployment.target === null ||
+        deployment.target === undefined ||
+        deployment.target === 'preview',
+      `${subject} is not a Preview-target deployment.`
     );
     return;
   }
-  requireValue(deployment.target === expected, `${subject} is not a ${expected} deployment.`);
+  requireValue(
+    deployment.target === expected,
+    `${subject} is not a ${expected} deployment.`
+  );
 }
 
 function verifyMetadata(
@@ -102,20 +131,36 @@ function verifyMetadata(
   role,
   subject,
   expectedPullRequest = null,
-  expectedCheckoutEnabled = false,
+  expectedCheckoutEnabled = false
 ) {
   const contract = ARTIFACTS[role];
   requireValue(contract, `Unknown artifact role ${role}.`);
-  requireValue(metadataSha(metadata) === expectedSha, `${subject} metadata SHA does not match the selected source.`);
-  requireValue(metadata?.cpRelease === expectedRelease, `${subject} release metadata does not match the requested release.`);
-  requireValue(metadata?.cpArtifactKind === contract.artifactKind, `${subject} has the wrong artifact role.`);
-  requireValue(metadata?.cpBuildEnvironment === contract.buildEnvironment, `${subject} has the wrong build environment.`);
+  requireValue(
+    metadataSha(metadata) === expectedSha,
+    `${subject} metadata SHA does not match the selected source.`
+  );
+  requireValue(
+    metadata?.cpRelease === expectedRelease,
+    `${subject} release metadata does not match the requested release.`
+  );
+  requireValue(
+    metadata?.cpArtifactKind === contract.artifactKind,
+    `${subject} has the wrong artifact role.`
+  );
+  requireValue(
+    metadata?.cpBuildEnvironment === contract.buildEnvironment,
+    `${subject} has the wrong build environment.`
+  );
   requireValue(
     metadata?.cpCheckoutEnabled === String(expectedCheckoutEnabled),
-    `${subject} checkout marker does not match the reviewed release mode.`,
+    `${subject} checkout marker does not match the reviewed release mode.`
   );
-  if (role === 'preview') {
-    requireValue(String(metadata?.cpPullRequest || '') === String(expectedPullRequest || ''), `${subject} pull-request metadata does not match.`);
+  if (role === 'preview' || role === 'staging') {
+    requireValue(
+      String(metadata?.cpPullRequest || '') ===
+        String(expectedPullRequest || ''),
+      `${subject} pull-request metadata does not match.`
+    );
   }
 }
 
@@ -130,14 +175,23 @@ function verifyArtifact({
   expectedCheckoutEnabled = false,
 }) {
   const contract = ARTIFACTS[role];
-  requireValue(DEPLOYMENT_ID.test(inspect?.id || ''), `${subject} lacks a valid deployment ID.`);
-  requireValue(Boolean(deploymentUrl(inspect?.url)), `${subject} lacks an immutable deployment URL.`);
+  requireValue(
+    DEPLOYMENT_ID.test(inspect?.id || ''),
+    `${subject} lacks a valid deployment ID.`
+  );
+  requireValue(
+    Boolean(deploymentUrl(inspect?.url)),
+    `${subject} lacks an immutable deployment URL.`
+  );
   requireValue(inspect.readyState === 'READY', `${subject} is not READY.`);
   requireTarget(inspect, contract.target, subject);
   requireNoAliases(inspect, subject);
 
   const listed = findListedDeployment(list, inspect, subject);
-  requireValue((listed.readyState || listed.state) === 'READY', `Listed ${subject} is not READY.`);
+  requireValue(
+    (listed.readyState || listed.state) === 'READY',
+    `Listed ${subject} is not READY.`
+  );
   requireTarget(listed, contract.target, `Listed ${subject}`);
   requireNoAliases(listed, `Listed ${subject}`);
   verifyMetadata(
@@ -147,32 +201,55 @@ function verifyArtifact({
     role,
     subject,
     expectedPullRequest,
-    expectedCheckoutEnabled,
+    expectedCheckoutEnabled
   );
   return { inspect, listed };
 }
 
-function verifyProductionAnchor(deployment, expectedProductionAnchor = null, requireDomainAliases = true) {
-  requireValue(DEPLOYMENT_ID.test(deployment?.id || ''), 'Production drift anchor lacks a valid deployment ID.');
-  requireValue(deployment.readyState === 'READY', 'Production drift anchor is not READY.');
-  requireValue(deployment.target === 'production', 'Production drift anchor is not a Production deployment.');
+function verifyProductionAnchor(
+  deployment,
+  expectedProductionAnchor = null,
+  requireDomainAliases = true
+) {
+  requireValue(
+    DEPLOYMENT_ID.test(deployment?.id || ''),
+    'Production drift anchor lacks a valid deployment ID.'
+  );
+  requireValue(
+    deployment.readyState === 'READY',
+    'Production drift anchor is not READY.'
+  );
+  requireValue(
+    deployment.target === 'production',
+    'Production drift anchor is not a Production deployment.'
+  );
   if (requireDomainAliases) {
     const aliases = new Set(deploymentAliases(deployment));
     for (const domain of PRODUCTION_DOMAINS) {
-      requireValue(aliases.has(domain), `Production drift anchor is missing the ${domain} alias.`);
+      requireValue(
+        aliases.has(domain),
+        `Production drift anchor is missing the ${domain} alias.`
+      );
     }
   }
   if (expectedProductionAnchor) {
-    requireValue(deployment.id === expectedProductionAnchor, 'Current Production does not match the reviewed drift anchor.');
+    requireValue(
+      deployment.id === expectedProductionAnchor,
+      'Current Production does not match the reviewed drift anchor.'
+    );
   }
   return deployment;
 }
 
-function verifyProductionUnchanged(productionBefore, productionAfter, requireDomainAliases = true) {
+function verifyProductionUnchanged(
+  productionBefore,
+  productionAfter,
+  requireDomainAliases = true
+) {
   verifyProductionAnchor(productionAfter, null, requireDomainAliases);
   requireValue(
     productionAfter.id === productionBefore.id,
-    'Current Production changed while immutable artifacts were being staged or selected.',
+    'Current Production changed while immutable artifacts were being staged or selected.'
   );
 }
 
@@ -204,23 +281,41 @@ function verifyCandidatePair({
     role: 'fallback',
     subject: 'Safe fallback',
   });
-  const anchor = verifyProductionAnchor(productionBefore, expectedProductionAnchor);
+  const anchor = verifyProductionAnchor(
+    productionBefore,
+    expectedProductionAnchor
+  );
 
-  requireValue(candidate.inspect.id !== fallback.inspect.id, 'Candidate and safe fallback must be distinct deployments.');
-  requireValue(deploymentUrl(candidate.inspect.url) !== deploymentUrl(fallback.inspect.url), 'Candidate and safe fallback must have distinct immutable URLs.');
-  requireValue(candidate.inspect.id !== anchor.id, 'Candidate is already the current Production deployment.');
-  requireValue(fallback.inspect.id !== anchor.id, 'Current Production drift anchor cannot be used as the safe fallback.');
+  requireValue(
+    candidate.inspect.id !== fallback.inspect.id,
+    'Candidate and safe fallback must be distinct deployments.'
+  );
+  requireValue(
+    deploymentUrl(candidate.inspect.url) !==
+      deploymentUrl(fallback.inspect.url),
+    'Candidate and safe fallback must have distinct immutable URLs.'
+  );
+  requireValue(
+    candidate.inspect.id !== anchor.id,
+    'Candidate is already the current Production deployment.'
+  );
+  requireValue(
+    fallback.inspect.id !== anchor.id,
+    'Current Production drift anchor cannot be used as the safe fallback.'
+  );
   verifyProductionUnchanged(anchor, productionAfter);
 
   return { candidate, fallback, anchor };
 }
 
 function promotionSourceId(deployment, listed) {
-  return listed?.originalDeploymentId
-    || listed?.meta?.originalDeploymentId
-    || deployment?.originalDeploymentId
-    || deployment?.meta?.originalDeploymentId
-    || null;
+  return (
+    listed?.originalDeploymentId ||
+    listed?.meta?.originalDeploymentId ||
+    deployment?.originalDeploymentId ||
+    deployment?.meta?.originalDeploymentId ||
+    null
+  );
 }
 
 function verifyPromotedProduction({
@@ -232,18 +327,39 @@ function verifyPromotedProduction({
   expectedRelease,
   expectedCheckoutEnabled = false,
 }) {
-  const subject = role === 'candidate' ? 'Promoted Production candidate' : 'Promoted safe fallback';
-  requireValue(DEPLOYMENT_ID.test(productionAfter?.id || ''), `${subject} lacks a valid deployment ID.`);
-  requireValue(productionAfter.readyState === 'READY', `${subject} is not READY.`);
-  requireValue(productionAfter.target === 'production', `${subject} is not a Production deployment.`);
+  const subject =
+    role === 'candidate'
+      ? 'Promoted Production candidate'
+      : 'Promoted safe fallback';
+  requireValue(
+    DEPLOYMENT_ID.test(productionAfter?.id || ''),
+    `${subject} lacks a valid deployment ID.`
+  );
+  requireValue(
+    productionAfter.readyState === 'READY',
+    `${subject} is not READY.`
+  );
+  requireValue(
+    productionAfter.target === 'production',
+    `${subject} is not a Production deployment.`
+  );
   const aliases = new Set(deploymentAliases(productionAfter));
   for (const domain of PRODUCTION_DOMAINS) {
-    requireValue(aliases.has(domain), `${subject} is missing the ${domain} alias.`);
+    requireValue(
+      aliases.has(domain),
+      `${subject} is missing the ${domain} alias.`
+    );
   }
 
   const listed = findListedDeployment(productionList, productionAfter, subject);
-  requireValue((listed.readyState || listed.state) === 'READY', `Listed ${subject} is not READY.`);
-  requireValue(listed.target === 'production', `Listed ${subject} is not Production-targeted.`);
+  requireValue(
+    (listed.readyState || listed.state) === 'READY',
+    `Listed ${subject} is not READY.`
+  );
+  requireValue(
+    listed.target === 'production',
+    `Listed ${subject} is not Production-targeted.`
+  );
   verifyMetadata(
     listed.meta,
     expectedSha,
@@ -251,65 +367,111 @@ function verifyPromotedProduction({
     role,
     subject,
     null,
-    expectedCheckoutEnabled,
+    expectedCheckoutEnabled
   );
 
   const directIdentity = productionAfter.id === source.inspect.id;
   const promotedFrom = promotionSourceId(productionAfter, listed);
-  const providerPromotionIdentity = listed?.meta?.action === 'promote' && promotedFrom === source.inspect.id;
-  requireValue(directIdentity || providerPromotionIdentity, `${subject} does not resolve to the exact reviewed source deployment.`);
+  const providerPromotionIdentity =
+    listed?.meta?.action === 'promote' && promotedFrom === source.inspect.id;
+  requireValue(
+    directIdentity || providerPromotionIdentity,
+    `${subject} does not resolve to the exact reviewed source deployment.`
+  );
 
-  return { listed, promotedFrom: directIdentity ? source.inspect.id : promotedFrom };
+  return {
+    listed,
+    promotedFrom: directIdentity ? source.inspect.id : promotedFrom,
+  };
 }
 
 const { mode, options } = parseArguments(process.argv.slice(2));
 const expectedSha = options['expected-sha'];
 const expectedRelease = options['expected-release'];
 const expectedProductionAnchor = options['expected-production-anchor'] || null;
-const expectedCandidateCheckoutValue = options['expected-candidate-checkout'] || 'false';
-requireValue(/^[0-9a-f]{40}$/.test(expectedSha || ''), 'Expected SHA must be a full lowercase commit SHA.');
-requireValue(/^[A-Za-z0-9._-]+$/.test(expectedRelease || ''), 'Expected release is invalid.');
-requireValue(/^(true|false)$/.test(expectedCandidateCheckoutValue), 'Expected candidate checkout marker must be true or false.');
+const expectedCandidateCheckoutValue =
+  options['expected-candidate-checkout'] || 'false';
+requireValue(
+  /^[0-9a-f]{40}$/.test(expectedSha || ''),
+  'Expected SHA must be a full lowercase commit SHA.'
+);
+requireValue(
+  /^[A-Za-z0-9._-]+$/.test(expectedRelease || ''),
+  'Expected release is invalid.'
+);
+requireValue(
+  /^(true|false)$/.test(expectedCandidateCheckoutValue),
+  'Expected candidate checkout marker must be true or false.'
+);
 requireValue(Boolean(options.output), 'Output receipt path is required.');
 const expectedCandidateCheckout = expectedCandidateCheckoutValue === 'true';
 
-if (mode === 'preview') {
+if (mode === 'preview' || mode === 'staging') {
   const expectedPullRequest = options['expected-pull-request'];
-  requireValue(/^[1-9][0-9]*$/.test(expectedPullRequest || ''), 'Expected pull-request number is invalid.');
+  requireValue(
+    /^[1-9][0-9]*$/.test(expectedPullRequest || ''),
+    'Expected pull-request number is invalid.'
+  );
+  const role = mode;
   const preview = verifyArtifact({
-    inspect: readJson(options['preview-inspect']),
+    inspect: readJson(
+      options[mode === 'preview' ? 'preview-inspect' : 'staging-inspect']
+    ),
     list: readJson(options['deployment-list']),
     expectedSha,
     expectedRelease,
     expectedPullRequest,
-    role: 'preview',
-    subject: 'Immutable Preview',
+    role,
+    subject: mode === 'preview' ? 'Immutable Preview' : 'Protected Staging',
     expectedCheckoutEnabled: true,
   });
   // `vercel inspect <custom-domain> --format=json` proves resolution to a
   // READY Production deployment but omits the queried custom domain from its
   // aliases array in CLI 56.1.0. Preserve the stronger alias rule for actual
   // promotion, while Preview drift protection compares the resolved IDs.
-  const productionBefore = verifyProductionAnchor(readJson(options['production-before']), null, false);
+  const productionBefore = verifyProductionAnchor(
+    readJson(options['production-before']),
+    null,
+    false
+  );
   const productionAfter = readJson(options['production-after']);
   verifyProductionUnchanged(productionBefore, productionAfter, false);
+  if (mode === 'staging') {
+    const aliasDeployment = readJson(options['staging-alias-inspect']);
+    requireValue(
+      aliasDeployment?.id === preview.inspect.id &&
+        aliasDeployment?.readyState === 'READY',
+      'staging.carlophillips.com does not resolve to the exact protected Staging deployment.'
+    );
+  }
 
-  writeFileSync(options.output, `${JSON.stringify({
-    schemaVersion: 'cp.vercel-preview-receipt.v1',
-    deploymentId: preview.inspect.id,
-    deploymentUrl: preview.inspect.url,
-    target: 'preview',
-    readyState: preview.inspect.readyState,
-    gitCommitSha: expectedSha,
-    release: expectedRelease,
-    pullRequest: Number(expectedPullRequest),
-    artifactKind: ARTIFACTS.preview.artifactKind,
-    buildEnvironment: ARTIFACTS.preview.buildEnvironment,
-    checkoutEnabled: true,
-    productionDomainsAssigned: false,
-    productionBeforeDeploymentId: productionBefore.id,
-    productionAfterPreviewDeploymentId: productionAfter.id,
-  }, null, 2)}\n`);
+  writeFileSync(
+    options.output,
+    `${JSON.stringify(
+      {
+        schemaVersion:
+          mode === 'preview'
+            ? 'cp.vercel-preview-receipt.v1'
+            : 'cp.protected-staging-deployment-receipt.v1',
+        deploymentId: preview.inspect.id,
+        deploymentUrl: preview.inspect.url,
+        target: 'preview',
+        readyState: preview.inspect.readyState,
+        gitCommitSha: expectedSha,
+        release: expectedRelease,
+        pullRequest: Number(expectedPullRequest),
+        artifactKind: ARTIFACTS[role].artifactKind,
+        buildEnvironment: ARTIFACTS[role].buildEnvironment,
+        checkoutEnabled: true,
+        productionDomainsAssigned: false,
+        productionBeforeDeploymentId: productionBefore.id,
+        productionAfterPreviewDeploymentId: productionAfter.id,
+        ...(mode === 'staging' ? { alias: 'staging.carlophillips.com' } : {}),
+      },
+      null,
+      2
+    )}\n`
+  );
 } else if (mode === 'candidate-pair') {
   const pair = verifyCandidatePair({
     candidateInspect: readJson(options['candidate-inspect']),
@@ -323,26 +485,36 @@ if (mode === 'preview') {
     expectedCandidateCheckout,
   });
 
-  writeFileSync(options.output, `${JSON.stringify({
-    schemaVersion: 'cp.vercel-release-pair-receipt.v2',
-    gitCommitSha: expectedSha,
-    release: expectedRelease,
-    candidateDeploymentId: pair.candidate.inspect.id,
-    candidateDeploymentUrl: pair.candidate.inspect.url,
-    candidateArtifactKind: ARTIFACTS.candidate.artifactKind,
-    safeFallbackDeploymentId: pair.fallback.inspect.id,
-    safeFallbackDeploymentUrl: pair.fallback.inspect.url,
-    safeFallbackArtifactKind: ARTIFACTS.fallback.artifactKind,
-    buildEnvironment: 'production',
-    checkoutEnabled: expectedCandidateCheckout,
-    safeFallbackCheckoutEnabled: false,
-    deploymentsDistinct: true,
-    productionDomainsAssigned: false,
-    productionBeforeDeploymentId: pair.anchor.id,
-    productionAfterStagingDeploymentId: pair.anchor.id,
-  }, null, 2)}\n`);
+  writeFileSync(
+    options.output,
+    `${JSON.stringify(
+      {
+        schemaVersion: 'cp.vercel-release-pair-receipt.v2',
+        gitCommitSha: expectedSha,
+        release: expectedRelease,
+        candidateDeploymentId: pair.candidate.inspect.id,
+        candidateDeploymentUrl: pair.candidate.inspect.url,
+        candidateArtifactKind: ARTIFACTS.candidate.artifactKind,
+        safeFallbackDeploymentId: pair.fallback.inspect.id,
+        safeFallbackDeploymentUrl: pair.fallback.inspect.url,
+        safeFallbackArtifactKind: ARTIFACTS.fallback.artifactKind,
+        buildEnvironment: 'production',
+        checkoutEnabled: expectedCandidateCheckout,
+        safeFallbackCheckoutEnabled: false,
+        deploymentsDistinct: true,
+        productionDomainsAssigned: false,
+        productionBeforeDeploymentId: pair.anchor.id,
+        productionAfterStagingDeploymentId: pair.anchor.id,
+      },
+      null,
+      2
+    )}\n`
+  );
 } else if (mode === 'production' || mode === 'fallback-production') {
-  requireValue(DEPLOYMENT_ID.test(expectedProductionAnchor || ''), 'Production verification requires the reviewed drift anchor.');
+  requireValue(
+    DEPLOYMENT_ID.test(expectedProductionAnchor || ''),
+    'Production verification requires the reviewed drift anchor.'
+  );
   const productionBefore = readJson(options['production-before']);
   const pair = verifyCandidatePair({
     candidateInspect: readJson(options['candidate-inspect']),
@@ -365,23 +537,35 @@ if (mode === 'preview') {
     role,
     expectedSha,
     expectedRelease,
-    expectedCheckoutEnabled: role === 'candidate' ? expectedCandidateCheckout : false,
+    expectedCheckoutEnabled:
+      role === 'candidate' ? expectedCandidateCheckout : false,
   });
 
-  writeFileSync(options.output, `${JSON.stringify({
-    schemaVersion: role === 'candidate' ? 'cp.vercel-production-receipt.v2' : 'cp.vercel-safe-fallback-receipt.v1',
-    release: expectedRelease,
-    gitCommitSha: expectedSha,
-    artifactRole: ARTIFACTS[role].artifactKind,
-    reviewedSourceDeploymentId: source.inspect.id,
-    safeFallbackDeploymentId: pair.fallback.inspect.id,
-    productionBeforeDeploymentId: pair.anchor.id,
-    productionAfterDeploymentId: productionAfter.id,
-    promotedFromDeploymentId: promoted.promotedFrom,
-    productionUrl: productionAfter.url,
-    exactArtifactPromoted: true,
-    checkoutEnabled: role === 'candidate' ? expectedCandidateCheckout : false,
-  }, null, 2)}\n`);
+  writeFileSync(
+    options.output,
+    `${JSON.stringify(
+      {
+        schemaVersion:
+          role === 'candidate'
+            ? 'cp.vercel-production-receipt.v2'
+            : 'cp.vercel-safe-fallback-receipt.v1',
+        release: expectedRelease,
+        gitCommitSha: expectedSha,
+        artifactRole: ARTIFACTS[role].artifactKind,
+        reviewedSourceDeploymentId: source.inspect.id,
+        safeFallbackDeploymentId: pair.fallback.inspect.id,
+        productionBeforeDeploymentId: pair.anchor.id,
+        productionAfterDeploymentId: productionAfter.id,
+        promotedFromDeploymentId: promoted.promotedFrom,
+        productionUrl: productionAfter.url,
+        exactArtifactPromoted: true,
+        checkoutEnabled:
+          role === 'candidate' ? expectedCandidateCheckout : false,
+      },
+      null,
+      2
+    )}\n`
+  );
 } else {
   throw new Error(`Unknown verification mode: ${mode || '<missing>'}`);
 }

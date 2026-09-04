@@ -31,7 +31,7 @@
     "test:privacy": "playwright test tests/e2e/privacy-network.spec.ts",
     "mock-assets": "node tools/mock-asset-factory.mjs",
     "mock-assets:ui": "node tools/mock-asset-factory-server.mjs",
-    "audit:prod": "yarn audit --groups dependencies --level moderate",
+    "audit:prod": "node scripts/audit-production-dependencies.mjs",
     "verify:media-readiness": "node scripts/verify-media-readiness.mjs",
     "verify:vercel-link": "node scripts/verify-vercel-link.mjs",
     "verify:source-boundaries": "node scripts/verify-source-boundaries.mjs",

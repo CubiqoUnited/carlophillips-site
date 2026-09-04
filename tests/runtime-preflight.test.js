@@ -9,6 +9,8 @@ const previewEnvironment = {
   CP_COMMERCE_ENVIRONMENT: 'preview',
   CP_DURABLE_STORE_ID: 'staging-store',
   CP_EXPECTED_PREVIEW_DURABLE_STORE_ID: 'staging-store',
+  CP_RELEASE_ID: 'cp-test-release',
+  CP_RELEASE_COMMIT_SHA: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
   SHOPIFY_STAGING_STORE_DOMAIN: 'cp-staging.myshopify.com',
   SHOPIFY_STAGING_STOREFRONT_TOKEN: 'staging-token',
   SHOPIFY_STAGING_CHECKOUT_HOSTS: 'cp-staging.myshopify.com',

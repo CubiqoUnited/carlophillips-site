@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       pull_request:
-        description: Open same-repository pull-request number targeting main
+        description: Open same-repository pull-request number targeting staging
         required: true
         type: string
       release:
@@ -39,6 +39,8 @@ jobs:
       COMMERCE_DATA_MODE: shopify
       SHOPIFY_CART_UI_ENABLED: 'true'
       SHOPIFY_CHECKOUT_ENABLED: 'true'
+      CP_RELEASE_ID: ${{ inputs.release }}
+      CP_RELEASE_COMMIT_SHA: ${{ inputs.expected_sha }}
 
     steps:
       - name: Enforce PR-bound Preview environment and exact pull request
@@ -50,15 +52,15 @@ jobs:
           [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
           [[ "$PULL_REQUEST" =~ ^[1-9][0-9]*$ ]]
           test "$EXPECTED_SHA" = "$GITHUB_SHA"
-          test "$GITHUB_REF" != "refs/heads/main"
+          test "$GITHUB_REF" != "refs/heads/staging"
           gh api "repos/$GITHUB_REPOSITORY/environments/Preview" > preview-environment.json
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST" > pull-request.json
           node - <<'NODE'
           const fs = require('node:fs');
           const environment = JSON.parse(fs.readFileSync('preview-environment.json', 'utf8'));
           const pullRequest = JSON.parse(fs.readFileSync('pull-request.json', 'utf8'));
-          if (pullRequest.state !== 'open' || pullRequest.base?.ref !== 'main') {
-            throw new Error('Preview requires an open pull request targeting main.');
+          if (pullRequest.state !== 'open' || pullRequest.base?.ref !== 'staging') {
+            throw new Error('Preview requires an open pull request targeting staging.');
           }
           if (pullRequest.head?.sha !== process.env.EXPECTED_SHA) {
             throw new Error('Pull-request head SHA does not match the selected workflow SHA.');
@@ -89,6 +91,8 @@ jobs:
           test "$NEXT_PUBLIC_SHOW_PRODUCTS" = "true"
           test "$SHOPIFY_CART_UI_ENABLED" = "true"
           test "$SHOPIFY_CHECKOUT_ENABLED" = "true"
+          test "$CP_RELEASE_ID" = "$RELEASE"
+          test "$CP_RELEASE_COMMIT_SHA" = "$EXPECTED_SHA"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -144,6 +148,8 @@ jobs:
             --env COMMERCE_DATA_MODE=shopify \
             --env SHOPIFY_CART_UI_ENABLED=true \
             --env SHOPIFY_CHECKOUT_ENABLED=true \
+            --env CP_RELEASE_ID="$RELEASE" \
+            --env CP_RELEASE_COMMIT_SHA="$GITHUB_SHA" \
             --meta gitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitSha="$GITHUB_SHA" \
             --meta cpGitCommitRef="$GITHUB_REF_NAME" \

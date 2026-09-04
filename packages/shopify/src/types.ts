@@ -154,6 +154,10 @@ export interface StorefrontCartLine {
 export interface StorefrontCart {
   readonly id: string;
   readonly checkoutUrl: string;
+  readonly attributes: readonly {
+    readonly key: string;
+    readonly value: string;
+  }[];
   readonly totalQuantity: number;
   readonly cost: {
     readonly subtotalAmount: MoneyV2;
