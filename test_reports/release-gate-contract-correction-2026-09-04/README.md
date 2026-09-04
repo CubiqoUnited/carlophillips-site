@@ -4,6 +4,8 @@ Date: 2026-09-04 EDT
 
 Branch: `codex/cx-corrections-2026-09-03`
 
+Pull request: #76 targeting `staging`
+
 ## Corrected invariants
 
 - The signed protected receipt is bound to the approved Staging SHA.

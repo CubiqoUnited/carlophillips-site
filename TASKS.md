@@ -11,7 +11,7 @@
       browser proofs and fail closed on payment, order or private-URL retention.
 - [x] Pass schema, unit, policy, lint, build and desktop/mobile screenshot
       comparison checks without committing downloaded CI artifacts.
-- [ ] Update PR #74 and require green Linux CI before Staging merge.
+- [ ] Require green Linux CI on correction PR #76 before Staging merge.
 
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 

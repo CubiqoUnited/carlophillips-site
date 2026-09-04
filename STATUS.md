@@ -14,9 +14,10 @@
   hash from 1440/390 browser proofs and explicitly requires no payment attempt,
   no order submission, no customer data and no retained private checkout URL.
 - Production approval, candidate identity, live checkout health and rollback
-  protection remain separate fail-closed gates. The correction is under local
-  schema/unit/policy/build/visual verification before the open Staging PR is
-  updated; Production has not been changed.
+  protection remain separate fail-closed gates. Local
+  schema/unit/policy/build/visual verification is green, and correction PR #76
+  targets `staging` for independent Linux CI and review. Production has not been
+  changed.
 
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 
