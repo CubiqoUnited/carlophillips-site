@@ -27,13 +27,18 @@ records and must not be executed.
       markers, bind the matching pair into GitHub Staging, store the same new
       receipt-signing secret in GitHub Staging and Production, and keep the
       snapshot flag false.
+- [x] Merge Admin correction PR #80 into `staging` at
+      `259071f6f9c83a186427c05f43dc4675feb17a60` and pass protected Staging run
+      `33841089145`, including exact-SHA deployment, signed no-PII probe,
+      1440/390 functional/a11y/screenshots, unchanged Production, and immutable
+      deployment receipt.
 - [ ] Add the missing Production required reviewer and protect `main` and
       `staging` with reviewed pull requests and required Verify/Playwright
       checks. Current API access is not repository-admin and was rejected;
       keep Production promotion disabled.
-- [ ] Add the least-privilege read-only `SHOPIFY_STAGING_ADMIN_TOKEN` to the
-      GitHub Staging environment without exposing it, then run the exact-SHA
-      protected no-order proof only after the Staging PR is merged.
+- [x] Keep the optional Shopify Admin inventory snapshot disabled. Its absent
+      read-only token is not a release blocker; the exact-SHA protected
+      deployment and signed no-order receipt already pass.
 
 ## Staging-to-Production provenance and no-order QA correction — 2026-09-04
 
@@ -50,9 +55,11 @@ records and must not be executed.
       at `d8a9db11acd6a70239fb03b20944a845e5a6b931`, and delete its remote branch.
 - [x] Disable the out-of-window Production promotion switch without deploying
       or changing Production.
-- [ ] Add the read-only Staging Admin secret, distinct durable-store identity
-      variables and the same encrypted receipt-signing secret to Staging and
-      Production; then signal `CP Shopify Staging proof bindings ready`.
+- [x] Add distinct durable-store identity variables and the same encrypted
+      receipt-signing secret to Staging and Production without disclosure.
+- [x] Classify the read-only Staging Admin snapshot as optional audit evidence,
+      not a release requirement; do not provision its token merely to satisfy
+      an agent-authored gate.
 
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 

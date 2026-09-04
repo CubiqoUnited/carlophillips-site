@@ -2,12 +2,15 @@
 
 Updated: 2026-09-04 EDT
 
-The shipped `apps/web` Admin fail-open defect is corrected on temporary branch
-`codex/sanity-blocker-record-2026-09-04`: missing, undefined, short, equal,
-malformed and wrong bearer credentials fail closed, and Vercel Admin access is
-bound to the exact Clerk Product Owner session. Focused and full source/build,
-local HTTP, accessibility and desktop/mobile screenshot checks pass. The live
-Admin route was not probed and no Production deployment occurred.
+The shipped `apps/web` Admin fail-open defect is corrected and merged through
+PR #80 into exact `staging@259071f6f9c83a186427c05f43dc4675feb17a60`:
+missing, undefined, short, equal, malformed and wrong bearer credentials fail
+closed, and Vercel Admin access is bound to the exact Clerk Product Owner
+session. Protected Staging run `33841089145` succeeded with repository checks,
+immutable deployment, signed PII-free probe, 1440/390 functional, accessibility
+and screenshot checks, unchanged healthy Production, and a signed immutable
+deployment receipt. The live Admin route was not probed and no Production
+deployment occurred.
 
 Completed protected configuration, without displaying values:
 
@@ -20,6 +23,11 @@ Completed protected configuration, without displaying values:
 - Confirmed `CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=false` and
   `CP_PRODUCTION_PROMOTION_ENABLED=false`.
 
+The optional read-only Shopify inventory-snapshot job was correctly skipped in
+run `33841089145`. Product Owner direction confirms that its absent
+`SHOPIFY_STAGING_ADMIN_TOKEN` is not a release blocker. Keep the snapshot flag
+off; do not provision a credential merely to satisfy optional audit evidence.
+
 Exact remaining human actions:
 
 1. A repository administrator opens GitHub -> `CubiqoUnited/carlophillips-site`
@@ -30,22 +38,16 @@ Exact remaining human actions:
    has push/workflow but not admin permission; environment update returned HTTP
    403 and branch-protection updates returned HTTP 404. No browser workaround
    was attempted.
-2. In GitHub -> Environments -> Staging, add
-   `SHOPIFY_STAGING_ADMIN_TOKEN` as an encrypted environment secret. It must be
-   a least-privilege custom-app token for
-   `carlophillips-staging.myshopify.com` with product and inventory read access
-   only—no order, customer or write access. Never paste or reveal its value.
-3. Signal completion with `CP release gate owner bindings ready`.
+2. Signal completion with `CP release gate owner bindings ready`.
 
 Cost: none intended. Risk: branch/environment protection changes affect who may
-merge and deploy; the Shopify token exposes catalog and inventory metadata.
-Keep the token Staging-only and read-only. Do not enable the snapshot flag,
-deploy Production, enter payment, submit an order or retain a private checkout
-URL before the exact reviewed Staging sequence resumes.
+merge and deploy. Do not enable the optional snapshot flag, deploy Production,
+enter payment, submit an order or retain a private checkout URL before the exact
+reviewed Staging sequence resumes.
 
 ---
 
-# CURRENT — READ-ONLY STAGING PROOF BINDINGS; NO PAYMENT OR ORDER
+# SUPERSEDED — OPTIONAL READ-ONLY STAGING SNAPSHOT; NO PAYMENT OR ORDER
 
 Updated: 2026-09-04 EDT
 
@@ -57,10 +59,13 @@ must not be performed.
 
 ## Current external proof bindings
 
-Protected Staging run `33809465340` is successful on exact
-`staging@9daa799cdd40be495584456a59a8efaea539ed65`; the earlier Vercel-token
-blocker is resolved. Production remained unchanged. Before the protected
-read-only Shopify snapshot can run, the Staging environment still requires:
+This section's earlier token requirement is superseded by the Product Owner's
+2026-09-04 decision that the Shopify Admin snapshot is optional audit evidence
+and not a release gate. Protected Staging run `33809465340` is successful on
+exact `staging@9daa799cdd40be495584456a59a8efaea539ed65`; the earlier
+Vercel-token blocker is resolved. Production remained unchanged. Before the
+optional protected read-only Shopify snapshot can run, the Staging environment
+would still require:
 
 1. `SHOPIFY_STAGING_ADMIN_TOKEN`: a read-only custom-app token from
    `carlophillips-staging.myshopify.com` with only product and inventory read

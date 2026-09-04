@@ -5,14 +5,15 @@ provenance sections supersede conflicting statements in every older section.
 Older payment/order evidence and same-SHA descriptions are historical context
 only and grant no current QA or release authority.
 
-## Sanity validation and Admin authentication blocker — 2026-09-04
+## Protected Staging Admin-gate closure — 2026-09-04
 
-- Current `staging@2ed89d52210e9aeeab9e5533ebfad58b4f82edf6` passes the
+- Current `staging@259071f6f9c83a186427c05f43dc4675feb17a60` passes the
   full local source/build suite: Yarn Classic 1.22.22 frozen install,
   formatting, design-system and Production-commerce lint, TypeScript,
   Stylelint, 82 files / 702 tests, optimized Next.js build, and 28/28 headless
-  desktop/mobile checks with six screenshot comparisons. Correction PRs
-  #77-#79 also have green Linux Verify and Playwright checks.
+  desktop/mobile checks with six screenshot comparisons. Admin correction PR
+  #80 passed Linux Verify and Playwright, then merged from exact head
+  `ffdf42b0a41e752965ee73f1b825be4a664b56b8`.
 - The sanity pass found and locally corrected a fail-open defect in the shipped
   `apps/web` Admin route. Missing, undefined, short, equal, malformed and wrong
   credentials now fail closed before Admin rendering; local reviewer/owner
@@ -33,11 +34,16 @@ only and grant no current QA or release authority.
   has a required reviewer, but Production has no required reviewer and its
   workflow therefore fails closed. The Production promotion switch remains
   `false`.
-- The current exact Staging SHA has no protected deployment/proof run. The
-  signed no-order receipt now remains blocked only by the human-created
-  least-privilege `SHOPIFY_STAGING_ADMIN_TOKEN` plus the repository-admin
-  protection changes above. Prior Staging browser artifacts are sanitized
-  historical evidence and cannot be reused as exact-SHA proof.
+- Protected Staging run `33841089145` succeeded on exact
+  `staging@259071f6f9c83a186427c05f43dc4675feb17a60`: repository verification,
+  immutable deployment, protected alias, signed PII-free webhook probe,
+  1440/390 functional/a11y/screenshot checks, unchanged healthy Production,
+  and immutable signed deployment receipt all passed. The optional read-only
+  Shopify inventory snapshot was correctly skipped because
+  `SHOPIFY_STAGING_ADMIN_TOKEN` is absent. That snapshot is optional audit
+  evidence, not a storefront, Staging-deployment or Production-promotion gate;
+  it remains disabled. Only the repository-admin protection changes above
+  remain release-control blockers.
 
 ## Staging-to-Production provenance and no-order QA correction — 2026-09-04
 
@@ -58,13 +64,12 @@ only and grant no current QA or release authority.
   passed independent Linux Verify and Playwright checks and merged to `staging`
   as `d8a9db11acd6a70239fb03b20944a845e5a6b931`; its remote branch is deleted.
   Superseded PR #76 closed unmerged. Production has not been changed.
-- The final live signed-receipt run remains blocked by missing protected
-  configuration: Staging `SHOPIFY_STAGING_ADMIN_TOKEN`, distinct
-  `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` /
-  `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`, and the same encrypted
-  `CP_RELEASE_RECEIPT_SIGNING_SECRET` in Staging and Production. The persistent
-  human record contains the exact safe action. The out-of-window Production
-  promotion switch was corrected from `true` to `false`; no deployment ran.
+- The distinct `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` /
+  `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID` pair and matching encrypted
+  `CP_RELEASE_RECEIPT_SIGNING_SECRET` are configured. A Shopify Admin snapshot
+  remains optional and disabled; its absent token is not a release blocker.
+  The out-of-window Production promotion switch remains `false`; no Production
+  deployment ran.
 
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 
