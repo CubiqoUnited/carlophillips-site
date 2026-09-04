@@ -4,7 +4,7 @@ Date: 2026-09-04 EDT
 
 Branch: `codex/cx-corrections-2026-09-03`
 
-Pull request: #76 targeting `staging`
+Pull request: #77 targeting `staging` (#76 closed unmerged)
 
 ## Corrected invariants
 

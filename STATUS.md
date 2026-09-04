@@ -15,8 +15,9 @@
   no order submission, no customer data and no retained private checkout URL.
 - Production approval, candidate identity, live checkout health and rollback
   protection remain separate fail-closed gates. Local
-  schema/unit/policy/build/visual verification is green, and correction PR #76
-  targets `staging` for independent Linux CI and review. Production has not been
+  schema/unit/policy/build/visual verification is green, and correction PR #77
+  targets `staging` for independent Linux CI and review. Superseded PR #76 was
+  closed unmerged after GitHub rejected its normal merge attempt. Production has not been
   changed.
 
 ## Protected Shopify snapshot handoff correction — 2026-09-03
