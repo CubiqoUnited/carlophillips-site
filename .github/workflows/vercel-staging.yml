@@ -20,6 +20,11 @@ on:
         required: false
         default: false
         type: boolean
+      update_visual_baselines:
+        description: Generate Linux baselines for deliberate visual review; normal release runs must leave this false
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   actions: read
@@ -217,7 +222,23 @@ jobs:
           SHOPIFY_STAGING_CHECKOUT_HOSTS: ${{ vars.SHOPIFY_STAGING_CHECKOUT_HOSTS }}
           SHOPIFY_STAGING_STOREFRONT_PASSWORD: ${{ secrets.SHOPIFY_STAGING_STOREFRONT_PASSWORD }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
-        run: yarn playwright test --config=playwright.release.config.ts
+        run: |
+          if [[ "${{ inputs.update_visual_baselines }}" == "true" ]]; then
+            yarn playwright test --config=playwright.release.config.ts --update-snapshots
+          else
+            yarn playwright test --config=playwright.release.config.ts
+          fi
+
+      - name: Preserve exact-width diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-visual-diagnostics-${{ inputs.expected_sha }}
+          path: |
+            test_reports/**
+            tests/release-gate/protected-staging.spec.ts-snapshots/**
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Capture unchanged healthy Production and exact Staging alias
         env:
