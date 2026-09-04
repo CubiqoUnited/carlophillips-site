@@ -145,7 +145,13 @@ export interface StorefrontCartLine {
     readonly title: string;
     readonly availableForSale: boolean;
     readonly selectedOptions: readonly SelectedOption[];
-    readonly product: { readonly handle: string; readonly title: string };
+    readonly product: {
+      readonly handle: string;
+      readonly title: string;
+      readonly images?: {
+        readonly nodes: readonly Pick<Image, 'url' | 'altText'>[];
+      };
+    };
     readonly price: MoneyV2;
     readonly image: Pick<Image, 'url' | 'altText'> | null;
   };

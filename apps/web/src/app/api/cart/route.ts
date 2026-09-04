@@ -89,9 +89,17 @@ export async function POST(request: Request) {
         environment,
       });
     }
+    const wantsJson = request.headers
+      .get('accept')
+      ?.includes('application/json');
+    const count =
+      cart.lines.edges.reduce((total, { node }) => total + node.quantity, 0) ||
+      0;
     const bagUrl = new URL('/bag', request.url);
     if (action === 'add') bagUrl.searchParams.set('added', '1');
-    const response = NextResponse.redirect(bagUrl, 303);
+    const response = wantsJson
+      ? NextResponse.json({ ok: true, count })
+      : NextResponse.redirect(bagUrl, 303);
     response.cookies.set(CART_COOKIE, cart.id, {
       httpOnly: true,
       sameSite: 'lax',

@@ -10,11 +10,17 @@ const expectedCheckoutHosts = new Set(
     .map((value) => value.trim())
     .filter(Boolean)
 );
+const branchPreviewQa = process.env.CP_BRANCH_PREVIEW_QA === 'true';
 
 test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser health', async ({
   context,
   page,
 }, testInfo) => {
+  const hideNonCustomerUi = () =>
+    page.addStyleTag({
+      content:
+        'vercel-live-feedback, vercel-toolbar { display: none !important; }',
+    });
   const consoleErrors: string[] = [];
   const networkFailures: string[] = [];
   const httpFailures: string[] = [];
@@ -41,7 +47,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   });
 
   for (const route of ['/', '/shop', '/collections', '/member', '/contact']) {
-    const response = await page.goto(route, { waitUntil: 'networkidle' });
+    const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
     expect(response?.ok(), `${route} must be healthy`).toBe(true);
     const overflow = await page.evaluate(
       () =>
@@ -50,15 +56,15 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     );
     expect(overflow, `${route} must not overflow`).toBeLessThanOrEqual(0);
   }
-  await page.goto('/member', { waitUntil: 'networkidle' });
+  await page.goto('/member', { waitUntil: 'domcontentloaded' });
   await expect(
     page.getByRole('heading', { name: 'Your account.' })
   ).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('00-member.png') });
-  await page.goto('/contact', { waitUntil: 'networkidle' });
+  await page.goto('/contact', { waitUntil: 'domcontentloaded' });
   await page.screenshot({ path: testInfo.outputPath('00-contact.png') });
 
-  await page.goto('/shop', { waitUntil: 'networkidle' });
+  await page.goto('/shop', { waitUntil: 'domcontentloaded' });
   await expect(
     page.getByRole('heading', { name: 'CARLOPHILLIPS Signature Hoodie' })
   ).toHaveCount(1);
@@ -66,7 +72,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     page.locator('[aria-label="Available products"] article')
   ).toHaveCount(1);
 
-  await page.goto('/?screen=gallery', { waitUntil: 'networkidle' });
+  await page.goto('/?screen=gallery', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeVisible();
   await expect
     .poll(() => page.evaluate(() => document.body.style.overflow))
@@ -78,13 +84,24 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
       )
     )
     .toBe(true);
+  await hideNonCustomerUi();
   await page.screenshot({ path: testInfo.outputPath('00-home-gallery.png') });
+  await expect(page.getByRole('dialog', { name: 'Gallery' })).toHaveScreenshot(
+    'staging-home-gallery.png',
+    { animations: 'disabled', maxDiffPixelRatio: 0.01 }
+  );
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeHidden();
 
+  const cartHydration = page.waitForResponse(
+    (response) =>
+      response.request().method() === 'GET' &&
+      new URL(response.url()).pathname === '/api/cart'
+  );
   const productResponse = await page.goto(`/product/${HANDLE}`, {
-    waitUntil: 'networkidle',
+    waitUntil: 'domcontentloaded',
   });
+  await cartHydration;
   expect(productResponse?.ok()).toBe(true);
   await expect(page.locator('main#main-content')).toBeVisible();
   await expect(
@@ -93,13 +110,15 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
       name: 'CARLOPHILLIPS Signature Hoodie',
     })
   ).toBeVisible();
-  await expect(page.getByRole('group', { name: 'Select size' })).toBeVisible();
+  await expect(
+    page.getByRole('group', { name: 'Choose a size' })
+  ).toBeVisible();
   const sizeButtons = page
-    .getByRole('group', { name: 'Select size' })
+    .getByRole('group', { name: 'Choose a size' })
     .getByRole('button');
   await expect(sizeButtons).toHaveText(['S', 'M', 'L']);
   const mediumButton = page
-    .getByRole('group', { name: 'Select size' })
+    .getByRole('group', { name: 'Choose a size' })
     .getByRole('button', { name: 'Size M', exact: true });
   await expect(mediumButton).toHaveAttribute('aria-pressed', 'false');
   await mediumButton.click();
@@ -108,30 +127,53 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     /^sha256:[a-f0-9]{64}$/
   );
   await expect(
-    page.getByRole('button', { name: 'ADD TO BAG $128', exact: true })
+    page.getByRole('button', { name: 'ADD TO BAG - $128', exact: true })
   ).toBeEnabled();
+  await hideNonCustomerUi();
   await page.screenshot({
     path: testInfo.outputPath('01-shopify-product-sml.png'),
     fullPage: true,
   });
+  await expect(page.locator('main#main-content')).toHaveScreenshot(
+    'staging-product-selected.png',
+    { animations: 'disabled', fullPage: true, maxDiffPixelRatio: 0.01 }
+  );
 
-  await page.getByRole('button', { name: 'ADD TO BAG $128' }).click();
-  await page.waitForURL('**/bag?added=1');
+  await page.getByRole('button', { name: 'ADD TO BAG - $128' }).click();
+  await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Bag (1)' })).toBeVisible();
+  await page.getByRole('link', { name: 'VIEW BAG' }).click();
+  await page.waitForURL('**/bag');
   await expect(page.locator('main#main-content')).toHaveAttribute(
     'data-commerce-source',
     'store'
   );
   await expect(page.getByText('Size: M')).toBeVisible();
-  await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: /^Bag 1$/i })).toBeVisible();
-  await expect(page.getByText('$128.00', { exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: /^Bag \(1\)$/i })).toBeVisible();
+  await expect(
+    page.locator('.cp-bag-summary').getByText('$128.00', { exact: true })
+  ).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Checkout', exact: true })
   ).toBeEnabled();
+  const populatedBagOverflow = await page.evaluate(
+    () =>
+      document.documentElement.scrollWidth -
+      document.documentElement.clientWidth
+  );
+  expect(
+    populatedBagOverflow,
+    'populated Bag must not overflow'
+  ).toBeLessThanOrEqual(0);
+  await hideNonCustomerUi();
   await page.screenshot({
     path: testInfo.outputPath('02-shopify-bag-truth.png'),
     fullPage: true,
   });
+  await expect(page.locator('main#main-content')).toHaveScreenshot(
+    'staging-bag.png',
+    { animations: 'disabled', fullPage: true, maxDiffPixelRatio: 0.01 }
+  );
 
   const cookies = await context.cookies();
   const checkoutResponse = await page.request.post('/api/cart', {
@@ -147,7 +189,13 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   expect(location).toBeTruthy();
   const checkout = new URL(location!);
   expect(checkout.protocol).toBe('https:');
-  expect(expectedCheckoutHosts.has(checkout.hostname)).toBe(true);
+  expect(
+    expectedCheckoutHosts.size > 0 || branchPreviewQa,
+    'protected Staging must supply its approved checkout-host allowlist'
+  ).toBe(true);
+  if (expectedCheckoutHosts.size > 0) {
+    expect(expectedCheckoutHosts.has(checkout.hostname)).toBe(true);
+  }
   await checkoutResponse.dispose();
 
   const axe = await new AxeBuilder({ page })

@@ -549,6 +549,15 @@
     transparent
   );
 
+  /* Commerce closeout component decisions. */
+  --cp-component-commerce-reading-width: 52rem;
+  --cp-component-bag-media-size: 8rem;
+  --cp-component-bag-media-size-mobile: 6rem;
+  --cp-component-gallery-max-height: 46rem;
+  --cp-component-feedback-success-border: var(--cp-color-cream-700);
+  --cp-component-control-disabled-background: var(--cp-color-neutral-100);
+  --cp-component-media-background: var(--cp-color-neutral-100);
+
   /* Tailwind/shadcn compatibility bridge; not a second CP token source. */
   --background: 0 0% 0%;
   --foreground: 0 0% 100%;

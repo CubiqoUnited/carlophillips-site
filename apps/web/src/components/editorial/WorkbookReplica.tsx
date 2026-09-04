@@ -22,6 +22,7 @@ import type { ApprovedCampaignAsset } from '@/lib/media/types';
 import type { HomeCatalogSummary } from '@/types';
 import HeroMorphPreview from './HeroMorphPreview';
 import { useModalDialog } from '@/lib/a11y/use-modal-dialog';
+import { curateCustomerMedia } from '@/lib/media/customer-product-media';
 
 const MuxVideo = dynamic(() => import('@mux/mux-video/react'), { ssr: false });
 const disableMuxTracking =
@@ -48,16 +49,9 @@ type StatusSurfaceName = Exclude<
 const NAVIGABLE_SURFACES = new Set<Surface>([
   'discovery',
   'gallery',
-  'gallery-order',
-  'order',
   'video-unavailable',
   'gallery-unavailable',
-  'size-unavailable',
   'menu',
-  'size',
-  'private-list',
-  'categories',
-  'hoodies',
 ]);
 
 export function formatCatalogPrice(
@@ -96,9 +90,11 @@ export function catalogGalleryStills(
 function ScreenHeader({
   onMenu,
   onBag,
+  bagCount = 0,
 }: {
   onMenu: () => void;
   onBag: () => void;
+  bagCount?: number;
 }) {
   return (
     <header className="cp-workbook-header">
@@ -107,7 +103,7 @@ function ScreenHeader({
       </button>
       <span className="cp-workbook-brand">CARLOPHILLIPS</span>
       <button onClick={onBag} className="cp-workbook-nav">
-        BAG 0 <ShoppingBag />
+        BAG ({bagCount}) <ShoppingBag />
       </button>
     </header>
   );
@@ -208,7 +204,7 @@ function OrderWidgetBody({
         SIZE GUIDE
       </button>
       <div className="cp-workbook-order-actions">
-        <ActionButton onClick={onContinue}>VIEW PRODUCT</ActionButton>
+        <ActionButton onClick={onContinue}>CHOOSE A SIZE</ActionButton>
         <p className="cp-workbook-order-note">
           SHIPPING &amp; RETURNS AVAILABLE AT CHECKOUT
         </p>
@@ -267,7 +263,7 @@ function GridSurface({
                   ? card.available
                     ? 'VIEW CATEGORY'
                     : 'COMING SOON'
-                  : 'VIEW PRODUCT'}
+                  : 'SHOP THE HOODIE'}
               </small>
             </button>
           ))}
@@ -386,15 +382,32 @@ export default function WorkbookReplica({
   const [completedRuns, setCompletedRuns] = useState(0);
   const [progress, setProgress] = useState(0);
   const [productFrameReady, setProductFrameReady] = useState(false);
-  const [size, setSize] = useState(
-    sizeOptions.includes('M') ? 'M' : sizeOptions[0] || ''
-  );
+  const [size, setSize] = useState('');
+  const [bagCount, setBagCount] = useState(0);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [videoExpanded, setVideoExpanded] = useState(false);
   const productVideo = useRef<MuxVideoElement>(null);
   const productEndHandled = useRef(false);
   const productStartedRef = useRef(false);
   const productAsset = productMotion[activeVideo];
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/cart', { signal: controller.signal, cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((result) => {
+        if (typeof result?.count === 'number') setBagCount(result.count);
+      })
+      .catch(() => undefined);
+    const updateCount = (event: Event) => {
+      const count = (event as CustomEvent<{ count?: number }>).detail?.count;
+      if (typeof count === 'number') setBagCount(count);
+    };
+    window.addEventListener('cp:bag-count', updateCount);
+    return () => {
+      controller.abort();
+      window.removeEventListener('cp:bag-count', updateCount);
+    };
+  }, []);
   const visibleSurface = surface === 'discovery' ? null : surface;
   const isStatus =
     visibleSurface &&
@@ -509,10 +522,10 @@ export default function WorkbookReplica({
     setProgress(1);
     setPlaying(false);
   };
-  const galleryMedia = useMemo(
-    () => catalogGalleryStills(catalogSummary).slice(0, 24),
-    [catalogSummary]
-  );
+  const galleryMedia = useMemo(() => {
+    const allMedia = catalogGalleryStills(catalogSummary);
+    return curateCustomerMedia(allMedia);
+  }, [catalogSummary]);
   const mediaCount = galleryMedia.length;
   const activeGalleryStill = galleryMedia[galleryIndex] || null;
   const previousGalleryStill = () =>
@@ -558,6 +571,7 @@ export default function WorkbookReplica({
           onExplore={snapToProduct}
           onMenu={() => setSurface('menu')}
           onBag={() => window.location.assign('/bag')}
+          bagCount={bagCount}
         />
         <section
           id="signature-runway"
@@ -567,6 +581,7 @@ export default function WorkbookReplica({
           <ScreenHeader
             onMenu={() => setSurface('menu')}
             onBag={() => window.location.assign('/bag')}
+            bagCount={bagCount}
           />
           <div className="cp-workbook-discovery-grid">
             <div className="cp-workbook-product-copy">
@@ -702,9 +717,11 @@ export default function WorkbookReplica({
               </ActionButton>
               <ActionButton
                 className="cp-workbook-order-cta"
-                onClick={() => window.location.assign(productHref)}
+                onClick={() =>
+                  window.location.assign(`${productHref}#product-options`)
+                }
               >
-                VIEW PRODUCT
+                SHOP THE HOODIE
               </ActionButton>
             </div>
             <div
@@ -743,21 +760,26 @@ export default function WorkbookReplica({
               >
                 <h2 id="menu-shop">SHOP</h2>
                 <ActionButton onClick={() => window.location.assign('/shop')}>
-                  SHOP THE COLLECTION
+                  SHOP
                 </ActionButton>
               </section>
               <section
                 className="cp-workbook-menu-group is-separated"
                 aria-labelledby="menu-private-support"
               >
-                <h2 id="menu-private-support">PRIVATE &amp; SUPPORT</h2>
-                <ActionButton onClick={() => setSurface('private-list')}>
-                  PRIVATE LIST
+                <h2 id="menu-private-support">CUSTOMER CARE</h2>
+                <ActionButton
+                  onClick={() => window.location.assign('/aftercare')}
+                >
+                  AFTERCARE
                 </ActionButton>
                 <ActionButton
                   onClick={() => window.location.assign('/contact')}
                 >
-                  CONTACT US
+                  CONTACT
+                </ActionButton>
+                <ActionButton onClick={() => window.location.assign('/member')}>
+                  ACCOUNT
                 </ActionButton>
               </section>
             </nav>
@@ -774,9 +796,11 @@ export default function WorkbookReplica({
               <header>
                 <ActionButton
                   subtle
-                  onClick={() => window.location.assign(productHref)}
+                  onClick={() =>
+                    window.location.assign(`${productHref}#product-options`)
+                  }
                 >
-                  VIEW PRODUCT
+                  CHOOSE A SIZE
                 </ActionButton>
                 <button
                   type="button"
@@ -802,14 +826,14 @@ export default function WorkbookReplica({
                       fill
                       sizes="(max-width: 768px) 72vw, 38vw"
                       priority
-                      className="object-contain"
+                      className="cp-workbook-gallery-product-image"
                     />
                   ) : (
                     <Image
                       src={productArchitecturePoster}
                       alt="Product gallery unavailable"
                       fill
-                      className="object-contain"
+                      className="cp-workbook-gallery-product-image"
                     />
                   )}
                 </div>
@@ -847,7 +871,7 @@ export default function WorkbookReplica({
                 aria-label="Product options"
               >
                 <header>
-                  <p>VIEW PRODUCT</p>
+                  <p>CHOOSE A SIZE</p>
                   <button
                     type="button"
                     onClick={() => setSurface('gallery')}
@@ -863,14 +887,16 @@ export default function WorkbookReplica({
                   priceLabel={priceLabel}
                   onSize={setSize}
                   onSizeGuide={() => setSurface('size')}
-                  onContinue={() => window.location.assign(productHref)}
+                  onContinue={() =>
+                    window.location.assign(`${productHref}#product-options`)
+                  }
                 />
               </aside>
             )}
           </section>
         )}
         {surface === 'order' && (
-          <Panel title="VIEW PRODUCT" onClose={() => setSurface('discovery')}>
+          <Panel title="CHOOSE A SIZE" onClose={() => setSurface('discovery')}>
             <OrderWidgetBody
               size={size}
               sizes={sizeOptions}
@@ -878,7 +904,9 @@ export default function WorkbookReplica({
               priceLabel={priceLabel}
               onSize={setSize}
               onSizeGuide={() => setSurface('size')}
-              onContinue={() => window.location.assign(productHref)}
+              onContinue={() =>
+                window.location.assign(`${productHref}#product-options`)
+              }
             />
           </Panel>
         )}

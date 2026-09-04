@@ -181,6 +181,7 @@ export function CommerceProductDetail({
             mediaReview={product.mediaReview}
             customerFacing={liveProduct}
             productTitle={product.title}
+            productHref={`/product/${product.handle}`}
             productOnly
           />
         </div>

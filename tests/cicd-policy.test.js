@@ -328,7 +328,12 @@ describe('CI/CD policy', () => {
     expect(preview).toContain('--meta cpCheckoutEnabled=true');
     expect(preview).toContain('--env SHOPIFY_CART_UI_ENABLED=true');
     expect(preview).toContain('--env SHOPIFY_CHECKOUT_ENABLED=true');
-    expect(preview).toContain('Preview Shopify test-bag action is missing.');
+    expect(preview).toContain('Preview Shopify add-to-bag action is missing.');
+    expect(preview).toContain('ADD TO BAG - $128');
+    expect(preview).toContain(
+      'yarn playwright test --config=playwright.release.config.ts'
+    );
+    expect(preview).toContain('SHOPIFY_STAGING_CHECKOUT_HOSTS:');
     expect(preview).toContain('/product/carlophillips-signature-hoodie');
     expect(preview).not.toContain('/products/carlophillips-signature-hoodie');
     expect(preview).toContain('action="/api/cart"');

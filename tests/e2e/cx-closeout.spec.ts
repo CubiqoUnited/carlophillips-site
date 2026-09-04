@@ -39,7 +39,7 @@ test('narrow header keeps menu, brand and bag count visible', async ({
     /menu/i
   );
   await expect(page.getByRole('link', { name: 'CARLOPHILLIPS' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Bag 0' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Bag (0)' })).toBeVisible();
 });
 
 test('homepage gallery locks scroll, traps focus, closes and restores focus', async ({
