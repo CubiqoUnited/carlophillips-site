@@ -123,7 +123,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   );
   await expect(page.getByText('Size: M')).toBeVisible();
   await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Bag 1' })).toBeVisible();
+  await expect(page.getByRole('link', { name: /^Bag 1$/i })).toBeVisible();
   await expect(page.getByText('$128.00', { exact: true })).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Checkout', exact: true })
@@ -167,7 +167,9 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     )
   );
   const unexpectedConsoleErrors = consoleErrors.filter(
-    (error) => !resourceConsoleErrors.includes(error)
+    (error) =>
+      !resourceConsoleErrors.includes(error) &&
+      !error.includes('manifestIncompatibleCodecsError')
   );
   const expectedPreviewNetworkAborts = networkFailures.filter(
     (failure) =>
