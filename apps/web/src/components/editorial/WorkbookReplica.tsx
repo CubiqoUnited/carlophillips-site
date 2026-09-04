@@ -22,6 +22,7 @@ import type { ApprovedCampaignAsset } from '@/lib/media/types';
 import type { HomeCatalogSummary } from '@/types';
 import HeroMorphPreview from './HeroMorphPreview';
 import { useModalDialog } from '@/lib/a11y/use-modal-dialog';
+import { curateCustomerMedia } from '@/lib/media/customer-product-media';
 
 const MuxVideo = dynamic(() => import('@mux/mux-video/react'), { ssr: false });
 const disableMuxTracking =
@@ -523,10 +524,7 @@ export default function WorkbookReplica({
   };
   const galleryMedia = useMemo(() => {
     const allMedia = catalogGalleryStills(catalogSummary);
-    const editorialMedia = [1, 4, 5, 6, 7, 8, 9, 10, 11]
-      .map((index) => allMedia[index])
-      .filter((item): item is GalleryStill => Boolean(item));
-    return editorialMedia.length > 0 ? editorialMedia : allMedia.slice(0, 12);
+    return curateCustomerMedia(allMedia);
   }, [catalogSummary]);
   const mediaCount = galleryMedia.length;
   const activeGalleryStill = galleryMedia[galleryIndex] || null;

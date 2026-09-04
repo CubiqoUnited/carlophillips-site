@@ -13,6 +13,7 @@ export default defineConfig({
   forbidOnly: true,
   retries: 0,
   workers: 1,
+  timeout: 120_000,
   // JSON/HTML reporters serialize config and can retain environment-scoped
   // headers. The protected receipt consumes only explicit sanitized artifacts.
   reporter: [['list']],

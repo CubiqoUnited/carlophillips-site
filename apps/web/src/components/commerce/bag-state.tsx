@@ -4,6 +4,7 @@ import Image from 'next/image';
 import type { BagDecision } from '@/types';
 import type { StorefrontCart } from '@repo/shopify';
 import { StorefrontHeader } from '../layout/StorefrontHeader';
+import { curateCustomerMedia } from '@/lib/media/customer-product-media';
 
 const copyByStatus: Record<
   BagDecision['status'],
@@ -85,113 +86,126 @@ export function CommerceBagState({
             <p className="cp-body-large cp-bag-description">{copy.body}</p>
             {cart && hasLines && (
               <div className="cp-bag-lines" aria-label="Shopify cart lines">
-                {cart.lines.edges.map(({ node }) => (
-                  <article key={node.id} className="cp-bag-line">
-                    <div className="cp-bag-line-media">
-                      {node.merchandise.image?.url ? (
-                        <Image
-                          src={node.merchandise.image.url}
-                          alt={
-                            node.merchandise.image.altText ||
-                            node.merchandise.product.title
-                          }
-                          fill
-                          sizes="(max-width: 430px) 28vw, 9rem"
-                          className="cp-bag-line-image"
-                        />
-                      ) : (
-                        <span className="cp-label-small">
-                          Image unavailable
-                        </span>
-                      )}
-                    </div>
-                    <div className="cp-bag-line-content">
-                      <div className="cp-bag-line-heading">
-                        <div>
-                          <p className="cp-label-small">
-                            {node.merchandise.product.title}
-                          </p>
-                          <p className="cp-text-copy cp-bag-line-options">
-                            {node.merchandise.selectedOptions
-                              .map(
-                                (option) => `${option.name}: ${option.value}`
-                              )
-                              .join(' · ')}
+                {cart.lines.edges.map(({ node }) => {
+                  const bagImage =
+                    curateCustomerMedia(
+                      node.merchandise.product.images?.nodes || []
+                    )[0] || node.merchandise.image;
+                  return (
+                    <article key={node.id} className="cp-bag-line">
+                      <div className="cp-bag-line-media">
+                        {bagImage?.url ? (
+                          <Image
+                            src={bagImage.url}
+                            alt={
+                              bagImage.altText || node.merchandise.product.title
+                            }
+                            fill
+                            sizes="(max-width: 430px) 28vw, 9rem"
+                            className="cp-bag-line-image"
+                          />
+                        ) : (
+                          <span className="cp-label-small">
+                            Image unavailable
+                          </span>
+                        )}
+                      </div>
+                      <div className="cp-bag-line-content">
+                        <div className="cp-bag-line-heading">
+                          <div>
+                            <p className="cp-label-small">
+                              {node.merchandise.product.title}
+                            </p>
+                            <p className="cp-text-copy cp-bag-line-options">
+                              {node.merchandise.selectedOptions
+                                .map(
+                                  (option) => `${option.name}: ${option.value}`
+                                )
+                                .join(' · ')}
+                            </p>
+                          </div>
+                          <p className="cp-text-copy cp-bag-line-price">
+                            {new Intl.NumberFormat('en-US', {
+                              style: 'currency',
+                              currency: node.merchandise.price.currencyCode,
+                            }).format(Number(node.merchandise.price.amount))}
                           </p>
                         </div>
-                        <p className="cp-text-copy cp-bag-line-price">
-                          {new Intl.NumberFormat('en-US', {
-                            style: 'currency',
-                            currency: node.merchandise.price.currencyCode,
-                          }).format(Number(node.merchandise.price.amount))}
-                        </p>
-                      </div>
-                      <div className="cp-bag-line-actions">
-                        <form
-                          method="post"
-                          action="/api/cart"
-                          className="cp-bag-quantity-form"
-                        >
-                          <input
-                            type="hidden"
-                            name="cartAction"
-                            value="update"
-                          />
-                          <input type="hidden" name="lineId" value={node.id} />
-                          <span
-                            id={`quantity-${node.id}-label`}
-                            className="cp-label-small"
+                        <div className="cp-bag-line-actions">
+                          <form
+                            method="post"
+                            action="/api/cart"
+                            className="cp-bag-quantity-form"
                           >
-                            Quantity
-                          </span>
-                          <div
-                            className="cp-bag-stepper"
-                            role="group"
-                            aria-labelledby={`quantity-${node.id}-label`}
-                          >
-                            <button
-                              type="submit"
-                              name="quantity"
-                              value={Math.max(1, node.quantity - 1)}
-                              disabled={node.quantity <= 1}
-                              aria-label="Decrease quantity"
+                            <input
+                              type="hidden"
+                              name="cartAction"
+                              value="update"
+                            />
+                            <input
+                              type="hidden"
+                              name="lineId"
+                              value={node.id}
+                            />
+                            <span
+                              id={`quantity-${node.id}-label`}
+                              className="cp-label-small"
                             >
-                              -
-                            </button>
-                            <output>{node.quantity}</output>
-                            <button
-                              type="submit"
-                              name="quantity"
-                              value={Math.min(5, node.quantity + 1)}
-                              disabled={node.quantity >= 5}
-                              aria-label="Increase quantity"
+                              Quantity
+                            </span>
+                            <div
+                              className="cp-bag-stepper"
+                              role="group"
+                              aria-labelledby={`quantity-${node.id}-label`}
                             >
-                              +
-                            </button>
-                          </div>
-                        </form>
-                        <form
-                          method="post"
-                          action="/api/cart"
-                          className="cp-bag-remove-form"
-                        >
-                          <input
-                            type="hidden"
-                            name="cartAction"
-                            value="remove"
-                          />
-                          <input type="hidden" name="lineId" value={node.id} />
-                          <button
-                            className="cp-action cp-action-quiet"
-                            type="submit"
+                              <button
+                                type="submit"
+                                name="quantity"
+                                value={Math.max(1, node.quantity - 1)}
+                                disabled={node.quantity <= 1}
+                                aria-label="Decrease quantity"
+                              >
+                                -
+                              </button>
+                              <output>{node.quantity}</output>
+                              <button
+                                type="submit"
+                                name="quantity"
+                                value={Math.min(5, node.quantity + 1)}
+                                disabled={node.quantity >= 5}
+                                aria-label="Increase quantity"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </form>
+                          <form
+                            method="post"
+                            action="/api/cart"
+                            className="cp-bag-remove-form"
                           >
-                            Remove
-                          </button>
-                        </form>
+                            <input
+                              type="hidden"
+                              name="cartAction"
+                              value="remove"
+                            />
+                            <input
+                              type="hidden"
+                              name="lineId"
+                              value={node.id}
+                            />
+                            <button
+                              className="cp-action cp-action-quiet"
+                              type="submit"
+                            >
+                              Remove
+                            </button>
+                          </form>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  );
+                })}
                 <div className="cp-bag-summary">
                   <p className="cp-body-large">
                     <span>Subtotal</span>

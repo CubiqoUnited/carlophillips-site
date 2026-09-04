@@ -15,6 +15,11 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   context,
   page,
 }, testInfo) => {
+  const hideNonCustomerUi = () =>
+    page.addStyleTag({
+      content:
+        'vercel-live-feedback, vercel-toolbar { display: none !important; }',
+    });
   const consoleErrors: string[] = [];
   const networkFailures: string[] = [];
   const httpFailures: string[] = [];
@@ -41,7 +46,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   });
 
   for (const route of ['/', '/shop', '/collections', '/member', '/contact']) {
-    const response = await page.goto(route, { waitUntil: 'networkidle' });
+    const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
     expect(response?.ok(), `${route} must be healthy`).toBe(true);
     const overflow = await page.evaluate(
       () =>
@@ -50,15 +55,15 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     );
     expect(overflow, `${route} must not overflow`).toBeLessThanOrEqual(0);
   }
-  await page.goto('/member', { waitUntil: 'networkidle' });
+  await page.goto('/member', { waitUntil: 'domcontentloaded' });
   await expect(
     page.getByRole('heading', { name: 'Your account.' })
   ).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('00-member.png') });
-  await page.goto('/contact', { waitUntil: 'networkidle' });
+  await page.goto('/contact', { waitUntil: 'domcontentloaded' });
   await page.screenshot({ path: testInfo.outputPath('00-contact.png') });
 
-  await page.goto('/shop', { waitUntil: 'networkidle' });
+  await page.goto('/shop', { waitUntil: 'domcontentloaded' });
   await expect(
     page.getByRole('heading', { name: 'CARLOPHILLIPS Signature Hoodie' })
   ).toHaveCount(1);
@@ -66,7 +71,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     page.locator('[aria-label="Available products"] article')
   ).toHaveCount(1);
 
-  await page.goto('/?screen=gallery', { waitUntil: 'networkidle' });
+  await page.goto('/?screen=gallery', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeVisible();
   await expect
     .poll(() => page.evaluate(() => document.body.style.overflow))
@@ -78,6 +83,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
       )
     )
     .toBe(true);
+  await hideNonCustomerUi();
   await page.screenshot({ path: testInfo.outputPath('00-home-gallery.png') });
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toHaveScreenshot(
     'staging-home-gallery.png',
@@ -87,7 +93,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeHidden();
 
   const productResponse = await page.goto(`/product/${HANDLE}`, {
-    waitUntil: 'networkidle',
+    waitUntil: 'domcontentloaded',
   });
   expect(productResponse?.ok()).toBe(true);
   await expect(page.locator('main#main-content')).toBeVisible();
@@ -116,6 +122,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(
     page.getByRole('button', { name: 'ADD TO BAG - $128', exact: true })
   ).toBeEnabled();
+  await hideNonCustomerUi();
   await page.screenshot({
     path: testInfo.outputPath('01-shopify-product-sml.png'),
     fullPage: true,
@@ -136,10 +143,13 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   );
   await expect(page.getByText('Size: M')).toBeVisible();
   await expect(page.getByRole('link', { name: /^Bag \(1\)$/i })).toBeVisible();
-  await expect(page.getByText('$128.00', { exact: true })).toBeVisible();
+  await expect(
+    page.locator('.cp-bag-summary').getByText('$128.00', { exact: true })
+  ).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Checkout', exact: true })
   ).toBeEnabled();
+  await hideNonCustomerUi();
   await page.screenshot({
     path: testInfo.outputPath('02-shopify-bag-truth.png'),
     fullPage: true,

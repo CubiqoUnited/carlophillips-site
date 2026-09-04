@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { MediaViewer } from '../MediaViewer';
 import type { ViewerMediaItem } from '@/lib/media/types';
+import { curateCustomerMedia } from '@/lib/media/customer-product-media';
 import type { MediaReview } from '@/types';
 
 export function ProductGallery({
@@ -23,12 +24,7 @@ export function ProductGallery({
 }) {
   const [open, setOpen] = useState(false);
   const galleryTriggerRef = useRef<HTMLButtonElement>(null);
-  const editorialOrder = [1, 4, 5, 6, 7, 8, 9, 10, 11];
-  const editorialMedia = editorialOrder
-    .map((index) => media[index])
-    .filter((item): item is ViewerMediaItem => Boolean(item));
-  const visibleMedia =
-    productOnly && editorialMedia.length > 0 ? editorialMedia : media;
+  const visibleMedia = productOnly ? curateCustomerMedia(media) : media;
   const previewMedia = visibleMedia.slice(0, 4);
   if (visibleMedia.length === 0) {
     return (
