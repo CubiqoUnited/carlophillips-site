@@ -251,6 +251,9 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
       .first()
       .click();
     await checkoutPage.waitForLoadState('domcontentloaded');
+    await checkoutPage.goto(checkout.toString(), {
+      waitUntil: 'domcontentloaded',
+    });
   }
   expect(new URL(checkoutPage.url()).pathname).not.toBe('/password');
   await expect(
