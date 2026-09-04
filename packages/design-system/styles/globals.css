@@ -17,6 +17,8 @@
 
   html {
     box-sizing: border-box;
+    max-width: 100%;
+    overflow-x: clip;
     scroll-behavior: smooth;
     scroll-snap-type: none;
     -webkit-font-smoothing: antialiased;
@@ -29,6 +31,8 @@
 
   body {
     margin: var(--cp-radius-none);
+    max-width: 100%;
+    overflow-x: clip;
     background: var(--cp-color-canvas);
     color: var(--cp-color-ink);
     font-family: var(--cp-font-sans);
