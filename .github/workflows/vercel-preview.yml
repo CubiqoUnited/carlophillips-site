@@ -15,6 +15,15 @@ on:
         description: Review identifier recorded in immutable Preview metadata
         required: true
         type: string
+      existing_preview_url:
+        description: Optional exact immutable Preview URL for credential-free browser QA
+        required: false
+        type: string
+      refresh_snapshots:
+        description: Generate Linux baselines for deliberate visual review
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   actions: read
@@ -28,6 +37,7 @@ concurrency:
 jobs:
   deploy-preview:
     name: Deploy exact immutable Preview
+    if: inputs.existing_preview_url == ''
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: Preview
@@ -253,3 +263,84 @@ jobs:
             test_reports/protected-preview/
           if-no-files-found: error
           retention-days: 90
+
+  verify-existing-preview:
+    name: Verify exact existing Preview
+    if: inputs.existing_preview_url != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Enforce exact same-repository pull request and safe Preview URL
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          PREVIEW_URL: ${{ inputs.existing_preview_url }}
+          PULL_REQUEST: ${{ inputs.pull_request }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$PULL_REQUEST" =~ ^[1-9][0-9]*$ ]]
+          [[ "$PREVIEW_URL" =~ ^https://[a-z0-9-]+\.vercel\.app$ ]]
+          test "$EXPECTED_SHA" = "$GITHUB_SHA"
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST" > pull-request.json
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const pullRequest = JSON.parse(fs.readFileSync('pull-request.json', 'utf8'));
+          if (pullRequest.state !== 'open' || pullRequest.base?.ref !== 'staging') {
+            throw new Error('Preview QA requires an open pull request targeting staging.');
+          }
+          if (pullRequest.head?.sha !== process.env.EXPECTED_SHA) {
+            throw new Error('Pull-request head SHA does not match the selected workflow SHA.');
+          }
+          if (pullRequest.head?.repo?.full_name !== process.env.GITHUB_REPOSITORY) {
+            throw new Error('Preview QA cannot execute fork-owned code.');
+          }
+          NODE
+
+      - name: Check out exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_sha }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Activate Yarn Classic
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          test "$(yarn --version)" = "1.22.22"
+
+      - name: Install locked dependencies and headless Chromium
+        run: |
+          yarn install --frozen-lockfile
+          yarn playwright install --with-deps chromium
+
+      - name: Run exact-width Preview functional, a11y and screenshot checks
+        env:
+          CP_RELEASE_GATE_BASE_URL: ${{ inputs.existing_preview_url }}
+          CP_RELEASE_GATE_OUTPUT_DIR: test_reports/existing-preview
+          CP_BRANCH_PREVIEW_QA: 'true'
+          REFRESH_SNAPSHOTS: ${{ inputs.refresh_snapshots }}
+        run: |
+          if [ "$REFRESH_SNAPSHOTS" = "true" ]; then
+            yarn playwright test --config=playwright.release.config.ts --update-snapshots
+          else
+            yarn playwright test --config=playwright.release.config.ts
+          fi
+
+      - name: Upload exact-width Preview evidence and Linux baselines
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exact-preview-browser-evidence-${{ github.sha }}
+          path: |
+            pull-request.json
+            test_reports/existing-preview/
+            tests/release-gate/protected-staging.spec.ts-snapshots/
+          if-no-files-found: error
+          retention-days: 30
