@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import type {
   CommerceEnvironment,
   VariantCombination,
   VariantPresentation,
 } from '@/types';
+import { useModalDialog } from '@/lib/a11y/use-modal-dialog';
 
 function money(amount: string, currency: string): string {
   return new Intl.NumberFormat('en-US', {
@@ -31,7 +32,7 @@ function sizeFor(item: VariantCombination): string {
 export default function ShopifyCheckoutForm({
   handle,
   presentation,
-  environment,
+  environment: _environment,
   sizeGuide,
 }: {
   handle: string;
@@ -57,23 +58,9 @@ export default function ShopifyCheckoutForm({
   const selected = available.find(
     (item) => item.referenceHash === referenceHash
   );
-  useEffect(() => {
-    if (!sizeGuideOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    sizeGuideRef.current?.querySelector<HTMLElement>('button')?.focus();
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setSizeGuideOpen(false);
-        sizeGuideTriggerRef.current?.focus();
-      }
-    };
-    window.addEventListener('keydown', closeOnEscape);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [sizeGuideOpen]);
+  useModalDialog(sizeGuideOpen, sizeGuideRef, sizeGuideTriggerRef, () =>
+    setSizeGuideOpen(false)
+  );
   if (!available.length) return null;
 
   return (
@@ -137,6 +124,7 @@ export default function ShopifyCheckoutForm({
             aria-modal="true"
             aria-label="Size and fit"
             className="cp-drawer"
+            tabIndex={-1}
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -183,9 +171,8 @@ export default function ShopifyCheckoutForm({
         </div>
       </div>
       <p className="mt-4 text-sm">
-        {environment === 'preview'
-          ? 'Private staging uses an isolated Shopify test checkout. Do not enter real customer or payment data.'
-          : 'You will review delivery and payment in Shopify before placing the order.'}
+        You will review delivery and payment securely in Shopify before placing
+        the order.
       </p>
     </form>
   );

@@ -2,36 +2,34 @@
 
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
+import { useModalDialog } from '@/lib/a11y/use-modal-dialog';
 
 export function StorefrontHeader({
   pageLabel,
   navigationAriaLabel = 'Storefront navigation',
   fixed = false,
+  bagCount = 0,
 }: {
   pageLabel?: string;
   navigationAriaLabel?: string;
   fixed?: boolean;
+  bagCount?: number;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentBagCount, setCurrentBagCount] = useState(bagCount);
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (!menuOpen) return;
-    const priorOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    menuRef.current?.querySelector<HTMLElement>('a, button')?.focus();
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setMenuOpen(false);
-        triggerRef.current?.focus();
-      }
-    };
-    window.addEventListener('keydown', closeOnEscape);
-    return () => {
-      document.body.style.overflow = priorOverflow;
-      window.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [menuOpen]);
+    const controller = new AbortController();
+    fetch('/api/cart', { signal: controller.signal, cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((result) => {
+        if (typeof result?.count === 'number') setCurrentBagCount(result.count);
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, []);
+  useModalDialog(menuOpen, menuRef, triggerRef, () => setMenuOpen(false));
   return (
     <header
       className={`cp-commerce-header ${fixed ? 'cp-commerce-header-fixed' : ''}`}
@@ -62,13 +60,13 @@ export function StorefrontHeader({
             <Link href="/aftercare">Aftercare</Link>
           )}
           {pageLabel === 'Bag' ? (
-            <span aria-current="page">Bag</span>
+            <span aria-current="page">Bag {currentBagCount}</span>
           ) : (
-            <Link href="/bag">Bag</Link>
+            <Link href="/bag">Bag {currentBagCount}</Link>
           )}
         </nav>
         <Link href="/bag" className="cp-commerce-mobile-bag">
-          Bag
+          Bag {currentBagCount}
         </Link>
       </div>
       {menuOpen && (
@@ -83,6 +81,7 @@ export function StorefrontHeader({
             aria-modal="true"
             aria-label="Menu"
             className="cp-mobile-menu"
+            tabIndex={-1}
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="cp-mobile-menu-header">

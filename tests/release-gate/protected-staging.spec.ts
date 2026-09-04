@@ -40,6 +40,48 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     }
   });
 
+  for (const route of ['/', '/shop', '/collections', '/member', '/contact']) {
+    const response = await page.goto(route, { waitUntil: 'networkidle' });
+    expect(response?.ok(), `${route} must be healthy`).toBe(true);
+    const overflow = await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth
+    );
+    expect(overflow, `${route} must not overflow`).toBeLessThanOrEqual(0);
+  }
+  await page.goto('/member', { waitUntil: 'networkidle' });
+  await expect(
+    page.getByRole('heading', { name: 'Your account.' })
+  ).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('00-member.png') });
+  await page.goto('/contact', { waitUntil: 'networkidle' });
+  await page.screenshot({ path: testInfo.outputPath('00-contact.png') });
+
+  await page.goto('/shop', { waitUntil: 'networkidle' });
+  await expect(
+    page.getByRole('heading', { name: 'CARLOPHILLIPS Signature Hoodie' })
+  ).toHaveCount(1);
+  await expect(
+    page.locator('[aria-label="Available products"] article')
+  ).toHaveCount(1);
+
+  await page.goto('/?screen=gallery', { waitUntil: 'networkidle' });
+  await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => document.body.style.overflow))
+    .toBe('hidden');
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        Boolean(document.activeElement?.closest('[role="dialog"]'))
+      )
+    )
+    .toBe(true);
+  await page.screenshot({ path: testInfo.outputPath('00-home-gallery.png') });
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeHidden();
+
   const productResponse = await page.goto(`/product/${HANDLE}`, {
     waitUntil: 'networkidle',
   });
@@ -74,12 +116,14 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   });
 
   await page.getByRole('button', { name: 'ADD TO BAG $128' }).click();
-  await page.waitForURL('**/bag');
+  await page.waitForURL('**/bag?added=1');
   await expect(page.locator('main#main-content')).toHaveAttribute(
     'data-commerce-source',
     'store'
   );
   await expect(page.getByText('Size: M')).toBeVisible();
+  await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Bag 1' })).toBeVisible();
   await expect(page.getByText('$128.00', { exact: true })).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Checkout', exact: true })
