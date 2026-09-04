@@ -60,7 +60,9 @@ export function StorefrontHeader({
             <Link href="/aftercare">Aftercare</Link>
           )}
           {pageLabel === 'Bag' ? (
-            <span aria-current="page">Bag {currentBagCount}</span>
+            <Link href="/bag" aria-current="page">
+              Bag {currentBagCount}
+            </Link>
           ) : (
             <Link href="/bag">Bag {currentBagCount}</Link>
           )}
