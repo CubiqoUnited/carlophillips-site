@@ -1,5 +1,39 @@
 # Current Status
 
+Status authority is newest-first. The current 2026-09-04 no-order and
+provenance sections supersede conflicting statements in every older section.
+Older payment/order evidence and same-SHA descriptions are historical context
+only and grant no current QA or release authority.
+
+## Sanity validation and Admin authentication blocker — 2026-09-04
+
+- Current `staging@2ed89d52210e9aeeab9e5533ebfad58b4f82edf6` passes the
+  full local source/build suite: Yarn Classic 1.22.22 frozen install,
+  formatting, design-system and Production-commerce lint, TypeScript,
+  Stylelint, 81 files / 698 tests, optimized Next.js build, and 28/28 headless
+  desktop/mobile checks with six screenshot comparisons. Correction PRs
+  #77-#79 also have green Linux Verify and Playwright checks.
+- The sanity pass found a separate fail-open defect in the shipped `apps/web`
+  Admin route. It interpolates possibly absent bearer-token variables directly
+  into header comparisons. With both variables absent, a local
+  Production-configuration reproduction returned the control plane for
+  `Authorization: Bearer undefined`; no header and a random token were denied.
+  The source is identical on `main` and `staging`; the live Admin route was not
+  probed and Production was not changed.
+- Vercel Preview lists both legacy Admin bearer variables as readable values,
+  while Production lists neither. Safe containment and rotation, followed by a
+  reviewed fail-closed code correction and protected deployment, are recorded
+  at the top of `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+- GitHub currently has no branch protection or repository ruleset for `main`
+  or `staging`. Staging deployment is restricted to the `staging` branch and
+  has a required reviewer, but Production has no required reviewer and its
+  workflow therefore fails closed. The Production promotion switch remains
+  `false`.
+- The current exact Staging SHA has no protected deployment/proof run. The
+  signed no-order receipt remains blocked by the missing GitHub environment
+  bindings already recorded below; prior Staging browser artifacts are
+  sanitized historical evidence and cannot be reused as exact-SHA proof.
+
 ## Staging-to-Production provenance and no-order QA correction — 2026-09-04
 
 - The prior contract was mechanically impossible: it required a signed proof

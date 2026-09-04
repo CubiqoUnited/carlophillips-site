@@ -1,5 +1,31 @@
 # Delivery Tasks
 
+Execution authority is newest-first. The current 2026-09-04 no-order and
+provenance sections supersede every conflicting checkbox in older sections.
+No older task may authorize a Staging payment, order submission, private
+checkout/order URL retention, order-evidence hash, or same-SHA
+Staging-to-Production requirement. Such entries are retained only as historical
+records and must not be executed.
+
+## Sanity validation and Admin authentication blocker — 2026-09-04
+
+- [x] Re-run frozen install, formatting, design-system and commerce lint,
+      TypeScript, Stylelint, 698 unit/policy tests, optimized build, and 28
+      desktop/mobile Playwright checks including six screenshot comparisons.
+- [x] Reproduce locally that the shipped `apps/web` Admin page accepts
+      `Authorization: Bearer undefined` when both legacy bearer-token variables
+      are absent; confirm the vulnerable source is identical on `main` and
+      `staging` without probing the live Admin route.
+- [ ] Correct the shipped Admin route so missing, short, equal or malformed
+      tokens fail closed and remote Vercel Admin access uses the approved Clerk
+      Product Owner session; add route-level regression coverage.
+- [ ] Complete the encrypted Preview/Production token containment and rotation
+      recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`, then verify the
+      corrected build in protected Staging before any Production deployment.
+- [ ] Add the missing Production required reviewer and protect `main` and
+      `staging` with reviewed pull requests and required Verify/Playwright
+      checks. Keep Production promotion disabled.
+
 ## Staging-to-Production provenance and no-order QA correction — 2026-09-04
 
 - [x] Replace impossible Staging/Production merge-SHA identity with a signed

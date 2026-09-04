@@ -1,3 +1,55 @@
+# CURRENT CRITICAL — ADMIN AUTH CONTAINMENT BEFORE ANY RELEASE
+
+Updated: 2026-09-04 EDT
+
+The shipped `apps/web` Admin page compares the Authorization header directly
+with `CP_ADMIN_REVIEW_TOKEN` and `CP_ADMIN_PRODUCT_OWNER_TOKEN` without first
+requiring either configured value. A local Production-configuration
+reproduction proved that `Authorization: Bearer undefined` renders the control
+plane when both variables are absent. The same vulnerable page exists on
+`origin/main` and `staging`. The live Admin route was not probed.
+
+Vercel Preview currently stores both legacy bearer-token variables as readable
+values rather than encrypted secrets; Production does not list either
+variable. Do **not** delete the Preview values while the vulnerable build is
+live, because an absent value is the fail-open case.
+
+Exact human containment action:
+
+1. Manually open Vercel -> Cubiqo team -> `carlophillips` -> Settings ->
+   Environment Variables. Do not paste or reveal any value in chat, a report,
+   a screenshot or Git.
+2. For both Preview and Production, create two new, distinct, randomly
+   generated values of at least 32 characters for `CP_ADMIN_REVIEW_TOKEN` and
+   `CP_ADMIN_PRODUCT_OWNER_TOKEN`; store all four values as encrypted/sensitive
+   variables scoped only to their environment. Never use the literal value
+   `undefined`. This is temporary containment, not approval of legacy remote
+   bearer authentication.
+3. Redeploy only through the normal reviewed branch and protected environment
+   workflow after the application fix requires configured, distinct tokens and
+   routes remote Admin access through the approved Clerk Product Owner session.
+   Production deployment still requires explicit Product Owner approval.
+4. After the corrected build is verified in protected Staging and Production,
+   remove the legacy remote bearer-token variables if the corrected runtime no
+   longer consumes them, and rotate any token that was previously readable.
+5. Signal completion with `CP Admin auth containment ready`.
+
+Cost: none intended. Risk: changing or deleting the variables in the wrong
+order can leave the current route fail-open or lock out Admin review. The code
+fix and protected deployment remain required; variable rotation alone is not a
+permanent fix.
+
+Additional release-gate configuration still required:
+
+- Add a required Product Owner reviewer to the GitHub `Production`
+  environment. The Production workflow currently fails closed because this
+  protection is absent; keep `CP_PRODUCTION_PROMOTION_ENABLED=false`.
+- Configure branch protection/rulesets for `main` and `staging` with reviewed
+  pull requests and required Verify/Playwright checks. Neither branch currently
+  has branch protection or a repository ruleset.
+
+---
+
 # CURRENT — READ-ONLY STAGING PROOF BINDINGS; NO PAYMENT OR ORDER
 
 Updated: 2026-09-04 EDT
