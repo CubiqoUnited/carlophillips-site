@@ -4,7 +4,8 @@ Date: 2026-09-04 EDT
 
 Branch: `codex/cx-corrections-2026-09-03`
 
-Pull request: #77 targeting `staging` (#76 closed unmerged)
+Pull request: #77 merged to `staging` as
+`d8a9db11acd6a70239fb03b20944a845e5a6b931` (#76 closed unmerged)
 
 ## Corrected invariants
 
@@ -33,6 +34,8 @@ Pull request: #77 targeting `staging` (#76 closed unmerged)
   desktop and mobile widths. Accessibility, console, network and privacy checks
   also passed.
 - `git diff --check`: passed.
+- Linux `CI / Verify` run `33837763314`: passed in 2m42s.
+- Linux `Playwright checkout gate` run `33837763313`: passed in 2m16s.
 
 The build emitted only the existing non-blocking Browserslist age and Edge
 Runtime/static-generation warnings. No Production deployment, payment, order,
