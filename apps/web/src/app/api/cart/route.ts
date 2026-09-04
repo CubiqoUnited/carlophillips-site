@@ -61,10 +61,11 @@ export async function POST(request: Request) {
         environment,
       });
       if (!cart) throw new Error('SHOPIFY_CART_NOT_FOUND');
-      return NextResponse.redirect(
-        trustedCartCheckoutUrl(cart, environment),
-        303
-      );
+      const checkoutUrl = trustedCartCheckoutUrl(cart, environment);
+      if (request.headers.get('accept')?.includes('application/json')) {
+        return NextResponse.json({ ok: true, checkoutUrl });
+      }
+      return NextResponse.redirect(checkoutUrl, 303);
     }
     let cart;
     if (action === 'update') {

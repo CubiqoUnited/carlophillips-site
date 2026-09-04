@@ -14,9 +14,9 @@ describe('customer product media curation', () => {
       'image-8',
       'image-9',
       'image-10',
-      'image-11',
     ]);
     expect(curateCustomerMedia(media)).not.toContain('image-0');
+    expect(curateCustomerMedia(media)).not.toContain('image-11');
   });
 
   it('keeps a truthful fallback when only one image is available', () => {

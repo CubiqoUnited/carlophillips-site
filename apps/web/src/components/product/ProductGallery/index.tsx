@@ -14,6 +14,7 @@ export function ProductGallery({
   productTitle = 'Product',
   productHref,
   productOnly = false,
+  purchaseLabel,
 }: {
   media: ViewerMediaItem[];
   mediaReview?: MediaReview | null;
@@ -21,6 +22,7 @@ export function ProductGallery({
   productTitle?: string;
   productHref: string;
   productOnly?: boolean;
+  purchaseLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
   const galleryTriggerRef = useRef<HTMLButtonElement>(null);
@@ -118,6 +120,7 @@ export function ProductGallery({
         title={productTitle}
         purchaseHref={productHref}
         triggerRef={galleryTriggerRef}
+        purchaseLabel={purchaseLabel}
       />
     </>
   );

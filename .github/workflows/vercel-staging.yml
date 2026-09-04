@@ -215,6 +215,7 @@ jobs:
           CP_RELEASE_GATE_BASE_URL: ${{ steps.staging.outputs.url }}
           CP_RELEASE_GATE_OUTPUT_DIR: test_reports/protected-staging
           SHOPIFY_STAGING_CHECKOUT_HOSTS: ${{ vars.SHOPIFY_STAGING_CHECKOUT_HOSTS }}
+          SHOPIFY_STAGING_STOREFRONT_PASSWORD: ${{ secrets.SHOPIFY_STAGING_STOREFRONT_PASSWORD }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: yarn playwright test --config=playwright.release.config.ts
 

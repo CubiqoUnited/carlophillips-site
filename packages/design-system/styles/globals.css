@@ -4737,6 +4737,21 @@ a:focus-visible {
   align-items: end;
 }
 
+.cp-bag-mutation-feedback {
+  grid-column: 1 / -1;
+  min-height: var(--cp-space-5);
+  color: var(--cp-color-copy-soft);
+}
+
+.cp-bag-mutation-feedback p {
+  margin: 0;
+}
+
+.cp-inline-action {
+  min-width: var(--cp-control-size);
+  min-height: var(--cp-control-size);
+}
+
 .cp-bag-remove-form .cp-action {
   min-width: var(--cp-control-size);
 }
