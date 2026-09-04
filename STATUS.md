@@ -19,6 +19,13 @@
   passed independent Linux Verify and Playwright checks and merged to `staging`
   as `d8a9db11acd6a70239fb03b20944a845e5a6b931`; its remote branch is deleted.
   Superseded PR #76 closed unmerged. Production has not been changed.
+- The final live signed-receipt run remains blocked by missing protected
+  configuration: Staging `SHOPIFY_STAGING_ADMIN_TOKEN`, distinct
+  `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` /
+  `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`, and the same encrypted
+  `CP_RELEASE_RECEIPT_SIGNING_SECRET` in Staging and Production. The persistent
+  human record contains the exact safe action. The out-of-window Production
+  promotion switch was corrected from `true` to `false`; no deployment ran.
 
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 

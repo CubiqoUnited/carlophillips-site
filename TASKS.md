@@ -13,6 +13,11 @@
       comparison checks without committing downloaded CI artifacts.
 - [x] Pass independent Linux CI on correction PR #77, merge it to `staging`
       at `d8a9db11acd6a70239fb03b20944a845e5a6b931`, and delete its remote branch.
+- [x] Disable the out-of-window Production promotion switch without deploying
+      or changing Production.
+- [ ] Add the read-only Staging Admin secret, distinct durable-store identity
+      variables and the same encrypted receipt-signing secret to Staging and
+      Production; then signal `CP Shopify Staging proof bindings ready`.
 
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 

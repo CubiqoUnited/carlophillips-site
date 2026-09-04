@@ -22,12 +22,16 @@ read-only Shopify snapshot can run, the Staging environment still requires:
 2. `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` and
    `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`: the existing distinct environment
    store identifiers. Do not invent or copy one environment's ID to the other.
+3. `CP_RELEASE_RECEIPT_SIGNING_SECRET`: the same newly generated value, at least
+   32 characters, stored separately as an encrypted secret in both GitHub
+   environments **Staging** and **Production**. Do not paste, print, log or save
+   the value in chat, source files, workflow inputs or this record.
 
 `SHOPIFY_PRODUCTION_STORE_DOMAIN` is already set to the independently evidenced
 Production shop. Cost: none intended. Risk: the Admin token exposes catalog and
 inventory metadata, so keep it read-only and only in GitHub's protected
 `Staging` environment. Signal completion with:
-`CP Shopify Staging proof bindings ready`.
+`CP Shopify Staging proof bindings ready` only after all three items exist.
 
 After that signal, enable the repository configuration variable
 `CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=true`, dispatch Protected Vercel Staging
