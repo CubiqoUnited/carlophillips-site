@@ -1,0 +1,262 @@
+[
+  {
+    "width": 320,
+    "route": "/",
+    "status": 200,
+    "final": "/",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "errors": [
+      "getErrorFromHlsErrorData() {type: mediaError, details: manifestIncompatibleCodecsError, fatal: true, url: https://stream.mux.com/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc.m3u8, error: Error: no level with compatible codecs found in manifest (one or more CODECS in variant not support…}"
+    ]
+  },
+  {
+    "width": 320,
+    "route": "/shop",
+    "status": 200,
+    "final": "/shop",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "route": "/product/carlophillips-signature-hoodie",
+    "status": 200,
+    "final": "/product/carlophillips-signature-hoodie",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "route": "/bag",
+    "status": 200,
+    "final": "/bag",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "route": "/aftercare",
+    "status": 200,
+    "final": "/aftercare",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "route": "/contact",
+    "status": 200,
+    "final": "/contact",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "route": "/collections",
+    "status": 200,
+    "final": "/shop",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "route": "/",
+    "status": 200,
+    "final": "/",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "errors": [
+      "getErrorFromHlsErrorData() {type: mediaError, details: manifestIncompatibleCodecsError, fatal: true, url: https://stream.mux.com/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc.m3u8, error: Error: no level with compatible codecs found in manifest (one or more CODECS in variant not support…}"
+    ]
+  },
+  {
+    "width": 390,
+    "route": "/shop",
+    "status": 200,
+    "final": "/shop",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "route": "/product/carlophillips-signature-hoodie",
+    "status": 200,
+    "final": "/product/carlophillips-signature-hoodie",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "route": "/bag",
+    "status": 200,
+    "final": "/bag",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "route": "/aftercare",
+    "status": 200,
+    "final": "/aftercare",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "route": "/contact",
+    "status": 200,
+    "final": "/contact",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "route": "/collections",
+    "status": 200,
+    "final": "/shop",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "errors": []
+  },
+  {
+    "width": 768,
+    "route": "/",
+    "status": 200,
+    "final": "/",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "errors": [
+      "getErrorFromHlsErrorData() {type: mediaError, details: manifestIncompatibleCodecsError, fatal: true, url: https://stream.mux.com/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc.m3u8, error: Error: no level with compatible codecs found in manifest (one or more CODECS in variant not support…}"
+    ]
+  },
+  {
+    "width": 768,
+    "route": "/shop",
+    "status": 200,
+    "final": "/shop",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "errors": []
+  },
+  {
+    "width": 768,
+    "route": "/product/carlophillips-signature-hoodie",
+    "status": 200,
+    "final": "/product/carlophillips-signature-hoodie",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "errors": []
+  },
+  {
+    "width": 768,
+    "route": "/bag",
+    "status": 200,
+    "final": "/bag",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "errors": []
+  },
+  {
+    "width": 768,
+    "route": "/aftercare",
+    "status": 200,
+    "final": "/aftercare",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "errors": []
+  },
+  {
+    "width": 768,
+    "route": "/contact",
+    "status": 200,
+    "final": "/contact",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "errors": []
+  },
+  {
+    "width": 768,
+    "route": "/collections",
+    "status": 200,
+    "final": "/shop",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "route": "/",
+    "status": 200,
+    "final": "/",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "errors": [
+      "getErrorFromHlsErrorData() {type: mediaError, details: manifestIncompatibleCodecsError, fatal: true, url: https://stream.mux.com/mIfRL7Bs4dKarRfC7T01DZjseBjZbQdn3TP39liDmdSc.m3u8, error: Error: no level with compatible codecs found in manifest (one or more CODECS in variant not support…}"
+    ]
+  },
+  {
+    "width": 1440,
+    "route": "/shop",
+    "status": 200,
+    "final": "/shop",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "route": "/product/carlophillips-signature-hoodie",
+    "status": 200,
+    "final": "/product/carlophillips-signature-hoodie",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "route": "/bag",
+    "status": 200,
+    "final": "/bag",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "route": "/aftercare",
+    "status": 200,
+    "final": "/aftercare",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "route": "/contact",
+    "status": 200,
+    "final": "/contact",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "route": "/collections",
+    "status": 200,
+    "final": "/shop",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "errors": []
+  }
+]

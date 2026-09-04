@@ -63,9 +63,26 @@ describe('monorepo home commerce projection', () => {
     expect(source).not.toContain('PROCESSING PAYMENT');
     expect(source).not.toContain('ORDER CONFIRMED');
     expect(source).not.toContain("setSurface('cart')");
+    expect(source).not.toContain('CONTINUE TO CHECKOUT');
+    expect(source).not.toContain('ORDER —');
+    expect(source).not.toContain('userScrollIntent');
   });
 
-  it('keeps mandatory snap scrolling on the workbook without trapping commerce pages', () => {
+  it('uses one authoritative size selector and a bounded quantity stepper', () => {
+    const source = readFileSync(
+      'apps/web/src/components/product/ProductForm/index.tsx',
+      'utf8'
+    );
+
+    expect(source).toContain('name="referenceHash"');
+    expect(source).not.toContain('<select');
+    expect(source).toContain('Decrease quantity');
+    expect(source).toContain('Increase quantity');
+    expect(source).toContain("'ADD TO BAG'");
+    expect(source).not.toContain('ADD TO TEST BAG');
+  });
+
+  it('keeps normal vertical scrolling across workbook and commerce pages', () => {
     const styles = readFileSync(
       'packages/design-system/styles/globals.css',
       'utf8'
@@ -73,7 +90,8 @@ describe('monorepo home commerce projection', () => {
 
     expect(styles).toMatch(/html\s*\{[^}]*scroll-snap-type:\s*none;/s);
     expect(styles).toMatch(
-      /html:has\(\.cp-workbook-site\)\s*\{[^}]*scroll-snap-type:\s*y mandatory;/s
+      /html:has\(\.cp-workbook-site\)\s*\{[^}]*scroll-snap-type:\s*none;/s
     );
+    expect(styles).not.toContain('scroll-snap-type: y mandatory');
   });
 });

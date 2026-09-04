@@ -5,23 +5,20 @@ import { MemberExperience } from '../apps/web/src/components/member/MemberExperi
 import { resolvePostPurchaseCapabilities } from '../apps/web/src/lib/commerce/post-purchase-policy.ts';
 
 describe('CP Aftercare experience', () => {
-  it('presents the full journey without inventing Shopify facts', () => {
+  it('presents customer-facing aftercare without internal or simulated facts', () => {
     const html = renderToStaticMarkup(
       <MemberExperience capabilities={resolvePostPurchaseCapabilities({})} />
     );
 
     expect(html).toContain('From confirmation to what comes next.');
-    expect(html).toContain('Confirmed');
-    expect(html).toContain('In production');
-    expect(html).toContain('Dispatched');
-    expect(html).toContain('Delivered');
-    expect(html).toContain('Return or refund');
-    expect(html).toContain('Fit memory');
-    expect(html).toContain('Shopify authoritative');
+    expect(html).toContain('Access your order securely.');
+    expect(html).toContain('For privacy');
     expect(html).toContain('Self-service returns are not configured');
     expect(html).not.toContain('CP Credit');
     expect(html).not.toContain('€15.00');
     expect(html).not.toContain('PRIVATE PREVIEW');
+    expect(html).not.toContain('Shopify authoritative');
+    expect(html).not.toContain('Fit memory');
   });
 
   it('shows CP Credit only when authenticated Shopify truth enables it', () => {

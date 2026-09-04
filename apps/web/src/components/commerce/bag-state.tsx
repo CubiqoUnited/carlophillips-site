@@ -19,9 +19,9 @@ const copyByStatus: Record<
     body: 'The required cart capability has not been verified for this environment. No local cart has been substituted.',
   },
   empty: {
-    eyebrow: 'Your bag',
+    eyebrow: '',
     title: 'Your bag is empty.',
-    body: 'The commerce source is available, but no approved product has been added.',
+    body: 'Explore the collection and add a piece when you are ready.',
   },
   ready: {
     eyebrow: 'Your bag',
@@ -42,7 +42,7 @@ export function CommerceBagState({
     ? {
         eyebrow: 'Your bag',
         title: 'Bag review',
-        body: 'Current price, availability and checkout are provided by Shopify.',
+        body: 'Review your pieces before checkout.',
       }
     : copyByStatus[decision.status];
 
@@ -59,34 +59,8 @@ export function CommerceBagState({
 
       <section className="cp-bag-section cp-section flex items-center">
         <div className="cp-bag-layout cp-shell-medium cp-grid-rule grid px-0">
-          <aside className="cp-bag-panel flex flex-col justify-between">
-            <p className="cp-label">Commerce truth</p>
-            <dl className="cp-definition-list grid gap-6 pt-7 text-sm">
-              <div>
-                <dt className="cp-label-small">Environment</dt>
-                <dd className="cp-text-copy mt-2">{decision.environment}</dd>
-              </div>
-              <div>
-                <dt className="cp-label-small">Source</dt>
-                <dd className="cp-text-copy mt-2">
-                  {decision.source === 'fixture'
-                    ? 'Local preview'
-                    : decision.source === 'shopify'
-                      ? 'Store'
-                      : 'Unavailable'}
-                </dd>
-              </div>
-              <div>
-                <dt className="cp-label-small">Checkout</dt>
-                <dd className="cp-text-copy mt-2">
-                  {decision.checkoutAllowed ? 'Eligible' : 'Disabled'}
-                </dd>
-              </div>
-            </dl>
-          </aside>
-
           <div className="cp-bag-copy flex flex-col justify-center">
-            <p className="cp-label">{copy.eyebrow}</p>
+            {copy.eyebrow && <p className="cp-label">{copy.eyebrow}</p>}
             <h1 className="cp-heading-section mt-8 max-w-4xl">{copy.title}</h1>
             <p className="cp-body-large mt-8 max-w-2xl">{copy.body}</p>
             {cart && hasLines && (
@@ -160,13 +134,13 @@ export function CommerceBagState({
                 >
                   <input type="hidden" name="cartAction" value="checkout" />
                   <button className="cp-action cp-action-solid" type="submit">
-                    Continue to checkout
+                    Checkout
                   </button>
                 </form>
               </div>
             )}
             <div className="mt-10 flex flex-wrap gap-3">
-              <Link href="/collections" className="cp-action cp-action-outline">
+              <Link href="/shop" className="cp-action cp-action-outline">
                 Continue shopping
               </Link>
               <Link href="/" className="cp-action cp-action-quiet">
