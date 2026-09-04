@@ -34,8 +34,8 @@ const html = await response.text();
 if (!html.includes('action="/api/cart"')) {
   throw new Error('CHECKOUT_HEALTH_CART_ACTION_MISSING');
 }
-if (!/ADD TO (?:TEST )?BAG/.test(html)) {
-  throw new Error('CHECKOUT_HEALTH_ADD_TO_BAG_MISSING');
+if (!/(?:CHOOSE A SIZE|ADD TO (?:TEST )?BAG)/.test(html)) {
+  throw new Error('CHECKOUT_HEALTH_PURCHASE_ACTION_MISSING');
 }
 writeFileSync(
   input.output,

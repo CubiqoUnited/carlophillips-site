@@ -183,7 +183,7 @@ jobs:
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('staging-pdp.html', 'utf8');
-          if (!html.includes('ADD TO BAG')) throw new Error('STAGING_ADD_TO_BAG_MISSING');
+          if (!html.includes('CHOOSE A SIZE')) throw new Error('STAGING_SIZE_SELECTION_MISSING');
           if (!html.includes('action="/api/cart"')) throw new Error('STAGING_CART_HANDOFF_MISSING');
           NODE
 

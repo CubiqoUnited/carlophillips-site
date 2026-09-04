@@ -401,6 +401,8 @@ describe('CI/CD policy', () => {
     expect(releasePlaywright).not.toContain("['json'");
     expect(releasePlaywright).not.toContain("['html'");
     expect(staging).toContain('verify-checkout-health.mjs');
+    expect(staging).toContain("html.includes('CHOOSE A SIZE')");
+    expect(staging).not.toContain("html.includes('ADD TO BAG')");
     expect(staging).toContain('verify-vercel-receipt.mjs staging');
     expect(staging).toContain('Verify deployment before aliasing');
     expect(staging).toContain(
