@@ -10,21 +10,30 @@ records and must not be executed.
 ## Sanity validation and Admin authentication blocker — 2026-09-04
 
 - [x] Re-run frozen install, formatting, design-system and commerce lint,
-      TypeScript, Stylelint, 698 unit/policy tests, optimized build, and 28
+      TypeScript, Stylelint, 702 unit/policy tests, optimized build, and 28
       desktop/mobile Playwright checks including six screenshot comparisons.
 - [x] Reproduce locally that the shipped `apps/web` Admin page accepts
       `Authorization: Bearer undefined` when both legacy bearer-token variables
       are absent; confirm the vulnerable source is identical on `main` and
       `staging` without probing the live Admin route.
-- [ ] Correct the shipped Admin route so missing, short, equal or malformed
+- [x] Correct the shipped Admin route so missing, short, equal or malformed
       tokens fail closed and remote Vercel Admin access uses the approved Clerk
       Product Owner session; add route-level regression coverage.
-- [ ] Complete the encrypted Preview/Production token containment and rotation
+- [x] Complete the encrypted Preview/Production token containment and rotation
       recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`, then verify the
-      corrected build in protected Staging before any Production deployment.
+      corrected build locally before protected Staging and any Production
+      deployment.
+- [x] Rotate Preview/Production to distinct non-secret durable-store identity
+      markers, bind the matching pair into GitHub Staging, store the same new
+      receipt-signing secret in GitHub Staging and Production, and keep the
+      snapshot flag false.
 - [ ] Add the missing Production required reviewer and protect `main` and
       `staging` with reviewed pull requests and required Verify/Playwright
-      checks. Keep Production promotion disabled.
+      checks. Current API access is not repository-admin and was rejected;
+      keep Production promotion disabled.
+- [ ] Add the least-privilege read-only `SHOPIFY_STAGING_ADMIN_TOKEN` to the
+      GitHub Staging environment without exposing it, then run the exact-SHA
+      protected no-order proof only after the Staging PR is merged.
 
 ## Staging-to-Production provenance and no-order QA correction — 2026-09-04
 

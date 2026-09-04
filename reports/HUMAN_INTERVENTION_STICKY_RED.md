@@ -1,52 +1,47 @@
-# CURRENT CRITICAL — ADMIN AUTH CONTAINMENT BEFORE ANY RELEASE
+# CURRENT — RELEASE-GATE OWNER ACTIONS AFTER FAIL-CLOSED CORRECTION
 
 Updated: 2026-09-04 EDT
 
-The shipped `apps/web` Admin page compares the Authorization header directly
-with `CP_ADMIN_REVIEW_TOKEN` and `CP_ADMIN_PRODUCT_OWNER_TOKEN` without first
-requiring either configured value. A local Production-configuration
-reproduction proved that `Authorization: Bearer undefined` renders the control
-plane when both variables are absent. The same vulnerable page exists on
-`origin/main` and `staging`. The live Admin route was not probed.
+The shipped `apps/web` Admin fail-open defect is corrected on temporary branch
+`codex/sanity-blocker-record-2026-09-04`: missing, undefined, short, equal,
+malformed and wrong bearer credentials fail closed, and Vercel Admin access is
+bound to the exact Clerk Product Owner session. Focused and full source/build,
+local HTTP, accessibility and desktop/mobile screenshot checks pass. The live
+Admin route was not probed and no Production deployment occurred.
 
-Vercel Preview currently stores both legacy bearer-token variables as readable
-values rather than encrypted secrets; Production does not list either
-variable. Do **not** delete the Preview values while the vulnerable build is
-live, because an absent value is the fail-open case.
+Completed protected configuration, without displaying values:
 
-Exact human containment action:
+- Rotated both legacy Admin variables to distinct sensitive values in Preview
+  and Production and added the immutable Product Owner ID to Production.
+- Rotated Preview and Production to distinct non-secret durable-store identity
+  markers and bound the matching pair into GitHub Staging.
+- Stored the same newly generated `CP_RELEASE_RECEIPT_SIGNING_SECRET` in GitHub
+  Staging and Production.
+- Confirmed `CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=false` and
+  `CP_PRODUCTION_PROMOTION_ENABLED=false`.
 
-1. Manually open Vercel -> Cubiqo team -> `carlophillips` -> Settings ->
-   Environment Variables. Do not paste or reveal any value in chat, a report,
-   a screenshot or Git.
-2. For both Preview and Production, create two new, distinct, randomly
-   generated values of at least 32 characters for `CP_ADMIN_REVIEW_TOKEN` and
-   `CP_ADMIN_PRODUCT_OWNER_TOKEN`; store all four values as encrypted/sensitive
-   variables scoped only to their environment. Never use the literal value
-   `undefined`. This is temporary containment, not approval of legacy remote
-   bearer authentication.
-3. Redeploy only through the normal reviewed branch and protected environment
-   workflow after the application fix requires configured, distinct tokens and
-   routes remote Admin access through the approved Clerk Product Owner session.
-   Production deployment still requires explicit Product Owner approval.
-4. After the corrected build is verified in protected Staging and Production,
-   remove the legacy remote bearer-token variables if the corrected runtime no
-   longer consumes them, and rotate any token that was previously readable.
-5. Signal completion with `CP Admin auth containment ready`.
+Exact remaining human actions:
 
-Cost: none intended. Risk: changing or deleting the variables in the wrong
-order can leave the current route fail-open or lock out Admin review. The code
-fix and protected deployment remain required; variable rotation alone is not a
-permanent fix.
+1. A repository administrator opens GitHub -> `CubiqoUnited/carlophillips-site`
+   -> Settings. Add a required Product Owner reviewer to the `Production`
+   environment. Protect both `main` and `staging` with pull-request review,
+   conversation resolution, no force-push/deletion, and required `Verify` plus
+   `Checkout E2E and accessibility` checks. The authenticated delivery account
+   has push/workflow but not admin permission; environment update returned HTTP
+   403 and branch-protection updates returned HTTP 404. No browser workaround
+   was attempted.
+2. In GitHub -> Environments -> Staging, add
+   `SHOPIFY_STAGING_ADMIN_TOKEN` as an encrypted environment secret. It must be
+   a least-privilege custom-app token for
+   `carlophillips-staging.myshopify.com` with product and inventory read access
+   only—no order, customer or write access. Never paste or reveal its value.
+3. Signal completion with `CP release gate owner bindings ready`.
 
-Additional release-gate configuration still required:
-
-- Add a required Product Owner reviewer to the GitHub `Production`
-  environment. The Production workflow currently fails closed because this
-  protection is absent; keep `CP_PRODUCTION_PROMOTION_ENABLED=false`.
-- Configure branch protection/rulesets for `main` and `staging` with reviewed
-  pull requests and required Verify/Playwright checks. Neither branch currently
-  has branch protection or a repository ruleset.
+Cost: none intended. Risk: branch/environment protection changes affect who may
+merge and deploy; the Shopify token exposes catalog and inventory metadata.
+Keep the token Staging-only and read-only. Do not enable the snapshot flag,
+deploy Production, enter payment, submit an order or retain a private checkout
+URL before the exact reviewed Staging sequence resumes.
 
 ---
 

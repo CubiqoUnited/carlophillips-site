@@ -2,7 +2,10 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 test.use({
-  extraHTTPHeaders: { Authorization: 'Bearer qa-review-token' },
+  extraHTTPHeaders: {
+    Authorization:
+      'Bearer qa-review-token-that-is-at-least-thirty-two-characters',
+  },
 });
 
 test('Admin analytics is truthful, accessible, and visually captured', async ({

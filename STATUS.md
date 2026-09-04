@@ -10,29 +10,34 @@ only and grant no current QA or release authority.
 - Current `staging@2ed89d52210e9aeeab9e5533ebfad58b4f82edf6` passes the
   full local source/build suite: Yarn Classic 1.22.22 frozen install,
   formatting, design-system and Production-commerce lint, TypeScript,
-  Stylelint, 81 files / 698 tests, optimized Next.js build, and 28/28 headless
+  Stylelint, 82 files / 702 tests, optimized Next.js build, and 28/28 headless
   desktop/mobile checks with six screenshot comparisons. Correction PRs
   #77-#79 also have green Linux Verify and Playwright checks.
-- The sanity pass found a separate fail-open defect in the shipped `apps/web`
-  Admin route. It interpolates possibly absent bearer-token variables directly
-  into header comparisons. With both variables absent, a local
-  Production-configuration reproduction returned the control plane for
-  `Authorization: Bearer undefined`; no header and a random token were denied.
-  The source is identical on `main` and `staging`; the live Admin route was not
-  probed and Production was not changed.
-- Vercel Preview lists both legacy Admin bearer variables as readable values,
-  while Production lists neither. Safe containment and rotation, followed by a
-  reviewed fail-closed code correction and protected deployment, are recorded
-  at the top of `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+- The sanity pass found and locally corrected a fail-open defect in the shipped
+  `apps/web` Admin route. Missing, undefined, short, equal, malformed and wrong
+  credentials now fail closed before Admin rendering; local reviewer/owner
+  roles remain distinct, and Vercel Preview/Production use only the exact Clerk
+  Product Owner session. Route-level tests and direct local HTTP checks pass.
+  The live Admin route was not probed and Production was not deployed.
+- The legacy Admin variables were rotated to distinct sensitive values in both
+  Vercel environments without disclosure, and the immutable Product Owner ID
+  was added to Production. These values are temporary defense-in-depth for
+  deployment transition; the corrected remote route does not grant bearer
+  access.
+- Preview and Production now use distinct non-secret durable-store identity
+  markers with matching GitHub Staging variables. The same newly generated
+  receipt-signing secret is stored in both protected GitHub environments, and
+  the Shopify snapshot flag remains false.
 - GitHub currently has no branch protection or repository ruleset for `main`
   or `staging`. Staging deployment is restricted to the `staging` branch and
   has a required reviewer, but Production has no required reviewer and its
   workflow therefore fails closed. The Production promotion switch remains
   `false`.
 - The current exact Staging SHA has no protected deployment/proof run. The
-  signed no-order receipt remains blocked by the missing GitHub environment
-  bindings already recorded below; prior Staging browser artifacts are
-  sanitized historical evidence and cannot be reused as exact-SHA proof.
+  signed no-order receipt now remains blocked only by the human-created
+  least-privilege `SHOPIFY_STAGING_ADMIN_TOKEN` plus the repository-admin
+  protection changes above. Prior Staging browser artifacts are sanitized
+  historical evidence and cannot be reused as exact-SHA proof.
 
 ## Staging-to-Production provenance and no-order QA correction — 2026-09-04
 

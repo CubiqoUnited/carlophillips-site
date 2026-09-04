@@ -54,7 +54,9 @@ export default defineConfig({
       NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS: 'true',
       NEXT_PUBLIC_SHOW_PRODUCTS: 'true',
       NEXT_PUBLIC_STAGING_REVIEW: 'true',
-      CP_ADMIN_REVIEW_TOKEN: 'qa-review-token',
+      CP_ADMIN_REVIEW_ENABLED: 'true',
+      CP_ADMIN_REVIEW_TOKEN:
+        'qa-review-token-that-is-at-least-thirty-two-characters',
     },
   },
 });
