@@ -1,3 +1,50 @@
+# CURRENT — RELEASE-GATE OWNER ACTIONS AFTER FAIL-CLOSED CORRECTION
+
+Updated: 2026-09-04 EDT
+
+The shipped `apps/web` Admin fail-open defect is corrected on temporary branch
+`codex/sanity-blocker-record-2026-09-04`: missing, undefined, short, equal,
+malformed and wrong bearer credentials fail closed, and Vercel Admin access is
+bound to the exact Clerk Product Owner session. Focused and full source/build,
+local HTTP, accessibility and desktop/mobile screenshot checks pass. The live
+Admin route was not probed and no Production deployment occurred.
+
+Completed protected configuration, without displaying values:
+
+- Rotated both legacy Admin variables to distinct sensitive values in Preview
+  and Production and added the immutable Product Owner ID to Production.
+- Rotated Preview and Production to distinct non-secret durable-store identity
+  markers and bound the matching pair into GitHub Staging.
+- Stored the same newly generated `CP_RELEASE_RECEIPT_SIGNING_SECRET` in GitHub
+  Staging and Production.
+- Confirmed `CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=false` and
+  `CP_PRODUCTION_PROMOTION_ENABLED=false`.
+
+Exact remaining human actions:
+
+1. A repository administrator opens GitHub -> `CubiqoUnited/carlophillips-site`
+   -> Settings. Add a required Product Owner reviewer to the `Production`
+   environment. Protect both `main` and `staging` with pull-request review,
+   conversation resolution, no force-push/deletion, and required `Verify` plus
+   `Checkout E2E and accessibility` checks. The authenticated delivery account
+   has push/workflow but not admin permission; environment update returned HTTP
+   403 and branch-protection updates returned HTTP 404. No browser workaround
+   was attempted.
+2. In GitHub -> Environments -> Staging, add
+   `SHOPIFY_STAGING_ADMIN_TOKEN` as an encrypted environment secret. It must be
+   a least-privilege custom-app token for
+   `carlophillips-staging.myshopify.com` with product and inventory read access
+   only—no order, customer or write access. Never paste or reveal its value.
+3. Signal completion with `CP release gate owner bindings ready`.
+
+Cost: none intended. Risk: branch/environment protection changes affect who may
+merge and deploy; the Shopify token exposes catalog and inventory metadata.
+Keep the token Staging-only and read-only. Do not enable the snapshot flag,
+deploy Production, enter payment, submit an order or retain a private checkout
+URL before the exact reviewed Staging sequence resumes.
+
+---
+
 # CURRENT — READ-ONLY STAGING PROOF BINDINGS; NO PAYMENT OR ORDER
 
 Updated: 2026-09-04 EDT
