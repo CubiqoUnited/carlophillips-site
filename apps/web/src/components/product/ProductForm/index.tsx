@@ -71,7 +71,37 @@ export default function ShopifyCheckoutForm({
       sizeGroupRef.current?.querySelector<HTMLButtonElement>('button')?.focus()
     );
   }, []);
-  if (!available.length) return null;
+  if (!available.length) {
+    return (
+      <div className="cp-purchase-form" data-purchase-state="sold-out">
+        <p className="cp-label cp-purchase-size-label">Choose a size</p>
+        <div className="cp-size-options" aria-label="Unavailable sizes">
+          {(presentation.combinations || []).map((item) => (
+            <button
+              key={item.referenceHash}
+              type="button"
+              disabled
+              aria-label={`Size ${sizeFor(item).toUpperCase()} sold out`}
+            >
+              {sizeFor(item).toUpperCase()}
+            </button>
+          ))}
+        </div>
+        <Button
+          type="button"
+          variant="solid"
+          size="large"
+          width="full"
+          disabled
+        >
+          SOLD OUT
+        </Button>
+        <p className="cp-purchase-note" role="status">
+          This piece is currently unavailable in every size.
+        </p>
+      </div>
+    );
+  }
 
   async function addToBag(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -129,6 +159,11 @@ export default function ShopifyCheckoutForm({
             onClick={() => {
               setReferenceHash(item.referenceHash);
               setStatus('idle');
+              window.dispatchEvent(
+                new CustomEvent('cp:size-selection', {
+                  detail: { selected: true },
+                })
+              );
             }}
             aria-pressed={referenceHash === item.referenceHash}
             aria-label={`Size ${sizeFor(item).toUpperCase()}`}

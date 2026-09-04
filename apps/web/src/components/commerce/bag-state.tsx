@@ -5,6 +5,7 @@ import type { BagDecision } from '@/types';
 import type { StorefrontCart } from '@repo/shopify';
 import { StorefrontHeader } from '../layout/StorefrontHeader';
 import { curateCustomerMedia } from '@/lib/media/customer-product-media';
+import { BagCheckoutAction, BagLineActions } from './bag-actions';
 
 const copyByStatus: Record<
   BagDecision['status'],
@@ -131,77 +132,10 @@ export function CommerceBagState({
                             }).format(Number(node.merchandise.price.amount))}
                           </p>
                         </div>
-                        <div className="cp-bag-line-actions">
-                          <form
-                            method="post"
-                            action="/api/cart"
-                            className="cp-bag-quantity-form"
-                          >
-                            <input
-                              type="hidden"
-                              name="cartAction"
-                              value="update"
-                            />
-                            <input
-                              type="hidden"
-                              name="lineId"
-                              value={node.id}
-                            />
-                            <span
-                              id={`quantity-${node.id}-label`}
-                              className="cp-label-small"
-                            >
-                              Quantity
-                            </span>
-                            <div
-                              className="cp-bag-stepper"
-                              role="group"
-                              aria-labelledby={`quantity-${node.id}-label`}
-                            >
-                              <button
-                                type="submit"
-                                name="quantity"
-                                value={Math.max(1, node.quantity - 1)}
-                                disabled={node.quantity <= 1}
-                                aria-label="Decrease quantity"
-                              >
-                                -
-                              </button>
-                              <output>{node.quantity}</output>
-                              <button
-                                type="submit"
-                                name="quantity"
-                                value={Math.min(5, node.quantity + 1)}
-                                disabled={node.quantity >= 5}
-                                aria-label="Increase quantity"
-                              >
-                                +
-                              </button>
-                            </div>
-                          </form>
-                          <form
-                            method="post"
-                            action="/api/cart"
-                            className="cp-bag-remove-form"
-                          >
-                            <input
-                              type="hidden"
-                              name="cartAction"
-                              value="remove"
-                            />
-                            <input
-                              type="hidden"
-                              name="lineId"
-                              value={node.id}
-                            />
-                            <button
-                              className="cp-action cp-action-quiet"
-                              type="submit"
-                            >
-                              Remove
-                            </button>
-                          </form>
-                        </div>
+                        <BagLineActions
+                          lineId={node.id}
+                          quantity={node.quantity}
+                        />
                       </div>
                     </article>
                   );
@@ -216,19 +150,7 @@ export function CommerceBagState({
                       }).format(Number(cart.cost.subtotalAmount.amount))}
                     </strong>
                   </p>
-                  <form
-                    method="post"
-                    action="/api/cart"
-                    className="cp-bag-checkout-form"
-                  >
-                    <input type="hidden" name="cartAction" value="checkout" />
-                    <button
-                      className="cp-action cp-action-solid cp-action-full"
-                      type="submit"
-                    >
-                      Checkout
-                    </button>
-                  </form>
+                  <BagCheckoutAction />
                 </div>
               </div>
             )}

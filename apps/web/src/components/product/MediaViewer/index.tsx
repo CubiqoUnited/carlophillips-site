@@ -15,6 +15,7 @@ interface MediaViewerProps {
   purchaseHref: string;
   title: string;
   triggerRef: RefObject<HTMLButtonElement | null>;
+  purchaseLabel?: string;
 }
 
 export function MediaViewer({
@@ -24,12 +25,14 @@ export function MediaViewer({
   purchaseHref,
   title,
   triggerRef,
+  purchaseLabel = 'ADD TO BAG',
 }: MediaViewerProps) {
   const controlledMedia = media.slice(0, 12);
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(false);
   const [zoomed, setZoomed] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [purchaseReady, setPurchaseReady] = useState(false);
   const dialogRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   useModalDialog(open, dialogRef, triggerRef, onClose);
@@ -39,6 +42,13 @@ export function MediaViewer({
     setActiveIndex(0);
     setZoomed(false);
     setAutoPlay(false);
+    setPurchaseReady(
+      Boolean(
+        document.querySelector<HTMLInputElement>(
+          '#product-options input[name="referenceHash"]'
+        )?.value
+      )
+    );
     setReducedMotion(
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     );
@@ -125,13 +135,30 @@ export function MediaViewer({
             </h2>
           </div>
           <div className="cp-media-dialog-controls">
-            <Link
-              href={`${purchaseHref}#product-options`}
-              className="cp-action cp-action-solid cp-media-purchase-action"
-              onClick={onClose}
-            >
-              CHOOSE A SIZE
-            </Link>
+            {purchaseReady ? (
+              <button
+                type="button"
+                className="cp-action cp-action-solid cp-media-purchase-action"
+                onClick={() => {
+                  onClose();
+                  requestAnimationFrame(() =>
+                    document
+                      .querySelector<HTMLFormElement>('#product-options')
+                      ?.requestSubmit()
+                  );
+                }}
+              >
+                {purchaseLabel}
+              </button>
+            ) : (
+              <Link
+                href={`${purchaseHref}#product-options`}
+                className="cp-action cp-action-solid cp-media-purchase-action"
+                onClick={onClose}
+              >
+                CHOOSE A SIZE
+              </Link>
+            )}
             <Text role="label" aria-live="polite">
               {String(activeIndex + 1).padStart(2, '0')} /{' '}
               {String(controlledMedia.length).padStart(2, '0')}

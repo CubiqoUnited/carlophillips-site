@@ -183,6 +183,7 @@ export function CommerceProductDetail({
             productTitle={product.title}
             productHref={`/product/${product.handle}`}
             productOnly
+            purchaseLabel={`ADD TO BAG - ${formatPrice(product.price, product.currency)}`}
           />
         </div>
         <div className="cp-commerce-buy-column flex items-start px-5 py-12 sm:px-8 lg:px-12 lg:py-16">

@@ -135,6 +135,10 @@ describe('active commerce boundary policy', () => {
       'apps/web/src/components/commerce/bag-state.tsx',
       'utf8'
     );
+    const bagActions = readFileSync(
+      'apps/web/src/components/commerce/bag-actions.tsx',
+      'utf8'
+    );
     const styles = readFileSync(
       'packages/design-system/styles/globals.css',
       'utf8'
@@ -153,7 +157,13 @@ describe('active commerce boundary policy', () => {
     expect(styles).toMatch(
       /\.cp-commerce-detail\s*>\s*div:first-child\s*\{[^}]*order:\s*2/s
     );
-    expect(bag).toContain('cp-bag-checkout-form');
+    expect(bag).toContain('<BagCheckoutAction />');
+    expect(bagActions).toContain('cp-bag-checkout-form');
+    expect(bagActions).toContain('Opening checkout…');
+    expect(bagActions).toContain('Retry checkout');
+    expect(bagActions).toContain('This change was not saved.');
+    expect(bagActions).toContain('if (pending) return');
+    expect(bagActions).not.toContain('gid://');
     expect(styles).toMatch(
       /\.cp-bag-checkout-form\s*\{[^}]*position:\s*sticky/s
     );

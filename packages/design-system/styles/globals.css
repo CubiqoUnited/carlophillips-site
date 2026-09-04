@@ -100,7 +100,6 @@
 }
 
 .cp-inline-action {
-  min-width: auto;
   text-decoration: underline;
   text-underline-offset: var(--cp-space-1);
 }
@@ -4735,6 +4734,16 @@ a:focus-visible {
 .cp-bag-line-actions {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
+}
+
+.cp-bag-mutation-feedback {
+  grid-column: 1 / -1;
+  min-height: var(--cp-space-5);
+  color: var(--cp-color-copy-soft);
+}
+
+.cp-bag-mutation-feedback p {
+  margin: 0;
 }
 
 .cp-bag-remove-form .cp-action {

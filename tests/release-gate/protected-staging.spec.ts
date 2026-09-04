@@ -11,6 +11,8 @@ const expectedCheckoutHosts = new Set(
     .filter(Boolean)
 );
 const branchPreviewQa = process.env.CP_BRANCH_PREVIEW_QA === 'true';
+const stagingStorefrontPassword =
+  process.env.SHOPIFY_STAGING_STOREFRONT_PASSWORD || '';
 
 test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser health', async ({
   context,
@@ -62,7 +64,15 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   ).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('00-member.png') });
   await page.goto('/contact', { waitUntil: 'domcontentloaded' });
-  await page.screenshot({ path: testInfo.outputPath('00-contact.png') });
+  await hideNonCustomerUi();
+  await page.screenshot({
+    path: testInfo.outputPath('00-contact.png'),
+    fullPage: true,
+  });
+  await expect(page.locator('main#main-content')).toHaveScreenshot(
+    'staging-contact.png',
+    { animations: 'disabled', fullPage: true, maxDiffPixelRatio: 0.01 }
+  );
 
   await page.goto('/shop', { waitUntil: 'domcontentloaded' });
   await expect(
@@ -72,7 +82,11 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     page.locator('[aria-label="Available products"] article')
   ).toHaveCount(1);
 
-  await page.goto('/?screen=gallery', { waitUntil: 'domcontentloaded' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  const galleryTrigger = page.getByRole('button', {
+    name: /VIEW GALLERY/i,
+  });
+  await galleryTrigger.click();
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeVisible();
   await expect
     .poll(() => page.evaluate(() => document.body.style.overflow))
@@ -92,6 +106,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   );
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeHidden();
+  await expect(galleryTrigger).toBeFocused();
 
   const cartHydration = page.waitForResponse(
     (response) =>
@@ -175,6 +190,27 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     { animations: 'disabled', fullPage: true, maxDiffPixelRatio: 0.01 }
   );
 
+  await page.route('**/api/cart', async (route) => {
+    if (
+      route.request().method() === 'POST' &&
+      route.request().postData()?.includes('checkout')
+    ) {
+      await route.abort('failed');
+      return;
+    }
+    await route.continue();
+  });
+  await page.getByRole('button', { name: 'Checkout', exact: true }).click();
+  await expect(
+    page.getByText(
+      'Checkout could not be opened. Your bag is unchanged; try again.'
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Retry checkout', exact: true })
+  ).toBeEnabled();
+  await page.unroute('**/api/cart');
+
   const cookies = await context.cookies();
   const checkoutResponse = await page.request.post('/api/cart', {
     form: { cartAction: 'checkout' },
@@ -197,6 +233,59 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     expect(expectedCheckoutHosts.has(checkout.hostname)).toBe(true);
   }
   await checkoutResponse.dispose();
+
+  const checkoutPage = await context.newPage();
+  await checkoutPage.goto(checkout.toString(), {
+    waitUntil: 'domcontentloaded',
+  });
+  if (new URL(checkoutPage.url()).pathname === '/password') {
+    expect(
+      stagingStorefrontPassword,
+      'bind SHOPIFY_STAGING_STOREFRONT_PASSWORD so protected QA can prove the payment step without submitting an order'
+    ).toBeTruthy();
+    await checkoutPage
+      .locator('input[type="password"], input[name="password"]')
+      .fill(stagingStorefrontPassword);
+    await checkoutPage
+      .locator('button[type="submit"], input[type="submit"]')
+      .first()
+      .click();
+    await checkoutPage.waitForLoadState('domcontentloaded');
+  }
+  expect(new URL(checkoutPage.url()).pathname).not.toBe('/password');
+  await expect(
+    checkoutPage.getByText(/Payment|Secure payment/i).first()
+  ).toBeVisible({ timeout: 30_000 });
+  await checkoutPage.screenshot({
+    path: testInfo.outputPath('03-shopify-payment-step-no-submit.png'),
+    fullPage: true,
+  });
+  await checkoutPage.close();
+
+  await page.route('**/api/cart', async (route) => {
+    if (route.request().method() === 'POST') {
+      await route.abort('failed');
+      return;
+    }
+    await route.continue();
+  });
+  await page.getByRole('button', { name: 'Increase quantity' }).click();
+  await expect(page.getByText('This change was not saved.')).toBeVisible();
+  await page.unroute('**/api/cart');
+  await page.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(page.getByRole('link', { name: /^Bag \(2\)$/i })).toBeVisible();
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.cp-bag-stepper output')).toHaveText('2');
+  await page.getByRole('button', { name: 'Decrease quantity' }).click();
+  await expect(page.getByRole('link', { name: /^Bag \(1\)$/i })).toBeVisible();
+  await page.getByRole('button', { name: 'Remove', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Your bag is empty.' })
+  ).toBeVisible();
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(
+    page.getByRole('heading', { name: 'Your bag is empty.' })
+  ).toBeVisible();
 
   const axe = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -252,6 +341,10 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
         sizeSelection: true,
         bagTruth: true,
         hostedStagingCheckout: true,
+        paymentStepReached: true,
+        quantityPersistence: true,
+        removeToEmpty: true,
+        focusRestoration: true,
         accessibilityPassed: true,
         consoleErrors: 0,
         networkFailures: 0,
