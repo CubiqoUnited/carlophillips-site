@@ -37,34 +37,34 @@ have no customer-runtime authority.
 - Fit memory may store only the customer's explicit size/fit preference on that
   device; it is not an order fact and stores no identity, address, payment or
   order data.
-- Staging uses its separate Shopify development store and test payments. It must
-  not submit a job to Apliiq Production. A complete Production provider journey
-  requires separate real-order authority and evidence.
+- Staging uses its separate Shopify development store and must mimic the
+  Production path through a trusted hosted checkout handoff, but QA must not
+  enter payment, submit an order or retain a private checkout URL. Production
+  checkout and payment remain enabled for customers. A complete Production
+  provider journey requires separately authorized real-order evidence.
 
 ### Shopify-mimic Staging digital QA boundary
 
 - `staging.carlophillips.com` must use only the dedicated Shopify development
   store, its Storefront credentials, Customer Account destination, return rules,
-  webhook secret and test payment gateway. Missing Staging configuration fails
+  webhook secret and hosted-checkout configuration. Missing Staging configuration fails
   closed; it never falls back to Production Shopify values.
-- The exact release candidate must complete a zero-charge Shopify test journey:
-  fresh product read, S/M/L at USD 128, bag, hosted checkout, simulated successful
-  payment, Shopify order and confirmation, authenticated customer order view,
-  signed webhook observation, cancellation or eligible return request, refund,
-  inventory restoration and the configured Shopify notifications.
-- Test identities, addresses and messages must be synthetic. Evidence must redact
-  private checkout/order-status URLs, customer data, credentials and raw Shopify
-  identifiers.
+- The exact release candidate must complete the safe Shopify Staging journey:
+  fresh product read, S/M/L at USD 128, bag, trusted hosted-checkout handoff,
+  signed synthetic webhook observation and unchanged inventory. The proof is
+  generated without entering payment, submitting an order or querying order data.
+- Evidence must never contain a private checkout/order-status URL, customer data,
+  credentials or raw Shopify identifiers.
 - Fulfilment, production, dispatch, tracking and delivery presentation must be
-  exercised in Staging with Shopify test/manual fulfilment facts or a dedicated
-  simulator. Staging must not send a fulfilment request to Apliiq Production.
+  exercised only with a dedicated no-order simulator when separately requested.
+  Staging must not send a fulfilment request to Apliiq Production.
 - Real Apliiq manufacture, carrier handoff and physical delivery are deferred to
   a later research/delivery iteration and are not blockers for accepting the
   Shopify-mimic Staging digital journey. They remain required before claiming
   complete Production POD fulfilment readiness.
 - Production promotion remains blocked until this exact Staging candidate passes
   repository checks, desktop/mobile visual comparison, browser/accessibility and
-  console/network QA, the complete zero-charge Shopify test journey, rollback
+  console/network QA, the sanitized checkout-handoff proof, rollback
   verification and Product Owner review.
 
 ## Objective
@@ -86,9 +86,9 @@ The system has two creation modes: designer-led inputs (brand rules, ideas, mock
 2. Product title, variant, price, availability, and media resolve from Shopify.
 3. Variant selection creates or updates a Shopify cart.
 4. Checkout redirects to Shopify Checkout.
-5. A Staging test order proves test payment, Shopify confirmation, customer
-   order status, cancellation/refund messaging and eligible Shopify-native
-   return behavior without a real charge or Production fulfilment.
+5. Staging proves a trusted hosted-checkout handoff without payment entry, order
+   submission, private checkout URL retention or customer data. Post-purchase
+   behavior is not fabricated from a QA order.
 6. POD acceptance, production, dispatch, tracking and delivery are proved only
    with separately authorized Production evidence when the provider has no safe
    sandbox. Support delivery is proved independently with synthetic data.

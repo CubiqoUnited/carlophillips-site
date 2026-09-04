@@ -180,9 +180,26 @@ function browserProofs(directory) {
     .map(readJson);
   const desktop = proofs.find((proof) => proof.viewportWidth === 1440);
   const mobile = proofs.find((proof) => proof.viewportWidth === 390);
+  const expectedKeys = [
+    'schemaVersion',
+    'viewportWidth',
+    'shopifyAuthoritativeProduct',
+    'sizeSelection',
+    'bagTruth',
+    'hostedStagingCheckout',
+    'accessibilityPassed',
+    'consoleErrors',
+    'networkFailures',
+    'screenshotHash',
+    'privateCheckoutUrlRetained',
+    'paymentAttempted',
+    'orderSubmitted',
+  ].sort();
   for (const proof of [desktop, mobile]) {
     if (
       !proof ||
+      proof.schemaVersion !== 'cp.protected-staging-browser-proof.v1' ||
+      JSON.stringify(Object.keys(proof).sort()) !== JSON.stringify(expectedKeys) ||
       proof.shopifyAuthoritativeProduct !== true ||
       proof.sizeSelection !== true ||
       proof.bagTruth !== true ||
@@ -198,147 +215,12 @@ function browserProofs(directory) {
       throw new Error('PROTECTED_BROWSER_PROOF_INVALID');
     }
   }
-  return { desktop, mobile };
-}
-
-async function redis(environment, command) {
-  const url = required(
-    process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL,
-    'STAGING_DURABLE_STORE_URL_REQUIRED'
-  );
-  const token = required(
-    process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
-    'STAGING_DURABLE_STORE_TOKEN_REQUIRED'
-  );
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(command),
-  });
-  if (!response.ok) throw new Error('STAGING_DURABLE_STORE_FAILED');
-  const payload = await response.json();
-  if (payload.error) throw new Error('STAGING_DURABLE_STORE_FAILED');
-  return payload.result;
-}
-
-async function lifecycleEvents(environment, orderReferenceHash) {
-  const keys = [];
-  let cursor = '0';
-  do {
-    const result = await redis(environment, [
-      'SCAN',
-      cursor,
-      'MATCH',
-      'cp:preview:shopify:webhook-event:*',
-      'COUNT',
-      500,
-    ]);
-    cursor = String(result?.[0] || '0');
-    keys.push(...(result?.[1] || []));
-  } while (cursor !== '0');
-  if (!keys.length) throw new Error('LIFECYCLE_EVENTS_MISSING');
-  const records = await redis(environment, ['MGET', ...keys]);
-  return (records || [])
-    .filter(Boolean)
-    .map((value) => JSON.parse(value))
-    .filter((event) => event.orderReferenceHash === orderReferenceHash);
-}
-
-function customAttribute(order, name) {
-  return order.customAttributes?.find((attribute) => attribute.key === name)
-    ?.value;
-}
-
-async function exactTestOrder(environment, snapshot) {
-  const data = await adminGraphql(
-    environment,
-    `query ProtectedReleaseOrders {
-      orders(first: 50, reverse: true) {
-        nodes {
-          id
-          test
-          createdAt
-          cancelledAt
-          closed
-          displayFinancialStatus
-          displayFulfillmentStatus
-          customAttributes { key value }
-          lineItems(first: 20) {
-            nodes { quantity variantTitle originalUnitPriceSet { shopMoney { amount currencyCode } } }
-          }
-          refunds {
-            id
-            refundLineItems(first: 20) { nodes { quantity restockType } }
-          }
-          fulfillments { id status }
-          fulfillmentOrders(first: 20) {
-            nodes {
-              id
-              status
-              requestStatus
-              assignedLocation {
-                name
-                location { fulfillmentService { handle } }
-              }
-            }
-          }
-        }
-      }
-    }`
-  );
-  const orders = (data.orders?.nodes || []).filter(
-    (order) =>
-      order.test === true &&
-      customAttribute(order, '_cp_release') === snapshot.release &&
-      customAttribute(order, '_cp_commit_sha') === snapshot.gitCommitSha &&
-      customAttribute(order, '_cp_commerce_environment') === 'preview'
-  );
-  if (orders.length !== 1) throw new Error('EXACT_TEST_ORDER_REQUIRED');
-  const order = orders[0];
-  const orderNumber = String(order.id || '').match(/\/([0-9]+)$/)?.[1];
-  if (!orderNumber) throw new Error('TEST_ORDER_REFERENCE_INVALID');
-  const lines = order.lineItems?.nodes || [];
-  const fulfillmentOrders = order.fulfillmentOrders?.nodes || [];
-  if (
-    lines.length !== 1 ||
-    lines[0].quantity !== 1 ||
-    !['S', 'M', 'L'].includes(String(lines[0].variantTitle).toUpperCase()) ||
-    Number(lines[0].originalUnitPriceSet?.shopMoney?.amount).toFixed(2) !==
-      '128.00' ||
-    lines[0].originalUnitPriceSet?.shopMoney?.currencyCode !== 'USD' ||
-    !order.cancelledAt ||
-    order.displayFinancialStatus !== 'REFUNDED' ||
-    order.displayFulfillmentStatus !== 'UNFULFILLED' ||
-    order.refunds?.length < 1 ||
-    order.refunds.some((refund) =>
-      (refund.refundLineItems?.nodes || []).some(
-        (line) => line.restockType === 'NO_RESTOCK'
-      )
-    ) ||
-    order.fulfillments?.length !== 0 ||
-    fulfillmentOrders.length < 1 ||
-    fulfillmentOrders.some(
-      (fulfillmentOrder) =>
-        fulfillmentOrder.requestStatus !== 'UNSUBMITTED' ||
-        !['CANCELLED', 'CLOSED'].includes(fulfillmentOrder.status) ||
-        /apliiq/i.test(fulfillmentOrder.assignedLocation?.name || '') ||
-        /apliiq/i.test(
-          fulfillmentOrder.assignedLocation?.location?.fulfillmentService
-            ?.handle || ''
-        )
-    )
-  ) {
-    throw new Error('TEST_ORDER_FINAL_STATE_INVALID');
-  }
   return {
-    orderReferenceHash: hash(`${environment.store}\n${orderNumber}`),
-    finalFinancialStatus: order.displayFinancialStatus,
-    finalFulfillmentStatus: order.displayFulfillmentStatus,
-    fulfillmentRequestSubmitted: false,
-    apliiqLocationAssigned: false,
+    desktop,
+    mobile,
+    checkoutHandoffEvidenceHash: hash(
+      JSON.stringify({ desktop, mobile })
+    ),
   };
 }
 
@@ -405,12 +287,8 @@ if (mode === 'snapshot') {
   const productionAfterInspect = readJson(options['production-after-inspect']);
   const productionBeforeHealth = readJson(options['production-before-health']);
   const productionAfterHealth = readJson(options['production-after-health']);
-  const confirmationHash = options['confirmation-hash'];
-  const orderStatusHash = options['order-status-hash'];
   const sourcePullRequest = Number(options['source-pull-request']);
   if (
-    !FINGERPRINT.test(confirmationHash || '') ||
-    !FINGERPRINT.test(orderStatusHash || '') ||
     !Number.isSafeInteger(sourcePullRequest) ||
     sourcePullRequest < 1 ||
     snapshot.gitCommitSha !== options['expected-sha'] ||
@@ -418,29 +296,11 @@ if (mode === 'snapshot') {
   ) {
     throw new Error('FINAL_PROOF_IDENTITY_INVALID');
   }
-  const order = await exactTestOrder(environment, snapshot);
-  const events = await lifecycleEvents(environment, order.orderReferenceHash);
-  const requiredTopics = [
-    'orders/create',
-    'orders/paid',
-    'orders/cancelled',
-    'refunds/create',
-  ];
-  const observedTopics = [
-    ...new Set(events.map((event) => event.topic)),
-  ].sort();
   if (
-    requiredTopics.some((topic) => !observedTopics.includes(topic)) ||
-    events.some(
-      (event) =>
-        event.signatureVerified !== true ||
-        event.signatureAlgorithm !== 'shopify-hmac-sha256' ||
-        event.externalActionApplied !== false
-    )
-  ) {
-    throw new Error('SIGNED_LIFECYCLE_INCOMPLETE');
-  }
-  if (
+    webhookProbe?.signatureVerified !== true ||
+    webhookProbe?.signatureAlgorithm !== 'shopify-hmac-sha256' ||
+    webhookProbe?.durableIdempotency !== true ||
+    webhookProbe?.piiFree !== true ||
     webhookProbe?.duplicateDelivery?.attempted !== true ||
     webhookProbe?.duplicateDelivery?.suppressed !== true ||
     webhookProbe?.duplicateDelivery?.observationCount !== 1 ||
@@ -454,17 +314,17 @@ if (mode === 'snapshot') {
       (variant) => variant.size === before.size
     );
     if (!after || after.inventory !== before.inventory) {
-      throw new Error('INVENTORY_NOT_RESTORED');
+      throw new Error('SHOPIFY_INVENTORY_MUTATED_DURING_PROOF');
     }
     return {
       size: before.size,
       price: before.price,
       currency: before.currency,
-      availableBefore: before.available,
-      availableAfter: after.available,
-      inventoryBefore: before.inventory,
-      inventoryAfter: after.inventory,
-      inventoryRestored: true,
+      availableAtSnapshot: before.available,
+      availableAtProof: after.available,
+      inventoryAtSnapshot: before.inventory,
+      inventoryAtProof: after.inventory,
+      inventoryUnchanged: true,
     };
   });
   const productionBefore = health(
@@ -481,7 +341,7 @@ if (mode === 'snapshot') {
     throw new Error('PRODUCTION_CHANGED_DURING_STAGING');
   }
   const unsigned = {
-    schemaVersion: 'cp.protected-staging-release-receipt.v1',
+    schemaVersion: 'cp.protected-staging-release-receipt.v2',
     generatedAt: new Date().toISOString(),
     release: snapshot.release,
     gitCommitSha: snapshot.gitCommitSha,
@@ -505,7 +365,7 @@ if (mode === 'snapshot') {
       storeReferenceHash: snapshot.storeReferenceHash,
       productionStoreReferenceHash: snapshot.productionStoreReferenceHash,
       storeIsolated: true,
-      paymentMode: 'test',
+      paymentMode: 'not-used',
       durableStoreReferenceHash: snapshot.durableStoreReferenceHash,
       productionDurableStoreReferenceHash:
         snapshot.productionDurableStoreReferenceHash,
@@ -522,30 +382,19 @@ if (mode === 'snapshot') {
       shopifyAuthoritativeProduct: true,
       sizeSelection: true,
       bagTruth: true,
-      hostedStagingCheckout: true,
-      testPayment: true,
-      paidOrder: true,
-      brandedConfirmation: true,
-      confirmationEvidenceHash: confirmationHash,
-      orderStatus: true,
-      orderStatusEvidenceHash: orderStatusHash,
+      hostedStagingCheckoutHandoff: true,
+      checkoutHandoffEvidenceHash: browsers.checkoutHandoffEvidenceHash,
+      privateCheckoutUrlRetained: false,
+      paymentAttempted: false,
+      orderSubmitted: false,
     },
-    lifecycle: {
-      orderReferenceHash: order.orderReferenceHash,
+    webhookSafety: {
       signatureVerified: true,
       signatureAlgorithm: 'shopify-hmac-sha256',
       durableIdempotency: true,
-      requiredTopics,
-      observedTopics,
       duplicateDelivery: webhookProbe.duplicateDelivery,
-      cancelled: true,
-      refunded: true,
-      inventoryRestored: true,
-      finalFinancialStatus: order.finalFinancialStatus,
-      finalFulfillmentStatus: order.finalFulfillmentStatus,
-      fulfillmentRequestSubmitted: order.fulfillmentRequestSubmitted,
-      apliiqLocationAssigned: order.apliiqLocationAssigned,
-      noApliiqProductionJob: true,
+      externalActionCount: 0,
+      piiFree: true,
     },
     quality: {
       desktop: {
@@ -576,6 +425,8 @@ if (mode === 'snapshot') {
     safeguards: {
       piiFree: true,
       realPaymentUsed: false,
+      paymentAttempted: false,
+      stagingOrderCreated: false,
       productionOrderCreated: false,
       privateCheckoutUrlRetained: false,
       productionStoreMutated: false,

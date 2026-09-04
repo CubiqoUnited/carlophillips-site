@@ -13,7 +13,7 @@
     "staging",
     "shopify",
     "customerPath",
-    "lifecycle",
+    "webhookSafety",
     "quality",
     "production",
     "rollback",
@@ -22,7 +22,7 @@
     "signature"
   ],
   "properties": {
-    "schemaVersion": { "const": "cp.protected-staging-release-receipt.v1" },
+    "schemaVersion": { "const": "cp.protected-staging-release-receipt.v2" },
     "generatedAt": { "type": "string", "format": "date-time" },
     "release": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
     "gitCommitSha": { "$ref": "#/$defs/sha" },
@@ -36,28 +36,24 @@
         "shopifyAuthoritativeProduct",
         "sizeSelection",
         "bagTruth",
-        "hostedStagingCheckout",
-        "testPayment",
-        "paidOrder",
-        "brandedConfirmation",
-        "confirmationEvidenceHash",
-        "orderStatus",
-        "orderStatusEvidenceHash"
+        "hostedStagingCheckoutHandoff",
+        "checkoutHandoffEvidenceHash",
+        "privateCheckoutUrlRetained",
+        "paymentAttempted",
+        "orderSubmitted"
       ],
       "properties": {
         "shopifyAuthoritativeProduct": { "const": true },
         "sizeSelection": { "const": true },
         "bagTruth": { "const": true },
-        "hostedStagingCheckout": { "const": true },
-        "testPayment": { "const": true },
-        "paidOrder": { "const": true },
-        "brandedConfirmation": { "const": true },
-        "confirmationEvidenceHash": { "$ref": "#/$defs/fingerprint" },
-        "orderStatus": { "const": true },
-        "orderStatusEvidenceHash": { "$ref": "#/$defs/fingerprint" }
+        "hostedStagingCheckoutHandoff": { "const": true },
+        "checkoutHandoffEvidenceHash": { "$ref": "#/$defs/fingerprint" },
+        "privateCheckoutUrlRetained": { "const": false },
+        "paymentAttempted": { "const": false },
+        "orderSubmitted": { "const": false }
       }
     },
-    "lifecycle": { "$ref": "#/$defs/lifecycle" },
+    "webhookSafety": { "$ref": "#/$defs/webhookSafety" },
     "quality": { "$ref": "#/$defs/quality" },
     "production": { "$ref": "#/$defs/production" },
     "rollback": { "$ref": "#/$defs/rollback" },
@@ -116,21 +112,21 @@
         "size",
         "price",
         "currency",
-        "availableBefore",
-        "availableAfter",
-        "inventoryBefore",
-        "inventoryAfter",
-        "inventoryRestored"
+        "availableAtSnapshot",
+        "availableAtProof",
+        "inventoryAtSnapshot",
+        "inventoryAtProof",
+        "inventoryUnchanged"
       ],
       "properties": {
         "size": { "enum": ["S", "M", "L"] },
         "price": { "const": "128.00" },
         "currency": { "const": "USD" },
-        "availableBefore": { "const": true },
-        "availableAfter": { "const": true },
-        "inventoryBefore": { "type": "integer", "minimum": 1 },
-        "inventoryAfter": { "type": "integer", "minimum": 1 },
-        "inventoryRestored": { "const": true }
+        "availableAtSnapshot": { "const": true },
+        "availableAtProof": { "const": true },
+        "inventoryAtSnapshot": { "type": "integer", "minimum": 1 },
+        "inventoryAtProof": { "type": "integer", "minimum": 1 },
+        "inventoryUnchanged": { "const": true }
       }
     },
     "shopify": {
@@ -159,7 +155,7 @@
         "storeReferenceHash": { "$ref": "#/$defs/fingerprint" },
         "productionStoreReferenceHash": { "$ref": "#/$defs/fingerprint" },
         "storeIsolated": { "const": true },
-        "paymentMode": { "const": "test" },
+        "paymentMode": { "const": "not-used" },
         "durableStoreReferenceHash": { "$ref": "#/$defs/fingerprint" },
         "productionDurableStoreReferenceHash": {
           "$ref": "#/$defs/fingerprint"
@@ -193,50 +189,21 @@
         }
       }
     },
-    "lifecycle": {
+    "webhookSafety": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "orderReferenceHash",
         "signatureVerified",
         "signatureAlgorithm",
         "durableIdempotency",
-        "requiredTopics",
-        "observedTopics",
         "duplicateDelivery",
-        "cancelled",
-        "refunded",
-        "inventoryRestored",
-        "finalFinancialStatus",
-        "finalFulfillmentStatus",
-        "fulfillmentRequestSubmitted",
-        "apliiqLocationAssigned",
-        "noApliiqProductionJob"
+        "externalActionCount",
+        "piiFree"
       ],
       "properties": {
-        "orderReferenceHash": { "$ref": "#/$defs/fingerprint" },
         "signatureVerified": { "const": true },
         "signatureAlgorithm": { "const": "shopify-hmac-sha256" },
         "durableIdempotency": { "const": true },
-        "requiredTopics": {
-          "type": "array",
-          "minItems": 4,
-          "maxItems": 4,
-          "uniqueItems": true,
-          "items": {
-            "enum": [
-              "orders/create",
-              "orders/paid",
-              "orders/cancelled",
-              "refunds/create"
-            ]
-          }
-        },
-        "observedTopics": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": { "type": "string" }
-        },
         "duplicateDelivery": {
           "type": "object",
           "additionalProperties": false,
@@ -253,14 +220,8 @@
             "externalActionCount": { "const": 0 }
           }
         },
-        "cancelled": { "const": true },
-        "refunded": { "const": true },
-        "inventoryRestored": { "const": true },
-        "finalFinancialStatus": { "const": "REFUNDED" },
-        "finalFulfillmentStatus": { "const": "UNFULFILLED" },
-        "fulfillmentRequestSubmitted": { "const": false },
-        "apliiqLocationAssigned": { "const": false },
-        "noApliiqProductionJob": { "const": true }
+        "externalActionCount": { "const": 0 },
+        "piiFree": { "const": true }
       }
     },
     "screenshot": {
@@ -349,6 +310,8 @@
       "required": [
         "piiFree",
         "realPaymentUsed",
+        "paymentAttempted",
+        "stagingOrderCreated",
         "productionOrderCreated",
         "privateCheckoutUrlRetained",
         "productionStoreMutated"
@@ -356,6 +319,8 @@
       "properties": {
         "piiFree": { "const": true },
         "realPaymentUsed": { "const": false },
+        "paymentAttempted": { "const": false },
+        "stagingOrderCreated": { "const": false },
         "productionOrderCreated": { "const": false },
         "privateCheckoutUrlRetained": { "const": false },
         "productionStoreMutated": { "const": false }

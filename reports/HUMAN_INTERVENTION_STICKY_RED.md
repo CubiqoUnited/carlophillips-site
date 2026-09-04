@@ -1,38 +1,46 @@
-# CURRENT SCOPE — SHOPIFY-MIMIC STAGING; APLIIQ PHYSICAL PROOF DEFERRED
+# CURRENT — READ-ONLY STAGING PROOF BINDINGS; NO PAYMENT OR ORDER
 
-## Current external proof bindings — 2026-09-03
+Updated: 2026-09-04 EDT
+
+This section supersedes every later instruction in this file that asks a human
+or agent to enter Staging payment data, submit a test order, capture an order or
+confirmation hash, cancel/refund/restock an order, retain a private checkout or
+order-status URL, or query Shopify order data for the release gate. Those steps
+must not be performed.
+
+## Current external proof bindings
 
 Protected Staging run `33809465340` is successful on exact
 `staging@9daa799cdd40be495584456a59a8efaea539ed65`; the earlier Vercel-token
 blocker is resolved. Production remained unchanged. Before the protected
-pre-order Shopify snapshot can run, the Staging environment still requires:
+read-only Shopify snapshot can run, the Staging environment still requires:
 
 1. `SHOPIFY_STAGING_ADMIN_TOKEN`: a read-only custom-app token from
-   `carlophillips-staging.myshopify.com` with products, inventory, locations,
-   orders, merchant-managed fulfillment-order and third-party
-   fulfillment-order read access. Do not grant writes or use Production.
+   `carlophillips-staging.myshopify.com` with only product and inventory read
+   access. Do not grant order, customer or write access and do not use
+   Production.
 2. `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` and
    `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`: the existing distinct environment
    store identifiers. Do not invent or copy one environment's ID to the other.
 
 `SHOPIFY_PRODUCTION_STORE_DOMAIN` is already set to the independently evidenced
-Production shop. Cost: none intended. Risk: the Admin token exposes test-store
-order metadata, so keep it read-only and only in GitHub's protected `Staging`
-environment. Signal completion with: `CP Shopify Staging proof bindings ready`.
+Production shop. Cost: none intended. Risk: the Admin token exposes catalog and
+inventory metadata, so keep it read-only and only in GitHub's protected
+`Staging` environment. Signal completion with:
+`CP Shopify Staging proof bindings ready`.
 
 After that signal, enable the repository configuration variable
 `CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=true`, dispatch Protected Vercel Staging
-for the current exact Staging SHA, and reset the flag after the run. Before
-entering synthetic checkout or test-payment data, record and obtain the separate
-explicit test-order action.
-No Production payment, Production order, Apliiq request or Production promotion
-is authorized.
+for the current exact Staging SHA, and reset the flag after the run. The browser
+proof may validate the HTTPS trusted-host handoff but must dispose of the
+response without navigation and must not retain its private URL. No payment,
+order, Apliiq request or Production promotion is authorized by this intervention.
 
 ---
 
-Updated: 2026-09-03 EDT
+## SUPERSEDED — 2026-09-03 Shopify-mimic order scope
 
-The Product Owner directed delivery through the complete Shopify-mimic digital
+The earlier Product Owner direction requested a complete Shopify-mimic digital
 Staging journey and deferred real Apliiq manufacture, dispatch, carrier tracking
 and physical delivery to the next research/delivery iteration. Staging must use
 the dedicated Shopify development store and test gateway to prove a successful
@@ -40,14 +48,13 @@ zero-charge order, confirmation, authenticated order view, signed webhook,
 cancellation or eligible return, refund, inventory restoration and notifications.
 It must not submit a fulfilment request to Apliiq Production.
 
-This decision removes Apliiq physical lifecycle proof from the current closure
-blockers. It does not waive the Shopify digital QA journey, exact-candidate
-Staging deployment, Product Owner Staging acceptance or the separate future
-Production POD proof.
+This order-based scope is superseded by the 2026-09-04 no-order boundary above
+and must not be executed. Exact-candidate Staging deployment, Product Owner
+Staging acceptance and the separate future Production POD proof remain.
 
 ---
 
-# RED — PROTECTED STAGING VERCEL AUTHORITY BLOCKS THE RELEASE GATE
+# SUPERSEDED — PROTECTED STAGING VERCEL AUTHORITY BLOCKED THE RELEASE GATE
 
 Updated: 2026-09-03 EDT
 

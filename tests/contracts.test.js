@@ -889,7 +889,7 @@ describe('truth contracts', () => {
     );
   });
 
-  it('keeps protected release receipts PII-free and exact-SHA bound', () => {
+  it('keeps protected Staging receipts PII-free, no-order and Staging-SHA bound', () => {
     expect(protectedStagingReleaseReceiptSchema.additionalProperties).toBe(
       false
     );
@@ -899,7 +899,7 @@ describe('truth contracts', () => {
         'staging',
         'shopify',
         'customerPath',
-        'lifecycle',
+        'webhookSafety',
         'production',
         'rollback',
         'signature',
@@ -908,6 +908,13 @@ describe('truth contracts', () => {
     expect(JSON.stringify(protectedStagingReleaseReceiptSchema)).not.toMatch(
       /customerEmail|customerName|shippingAddress|checkoutUrl|orderId/
     );
+    expect(
+      protectedStagingReleaseReceiptSchema.properties.customerPath.properties
+    ).toMatchObject({
+      privateCheckoutUrlRetained: { const: false },
+      paymentAttempted: { const: false },
+      orderSubmitted: { const: false },
+    });
   });
 
   it('validates a sanitized admin command decision without connector or upstream authority claims', () => {

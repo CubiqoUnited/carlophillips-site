@@ -246,9 +246,10 @@ jobs:
             echo "- Immutable deployment: ${{ steps.staging.outputs.url }}"
             echo "- Commit: ${{ inputs.expected_sha }}"
             echo "- Checkout enabled: true"
-            echo "- Shopify-origin test order and Admin API audit are deferred follow-up checks"
+            echo "- Sanitized checkout handoff and read-only Shopify audit: verified"
+            echo "- Payment/order submission: not attempted"
             echo "- Production remained healthy and checkout-enabled: true"
-            echo "- Receipt is preliminary until the protected test-order lifecycle proof passes"
+            echo "- Receipt is preliminary until the signed protected Staging proof passes"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
@@ -272,7 +273,7 @@ jobs:
           retention-days: 90
 
   snapshot-shopify:
-    name: Capture exact pre-order Shopify inventory snapshot
+    name: Capture exact read-only Shopify inventory snapshot
     needs: deploy-staging
     if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
     runs-on: ubuntu-latest
@@ -299,7 +300,7 @@ jobs:
         with:
           node-version: 24
 
-      - name: Capture read-only pre-order Shopify snapshot
+      - name: Capture read-only Shopify snapshot
         env:
           SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
           SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
@@ -312,7 +313,7 @@ jobs:
           --release "${{ inputs.release }}"
           --output staging-shopify-snapshot.json
 
-      - name: Publish pre-order snapshot summary
+      - name: Publish read-only snapshot summary
         run: |
           {
             echo "## Protected Staging Shopify snapshot"

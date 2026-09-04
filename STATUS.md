@@ -1,5 +1,23 @@
 # Current Status
 
+## Staging-to-Production provenance and no-order QA correction — 2026-09-04
+
+- The prior contract was mechanically impossible: it required a signed proof
+  tied to the protected `staging` merge commit to also equal the later `main`
+  merge commit. Production Candidate and Promotion now accept distinct Staging
+  and Production SHAs and require a merged `staging`-to-`main` PR whose head is
+  the approved Staging SHA, whose merge commit is the requested `main` SHA, with
+  ancestry and exact Git-tree identity.
+- The protected Staging receipt no longer asks for confirmation or order/status
+  hashes and no longer queries or requires a test order, payment, cancellation,
+  refund, restock or order lifecycle. It derives a sanitized checkout-handoff
+  hash from 1440/390 browser proofs and explicitly requires no payment attempt,
+  no order submission, no customer data and no retained private checkout URL.
+- Production approval, candidate identity, live checkout health and rollback
+  protection remain separate fail-closed gates. The correction is under local
+  schema/unit/policy/build/visual verification before the open Staging PR is
+  updated; Production has not been changed.
+
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 
 - Protected Staging run `33809465340` passed on exact
@@ -32,16 +50,12 @@
   refreshing the reviewed Darwin/Linux PDP baselines. The new 390 px rendering
   removes 336 px of empty space without clipping, collision or overflow; the
   homepage and bag comparisons remain unchanged and green.
-- Shopify supports the required QA architecture through the existing dedicated
-  development store and test gateway. Historical protected Staging evidence
-  already proves a zero-charge payment/order, confirmation, webhook,
-  cancellation, refund, restock and notification path, but that evidence is not
-  bound to the new PR #69 candidate and must be repeated for its exact merged
-  Staging commit.
+- The dedicated development store supports safe product, bag and hosted-checkout
+  handoff QA. Earlier payment/order evidence is historical and must not be
+  repeated or used as a release requirement.
 - The current candidate is not yet merged to `staging`, not yet assigned to
   `staging.carlophillips.com`, and has not received final Product Owner Staging
-  acceptance. Customer Account/order visibility, self-serve returns and the
-  exact-candidate synthetic order remain open external Staging proofs.
+  acceptance. Post-purchase behavior remains outside this no-order Staging proof.
 
 ## End-to-end release-protection gate — 2026-09-03
 

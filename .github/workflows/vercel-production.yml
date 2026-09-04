@@ -11,6 +11,10 @@ on:
         description: Full 40-character main SHA
         required: true
         type: string
+      staging_sha:
+        description: Approved 40-character Staging SHA bound to the signed proof
+        required: true
+        type: string
       previous_checkout_enabled_deployment:
         description: Current verified checkout-enabled Production deployment ID
         required: true
@@ -21,6 +25,10 @@ on:
         type: string
       source_pr:
         description: Merged pull request bound to the protected Staging receipt
+        required: true
+        type: number
+      production_pr:
+        description: Merged staging-to-main pull request that produced expected_sha
         required: true
         type: number
       proof_run_id:
@@ -99,24 +107,34 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PROOF_RUN_ID: ${{ inputs.proof_run_id }}
-          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          STAGING_SHA: ${{ inputs.staging_sha }}
+          PRODUCTION_SHA: ${{ inputs.expected_sha }}
+          PRODUCTION_PR: ${{ inputs.production_pr }}
           CP_RELEASE_RECEIPT_SIGNING_SECRET: ${{ secrets.CP_RELEASE_RECEIPT_SIGNING_SECRET }}
         run: |
           [[ "$PROOF_RUN_ID" =~ ^[1-9][0-9]*$ ]]
+          [[ "$STAGING_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$PRODUCTION_PR" =~ ^[1-9][0-9]*$ ]]
           gh run view "$PROOF_RUN_ID" --repo "$GITHUB_REPOSITORY" --json conclusion,headSha,event > proof-run.json
           node - <<'NODE'
           const fs = require('node:fs');
           const run = JSON.parse(fs.readFileSync('proof-run.json', 'utf8'));
           if (run.conclusion !== 'success' || run.event !== 'workflow_dispatch') throw new Error('PROTECTED_PROOF_RUN_NOT_SUCCESSFUL');
-          if (run.headSha !== process.env.EXPECTED_SHA) throw new Error('PROTECTED_PROOF_SHA_MISMATCH');
+          if (run.headSha !== process.env.STAGING_SHA) throw new Error('PROTECTED_PROOF_STAGING_SHA_MISMATCH');
           NODE
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PRODUCTION_PR" > production-pr.json
           gh run download "$PROOF_RUN_ID" --repo "$GITHUB_REPOSITORY" \
-            --name "protected-release-proof-$EXPECTED_SHA" --dir protected-proof
+            --name "protected-release-proof-$STAGING_SHA" --dir protected-proof
           node .github/scripts/protected-release-receipt.mjs verify \
             --input protected-proof/protected-release-receipt.json \
-            --expected-sha "$EXPECTED_SHA" \
+            --expected-staging-sha "$STAGING_SHA" \
             --expected-release "${{ inputs.release }}" \
             --source-pull-request "${{ inputs.source_pr }}"
+          node .github/scripts/verify-staging-promotion.mjs \
+            --staging-sha "$STAGING_SHA" \
+            --production-sha "$PRODUCTION_SHA" \
+            --production-pr-json production-pr.json \
+            --repository "$GITHUB_REPOSITORY"
 
       - name: Capture candidate and checkout-enabled rollback anchor
         env:
