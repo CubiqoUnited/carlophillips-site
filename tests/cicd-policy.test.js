@@ -43,6 +43,10 @@ const protectedProofCollector = readFileSync(
   'scripts/collect-protected-shopify-proof.mjs',
   'utf8'
 );
+const stagingPromotionVerifier = readFileSync(
+  '.github/scripts/verify-staging-promotion.mjs',
+  'utf8'
+);
 const releasePlaywright = readFileSync('playwright.release.config.ts', 'utf8');
 const verifierPath = join(
   process.cwd(),
@@ -412,7 +416,7 @@ describe('CI/CD policy', () => {
     expect(staging).not.toContain('SHOPIFY_CHECKOUT_ENABLED=false');
   });
 
-  it('creates a signed PII-free lifecycle proof only for the same successful Staging SHA', () => {
+  it('creates a signed PII-free checkout-handoff proof for the successful Staging SHA', () => {
     expect(protectedProof).toContain('environment: Staging');
     expect(protectedProof).toContain('git rev-parse origin/staging');
     expect(protectedProof).toContain('STAGING_RUN_NOT_SUCCESSFUL');
@@ -432,12 +436,16 @@ describe('CI/CD policy', () => {
     );
     expect(protectedProof).not.toContain('vercel promote');
     expect(protectedProofCollector).toContain('partnerDevelopment');
-    expect(protectedProofCollector).toContain("'orders/cancelled'");
-    expect(protectedProofCollector).toContain("'refunds/create'");
-    expect(protectedProofCollector).toContain(
-      "fulfillmentOrder.requestStatus !== 'UNSUBMITTED'"
-    );
-    expect(protectedProofCollector).toContain('noApliiqProductionJob: true');
+    expect(protectedProofCollector).toContain('checkoutHandoffEvidenceHash');
+    expect(protectedProofCollector).toContain('paymentAttempted: false');
+    expect(protectedProofCollector).toContain('orderSubmitted: false');
+    expect(protectedProofCollector).not.toContain('exactTestOrder');
+    expect(protectedProofCollector).not.toContain('orders(first');
+    expect(protectedProofCollector).not.toContain('UPSTASH_REDIS');
+    expect(protectedProofCollector).not.toContain('confirmation-hash');
+    expect(protectedProofCollector).not.toContain('order-status-hash');
+    expect(protectedProof).not.toContain('confirmation_evidence_hash');
+    expect(protectedProof).not.toContain('order_status_evidence_hash');
   });
 
   it('stages one checkout-enabled Production candidate without aliases', () => {
@@ -449,6 +457,11 @@ describe('CI/CD policy', () => {
     expect(candidate).toMatch(/SHOPIFY_CHECKOUT_ENABLED: ['"]true['"]/);
     expect(candidate).toContain('action="/api/cart"');
     expect(candidate).toContain('protected-release-receipt.mjs verify');
+    expect(candidate).toContain('staging_sha:');
+    expect(candidate).toContain('production_pr:');
+    expect(candidate).toContain('verify-staging-promotion.mjs');
+    expect(candidate).toContain('PROTECTED_PROOF_STAGING_SHA_MISMATCH');
+    expect(candidate).not.toContain('PROTECTED_PROOF_SHA_MISMATCH');
     expect(candidate).toContain('VERCEL_PROJECT_LINK_MISMATCH');
     expect(candidate).toContain('VERCEL_ORG_LINK_MISMATCH');
     expect(candidate).toContain('vercel build --prod');
@@ -479,6 +492,21 @@ describe('CI/CD policy', () => {
     );
     expect(productionCommerceVerifier).toContain(
       "['ls-tree', '-rz', expectedSha, '--', ...changedPaths]"
+    );
+  });
+
+  it('binds Production to an approved Staging tree through a merged staging-to-main PR', () => {
+    expect(production).toContain('staging_sha:');
+    expect(production).toContain('production_pr:');
+    expect(production).toContain('verify-staging-promotion.mjs');
+    expect(production).toContain('PROTECTED_PROOF_STAGING_SHA_MISMATCH');
+    expect(production).not.toContain('PROTECTED_PROOF_SHA_MISMATCH');
+    expect(stagingPromotionVerifier).toContain(
+      "['merge-base', '--is-ancestor', ancestor, descendant]"
+    );
+    expect(stagingPromotionVerifier).toContain('`${sha}^{tree}`');
+    expect(stagingPromotionVerifier).toContain(
+      'tree(stagingSha) === tree(productionSha)'
     );
   });
 

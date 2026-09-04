@@ -1,16 +1,28 @@
 # Delivery Tasks
 
+## Staging-to-Production provenance and no-order QA correction — 2026-09-04
+
+- [x] Replace impossible Staging/Production merge-SHA identity with a signed
+      Staging SHA plus merged `staging`-to-`main` PR provenance, ancestry and
+      exact Git-tree identity checks.
+- [x] Remove payment, order, confirmation, cancellation, refund, restock and
+      private checkout evidence from the protected Staging proof contract.
+- [x] Derive a sanitized checkout-handoff evidence hash from the desktop/mobile
+      browser proofs and fail closed on payment, order or private-URL retention.
+- [x] Pass schema, unit, policy, lint, build and desktop/mobile screenshot
+      comparison checks without committing downloaded CI artifacts.
+- [ ] Require green Linux CI on correction PR #77 before Staging merge.
+
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 
 - [x] Rebind the GitHub Staging Vercel secret from the authenticated canonical
       Cubiqo CLI credential without printing or retaining the value.
 - [x] Pass exact-SHA protected Staging deployment, alias, webhook duplicate,
       1440/390 browser/a11y/screenshot, Production-health and receipt checks.
-- [x] Isolate read-only pre-order Shopify inventory capture in an opt-in job
+- [x] Isolate read-only Shopify inventory capture in an opt-in job
       after deployment and bind it to the same SHA/release/source PR/run.
-- [ ] Add the read-only Shopify Admin token and distinct durable-store IDs,
-      run the protected snapshot, then obtain explicit human authorization for
-      the synthetic test payment/order/cancel/refund/restock journey.
+- [ ] Add the read-only Shopify Admin token and distinct durable-store IDs, then
+      run the protected snapshot and signed no-order checkout-handoff proof.
 
 ## PR #69 Shopify-mimic Staging closure — 2026-09-03
 
@@ -27,13 +39,12 @@
       merged commit to `staging.carlophillips.com` without touching `main` or
       either Production domain.
 - [ ] Prove the exact Staging candidate against the dedicated Shopify
-      development store: fresh S/M/L at USD 128, bag, trusted hosted checkout,
-      zero-charge successful test payment/order, confirmation, authenticated
-      customer order view, signed webhook, cancellation or eligible return,
-      refund, inventory restoration and notifications using synthetic data.
+      development store: fresh S/M/L at USD 128, bag, trusted hosted-checkout
+      handoff, signed synthetic webhook and unchanged inventory without payment
+      entry, order submission, customer data or private URL retention.
 - [ ] Verify desktop/mobile layout, accessibility, console/network health,
-      no Production credential fallback, no private URL retention and no Apliiq
-      Production fulfilment request.
+      no Production credential fallback, no private URL retention and no
+      payment, order or Apliiq Production fulfilment request.
 - [ ] Obtain Product Owner acceptance on canonical Staging, close superseded
       PRs #67/#68, then delete all temporary remote branches and worktrees so
       only `main` and `staging` remain.

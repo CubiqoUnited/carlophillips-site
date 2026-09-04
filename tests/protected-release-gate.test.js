@@ -12,7 +12,7 @@ const secret = 'test-only-release-receipt-secret-value';
 
 function evidence() {
   return {
-    schemaVersion: 'cp.protected-staging-release-receipt.v1',
+    schemaVersion: 'cp.protected-staging-release-receipt.v2',
     generatedAt: '2026-09-03T12:00:00.000Z',
     release: 'cp-release-2026-09-03',
     gitCommitSha: sha,
@@ -36,7 +36,7 @@ function evidence() {
       storeReferenceHash: hash('1'),
       productionStoreReferenceHash: hash('2'),
       storeIsolated: true,
-      paymentMode: 'test',
+      paymentMode: 'not-used',
       durableStoreReferenceHash: hash('3'),
       productionDurableStoreReferenceHash: hash('4'),
       durableStoreIsolated: true,
@@ -45,11 +45,11 @@ function evidence() {
         size,
         price: '128.00',
         currency: 'USD',
-        availableBefore: true,
-        availableAfter: true,
-        inventoryBefore: 25,
-        inventoryAfter: 25,
-        inventoryRestored: true,
+        availableAtSnapshot: true,
+        availableAtProof: true,
+        inventoryAtSnapshot: 25,
+        inventoryAtProof: 25,
+        inventoryUnchanged: true,
       })),
       cartBinding: {
         gitCommitSha: sha,
@@ -61,46 +61,24 @@ function evidence() {
       shopifyAuthoritativeProduct: true,
       sizeSelection: true,
       bagTruth: true,
-      hostedStagingCheckout: true,
-      testPayment: true,
-      paidOrder: true,
-      brandedConfirmation: true,
-      confirmationEvidenceHash: hash('8'),
-      orderStatus: true,
-      orderStatusEvidenceHash: hash('9'),
+      hostedStagingCheckoutHandoff: true,
+      checkoutHandoffEvidenceHash: hash('8'),
+      privateCheckoutUrlRetained: false,
+      paymentAttempted: false,
+      orderSubmitted: false,
     },
-    lifecycle: {
-      orderReferenceHash: hash('5'),
+    webhookSafety: {
       signatureVerified: true,
       signatureAlgorithm: 'shopify-hmac-sha256',
       durableIdempotency: true,
-      requiredTopics: [
-        'orders/create',
-        'orders/paid',
-        'orders/cancelled',
-        'refunds/create',
-      ],
-      observedTopics: [
-        'orders/create',
-        'orders/paid',
-        'orders/cancelled',
-        'orders/updated',
-        'refunds/create',
-      ],
       duplicateDelivery: {
         attempted: true,
         suppressed: true,
         observationCount: 1,
         externalActionCount: 0,
       },
-      cancelled: true,
-      refunded: true,
-      inventoryRestored: true,
-      finalFinancialStatus: 'REFUNDED',
-      finalFulfillmentStatus: 'UNFULFILLED',
-      fulfillmentRequestSubmitted: false,
-      apliiqLocationAssigned: false,
-      noApliiqProductionJob: true,
+      externalActionCount: 0,
+      piiFree: true,
     },
     quality: {
       desktop: {
@@ -135,6 +113,8 @@ function evidence() {
     safeguards: {
       piiFree: true,
       realPaymentUsed: false,
+      paymentAttempted: false,
+      stagingOrderCreated: false,
       productionOrderCreated: false,
       privateCheckoutUrlRetained: false,
       productionStoreMutated: false,
@@ -236,32 +216,30 @@ describe('protected Staging release gate', () => {
       'SAFEGUARDS_INVALID',
     ],
     [
-      'Apliiq job',
+      'retained checkout URL',
       (item) => {
-        item.lifecycle.noApliiqProductionJob = false;
+        item.customerPath.privateCheckoutUrlRetained = true;
       },
-      'APLIIQ_JOB_DETECTED',
+      'CUSTOMER_PATH_SIDE_EFFECT_DETECTED',
     ],
     [
-      'missing paid event',
+      'order submission',
       (item) => {
-        item.lifecycle.observedTopics = item.lifecycle.observedTopics.filter(
-          (topic) => topic !== 'orders/paid'
-        );
+        item.safeguards.stagingOrderCreated = true;
       },
-      'LIFECYCLE_TOPICS_INCOMPLETE',
+      'SAFEGUARDS_INVALID',
     ],
     [
       'duplicate action',
       (item) => {
-        item.lifecycle.duplicateDelivery.externalActionCount = 1;
+        item.webhookSafety.duplicateDelivery.externalActionCount = 1;
       },
       'DUPLICATE_ACTION_DETECTED',
     ],
     [
       'inventory drift',
       (item) => {
-        item.shopify.variants[0].inventoryAfter = 24;
+        item.shopify.variants[0].inventoryAtProof = 24;
       },
       'SHOPIFY_VARIANTS_INVALID',
     ],
