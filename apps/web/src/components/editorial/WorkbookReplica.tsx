@@ -207,7 +207,7 @@ function OrderWidgetBody({
         SIZE GUIDE
       </button>
       <div className="cp-workbook-order-actions">
-        <ActionButton onClick={onContinue}>CONTINUE TO CHECKOUT</ActionButton>
+        <ActionButton onClick={onContinue}>VIEW PRODUCT</ActionButton>
         <p className="cp-workbook-order-note">
           SHIPPING &amp; RETURNS AVAILABLE AT CHECKOUT
         </p>
@@ -393,7 +393,6 @@ export default function WorkbookReplica({
   const productVideo = useRef<MuxVideoElement>(null);
   const productEndHandled = useRef(false);
   const productStartedRef = useRef(false);
-  const userScrollIntent = useRef(false);
   const productAsset = productMotion[activeVideo];
   const visibleSurface = surface === 'discovery' ? null : surface;
   const isStatus =
@@ -446,7 +445,6 @@ export default function WorkbookReplica({
     setPlaying(true);
   };
   const snapToProduct = () => {
-    userScrollIntent.current = true;
     document
       .getElementById('signature-runway')
       ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -478,41 +476,6 @@ export default function WorkbookReplica({
     observer.observe(discovery);
     return () => observer.disconnect();
   }, []);
-  useEffect(() => {
-    if (!entered) return;
-    const markIntent = () => {
-      userScrollIntent.current = true;
-    };
-    const markKeyboardIntent = (event: KeyboardEvent) => {
-      if (['ArrowDown', 'PageDown', 'End', ' '].includes(event.key))
-        markIntent();
-    };
-    window.addEventListener('wheel', markIntent, { passive: true });
-    window.addEventListener('touchstart', markIntent, { passive: true });
-    window.addEventListener('keydown', markKeyboardIntent);
-    const styles = getComputedStyle(document.documentElement);
-    const parseDuration = (token: string, fallback: number) => {
-      const value = styles.getPropertyValue(token).trim();
-      if (value.endsWith('ms')) return Number.parseFloat(value);
-      if (value.endsWith('s')) return Number.parseFloat(value) * 1000;
-      return fallback;
-    };
-    const revealDuration = parseDuration('--cp-duration-hero-preview', 8000);
-    const postMorphHold = parseDuration('--cp-duration-post-morph-hold', 5000);
-    const timer = window.setTimeout(() => {
-      if (
-        !userScrollIntent.current &&
-        window.scrollY < window.innerHeight * 0.5
-      )
-        snapToProduct();
-    }, revealDuration + postMorphHold);
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener('wheel', markIntent);
-      window.removeEventListener('touchstart', markIntent);
-      window.removeEventListener('keydown', markKeyboardIntent);
-    };
-  }, [entered]);
   const handleProductEnded = () => {
     if (productEndHandled.current) return;
     productEndHandled.current = true;
@@ -728,9 +691,9 @@ export default function WorkbookReplica({
               </ActionButton>
               <ActionButton
                 className="cp-workbook-order-cta"
-                onClick={() => setSurface('order')}
+                onClick={() => window.location.assign(productHref)}
               >
-                ORDER — {priceLabel}
+                VIEW PRODUCT
               </ActionButton>
             </div>
             <div
@@ -779,21 +742,16 @@ export default function WorkbookReplica({
         <Panel title="NAVIGATION" onClose={close}>
           <nav className="cp-workbook-menu">
             <ActionButton onClick={() => setSurface('discovery')}>
-              DISCOVERY
+              HOME
             </ActionButton>
             <section
               className="cp-workbook-menu-group"
               aria-labelledby="menu-shop"
             >
               <h2 id="menu-shop">SHOP</h2>
-              <ActionButton onClick={() => setSurface('categories')}>
-                ALL CATEGORIES
+              <ActionButton onClick={() => window.location.assign('/shop')}>
+                SHOP THE COLLECTION
               </ActionButton>
-              <div className="cp-workbook-menu-categories">
-                <ActionButton onClick={() => setSurface('hoodies')}>
-                  HOODIES
-                </ActionButton>
-              </div>
             </section>
             <section
               className="cp-workbook-menu-group is-separated"
@@ -819,8 +777,11 @@ export default function WorkbookReplica({
         >
           <div className="cp-workbook-gallery-media">
             <header>
-              <ActionButton subtle onClick={() => setSurface('gallery-order')}>
-                ORDER — {priceLabel}
+              <ActionButton
+                subtle
+                onClick={() => window.location.assign(productHref)}
+              >
+                VIEW PRODUCT
               </ActionButton>
               <button type="button" onClick={close} aria-label="Close gallery">
                 <X />
@@ -882,9 +843,12 @@ export default function WorkbookReplica({
             </div>
           </div>
           {surface === 'gallery-order' && (
-            <aside className="cp-workbook-gallery-order" aria-label="Order">
+            <aside
+              className="cp-workbook-gallery-order"
+              aria-label="Product options"
+            >
               <header>
-                <p>ORDER</p>
+                <p>VIEW PRODUCT</p>
                 <button
                   type="button"
                   onClick={() => setSurface('gallery')}
@@ -907,7 +871,7 @@ export default function WorkbookReplica({
         </section>
       )}
       {surface === 'order' && (
-        <Panel title="ORDER" onClose={() => setSurface('discovery')}>
+        <Panel title="VIEW PRODUCT" onClose={() => setSurface('discovery')}>
           <OrderWidgetBody
             size={size}
             sizes={sizeOptions}

@@ -1,4 +1,4 @@
-import { CommerceCatalogBoundary } from '@/components/commerce/catalog-boundary';
+import { redirect } from 'next/navigation';
 
 export const metadata = {
   title: 'Collection | CARLOPHILLIPS',
@@ -9,5 +9,5 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 
 export default function CollectionsPage() {
-  return <CommerceCatalogBoundary pageLabel="Collections" />;
+  redirect('/shop');
 }
