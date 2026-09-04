@@ -33,11 +33,16 @@ const copyByStatus: Record<
 export function CommerceBagState({
   decision,
   cart,
+  added = false,
 }: {
   decision: BagDecision;
   cart?: StorefrontCart | null;
+  added?: boolean;
 }) {
   const hasLines = Boolean(cart?.lines.edges.length);
+  const bagCount =
+    cart?.lines.edges.reduce((total, { node }) => total + node.quantity, 0) ||
+    0;
   const copy = hasLines
     ? {
         eyebrow: 'Your bag',
@@ -55,12 +60,26 @@ export function CommerceBagState({
       }
       className="cp-commerce-page"
     >
-      <StorefrontHeader pageLabel="Bag" navigationAriaLabel="Bag navigation" />
+      <StorefrontHeader
+        pageLabel="Bag"
+        bagCount={bagCount}
+        navigationAriaLabel="Bag navigation"
+      />
 
       <section className="cp-bag-section cp-section flex items-center">
         <div className="cp-bag-layout cp-shell-medium cp-grid-rule grid px-0">
           <div className="cp-bag-copy flex flex-col justify-center">
             {copy.eyebrow && <p className="cp-label">{copy.eyebrow}</p>}
+            {added && hasLines && (
+              <div className="cp-added-to-bag" role="status" aria-live="polite">
+                <strong>Added to bag.</strong>
+                <span>
+                  {' '}
+                  Your bag now contains {bagCount}{' '}
+                  {bagCount === 1 ? 'item' : 'items'}.
+                </span>
+              </div>
+            )}
             <h1 className="cp-heading-section mt-8 max-w-4xl">{copy.title}</h1>
             <p className="cp-body-large mt-8 max-w-2xl">{copy.body}</p>
             {cart && hasLines && (

@@ -14,7 +14,11 @@ export const metadata = {
   robots: { index: false, follow: true },
 };
 
-export default async function BagPage() {
+export default async function BagPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ added?: string }>;
+}) {
   const environment = readCommerceEnvironment();
   let cart = null;
   let available = true;
@@ -51,5 +55,6 @@ export default async function BagPage() {
         cart,
       };
 
-  return <CommerceBagState decision={decision} cart={cart} />;
+  const added = (await searchParams)?.added === '1';
+  return <CommerceBagState decision={decision} cart={cart} added={added} />;
 }

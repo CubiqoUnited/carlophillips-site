@@ -20,7 +20,7 @@ export function ProductGallery({
   productOnly?: boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const visibleMedia = productOnly
+  const productMedia = productOnly
     ? media.filter(
         (item) =>
           !item.onBodyPose &&
@@ -29,6 +29,13 @@ export function ProductGallery({
           )
       )
     : media;
+  // Shopify's second approved image is the editorial, neutral-canvas lead.
+  // Keep every source image available in the gallery while avoiding the raw
+  // supplier-white cutout as the customer-facing hero.
+  const visibleMedia =
+    productOnly && productMedia.length > 1
+      ? [productMedia[1], productMedia[0], ...productMedia.slice(2)]
+      : productMedia;
   if (visibleMedia.length === 0) {
     return (
       <div

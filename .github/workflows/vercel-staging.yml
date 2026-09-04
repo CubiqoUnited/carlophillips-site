@@ -15,6 +15,11 @@ on:
         description: Immutable Staging review identifier
         required: true
         type: string
+      cleanup_demo_catalog:
+        description: Delete the exact 15 non-approved demo products from isolated Staging Shopify
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   actions: read
@@ -29,6 +34,7 @@ jobs:
   deploy-staging:
     name: Deploy exact merged staging SHA to staging.carlophillips.com
     runs-on: ubuntu-latest
+    needs: snapshot-shopify
     timeout-minutes: 60
     environment:
       name: Staging
@@ -273,9 +279,7 @@ jobs:
           retention-days: 90
 
   snapshot-shopify:
-    name: Capture exact read-only Shopify inventory snapshot
-    needs: deploy-staging
-    if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
+    name: Verify and optionally clean isolated Staging Shopify catalog
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
@@ -300,7 +304,24 @@ jobs:
         with:
           node-version: 24
 
+      - name: Delete exact non-approved demo products
+        if: ${{ inputs.cleanup_demo_catalog }}
+        env:
+          SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
+          SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
+          SHOPIFY_STAGING_ADMIN_TOKEN: ${{ secrets.SHOPIFY_STAGING_ADMIN_TOKEN }}
+        run: node scripts/cleanup-staging-shopify-catalog.mjs
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ inputs.cleanup_demo_catalog }}
+        with:
+          name: staging-shopify-catalog-cleanup-${{ inputs.expected_sha }}
+          path: staging-shopify-cleanup.json
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Capture read-only Shopify snapshot
+        if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
         env:
           SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
           SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
@@ -314,6 +335,7 @@ jobs:
           --output staging-shopify-snapshot.json
 
       - name: Publish read-only snapshot summary
+        if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
         run: |
           {
             echo "## Protected Staging Shopify snapshot"
@@ -324,6 +346,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
+        if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
         with:
           name: staging-shopify-snapshot-${{ inputs.expected_sha }}
           path: staging-shopify-snapshot.json

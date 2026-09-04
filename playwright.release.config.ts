@@ -28,17 +28,40 @@ export default defineConfig({
   },
   projects: [
     {
+      name: 'mobile-320',
+      use: { ...devices['Pixel 7'], viewport: { width: 320, height: 700 } },
+    },
+    {
+      name: 'mobile-360',
+      use: { ...devices['Pixel 7'], viewport: { width: 360, height: 800 } },
+    },
+    {
+      name: 'mobile-390',
+      use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } },
+    },
+    {
+      name: 'mobile-430',
+      use: { ...devices['Pixel 7'], viewport: { width: 430, height: 900 } },
+    },
+    {
+      name: 'tablet-768',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 768, height: 1024 },
+      },
+    },
+    {
+      name: 'desktop-1024',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1024, height: 900 },
+      },
+    },
+    {
       name: 'desktop-1440',
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1440, height: 1000 },
-      },
-    },
-    {
-      name: 'mobile-390',
-      use: {
-        ...devices['Pixel 7'],
-        viewport: { width: 390, height: 844 },
       },
     },
   ],
