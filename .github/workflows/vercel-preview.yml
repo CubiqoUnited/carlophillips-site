@@ -110,6 +110,9 @@ jobs:
       - name: Install locked dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Install headless Chromium
+        run: yarn playwright install --with-deps chromium
+
       - name: Verify repository before Preview
         run: yarn verify
 
@@ -199,10 +202,18 @@ jobs:
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('preview-pdp.html', 'utf8');
-          if (!html.includes('ADD TO TEST BAG')) throw new Error('Preview Shopify test-bag action is missing.');
+          if (!html.includes('ADD TO BAG - $128')) throw new Error('Preview Shopify add-to-bag action is missing.');
           if (!html.includes('action="/api/cart"')) throw new Error('Preview Shopify cart endpoint is missing.');
           if (!html.includes('isolated Shopify test checkout')) throw new Error('Preview test-checkout disclosure is missing.');
           NODE
+
+      - name: Run exact-width Preview functional, a11y and screenshot checks
+        env:
+          CP_RELEASE_GATE_BASE_URL: ${{ steps.preview.outputs.url }}
+          CP_RELEASE_GATE_OUTPUT_DIR: test_reports/protected-preview
+          SHOPIFY_STAGING_CHECKOUT_HOSTS: ${{ vars.SHOPIFY_STAGING_CHECKOUT_HOSTS }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: yarn playwright test --config=playwright.release.config.ts
 
       - name: Remove pulled Preview environment data
         run: |
@@ -226,6 +237,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload immutable Preview receipt
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: preview-release-receipt-${{ github.sha }}
@@ -238,5 +250,6 @@ jobs:
             production-after-preview.json
             preview-release-receipt.json
             preview-pdp.html
+            test_reports/protected-preview/
           if-no-files-found: error
           retention-days: 90

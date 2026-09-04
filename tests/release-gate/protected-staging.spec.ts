@@ -10,6 +10,7 @@ const expectedCheckoutHosts = new Set(
     .map((value) => value.trim())
     .filter(Boolean)
 );
+const branchPreviewQa = process.env.CP_BRANCH_PREVIEW_QA === 'true';
 
 test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser health', async ({
   context,
@@ -92,9 +93,15 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeHidden();
 
+  const cartHydration = page.waitForResponse(
+    (response) =>
+      response.request().method() === 'GET' &&
+      new URL(response.url()).pathname === '/api/cart'
+  );
   const productResponse = await page.goto(`/product/${HANDLE}`, {
     waitUntil: 'domcontentloaded',
   });
+  await cartHydration;
   expect(productResponse?.ok()).toBe(true);
   await expect(page.locator('main#main-content')).toBeVisible();
   await expect(
@@ -149,6 +156,15 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(
     page.getByRole('button', { name: 'Checkout', exact: true })
   ).toBeEnabled();
+  const populatedBagOverflow = await page.evaluate(
+    () =>
+      document.documentElement.scrollWidth -
+      document.documentElement.clientWidth
+  );
+  expect(
+    populatedBagOverflow,
+    'populated Bag must not overflow'
+  ).toBeLessThanOrEqual(0);
   await hideNonCustomerUi();
   await page.screenshot({
     path: testInfo.outputPath('02-shopify-bag-truth.png'),
@@ -173,7 +189,13 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   expect(location).toBeTruthy();
   const checkout = new URL(location!);
   expect(checkout.protocol).toBe('https:');
-  expect(expectedCheckoutHosts.has(checkout.hostname)).toBe(true);
+  expect(
+    expectedCheckoutHosts.size > 0 || branchPreviewQa,
+    'protected Staging must supply its approved checkout-host allowlist'
+  ).toBe(true);
+  if (expectedCheckoutHosts.size > 0) {
+    expect(expectedCheckoutHosts.has(checkout.hostname)).toBe(true);
+  }
   await checkoutResponse.dispose();
 
   const axe = await new AxeBuilder({ page })
