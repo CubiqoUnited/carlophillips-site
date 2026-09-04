@@ -61,6 +61,8 @@ export function CommerceCatalogState({
   const copy = environmentCopy(decision);
   const available = decision.status === 'available';
   const liveCollection = available && decision.commerceAllowed;
+  const leadMedia = (product: ProductViewModel) =>
+    product.media[1] || product.media[0];
 
   return (
     <main
@@ -129,10 +131,10 @@ export function CommerceCatalogState({
                 className={`cp-surface-canvas ${liveCollection && decision.products.length === 1 ? 'contents' : 'cp-catalog-card flex flex-col'}`}
               >
                 <div className="cp-catalog-card-media cp-card-media relative flex items-center justify-center">
-                  {product.media[0]?.url ? (
+                  {leadMedia(product)?.url ? (
                     <Image
-                      src={product.media[0].url}
-                      alt={product.media[0].alt}
+                      src={leadMedia(product)?.url || ''}
+                      alt={leadMedia(product)?.alt || product.title}
                       fill
                       sizes={
                         liveCollection

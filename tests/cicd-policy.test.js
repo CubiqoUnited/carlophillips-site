@@ -378,7 +378,7 @@ describe('CI/CD policy', () => {
     expect(staging).not.toContain('--meta cpGitCommitSha="$GITHUB_SHA"');
     expect(staging).toContain('yarn test:e2e');
     expect(staging).toContain('snapshot-shopify:');
-    expect(staging).toContain('needs: deploy-staging');
+    expect(staging).toContain('needs: snapshot-shopify');
     expect(staging).toContain('CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT');
     expect(staging).toContain('collect-protected-shopify-proof.mjs snapshot');
     expect(staging).toContain('SHOPIFY_STAGING_ADMIN_TOKEN');

@@ -17,6 +17,8 @@
 
   html {
     box-sizing: border-box;
+    max-width: 100%;
+    overflow-x: clip;
     scroll-behavior: smooth;
     scroll-snap-type: none;
     -webkit-font-smoothing: antialiased;
@@ -29,6 +31,8 @@
 
   body {
     margin: var(--cp-radius-none);
+    max-width: 100%;
+    overflow-x: clip;
     background: var(--cp-color-canvas);
     color: var(--cp-color-ink);
     font-family: var(--cp-font-sans);
@@ -229,10 +233,6 @@
   .cp-commerce-menu-trigger,
   .cp-commerce-mobile-bag {
     font-size: var(--cp-size-caption);
-  }
-
-  .cp-commerce-menu-trigger span {
-    display: none;
   }
 }
 
@@ -3646,7 +3646,9 @@ a:focus-visible {
   display: inline-flex;
   gap: var(--cp-space-2);
   justify-self: start;
-  padding: var(--cp-space-2) 0;
+  min-height: var(--cp-touch-target-min);
+  min-width: var(--cp-touch-target-min);
+  padding: var(--cp-space-2);
   text-transform: uppercase;
 }
 
@@ -3771,10 +3773,10 @@ a:focus-visible {
   color: var(--cp-component-product-control-color);
   display: inline-flex;
   gap: var(--cp-space-2);
-  height: var(--cp-space-6);
+  height: var(--cp-touch-target-min);
   justify-content: center;
   padding: 0;
-  width: var(--cp-space-6);
+  width: var(--cp-touch-target-min);
 }
 
 .cp-workbook-video-controls > button svg {
@@ -3836,9 +3838,13 @@ a:focus-visible {
 .cp-workbook-video-selector button {
   background: var(--cp-color-muted);
   border: 0;
-  height: var(--cp-border-width-hairline);
-  padding: 0;
-  width: var(--cp-space-5);
+  height: var(--cp-touch-target-min);
+  padding: calc(
+      (var(--cp-touch-target-min) - var(--cp-border-width-hairline)) / 2
+    )
+    0;
+  width: var(--cp-touch-target-min);
+  background-clip: content-box;
 }
 
 .cp-workbook-video-selector button.is-active {
@@ -3889,10 +3895,10 @@ a:focus-visible {
 .cp-workbook-discovery-tray button {
   background: var(--cp-color-panel-raised);
   border: var(--cp-border-rule);
-  height: var(--cp-control-size);
+  height: var(--cp-touch-target-min);
   overflow: hidden;
   position: relative;
-  width: var(--cp-control-size);
+  width: var(--cp-touch-target-min);
 }
 
 .cp-workbook-discovery-tray button img,
@@ -4002,6 +4008,8 @@ a:focus-visible {
   background: transparent;
   border: 0;
   color: var(--cp-color-copy-strong);
+  min-height: var(--cp-touch-target-min);
+  min-width: var(--cp-touch-target-min);
 }
 
 .cp-workbook-panel > header svg {
@@ -4217,8 +4225,8 @@ a:focus-visible {
 .cp-workbook-gallery-thumbnails button {
   background: var(--cp-color-panel-raised);
   border: var(--cp-border-rule);
-  flex: 0 0 var(--cp-control-size);
-  height: var(--cp-control-size);
+  flex: 0 0 var(--cp-touch-target-min);
+  height: var(--cp-touch-target-min);
   overflow: hidden;
   position: relative;
 }
@@ -4323,7 +4331,7 @@ a:focus-visible {
   line-height: var(--cp-leading-body);
 }
 
-+ .cp-contact-page {
+.cp-contact-page {
   background: var(--cp-color-canvas);
   color: var(--cp-color-copy-strong);
   min-height: var(--cp-viewport-height);
@@ -4334,6 +4342,51 @@ a:focus-visible {
   gap: var(--cp-space-16);
   padding-bottom: var(--cp-space-20);
   padding-top: calc(var(--cp-header-height) + var(--cp-space-16));
+  min-height: var(--cp-viewport-height);
+  align-content: center;
+}
+
+.cp-workbook-modal-root {
+  display: contents;
+}
+
+.cp-added-to-bag {
+  margin-bottom: var(--cp-space-5);
+  border: var(--cp-border-rule-strong);
+  padding: var(--cp-space-4);
+}
+
+@media (max-width: 23rem) {
+  .cp-commerce-header-inner {
+    gap: var(--cp-space-1);
+  }
+
+  .cp-commerce-header {
+    padding-inline: var(--cp-space-1);
+  }
+
+  .cp-commerce-brand {
+    font-size: var(--cp-size-caption);
+    letter-spacing: var(--cp-tracking-compact);
+  }
+
+  .cp-commerce-menu-trigger,
+  .cp-commerce-mobile-bag {
+    padding-inline: var(--cp-space-1);
+  }
+
+  .cp-shell-wide,
+  .cp-shell-medium {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .cp-catalog-grid,
+  .cp-catalog-card,
+  .cp-card-copy {
+    min-width: 0;
+  }
 }
 
 .cp-contact-intro h1 {
