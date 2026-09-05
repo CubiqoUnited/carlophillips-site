@@ -190,6 +190,10 @@ function browserProofs(directory) {
     'sizeSelection',
     'bagTruth',
     'hostedStagingCheckout',
+    'paymentStepReached',
+    'quantityPersistence',
+    'removeToEmpty',
+    'focusRestoration',
     'accessibilityPassed',
     'consoleErrors',
     'networkFailures',
@@ -213,6 +217,10 @@ function browserProofs(directory) {
       proof.sizeSelection !== true ||
       proof.bagTruth !== true ||
       proof.hostedStagingCheckout !== true ||
+      proof.paymentStepReached !== true ||
+      proof.quantityPersistence !== true ||
+      proof.removeToEmpty !== true ||
+      proof.focusRestoration !== true ||
       proof.accessibilityPassed !== true ||
       proof.consoleErrors !== 0 ||
       proof.networkFailures !== 0 ||

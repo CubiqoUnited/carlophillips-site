@@ -443,6 +443,14 @@ describe('CI/CD policy', () => {
     );
     expect(protectedProof).not.toContain('vercel promote');
     expect(protectedProofCollector).toContain('shopifyOffer');
+    for (const evidence of [
+      'paymentStepReached',
+      'quantityPersistence',
+      'removeToEmpty',
+      'focusRestoration',
+    ]) {
+      expect(protectedProofCollector).toContain(`proof.${evidence} !== true`);
+    }
     expect(protectedProofCollector).toContain('checkoutHandoffEvidenceHash');
     expect(protectedProofCollector).toContain('paymentAttempted: false');
     expect(protectedProofCollector).toContain('orderSubmitted: false');
