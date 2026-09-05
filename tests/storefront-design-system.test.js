@@ -584,6 +584,8 @@ describe('storefront design system', () => {
       'line-height': 'var(--cp-component-action-line-height)',
       'letter-spacing': 'var(--cp-component-action-letter-spacing)',
       'padding-inline': 'var(--cp-component-action-inline-padding)',
+      transition:
+        'border-color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard)',
     });
     expect(selectorDeclarations('.cp-card-action')).toMatchObject({
       height: 'var(--cp-component-card-action-height)',

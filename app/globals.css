@@ -421,10 +421,9 @@
     letter-spacing: var(--cp-component-action-letter-spacing);
     text-transform: var(--cp-semantic-layout-text-transform-label);
     border-radius: var(--cp-component-action-radius);
-    transition:
-      background var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard),
-      border-color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard),
-      color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
+    /* Keep foreground/background swaps atomic so hover transitions never pass
+       through a low-contrast midpoint. */
+    transition: border-color var(--cp-semantic-duration-standard) var(--cp-semantic-easing-standard);
   }
 
   .cp-action-outline {
