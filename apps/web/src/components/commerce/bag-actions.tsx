@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Mutation =
   | { cartAction: 'update'; lineId: string; quantity: number }
@@ -32,9 +32,12 @@ export function BagLineActions({
   quantity: number;
 }) {
   const router = useRouter();
+  const [confirmedQuantity, setConfirmedQuantity] = useState(quantity);
   const [pending, setPending] = useState<'update' | 'remove' | null>(null);
   const [failed, setFailed] = useState(false);
   const retryRef = useRef<Mutation | null>(null);
+
+  useEffect(() => setConfirmedQuantity(quantity), [quantity]);
 
   async function mutate(mutation: Mutation) {
     if (pending) return;
@@ -50,6 +53,12 @@ export function BagLineActions({
       window.dispatchEvent(
         new CustomEvent('cp:bag-count', { detail: { count: result.count } })
       );
+      if (mutation.cartAction === 'update') {
+        // The mutation response is authoritative. Reflect it immediately while
+        // the server-component refresh catches up so customers never see a
+        // successfully updated header count paired with a stale line quantity.
+        setConfirmedQuantity(mutation.quantity);
+      }
       router.refresh();
     } catch {
       setFailed(true);
@@ -71,21 +80,29 @@ export function BagLineActions({
         >
           <button
             type="button"
-            disabled={quantity <= 1 || Boolean(pending)}
+            disabled={confirmedQuantity <= 1 || Boolean(pending)}
             aria-label="Decrease quantity"
             onClick={() =>
-              mutate({ cartAction: 'update', lineId, quantity: quantity - 1 })
+              mutate({
+                cartAction: 'update',
+                lineId,
+                quantity: confirmedQuantity - 1,
+              })
             }
           >
             -
           </button>
-          <output aria-live="polite">{quantity}</output>
+          <output aria-live="polite">{confirmedQuantity}</output>
           <button
             type="button"
-            disabled={quantity >= 5 || Boolean(pending)}
+            disabled={confirmedQuantity >= 5 || Boolean(pending)}
             aria-label="Increase quantity"
             onClick={() =>
-              mutate({ cartAction: 'update', lineId, quantity: quantity + 1 })
+              mutate({
+                cartAction: 'update',
+                lineId,
+                quantity: confirmedQuantity + 1,
+              })
             }
           >
             +

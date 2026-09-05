@@ -163,6 +163,10 @@ describe('active commerce boundary policy', () => {
     expect(bagActions).toContain('Retry checkout');
     expect(bagActions).toContain('This change was not saved.');
     expect(bagActions).toContain('if (pending) return');
+    expect(bagActions).toContain('setConfirmedQuantity(mutation.quantity)');
+    expect(bagActions).toContain(
+      '<output aria-live="polite">{confirmedQuantity}</output>'
+    );
     expect(bagActions).not.toContain('gid://');
     expect(styles).toMatch(
       /\.cp-bag-checkout-form\s*\{[^}]*position:\s*sticky/s

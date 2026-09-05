@@ -277,6 +277,10 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await page.unroute('**/api/cart');
   await page.getByRole('button', { name: 'Retry', exact: true }).click();
   await expect(page.getByRole('link', { name: /^Bag \(2\)$/i })).toBeVisible();
+  // The header count updates from the confirmed mutation response before the
+  // server-component refresh completes. Wait for the cart line itself so the
+  // following reload cannot race that refresh and render its older response.
+  await expect(page.locator('.cp-bag-stepper output')).toHaveText('2');
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(page.locator('.cp-bag-stepper output')).toHaveText('2');
   await page.getByRole('button', { name: 'Decrease quantity' }).click();

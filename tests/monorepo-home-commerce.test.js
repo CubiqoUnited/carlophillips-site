@@ -102,4 +102,21 @@ describe('monorepo home commerce projection', () => {
     );
     expect(styles).not.toContain('scroll-snap-type: y mandatory');
   });
+
+  it('keeps action foreground and background swaps contrast-safe', () => {
+    const styles = readFileSync(
+      'packages/design-system/styles/globals.css',
+      'utf8'
+    );
+
+    const actionRule =
+      [...styles.matchAll(/\.cp-action\s*\{[^}]*\}/gs)]
+        .map(([rule]) => rule)
+        .find((rule) => rule.includes('transition:')) || '';
+    expect(actionRule).toContain(
+      'transition: border-color var(--cp-duration-standard) var(--cp-ease-standard);'
+    );
+    expect(actionRule).not.toContain('transition: background');
+    expect(actionRule).not.toContain(',\n      color ');
+  });
 });
