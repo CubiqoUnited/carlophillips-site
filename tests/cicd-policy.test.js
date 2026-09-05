@@ -533,6 +533,11 @@ describe('CI/CD policy', () => {
     expect(production).toContain('protected-release-receipt.mjs verify');
     expect(production).toContain('vercel promote "$CANDIDATE"');
     expect(production).toContain('vercel promote "$PREVIOUS"');
+    expect(production).toContain(
+      'vercel api "/v13/deployments/$CANDIDATE?teamId=$VERCEL_ORG_ID"'
+    );
+    expect(production).toContain('candidateApi.meta?.cpGitCommitSha');
+    expect(production).toContain("steps.promotion.outcome != 'skipped'");
     expect(production).toContain('previous.id !== live.id');
     expect(production).toContain("steps.receipt.outcome != 'success'");
     expect(production).toContain("steps.receipt_upload.outcome != 'success'");
