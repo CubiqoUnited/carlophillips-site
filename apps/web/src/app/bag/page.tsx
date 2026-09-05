@@ -3,6 +3,7 @@ import { getCommerceEnvironment } from '@/lib/config/product-visibility';
 import type { BagDecision, CommerceEnvironment } from '@/types';
 import { cookies } from 'next/headers';
 import { readShopifyCart } from '@/lib/commerce/shopify-cart-server';
+import { resolveStorefrontBagStatus } from '@/lib/commerce/bag-decision';
 
 const readCommerceEnvironment =
   getCommerceEnvironment as () => CommerceEnvironment;
@@ -31,6 +32,10 @@ export default async function BagPage({
   }
   const localFixture =
     environment === 'local' && process.env.COMMERCE_DATA_MODE === 'fixture';
+  const bagStatus = resolveStorefrontBagStatus({
+    available,
+    lineCount: cart?.lines.edges.length || 0,
+  });
   const decision: BagDecision = localFixture
     ? {
         schemaVersion: 'cp.bag-decision.v1',
@@ -44,7 +49,7 @@ export default async function BagPage({
       }
     : {
         schemaVersion: 'cp.bag-decision.v1',
-        status: !available ? 'unavailable' : cart ? 'ready' : 'empty',
+        status: bagStatus,
         source: available ? 'shopify' : 'unavailable',
         environment,
         commerceAllowed: available,

@@ -284,7 +284,8 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   const removeResponsePromise = page.waitForResponse(
     (response) =>
       response.request().method() === 'POST' &&
-      new URL(response.url()).pathname === '/api/cart'
+      new URL(response.url()).pathname === '/api/cart' &&
+      response.request().postData()?.includes('remove') === true
   );
   await page.getByRole('button', { name: 'Remove', exact: true }).click();
   const removeResponse = await removeResponsePromise;
