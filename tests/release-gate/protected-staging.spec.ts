@@ -369,6 +369,12 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
         schemaVersion: 'cp.protected-staging-browser-proof.v1',
         viewportWidth: page.viewportSize()?.width,
         shopifyAuthoritativeProduct: true,
+        shopifyOffer: {
+          handle: HANDLE,
+          sizes: ['S', 'M', 'L'],
+          price: '128.00',
+          currency: 'USD',
+        },
         sizeSelection: true,
         bagTruth: true,
         hostedStagingCheckout: true,

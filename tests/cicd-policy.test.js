@@ -430,10 +430,10 @@ describe('CI/CD policy', () => {
     expect(protectedProof).toContain('STAGING_RUN_SHA_MISMATCH');
     expect(protectedProof).toContain('staging-receipt-$EXPECTED_SHA');
     expect(protectedProof).not.toContain('snapshot_run_id:');
-    expect(protectedProof).toContain('staging-shopify-snapshot-$EXPECTED_SHA');
-    expect(protectedProof).toContain(
-      '--snapshot shopify-snapshot/staging-shopify-snapshot.json'
+    expect(protectedProof).not.toContain(
+      'staging-shopify-snapshot-$EXPECTED_SHA'
     );
+    expect(protectedProof).not.toContain('SHOPIFY_STAGING_ADMIN_TOKEN');
     expect(protectedProof).toContain(
       'collect-protected-shopify-proof.mjs finalize'
     );
@@ -442,7 +442,7 @@ describe('CI/CD policy', () => {
       'protected-release-proof-${{ inputs.expected_sha }}'
     );
     expect(protectedProof).not.toContain('vercel promote');
-    expect(protectedProofCollector).toContain('partnerDevelopment');
+    expect(protectedProofCollector).toContain('shopifyOffer');
     expect(protectedProofCollector).toContain('checkoutHandoffEvidenceHash');
     expect(protectedProofCollector).toContain('paymentAttempted: false');
     expect(protectedProofCollector).toContain('orderSubmitted: false');

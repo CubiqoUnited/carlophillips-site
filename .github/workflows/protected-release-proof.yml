@@ -69,7 +69,7 @@ jobs:
           if (pull.merge_commit_sha !== process.env.EXPECTED_SHA) throw new Error('SOURCE_PR_MERGE_SHA_MISMATCH');
           NODE
 
-      - name: Download the exact protected Staging and read-only Shopify evidence
+      - name: Download the exact protected Staging customer-path evidence
         env:
           GH_TOKEN: ${{ github.token }}
           STAGING_RUN_ID: ${{ inputs.staging_run_id }}
@@ -85,8 +85,6 @@ jobs:
           NODE
           gh run download "$STAGING_RUN_ID" --repo "$GITHUB_REPOSITORY" \
             --name "staging-receipt-$EXPECTED_SHA" --dir staging-evidence
-          gh run download "$STAGING_RUN_ID" --repo "$GITHUB_REPOSITORY" \
-            --name "staging-shopify-snapshot-$EXPECTED_SHA" --dir shopify-snapshot
 
       - uses: actions/setup-node@v4
         with:
@@ -112,12 +110,10 @@ jobs:
         env:
           SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
           SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
-          SHOPIFY_STAGING_ADMIN_TOKEN: ${{ secrets.SHOPIFY_STAGING_ADMIN_TOKEN }}
           CP_EXPECTED_PREVIEW_DURABLE_STORE_ID: ${{ vars.CP_EXPECTED_PREVIEW_DURABLE_STORE_ID }}
           CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID: ${{ vars.CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID }}
         run: >-
           node scripts/collect-protected-shopify-proof.mjs finalize
-          --snapshot shopify-snapshot/staging-shopify-snapshot.json
           --browser-proof-directory staging-evidence/test_reports/protected-staging
           --deployment-receipt staging-evidence/protected-staging-deployment-receipt.json
           --webhook-probe staging-evidence/staging-webhook-probe.json
