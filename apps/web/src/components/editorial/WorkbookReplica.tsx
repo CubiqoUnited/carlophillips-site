@@ -13,7 +13,7 @@ import {
   Maximize2,
   Minimize2,
 } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type MuxVideoElement from '@mux/mux-video';
 import productArchitecturePoster from '../../../public/media/editorial/product-architecture-background-v1.png';
 import { getApprovedCampaignMotionAssets } from '@/lib/media/campaign-motion-registry';
@@ -21,6 +21,8 @@ import type { ApprovedCampaignMotionAsset } from '@/lib/media/campaign-motion-re
 import type { ApprovedCampaignAsset } from '@/lib/media/types';
 import type { HomeCatalogSummary } from '@/types';
 import HeroMorphPreview from './HeroMorphPreview';
+import { useModalDialog } from '@/lib/a11y/use-modal-dialog';
+import { curateCustomerMedia } from '@/lib/media/customer-product-media';
 
 const MuxVideo = dynamic(() => import('@mux/mux-video/react'), { ssr: false });
 const disableMuxTracking =
@@ -47,16 +49,9 @@ type StatusSurfaceName = Exclude<
 const NAVIGABLE_SURFACES = new Set<Surface>([
   'discovery',
   'gallery',
-  'gallery-order',
-  'order',
   'video-unavailable',
   'gallery-unavailable',
-  'size-unavailable',
   'menu',
-  'size',
-  'private-list',
-  'categories',
-  'hoodies',
 ]);
 
 export function formatCatalogPrice(
@@ -95,9 +90,11 @@ export function catalogGalleryStills(
 function ScreenHeader({
   onMenu,
   onBag,
+  bagCount = 0,
 }: {
   onMenu: () => void;
   onBag: () => void;
+  bagCount?: number;
 }) {
   return (
     <header className="cp-workbook-header">
@@ -106,7 +103,7 @@ function ScreenHeader({
       </button>
       <span className="cp-workbook-brand">CARLOPHILLIPS</span>
       <button onClick={onBag} className="cp-workbook-nav">
-        BAG <ShoppingBag />
+        BAG ({bagCount}) <ShoppingBag />
       </button>
     </header>
   );
@@ -207,7 +204,7 @@ function OrderWidgetBody({
         SIZE GUIDE
       </button>
       <div className="cp-workbook-order-actions">
-        <ActionButton onClick={onContinue}>CONTINUE TO CHECKOUT</ActionButton>
+        <ActionButton onClick={onContinue}>CHOOSE A SIZE</ActionButton>
         <p className="cp-workbook-order-note">
           SHIPPING &amp; RETURNS AVAILABLE AT CHECKOUT
         </p>
@@ -266,7 +263,7 @@ function GridSurface({
                   ? card.available
                     ? 'VIEW CATEGORY'
                     : 'COMING SOON'
-                  : 'VIEW PRODUCT'}
+                  : 'SHOP THE HOODIE'}
               </small>
             </button>
           ))}
@@ -385,16 +382,32 @@ export default function WorkbookReplica({
   const [completedRuns, setCompletedRuns] = useState(0);
   const [progress, setProgress] = useState(0);
   const [productFrameReady, setProductFrameReady] = useState(false);
-  const [size, setSize] = useState(
-    sizeOptions.includes('M') ? 'M' : sizeOptions[0] || ''
-  );
+  const [size, setSize] = useState('');
+  const [bagCount, setBagCount] = useState(0);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [videoExpanded, setVideoExpanded] = useState(false);
   const productVideo = useRef<MuxVideoElement>(null);
   const productEndHandled = useRef(false);
   const productStartedRef = useRef(false);
-  const userScrollIntent = useRef(false);
   const productAsset = productMotion[activeVideo];
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/cart', { signal: controller.signal, cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((result) => {
+        if (typeof result?.count === 'number') setBagCount(result.count);
+      })
+      .catch(() => undefined);
+    const updateCount = (event: Event) => {
+      const count = (event as CustomEvent<{ count?: number }>).detail?.count;
+      if (typeof count === 'number') setBagCount(count);
+    };
+    window.addEventListener('cp:bag-count', updateCount);
+    return () => {
+      controller.abort();
+      window.removeEventListener('cp:bag-count', updateCount);
+    };
+  }, []);
   const visibleSurface = surface === 'discovery' ? null : surface;
   const isStatus =
     visibleSurface &&
@@ -407,7 +420,17 @@ export default function WorkbookReplica({
       'categories',
       'hoodies',
     ].includes(visibleSurface);
-  const close = () => setSurface('discovery');
+  const close = useCallback(() => setSurface('discovery'), []);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const modalTriggerRef = useRef<HTMLElement>(null);
+  const modalOpen = [
+    'menu',
+    'gallery',
+    'gallery-order',
+    'order',
+    'size',
+  ].includes(surface);
+  useModalDialog(modalOpen, modalRef, modalTriggerRef, close);
   const replaySequence = () => {
     productStartedRef.current = true;
     productEndHandled.current = false;
@@ -446,7 +469,6 @@ export default function WorkbookReplica({
     setPlaying(true);
   };
   const snapToProduct = () => {
-    userScrollIntent.current = true;
     document
       .getElementById('signature-runway')
       ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -478,41 +500,6 @@ export default function WorkbookReplica({
     observer.observe(discovery);
     return () => observer.disconnect();
   }, []);
-  useEffect(() => {
-    if (!entered) return;
-    const markIntent = () => {
-      userScrollIntent.current = true;
-    };
-    const markKeyboardIntent = (event: KeyboardEvent) => {
-      if (['ArrowDown', 'PageDown', 'End', ' '].includes(event.key))
-        markIntent();
-    };
-    window.addEventListener('wheel', markIntent, { passive: true });
-    window.addEventListener('touchstart', markIntent, { passive: true });
-    window.addEventListener('keydown', markKeyboardIntent);
-    const styles = getComputedStyle(document.documentElement);
-    const parseDuration = (token: string, fallback: number) => {
-      const value = styles.getPropertyValue(token).trim();
-      if (value.endsWith('ms')) return Number.parseFloat(value);
-      if (value.endsWith('s')) return Number.parseFloat(value) * 1000;
-      return fallback;
-    };
-    const revealDuration = parseDuration('--cp-duration-hero-preview', 8000);
-    const postMorphHold = parseDuration('--cp-duration-post-morph-hold', 5000);
-    const timer = window.setTimeout(() => {
-      if (
-        !userScrollIntent.current &&
-        window.scrollY < window.innerHeight * 0.5
-      )
-        snapToProduct();
-    }, revealDuration + postMorphHold);
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener('wheel', markIntent);
-      window.removeEventListener('touchstart', markIntent);
-      window.removeEventListener('keydown', markKeyboardIntent);
-    };
-  }, [entered]);
   const handleProductEnded = () => {
     if (productEndHandled.current) return;
     productEndHandled.current = true;
@@ -535,10 +522,10 @@ export default function WorkbookReplica({
     setProgress(1);
     setPlaying(false);
   };
-  const galleryMedia = useMemo(
-    () => catalogGalleryStills(catalogSummary).slice(0, 24),
-    [catalogSummary]
-  );
+  const galleryMedia = useMemo(() => {
+    const allMedia = catalogGalleryStills(catalogSummary);
+    return curateCustomerMedia(allMedia);
+  }, [catalogSummary]);
   const mediaCount = galleryMedia.length;
   const activeGalleryStill = galleryMedia[galleryIndex] || null;
   const previousGalleryStill = () =>
@@ -584,6 +571,7 @@ export default function WorkbookReplica({
           onExplore={snapToProduct}
           onMenu={() => setSurface('menu')}
           onBag={() => window.location.assign('/bag')}
+          bagCount={bagCount}
         />
         <section
           id="signature-runway"
@@ -593,6 +581,7 @@ export default function WorkbookReplica({
           <ScreenHeader
             onMenu={() => setSurface('menu')}
             onBag={() => window.location.assign('/bag')}
+            bagCount={bagCount}
           />
           <div className="cp-workbook-discovery-grid">
             <div className="cp-workbook-product-copy">
@@ -728,9 +717,11 @@ export default function WorkbookReplica({
               </ActionButton>
               <ActionButton
                 className="cp-workbook-order-cta"
-                onClick={() => setSurface('order')}
+                onClick={() =>
+                  window.location.assign(`${productHref}#product-options`)
+                }
               >
-                ORDER — {priceLabel}
+                SHOP THE HOODIE
               </ActionButton>
             </div>
             <div
@@ -753,181 +744,184 @@ export default function WorkbookReplica({
                 </button>
               ))}
             </div>
-            <nav
-              className="cp-workbook-discovery-links"
-              aria-label="Discovery shortcuts"
-            >
-              <ActionButton subtle onClick={() => setSurface('categories')}>
-                ALL CATEGORIES
-              </ActionButton>
-              <ActionButton subtle onClick={() => setSurface('hoodies')}>
-                ALL HOODIES
-              </ActionButton>
-              <div role="group" aria-label="Discovery pagination">
-                {Array.from({ length: 6 }, (_, index) => (
-                  <span
-                    key={index}
-                    className={index === 0 ? 'is-active' : ''}
-                  />
-                ))}
-              </div>
-            </nav>
           </div>
         </section>
       </div>
-      {surface === 'menu' && (
-        <Panel title="NAVIGATION" onClose={close}>
-          <nav className="cp-workbook-menu">
-            <ActionButton onClick={() => setSurface('discovery')}>
-              DISCOVERY
-            </ActionButton>
-            <section
-              className="cp-workbook-menu-group"
-              aria-labelledby="menu-shop"
-            >
-              <h2 id="menu-shop">SHOP</h2>
-              <ActionButton onClick={() => setSurface('categories')}>
-                ALL CATEGORIES
+      <div ref={modalRef} className="cp-workbook-modal-root">
+        {surface === 'menu' && (
+          <Panel title="NAVIGATION" onClose={close}>
+            <nav className="cp-workbook-menu">
+              <ActionButton onClick={() => setSurface('discovery')}>
+                HOME
               </ActionButton>
-              <div className="cp-workbook-menu-categories">
-                <ActionButton onClick={() => setSurface('hoodies')}>
-                  HOODIES
+              <section
+                className="cp-workbook-menu-group"
+                aria-labelledby="menu-shop"
+              >
+                <h2 id="menu-shop">SHOP</h2>
+                <ActionButton onClick={() => window.location.assign('/shop')}>
+                  SHOP
                 </ActionButton>
-              </div>
-            </section>
-            <section
-              className="cp-workbook-menu-group is-separated"
-              aria-labelledby="menu-private-support"
-            >
-              <h2 id="menu-private-support">PRIVATE &amp; SUPPORT</h2>
-              <ActionButton onClick={() => setSurface('private-list')}>
-                PRIVATE LIST
-              </ActionButton>
-              <ActionButton onClick={() => window.location.assign('/contact')}>
-                CONTACT US
-              </ActionButton>
-            </section>
-          </nav>
-        </Panel>
-      )}
-      {(surface === 'gallery' || surface === 'gallery-order') && (
-        <section
-          className={`cp-workbook-gallery-overlay${surface === 'gallery-order' ? ' has-order' : ''}`}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Gallery"
-        >
-          <div className="cp-workbook-gallery-media">
-            <header>
-              <ActionButton subtle onClick={() => setSurface('gallery-order')}>
-                ORDER — {priceLabel}
-              </ActionButton>
-              <button type="button" onClick={close} aria-label="Close gallery">
-                <X />
-              </button>
-            </header>
-            <div className="cp-workbook-gallery">
-              <button
-                type="button"
-                onClick={previousGalleryStill}
-                aria-label="Previous image"
+              </section>
+              <section
+                className="cp-workbook-menu-group is-separated"
+                aria-labelledby="menu-private-support"
               >
-                <ChevronLeft />
-              </button>
-              <div className="cp-workbook-gallery-image">
-                {activeGalleryStill ? (
-                  <Image
-                    src={activeGalleryStill.src}
-                    alt={activeGalleryStill.alt}
-                    fill
-                    sizes="(max-width: 768px) 72vw, 38vw"
-                    priority
-                    className="object-contain"
-                  />
-                ) : (
-                  <Image
-                    src={productArchitecturePoster}
-                    alt="Product gallery unavailable"
-                    fill
-                    className="object-contain"
-                  />
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={nextGalleryStill}
-                aria-label="Next image"
-              >
-                <ChevronRight />
-              </button>
-            </div>
-            <p className="cp-workbook-gallery-labels">
-              {String(galleryIndex + 1).padStart(2, '0')} / {mediaCount}
-            </p>
-            <div
-              className="cp-workbook-gallery-thumbnails"
-              aria-label="Gallery thumbnails"
-            >
-              {galleryMedia.map((still, index) => (
-                <button
-                  type="button"
-                  key={still.id}
-                  className={index === galleryIndex ? 'is-active' : ''}
-                  onClick={() => setGalleryIndex(index)}
-                  aria-label={`View ${still.alt}`}
+                <h2 id="menu-private-support">CUSTOMER CARE</h2>
+                <ActionButton
+                  onClick={() => window.location.assign('/aftercare')}
                 >
-                  <Image src={still.src} alt="" fill sizes="3rem" />
-                </button>
-              ))}
-            </div>
-          </div>
-          {surface === 'gallery-order' && (
-            <aside className="cp-workbook-gallery-order" aria-label="Order">
+                  AFTERCARE
+                </ActionButton>
+                <ActionButton
+                  onClick={() => window.location.assign('/contact')}
+                >
+                  CONTACT
+                </ActionButton>
+                <ActionButton onClick={() => window.location.assign('/member')}>
+                  ACCOUNT
+                </ActionButton>
+              </section>
+            </nav>
+          </Panel>
+        )}
+        {(surface === 'gallery' || surface === 'gallery-order') && (
+          <section
+            className={`cp-workbook-gallery-overlay${surface === 'gallery-order' ? ' has-order' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Gallery"
+          >
+            <div className="cp-workbook-gallery-media">
               <header>
-                <p>ORDER</p>
+                <ActionButton
+                  subtle
+                  onClick={() =>
+                    window.location.assign(`${productHref}#product-options`)
+                  }
+                >
+                  CHOOSE A SIZE
+                </ActionButton>
                 <button
                   type="button"
-                  onClick={() => setSurface('gallery')}
-                  aria-label="Close order"
+                  onClick={close}
+                  aria-label="Close gallery"
                 >
                   <X />
                 </button>
               </header>
-              <OrderWidgetBody
-                size={size}
-                sizes={sizeOptions}
-                description={productDescription}
-                priceLabel={priceLabel}
-                onSize={setSize}
-                onSizeGuide={() => setSurface('size')}
-                onContinue={() => window.location.assign(productHref)}
-              />
-            </aside>
-          )}
-        </section>
-      )}
-      {surface === 'order' && (
-        <Panel title="ORDER" onClose={() => setSurface('discovery')}>
-          <OrderWidgetBody
-            size={size}
-            sizes={sizeOptions}
-            description={productDescription}
-            priceLabel={priceLabel}
-            onSize={setSize}
-            onSizeGuide={() => setSurface('size')}
-            onContinue={() => window.location.assign(productHref)}
-          />
-        </Panel>
-      )}
-      {surface === 'size' && (
-        <Panel title="SIZE GUIDE" onClose={() => setSurface('order')}>
-          <p className="cp-workbook-copy">
-            {sizeGuideText ||
-              'Size guidance is currently unavailable in Shopify. Available sizes remain visible on the product page.'}
-          </p>
-          <ActionButton onClick={() => setSurface('order')}>CLOSE</ActionButton>
-        </Panel>
-      )}
+              <div className="cp-workbook-gallery">
+                <button
+                  type="button"
+                  onClick={previousGalleryStill}
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft />
+                </button>
+                <div className="cp-workbook-gallery-image">
+                  {activeGalleryStill ? (
+                    <Image
+                      src={activeGalleryStill.src}
+                      alt={activeGalleryStill.alt}
+                      fill
+                      sizes="(max-width: 768px) 72vw, 38vw"
+                      priority
+                      className="cp-workbook-gallery-product-image"
+                    />
+                  ) : (
+                    <Image
+                      src={productArchitecturePoster}
+                      alt="Product gallery unavailable"
+                      fill
+                      className="cp-workbook-gallery-product-image"
+                    />
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={nextGalleryStill}
+                  aria-label="Next image"
+                >
+                  <ChevronRight />
+                </button>
+              </div>
+              <p className="cp-workbook-gallery-labels">
+                {String(galleryIndex + 1).padStart(2, '0')} / {mediaCount}
+              </p>
+              <div
+                className="cp-workbook-gallery-thumbnails"
+                aria-label="Gallery thumbnails"
+              >
+                {galleryMedia.map((still, index) => (
+                  <button
+                    type="button"
+                    key={still.id}
+                    className={index === galleryIndex ? 'is-active' : ''}
+                    onClick={() => setGalleryIndex(index)}
+                    aria-label={`View ${still.alt}`}
+                  >
+                    <Image src={still.src} alt="" fill sizes="3rem" />
+                  </button>
+                ))}
+              </div>
+            </div>
+            {surface === 'gallery-order' && (
+              <aside
+                className="cp-workbook-gallery-order"
+                aria-label="Product options"
+              >
+                <header>
+                  <p>CHOOSE A SIZE</p>
+                  <button
+                    type="button"
+                    onClick={() => setSurface('gallery')}
+                    aria-label="Close order"
+                  >
+                    <X />
+                  </button>
+                </header>
+                <OrderWidgetBody
+                  size={size}
+                  sizes={sizeOptions}
+                  description={productDescription}
+                  priceLabel={priceLabel}
+                  onSize={setSize}
+                  onSizeGuide={() => setSurface('size')}
+                  onContinue={() =>
+                    window.location.assign(`${productHref}#product-options`)
+                  }
+                />
+              </aside>
+            )}
+          </section>
+        )}
+        {surface === 'order' && (
+          <Panel title="CHOOSE A SIZE" onClose={() => setSurface('discovery')}>
+            <OrderWidgetBody
+              size={size}
+              sizes={sizeOptions}
+              description={productDescription}
+              priceLabel={priceLabel}
+              onSize={setSize}
+              onSizeGuide={() => setSurface('size')}
+              onContinue={() =>
+                window.location.assign(`${productHref}#product-options`)
+              }
+            />
+          </Panel>
+        )}
+        {surface === 'size' && (
+          <Panel title="SIZE GUIDE" onClose={() => setSurface('order')}>
+            <p className="cp-workbook-copy">
+              {sizeGuideText ||
+                'Size guidance is currently unavailable in Shopify. Available sizes remain visible on the product page.'}
+            </p>
+            <ActionButton onClick={() => setSurface('order')}>
+              CLOSE
+            </ActionButton>
+          </Panel>
+        )}
+      </div>
     </main>
   );
 }

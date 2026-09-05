@@ -1,44 +1,61 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Maximize, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { Text } from '@repo/design-system';
 import type { ViewerMediaItem } from '@/lib/media/types';
+import { useModalDialog } from '@/lib/a11y/use-modal-dialog';
 
 interface MediaViewerProps {
   media: ViewerMediaItem[];
   open: boolean;
   onClose: () => void;
+  purchaseHref: string;
   title: string;
+  triggerRef: RefObject<HTMLButtonElement | null>;
+  purchaseLabel?: string;
 }
 
-export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
+export function MediaViewer({
+  media,
+  open,
+  onClose,
+  purchaseHref,
+  title,
+  triggerRef,
+  purchaseLabel = 'ADD TO BAG',
+}: MediaViewerProps) {
   const controlledMedia = media.slice(0, 12);
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(false);
   const [zoomed, setZoomed] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [purchaseReady, setPurchaseReady] = useState(false);
   const dialogRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  useModalDialog(open, dialogRef, triggerRef, onClose);
 
   useEffect(() => {
     if (!open) return undefined;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     setActiveIndex(0);
     setZoomed(false);
     setAutoPlay(false);
+    setPurchaseReady(
+      Boolean(
+        document.querySelector<HTMLInputElement>(
+          '#product-options input[name="referenceHash"]'
+        )?.value
+      )
+    );
     setReducedMotion(
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     );
     requestAnimationFrame(() => {
       trackRef.current?.scrollTo({ left: 0 });
-      dialogRef.current?.focus();
     });
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
+    return undefined;
   }, [open]);
 
   useEffect(() => {
@@ -57,11 +74,11 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
       behavior: reducedMotion ? 'auto' : 'smooth',
     });
     trackRef.current.querySelectorAll('video').forEach((video, index) => {
-      if (index === activeIndex && !reducedMotion)
+      if (index === activeIndex && autoPlay && !reducedMotion)
         void video.play().catch(() => undefined);
       else video.pause();
     });
-  }, [activeIndex, open, reducedMotion]);
+  }, [activeIndex, autoPlay, open, reducedMotion]);
 
   if (!open || controlledMedia.length === 0) return null;
 
@@ -69,7 +86,10 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
     const index = Math.max(0, Math.min(nextIndex, controlledMedia.length - 1));
     const track = trackRef.current;
     if (!track) return;
-    track.scrollTo({ left: index * track.clientWidth, behavior: 'smooth' });
+    track.scrollTo({
+      left: index * track.clientWidth,
+      behavior: reducedMotion ? 'auto' : 'smooth',
+    });
     setActiveIndex(index);
   };
 
@@ -85,22 +105,6 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
         if (event.key === 'Escape') onClose();
         if (event.key === 'ArrowLeft') moveTo(activeIndex - 1);
         if (event.key === 'ArrowRight') moveTo(activeIndex + 1);
-        if (event.key === 'Tab') {
-          const focusable = Array.from(
-            dialogRef.current?.querySelectorAll<HTMLElement>(
-              'button, [href], input, video, [tabindex]:not([tabindex="-1"])'
-            ) || []
-          ).filter((element) => !element.hasAttribute('disabled'));
-          const first = focusable[0];
-          const last = focusable[focusable.length - 1];
-          if (event.shiftKey && document.activeElement === first) {
-            event.preventDefault();
-            last?.focus();
-          } else if (!event.shiftKey && document.activeElement === last) {
-            event.preventDefault();
-            first?.focus();
-          }
-        }
       }}
       className="cp-media-dialog"
       data-product-media-overlay="open"
@@ -131,6 +135,30 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
             </h2>
           </div>
           <div className="cp-media-dialog-controls">
+            {purchaseReady ? (
+              <button
+                type="button"
+                className="cp-action cp-action-solid cp-media-purchase-action"
+                onClick={() => {
+                  onClose();
+                  requestAnimationFrame(() =>
+                    document
+                      .querySelector<HTMLFormElement>('#product-options')
+                      ?.requestSubmit()
+                  );
+                }}
+              >
+                {purchaseLabel}
+              </button>
+            ) : (
+              <Link
+                href={`${purchaseHref}#product-options`}
+                className="cp-action cp-action-solid cp-media-purchase-action"
+                onClick={onClose}
+              >
+                CHOOSE A SIZE
+              </Link>
+            )}
             <Text role="label" aria-live="polite">
               {String(activeIndex + 1).padStart(2, '0')} /{' '}
               {String(controlledMedia.length).padStart(2, '0')}
@@ -168,7 +196,9 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
                 {item.type === 'video' ? (
                   <video
                     controls
-                    autoPlay={!reducedMotion && index === activeIndex}
+                    autoPlay={
+                      autoPlay && !reducedMotion && index === activeIndex
+                    }
                     muted
                     playsInline
                     preload="metadata"
@@ -182,7 +212,6 @@ export function MediaViewer({ media, open, onClose, title }: MediaViewerProps) {
                     fill
                     priority={index === 0}
                     sizes="90vw"
-                    unoptimized
                     className={`cp-media-slide-image ${zoomed && index === activeIndex ? 'is-zoomed' : ''}`}
                   />
                 )}

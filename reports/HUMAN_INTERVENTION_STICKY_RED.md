@@ -1,38 +1,102 @@
-# CURRENT SCOPE — SHOPIFY-MIMIC STAGING; APLIIQ PHYSICAL PROOF DEFERRED
+# CURRENT — RELEASE-GATE OWNER ACTIONS AFTER FAIL-CLOSED CORRECTION
 
-## Current external proof bindings — 2026-09-03
+Updated: 2026-09-04 EDT
 
-Protected Staging run `33809465340` is successful on exact
-`staging@9daa799cdd40be495584456a59a8efaea539ed65`; the earlier Vercel-token
-blocker is resolved. Production remained unchanged. Before the protected
-pre-order Shopify snapshot can run, the Staging environment still requires:
+The shipped `apps/web` Admin fail-open defect is corrected and merged through
+PR #80 into exact `staging@259071f6f9c83a186427c05f43dc4675feb17a60`:
+missing, undefined, short, equal, malformed and wrong bearer credentials fail
+closed, and Vercel Admin access is bound to the exact Clerk Product Owner
+session. Protected Staging run `33841089145` succeeded with repository checks,
+immutable deployment, signed PII-free probe, 1440/390 functional, accessibility
+and screenshot checks, unchanged healthy Production, and a signed immutable
+deployment receipt. The live Admin route was not probed and no Production
+deployment occurred.
 
-1. `SHOPIFY_STAGING_ADMIN_TOKEN`: a read-only custom-app token from
-   `carlophillips-staging.myshopify.com` with products, inventory, locations,
-   orders, merchant-managed fulfillment-order and third-party
-   fulfillment-order read access. Do not grant writes or use Production.
-2. `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` and
-   `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`: the existing distinct environment
-   store identifiers. Do not invent or copy one environment's ID to the other.
+Completed protected configuration, without displaying values:
 
-`SHOPIFY_PRODUCTION_STORE_DOMAIN` is already set to the independently evidenced
-Production shop. Cost: none intended. Risk: the Admin token exposes test-store
-order metadata, so keep it read-only and only in GitHub's protected `Staging`
-environment. Signal completion with: `CP Shopify Staging proof bindings ready`.
+- Rotated both legacy Admin variables to distinct sensitive values in Preview
+  and Production and added the immutable Product Owner ID to Production.
+- Rotated Preview and Production to distinct non-secret durable-store identity
+  markers and bound the matching pair into GitHub Staging.
+- Stored the same newly generated `CP_RELEASE_RECEIPT_SIGNING_SECRET` in GitHub
+  Staging and Production.
+- Confirmed `CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=false` and
+  `CP_PRODUCTION_PROMOTION_ENABLED=false`.
 
-After that signal, enable the repository configuration variable
-`CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=true`, dispatch Protected Vercel Staging
-for the current exact Staging SHA, and reset the flag after the run. Before
-entering synthetic checkout or test-payment data, record and obtain the separate
-explicit test-order action.
-No Production payment, Production order, Apliiq request or Production promotion
-is authorized.
+The optional read-only Shopify inventory-snapshot job was correctly skipped in
+run `33841089145`. Product Owner direction confirms that its absent
+`SHOPIFY_STAGING_ADMIN_TOKEN` is not a release blocker. Keep the snapshot flag
+off; do not provision a credential merely to satisfy optional audit evidence.
+
+Exact remaining human actions:
+
+1. A repository administrator opens GitHub -> `CubiqoUnited/carlophillips-site`
+   -> Settings. Add a required Product Owner reviewer to the `Production`
+   environment. Protect both `main` and `staging` with pull-request review,
+   conversation resolution, no force-push/deletion, and required `Verify` plus
+   `Checkout E2E and accessibility` checks. The authenticated delivery account
+   has push/workflow but not admin permission; environment update returned HTTP
+   403 and branch-protection updates returned HTTP 404. No browser workaround
+   was attempted.
+2. Signal completion with `CP release gate owner bindings ready`.
+
+Cost: none intended. Risk: branch/environment protection changes affect who may
+merge and deploy. Do not enable the optional snapshot flag, deploy Production,
+enter payment, submit an order or retain a private checkout URL before the exact
+reviewed Staging sequence resumes.
 
 ---
 
-Updated: 2026-09-03 EDT
+# SUPERSEDED — OPTIONAL READ-ONLY STAGING SNAPSHOT; NO PAYMENT OR ORDER
 
-The Product Owner directed delivery through the complete Shopify-mimic digital
+Updated: 2026-09-04 EDT
+
+This section supersedes every later instruction in this file that asks a human
+or agent to enter Staging payment data, submit a test order, capture an order or
+confirmation hash, cancel/refund/restock an order, retain a private checkout or
+order-status URL, or query Shopify order data for the release gate. Those steps
+must not be performed.
+
+## Current external proof bindings
+
+This section's earlier token requirement is superseded by the Product Owner's
+2026-09-04 decision that the Shopify Admin snapshot is optional audit evidence
+and not a release gate. Protected Staging run `33809465340` is successful on
+exact `staging@9daa799cdd40be495584456a59a8efaea539ed65`; the earlier
+Vercel-token blocker is resolved. Production remained unchanged. Before the
+optional protected read-only Shopify snapshot can run, the Staging environment
+would still require:
+
+1. `SHOPIFY_STAGING_ADMIN_TOKEN`: a read-only custom-app token from
+   `carlophillips-staging.myshopify.com` with only product and inventory read
+   access. Do not grant order, customer or write access and do not use
+   Production.
+2. `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` and
+   `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID`: the existing distinct environment
+   store identifiers. Do not invent or copy one environment's ID to the other.
+3. `CP_RELEASE_RECEIPT_SIGNING_SECRET`: the same newly generated value, at least
+   32 characters, stored separately as an encrypted secret in both GitHub
+   environments **Staging** and **Production**. Do not paste, print, log or save
+   the value in chat, source files, workflow inputs or this record.
+
+`SHOPIFY_PRODUCTION_STORE_DOMAIN` is already set to the independently evidenced
+Production shop. Cost: none intended. Risk: the Admin token exposes catalog and
+inventory metadata, so keep it read-only and only in GitHub's protected
+`Staging` environment. Signal completion with:
+`CP Shopify Staging proof bindings ready` only after all three items exist.
+
+After that signal, enable the repository configuration variable
+`CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT=true`, dispatch Protected Vercel Staging
+for the current exact Staging SHA, and reset the flag after the run. The browser
+proof may validate the HTTPS trusted-host handoff but must dispose of the
+response without navigation and must not retain its private URL. No payment,
+order, Apliiq request or Production promotion is authorized by this intervention.
+
+---
+
+## SUPERSEDED — 2026-09-03 Shopify-mimic order scope
+
+The earlier Product Owner direction requested a complete Shopify-mimic digital
 Staging journey and deferred real Apliiq manufacture, dispatch, carrier tracking
 and physical delivery to the next research/delivery iteration. Staging must use
 the dedicated Shopify development store and test gateway to prove a successful
@@ -40,14 +104,13 @@ zero-charge order, confirmation, authenticated order view, signed webhook,
 cancellation or eligible return, refund, inventory restoration and notifications.
 It must not submit a fulfilment request to Apliiq Production.
 
-This decision removes Apliiq physical lifecycle proof from the current closure
-blockers. It does not waive the Shopify digital QA journey, exact-candidate
-Staging deployment, Product Owner Staging acceptance or the separate future
-Production POD proof.
+This order-based scope is superseded by the 2026-09-04 no-order boundary above
+and must not be executed. Exact-candidate Staging deployment, Product Owner
+Staging acceptance and the separate future Production POD proof remain.
 
 ---
 
-# RED — PROTECTED STAGING VERCEL AUTHORITY BLOCKS THE RELEASE GATE
+# SUPERSEDED — PROTECTED STAGING VERCEL AUTHORITY BLOCKED THE RELEASE GATE
 
 Updated: 2026-09-03 EDT
 

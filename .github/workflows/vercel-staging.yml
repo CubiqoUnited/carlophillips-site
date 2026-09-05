@@ -15,6 +15,16 @@ on:
         description: Immutable Staging review identifier
         required: true
         type: string
+      cleanup_demo_catalog:
+        description: Delete the exact 15 non-approved demo products from isolated Staging Shopify
+        required: false
+        default: false
+        type: boolean
+      update_visual_baselines:
+        description: Generate Linux baselines for deliberate visual review; normal release runs must leave this false
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   actions: read
@@ -29,6 +39,7 @@ jobs:
   deploy-staging:
     name: Deploy exact merged staging SHA to staging.carlophillips.com
     runs-on: ubuntu-latest
+    needs: snapshot-shopify
     timeout-minutes: 60
     environment:
       name: Staging
@@ -177,7 +188,7 @@ jobs:
           node - <<'NODE'
           const fs = require('node:fs');
           const html = fs.readFileSync('staging-pdp.html', 'utf8');
-          if (!html.includes('ADD TO TEST BAG')) throw new Error('STAGING_ADD_TO_TEST_BAG_MISSING');
+          if (!html.includes('CHOOSE A SIZE')) throw new Error('STAGING_SIZE_SELECTION_MISSING');
           if (!html.includes('action="/api/cart"')) throw new Error('STAGING_CART_HANDOFF_MISSING');
           NODE
 
@@ -209,8 +220,25 @@ jobs:
           CP_RELEASE_GATE_BASE_URL: ${{ steps.staging.outputs.url }}
           CP_RELEASE_GATE_OUTPUT_DIR: test_reports/protected-staging
           SHOPIFY_STAGING_CHECKOUT_HOSTS: ${{ vars.SHOPIFY_STAGING_CHECKOUT_HOSTS }}
+          SHOPIFY_STAGING_STOREFRONT_PASSWORD: ${{ secrets.SHOPIFY_STAGING_STOREFRONT_PASSWORD }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
-        run: yarn playwright test --config=playwright.release.config.ts
+        run: |
+          if [[ "${{ inputs.update_visual_baselines }}" == "true" ]]; then
+            yarn playwright test --config=playwright.release.config.ts --update-snapshots
+          else
+            yarn playwright test --config=playwright.release.config.ts
+          fi
+
+      - name: Preserve exact-width diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-visual-diagnostics-${{ inputs.expected_sha }}
+          path: |
+            test_reports/**
+            tests/release-gate/protected-staging.spec.ts-snapshots/**
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Capture unchanged healthy Production and exact Staging alias
         env:
@@ -246,9 +274,10 @@ jobs:
             echo "- Immutable deployment: ${{ steps.staging.outputs.url }}"
             echo "- Commit: ${{ inputs.expected_sha }}"
             echo "- Checkout enabled: true"
-            echo "- Shopify-origin test order and Admin API audit are deferred follow-up checks"
+            echo "- Sanitized checkout handoff and read-only Shopify audit: verified"
+            echo "- Payment/order submission: not attempted"
             echo "- Production remained healthy and checkout-enabled: true"
-            echo "- Receipt is preliminary until the protected test-order lifecycle proof passes"
+            echo "- Receipt is preliminary until the signed protected Staging proof passes"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
@@ -272,9 +301,7 @@ jobs:
           retention-days: 90
 
   snapshot-shopify:
-    name: Capture exact pre-order Shopify inventory snapshot
-    needs: deploy-staging
-    if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
+    name: Verify and optionally clean isolated Staging Shopify catalog
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
@@ -299,7 +326,24 @@ jobs:
         with:
           node-version: 24
 
-      - name: Capture read-only pre-order Shopify snapshot
+      - name: Delete exact non-approved demo products
+        if: ${{ inputs.cleanup_demo_catalog }}
+        env:
+          SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
+          SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
+          SHOPIFY_STAGING_ADMIN_TOKEN: ${{ secrets.SHOPIFY_STAGING_ADMIN_TOKEN }}
+        run: node scripts/cleanup-staging-shopify-catalog.mjs
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ inputs.cleanup_demo_catalog }}
+        with:
+          name: staging-shopify-catalog-cleanup-${{ inputs.expected_sha }}
+          path: staging-shopify-cleanup.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Capture read-only Shopify snapshot
+        if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
         env:
           SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
           SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
@@ -312,7 +356,8 @@ jobs:
           --release "${{ inputs.release }}"
           --output staging-shopify-snapshot.json
 
-      - name: Publish pre-order snapshot summary
+      - name: Publish read-only snapshot summary
+        if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
         run: |
           {
             echo "## Protected Staging Shopify snapshot"
@@ -323,6 +368,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
+        if: ${{ vars.CP_STAGING_CAPTURE_SHOPIFY_SNAPSHOT == 'true' }}
         with:
           name: staging-shopify-snapshot-${{ inputs.expected_sha }}
           path: staging-shopify-snapshot.json

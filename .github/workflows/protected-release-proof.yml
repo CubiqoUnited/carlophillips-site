@@ -19,14 +19,6 @@ on:
         description: Successful Protected Vercel Staging workflow run ID
         required: true
         type: string
-      confirmation_evidence_hash:
-        description: SHA-256 fingerprint of the redacted CP-branded confirmation evidence
-        required: true
-        type: string
-      order_status_evidence_hash:
-        description: SHA-256 fingerprint of the redacted Shopify order/status evidence
-        required: true
-        type: string
 
 permissions:
   actions: read
@@ -39,7 +31,7 @@ concurrency:
 
 jobs:
   prove-release:
-    name: Issue signed PII-free exact-SHA receipt
+    name: Issue signed PII-free Staging receipt
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: Staging
@@ -60,16 +52,12 @@ jobs:
           SOURCE_PR: ${{ inputs.source_pr }}
           RELEASE: ${{ inputs.release }}
           STAGING_RUN_ID: ${{ inputs.staging_run_id }}
-          CONFIRMATION_HASH: ${{ inputs.confirmation_evidence_hash }}
-          ORDER_STATUS_HASH: ${{ inputs.order_status_evidence_hash }}
           GH_TOKEN: ${{ github.token }}
         run: |
           [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
           [[ "$SOURCE_PR" =~ ^[1-9][0-9]*$ ]]
           [[ "$STAGING_RUN_ID" =~ ^[1-9][0-9]*$ ]]
           [[ "$RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]
-          [[ "$CONFIRMATION_HASH" =~ ^sha256:[a-f0-9]{64}$ ]]
-          [[ "$ORDER_STATUS_HASH" =~ ^sha256:[a-f0-9]{64}$ ]]
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           git fetch --no-tags origin staging
           test "$(git rev-parse origin/staging)" = "$EXPECTED_SHA"
@@ -81,7 +69,7 @@ jobs:
           if (pull.merge_commit_sha !== process.env.EXPECTED_SHA) throw new Error('SOURCE_PR_MERGE_SHA_MISMATCH');
           NODE
 
-      - name: Download the exact protected Staging and pre-order Shopify evidence
+      - name: Download the exact protected Staging customer-path evidence
         env:
           GH_TOKEN: ${{ github.token }}
           STAGING_RUN_ID: ${{ inputs.staging_run_id }}
@@ -97,8 +85,6 @@ jobs:
           NODE
           gh run download "$STAGING_RUN_ID" --repo "$GITHUB_REPOSITORY" \
             --name "staging-receipt-$EXPECTED_SHA" --dir staging-evidence
-          gh run download "$STAGING_RUN_ID" --repo "$GITHUB_REPOSITORY" \
-            --name "staging-shopify-snapshot-$EXPECTED_SHA" --dir shopify-snapshot
 
       - uses: actions/setup-node@v4
         with:
@@ -111,7 +97,7 @@ jobs:
           test "$(yarn --version)" = "1.22.22"
           yarn global add vercel@56.1.0
 
-      - name: Recheck healthy checkout-enabled Production after the full Staging lifecycle
+      - name: Recheck healthy checkout-enabled Production after Staging validation
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
@@ -120,18 +106,14 @@ jobs:
             --url https://www.carlophillips.com \
             --output production-after-proof-health.json
 
-      - name: Assemble Shopify, lifecycle, isolation, visual and rollback evidence
+      - name: Assemble Shopify, handoff, isolation, visual and rollback evidence
         env:
           SHOPIFY_STAGING_STORE_DOMAIN: ${{ vars.SHOPIFY_STAGING_STORE_DOMAIN }}
           SHOPIFY_PRODUCTION_STORE_DOMAIN: ${{ vars.SHOPIFY_PRODUCTION_STORE_DOMAIN }}
-          SHOPIFY_STAGING_ADMIN_TOKEN: ${{ secrets.SHOPIFY_STAGING_ADMIN_TOKEN }}
           CP_EXPECTED_PREVIEW_DURABLE_STORE_ID: ${{ vars.CP_EXPECTED_PREVIEW_DURABLE_STORE_ID }}
           CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID: ${{ vars.CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID }}
-          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
-          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
         run: >-
           node scripts/collect-protected-shopify-proof.mjs finalize
-          --snapshot shopify-snapshot/staging-shopify-snapshot.json
           --browser-proof-directory staging-evidence/test_reports/protected-staging
           --deployment-receipt staging-evidence/protected-staging-deployment-receipt.json
           --webhook-probe staging-evidence/staging-webhook-probe.json
@@ -140,8 +122,6 @@ jobs:
           --production-before-health staging-evidence/production-before-health.json
           --production-after-health production-after-proof-health.json
           --source-pull-request "${{ inputs.source_pr }}"
-          --confirmation-hash "${{ inputs.confirmation_evidence_hash }}"
-          --order-status-hash "${{ inputs.order_status_evidence_hash }}"
           --expected-sha "${{ inputs.expected_sha }}"
           --release "${{ inputs.release }}"
           --output unsigned-protected-release-receipt.json
@@ -155,7 +135,7 @@ jobs:
             --output protected-release-receipt.json
           node .github/scripts/protected-release-receipt.mjs verify \
             --input protected-release-receipt.json \
-            --expected-sha "${{ inputs.expected_sha }}" \
+            --expected-staging-sha "${{ inputs.expected_sha }}" \
             --expected-release "${{ inputs.release }}" \
             --source-pull-request "${{ inputs.source_pr }}"
 
@@ -165,8 +145,9 @@ jobs:
             echo "## Protected Staging release proof"
             echo "- Exact combined commit: ${{ inputs.expected_sha }}"
             echo "- Source PR: #${{ inputs.source_pr }}"
-            echo "- Isolated Shopify test payment/order/cancel/refund/restock: verified"
-            echo "- Signed lifecycle and durable duplicate suppression: verified"
+            echo "- Sanitized hosted-checkout handoff with no retained private URL: verified"
+            echo "- Payment/order submission: not attempted"
+            echo "- Signed synthetic webhook and durable duplicate suppression: verified"
             echo "- Production approval: not granted by this receipt"
           } >> "$GITHUB_STEP_SUMMARY"
 

@@ -93,4 +93,16 @@ describe('controlled product media display', () => {
     );
     expect(activeSource).not.toMatch(/\/candidates\//);
   });
+
+  it('adapts the gallery purchase action to the selected PDP size', () => {
+    const viewer = readFileSync(
+      'apps/web/src/components/product/MediaViewer/index.tsx',
+      'utf8'
+    );
+
+    expect(viewer).toContain('input[name="referenceHash"]');
+    expect(viewer).toContain('purchaseReady ?');
+    expect(viewer).toContain('requestSubmit()');
+    expect(viewer).toContain('CHOOSE A SIZE');
+  });
 });

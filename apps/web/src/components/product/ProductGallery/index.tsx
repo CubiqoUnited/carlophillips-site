@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { MediaViewer } from '../MediaViewer';
 import type { ViewerMediaItem } from '@/lib/media/types';
+import { curateCustomerMedia } from '@/lib/media/customer-product-media';
 import type { MediaReview } from '@/types';
 
 export function ProductGallery({
@@ -11,33 +12,31 @@ export function ProductGallery({
   mediaReview = null,
   customerFacing = false,
   productTitle = 'Product',
+  productHref,
   productOnly = false,
+  purchaseLabel,
 }: {
   media: ViewerMediaItem[];
   mediaReview?: MediaReview | null;
   customerFacing?: boolean;
   productTitle?: string;
+  productHref: string;
   productOnly?: boolean;
+  purchaseLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
-  const visibleMedia = productOnly
-    ? media.filter(
-        (item) =>
-          !item.onBodyPose &&
-          !item.modalities.some((modality) =>
-            ['on-model', 'lifestyle'].includes(modality)
-          )
-      )
-    : media;
+  const galleryTriggerRef = useRef<HTMLButtonElement>(null);
+  const visibleMedia = productOnly ? curateCustomerMedia(media) : media;
+  const previewMedia = visibleMedia.slice(0, 4);
   if (visibleMedia.length === 0) {
     return (
       <div
-        className="cp-product-gallery-empty cp-surface-raised cp-text-muted flex flex-col items-center justify-center gap-4 p-10 text-center text-sm"
+        className="cp-product-gallery-empty cp-surface-raised cp-text-muted"
         data-media-review={mediaReview?.status || 'incomplete'}
       >
         <p>No approved product media was returned by the selected source.</p>
         {mediaReview && (
-          <p className="cp-label-small max-w-xl font-mono">
+          <p className="cp-label-small cp-product-gallery-review">
             Media review incomplete — missing:{' '}
             {mediaReview.missingModalities.join(', ') || 'approved fallback'}
           </p>
@@ -53,7 +52,7 @@ export function ProductGallery({
         data-media-count={visibleMedia.length}
         data-media-review={mediaReview?.status || 'incomplete'}
       >
-        {visibleMedia.map((item, index) => (
+        {previewMedia.map((item, index) => (
           <figure
             key={item.id}
             className={
@@ -65,7 +64,7 @@ export function ProductGallery({
             {item.type === 'image' && (item.url || item.src) ? (
               <button
                 type="button"
-                className="block h-full w-full"
+                className="cp-product-media-trigger"
                 onClick={() => setOpen(true)}
                 aria-label={`Open ${item.label}`}
               >
@@ -77,7 +76,7 @@ export function ProductGallery({
                     alt={item.alt}
                     fill
                     sizes="(min-width: 1024px) 52vw, 100vw"
-                    className="object-contain object-center p-8 sm:p-12"
+                    className="cp-product-media-image"
                   />
                 </div>
               </button>
@@ -88,15 +87,15 @@ export function ProductGallery({
                 playsInline
                 preload="none"
                 poster={item.previewUrl}
-                className="h-full w-full object-contain"
+                className="cp-product-media-video"
                 src={item.url || item.src}
               />
             ) : (
-              <div className="cp-product-media-portrait cp-text-muted flex items-center justify-center p-8 text-sm">
+              <div className="cp-product-media-portrait cp-product-media-unavailable cp-text-muted">
                 Media unavailable
               </div>
             )}
-            <figcaption className="cp-label-small cp-surface-canvas cp-rule border-t px-5 py-4">
+            <figcaption className="cp-label-small cp-surface-canvas cp-product-media-caption">
               {customerFacing
                 ? `View ${String(index + 1).padStart(2, '0')}`
                 : item.label}
@@ -104,8 +103,9 @@ export function ProductGallery({
           </figure>
         ))}
       </div>
-      <div className="flex justify-end border-b px-5 py-4">
+      <div className="cp-product-gallery-action">
         <button
+          ref={galleryTriggerRef}
           type="button"
           className="cp-action cp-action-outline"
           onClick={() => setOpen(true)}
@@ -118,6 +118,9 @@ export function ProductGallery({
         open={open}
         onClose={() => setOpen(false)}
         title={productTitle}
+        purchaseHref={productHref}
+        triggerRef={galleryTriggerRef}
+        purchaseLabel={purchaseLabel}
       />
     </>
   );

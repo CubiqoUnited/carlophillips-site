@@ -38,7 +38,7 @@ if (mode === 'sign') {
   verifyProtectedReleaseReceipt(
     json(options.input),
     {
-      gitCommitSha: options['expected-sha'],
+      gitCommitSha: options['expected-staging-sha'],
       release: options['expected-release'],
       sourcePullRequest,
     },

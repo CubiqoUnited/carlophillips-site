@@ -24,9 +24,7 @@ test.describe('Local fixture checkout boundary', () => {
       await page.evaluate(
         () => getComputedStyle(document.documentElement).scrollSnapType
       )
-    ).toBe(
-      testInfo.project.name === 'mobile-chromium' ? 'none' : 'y mandatory'
-    );
+    ).toBe('none');
     await expect(page.locator('form[action="/api/cart"]')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText(/checkout\.shopify/i);
     await page.locator('#signature-runway').evaluate((element) =>
@@ -45,6 +43,10 @@ test.describe('Local fixture checkout boundary', () => {
     expect(orderBox!.y).toBeGreaterThanOrEqual(0);
     expect(orderBox!.y + orderBox!.height).toBeLessThanOrEqual(
       viewport!.height
+    );
+    await expect(orderButton).toHaveText(/shop the hoodie/i);
+    await expect(page.locator('main#main-content')).not.toContainText(
+      /add to cart|order now/i
     );
     await page.screenshot({
       path: testInfo.outputPath('01-home-fail-closed.png'),

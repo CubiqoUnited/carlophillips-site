@@ -1,16 +1,76 @@
 # Delivery Tasks
 
+Execution authority is newest-first. The current 2026-09-04 no-order and
+provenance sections supersede every conflicting checkbox in older sections.
+No older task may authorize a Staging payment, order submission, private
+checkout/order URL retention, order-evidence hash, or same-SHA
+Staging-to-Production requirement. Such entries are retained only as historical
+records and must not be executed.
+
+## Sanity validation and Admin authentication blocker — 2026-09-04
+
+- [x] Re-run frozen install, formatting, design-system and commerce lint,
+      TypeScript, Stylelint, 702 unit/policy tests, optimized build, and 28
+      desktop/mobile Playwright checks including six screenshot comparisons.
+- [x] Reproduce locally that the shipped `apps/web` Admin page accepts
+      `Authorization: Bearer undefined` when both legacy bearer-token variables
+      are absent; confirm the vulnerable source is identical on `main` and
+      `staging` without probing the live Admin route.
+- [x] Correct the shipped Admin route so missing, short, equal or malformed
+      tokens fail closed and remote Vercel Admin access uses the approved Clerk
+      Product Owner session; add route-level regression coverage.
+- [x] Complete the encrypted Preview/Production token containment and rotation
+      recorded in `reports/HUMAN_INTERVENTION_STICKY_RED.md`, then verify the
+      corrected build locally before protected Staging and any Production
+      deployment.
+- [x] Rotate Preview/Production to distinct non-secret durable-store identity
+      markers, bind the matching pair into GitHub Staging, store the same new
+      receipt-signing secret in GitHub Staging and Production, and keep the
+      snapshot flag false.
+- [x] Merge Admin correction PR #80 into `staging` at
+      `259071f6f9c83a186427c05f43dc4675feb17a60` and pass protected Staging run
+      `33841089145`, including exact-SHA deployment, signed no-PII probe,
+      1440/390 functional/a11y/screenshots, unchanged Production, and immutable
+      deployment receipt.
+- [ ] Add the missing Production required reviewer and protect `main` and
+      `staging` with reviewed pull requests and required Verify/Playwright
+      checks. Current API access is not repository-admin and was rejected;
+      keep Production promotion disabled.
+- [x] Keep the optional Shopify Admin inventory snapshot disabled. Its absent
+      read-only token is not a release blocker; the exact-SHA protected
+      deployment and signed no-order receipt already pass.
+
+## Staging-to-Production provenance and no-order QA correction — 2026-09-04
+
+- [x] Replace impossible Staging/Production merge-SHA identity with a signed
+      Staging SHA plus merged `staging`-to-`main` PR provenance, ancestry and
+      exact Git-tree identity checks.
+- [x] Remove payment, order, confirmation, cancellation, refund, restock and
+      private checkout evidence from the protected Staging proof contract.
+- [x] Derive a sanitized checkout-handoff evidence hash from the desktop/mobile
+      browser proofs and fail closed on payment, order or private-URL retention.
+- [x] Pass schema, unit, policy, lint, build and desktop/mobile screenshot
+      comparison checks without committing downloaded CI artifacts.
+- [x] Pass independent Linux CI on correction PR #77, merge it to `staging`
+      at `d8a9db11acd6a70239fb03b20944a845e5a6b931`, and delete its remote branch.
+- [x] Disable the out-of-window Production promotion switch without deploying
+      or changing Production.
+- [x] Add distinct durable-store identity variables and the same encrypted
+      receipt-signing secret to Staging and Production without disclosure.
+- [x] Classify the read-only Staging Admin snapshot as optional audit evidence,
+      not a release requirement; do not provision its token merely to satisfy
+      an agent-authored gate.
+
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 
 - [x] Rebind the GitHub Staging Vercel secret from the authenticated canonical
       Cubiqo CLI credential without printing or retaining the value.
 - [x] Pass exact-SHA protected Staging deployment, alias, webhook duplicate,
       1440/390 browser/a11y/screenshot, Production-health and receipt checks.
-- [x] Isolate read-only pre-order Shopify inventory capture in an opt-in job
+- [x] Isolate read-only Shopify inventory capture in an opt-in job
       after deployment and bind it to the same SHA/release/source PR/run.
-- [ ] Add the read-only Shopify Admin token and distinct durable-store IDs,
-      run the protected snapshot, then obtain explicit human authorization for
-      the synthetic test payment/order/cancel/refund/restock journey.
+- [ ] Add the read-only Shopify Admin token and distinct durable-store IDs, then
+      run the protected snapshot and signed no-order checkout-handoff proof.
 
 ## PR #69 Shopify-mimic Staging closure — 2026-09-03
 
@@ -27,13 +87,12 @@
       merged commit to `staging.carlophillips.com` without touching `main` or
       either Production domain.
 - [ ] Prove the exact Staging candidate against the dedicated Shopify
-      development store: fresh S/M/L at USD 128, bag, trusted hosted checkout,
-      zero-charge successful test payment/order, confirmation, authenticated
-      customer order view, signed webhook, cancellation or eligible return,
-      refund, inventory restoration and notifications using synthetic data.
+      development store: fresh S/M/L at USD 128, bag, trusted hosted-checkout
+      handoff, signed synthetic webhook and unchanged inventory without payment
+      entry, order submission, customer data or private URL retention.
 - [ ] Verify desktop/mobile layout, accessibility, console/network health,
-      no Production credential fallback, no private URL retention and no Apliiq
-      Production fulfilment request.
+      no Production credential fallback, no private URL retention and no
+      payment, order or Apliiq Production fulfilment request.
 - [ ] Obtain Product Owner acceptance on canonical Staging, close superseded
       PRs #67/#68, then delete all temporary remote branches and worktrees so
       only `main` and `staging` remain.

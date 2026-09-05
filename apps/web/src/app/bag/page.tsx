@@ -3,6 +3,7 @@ import { getCommerceEnvironment } from '@/lib/config/product-visibility';
 import type { BagDecision, CommerceEnvironment } from '@/types';
 import { cookies } from 'next/headers';
 import { readShopifyCart } from '@/lib/commerce/shopify-cart-server';
+import { resolveStorefrontBagStatus } from '@/lib/commerce/bag-decision';
 
 const readCommerceEnvironment =
   getCommerceEnvironment as () => CommerceEnvironment;
@@ -14,7 +15,11 @@ export const metadata = {
   robots: { index: false, follow: true },
 };
 
-export default async function BagPage() {
+export default async function BagPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ added?: string }>;
+}) {
   const environment = readCommerceEnvironment();
   let cart = null;
   let available = true;
@@ -27,6 +32,10 @@ export default async function BagPage() {
   }
   const localFixture =
     environment === 'local' && process.env.COMMERCE_DATA_MODE === 'fixture';
+  const bagStatus = resolveStorefrontBagStatus({
+    available,
+    lineCount: cart?.lines.edges.length || 0,
+  });
   const decision: BagDecision = localFixture
     ? {
         schemaVersion: 'cp.bag-decision.v1',
@@ -40,7 +49,7 @@ export default async function BagPage() {
       }
     : {
         schemaVersion: 'cp.bag-decision.v1',
-        status: !available ? 'unavailable' : cart ? 'ready' : 'empty',
+        status: bagStatus,
         source: available ? 'shopify' : 'unavailable',
         environment,
         commerceAllowed: available,
@@ -51,5 +60,6 @@ export default async function BagPage() {
         cart,
       };
 
-  return <CommerceBagState decision={decision} cart={cart} />;
+  const added = (await searchParams)?.added === '1';
+  return <CommerceBagState decision={decision} cart={cart} added={added} />;
 }

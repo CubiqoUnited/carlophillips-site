@@ -12,6 +12,7 @@ export default function HeroMorphPreview({
   onExplore,
   onMenu,
   onBag,
+  bagCount = 0,
 }: {
   variant?: 'editorial' | 'rugged';
   embedded?: boolean;
@@ -20,6 +21,7 @@ export default function HeroMorphPreview({
   onExplore?: () => void;
   onMenu?: () => void;
   onBag?: () => void;
+  bagCount?: number;
 }) {
   const [previewRevealed, setPreviewRevealed] = useState(false);
   const revealed = controlledRevealed ?? previewRevealed;
@@ -69,9 +71,9 @@ export default function HeroMorphPreview({
           <span aria-hidden="true">☰</span>
           <span>MENU</span>
         </button>
-        <span className="cp-hero-preview-brand">C A R L O P H I L L I P S</span>
+        <span className="cp-hero-preview-brand">CARLOPHILLIPS</span>
         <button type="button" onClick={onBag}>
-          Bag
+          BAG ({bagCount})
         </button>
       </header>
 

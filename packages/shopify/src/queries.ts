@@ -181,6 +181,12 @@ export const CART_FRAGMENT = /* GraphQL */ `
               product {
                 handle
                 title
+                images(first: 12) {
+                  nodes {
+                    url
+                    altText
+                  }
+                }
               }
               price {
                 amount

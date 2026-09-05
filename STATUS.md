@@ -1,5 +1,76 @@
 # Current Status
 
+Status authority is newest-first. The current 2026-09-04 no-order and
+provenance sections supersede conflicting statements in every older section.
+Older payment/order evidence and same-SHA descriptions are historical context
+only and grant no current QA or release authority.
+
+## Protected Staging Admin-gate closure — 2026-09-04
+
+- Current `staging@259071f6f9c83a186427c05f43dc4675feb17a60` passes the
+  full local source/build suite: Yarn Classic 1.22.22 frozen install,
+  formatting, design-system and Production-commerce lint, TypeScript,
+  Stylelint, 82 files / 702 tests, optimized Next.js build, and 28/28 headless
+  desktop/mobile checks with six screenshot comparisons. Admin correction PR
+  #80 passed Linux Verify and Playwright, then merged from exact head
+  `ffdf42b0a41e752965ee73f1b825be4a664b56b8`.
+- The sanity pass found and locally corrected a fail-open defect in the shipped
+  `apps/web` Admin route. Missing, undefined, short, equal, malformed and wrong
+  credentials now fail closed before Admin rendering; local reviewer/owner
+  roles remain distinct, and Vercel Preview/Production use only the exact Clerk
+  Product Owner session. Route-level tests and direct local HTTP checks pass.
+  The live Admin route was not probed and Production was not deployed.
+- The legacy Admin variables were rotated to distinct sensitive values in both
+  Vercel environments without disclosure, and the immutable Product Owner ID
+  was added to Production. These values are temporary defense-in-depth for
+  deployment transition; the corrected remote route does not grant bearer
+  access.
+- Preview and Production now use distinct non-secret durable-store identity
+  markers with matching GitHub Staging variables. The same newly generated
+  receipt-signing secret is stored in both protected GitHub environments, and
+  the Shopify snapshot flag remains false.
+- GitHub currently has no branch protection or repository ruleset for `main`
+  or `staging`. Staging deployment is restricted to the `staging` branch and
+  has a required reviewer, but Production has no required reviewer and its
+  workflow therefore fails closed. The Production promotion switch remains
+  `false`.
+- Protected Staging run `33841089145` succeeded on exact
+  `staging@259071f6f9c83a186427c05f43dc4675feb17a60`: repository verification,
+  immutable deployment, protected alias, signed PII-free webhook probe,
+  1440/390 functional/a11y/screenshot checks, unchanged healthy Production,
+  and immutable signed deployment receipt all passed. The optional read-only
+  Shopify inventory snapshot was correctly skipped because
+  `SHOPIFY_STAGING_ADMIN_TOKEN` is absent. That snapshot is optional audit
+  evidence, not a storefront, Staging-deployment or Production-promotion gate;
+  it remains disabled. Only the repository-admin protection changes above
+  remain release-control blockers.
+
+## Staging-to-Production provenance and no-order QA correction — 2026-09-04
+
+- The prior contract was mechanically impossible: it required a signed proof
+  tied to the protected `staging` merge commit to also equal the later `main`
+  merge commit. Production Candidate and Promotion now accept distinct Staging
+  and Production SHAs and require a merged `staging`-to-`main` PR whose head is
+  the approved Staging SHA, whose merge commit is the requested `main` SHA, with
+  ancestry and exact Git-tree identity.
+- The protected Staging receipt no longer asks for confirmation or order/status
+  hashes and no longer queries or requires a test order, payment, cancellation,
+  refund, restock or order lifecycle. It derives a sanitized checkout-handoff
+  hash from 1440/390 browser proofs and explicitly requires no payment attempt,
+  no order submission, no customer data and no retained private checkout URL.
+- Production approval, candidate identity, live checkout health and rollback
+  protection remain separate fail-closed gates. Local
+  schema/unit/policy/build/visual verification is green. Correction PR #77
+  passed independent Linux Verify and Playwright checks and merged to `staging`
+  as `d8a9db11acd6a70239fb03b20944a845e5a6b931`; its remote branch is deleted.
+  Superseded PR #76 closed unmerged. Production has not been changed.
+- The distinct `CP_EXPECTED_PREVIEW_DURABLE_STORE_ID` /
+  `CP_EXPECTED_PRODUCTION_DURABLE_STORE_ID` pair and matching encrypted
+  `CP_RELEASE_RECEIPT_SIGNING_SECRET` are configured. A Shopify Admin snapshot
+  remains optional and disabled; its absent token is not a release blocker.
+  The out-of-window Production promotion switch remains `false`; no Production
+  deployment ran.
+
 ## Protected Shopify snapshot handoff correction — 2026-09-03
 
 - Protected Staging run `33809465340` passed on exact
@@ -32,16 +103,12 @@
   refreshing the reviewed Darwin/Linux PDP baselines. The new 390 px rendering
   removes 336 px of empty space without clipping, collision or overflow; the
   homepage and bag comparisons remain unchanged and green.
-- Shopify supports the required QA architecture through the existing dedicated
-  development store and test gateway. Historical protected Staging evidence
-  already proves a zero-charge payment/order, confirmation, webhook,
-  cancellation, refund, restock and notification path, but that evidence is not
-  bound to the new PR #69 candidate and must be repeated for its exact merged
-  Staging commit.
+- The dedicated development store supports safe product, bag and hosted-checkout
+  handoff QA. Earlier payment/order evidence is historical and must not be
+  repeated or used as a release requirement.
 - The current candidate is not yet merged to `staging`, not yet assigned to
   `staging.carlophillips.com`, and has not received final Product Owner Staging
-  acceptance. Customer Account/order visibility, self-serve returns and the
-  exact-candidate synthetic order remain open external Staging proofs.
+  acceptance. Post-purchase behavior remains outside this no-order Staging proof.
 
 ## End-to-end release-protection gate — 2026-09-03
 

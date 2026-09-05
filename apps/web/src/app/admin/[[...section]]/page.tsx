@@ -1,7 +1,7 @@
-import { headers } from 'next/headers';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React from 'react';
+import { requireAdminAccess } from '@/lib/admin/access-server';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -61,22 +61,14 @@ export default async function AdminPage(props: {
   if (!adminSections.some((section) => section.id === activeSection))
     notFound();
 
-  const headersList = await headers();
-  const authHeader = headersList.get('authorization');
-  const isReviewer =
-    authHeader === `Bearer ${process.env.CP_ADMIN_REVIEW_TOKEN}`;
-  const isOwner =
-    authHeader === `Bearer ${process.env.CP_ADMIN_PRODUCT_OWNER_TOKEN}`;
+  const access = await requireAdminAccess({
+    requiredRole: ['theme', 'media-generation'].includes(activeSection)
+      ? 'product_owner'
+      : null,
+  });
+  if (!access.allowed) notFound();
 
-  if (!isReviewer && !isOwner) {
-    return (
-      <main className="cp-admin-auth-state">
-        <h1 className="cp-admin-auth-title">401 Unauthorized</h1>
-      </main>
-    );
-  }
-
-  const role = isOwner ? 'product_owner' : 'reviewer';
+  const role = access.role;
   const definition = adminSections.find(
     (section) => section.id === activeSection
   );

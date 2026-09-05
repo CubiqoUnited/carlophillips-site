@@ -26,6 +26,9 @@ export const Gallery: Story = {
         <Button variant="outline" disabled>
           Disabled action
         </Button>
+        <Button variant="solid" width="full" busy>
+          Adding...
+        </Button>
       </div>
     </div>
   ),

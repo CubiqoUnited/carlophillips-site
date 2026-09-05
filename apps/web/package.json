@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@clerk/nextjs": "7.7.5",
     "@mux/mux-player-react": "^3.11.0",
     "@mux/mux-video": "0.31.2",
     "@next/env": "15.5.21",

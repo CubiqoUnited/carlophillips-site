@@ -6,7 +6,9 @@ The public storefront is Shopify-authoritative. Product and catalog routes read
 current Shopify product data; checkout re-reads the product, resolves the
 submitted opaque selection to a current available S/M/L variant, creates a
 Shopify cart, and accepts only a trusted HTTPS Shopify checkout URL. Vercel
-Preview uses a separate Shopify staging/development store with test payments.
+Preview uses a separate Shopify staging/development store and mimics the
+Production hosted-checkout handoff without entering payment or submitting an
+order.
 
 Product Release Records, fingerprints, sample state, approval JSON, and
 Draft/Staged/Approved/Released transitions are non-runtime historical audit

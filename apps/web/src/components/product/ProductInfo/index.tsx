@@ -181,7 +181,9 @@ export function CommerceProductDetail({
             mediaReview={product.mediaReview}
             customerFacing={liveProduct}
             productTitle={product.title}
+            productHref={`/product/${product.handle}`}
             productOnly
+            purchaseLabel={`ADD TO BAG - ${formatPrice(product.price, product.currency)}`}
           />
         </div>
         <div className="cp-commerce-buy-column flex items-start px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
@@ -195,19 +197,6 @@ export function CommerceProductDetail({
                 'Product details are currently unavailable.'}
             </p>
 
-            {attributes.length > 0 && (
-              <dl
-                className="cp-product-attributes mt-8"
-                aria-label="Product attributes"
-              >
-                {attributes.map(([label, value]) => (
-                  <div key={`${label}-${value}`}>
-                    <dt>{label}</dt>
-                    <dd>{value}</dd>
-                  </div>
-                ))}
-              </dl>
-            )}
             <p className="cp-product-price cp-text-copy mt-7 text-2xl font-light">
               {formatPrice(product.price, product.currency)}
             </p>
@@ -221,33 +210,6 @@ export function CommerceProductDetail({
               />
             ) : (
               <VariantPresentation presentation={product.variantPresentation} />
-            )}
-
-            {product.colors.length > 0 && (
-              <div className="cp-variant-list mt-10 pt-7">
-                <p className="cp-label-small mb-3">Product attributes</p>
-                <p className="cp-text-copy text-sm">
-                  {product.colors.join(', ')}
-                </p>
-              </div>
-            )}
-
-            {product.sizes.length > 0 && (
-              <div className="mt-9">
-                <p className="cp-label-small mb-4">Sizes observed</p>
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-                  {product.sizes.map((size) => (
-                    <button
-                      key={size}
-                      type="button"
-                      disabled
-                      className="cp-choice-disabled h-12 text-xs"
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
             )}
 
             {!liveProduct && (

@@ -13,6 +13,25 @@ import { evaluateCorsRequest } from '@/lib/http/cors-policy';
 export const dynamic = 'force-dynamic';
 const CART_COOKIE = 'cp_shopify_cart';
 
+export async function GET(request: Request) {
+  const cartId = request.headers
+    .get('cookie')
+    ?.match(/(?:^|;\s*)cp_shopify_cart=([^;]+)/)?.[1];
+  const environment = getCommerceEnvironment();
+  try {
+    const cart = await readShopifyCart({
+      cartId: cartId ? decodeURIComponent(cartId) : null,
+      environment,
+    });
+    const count =
+      cart?.lines.edges.reduce((total, { node }) => total + node.quantity, 0) ||
+      0;
+    return NextResponse.json({ count });
+  } catch {
+    return NextResponse.json({ count: 0 }, { status: 503 });
+  }
+}
+
 function originAllowed(request: Request) {
   const url = new URL(request.url);
   const forwardedHost = request.headers.get('x-forwarded-host');
@@ -42,10 +61,11 @@ export async function POST(request: Request) {
         environment,
       });
       if (!cart) throw new Error('SHOPIFY_CART_NOT_FOUND');
-      return NextResponse.redirect(
-        trustedCartCheckoutUrl(cart, environment),
-        303
-      );
+      const checkoutUrl = trustedCartCheckoutUrl(cart, environment);
+      if (request.headers.get('accept')?.includes('application/json')) {
+        return NextResponse.json({ ok: true, checkoutUrl });
+      }
+      return NextResponse.redirect(checkoutUrl, 303);
     }
     let cart;
     if (action === 'update') {
@@ -70,7 +90,17 @@ export async function POST(request: Request) {
         environment,
       });
     }
-    const response = NextResponse.redirect(new URL('/bag', request.url), 303);
+    const wantsJson = request.headers
+      .get('accept')
+      ?.includes('application/json');
+    const count =
+      cart.lines.edges.reduce((total, { node }) => total + node.quantity, 0) ||
+      0;
+    const bagUrl = new URL('/bag', request.url);
+    if (action === 'add') bagUrl.searchParams.set('added', '1');
+    const response = wantsJson
+      ? NextResponse.json({ ok: true, count })
+      : NextResponse.redirect(bagUrl, 303);
     response.cookies.set(CART_COOKIE, cart.id, {
       httpOnly: true,
       sameSite: 'lax',
