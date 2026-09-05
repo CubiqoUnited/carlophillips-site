@@ -313,6 +313,12 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   const unexpectedHttpFailures = httpFailures.filter(
     (failure) => !previewToolbarProbes.includes(failure)
   );
+  const cartEndpoint = `${new URL(process.env.CP_RELEASE_GATE_BASE_URL!).origin}/api/cart`;
+  const expectedCartAbortConsoleErrors = consoleErrors.filter(
+    (error) =>
+      error.startsWith('Failed to load resource: net::ERR_FAILED') &&
+      error.endsWith(cartEndpoint)
+  );
   const resourceConsoleErrors = consoleErrors.filter((error) =>
     error.startsWith(
       'Failed to load resource: the server responded with a status of 400'
@@ -321,7 +327,13 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   const unexpectedConsoleErrors = consoleErrors.filter(
     (error) =>
       !resourceConsoleErrors.includes(error) &&
+      !expectedCartAbortConsoleErrors.includes(error) &&
       !error.includes('manifestIncompatibleCodecsError')
+  );
+  const expectedCartNetworkAborts = networkFailures.filter(
+    (failure) =>
+      failure.startsWith(`POST ${cartEndpoint} fetch `) &&
+      failure.endsWith('net::ERR_FAILED')
   );
   const expectedPreviewNetworkAborts = networkFailures.filter(
     (failure) =>
@@ -332,12 +344,16 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
       )
   );
   const unexpectedNetworkFailures = networkFailures.filter(
-    (failure) => !expectedPreviewNetworkAborts.includes(failure)
+    (failure) =>
+      !expectedPreviewNetworkAborts.includes(failure) &&
+      !expectedCartNetworkAborts.includes(failure)
   );
   expect(axe.violations).toEqual([]);
   expect(unexpectedHttpFailures).toEqual([]);
   expect(unexpectedConsoleErrors).toEqual([]);
   expect(resourceConsoleErrors).toHaveLength(previewToolbarProbes.length);
+  expect(expectedCartAbortConsoleErrors).toHaveLength(2);
+  expect(expectedCartNetworkAborts).toHaveLength(2);
   expect(unexpectedNetworkFailures).toEqual([]);
 
   const productImage = testInfo.outputPath('01-shopify-product-sml.png');
