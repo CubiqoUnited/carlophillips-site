@@ -1555,10 +1555,9 @@ mux-video.cp-product-motion-video {
     letter-spacing: var(--cp-tracking-action);
     text-transform: uppercase;
     border-radius: var(--cp-component-action-radius);
-    transition:
-      background var(--cp-duration-standard) var(--cp-ease-standard),
-      border-color var(--cp-duration-standard) var(--cp-ease-standard),
-      color var(--cp-duration-standard) var(--cp-ease-standard);
+    /* Foreground/background swaps stay atomic so hover never crosses an
+       inaccessible midpoint; the outline retains its border transition. */
+    transition: border-color var(--cp-duration-standard) var(--cp-ease-standard);
   }
 
   .cp-action-outline {
