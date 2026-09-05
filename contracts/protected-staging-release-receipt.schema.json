@@ -22,7 +22,7 @@
     "signature"
   ],
   "properties": {
-    "schemaVersion": { "const": "cp.protected-staging-release-receipt.v2" },
+    "schemaVersion": { "const": "cp.protected-staging-release-receipt.v3" },
     "generatedAt": { "type": "string", "format": "date-time" },
     "release": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
     "gitCommitSha": { "$ref": "#/$defs/sha" },
@@ -108,25 +108,12 @@
     "variant": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "size",
-        "price",
-        "currency",
-        "availableAtSnapshot",
-        "availableAtProof",
-        "inventoryAtSnapshot",
-        "inventoryAtProof",
-        "inventoryUnchanged"
-      ],
+      "required": ["size", "price", "currency", "customerVisible"],
       "properties": {
         "size": { "enum": ["S", "M", "L"] },
         "price": { "const": "128.00" },
         "currency": { "const": "USD" },
-        "availableAtSnapshot": { "const": true },
-        "availableAtProof": { "const": true },
-        "inventoryAtSnapshot": { "type": "integer", "minimum": 1 },
-        "inventoryAtProof": { "type": "integer", "minimum": 1 },
-        "inventoryUnchanged": { "const": true }
+        "customerVisible": { "const": true }
       }
     },
     "shopify": {

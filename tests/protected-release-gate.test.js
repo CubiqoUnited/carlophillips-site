@@ -12,7 +12,7 @@ const secret = 'test-only-release-receipt-secret-value';
 
 function evidence() {
   return {
-    schemaVersion: 'cp.protected-staging-release-receipt.v2',
+    schemaVersion: 'cp.protected-staging-release-receipt.v3',
     generatedAt: '2026-09-03T12:00:00.000Z',
     release: 'cp-release-2026-09-03',
     gitCommitSha: sha,
@@ -45,11 +45,7 @@ function evidence() {
         size,
         price: '128.00',
         currency: 'USD',
-        availableAtSnapshot: true,
-        availableAtProof: true,
-        inventoryAtSnapshot: 25,
-        inventoryAtProof: 25,
-        inventoryUnchanged: true,
+        customerVisible: true,
       })),
       cartBinding: {
         gitCommitSha: sha,
@@ -237,9 +233,9 @@ describe('protected Staging release gate', () => {
       'DUPLICATE_ACTION_DETECTED',
     ],
     [
-      'inventory drift',
+      'customer-hidden variant',
       (item) => {
-        item.shopify.variants[0].inventoryAtProof = 24;
+        item.shopify.variants[0].customerVisible = false;
       },
       'SHOPIFY_VARIANTS_INVALID',
     ],

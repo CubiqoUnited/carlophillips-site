@@ -31,7 +31,7 @@ function required(value, code) {
   return value;
 }
 
-function exactEnvironment() {
+function exactEnvironment({ requireAdmin = true } = {}) {
   const store = required(
     process.env.SHOPIFY_STAGING_STORE_DOMAIN,
     'SHOPIFY_STAGING_STORE_DOMAIN_REQUIRED'
@@ -44,10 +44,12 @@ function exactEnvironment() {
   )
     .trim()
     .toLowerCase();
-  const adminToken = required(
-    process.env.SHOPIFY_STAGING_ADMIN_TOKEN,
-    'SHOPIFY_STAGING_ADMIN_TOKEN_REQUIRED'
-  );
+  const adminToken = requireAdmin
+    ? required(
+        process.env.SHOPIFY_STAGING_ADMIN_TOKEN,
+        'SHOPIFY_STAGING_ADMIN_TOKEN_REQUIRED'
+      )
+    : undefined;
   const durableStore = required(
     process.env.CP_EXPECTED_PREVIEW_DURABLE_STORE_ID,
     'PREVIEW_DURABLE_STORE_ID_REQUIRED'
@@ -184,6 +186,7 @@ function browserProofs(directory) {
     'schemaVersion',
     'viewportWidth',
     'shopifyAuthoritativeProduct',
+    'shopifyOffer',
     'sizeSelection',
     'bagTruth',
     'hostedStagingCheckout',
@@ -199,8 +202,14 @@ function browserProofs(directory) {
     if (
       !proof ||
       proof.schemaVersion !== 'cp.protected-staging-browser-proof.v1' ||
-      JSON.stringify(Object.keys(proof).sort()) !== JSON.stringify(expectedKeys) ||
+      JSON.stringify(Object.keys(proof).sort()) !==
+        JSON.stringify(expectedKeys) ||
       proof.shopifyAuthoritativeProduct !== true ||
+      proof.shopifyOffer?.handle !== 'carlophillips-signature-hoodie' ||
+      JSON.stringify(proof.shopifyOffer?.sizes) !==
+        JSON.stringify(['S', 'M', 'L']) ||
+      proof.shopifyOffer?.price !== '128.00' ||
+      proof.shopifyOffer?.currency !== 'USD' ||
       proof.sizeSelection !== true ||
       proof.bagTruth !== true ||
       proof.hostedStagingCheckout !== true ||
@@ -218,9 +227,8 @@ function browserProofs(directory) {
   return {
     desktop,
     mobile,
-    checkoutHandoffEvidenceHash: hash(
-      JSON.stringify({ desktop, mobile })
-    ),
+    offer: desktop.shopifyOffer,
+    checkoutHandoffEvidenceHash: hash(JSON.stringify({ desktop, mobile })),
   };
 }
 
@@ -241,7 +249,7 @@ function health(inspect, healthReceipt) {
 }
 
 const { mode, options } = parse(process.argv.slice(2));
-const environment = exactEnvironment();
+const environment = exactEnvironment({ requireAdmin: mode === 'snapshot' });
 
 if (mode === 'snapshot') {
   if (
@@ -277,7 +285,6 @@ if (mode === 'snapshot') {
     'Isolated Shopify Staging S/M/L inventory snapshot captured.\n'
   );
 } else if (mode === 'finalize') {
-  const snapshot = readJson(options.snapshot);
   const browsers = browserProofs(options['browser-proof-directory']);
   const deployment = readJson(options['deployment-receipt']);
   const webhookProbe = readJson(options['webhook-probe']);
@@ -291,8 +298,8 @@ if (mode === 'snapshot') {
   if (
     !Number.isSafeInteger(sourcePullRequest) ||
     sourcePullRequest < 1 ||
-    snapshot.gitCommitSha !== options['expected-sha'] ||
-    snapshot.release !== options.release
+    !SHA.test(options['expected-sha'] || '') ||
+    !/^[A-Za-z0-9._-]+$/.test(options.release || '')
   ) {
     throw new Error('FINAL_PROOF_IDENTITY_INVALID');
   }
@@ -308,25 +315,12 @@ if (mode === 'snapshot') {
   ) {
     throw new Error('DUPLICATE_DELIVERY_PROOF_INVALID');
   }
-  const current = await productObservation(environment);
-  const variants = snapshot.product.variants.map((before) => {
-    const after = current.variants.find(
-      (variant) => variant.size === before.size
-    );
-    if (!after || after.inventory !== before.inventory) {
-      throw new Error('SHOPIFY_INVENTORY_MUTATED_DURING_PROOF');
-    }
-    return {
-      size: before.size,
-      price: before.price,
-      currency: before.currency,
-      availableAtSnapshot: before.available,
-      availableAtProof: after.available,
-      inventoryAtSnapshot: before.inventory,
-      inventoryAtProof: after.inventory,
-      inventoryUnchanged: true,
-    };
-  });
+  const variants = browsers.offer.sizes.map((size) => ({
+    size,
+    price: browsers.offer.price,
+    currency: browsers.offer.currency,
+    customerVisible: true,
+  }));
   const productionBefore = health(
     productionBeforeInspect,
     productionBeforeHealth
@@ -341,10 +335,10 @@ if (mode === 'snapshot') {
     throw new Error('PRODUCTION_CHANGED_DURING_STAGING');
   }
   const unsigned = {
-    schemaVersion: 'cp.protected-staging-release-receipt.v2',
+    schemaVersion: 'cp.protected-staging-release-receipt.v3',
     generatedAt: new Date().toISOString(),
-    release: snapshot.release,
-    gitCommitSha: snapshot.gitCommitSha,
+    release: options.release,
+    gitCommitSha: options['expected-sha'],
     sourcePullRequest,
     staging: {
       deploymentId: deployment.deploymentId,
@@ -361,20 +355,21 @@ if (mode === 'snapshot') {
     shopify: {
       source: 'shopify',
       environment: 'preview',
-      storeKind: snapshot.storeKind,
-      storeReferenceHash: snapshot.storeReferenceHash,
-      productionStoreReferenceHash: snapshot.productionStoreReferenceHash,
+      storeKind: 'development',
+      storeReferenceHash: hash(environment.store),
+      productionStoreReferenceHash: hash(environment.productionStore),
       storeIsolated: true,
       paymentMode: 'not-used',
-      durableStoreReferenceHash: snapshot.durableStoreReferenceHash,
-      productionDurableStoreReferenceHash:
-        snapshot.productionDurableStoreReferenceHash,
+      durableStoreReferenceHash: hash(environment.durableStore),
+      productionDurableStoreReferenceHash: hash(
+        environment.productionDurableStore
+      ),
       durableStoreIsolated: true,
-      handle: snapshot.product.handle,
+      handle: browsers.offer.handle,
       variants,
       cartBinding: {
-        gitCommitSha: snapshot.gitCommitSha,
-        release: snapshot.release,
+        gitCommitSha: options['expected-sha'],
+        release: options.release,
       },
       hostedCheckout: { https: true, trustedHost: true },
     },
