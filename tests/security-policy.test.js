@@ -8,6 +8,8 @@ import { DELETE, GET, OPTIONS, POST } from '../app/api/[[...path]]/route';
 
 const originalCorsOrigins = process.env.CORS_ORIGINS;
 const originalVercelEnvironment = process.env.VERCEL_ENV;
+const originalCommerceEnvironment =
+  process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT;
 
 afterEach(() => {
   if (originalCorsOrigins === undefined) delete process.env.CORS_ORIGINS;
@@ -15,6 +17,11 @@ afterEach(() => {
 
   if (originalVercelEnvironment === undefined) delete process.env.VERCEL_ENV;
   else process.env.VERCEL_ENV = originalVercelEnvironment;
+
+  if (originalCommerceEnvironment === undefined)
+    delete process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT;
+  else
+    process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT = originalCommerceEnvironment;
 });
 
 describe('page response security policy', () => {
@@ -24,6 +31,7 @@ describe('page response security policy', () => {
 
   it('denies framing and does not attach global wildcard CORS', async () => {
     delete process.env.VERCEL_ENV;
+    delete process.env.NEXT_PUBLIC_COMMERCE_ENVIRONMENT;
     const [{ headers }] = await nextConfig.headers();
     const values = Object.fromEntries(
       headers.map(({ key, value }) => [key, value])
