@@ -281,10 +281,21 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(page.locator('.cp-bag-stepper output')).toHaveText('2');
   await page.getByRole('button', { name: 'Decrease quantity' }).click();
   await expect(page.getByRole('link', { name: /^Bag \(1\)$/i })).toBeVisible();
+  const removeResponsePromise = page.waitForResponse(
+    (response) =>
+      response.request().method() === 'POST' &&
+      new URL(response.url()).pathname === '/api/cart'
+  );
   await page.getByRole('button', { name: 'Remove', exact: true }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Your bag is empty.' })
-  ).toBeVisible();
+  const removeResponse = await removeResponsePromise;
+  expect(removeResponse.ok(), 'Shopify remove mutation must succeed').toBe(
+    true
+  );
+  await expect(removeResponse.json()).resolves.toMatchObject({
+    ok: true,
+    count: 0,
+  });
+  await expect(page.getByRole('link', { name: /^Bag \(0\)$/i })).toBeVisible();
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(
     page.getByRole('heading', { name: 'Your bag is empty.' })
