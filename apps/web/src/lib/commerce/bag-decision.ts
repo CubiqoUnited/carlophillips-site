@@ -11,6 +11,17 @@ interface ActivationDecision {
   reason?: string;
 }
 
+export function resolveStorefrontBagStatus({
+  available,
+  lineCount,
+}: {
+  available: boolean;
+  lineCount: number;
+}): 'unavailable' | 'empty' | 'ready' {
+  if (!available) return 'unavailable';
+  return lineCount > 0 ? 'ready' : 'empty';
+}
+
 export function resolveBagDecision({
   environment,
   activationDecision,

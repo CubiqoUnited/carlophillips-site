@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { resolveBagDecision } from '../lib/commerce/bag-decision';
+import { resolveStorefrontBagStatus } from '../apps/web/src/lib/commerce/bag-decision';
 
 const unavailableActivation = {
   cartAllowed: false,
@@ -12,6 +13,18 @@ const readyActivation = {
 };
 
 describe('bag decisions', () => {
+  it('treats a retained Shopify cart with zero lines as empty', () => {
+    expect(resolveStorefrontBagStatus({ available: true, lineCount: 0 })).toBe(
+      'empty'
+    );
+    expect(resolveStorefrontBagStatus({ available: true, lineCount: 1 })).toBe(
+      'ready'
+    );
+    expect(resolveStorefrontBagStatus({ available: false, lineCount: 0 })).toBe(
+      'unavailable'
+    );
+  });
+
   it('uses a visibly non-commerce local preview when cart access is unverified', () => {
     expect(
       resolveBagDecision({
