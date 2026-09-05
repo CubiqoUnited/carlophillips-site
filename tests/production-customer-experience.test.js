@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createAnalyticsEvent } from '../lib/analytics/event-contract.js';
 import {
   canLoadAnalytics,
@@ -11,13 +11,39 @@ import robots from '../app/robots.js';
 import sitemap from '../app/sitemap.js';
 
 describe('production customer experience authority', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it('has exactly one tracked robots implementation', () => {
     expect(existsSync('app/robots.js')).toBe(true);
     expect(existsSync('public/robots.txt')).toBe(false);
   });
 
   it('keeps non-production environments uncrawlable', () => {
+    vi.stubEnv('NEXT_PUBLIC_COMMERCE_ENVIRONMENT', 'preview');
     expect(robots()).toEqual({ rules: [{ userAgent: '*', disallow: '/' }] });
+  });
+
+  it('publishes approved storefront routes in production', () => {
+    vi.stubEnv('NEXT_PUBLIC_COMMERCE_ENVIRONMENT', 'production');
+    expect(robots()).toEqual({
+      rules: [
+        {
+          userAgent: '*',
+          allow: ['/', '/shop', '/collections'],
+          disallow: [
+            '/api/',
+            '/admin/',
+            '/products/',
+            '/privacy',
+            '/terms',
+            '/cookie-policy',
+          ],
+        },
+      ],
+      sitemap: 'https://www.carlophillips.com/sitemap.xml',
+    });
   });
 
   it('uses deterministic sitemap evidence and excludes unreleased products', () => {
