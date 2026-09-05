@@ -145,20 +145,23 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           vercel inspect "$CANDIDATE" --wait --timeout=5m --format=json --token="$VERCEL_TOKEN" > candidate-inspect.json
+          vercel api "/v13/deployments/$CANDIDATE?teamId=$VERCEL_ORG_ID" --token="$VERCEL_TOKEN" > candidate-api.json
           vercel inspect "$PREVIOUS" --format=json --token="$VERCEL_TOKEN" > previous-production-inspect.json
           vercel inspect www.carlophillips.com --format=json --token="$VERCEL_TOKEN" > production-before.json
           node - <<'NODE'
           const fs = require('node:fs');
           const candidate = JSON.parse(fs.readFileSync('candidate-inspect.json', 'utf8'));
+          const candidateApi = JSON.parse(fs.readFileSync('candidate-api.json', 'utf8'));
           const previous = JSON.parse(fs.readFileSync('previous-production-inspect.json', 'utf8'));
           const live = JSON.parse(fs.readFileSync('production-before.json', 'utf8'));
           if (candidate.readyState !== 'READY') throw new Error('CANDIDATE_NOT_READY');
+          if (candidateApi.id !== candidate.id) throw new Error('CANDIDATE_API_ID_MISMATCH');
           if (previous.readyState !== 'READY') throw new Error('ROLLBACK_ANCHOR_NOT_READY');
           if (previous.id !== live.id) throw new Error('PRODUCTION_DRIFT_DETECTED');
-          if (candidate.meta?.cpGitCommitSha !== process.env.EXPECTED_SHA) throw new Error('CANDIDATE_SHA_MISMATCH');
-          if (candidate.meta?.cpRelease !== process.env.RELEASE) throw new Error('CANDIDATE_RELEASE_MISMATCH');
-          if (candidate.meta?.cpArtifactKind !== 'staged-production') throw new Error('CANDIDATE_ROLE_MISMATCH');
-          if (candidate.meta?.cpCheckoutEnabled !== 'true') throw new Error('CANDIDATE_CHECKOUT_DISABLED');
+          if (candidateApi.meta?.cpGitCommitSha !== process.env.EXPECTED_SHA) throw new Error('CANDIDATE_SHA_MISMATCH');
+          if (candidateApi.meta?.cpRelease !== process.env.RELEASE) throw new Error('CANDIDATE_RELEASE_MISMATCH');
+          if (candidateApi.meta?.cpArtifactKind !== 'staged-production') throw new Error('CANDIDATE_ROLE_MISMATCH');
+          if (candidateApi.meta?.cpCheckoutEnabled !== 'true') throw new Error('CANDIDATE_CHECKOUT_DISABLED');
           NODE
           node scripts/verify-checkout-health.mjs --url https://www.carlophillips.com --output production-before-health.json
 
@@ -227,7 +230,7 @@ jobs:
 
       - name: Restore previous verified checkout-enabled deployment
         id: rollback
-        if: always() && (steps.promotion.outcome != 'success' || steps.verification.outcome != 'success' || steps.receipt.outcome != 'success' || steps.receipt_upload.outcome != 'success')
+        if: always() && steps.promotion.outcome != 'skipped' && (steps.promotion.outcome != 'success' || steps.verification.outcome != 'success' || steps.receipt.outcome != 'success' || steps.receipt_upload.outcome != 'success')
         env:
           PREVIOUS: ${{ inputs.previous_checkout_enabled_deployment }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
