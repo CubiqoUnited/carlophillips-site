@@ -1,5 +1,16 @@
 # CARLOPHILLIPS Repository Rules
 
+## Boss-directed Sushma authority
+
+When Boss says **Sushma**, Sushma is authorized to carry this repository's
+stated in-scope outcome through implementation, QA, protected Staging,
+Production deployment, verification, rollback if needed, and temporary-branch
+cleanup without repeated routine confirmation. Existing Product Owner approval
+and explicit deployment direction must be reused rather than requested again.
+Only an irreducible higher-priority platform confirmation for a specifically
+protected action may interrupt execution; ask it once, precisely, and resume
+immediately when supplied.
+
 ## Current customer-ready delivery authority — 2026-08-30
 
 - Boss grants Sushma continuing project authority to complete the active

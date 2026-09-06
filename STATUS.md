@@ -1,5 +1,36 @@
 # Current Status
 
+## Production release and governance reconciliation — 2026-09-06
+
+- Protected Staging completed successfully for exact
+  `staging@60b53ec4fe2490ac9da0845161af7f439d01be95` in runs `33995131062`
+  and `33997642823`. Repository verification, Shopify S/M/L and USD 128
+  customer-path checks, desktop/mobile accessibility and screenshot checks,
+  sanitized no-order checkout handoff, Production-health comparison, and the
+  signed release receipt passed.
+- PR #113 promoted that exact Staging tree to
+  `main@f814965730a42df481a7bf367ca8306cd1e4ce46`. `main` and `staging`
+  have identical Git trees. CI, Production candidate run `33997966312`, and
+  protected Production promotion run `34000897392` passed. Production and
+  Staging return HTTP 200; rollback was prepared but not required.
+- Production and Staging GitHub environments each have the authenticated
+  Product Owner as required reviewer. Staging deployments are restricted to
+  the `staging` branch.
+- Repository governance remains incomplete: GitHub has no ruleset or legacy
+  branch protection for `main` or `staging`, Production is not restricted to
+  `main`, and automatic merged-branch deletion is disabled. The authenticated
+  delivery account has write but not admin permission; exact API attempts were
+  rejected with HTTP 403/404. The required administrator action is recorded at
+  the top of `reports/HUMAN_INTERVENTION_STICKY_RED.md`.
+- Storefront and hosted-checkout handoff are verified without payment or order
+  submission. Settlement, POD fulfilment, tracking, support, and returns remain
+  outside the evidence and must not be described as end-to-end complete.
+- The canonical `/Users/edv/Documents/cp` checkout remains intentionally
+  untouched because it contains user-owned uncommitted governance changes and
+  approximately 373 MB of untracked historical QA evidence. Governance work is
+  isolated in a clean temporary worktree until those files can be reconciled
+  without loss.
+
 Status authority is newest-first. The current 2026-09-04 no-order and
 provenance sections supersede conflicting statements in every older section.
 Older payment/order evidence and same-SHA descriptions are historical context
