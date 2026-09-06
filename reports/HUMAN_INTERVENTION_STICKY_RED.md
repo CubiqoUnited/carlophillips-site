@@ -1,4 +1,38 @@
-# CURRENT — RELEASE-GATE OWNER ACTIONS AFTER FAIL-CLOSED CORRECTION
+# CURRENT — REPOSITORY ADMIN GOVERNANCE REQUIRED
+
+Updated: 2026-09-06 EDT
+
+Production release `main@f814965730a42df481a7bf367ca8306cd1e4ce46`
+passed protected Staging, signed release proof, PR checks, Production candidate,
+protected promotion, checkout-health, and rollback-anchor verification. Its Git
+tree is identical to `staging@60b53ec4fe2490ac9da0845161af7f439d01be95`.
+
+The authenticated delivery account `avloy07-eng` has repository **write**, not
+**admin**, permission. Attempts to apply branch protection, Production branch
+restriction, and automatic merged-branch deletion through the GitHub API were
+rejected with HTTP 403/404. No bypass was attempted.
+
+Exact administrator action:
+
+1. Open GitHub → `CubiqoUnited/carlophillips-site` → Settings → Rules →
+   Rulesets. Protect both `main` and `staging` and require a pull request with
+   one approval, resolved conversations, branches up to date, `Verify`, and
+   `Checkout E2E and accessibility`. Block force-push and deletion, including
+   for administrators.
+2. Open Settings → Environments → Production. Retain the existing required
+   Product Owner reviewer and restrict deployment branches to `main` only.
+3. Open Settings → General → Pull Requests. Enable automatic deletion of
+   head branches after merge.
+4. Signal completion with `CP repository governance applied`.
+
+Cost: none intended. Risk: incorrect required-check names can block all merges;
+use the exact names above. These controls affect future merges and deployments
+but do not alter the currently healthy Production deployment. Do not remove the
+existing Staging or Production required reviewer.
+
+---
+
+# SUPERSEDED — RELEASE-GATE OWNER ACTIONS AFTER FAIL-CLOSED CORRECTION
 
 Updated: 2026-09-04 EDT
 
