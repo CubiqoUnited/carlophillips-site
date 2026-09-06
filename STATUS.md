@@ -2,6 +2,14 @@
 
 ## Production release and governance reconciliation — 2026-09-06
 
+- Governance PR #114 passed `Verify` and `Checkout E2E and accessibility` and
+  merged to `staging@33b7eeae5e051e3df94a6321f49580af73e1b047`.
+  Protected Staging run `34014134514` passed the exact-SHA, repository, test,
+  build, accessibility, and browser checks, then failed safely before build or
+  deployment at `vercel pull`: the encrypted Staging Vercel credential cannot
+  access the configured canonical team. Staging and Production aliases were
+  unchanged. The exact credential reauthorization is recorded in the human
+  intervention report; promotion to `main` remains paused until Staging passes.
 - Protected Staging completed successfully for exact
   `staging@60b53ec4fe2490ac9da0845161af7f439d01be95` in runs `33995131062`
   and `33997642823`. Repository verification, Shopify S/M/L and USD 128

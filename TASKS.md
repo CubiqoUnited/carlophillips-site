@@ -2,6 +2,16 @@
 
 ## Delivery governance closeout — 2026-09-06
 
+- [x] Merge governance PR #114 to
+      `staging@33b7eeae5e051e3df94a6321f49580af73e1b047` after green `Verify`
+      and `Checkout E2E and accessibility` checks; delete its remote branch.
+- [ ] Reauthorize the encrypted GitHub Staging `VERCEL_TOKEN` for the canonical
+      Cubiqo Vercel team and rerun protected Staging `34014134514` inputs. The
+      first attempt passed repository/QA checks and failed safely before
+      deployment with `scope-not-accessible`.
+- [ ] After exact protected Staging succeeds, promote the identical governance
+      tree through a reviewed `staging`-to-`main` PR and delete temporary
+      branches. Do not bypass the protected workflow.
 - [x] Verify `origin/main@f814965730a42df481a7bf367ca8306cd1e4ce46`
       and `origin/staging@60b53ec4fe2490ac9da0845161af7f439d01be95`
       have identical Git trees.
