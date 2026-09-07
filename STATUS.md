@@ -12,10 +12,10 @@
   `dpl_26T9f1b3jBex26zajTJyvEgHoJbS`; the authenticated Vercel deployment record
   identifies source commit `f814965730a42df481a7bf367ca8306cd1e4ce46` in
   `CubiqoUnited/carlophillips-site`.
-- Governance PR #116 is open against canonical `staging`. Exact head
-  `42c942b382e0290effb702a7f388da7f4b1b2775` passes `Verify` and
-  `Checkout E2E and accessibility` and is blocked only on the required
-  independent approval. It is not deployed.
+- Governance PR #116 is open against canonical `staging`. Its latest remote
+  head must pass `Verify` and `Checkout E2E and accessibility` and is blocked
+  on the required independent approval. It is not deployed; GitHub is the
+  authority for its changing candidate SHA and latest-head checks.
 - Support/customer-account PR #117 is open against canonical `staging`. Exact
   head `eb7590e6563ed5f58d3baa2b1c7a7910d0c853f1` passes both required checks
   and remains review-blocked. Production Watch/webhook-recovery PR #118 and
@@ -29,6 +29,10 @@
 - Phase 1 remains active. No current controlled payment/order, Apliiq
   production-to-tracking lifecycle, monitored support receipt, native account/
   returns drill, or complete Production monitoring/reconciliation proof exists.
+- The 2026-09-07 executability audit proves PR #116 is not a runtime dependency
+  for #117/#118. It resumed the representative exception tabletop and a safe
+  Staging cart/checkout probe; the latter reached the dedicated Shopify Staging
+  store password gate without payment, order, customer data or provider action.
 
 This section is the current baseline and supersedes older branch/deployment or
 capability statements below when they conflict.

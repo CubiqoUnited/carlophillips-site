@@ -5,8 +5,8 @@
 - [x] Reconfirm canonical deployed provenance: Staging is READY at exact
       `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`; Production is READY at exact
       `f814965730a42df481a7bf367ca8306cd1e4ce46`; both public routes return 200.
-- [x] Prepare governance PR #116 and pass both required checks on exact head
-      `42c942b382e0290effb702a7f388da7f4b1b2775`.
+- [x] Prepare governance PR #116 and pass both required checks before the
+      executability audit; require the same checks again on every later head.
 - [ ] Independent reviewer approves PR #116; then merge to `staging`, run the
       protected Staging workflow, verify the canonical alias and promote the
       identical approved governance state through the normal protected path.
@@ -37,6 +37,9 @@
 - [ ] Complete Pushpa-accepted cancellation, return, refund, replacement,
       fulfillment-delay and missing-tracking operational drills, then reconcile
       every Phase 1 exit criterion before closure.
+- [x] Audit every remaining Phase 1 tranche without assuming #116 is a global
+      dependency; resume the non-live exception tabletop and safely prove that
+      current Staging checkout reaches the separate Shopify password gate.
 
 The Human Intervention Queue is authoritative for each blocked owner, trigger
 and exact resume point. Continue non-conflicting safe work when one row is
