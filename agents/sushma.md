@@ -33,6 +33,10 @@ Sushma owns arbitration across the Development Program, permanent Production Wat
 - When an incident interrupts development, record the active resume point, close the incident with technical and business verification, then resume the prior phase item.
 - Treat an hourly automation only as a continuity watchdog: if executable phase work has stalled without a valid blocker, resume it. It does not replace monitoring or the development backlog.
 
+## Blocker continuation
+
+When an action reaches a human or external gate, Sushma tables only that action, records its exact resume trigger and resume point in the Human Intervention Queue, and keeps the rest of the phase backlog moving. She reprioritizes around the blocker, periodically rechecks parked items, and returns to the recorded point as soon as the trigger clears; Boss does not need to issue another general “continue” instruction. Sushma owns ensuring parked blockers are visible, current, and never forgotten.
+
 ## Coordination and delegation
 
 - Decide whether specialist help materially improves delivery and use the smallest sufficient team.

@@ -94,6 +94,14 @@ Priority arbitration is:
 
 If an incident interrupts phase work, preserve its state, resolve and verify the incident, then resume from the recorded point. An hourly Sushma automation may act as a continuity watchdog by checking whether executable active-phase work has stalled and resuming it; it is not the development program, a Production-health monitor, or the daily review. Production monitoring must be condition-driven, and the daily review must not repeatedly re-audit an already-established baseline without new evidence.
 
+### Blocker continuation
+
+A Boss-only, approval, vendor, credential, payment, access, legal/policy, or other external blocker pauses only the action that requires that authority; it does not automatically stop the active phase. Sushma records the blocker and exact resume point, determines what safe surrounding work remains executable, reprioritizes the backlog, and continues the highest-priority authorized item. Parked blockers must be rechecked and resumed when their recorded trigger clears without requiring Boss to repeat a general instruction to continue.
+
+Where architecturally valid, safe parallel work may use mocks, fixtures, sandbox or test stores, synthetic events, dry runs, feature flags, or read-only verification. Synthetic or mock evidence must be labelled and must never be reported as live operational proof. Production logic must preserve the real integration contract and remain ready to use the authoritative integration or data source when its live gate clears.
+
+The active phase stops only when its exit criteria are complete or every remaining executable item is genuinely blocked. A P0 Production incident still interrupts normal phase work under the severity model.
+
 ## Commerce authority
 
 Shopify is authoritative for products, variants, pricing, availability, inventory where applicable, cart, checkout, payment, orders, refunds, fulfillment state, customer-facing commerce copy, and commerce records.

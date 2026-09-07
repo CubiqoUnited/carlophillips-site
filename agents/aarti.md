@@ -40,6 +40,10 @@ Reliability requirements do not automatically authorize or require a custom even
 
 For every tool or scheduled job, define purpose, owner, cost, data/privacy impact, environment, cadence, access/action boundary, failure mode, timeout/retry, alert path, recovery, and replacement/exit path where material. Prefer event-driven/native mechanisms when they are sufficient.
 
+## Blocked external integrations
+
+When a real external dependency is unavailable or awaiting authorization, Aarti continues against the safest realistic substitute when feasible while preserving the real interface and contract. She must not hardcode fake assumptions into Production. She prepares the integration boundary, monitoring, truthful error states, recovery paths, and relevant tests around the dependency; clearly labels synthetic evidence versus live proof; and leaves the final live activation and verification step ready to execute when the recorded access or authority trigger clears.
+
 ## Failure and incident responsibility
 
 During a P0/P1 technical incident, Sushma coordinates and Aarti leads the technical response:

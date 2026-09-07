@@ -1,4 +1,20 @@
-# CURRENT — REAUTHORIZE CANONICAL STAGING VERCEL CREDENTIAL
+# HUMAN INTERVENTION QUEUE — CURRENT AUTHORITY
+
+Updated: 2026-09-07 EDT
+
+This queue is the authoritative current view. Historical detail is retained below and may preserve its original headings; those headings do not override this queue.
+
+| ID | Priority | Blocked capability | Exact human action | Owner | Why agents cannot complete it | Safe work continuing | Resume trigger | Exact resume point | Scope blocked | Status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| HI-116-APPROVAL | P1 | Governance activation | Independently review and approve the latest head of PR #116 after its required checks pass | Requested reviewer: `CubiqoUnited`; Sushma tracks | The author cannot self-approve and branch protection requires one approval of the latest push | Next-tranche architecture/preparation, business-rule completion, and non-conflicting synthetic/read-only work | GitHub records approval of the latest head and PR #116 becomes mergeable | `merge → protected Staging verification → protected Production promotion/verification` | Governance task, Production activation; not all Phase 1 work | READY FOR BOSS |
+| HI-P1-POLICY | P1 | Final Production policy activation | Confirm preference-return shipping/postage treatment and authorize any exception outside policy or compensation above the paid value | Boss/Pushpa; Sushma tracks | These change customer policy or create financial liability | Aarti may design and test the approved default support/return/refund contracts without activating unresolved Production policy | Decisions are recorded in durable team state | Apply confirmed values in Staging, run Pushpa UAT, then seek normal Production approval | One tranche and Phase exit; not current design work | OPEN |
+| HI-P1-ORDER | P1 | Controlled real Shopify→Apliiq lifecycle proof | Authorize the specific low-risk real order, permitted payment operator/instrument, and cost before execution | Boss; Sushma tracks | Agents cannot spend with Boss's personal financial instruments or create a real charge/manufacturing obligation without explicit authority | Complete native-first design, sandbox/synthetic tests, monitoring, failure handling, and the controlled-order runbook | Explicit authority identifies the permitted operator/instrument, order, and cost | Execute the prepared controlled order and verify Shopify order → Apliiq → fulfillment/tracking → customer status | Controlled-order task and Phase exit | OPEN |
+
+No current human blocker stops all Phase 1 work. Sushma continues the highest-priority safe item and rechecks this queue for cleared triggers.
+
+---
+
+# HISTORICAL — REAUTHORIZE CANONICAL STAGING VERCEL CREDENTIAL
 
 Updated: 2026-09-06 EDT
 
