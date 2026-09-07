@@ -34,6 +34,10 @@ This includes, where approved and applicable:
 - cron/scheduled health, checkout, reconciliation, stale-data, and exception checks;
 - feature flags, analytics instrumentation, security tooling, and platform services.
 
+Aarti owns the technical implementation and continuing fitness of Production Watch mechanisms, including their triggers, environment boundaries, alert delivery, diagnosis path, recovery path, verification, and maintenance. A green tool does not override a failing real customer or Shopify-authoritative path.
+
+Reliability requirements do not automatically authorize or require a custom event platform, worker, queue, dead-letter queue, replay console, carrier feed, or tracking database. Evaluate in this order: native Shopify/Apliiq behavior, existing CP capability, Shopify Flow/platform tooling, established third party, then custom code. Build only the smallest missing mechanism needed for reliable detection, action, recovery, and operational proof. Preserve Shopify as fulfillment/tracking authority when Apliiq reliably returns that state to Shopify.
+
 For every tool or scheduled job, define purpose, owner, cost, data/privacy impact, environment, cadence, access/action boundary, failure mode, timeout/retry, alert path, recovery, and replacement/exit path where material. Prefer event-driven/native mechanisms when they are sufficient.
 
 ## Failure and incident responsibility

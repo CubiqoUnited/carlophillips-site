@@ -80,6 +80,20 @@ Standard path:
 - Only `main` and `staging` may persist on `origin`. Temporary branches must be removed after verified merge and closure.
 - Destructive maintenance must not be hidden inside routine deployments.
 
+## Coordinated operating loops
+
+CP runs three distinct but coordinated operating loops:
+
+1. **Development program** — complete the active phase against its exit criteria, then move from Phase 1 to Phase 2 to Phase 3. Sushma continuously selects the highest-priority authorized executable item, routes it to the smallest sufficient team, and drives it through requirement, feasibility, implementation, technical verification, QA/UAT, business acceptance, Staging, release, verification, and closure as applicable.
+2. **Production Watch** — a permanent, condition-driven operational loop. Monitors, synthetics, platform alerts, webhooks, cron jobs, and reconciliation checks detect material Production failure or degradation and trigger incident work. Sushma commands the incident, Aarti leads technical recovery, Pushpa owns intended customer/business behavior, and active phase work resumes after verified closure.
+3. **Daily product/operations review** — a permanent scheduled review for emerging P1/P2 issues, customer friction, analytics anomalies, support/fulfillment patterns, stale blockers, bugs, minor enhancements, operational debt, and later merch/growth opportunities. Findings enter the shared backlog and interrupt active delivery only when severity warrants it.
+
+Priority arbitration is:
+
+`P0 Production incident → P1 Production incident → active-phase P0/P1 → remaining phase-required work → P2 bugs/enhancements → cleanup/optimization`
+
+If an incident interrupts phase work, preserve its state, resolve and verify the incident, then resume from the recorded point. An hourly Sushma automation may act as a continuity watchdog by checking whether executable active-phase work has stalled and resuming it; it is not the development program, a Production-health monitor, or the daily review. Production monitoring must be condition-driven, and the daily review must not repeatedly re-audit an already-established baseline without new evidence.
+
 ## Commerce authority
 
 Shopify is authoritative for products, variants, pricing, availability, inventory where applicable, cart, checkout, payment, orders, refunds, fulfillment state, customer-facing commerce copy, and commerce records.
@@ -106,6 +120,8 @@ Evaluation order where practical:
 - Pushpa owns business fit and acceptance.
 - Sushma may challenge cost, complexity, operational burden, priority, or delivery value.
 - Shopify/Apliiq handoff, fulfillment state, tracking, exceptions, and reconciliation require operational verification.
+- A missing CP webhook worker, queue, dead-letter queue, replay console, or carrier database is a capability question, not an automatic implementation requirement. First determine whether Shopify, Apliiq, Shopify Flow/platform tooling, an established third party, or periodic Shopify reconciliation already provides sufficient reliable action, detection, recovery, and evidence.
+- The intended tracking chain is `Apliiq → Shopify fulfillment/tracking → customer`. CP must prove the chain, expose the appropriate customer path, detect missing or stale tracking, and alert Operations; CP should not ingest carrier data or create a second tracking authority unless the native chain is insufficient.
 
 ## Role routing
 
@@ -255,6 +271,8 @@ Testing must match scope and risk. Where applicable, run unit, integration, API,
 
 Critical integrations must account for missing and duplicate requests, unavailable dependencies, partial success, premature acknowledgement, retry, reconciliation, operator alert, safe replay, rollback, and recovery. Critical silent failures are not Production-ready.
 
+These are required operational outcomes, not a mandate that CP custom-build every mechanism. Use the native-first evaluation order and implement custom processing only for demonstrated gaps.
+
 Aarti defines monitoring architecture; Sushma owns operational response. Coverage should include DNS/domain, storefront, product availability, cart, checkout handoff, payment surface, application errors, Shopify webhook ingress and processing, support delivery, paid orders without fulfillment progress, missing tracking, POD failures, release failures, and reconciliation.
 
 Use APIs, webhooks, scheduled checks, synthetic tests, or established monitoring tools when they materially improve reliability. Boss should not need to watch dashboards for routine health.
@@ -270,6 +288,12 @@ Phase 1 remains active until:
 `support + checkout + payment/order + Apliiq handoff + tracking + cancellation/return/refund + monitoring/reconciliation + controlled E2E proof`
 
 are operationally complete and the storefront/product/variant/cart flow is stable.
+
+Controlled E2E proof must establish the native happy path:
+
+`CP storefront → Shopify cart → Shopify payment/order → Apliiq receipt/production/fulfillment → tracking returned to Shopify → customer notification/status`
+
+Representative exception handling must also be proven for support, cancellation, return/refund, fulfillment delay, missing tracking, and webhook/integration failure. One physical order does not need to experience every exception. Use the strongest safe proof appropriate to the path: a controlled real order for the native fulfillment chain, and test-store scenarios, synthetic events, safe simulations, or controlled operational drills where they provide valid evidence for an exception.
 
 While Phase 1 is active, each time Sushma is invoked or an authorized schedule runs, she selects the highest-priority unresolved P0/P1 item within Boss's authorized scope, uses the smallest sufficient team, drives it through requirements, implementation, technical verification, QA/UAT, business verification, approved release, and closure, then moves to the next item when the active authority permits. This is an execution-priority rule, not authorization to create a recurring automation, continue indefinitely in the background, or expand beyond the active task.
 

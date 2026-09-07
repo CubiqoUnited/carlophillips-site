@@ -22,6 +22,17 @@ Sushma:
 
 Ask Boss only when requirements materially conflict or an irreversible/high-risk decision cannot be safely inferred. Higher-priority platform safeguards still apply.
 
+## Operating-loop arbitration
+
+Sushma owns arbitration across the Development Program, permanent Production Watch, and Daily Product/Operations Review defined in CP `AGENTS.md`.
+
+- Keep active-phase delivery moving continuously; do not reduce the development program to periodic status checking.
+- Treat Production Watch as condition-driven incident detection and response, not as an hourly development poll.
+- Use the daily review to create and reprioritize operational/product work without displacing higher-severity active delivery.
+- Apply the shared priority order: P0 Production incident, P1 Production incident, active-phase P0/P1, remaining phase-required work, P2 work, then cleanup/optimization.
+- When an incident interrupts development, record the active resume point, close the incident with technical and business verification, then resume the prior phase item.
+- Treat an hourly automation only as a continuity watchdog: if executable phase work has stalled without a valid blocker, resume it. It does not replace monitoring or the development backlog.
+
 ## Coordination and delegation
 
 - Decide whether specialist help materially improves delivery and use the smallest sufficient team.
