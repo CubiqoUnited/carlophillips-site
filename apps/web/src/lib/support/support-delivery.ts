@@ -13,6 +13,7 @@ type SupportDeliveryResult =
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
+const MAX_DELIVERY_ATTEMPTS = 2;
 
 const topicLabels: Record<SupportTopic, string> = {
   'order-status': 'Order status',
@@ -52,6 +53,30 @@ function supportText(requestId: string, request: SupportRequest): string {
     .join('\n');
 }
 
+function deliveryEnvironment(environment: SupportEnvironment): string {
+  const value = environment.VERCEL_ENV?.trim();
+  return value === 'production' || value === 'preview' || value === 'development'
+    ? value
+    : 'unknown';
+}
+
+function reportDeliveryFailure(
+  requestId: string,
+  reason: 'provider-rejected' | 'provider-unavailable',
+  attempts: number,
+  environment: SupportEnvironment
+) {
+  console.error('cp.support.delivery_failed', {
+    event: 'support_delivery_failed',
+    requestId,
+    reason,
+    attempts,
+    environment: deliveryEnvironment(environment),
+    route: '/api/contact',
+    occurredAt: new Date().toISOString(),
+  });
+}
+
 export async function deliverSupportRequest(
   request: SupportRequest,
   environment: SupportEnvironment = process.env,
@@ -61,27 +86,41 @@ export async function deliverSupportRequest(
   if (!config) return { delivered: false, reason: 'not-configured' };
 
   const requestId = `CP-${crypto.randomUUID().split('-')[0].toUpperCase()}`;
-  try {
-    const response = await fetcher(RESEND_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${config.apiKey}`,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: `CARLOPHILLIPS <${config.from}>`,
-        to: [config.to],
-        reply_to: request.email,
-        subject: `CARLOPHILLIPS support — ${topicLabels[request.topic]}`,
-        text: supportText(requestId, request),
-      }),
-      signal: AbortSignal.timeout(10_000),
-    });
-    if (!response.ok) {
+  for (let attempt = 1; attempt <= MAX_DELIVERY_ATTEMPTS; attempt += 1) {
+    try {
+      const response = await fetcher(RESEND_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${config.apiKey}`,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: `CARLOPHILLIPS <${config.from}>`,
+          to: [config.to],
+          reply_to: request.email,
+          subject: `CARLOPHILLIPS support — ${topicLabels[request.topic]}`,
+          text: supportText(requestId, request),
+        }),
+        signal: AbortSignal.timeout(10_000),
+      });
+      if (response.ok) return { delivered: true, requestId };
+
+      const retryable = response.status === 429 || response.status >= 500;
+      if (retryable && attempt < MAX_DELIVERY_ATTEMPTS) continue;
+
+      reportDeliveryFailure(requestId, 'provider-rejected', attempt, environment);
       return { delivered: false, reason: 'provider-rejected' };
+    } catch {
+      if (attempt < MAX_DELIVERY_ATTEMPTS) continue;
+      reportDeliveryFailure(
+        requestId,
+        'provider-unavailable',
+        attempt,
+        environment
+      );
+      return { delivered: false, reason: 'provider-unavailable' };
     }
-    return { delivered: true, requestId };
-  } catch {
-    return { delivered: false, reason: 'provider-unavailable' };
   }
+
+  return { delivered: false, reason: 'provider-unavailable' };
 }

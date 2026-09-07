@@ -89,13 +89,85 @@ describe('deployed apps/web contact boundary', () => {
     process.env.RESEND_API_KEY = 'configured-test-key';
     process.env.CP_SUPPORT_FROM_EMAIL = 'support@carlophillips.example';
     process.env.CP_SUPPORT_TO_EMAIL = 'operator@carlophillips.example';
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async () => new Response(null, { status: 429 }))
-    );
+    const provider = vi.fn(async () => new Response(null, { status: 429 }));
+    vi.stubGlobal('fetch', provider);
+    const report = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     const response = await POST(request(valid));
     expect(response.status).toBe(502);
     expect(await response.json()).toEqual({ error: 'SUPPORT_DELIVERY_FAILED' });
+    expect(provider).toHaveBeenCalledTimes(2);
+    expect(report).toHaveBeenCalledOnce();
+    expect(report.mock.calls[0][0]).toBe('cp.support.delivery_failed');
+    expect(report.mock.calls[0][1]).toMatchObject({
+      event: 'support_delivery_failed',
+      reason: 'provider-rejected',
+      attempts: 2,
+      route: '/api/contact',
+    });
+    expect(JSON.stringify(report.mock.calls)).not.toContain(valid.email);
+    expect(JSON.stringify(report.mock.calls)).not.toContain(valid.orderNumber);
+    expect(JSON.stringify(report.mock.calls)).not.toContain(valid.message);
+  });
+
+  it('retries a transient provider failure once and returns one success reference', async () => {
+    process.env.RESEND_API_KEY = 'configured-test-key';
+    process.env.CP_SUPPORT_FROM_EMAIL = 'support@carlophillips.example';
+    process.env.CP_SUPPORT_TO_EMAIL = 'operator@carlophillips.example';
+    const provider = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(null, { status: 503 }))
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+    vi.stubGlobal('fetch', provider);
+    const report = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const response = await POST(request(valid));
+    const result = await response.json();
+    expect(response.status).toBe(200);
+    expect(result).toMatchObject({ ok: true });
+    expect(result.requestId).toMatch(/^CP-[A-F0-9]{8}$/);
+    expect(provider).toHaveBeenCalledTimes(2);
+    expect(report).not.toHaveBeenCalled();
+    const requestIds = provider.mock.calls.map(([, init]) => {
+      const body = JSON.parse(init.body);
+      return body.text.match(/CARLOPHILLIPS support request (CP-[A-F0-9]{8})/)[1];
+    });
+    expect(new Set(requestIds)).toEqual(new Set([result.requestId]));
+  });
+
+  it('does not retry a non-transient provider rejection', async () => {
+    process.env.RESEND_API_KEY = 'configured-test-key';
+    process.env.CP_SUPPORT_FROM_EMAIL = 'support@carlophillips.example';
+    process.env.CP_SUPPORT_TO_EMAIL = 'operator@carlophillips.example';
+    const provider = vi.fn(async () => new Response(null, { status: 400 }));
+    vi.stubGlobal('fetch', provider);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const response = await POST(request(valid));
+    expect(response.status).toBe(502);
+    expect(provider).toHaveBeenCalledOnce();
+  });
+
+  it('retries transport failure once and reports sanitized exhaustion', async () => {
+    process.env.RESEND_API_KEY = 'configured-test-key';
+    process.env.CP_SUPPORT_FROM_EMAIL = 'support@carlophillips.example';
+    process.env.CP_SUPPORT_TO_EMAIL = 'operator@carlophillips.example';
+    process.env.VERCEL_ENV = 'preview';
+    const provider = vi.fn(async () => {
+      throw new Error(`network failure for ${valid.email}`);
+    });
+    vi.stubGlobal('fetch', provider);
+    const report = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const response = await POST(request(valid));
+    expect(response.status).toBe(502);
+    expect(provider).toHaveBeenCalledTimes(2);
+    expect(report.mock.calls[0][1]).toMatchObject({
+      reason: 'provider-unavailable',
+      attempts: 2,
+      environment: 'preview',
+    });
+    expect(JSON.stringify(report.mock.calls)).not.toContain(valid.email);
+    expect(JSON.stringify(report.mock.calls)).not.toContain('network failure');
   });
 });
