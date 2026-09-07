@@ -6,13 +6,13 @@
 ACTIVE PHASE: "Phase 1 — Site/commerce readiness"
 CURRENT P0/P1: "P0: none currently verified. P1: support/account setup; controlled Shopify-to-Apliiq lifecycle proof; post-sale operations; reliability/alerts; continuous Production watch"
 CURRENT OWNER: "Sushma delivery/incident arbitration; Aarti technical delivery and Production Watch; Pushpa business rules/UAT"
-IN PROGRESS: "PR #116 governance activation is parked at independent approval; safe Phase 1 preparation continues under the blocker-continuation rule"
-HUMAN BLOCKERS: "HI-116-APPROVAL; HI-P1-POLICY; HI-P1-ORDER — authoritative details in reports/HUMAN_INTERVENTION_STICKY_RED.md"
-WORK CONTINUING: "Aarti native-first support/customer-account tranche design and non-conflicting synthetic/read-only preparation; no broad custom post-payment platform"
-WAITING ON: "PR #116 latest-head independent approval; later Production policy and controlled-real-order authorities"
+IN PROGRESS: "PR #116 governance activation is parked at independent approval. PR #117 support reliability, PR #118 Production Watch/webhook recovery, and stacked PR #119 controlled-lifecycle/synthetic drills are prepared without live activation claims"
+HUMAN BLOCKERS: "HI-116/117/118/119-APPROVAL; HI-P1-POLICY; HI-P1-ORDER — authoritative details in reports/HUMAN_INTERVENTION_STICKY_RED.md"
+WORK CONTINUING: "Exact-SHA synthetic exception validation, protected-merge reconciliation preparation, and live-authority preflight documentation; no broad custom post-payment platform and no transaction"
+WAITING ON: "PR #116 latest-head independent approval first; follow-on PR reviews after canonical staging reconciliation; later Production policy and controlled-real-order authorities"
 RECENT DECISIONS: "CP-DEC-004 defines next-tranche support, cancellation, return/refund, tracking-remedy, operator-authority, and controlled-order acceptance defaults"
-NEXT AUTONOMOUS ACTION: "Prepare the smallest native-first technical design for support/customer accounts while periodically rechecking PR #116 approval"
-RESUME TRIGGERS: "HI-116-APPROVAL: required GitHub approval recorded → merge and protected release; HI-P1-POLICY and HI-P1-ORDER: explicit decisions/authority recorded → resume their exact activation/proof steps"
+NEXT AUTONOMOUS ACTION: "Finish PR #119 exact-SHA validation, then keep the four-PR merge/rebase sequence ready while periodically rechecking PR #116 approval"
+RESUME TRIGGERS: "HI-116-APPROVAL: approval recorded → merge/protected release; HI-117/118/119-APPROVAL: predecessor merged plus latest-base approval → merge/verify; HI-P1-POLICY and HI-P1-ORDER: explicit decisions/authority → resume activation/proof"
 ```
 
 ## Handoff format
