@@ -55,7 +55,9 @@ function supportText(requestId: string, request: SupportRequest): string {
 
 function deliveryEnvironment(environment: SupportEnvironment): string {
   const value = environment.VERCEL_ENV?.trim();
-  return value === 'production' || value === 'preview' || value === 'development'
+  return value === 'production' ||
+    value === 'preview' ||
+    value === 'development'
     ? value
     : 'unknown';
 }
@@ -108,7 +110,12 @@ export async function deliverSupportRequest(
       const retryable = response.status === 429 || response.status >= 500;
       if (retryable && attempt < MAX_DELIVERY_ATTEMPTS) continue;
 
-      reportDeliveryFailure(requestId, 'provider-rejected', attempt, environment);
+      reportDeliveryFailure(
+        requestId,
+        'provider-rejected',
+        attempt,
+        environment
+      );
       return { delivered: false, reason: 'provider-rejected' };
     } catch {
       if (attempt < MAX_DELIVERY_ATTEMPTS) continue;

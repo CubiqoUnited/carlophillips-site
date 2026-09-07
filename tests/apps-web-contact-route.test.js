@@ -130,7 +130,9 @@ describe('deployed apps/web contact boundary', () => {
     expect(report).not.toHaveBeenCalled();
     const requestIds = provider.mock.calls.map(([, init]) => {
       const body = JSON.parse(init.body);
-      return body.text.match(/CARLOPHILLIPS support request (CP-[A-F0-9]{8})/)[1];
+      return body.text.match(
+        /CARLOPHILLIPS support request (CP-[A-F0-9]{8})/
+      )[1];
     });
     expect(new Set(requestIds)).toEqual(new Set([result.requestId]));
   });
