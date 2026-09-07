@@ -94,6 +94,8 @@ No screenshot or artifact may contain payment data, customer address, email, pho
 
 These drills do not require the physical order to experience every failure. Use the strongest safe environment and clearly label synthetic evidence.
 
+After release, the manual `Phase 1 synthetic exception drills` workflow runs the repository-defined support, webhook, lifecycle, return/refund, reconciliation, and customer-routing cases against an exact SHA. Its receipt is always labelled `synthetic_only` and `liveOperationalProof: false`; it cannot replace the live gates in the table below.
+
 | Scenario | Safe proof | Required result | Live proof still required? |
 |---|---|---|---|
 | Support provider unavailable | Mock provider timeout/5xx plus Staging alert drill | bounded retry, no false success, fallback, operator alert | Yes: monitored mailbox delivery and alert route |

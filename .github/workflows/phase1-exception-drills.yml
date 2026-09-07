@@ -1,0 +1,102 @@
+name: Phase 1 synthetic exception drills
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Exact full SHA to test
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-exceptions:
+    name: Support, webhook and lifecycle exceptions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_sha }}
+
+      - name: Bind exact SHA
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Activate Yarn Classic
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          test "$(yarn --version)" = "1.22.22"
+
+      - name: Install locked dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run synthetic exception suite
+        run: |
+          mkdir -p test_reports/phase1-exception-drills
+          yarn vitest run \
+            tests/apps-web-contact-route.test.js \
+            tests/shopify-webhook-verifier.test.js \
+            tests/webhook-idempotency-runtime.test.js \
+            tests/shopify-webhook-observation.test.ts \
+            tests/shopify-webhook-route-failure.test.js \
+            tests/order-lifecycle.test.js \
+            tests/post-purchase-policy.test.js \
+            tests/controlled-commerce-runbook.test.js \
+            --reporter=json \
+            --outputFile=test_reports/phase1-exception-drills/vitest.json
+
+      - name: Write synthetic evidence receipt
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const report = JSON.parse(readFileSync('test_reports/phase1-exception-drills/vitest.json', 'utf8'));
+          const receipt = {
+            schemaVersion: 'cp.phase1-exception-drills.v1',
+            evidenceClassification: 'synthetic_only',
+            testedSha: process.env.EXPECTED_SHA,
+            testedAt: new Date().toISOString(),
+            testFiles: report.numTotalTestSuites,
+            tests: report.numTotalTests,
+            passed: report.numPassedTests,
+            successful: report.success === true,
+            externalSystemsMutated: false,
+            paymentAttempted: false,
+            orderSubmitted: false,
+            fulfillmentRequested: false,
+            liveOperationalProof: false,
+          };
+          if (!receipt.successful || receipt.tests !== receipt.passed) {
+            throw new Error('SYNTHETIC_EXCEPTION_DRILLS_FAILED');
+          }
+          writeFileSync(
+            'test_reports/phase1-exception-drills/receipt.json',
+            `${JSON.stringify(receipt, null, 2)}\n`
+          );
+          NODE
+
+      - name: Upload synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase1-synthetic-exceptions-${{ inputs.expected_sha }}
+          path: test_reports/phase1-exception-drills/
+          if-no-files-found: error
+          retention-days: 30
