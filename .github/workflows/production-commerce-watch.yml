@@ -1,0 +1,105 @@
+name: Production commerce watch
+
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: production-commerce-watch
+  cancel-in-progress: false
+
+jobs:
+  commerce-watch:
+    name: Storefront, cart and checkout handoff
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out Production source
+        uses: actions/checkout@v4
+
+      - name: Verify live Production commerce
+        run: |
+          mkdir -p test_reports/production-watch
+          node scripts/verify-checkout-health.mjs \
+            --url https://www.carlophillips.com \
+            --output test_reports/production-watch/commerce-health.json \
+            --cart-probe true
+
+      - name: Open or update P0 incident
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[P0] Production commerce watch failed';
+            const body = [
+              'The scheduled Production storefront/cart/checkout-handoff check failed.',
+              '',
+              `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              `Observed source: ${context.sha}`,
+              '',
+              'Sushma: treat as incident coordinator. Aarti: diagnose the failed path. No payment or order was attempted.',
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            const existing = issues.find(issue => !issue.pull_request && issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+              });
+            }
+
+      - name: Close recovered P0 incident
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[P0] Production commerce watch failed';
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            for (const issue of issues.filter(item => !item.pull_request && item.title === title)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `Production commerce recovered in run ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}. Sushma must still confirm incident closure and prevention.`,
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+              });
+            }
+
+      - name: Upload sanitized watch evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-commerce-watch-${{ github.run_id }}
+          path: test_reports/production-watch/
+          if-no-files-found: warn
+          retention-days: 30
