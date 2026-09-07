@@ -1,4 +1,71 @@
-# CURRENT — RELEASE-GATE OWNER ACTIONS AFTER FAIL-CLOSED CORRECTION
+# CURRENT — REAUTHORIZE CANONICAL STAGING VERCEL CREDENTIAL
+
+Updated: 2026-09-06 EDT
+
+Governance PR #114 passed both GitHub checks and merged to exact
+`staging@33b7eeae5e051e3df94a6321f49580af73e1b047`. Protected Staging run
+`34014134514` passed exact-SHA validation, full repository verification,
+accessibility, browser health, and the no-cleanup catalog guard. It then failed
+safely before Vercel build, deployment, aliasing, or Shopify checkout handoff:
+Vercel CLI returned `You do not have access to the specified account` for the
+configured canonical Cubiqo scope. Production and Staging aliases were not
+changed.
+
+Exact human action:
+
+1. Manually open Vercel → Cubiqo team → Account Settings → Tokens and create or
+   reauthorize a least-privilege automation token that can access only the
+   canonical CARLOPHILLIPS project.
+2. Manually open GitHub → `CubiqoUnited/carlophillips-site` → Settings →
+   Environments → Staging → Environment secrets and replace only
+   `VERCEL_TOKEN` with that encrypted value. Do not paste it into chat, source,
+   workflow inputs, logs, or this report.
+3. Keep the existing non-secret organization, project, and scope bindings
+   unchanged. Signal completion with `CP canonical Staging Vercel token ready`.
+
+Cost: none intended. Risk: the token can deploy and move the Staging alias in
+the canonical Vercel project; do not broaden it to Production or another team.
+Resume by rerunning Protected Vercel Staging with PR `114`, exact SHA
+`33b7eeae5e051e3df94a6321f49580af73e1b047`, release
+`cp-governance-2026-09-06`, and both optional mutation/baseline switches false.
+
+---
+
+# CURRENT — REPOSITORY ADMIN GOVERNANCE REQUIRED
+
+Updated: 2026-09-06 EDT
+
+Production release `main@f814965730a42df481a7bf367ca8306cd1e4ce46`
+passed protected Staging, signed release proof, PR checks, Production candidate,
+protected promotion, checkout-health, and rollback-anchor verification. Its Git
+tree is identical to `staging@60b53ec4fe2490ac9da0845161af7f439d01be95`.
+
+The authenticated delivery account `avloy07-eng` has repository **write**, not
+**admin**, permission. Attempts to apply branch protection, Production branch
+restriction, and automatic merged-branch deletion through the GitHub API were
+rejected with HTTP 403/404. No bypass was attempted.
+
+Exact administrator action:
+
+1. Open GitHub → `CubiqoUnited/carlophillips-site` → Settings → Rules →
+   Rulesets. Protect both `main` and `staging` and require a pull request with
+   one approval, resolved conversations, branches up to date, `Verify`, and
+   `Checkout E2E and accessibility`. Block force-push and deletion, including
+   for administrators.
+2. Open Settings → Environments → Production. Retain the existing required
+   Product Owner reviewer and restrict deployment branches to `main` only.
+3. Open Settings → General → Pull Requests. Enable automatic deletion of
+   head branches after merge.
+4. Signal completion with `CP repository governance applied`.
+
+Cost: none intended. Risk: incorrect required-check names can block all merges;
+use the exact names above. These controls affect future merges and deployments
+but do not alter the currently healthy Production deployment. Do not remove the
+existing Staging or Production required reviewer.
+
+---
+
+# SUPERSEDED — RELEASE-GATE OWNER ACTIONS AFTER FAIL-CLOSED CORRECTION
 
 Updated: 2026-09-04 EDT
 

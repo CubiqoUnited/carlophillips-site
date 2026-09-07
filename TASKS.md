@@ -1,5 +1,41 @@
 # Delivery Tasks
 
+## Delivery governance closeout — 2026-09-06
+
+- [x] Merge governance PR #114 to
+      `staging@33b7eeae5e051e3df94a6321f49580af73e1b047` after green `Verify`
+      and `Checkout E2E and accessibility` checks; delete its remote branch.
+- [ ] Reauthorize the encrypted GitHub Staging `VERCEL_TOKEN` for the canonical
+      Cubiqo Vercel team and rerun protected Staging `34014134514` inputs. The
+      first attempt passed repository/QA checks and failed safely before
+      deployment with `scope-not-accessible`.
+- [ ] After exact protected Staging succeeds, promote the identical governance
+      tree through a reviewed `staging`-to-`main` PR and delete temporary
+      branches. Do not bypass the protected workflow.
+- [x] Verify `origin/main@f814965730a42df481a7bf367ca8306cd1e4ce46`
+      and `origin/staging@60b53ec4fe2490ac9da0845161af7f439d01be95`
+      have identical Git trees.
+- [x] Verify protected Staging, signed release proof, PR CI/Playwright,
+      Production candidate, Production promotion, checkout-health and rollback
+      preparation all passed for the exact release chain.
+- [x] Verify Production and Staging return HTTP 200 and preserve the no-order,
+      no-customer-data QA boundary.
+- [x] Verify required reviewers exist on both GitHub deployment environments
+      and Staging permits only the `staging` branch.
+- [ ] A repository administrator protects both `main` and `staging` with one
+      approving PR review, conversation resolution, up-to-date `Verify` and
+      `Checkout E2E and accessibility` checks, and blocked force-push/deletion.
+- [ ] A repository administrator restricts the Production environment to
+      `main` and enables automatic deletion of merged temporary branches.
+- [ ] Reconcile the user-owned changes and historical QA artifacts in
+      `/Users/edv/Documents/cp`; do not discard, overwrite, or classify them as
+      removable without an evidence-preserving inventory.
+- [ ] Remove obsolete local worktrees only after their modified and untracked
+      QA evidence is preserved or deliberately retained. Remote branch hygiene
+      is already compliant: only `main` and `staging` remain.
+- [ ] Exercise settlement and the POD/post-sale lifecycle only under separate
+      exact-order authorization before claiming end-to-end commerce readiness.
+
 Execution authority is newest-first. The current 2026-09-04 no-order and
 provenance sections supersede every conflicting checkbox in older sections.
 No older task may authorize a Staging payment, order submission, private
