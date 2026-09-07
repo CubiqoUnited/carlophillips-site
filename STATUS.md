@@ -1,5 +1,38 @@
 # Current Status
 
+## Phase 1 tranche readiness and deployed provenance — 2026-09-07
+
+- Canonical Git remains `staging@5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`
+  and `main@f814965730a42df481a7bf367ca8306cd1e4ce46`.
+- `staging.carlophillips.com` returns HTTP 200 from READY Preview deployment
+  `dpl_AEVZjWLEUxpuxu7RAeUW2HCTakih`; the authenticated Vercel deployment record
+  identifies source commit `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f` in
+  `CubiqoUnited/carlophillips-site`.
+- `www.carlophillips.com` returns HTTP 200 from READY Production deployment
+  `dpl_26T9f1b3jBex26zajTJyvEgHoJbS`; the authenticated Vercel deployment record
+  identifies source commit `f814965730a42df481a7bf367ca8306cd1e4ce46` in
+  `CubiqoUnited/carlophillips-site`.
+- Governance PR #116 is open against canonical `staging`. Exact head
+  `42c942b382e0290effb702a7f388da7f4b1b2775` passes `Verify` and
+  `Checkout E2E and accessibility` and is blocked only on the required
+  independent approval. It is not deployed.
+- Support/customer-account PR #117 is open against canonical `staging`. Exact
+  head `eb7590e6563ed5f58d3baa2b1c7a7910d0c853f1` passes both required checks
+  and remains review-blocked. Production Watch/webhook-recovery PR #118 and
+  stacked controlled-lifecycle PR #119 also have green exact-head checks and
+  remain unmerged.
+- A read-only Vercel name/scope inventory confirms Preview and Production have
+  their respective Shopify commerce, checkout, webhook, durable-store and Clerk
+  variables. Neither environment has the three Resend support variables or its
+  environment-specific Shopify account/returns URLs. This proves presence or
+  absence of names only, not correctness of encrypted values or live operation.
+- Phase 1 remains active. No current controlled payment/order, Apliiq
+  production-to-tracking lifecycle, monitored support receipt, native account/
+  returns drill, or complete Production monitoring/reconciliation proof exists.
+
+This section is the current baseline and supersedes older branch/deployment or
+capability statements below when they conflict.
+
 ## Production release and governance reconciliation — 2026-09-06
 
 - Governance PR #114 passed `Verify` and `Checkout E2E and accessibility` and
