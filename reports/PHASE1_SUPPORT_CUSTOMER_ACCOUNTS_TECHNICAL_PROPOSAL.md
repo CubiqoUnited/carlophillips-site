@@ -73,3 +73,35 @@ Mock, unit, synthetic, and Staging evidence must remain explicitly labelled; non
 - Final failure emits one sanitized `cp.support.delivery_failed` signal containing only the generated request reference, failure class, attempt count, environment, route, and timestamp.
 - The customer still receives exactly one truthful success or failure result; the same request reference is retained across a retry.
 - Targeted support and post-purchase tests, lint, Production-commerce lint, design-system lint, and TypeScript checks pass locally. Live provider delivery, alert routing, mailbox receipt, Shopify account isolation, and returns remain unproven.
+
+## Protected environment presence audit
+
+A read-only Vercel CLI inventory on 2026-09-07 identified the canonical project as
+`Cubiqo/carlophillips` (`prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`). The project reports
+root directory `.` and output directory `apps/web/.next`, consistent with
+`apps/web` being the deployed Next.js application. Only variable names and scopes
+were inspected; no values were printed, copied, or retained.
+
+The existing Preview inventory contains the isolated Shopify Staging commerce,
+webhook, checkout, durable-store, and Clerk variables. The Production inventory
+contains the corresponding live Shopify commerce, webhook, checkout,
+durable-store, and Clerk variables. Neither inventory contains the post-purchase
+activation variables below:
+
+| Required variable | Preview/Staging | Production | Effect while absent |
+|---|---|---|---|
+| `RESEND_API_KEY` | Missing | Missing | Support delivery remains unconfigured and returns no false success |
+| `CP_SUPPORT_FROM_EMAIL` | Missing | Missing | No verified CP sender is available |
+| `CP_SUPPORT_TO_EMAIL` | Missing | Missing | No monitored support recipient is available |
+| `SHOPIFY_STAGING_ACCOUNT_URL` | Missing | N/A | Staging customer-account entry remains fail-closed |
+| `SHOPIFY_STAGING_RETURNS_URL` | Missing | N/A | Staging self-service returns entry remains fail-closed |
+| `SHOPIFY_ACCOUNT_URL` | N/A | Missing | Production customer-account entry remains fail-closed |
+| `SHOPIFY_RETURNS_URL` | N/A | Missing | Production self-service returns entry remains fail-closed |
+
+This is configuration-presence evidence only. It does not establish that any
+existing encrypted commerce variable contains the correct value, that Shopify
+Customer Accounts or native returns are enabled, or that Resend and the monitored
+mailbox work. The exact next activation step remains: provision verified Preview
+values through the protected owner path, deploy the approved SHA to canonical
+Staging, then run the support/account/returns drills before any Production values
+are added.
