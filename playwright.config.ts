@@ -57,6 +57,8 @@ export default defineConfig({
       CP_ADMIN_REVIEW_ENABLED: 'true',
       CP_ADMIN_REVIEW_TOKEN:
         'qa-review-token-that-is-at-least-thirty-two-characters',
+      CP_SUPPORT_PUBLIC_FALLBACK_URL:
+        'https://support.carlophillips.example/contact',
     },
   },
 });

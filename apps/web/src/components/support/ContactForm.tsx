@@ -23,7 +23,48 @@ const orderTopics = new Set([
 type FormStatus =
   'idle' | 'sending' | 'sent' | 'invalid' | 'unavailable' | 'failed';
 
-export function ContactForm() {
+export function supportStatusForResponse(status: number): FormStatus {
+  if (status === 400) return 'invalid';
+  if (status === 503) return 'unavailable';
+  return 'failed';
+}
+
+export function ContactSupportRecovery({
+  unavailable,
+  fallbackHref,
+}: {
+  unavailable: boolean;
+  fallbackHref: string | null;
+}) {
+  return (
+    <>
+      <p>
+        {unavailable
+          ? 'Email support is unavailable right now.'
+          : 'Your request was not sent. Please try again shortly.'}
+      </p>
+      <p>
+        For order updates, use the secure order-status link in your Shopify
+        email.
+      </p>
+      {fallbackHref && (
+        <p>
+          Alternate support:{' '}
+          <a href={fallbackHref} rel="noreferrer">
+            open the public support channel
+          </a>
+          .
+        </p>
+      )}
+    </>
+  );
+}
+
+export function ContactForm({
+  fallbackHref = null,
+}: {
+  fallbackHref?: string | null;
+}) {
   const [email, setEmail] = useState('');
   const [topic, setTopic] = useState('');
   const [orderNumber, setOrderNumber] = useState('');
@@ -59,13 +100,7 @@ export function ContactForm() {
         setRequestId(result.requestId);
         setStatus('sent');
       } else {
-        setStatus(
-          response.status === 400
-            ? 'invalid'
-            : response.status === 503
-              ? 'unavailable'
-              : 'failed'
-        );
+        setStatus(supportStatusForResponse(response.status));
       }
     } catch {
       setStatus('failed');
@@ -150,14 +185,11 @@ export function ContactForm() {
         {status === 'invalid' && (
           <p>Please enter a valid email, choose a topic, and add a message.</p>
         )}
-        {status === 'failed' && (
-          <p>Your request was not sent. Please try again shortly.</p>
-        )}
-        {status === 'unavailable' && (
-          <p>
-            Email support is not configured yet. Use the secure order-status
-            link in your Shopify email for order updates.
-          </p>
+        {(status === 'failed' || status === 'unavailable') && (
+          <ContactSupportRecovery
+            unavailable={status === 'unavailable'}
+            fallbackHref={fallbackHref}
+          />
         )}
       </div>
       <button
