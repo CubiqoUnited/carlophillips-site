@@ -369,6 +369,8 @@ The role structure is phase-agnostic; CP execution progresses through these oper
 
 Governance is a guardrail, not a deliverable. A Phase cannot remain open merely to perfect documentation, evidence, process, or controls once required functionality and safe deployment criteria are satisfied.
 
+**Personal-project operating mode:** optimize for working software and rapid iteration. Governance exists only to prevent meaningful breakage, security exposure, bad payments/orders, or irreversible Production mistakes. Everything else should be lightweight and non-blocking.
+
 ### Phase 1 — Site/commerce readiness (active)
 
 Phase 1 remains active until:
