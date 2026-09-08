@@ -37,7 +37,8 @@ afterEach(() => {
 
 function webhookRequest(
   body = JSON.stringify({ id: 1001 }),
-  webhookId = randomUUID()
+  webhookId = randomUUID(),
+  triggeredAt = new Date().toISOString()
 ) {
   return new Request('https://staging.carlophillips.com/api/webhooks/shopify', {
     method: 'POST',
@@ -49,7 +50,7 @@ function webhookRequest(
       'x-shopify-topic': 'orders/paid',
       'x-shopify-shop-domain': shop,
       'x-shopify-webhook-id': webhookId,
-      'x-shopify-triggered-at': new Date().toISOString(),
+      'x-shopify-triggered-at': triggeredAt,
     },
     body,
   });
@@ -143,6 +144,72 @@ describe('deployed Shopify webhook failure semantics', () => {
     expect(retry.status).toBe(503);
     expect(await retry.json()).toEqual({
       error: 'WEBHOOK_PROCESSING_INCOMPLETE',
+    });
+  });
+
+  it('reclaims an expired processing lease during Shopify retry delivery', async () => {
+    const webhookId = randomUUID();
+    let claimAttempts = 0;
+    let recordAttempts = 0;
+    const durable = vi.fn(async (_url, init) => {
+      const command = JSON.parse(init.body);
+      if (command[0] === 'SET' && command.includes('NX')) {
+        claimAttempts += 1;
+        return new Response(JSON.stringify({ result: 'OK' }));
+      }
+      if (command[0] === 'SET' && command.includes('XX')) {
+        recordAttempts += 1;
+        if (recordAttempts === 1) return new Response(null, { status: 503 });
+        return new Response(JSON.stringify({ result: 'OK' }));
+      }
+      if (command[0] === 'DEL') return new Response(null, { status: 503 });
+      throw new Error('unexpected durable command');
+    });
+    vi.stubGlobal('fetch', durable);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { POST } =
+      await import('../apps/web/src/app/api/webhooks/shopify/route');
+    const originalTriggeredAt = new Date(
+      Date.now() - 10 * 60 * 1000
+    ).toISOString();
+
+    const first = await POST(
+      webhookRequest(undefined, webhookId, originalTriggeredAt)
+    );
+    expect(first.status).toBe(503);
+
+    // This models Redis expiring the short processing lease before Shopify's
+    // later retry of the same authenticated delivery.
+    const retry = await POST(
+      webhookRequest(undefined, webhookId, originalTriggeredAt)
+    );
+    expect(retry.status).toBe(200);
+    expect(await retry.json()).toMatchObject({ ok: true, duplicate: false });
+    expect(claimAttempts).toBe(2);
+    expect(recordAttempts).toBe(2);
+  });
+
+  it('acknowledges a completed observation as a harmless duplicate', async () => {
+    const durable = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: null }), { status: 200 })
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: '{"webhookId":"recorded"}' }), {
+          status: 200,
+        })
+      );
+    vi.stubGlobal('fetch', durable);
+    const { POST } =
+      await import('../apps/web/src/app/api/webhooks/shopify/route');
+
+    const response = await POST(webhookRequest());
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      ok: true,
+      duplicate: true,
+      externalActionApplied: false,
     });
   });
 });

@@ -7,6 +7,7 @@ import type { CommerceEnvironment } from './runtime-types';
 type DurableEnvironment = Exclude<CommerceEnvironment, 'local'>;
 const DURABLE_REPLAY_TTL_MS = 60 * 60 * 24 * 30 * 1000;
 const DURABLE_REPLAY_TTL_SECONDS = DURABLE_REPLAY_TTL_MS / 1000;
+const PROCESSING_CLAIM_TTL_MS = 30 * 1000;
 
 function deliveryKey(webhookId: string) {
   return createHash('sha256').update(webhookId).digest('hex');
@@ -39,7 +40,10 @@ export class DurableWebhookStore implements WebhookIdempotencyStore {
   }
 
   async claim(webhookId: string, expiresAt: Date) {
-    const ttl = Math.max(1_000, expiresAt.getTime() - Date.now());
+    const ttl = Math.max(
+      1_000,
+      Math.min(PROCESSING_CLAIM_TTL_MS, expiresAt.getTime() - Date.now())
+    );
     const result = await this.command([
       'SET',
       `cp:${this.namespace}:shopify:webhook:${deliveryKey(webhookId)}`,
