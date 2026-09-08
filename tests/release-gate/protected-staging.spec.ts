@@ -257,8 +257,13 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   }
   expect(new URL(checkoutPage.url()).pathname).not.toBe('/password');
   await expect(
-    checkoutPage.getByRole('heading', { name: 'Payment', exact: true })
+    checkoutPage.getByRole('heading', {
+      name: /^(Payment|Pay with credit card)$/,
+    })
   ).toBeVisible({ timeout: 30_000 });
+  await expect(
+    checkoutPage.getByText('Testing instruction', { exact: true })
+  ).toBeVisible();
   await checkoutPage.screenshot({
     path: testInfo.outputPath('03-shopify-payment-step-no-submit.png'),
     fullPage: true,
