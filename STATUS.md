@@ -45,17 +45,17 @@
   because it used default ref `main`, which the Staging environment branch
   policy denies. The corrected dispatch used `--ref staging`; no artifact or
   alias was created by the rejected run.
-- PR #117 is reconciled without conflict onto `ce2bb181…`. Candidate head
-  before this durable-state update is
-  `87d62e676cde3690b293d455284ae1685409dff6`; 16 targeted tests, web typecheck
-  and Production-commerce lint pass locally. Its first exact-head `Verify`
-  attempt reached the dependency audit and received an external GitHub
-  Advisory Database HTTP 403; the unchanged-head rerun is active. Checkout E2E
-  and accessibility pass.
-- PR #117 is now the active merge candidate. Its latest governance/durable-state
-  update must pass both required exact-head checks before merge; PRs #118 and
-  #119 remain ordered afterward. External support, account, native-ops, policy
-  and transaction gates remain parked.
+- PR #117 exact head `908b82cca7d7413b989f38ba3a2c5c418ee2b5ad`
+  passed both required checks and merged through protected review to
+  `staging@42aade89cf1d2da310dce2c955ac8d0d20e6fb66`. Protected Staging run
+  [34203965788](https://github.com/CubiqoUnited/carlophillips-site/actions/runs/34203965788)
+  passed the exact-SHA repository, build, project-identity, deploy, alias,
+  signed-probe, functional, accessibility, Production-unchanged and immutable
+  receipt gates. READY deployment `dpl_7yoVoFWzorpEZDdPiyz6nSpjUCpM` serves
+  `staging.carlophillips.com` with HTTP 200.
+- PR #118 is reconciled onto verified canonical Staging and is the active
+  exact-head CI/merge candidate; PR #119 remains ordered afterward. External
+  support, account, native-ops, policy and transaction gates remain parked.
 
 This section is the current baseline and supersedes older branch, PR and
 deployment statements below when they conflict.

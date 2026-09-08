@@ -17,9 +17,13 @@
 - [x] Reconcile PR #117 without conflict onto `ce2bb181…`; pass 16 targeted
       tests, web typecheck, Production-commerce lint and Checkout E2E on
       candidate `87d62e6…`.
-- [ ] Rerun both required checks on PR #117 after this concise governance and
-      durable-state update; merge once its exact head is green, then deploy and
-      verify that exact Staging SHA.
+- [x] Pass both required checks on PR #117 exact head `908b82c…`, merge to
+      `staging@42aade89cf1d2da310dce2c955ac8d0d20e6fb66`, and pass protected
+      Staging run `34203965788`; verify READY deployment
+      `dpl_7yoVoFWzorpEZDdPiyz6nSpjUCpM` and HTTP 200 on the canonical alias.
+- [ ] Pass both required checks on PR #118 after reconciliation onto verified
+      Staging, merge its exact green head, then run protected exact-SHA Staging
+      verification before reconciling PR #119.
 
 - [x] Reconfirm canonical deployed provenance: Staging is READY at exact
       `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`; Production is READY at exact

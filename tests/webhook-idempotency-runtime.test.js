@@ -39,14 +39,15 @@ describe('durable Shopify webhook idempotency', () => {
     expect(claim[0]).toBe('SET');
     expect(claim[1]).toMatch(/^cp:preview:shopify:webhook:[a-f0-9]{64}$/);
     expect(claim.slice(2, 5)).toEqual(['claimed', 'NX', 'PX']);
-    expect(claim[5]).toBeGreaterThanOrEqual(60 * 60 * 24 * 30 * 1000);
+    expect(claim[5]).toBeGreaterThan(0);
+    expect(claim[5]).toBeLessThanOrEqual(30_000);
     const record = JSON.parse(fetchImpl.mock.calls[1][1].body);
     expect(record[0]).toBe('SET');
-    expect(record[1]).toMatch(
-      /^cp:preview:shopify:webhook-event:[a-f0-9]{64}$/
-    );
-    expect(record[3]).toBe('EX');
-    expect(record[4]).toBe(60 * 60 * 24 * 30);
+    expect(record[1]).toMatch(/^cp:preview:shopify:webhook:[a-f0-9]{64}$/);
+    expect(record[1]).toBe(claim[1]);
+    expect(record[3]).toBe('XX');
+    expect(record[4]).toBe('EX');
+    expect(record[5]).toBe(60 * 60 * 24 * 30);
     expect(JSON.parse(record[2])).toEqual({
       topic: 'orders/paid',
       payloadHash: 'hash',
@@ -57,6 +58,28 @@ describe('durable Shopify webhook idempotency', () => {
     expect(release[1].slice('cp:preview:shopify:webhook:'.length)).toBe(
       claim[1].slice('cp:preview:shopify:webhook:'.length)
     );
+  });
+
+  it('distinguishes an in-progress claim from a completed observation', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: 'claimed' }))
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: '{"topic":"orders/paid"}' }))
+      )
+      .mockResolvedValueOnce(new Response(JSON.stringify({ result: null })));
+    const store = new DurableWebhookStore(
+      'https://redis.example',
+      'token',
+      'preview',
+      fetchImpl
+    );
+
+    await expect(store.status('webhook-1')).resolves.toBe('claimed');
+    await expect(store.status('webhook-1')).resolves.toBe('recorded');
+    await expect(store.status('webhook-1')).resolves.toBeNull();
   });
 
   it('does not treat a previously claimed delivery as new', async () => {

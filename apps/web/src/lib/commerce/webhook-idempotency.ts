@@ -7,6 +7,7 @@ import type { CommerceEnvironment } from './runtime-types';
 type DurableEnvironment = Exclude<CommerceEnvironment, 'local'>;
 const DURABLE_REPLAY_TTL_MS = 60 * 60 * 24 * 30 * 1000;
 const DURABLE_REPLAY_TTL_SECONDS = DURABLE_REPLAY_TTL_MS / 1000;
+const PROCESSING_CLAIM_TTL_MS = 30 * 1000;
 
 function deliveryKey(webhookId: string) {
   return createHash('sha256').update(webhookId).digest('hex');
@@ -40,8 +41,8 @@ export class DurableWebhookStore implements WebhookIdempotencyStore {
 
   async claim(webhookId: string, expiresAt: Date) {
     const ttl = Math.max(
-      DURABLE_REPLAY_TTL_MS,
-      expiresAt.getTime() - Date.now()
+      1_000,
+      Math.min(PROCESSING_CLAIM_TTL_MS, expiresAt.getTime() - Date.now())
     );
     const result = await this.command([
       'SET',
@@ -57,12 +58,22 @@ export class DurableWebhookStore implements WebhookIdempotencyStore {
   async record(webhookId: string, observation: object) {
     const result = await this.command([
       'SET',
-      `cp:${this.namespace}:shopify:webhook-event:${deliveryKey(webhookId)}`,
+      `cp:${this.namespace}:shopify:webhook:${deliveryKey(webhookId)}`,
       JSON.stringify(observation),
+      'XX',
       'EX',
       DURABLE_REPLAY_TTL_SECONDS,
     ]);
     if (result.result !== 'OK') throw new Error('WEBHOOK_EVENT_STORE_FAILED');
+  }
+
+  async status(webhookId: string): Promise<'claimed' | 'recorded' | null> {
+    const result = await this.command([
+      'GET',
+      `cp:${this.namespace}:shopify:webhook:${deliveryKey(webhookId)}`,
+    ]);
+    if (result.result === null || result.result === undefined) return null;
+    return result.result === 'claimed' ? 'claimed' : 'recorded';
   }
 
   async release(webhookId: string) {
