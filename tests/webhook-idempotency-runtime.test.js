@@ -43,9 +43,7 @@ describe('durable Shopify webhook idempotency', () => {
     expect(claim[5]).toBeLessThanOrEqual(60_000);
     const record = JSON.parse(fetchImpl.mock.calls[1][1].body);
     expect(record[0]).toBe('SET');
-    expect(record[1]).toMatch(
-      /^cp:preview:shopify:webhook:[a-f0-9]{64}$/
-    );
+    expect(record[1]).toMatch(/^cp:preview:shopify:webhook:[a-f0-9]{64}$/);
     expect(record[1]).toBe(claim[1]);
     expect(record[3]).toBe('XX');
     expect(record[4]).toBe('EX');
