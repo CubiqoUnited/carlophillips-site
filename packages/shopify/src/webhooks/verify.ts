@@ -2,7 +2,10 @@ import 'server-only';
 
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 
-const DEFAULT_REPLAY_WINDOW_MS = 5 * 60 * 1000;
+// Shopify can retry a failed delivery for four hours using the original
+// triggered-at timestamp. Keep a small transport buffer so a legitimate final
+// retry is not rejected at the boundary.
+const DEFAULT_REPLAY_WINDOW_MS = 5 * 60 * 60 * 1000;
 const DEFAULT_FUTURE_TOLERANCE_MS = 60 * 1000;
 const SHOP_DOMAIN_PATTERN = /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/;
 

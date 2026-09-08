@@ -82,11 +82,27 @@ export async function POST(request: Request) {
       error instanceof ShopifyWebhookVerificationError &&
       error.code === 'SHOPIFY_WEBHOOK_REPLAYED'
     ) {
-      return NextResponse.json({
-        ok: true,
-        duplicate: true,
-        externalActionApplied: false,
-      });
+      try {
+        const webhookId = request.headers.get('x-shopify-webhook-id') || '';
+        if ((await store.status(webhookId)) === 'recorded') {
+          return NextResponse.json({
+            ok: true,
+            duplicate: true,
+            externalActionApplied: false,
+          });
+        }
+      } catch {
+        // Fall through to a retryable response; never acknowledge uncertain state.
+      }
+      reportWebhookFailure(
+        'idempotency_failed',
+        environment,
+        request.headers.get('x-shopify-topic') || undefined
+      );
+      return NextResponse.json(
+        { error: 'WEBHOOK_PROCESSING_INCOMPLETE' },
+        { status: 503 }
+      );
     }
     if (error instanceof ShopifyWebhookVerificationError) {
       return NextResponse.json({ error: error.code }, { status: 401 });
