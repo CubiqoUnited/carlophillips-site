@@ -40,6 +40,13 @@
 - [x] Audit every remaining Phase 1 tranche without assuming #116 is a global
       dependency; resume the non-live exception tabletop and safely prove that
       current Staging checkout reaches the separate Shopify password gate.
+- [x] Complete the ten-scenario representative exception tabletop on PR #119
+      and reconcile it onto PR #118's accepted head. PR #119 exact head
+      `1deed62861acaf5aaed9b32743210033f3339725` passes the eight-file
+      synthetic suite 55/55 locally and exact-head GitHub `Verify` passes.
+- [x] Record Aarti technical review, Pushpa business acceptance and Sushma
+      APPROVE/REQUEST-CHANGES briefs for independent PRs #117 and #118; do not
+      wait on PR #116 because it is not their technical dependency.
 
 The Human Intervention Queue is authoritative for each blocked owner, trigger
 and exact resume point. Continue non-conflicting safe work when one row is

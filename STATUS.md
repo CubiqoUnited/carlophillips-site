@@ -33,6 +33,18 @@
   for #117/#118. It resumed the representative exception tabletop and a safe
   Staging cart/checkout probe; the latter reached the dedicated Shopify Staging
   store password gate without payment, order, customer data or provider action.
+- PR #119 exact head `1deed62861acaf5aaed9b32743210033f3339725`
+  now contains the completed ten-scenario representative exception tabletop.
+  It is reconciled onto PR #118's accepted `fb4bdfe` head. Its eight-file
+  synthetic support/webhook/lifecycle suite passes 55/55 locally and exact-head
+  GitHub `Verify` passes. This closes tabletop preparation only;
+  it does not prove live Shopify, Apliiq, tracking, support, Flow or operator execution.
+- Role-separated review is complete for PR #117 exact head
+  `ee71bbde03ac9fbda527c4a5f5678cd3fe68a2b8` and PR #118 exact head
+  `fb4bdfe607f380ce6ad772d3cceecad2942fcefd`. Both required checks pass;
+  Aarti approves technical/code readiness, Pushpa accepts business/code
+  readiness, and Sushma approves both for independent GitHub review. Neither
+  decision is live operational acceptance or Phase 1 closure.
 
 This section is the current baseline and supersedes older branch/deployment or
 capability statements below when they conflict.
