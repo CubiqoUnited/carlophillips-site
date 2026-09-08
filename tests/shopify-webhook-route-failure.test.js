@@ -35,7 +35,10 @@ afterEach(() => {
   vi.resetModules();
 });
 
-function webhookRequest(body = JSON.stringify({ id: 1001 })) {
+function webhookRequest(
+  body = JSON.stringify({ id: 1001 }),
+  webhookId = randomUUID()
+) {
   return new Request('https://staging.carlophillips.com/api/webhooks/shopify', {
     method: 'POST',
     headers: {
@@ -45,7 +48,7 @@ function webhookRequest(body = JSON.stringify({ id: 1001 })) {
         .digest('base64'),
       'x-shopify-topic': 'orders/paid',
       'x-shopify-shop-domain': shop,
-      'x-shopify-webhook-id': randomUUID(),
+      'x-shopify-webhook-id': webhookId,
       'x-shopify-triggered-at': new Date().toISOString(),
     },
     body,
@@ -100,6 +103,46 @@ describe('deployed Shopify webhook failure semantics', () => {
     expect(report.mock.calls[0][1]).toMatchObject({
       event: 'shopify_webhook_storage_failed',
       topic: 'orders/paid',
+    });
+  });
+
+  it('never acknowledges an unrecorded claim as a completed duplicate', async () => {
+    const webhookId = randomUUID();
+    let claimed = false;
+    const durable = vi.fn(async (_url, init) => {
+      const command = JSON.parse(init.body);
+      if (command[0] === 'SET' && command.includes('NX')) {
+        if (claimed)
+          return new Response(JSON.stringify({ result: null }), {
+            status: 200,
+          });
+        claimed = true;
+        return new Response(JSON.stringify({ result: 'OK' }), { status: 200 });
+      }
+      if (command[0] === 'SET' && command.includes('XX')) {
+        return new Response(null, { status: 503 });
+      }
+      if (command[0] === 'DEL') return new Response(null, { status: 503 });
+      if (command[0] === 'GET') {
+        return new Response(JSON.stringify({ result: 'claimed' }), {
+          status: 200,
+        });
+      }
+      throw new Error('unexpected durable command');
+    });
+    vi.stubGlobal('fetch', durable);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { POST } =
+      await import('../apps/web/src/app/api/webhooks/shopify/route');
+
+    const first = await POST(webhookRequest(undefined, webhookId));
+    expect(first.status).toBe(503);
+    expect(await first.json()).toEqual({ error: 'WEBHOOK_EVENT_STORE_FAILED' });
+
+    const retry = await POST(webhookRequest(undefined, webhookId));
+    expect(retry.status).toBe(503);
+    expect(await retry.json()).toEqual({
+      error: 'WEBHOOK_PROCESSING_INCOMPLETE',
     });
   });
 });

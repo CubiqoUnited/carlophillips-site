@@ -31,8 +31,8 @@ References:
 ## Current CP boundary
 
 - `apps/web/src/app/api/webhooks/shopify/route.ts` accepts eight allowlisted Shopify topics after runtime, HMAC, shop, topic, timestamp, body, and replay verification.
-- `webhook-idempotency.ts` requires an environment-namespaced durable Upstash/KV claim and stores a 30-day sanitized observation.
-- Duplicates return success with `duplicate: true` and do not apply an external action.
+- `webhook-idempotency.ts` requires an environment-namespaced durable Upstash/KV claim. The short processing claim is atomically replaced in the same key by the sanitized observation, which then remains for 30 days.
+- A delivery returns duplicate success only when that durable key contains a completed observation. A claimed-but-unrecorded or unreadable state returns retryable 503 and cannot masquerade as success.
 - New valid receipts return `externalActionApplied: false`; this proves authenticated observation, not completion of a downstream business process.
 - The protected webhook probe proves signed receipt and duplicate suppression but is manual and Staging-bound.
 - No live subscription inventory, per-topic operating behavior, missing-event reconciliation, operator alert, or Production end-to-end observation is currently proven.
@@ -81,6 +81,10 @@ Flow setup must use a monitored staff destination and must be tested. A configur
 - Duplicate webhook: acknowledge safely, record no second observation/action.
 - CP 200 with `externalActionApplied: false`: receipt succeeded; no external business action is claimed.
 - KV unavailable: return 503 so Shopify can retry; emit a sanitized technical alert.
+- Observation-write plus claim-release failure: keep returning 503 for the
+  incomplete claim; never acknowledge it as a completed duplicate. The short
+  processing lease prevents an orphaned claim from occupying the 30-day
+  completed-observation window.
 - Authenticated receipt but missing business outcome: treat as an open exception, query Shopify current state, then inspect Apliiq/Flow; do not call it success.
 - Tracking absent/stale: alert Operations and follow the Pushpa remedy; do not create a second carrier database by default.
 - Reconciliation mismatch: Shopify wins for commerce state; Sushma opens a P1 or P0 according to active-order/customer impact and Aarti investigates the integration path.
@@ -100,3 +104,20 @@ Flow setup must use a monitored staff destination and must be tested. A configur
 **GO** for read-only subscription inventory, Flow design/configuration in the test store, sanitized failure telemetry, and synthetic exception drills.
 
 **NO-GO** for a custom processor/queue/DLQ and for Production lifecycle claims until native Apliiq behavior, Flow coverage, real subscriptions, and a controlled authorized order demonstrate the remaining gap.
+
+## Candidate implementation evidence
+
+- Durable processing and completion now share one environment-namespaced key:
+  a short `claimed` lease is atomically replaced with the sanitized observation
+  and a 30-day completion TTL.
+- Duplicate delivery returns 200 only for `recorded`; `claimed`, missing, or
+  unreadable state returns retryable 503. Regression coverage proves that an
+  observation-write failure followed by a release failure cannot turn the next
+  same-ID retry into false duplicate success.
+- A recovered Production commerce check comments on the open P0 but leaves it
+  open for Sushma to verify recovery, prevention and closure. One green run no
+  longer closes the incident automatically.
+- Targeted webhook/store/watch tests pass 23/23 with TypeScript and
+  Production-commerce lint green. Live subscriptions, alert delivery, first
+  scheduled Production execution, native Flow/Apliiq behavior and controlled
+  lifecycle evidence remain separate operational gates.

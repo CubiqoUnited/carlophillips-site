@@ -13,6 +13,8 @@ describe('Production commerce watch', () => {
     expect(workflow).toContain("cron: '7,37 * * * *'");
     expect(workflow).toContain('issues: write');
     expect(workflow).toContain("'[P0] Production commerce watch failed'");
+    expect(workflow).toContain('pending Sushma closure');
+    expect(workflow).not.toContain("state: 'closed'");
   });
 
   it('creates a real cart and verifies a trusted checkout handoff without payment', () => {
