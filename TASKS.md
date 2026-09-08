@@ -2,15 +2,32 @@
 
 ## Active Phase 1 tranche sequence — 2026-09-07
 
+- [x] Record Aarti technical PASS, Pushpa business PASS where applicable, and
+      Sushma delivery APPROVE for PR #116; merge it through the protected PR
+      path to `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+- [x] Dispatch protected Staging from the permitted `staging` ref, validate the
+      exact merged SHA, and preserve run `34184480979` evidence.
+- [ ] Reauthorize/replace the encrypted GitHub Staging `VERCEL_TOKEN` with a
+      token that can access `cubiqo-projects-d7156840`, then rerun protected
+      Staging with PR `116`, expected SHA `ce2bb181…`, and release
+      `phase1-governance-ce2bb181`. Do not bypass the workflow.
+- [x] Reconcile PR #117 without conflict onto `ce2bb181…`; pass 16 targeted
+      tests, web typecheck, Production-commerce lint and Checkout E2E on
+      candidate `87d62e6…`.
+- [ ] Rerun both required checks on PR #117 after this durable-state update;
+      merge only after the exact head is green and `ce2bb181…` has passed
+      protected Staging verification.
+
 - [x] Reconfirm canonical deployed provenance: Staging is READY at exact
       `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`; Production is READY at exact
       `f814965730a42df481a7bf367ca8306cd1e4ce46`; both public routes return 200.
 - [x] Prepare governance PR #116 and pass both required checks before the
       executability audit; require the same checks again on every later head.
-- [ ] Record Aarti technical PASS, Pushpa business PASS where applicable, and
+- [x] Record Aarti technical PASS, Pushpa business PASS where applicable, and
       Sushma delivery APPROVE for PR #116; then merge the green candidate to
       `staging`, run the protected Staging workflow, verify the canonical alias,
-      and promote the identical approved governance state normally.
+      and promote the identical approved governance state normally. Merge is
+      complete; protected deployment remains blocked on the scoped Vercel token.
 - [x] Prepare PR #117 bounded support retry/sanitized telemetry, native
       account/returns proposal, runbook and exact environment-name audit; pass
       both required checks on exact head

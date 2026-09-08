@@ -1,5 +1,36 @@
 # Current Status
 
+## Phase 1 protected-Staging progression — 2026-09-08
+
+- Aarti technical PASS, Pushpa business PASS where applicable, and Sushma
+  delivery APPROVE are recorded for governance PR #116. PR #116 merged through
+  the protected pull-request path to canonical
+  `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+- Protected Staging run
+  [34184480979](https://github.com/CubiqoUnited/carlophillips-site/actions/runs/34184480979)
+  validated the exact merged SHA and passed repository verification, then
+  failed before build, deployment or alias assignment at `vercel pull`: the
+  encrypted GitHub `VERCEL_TOKEN` cannot access configured Cubiqo scope
+  `cubiqo-projects-d7156840`. `staging.carlophillips.com` therefore remains on
+  the previously verified deployment/SHA; Production was unchanged.
+- The first workflow dispatch, run `34184433700`, was rejected before a runner
+  because it used default ref `main`, which the Staging environment branch
+  policy denies. The corrected dispatch used `--ref staging`; no artifact or
+  alias was created by the rejected run.
+- PR #117 is reconciled without conflict onto `ce2bb181…`. Candidate head
+  before this durable-state update is
+  `87d62e676cde3690b293d455284ae1685409dff6`; 16 targeted tests, web typecheck
+  and Production-commerce lint pass locally. Its first exact-head `Verify`
+  attempt reached the dependency audit and received an external GitHub
+  Advisory Database HTTP 403; the unchanged-head rerun is active. Checkout E2E
+  and accessibility pass.
+- PR #117 cannot merge until protected Staging verification for `ce2bb181…`
+  succeeds. PRs #118 and #119 remain ordered afterward. External support,
+  account, native-ops, policy and transaction gates remain parked.
+
+This section is the current baseline and supersedes older branch, PR and
+deployment statements below when they conflict.
+
 ## Phase 1 tranche readiness and deployed provenance — 2026-09-07
 
 - Canonical Git remains `staging@5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`
