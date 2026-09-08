@@ -23,6 +23,9 @@ The alert must be tested in Preview by inducing a safe provider failure. A log e
 - 200 with a CP reference means Resend accepted the request; it does not prove an operator read or resolved it.
 - 503 means delivery configuration is absent. The page directs the customer to the secure Shopify order-status path and must display the approved monitored fallback once configured.
 - 502 means the provider rejected the request or remained unavailable after the bounded retry. No success message is shown.
+- Every bounded retry reuses one provider `Idempotency-Key` and identical
+  payload so an ambiguous timeout/5xx response cannot send the same support
+  email twice within Resend's idempotency window.
 
 ## Response and recovery
 

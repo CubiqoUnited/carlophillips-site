@@ -135,6 +135,38 @@ describe('deployed apps/web contact boundary', () => {
       )[1];
     });
     expect(new Set(requestIds)).toEqual(new Set([result.requestId]));
+    const idempotencyKeys = provider.mock.calls.map(
+      ([, init]) => init.headers['idempotency-key']
+    );
+    expect(new Set(idempotencyKeys).size).toBe(1);
+    expect(idempotencyKeys[0]).toMatch(
+      /^support\/[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/
+    );
+    expect(provider.mock.calls[0][1].body).toBe(
+      provider.mock.calls[1][1].body
+    );
+  });
+
+  it('uses one provider idempotency key after an ambiguous transport failure', async () => {
+    process.env.RESEND_API_KEY = 'configured-test-key';
+    process.env.CP_SUPPORT_FROM_EMAIL = 'support@carlophillips.example';
+    process.env.CP_SUPPORT_TO_EMAIL = 'operator@carlophillips.example';
+    const provider = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('response lost after send'))
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+    vi.stubGlobal('fetch', provider);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const response = await POST(request(valid));
+    expect(response.status).toBe(200);
+    expect(provider).toHaveBeenCalledTimes(2);
+    const attempts = provider.mock.calls.map(([, init]) => ({
+      key: init.headers['idempotency-key'],
+      body: init.body,
+    }));
+    expect(attempts[0]).toEqual(attempts[1]);
+    expect(attempts[0].key).toMatch(/^support\/[a-f0-9-]{36}$/);
   });
 
   it('does not retry a non-transient provider rejection', async () => {

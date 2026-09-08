@@ -70,6 +70,9 @@ Mock, unit, synthetic, and Staging evidence must remain explicitly labelled; non
 ## Implementation evidence
 
 - Candidate implementation adds one bounded retry for Resend 429, 5xx, timeout, or transport failure. Ordinary provider 4xx responses are not retried.
+- Both attempts reuse one full-UUID-derived Resend `Idempotency-Key` and the
+  identical payload, preventing duplicate provider sends after an ambiguous
+  response while keeping the key out of logs and customer responses.
 - Final failure emits one sanitized `cp.support.delivery_failed` signal containing only the generated request reference, failure class, attempt count, environment, route, and timestamp.
 - The customer still receives exactly one truthful success or failure result; the same request reference is retained across a retry.
 - Targeted support and post-purchase tests, lint, Production-commerce lint, design-system lint, and TypeScript checks pass locally. Live provider delivery, alert routing, mailbox receipt, Shopify account isolation, and returns remain unproven.

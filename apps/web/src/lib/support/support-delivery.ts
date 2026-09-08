@@ -87,7 +87,9 @@ export async function deliverSupportRequest(
   const config = resolveSupportDeliveryConfig(environment);
   if (!config) return { delivered: false, reason: 'not-configured' };
 
-  const requestId = `CP-${crypto.randomUUID().split('-')[0].toUpperCase()}`;
+  const requestUuid = crypto.randomUUID();
+  const requestId = `CP-${requestUuid.split('-')[0].toUpperCase()}`;
+  const idempotencyKey = `support/${requestUuid}`;
   for (let attempt = 1; attempt <= MAX_DELIVERY_ATTEMPTS; attempt += 1) {
     try {
       const response = await fetcher(RESEND_ENDPOINT, {
@@ -95,6 +97,7 @@ export async function deliverSupportRequest(
         headers: {
           authorization: `Bearer ${config.apiKey}`,
           'content-type': 'application/json',
+          'idempotency-key': idempotencyKey,
         },
         body: JSON.stringify({
           from: `CARLOPHILLIPS <${config.from}>`,
