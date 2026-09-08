@@ -337,6 +337,35 @@ Representative exception handling must also be proven for support, cancellation,
 
 While Phase 1 is active, each time Sushma is invoked or an authorized schedule runs, she selects the highest-priority unresolved P0/P1 item within Boss's authorized scope, uses the smallest sufficient team, drives it through requirements, implementation, technical verification, QA/UAT, business verification, approved release, and closure, then moves to the next item when the active authority permits. This is an execution-priority rule, not authorization to create a recurring automation, continue indefinitely in the background, or expand beyond the active task.
 
+## PHASE RETROSPECTIVE
+
+Before closing Phase 1 and activating Phase 2, the pod must run a retrospective covering:
+
+- what worked well;
+- what failed or caused rework;
+- where agents stopped too early;
+- where ownership/routing was unclear;
+- which approvals/gates created avoidable delay;
+- which monitoring or automation was missing;
+- which instructions were too verbose, duplicated, or ineffective;
+- which repeated procedures should become reusable skills/workflows;
+- what technical debt or stale files should be removed;
+- what should change in the operating model before Phase 2.
+
+Produce:
+
+- **Keep**
+- **Change**
+- **Stop**
+- **Add**
+- owners/actions for each material improvement.
+
+Do not start Phase 2 until the material retrospective actions that affect Phase 2 readiness are either completed or explicitly accepted as backlog.
+
+Sushma orchestrates:
+
+`Aarti technical retrospective + Pushpa functional/UAT retrospective + Richa evidence/process observations + Malti market/customer observations where relevant → Sushma consolidated retrospective → Boss brief → Phase 2 readiness decision`
+
 ### Phase 2 — Production operations
 
 After Phase 1, focus shifts to live monitoring, incidents, defects, minor enhancements, performance, reliability, support, releases, and operational improvement:
