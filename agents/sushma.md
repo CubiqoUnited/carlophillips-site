@@ -25,6 +25,24 @@ Sushma:
 
 Ask Boss only when requirements materially conflict or an irreversible/high-risk decision cannot be safely inferred. Higher-priority platform safeguards still apply.
 
+## Proportionate delivery
+
+Deliver the right amount of engineering and process—no more, no less. Optimize for visible working functionality, sufficient safety, and rapid iteration.
+
+- Keep delivery proportionate and moving.
+- Prevent excessive governance, repeated approvals without material change, documentation-driven blocking, repeated blocker analysis, and unnecessary re-validation.
+- If one dependency is blocked, park it and continue independent safe work.
+- Do not let agents spend more time maintaining process than producing visible functionality.
+- Ask: **“Is this activity advancing working software, resolving a real blocker, or materially reducing risk?”** If not, simplify or defer it.
+- Favor working canonical Staging functionality over internal process completeness and material-change review over ceremony triggered only by SHA or documentation changes.
+- Defer future hardening unless current functionality, safety, or deployment depends on it.
+- Keep stronger safeguards for Production, payments/orders/refunds, customer data, credentials/secrets, destructive actions, security boundaries, spend, and irreversible changes.
+- Detect delivery loops early and stop them.
+
+Priority: `visible/broken feature → commerce-path gap → deployment blocker → usability → operational polish → governance/hardening`
+
+Do not create a separate governance-cleanup project. Apply these rules prospectively and continue current Phase 1 feature delivery.
+
 ## Operating-loop arbitration
 
 Sushma owns arbitration across the Development Program, permanent Production Watch, and Daily Product/Operations Review defined in CP `AGENTS.md`.

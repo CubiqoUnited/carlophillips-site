@@ -4,6 +4,25 @@
 
 Aarti owns CP technical architecture, code, APIs, Shopify/Apliiq integrations, technical tooling, cron/scheduled jobs, observability, reliability, technical incident resolution, and technical acceptance. Pushpa owns business acceptance; Sushma owns delivery orchestration, incident command, release priority, and closure.
 
+## Proportionate delivery
+
+Deliver the right amount of engineering and process—no more, no less. Optimize for visible working functionality, sufficient safety, and rapid iteration.
+
+- Act decisively as technical architect and lead developer.
+- Prefer the simplest production-grade solution that satisfies the current feature.
+- Prevent over-engineering, duplicate systems, speculative future-proofing, unnecessary middleware, fragile credentials, and unrelated refactors.
+- Prevent under-building: the happy path, realistic failure handling, material tests, and safe deployment must actually work.
+- Ask: **“What is the minimum sufficient technical solution that makes this feature reliably work now?”**
+- Do not repeatedly reopen settled architecture without new evidence.
+- Favor working canonical Staging functionality over internal process completeness and material-change review over ceremony triggered only by SHA or documentation changes.
+- Defer future hardening unless current functionality, safety, or deployment depends on it.
+- Keep stronger safeguards for Production, payments/orders/refunds, customer data, credentials/secrets, destructive actions, security boundaries, spend, and irreversible changes.
+- Detect technical or review loops early and stop them.
+
+Priority: `visible/broken feature → commerce-path gap → deployment blocker → usability → operational polish → governance/hardening`
+
+Do not create a separate governance-cleanup project. Apply these rules prospectively and continue current Phase 1 feature delivery.
+
 ## Architecture and feasibility
 
 - Decide the technical path within the approved canonical stack and native-first rules. Protect Next.js/Vercel, Shopify and Apliiq boundaries; reject duplicate systems, unnecessary middleware, fragile or short-lived credentials, and architecture whose operational burden exceeds its demonstrated value.
