@@ -1,4 +1,33 @@
-# CURRENT — REAUTHORIZE CANONICAL STAGING VERCEL CREDENTIAL
+# HUMAN INTERVENTION QUEUE — CURRENT AUTHORITY
+
+Updated: 2026-09-08 EDT
+
+This queue is the authoritative current view. Historical detail is retained below and may preserve its original headings; those headings do not override this queue.
+
+| ID | Category | Priority | Blocked capability | Exact action | Owner | Why it cannot be completed autonomously | Work continuing in parallel | Resume trigger | Resume point | Scope blocked | Status |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| HI-P1-STAGING-VERCEL | RESOLVED | P1 | Protected Staging deployment for `staging@ce2bb181…` | Use the minimum durable team/account credential supported by the unchanged CLI, bound only to GitHub `Staging` and hard-pinned to canonical Cubiqo team/project/scope IDs | Aarti verified identity/scope; Sushma bound, reran and closed | The prior eight-hour interactive token expired; Vercel CLI 56.1.0 rejected a durable project-only token with `User not found (404)`. Boss authorized the minimum durable team/account credential required by the current CLI without authorizing broader deployment behavior | PR #117 → #118 → #119 resumes | Exact run `34184480979` attempt 4 succeeds and canonical alias is verified | Completed: attempt 4 passed unchanged protected workflow for exact `ce2bb181…`; READY deployment `dpl_28oNTseGJnoEfG8dtJ7keTagDeEc`; `staging.carlophillips.com` HTTP 200; Production unchanged | None; project-scoped/OIDC alternative is later hardening | CLOSED |
+| HI-P1-SUPPORT-ACCOUNTS | ADMIN / EXTERNAL ACCESS REQUIRED | P1 | Staging support, customer-account and native-returns activation | Verify the Resend sender/domain and monitored recipient; provision the three support variables plus the two Shopify Staging public entry URLs in Vercel Preview; enable the native Shopify Staging features | Vercel/Resend/Shopify admin owner; Aarti verifies; Pushpa accepts; Sushma tracks | Available agents lack the sender/mailbox facts or permission to activate Shopify account/return configuration | PR #117 code/tests/runbook and non-live failure drills continue | The five required Preview variables are present, Shopify Staging account/returns are enabled, and the monitored mailbox/operator are identified | Deploy approved PR #117 SHA to canonical Staging, then run no-PII support receipt/failure-alert, account isolation and eligible/ineligible returns drills | Support/account/returns operational proof and Phase exit | OPEN |
+| HI-P1-STAGING-ORDER | ADMIN / EXTERNAL ACCESS REQUIRED | P1 | Current no-charge Staging payment/order and native cancel/refund proof | Provide protected access through the dedicated Shopify Staging store password gate and confirm the permitted test-payment/admin operator path | Shopify Staging admin owner; Aarti verifies; Pushpa accepts; Sushma tracks | Public cart creation works, but available agents lack the password or authenticated Shopify Admin session | Tabletop/synthetic exceptions and no-order storefront/cart checks continue | Protected storefront/test-payment access is available without exposing the password in chat/source/logs | Execute one synthetic customer/test-payment order, then native cancellation/refund/restock scenarios without Apliiq Production | Current payment/order and post-sale Staging proof | OPEN |
+| HI-P1-NATIVE-OPS | ADMIN / EXTERNAL ACCESS REQUIRED | P1 | Shopify/Apliiq webhook subscriptions, Flow alerts and lifecycle reconciliation | Grant or perform authenticated read/config inspection of Shopify/Apliiq/Flow and identify the monitored staff alert recipient | Shopify/Apliiq/Flow admin owner; Aarti designs/verifies; Sushma responds | Available agents lack a Shopify Admin token or authenticated provider/Flow session, and native behavior must be established before custom processing | PR #118 proposal, webhook failure tests, local reconciliation fixtures and controlled-order preflight continue | Current subscription/Flow/Apliiq behavior and alert recipient are recorded and approved configuration access exists | Configure/verify native alerts and scheduled exceptions, prove delivery/recovery, then add custom code only for demonstrated residual gaps | Webhook operations, reconciliation, paid-order/Apliiq/tracking watch, Phase exit | OPEN |
+| HI-P1-POLICY | BOSS ACTION REQUIRED | P1 | Final Production policy activation | Decide preference-return shipping/postage treatment and authorize any exception outside policy or compensation above the paid value | Boss decides unresolved policy/liability; Pushpa prepares recommendation; Sushma tracks | The unresolved choice changes customer policy or creates financial liability beyond Pushpa's safe delegated authority | Aarti may design and test approved default support/return/refund contracts without activating unresolved Production policy | Boss's decision is recorded in durable team state | Apply confirmed values in Staging, run Pushpa UAT, then seek required final Staging acceptance | One tranche and Phase exit; not current design work | OPEN |
+| HI-P1-ORDER | BOSS ACTION REQUIRED | P1 | Controlled real Shopify→Apliiq lifecycle proof | Authorize the specific low-risk real Production order, permitted payment operator/instrument, and cost before execution | Boss; Sushma prepares the decision brief and tracks | Agents cannot create a real charge/manufacturing obligation or use Boss's financial instrument without explicit authority | Complete native-first design, sandbox/synthetic tests, monitoring, failure handling, and the controlled-order runbook | Explicit authority identifies the permitted operator/instrument, order, and cost | Execute the prepared controlled order and verify Shopify order → Apliiq → fulfillment/tracking → customer status | Controlled-order task and Phase exit | OPEN |
+
+No current human blocker stops all Phase 1 work. Sushma continues the highest-priority safe item and rechecks this queue for cleared triggers.
+
+## Resolved — Staging merge governance — 2026-09-07 EDT
+
+GitHub ruleset `22503877` now targets only `staging` and requires a pull request,
+zero human approvals, resolved conversations, up-to-date branches, `Verify`,
+`Checkout E2E and accessibility`, and deletion/force-push protection. Ruleset
+`22407822` now targets only the default branch and retains its existing one-review,
+latest-push, required-check, resolved-conversation, deletion and force-push controls.
+PRs #116, #117 and #118 were rechecked as green and `CLEAN`; their former
+staging-only independent-approval queue items are closed.
+
+---
+
+# HISTORICAL — REAUTHORIZE CANONICAL STAGING VERCEL CREDENTIAL
 
 Updated: 2026-09-06 EDT
 
@@ -31,7 +60,7 @@ Resume by rerunning Protected Vercel Staging with PR `114`, exact SHA
 
 ---
 
-# CURRENT — REPOSITORY ADMIN GOVERNANCE REQUIRED
+# HISTORICAL — REPOSITORY ADMIN GOVERNANCE REQUIRED
 
 Updated: 2026-09-06 EDT
 
