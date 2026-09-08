@@ -1,5 +1,6 @@
 import { ContactForm } from '@/components/support/ContactForm';
 import { StorefrontHeader } from '@/components/layout/StorefrontHeader';
+import { resolvePublicSupportFallback } from '@/lib/support/public-support-fallback';
 
 export const metadata = {
   title: 'Contact Us | CARLOPHILLIPS',
@@ -16,7 +17,7 @@ export default function ContactPage() {
           <h1>Contact us</h1>
           <p>Tell us what you need. We’ll reply within 1–2 business days.</p>
         </div>
-        <ContactForm />
+        <ContactForm fallbackHref={resolvePublicSupportFallback()} />
       </section>
     </main>
   );

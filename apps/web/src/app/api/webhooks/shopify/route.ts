@@ -23,6 +23,20 @@ const TOPICS = new Set([
   'refunds/create',
 ]);
 
+function reportWebhookFailure(
+  event: 'configuration_failed' | 'idempotency_failed' | 'storage_failed',
+  environment: string,
+  topic?: string
+) {
+  console.error('cp.shopify_webhook.failed', {
+    event: `shopify_webhook_${event}`,
+    environment,
+    route: '/api/webhooks/shopify',
+    topic: topic && TOPICS.has(topic) ? topic : null,
+    occurredAt: new Date().toISOString(),
+  });
+}
+
 export async function POST(request: Request) {
   const environment = getCommerceEnvironment();
   try {
@@ -31,6 +45,7 @@ export async function POST(request: Request) {
   } catch (error) {
     const code =
       error instanceof Error ? error.message : 'RUNTIME_CONFIG_INVALID';
+    reportWebhookFailure('configuration_failed', environment);
     return NextResponse.json({ error: code }, { status: 503 });
   }
   const webhookConfig = resolveShopifyWebhookConfig(environment);
@@ -45,6 +60,7 @@ export async function POST(request: Request) {
   try {
     store = createDurableWebhookStore(environment);
   } catch {
+    reportWebhookFailure('configuration_failed', environment);
     return NextResponse.json(
       { error: 'DURABLE_IDEMPOTENCY_REQUIRED' },
       { status: 503 }
@@ -66,17 +82,40 @@ export async function POST(request: Request) {
       error instanceof ShopifyWebhookVerificationError &&
       error.code === 'SHOPIFY_WEBHOOK_REPLAYED'
     ) {
-      return NextResponse.json({
-        ok: true,
-        duplicate: true,
-        externalActionApplied: false,
-      });
+      try {
+        const webhookId = request.headers.get('x-shopify-webhook-id') || '';
+        if ((await store.status(webhookId)) === 'recorded') {
+          return NextResponse.json({
+            ok: true,
+            duplicate: true,
+            externalActionApplied: false,
+          });
+        }
+      } catch {
+        // Fall through to a retryable response; never acknowledge uncertain state.
+      }
+      reportWebhookFailure(
+        'idempotency_failed',
+        environment,
+        request.headers.get('x-shopify-topic') || undefined
+      );
+      return NextResponse.json(
+        { error: 'WEBHOOK_PROCESSING_INCOMPLETE' },
+        { status: 503 }
+      );
     }
-    const code =
-      error instanceof ShopifyWebhookVerificationError
-        ? error.code
-        : 'SHOPIFY_WEBHOOK_REJECTED';
-    return NextResponse.json({ error: code }, { status: 401 });
+    if (error instanceof ShopifyWebhookVerificationError) {
+      return NextResponse.json({ error: error.code }, { status: 401 });
+    }
+    reportWebhookFailure(
+      'idempotency_failed',
+      environment,
+      request.headers.get('x-shopify-topic') || undefined
+    );
+    return NextResponse.json(
+      { error: 'WEBHOOK_IDEMPOTENCY_UNAVAILABLE' },
+      { status: 503 }
+    );
   }
 
   try {
@@ -86,6 +125,7 @@ export async function POST(request: Request) {
     );
   } catch {
     await store.release(verified.webhookId).catch(() => undefined);
+    reportWebhookFailure('storage_failed', environment, verified.topic);
     return NextResponse.json(
       { error: 'WEBHOOK_EVENT_STORE_FAILED' },
       { status: 503 }

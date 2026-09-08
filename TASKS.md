@@ -1,5 +1,118 @@
 # Delivery Tasks
 
+## Active Phase 1 tranche sequence — 2026-09-07
+
+- [x] Record Aarti technical PASS, Pushpa business PASS where applicable, and
+      Sushma delivery APPROVE for PR #116; merge it through the protected PR
+      path to `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+- [x] Dispatch protected Staging from the permitted `staging` ref, validate the
+      exact merged SHA, and preserve run `34184480979` evidence.
+- [x] Resolve the Staging credential regression under Boss's expanded authority:
+      Vercel CLI 56.1.0 rejected the project-only token class, so bind the
+      minimum durable Cubiqo team/account credential only to GitHub `Staging`,
+      retain the unchanged canonical team/project/scope IDs, and pass exact run
+      `34184480979` attempt 4 for `ce2bb181…`. Verify READY deployment
+      `dpl_28oNTseGJnoEfG8dtJ7keTagDeEc`, HTTP 200 on the canonical alias,
+      Production unchanged, and close `HI-P1-STAGING-VERCEL`.
+- [x] Reconcile PR #117 without conflict onto `ce2bb181…`; pass 16 targeted
+      tests, web typecheck, Production-commerce lint and Checkout E2E on
+      candidate `87d62e6…`.
+- [x] Pass both required checks on PR #117 exact head `908b82c…`, merge to
+      `staging@42aade89cf1d2da310dce2c955ac8d0d20e6fb66`, and pass protected
+      Staging run `34203965788`; verify READY deployment
+      `dpl_7yoVoFWzorpEZDdPiyz6nSpjUCpM` and HTTP 200 on the canonical alias.
+- [ ] Pass both required checks on PR #118 after reconciliation onto verified
+      Staging, merge its exact green head, then run protected exact-SHA Staging
+      verification before reconciling PR #119.
+
+- [x] Reconfirm canonical deployed provenance: Staging is READY at exact
+      `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`; Production is READY at exact
+      `f814965730a42df481a7bf367ca8306cd1e4ce46`; both public routes return 200.
+- [x] Prepare governance PR #116 and pass both required checks before the
+      executability audit; require the same checks again on every later head.
+- [x] Record Aarti technical PASS, Pushpa business PASS where applicable, and
+      Sushma delivery APPROVE for PR #116; then merge the green candidate to
+      `staging`, run the protected Staging workflow, verify the canonical alias,
+      and promote the identical approved governance state normally. Merge is
+      complete; protected deployment remains blocked on the scoped Vercel token.
+- [x] Prepare PR #117 bounded support retry/sanitized telemetry, native
+      account/returns proposal, runbook and exact environment-name audit; pass
+      both required checks on exact head
+      `eb7590e6563ed5f58d3baa2b1c7a7910d0c853f1`.
+- [ ] After #116 is verified, reconcile and approve #117 against canonical
+      `staging`; provision verified Preview support/account/returns configuration
+      and run the no-PII support receipt/failure-alert, account-isolation and
+      eligible/ineligible return drills.
+- [x] Prepare green PR #118 for Production commerce watch and retryable webhook
+      recovery, without adding a parallel commerce authority or broad custom
+      event platform.
+- [ ] After #116 is verified, reconcile and approve #118 against canonical
+      `staging`; verify Staging, promote normally, and observe the first scheduled
+      Production watch plus alert/recovery behavior.
+- [x] Prepare stacked PR #119 controlled-lifecycle runbook and explicitly
+      synthetic exception suite; exact head
+      `5023518f2e35ea3dbdf9f5aed58b9cd3f929f4a2` passes CI.
+- [ ] After #118, retarget/reconcile #119 through canonical `staging`, obtain
+      review, run the exact-SHA synthetic suite, and retain the receipt as
+      synthetic-only evidence.
+- [ ] Obtain separate Boss authority for the bounded real order and prove
+      Shopify payment/order → Apliiq acceptance/production → fulfillment →
+      tracking in Shopify → customer status. Never treat the synthetic suite as
+      this live proof.
+- [ ] Complete Pushpa-accepted cancellation, return, refund, replacement,
+      fulfillment-delay and missing-tracking operational drills, then reconcile
+      every Phase 1 exit criterion before closure.
+- [x] Audit every remaining Phase 1 tranche without assuming #116 is a global
+      dependency; resume the non-live exception tabletop and safely prove that
+      current Staging checkout reaches the separate Shopify password gate.
+- [x] Complete the ten-scenario representative exception tabletop on PR #119
+      and reconcile it onto PR #118's accepted head. PR #119 exact head
+      `1deed62861acaf5aaed9b32743210033f3339725` passes the eight-file
+      synthetic suite 55/55 locally and exact-head GitHub `Verify` passes.
+- [x] Record Aarti technical review, Pushpa business acceptance and Sushma
+      APPROVE/REQUEST-CHANGES briefs for independent PRs #117 and #118; do not
+      wait on PR #116 because it is not their technical dependency.
+
+The Human Intervention Queue is authoritative for each blocked owner, trigger
+and exact resume point. Continue non-conflicting safe work when one row is
+parked.
+
+## Delivery governance closeout — 2026-09-06
+
+- [x] Merge governance PR #114 to
+      `staging@33b7eeae5e051e3df94a6321f49580af73e1b047` after green `Verify`
+      and `Checkout E2E and accessibility` checks; delete its remote branch.
+- [ ] Reauthorize the encrypted GitHub Staging `VERCEL_TOKEN` for the canonical
+      Cubiqo Vercel team and rerun protected Staging `34014134514` inputs. The
+      first attempt passed repository/QA checks and failed safely before
+      deployment with `scope-not-accessible`.
+- [ ] After exact protected Staging succeeds, promote the identical governance
+      tree through a reviewed `staging`-to-`main` PR and delete temporary
+      branches. Do not bypass the protected workflow.
+- [x] Verify `origin/main@f814965730a42df481a7bf367ca8306cd1e4ce46`
+      and `origin/staging@60b53ec4fe2490ac9da0845161af7f439d01be95`
+      have identical Git trees.
+- [x] Verify protected Staging, signed release proof, PR CI/Playwright,
+      Production candidate, Production promotion, checkout-health and rollback
+      preparation all passed for the exact release chain.
+- [x] Verify Production and Staging return HTTP 200 and preserve the no-order,
+      no-customer-data QA boundary.
+- [x] Verify required reviewers exist on both GitHub deployment environments
+      and Staging permits only the `staging` branch.
+- [ ] A repository administrator protects both `main` and `staging` with one
+      approving PR review, conversation resolution, up-to-date `Verify` and
+      `Checkout E2E and accessibility` checks, and blocked force-push/deletion.
+- [ ] A repository administrator restricts the Production environment to
+      `main` and enables automatic deletion of merged temporary branches.
+- [ ] Reconcile the user-owned changes and historical QA artifacts in
+      `/Users/edv/Documents/cp`; do not discard, overwrite, or classify them as
+      removable without an evidence-preserving inventory.
+- [ ] Remove obsolete local worktrees only after their modified and untracked
+      QA evidence is preserved or deliberately retained. Remote branch hygiene
+      is already compliant: only `main` and `staging` remain.
+- [ ] Exercise settlement and the POD/post-sale lifecycle only under separate
+      exact-order authorization before claiming end-to-end commerce readiness.
+
 Execution authority is newest-first. The current 2026-09-04 no-order and
 provenance sections supersede every conflicting checkbox in older sections.
 No older task may authorize a Staging payment, order submission, private
