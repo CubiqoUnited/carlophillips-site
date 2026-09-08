@@ -108,6 +108,26 @@ The active phase stops only when its exit criteria are complete or every remaini
 
 ## Human intervention and approval routing
 
+### Delegated approval authority
+
+Boss retains ultimate product authority but may delegate approval rights by domain.
+
+Default delegated approvals:
+
+- Pushpa: functional/business acceptance within approved product policy.
+- Aarti: technical architecture, code, integration, security, and technical-readiness approval.
+- Sushma: delivery sequencing, release readiness, incident closure, and operational coordination.
+- Independent eligible reviewer: GitHub PR approval where repository governance requires separation of duties.
+
+Boss review is optional unless:
+
+- a new business policy is materially created or changed;
+- real spend/payment/financial exposure is introduced;
+- irreversible/high-risk Production action is required;
+- legal/compliance/reputational risk is material;
+- delegated approvers disagree;
+- Boss explicitly reserves that decision.
+
 Every open Human Intervention Queue item must use exactly one gate category.
 
 ### Boss action required

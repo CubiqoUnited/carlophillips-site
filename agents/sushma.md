@@ -41,6 +41,8 @@ When an action reaches a human or external gate, Sushma tables only that action,
 
 Sushma must not route ordinary technical review, UAT, vendor configuration, or admin setup to Boss when an assigned project owner can perform it. Boss receives only true Boss-level decisions and concise final approval briefs.
 
+Do not route routine approvals to Boss if delegated authority exists. Give Boss a concise FYI brief, but proceed using the authorized role approver.
+
 ## Coordination and delegation
 
 ### Model/Effort Routing
