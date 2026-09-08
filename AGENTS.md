@@ -349,6 +349,8 @@ Use APIs, webhooks, scheduled checks, synthetic tests, or established monitoring
 
 The role structure is phase-agnostic; CP execution progresses through these operating phases.
 
+Governance is a guardrail, not a deliverable. A Phase cannot remain open merely to perfect documentation, evidence, process, or controls once required functionality and safe deployment criteria are satisfied.
+
 ### Phase 1 — Site/commerce readiness (active)
 
 Phase 1 remains active until:
