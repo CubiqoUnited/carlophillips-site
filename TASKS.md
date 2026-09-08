@@ -7,9 +7,10 @@
       `f814965730a42df481a7bf367ca8306cd1e4ce46`; both public routes return 200.
 - [x] Prepare governance PR #116 and pass both required checks before the
       executability audit; require the same checks again on every later head.
-- [ ] Independent reviewer approves PR #116; then merge to `staging`, run the
-      protected Staging workflow, verify the canonical alias and promote the
-      identical approved governance state through the normal protected path.
+- [ ] Record Aarti technical PASS, Pushpa business PASS where applicable, and
+      Sushma delivery APPROVE for PR #116; then merge the green candidate to
+      `staging`, run the protected Staging workflow, verify the canonical alias,
+      and promote the identical approved governance state normally.
 - [x] Prepare PR #117 bounded support retry/sanitized telemetry, native
       account/returns proposal, runbook and exact environment-name audit; pass
       both required checks on exact head

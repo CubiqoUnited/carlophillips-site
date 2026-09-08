@@ -12,15 +12,15 @@
   `dpl_26T9f1b3jBex26zajTJyvEgHoJbS`; the authenticated Vercel deployment record
   identifies source commit `f814965730a42df481a7bf367ca8306cd1e4ce46` in
   `CubiqoUnited/carlophillips-site`.
-- Governance PR #116 is open against canonical `staging`. Its latest remote
-  head must pass `Verify` and `Checkout E2E and accessibility` and is blocked
-  on the required independent approval. It is not deployed; GitHub is the
-  authority for its changing candidate SHA and latest-head checks.
+- Governance PR #116 is open against canonical `staging` at exact head
+  `8d7128ba5c125ede74de3273dfbfcb3ecb080018`; both required checks pass and
+  GitHub reports it `CLEAN`. It still requires the recorded Aarti technical,
+  Pushpa business where applicable, and Sushma delivery decisions before merge.
 - Support/customer-account PR #117 is open against canonical `staging`. Exact
   head `eb7590e6563ed5f58d3baa2b1c7a7910d0c853f1` passes both required checks
-  and remains review-blocked. Production Watch/webhook-recovery PR #118 and
-  stacked controlled-lifecycle PR #119 also have green exact-head checks and
-  remain unmerged.
+  and GitHub reports it `CLEAN`. Production Watch/webhook-recovery PR #118 is
+  also green and `CLEAN`; stacked controlled-lifecycle PR #119 remains ordered
+  after #118. All remain unmerged.
 - A read-only Vercel name/scope inventory confirms Preview and Production have
   their respective Shopify commerce, checkout, webhook, durable-store and Clerk
   variables. Neither environment has the three Resend support variables or its
