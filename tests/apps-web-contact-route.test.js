@@ -142,9 +142,7 @@ describe('deployed apps/web contact boundary', () => {
     expect(idempotencyKeys[0]).toMatch(
       /^support\/[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/
     );
-    expect(provider.mock.calls[0][1].body).toBe(
-      provider.mock.calls[1][1].body
-    );
+    expect(provider.mock.calls[0][1].body).toBe(provider.mock.calls[1][1].body);
   });
 
   it('uses one provider idempotency key after an ambiguous transport failure', async () => {
