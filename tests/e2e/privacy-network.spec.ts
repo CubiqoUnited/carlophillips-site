@@ -67,7 +67,7 @@ test('customer PII stays on the support intake boundary', async ({
   await page.getByRole('button', { name: 'Send request' }).click();
   expect((await intake).status()).toBe(503);
   await expect(
-    page.getByText('Email support is not configured yet.')
+    page.getByText('Email support is unavailable right now.')
   ).toBeVisible();
 
   const browserState = await page.evaluate(() => ({
