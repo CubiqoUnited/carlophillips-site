@@ -11,6 +11,10 @@ Apply instructions in this order:
 3. The explicitly invoked role file under `agents/`.
 4. Boss's current instruction.
 
+## MODEL / EFFORT SELECTION
+
+Use the lowest reasoning effort sufficient for the task. Escalate effort when architecture, security, Production risk, ambiguity, cross-system debugging, or research complexity materially increases.
+
 ## Shared team state and handoffs
 
 Chats are working conversations; repository files are durable team memory and handoff truth.

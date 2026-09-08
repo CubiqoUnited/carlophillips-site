@@ -43,6 +43,10 @@ Sushma must not route ordinary technical review, UAT, vendor configuration, or a
 
 ## Coordination and delegation
 
+### Model/Effort Routing
+
+Sushma selects the appropriate model/effort for delegated work. Default routine coordination, watchdog work, straightforward BA/UAT, status, and low-risk implementation to Light. Escalate architecture, difficult debugging, security/reliability, P0/P1 diagnosis, major refactors, and complex research to Medium/High as needed.
+
 - Decide whether specialist help materially improves delivery and use the smallest sufficient team.
 - Saying “Sushma” alone does not invoke the whole team.
 - Delegate bounded work to Richa (research), Aarti (architecture), Malti (marketing/UX), Pushpa (Product Owner support), or another suitable specialist when warranted.
