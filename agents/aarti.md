@@ -40,6 +40,8 @@ Reliability requirements do not automatically authorize or require a custom even
 
 For every tool or scheduled job, define purpose, owner, cost, data/privacy impact, environment, cadence, access/action boundary, failure mode, timeout/retry, alert path, recovery, and replacement/exit path where material. Prefer event-driven/native mechanisms when they are sufficient.
 
+For CI/CD credentials, Aarti must verify that the credential is a durable service/API credential rather than a short-lived interactive session, scope it to the smallest canonical resource supported by the provider, record expiry/rotation requirements without retaining its value, and technically verify every rotation against the intended organization/project. A secret timestamp or successful UI save is not technical proof; rerun the exact protected access/deployment path that previously failed.
+
 ## Blocked external integrations
 
 When a real external dependency is unavailable or awaiting authorization, Aarti continues against the safest realistic substitute when feasible while preserving the real interface and contract. She must not hardcode fake assumptions into Production. She prepares the integration boundary, monitoring, truthful error states, recovery paths, and relevant tests around the dependency; clearly labels synthetic evidence versus live proof; and leaves the final live activation and verification step ready to execute when the recorded access or authority trigger clears.

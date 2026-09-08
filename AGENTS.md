@@ -84,6 +84,15 @@ Standard path:
 - Only `main` and `staging` may persist on `origin`. Temporary branches must be removed after verified merge and closure.
 - Destructive maintenance must not be hidden inside routine deployments.
 
+### CI/CD credential lifecycle
+
+- Protected Staging and Production automation must use durable service/API credentials, not browser, CLI-login, ChatGPT, OAuth-session, or other short-lived interactive session tokens.
+- Scope each credential to the smallest canonical environment/team/project and capability supported by the provider. Never broaden access merely to make a deployment pass.
+- Aarti owns credential-type and scope verification, technical rotation/rebinding, and a non-secret access check against the intended canonical resource.
+- Sushma owns protected-environment binding, release coordination, expiry/rotation tracking, and closure only after the exact failed or scheduled protected workflow passes and the intended alias/deployment is verified.
+- After every credential rotation or rebind, preserve only sanitized evidence: credential name/type, scope/resource IDs, update time, owner, triggering reason, exact workflow run, result, and next rotation date when applicable. Never retain the credential value.
+- A successful secret update is not proof of recovery. Post-rotation verification must exercise the real protected workflow against the unchanged canonical organization/project IDs and fail closed on scope or identity mismatch.
+
 ## Coordinated operating loops
 
 CP runs three distinct but coordinated operating loops:

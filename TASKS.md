@@ -7,10 +7,16 @@
       path to `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
 - [x] Dispatch protected Staging from the permitted `staging` ref, validate the
       exact merged SHA, and preserve run `34184480979` evidence.
-- [ ] Reauthorize/replace the encrypted GitHub Staging `VERCEL_TOKEN` with a
-      token that can access `cubiqo-projects-d7156840`, then rerun protected
-      Staging with PR `116`, expected SHA `ce2bb181…`, and release
-      `phase1-governance-ce2bb181`. Do not bypass the workflow.
+- [ ] Resolve Vercel credential-class compatibility without broadening the
+      approved project-only boundary: the expired eight-hour CLI session token
+      is removed, and a durable token scoped only to canonical project
+      `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` is bound, but unchanged Vercel CLI
+      56.1.0 rejects that credential class at `vercel pull` (`User not found`,
+      run `34184480979` attempt 3). Aarti determines the provider-supported
+      least-privilege compatible path; Sushma rebinds and reruns the same PR
+      `116` / `ce2bb181…` / `phase1-governance-ce2bb181` workflow and verifies
+      the receipt and alias. Do not substitute a broader account/team token or
+      change workflow architecture without explicit authority.
 - [x] Reconcile PR #117 without conflict onto `ce2bb181…`; pass 16 targeted
       tests, web typecheck, Production-commerce lint and Checkout E2E on
       candidate `87d62e6…`.

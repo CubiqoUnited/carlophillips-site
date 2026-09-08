@@ -2,6 +2,33 @@
 
 ## Phase 1 protected-Staging progression — 2026-09-08
 
+- Credential-regression analysis compares successful protected Staging run
+  `34041556159` with failed run `34184480979`. GitHub Staging
+  `VERCEL_ORG_ID=team_Q25fvpJOPiIeoG3hfxtCVkhW`,
+  `VERCEL_PROJECT_ID=prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`, and
+  `VERCEL_SCOPE=cubiqo-projects-d7156840` have been unchanged since September 3;
+  the workflow and pinned Vercel CLI were also unchanged between the runs.
+- The regressed secret was an interactive Vercel CLI Sign-in-with-Vercel token
+  created at `2026-09-06T14:54:37Z`, bound to GitHub Staging at
+  `15:12:04Z`, and expired at `22:54:37Z`. Run `34041556159` began one second
+  after binding and passed. No Git commit introduced the expiry: PR #115 / merge
+  `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f` documented the blocker, while
+  the September 6 Sushma repair task copied the short-lived CLI session into
+  GitHub.
+- A durable no-expiry Vercel token scoped only to canonical project
+  `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` was created and rebound without exposing
+  its value. Exact run `34184480979` attempts 2 and 3 retained the same SHA and
+  inputs. Attempt 3 used the correctly captured `vcp` project credential but
+  Vercel CLI 56.1.0 rejected it at `vercel pull` with `User not found (404)`;
+  a separate non-mutating CLI check returned `Not authorized` without `--scope`
+  and the same 404 with `--scope`. No build, deployment or alias occurred.
+- The remaining blocker is credential-class compatibility, not lost IDs or
+  workflow architecture. A broader durable team/account token would exceed the
+  approved project-only boundary; changing the pinned CLI/authentication path
+  would violate the requested exact-workflow/no-architecture-change constraint.
+  Aarti owns the compatible least-privilege technical resolution; Sushma owns
+  rebinding and exact-workflow/alias verification afterward.
+
 - Aarti technical PASS, Pushpa business PASS where applicable, and Sushma
   delivery APPROVE are recorded for governance PR #116. PR #116 merged through
   the protected pull-request path to canonical

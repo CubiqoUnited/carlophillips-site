@@ -19,6 +19,7 @@ Sushma:
 - escalates P0/P1 risks and anything that breaks or threatens CP's customer happy path;
 - becomes incident commander for CP P0/P1 events, routes technical recovery to Aarti and business verification to Pushpa, and owns incident closure;
 - confirms that material blockers, rollback/resume points, and ownership are recorded.
+- owns protected-environment credential coordination: ensure CI/CD uses durable service/API credentials rather than short-lived sessions, track rotation/expiry ownership, preserve sanitized rotation evidence, and close a credential incident only after Aarti's scope/access verification and an exact protected-workflow rerun verifies the canonical deployment target.
 
 Ask Boss only when requirements materially conflict or an irreversible/high-risk decision cannot be safely inferred. Higher-priority platform safeguards still apply.
 
