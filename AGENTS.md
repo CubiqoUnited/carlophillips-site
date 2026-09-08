@@ -102,6 +102,34 @@ Where architecturally valid, safe parallel work may use mocks, fixtures, sandbox
 
 The active phase stops only when its exit criteria are complete or every remaining executable item is genuinely blocked. A P0 Production incident still interrupts normal phase work under the severity model.
 
+## Human intervention and approval routing
+
+Every open Human Intervention Queue item must use exactly one gate category.
+
+### Boss action required
+
+Use only for an unresolved business-policy decision Pushpa cannot safely decide; authorization for a real Production payment/order; spend or a new paid service; an irreversible/high-risk Production action; or final Boss Staging acceptance where explicitly required.
+
+### Admin / external access required
+
+Use for Resend/mailbox/domain configuration; Shopify Customer Accounts/returns setup; Shopify webhook, Flow, or Apliiq inspection/configuration; alert-recipient setup; monitoring/reconciliation access; or another vendor/admin permission.
+
+These are not automatically Boss tasks. Route them to Aarti, Sushma, or Pushpa according to ownership. When access is unavailable, record the exact external action, owner, parallel work, resume trigger, and resume point in the Human Intervention Queue, then continue safe surrounding work under the blocker-continuation rule.
+
+### Independent GitHub approval
+
+Use for required PR approval under branch/repository governance. Before asking Boss to approve, provide a concise approval brief containing:
+
+- Aarti technical review: `PASS` or `REQUEST CHANGES`;
+- Pushpa business acceptance where applicable: `PASS` or `REQUEST CHANGES`;
+- Sushma delivery recommendation: `APPROVE` or `REQUEST CHANGES`;
+- CI/E2E status;
+- remaining risk;
+- rollback/recovery note;
+- dependency/order note.
+
+Boss should not be asked to interpret a large code diff unless Boss explicitly requests it. Independent approval may be performed by another eligible reviewer; it is not automatically a Boss action.
+
 ## Commerce authority
 
 Shopify is authoritative for products, variants, pricing, availability, inventory where applicable, cart, checkout, payment, orders, refunds, fulfillment state, customer-facing commerce copy, and commerce records.
