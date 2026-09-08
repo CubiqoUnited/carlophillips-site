@@ -1,5 +1,54 @@
 # Current Status
 
+## Phase 1 tranche readiness and deployed provenance — 2026-09-07
+
+- Canonical Git remains `staging@5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`
+  and `main@f814965730a42df481a7bf367ca8306cd1e4ce46`.
+- `staging.carlophillips.com` returns HTTP 200 from READY Preview deployment
+  `dpl_AEVZjWLEUxpuxu7RAeUW2HCTakih`; the authenticated Vercel deployment record
+  identifies source commit `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f` in
+  `CubiqoUnited/carlophillips-site`.
+- `www.carlophillips.com` returns HTTP 200 from READY Production deployment
+  `dpl_26T9f1b3jBex26zajTJyvEgHoJbS`; the authenticated Vercel deployment record
+  identifies source commit `f814965730a42df481a7bf367ca8306cd1e4ce46` in
+  `CubiqoUnited/carlophillips-site`.
+- Governance PR #116 is open against canonical `staging` at exact head
+  `8d7128ba5c125ede74de3273dfbfcb3ecb080018`; both required checks pass and
+  GitHub reports it `CLEAN`. It still requires the recorded Aarti technical,
+  Pushpa business where applicable, and Sushma delivery decisions before merge.
+- Support/customer-account PR #117 is open against canonical `staging`. Exact
+  head `eb7590e6563ed5f58d3baa2b1c7a7910d0c853f1` passes both required checks
+  and GitHub reports it `CLEAN`. Production Watch/webhook-recovery PR #118 is
+  also green and `CLEAN`; stacked controlled-lifecycle PR #119 remains ordered
+  after #118. All remain unmerged.
+- A read-only Vercel name/scope inventory confirms Preview and Production have
+  their respective Shopify commerce, checkout, webhook, durable-store and Clerk
+  variables. Neither environment has the three Resend support variables or its
+  environment-specific Shopify account/returns URLs. This proves presence or
+  absence of names only, not correctness of encrypted values or live operation.
+- Phase 1 remains active. No current controlled payment/order, Apliiq
+  production-to-tracking lifecycle, monitored support receipt, native account/
+  returns drill, or complete Production monitoring/reconciliation proof exists.
+- The 2026-09-07 executability audit proves PR #116 is not a runtime dependency
+  for #117/#118. It resumed the representative exception tabletop and a safe
+  Staging cart/checkout probe; the latter reached the dedicated Shopify Staging
+  store password gate without payment, order, customer data or provider action.
+- PR #119 exact head `1deed62861acaf5aaed9b32743210033f3339725`
+  now contains the completed ten-scenario representative exception tabletop.
+  It is reconciled onto PR #118's accepted `fb4bdfe` head. Its eight-file
+  synthetic support/webhook/lifecycle suite passes 55/55 locally and exact-head
+  GitHub `Verify` passes. This closes tabletop preparation only;
+  it does not prove live Shopify, Apliiq, tracking, support, Flow or operator execution.
+- Role-separated review is complete for PR #117 exact head
+  `ee71bbde03ac9fbda527c4a5f5678cd3fe68a2b8` and PR #118 exact head
+  `fb4bdfe607f380ce6ad772d3cceecad2942fcefd`. Both required checks pass;
+  Aarti approves technical/code readiness, Pushpa accepts business/code
+  readiness, and Sushma approves both for independent GitHub review. Neither
+  decision is live operational acceptance or Phase 1 closure.
+
+This section is the current baseline and supersedes older branch/deployment or
+capability statements below when they conflict.
+
 ## Production release and governance reconciliation — 2026-09-06
 
 - Governance PR #114 passed `Verify` and `Checkout E2E and accessibility` and

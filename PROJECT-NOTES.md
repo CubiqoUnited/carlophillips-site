@@ -2,6 +2,26 @@
 
 ## Notes
 
+### cp-three-operating-loops
+
+- Saved: 2026-09-07
+- Source: Boss-approved CP Phase 1 baseline and operating-model correction
+- Status: approved
+- Tags: governance, sushma, phase-1, production-watch, daily-review, priority, native-first
+- Related: `AGENTS.md`, `agents/sushma.md`, `agents/aarti.md`, `STATUS.md`, `TASKS.md`
+
+#### Prompt
+
+Treat CP as three coordinated loops: a Development Program that completes Phase 1, then Phase 2, then Phase 3; permanent condition-driven Production Watch; and a permanent Daily Product/Operations Review. The hourly Sushma automation is only a continuity watchdog and must not be confused with development requirements or Production monitoring. Apply native Shopify/Apliiq and platform capabilities before custom infrastructure, and prove the native fulfillment/tracking chain without requiring one physical order to experience every exception.
+
+#### Saved response
+
+Sushma owns arbitration across the three loops using this priority order: P0 Production incident, P1 Production incident, active-phase P0/P1, remaining phase-required work, P2 bugs/enhancements, then cleanup/optimization. An interrupting incident preserves the active phase resume point; after verified incident closure, phase work resumes.
+
+The approved Phase 1 starting backlog is six delivery epics: governance activation; support and customer-account setup; controlled commerce lifecycle proof; post-sale business operations; operational reliability; and continuous Production watch.
+
+Reliability is an outcome, not a mandate to build a custom event-processing or carrier platform. Evaluate native Shopify/Apliiq, existing CP capability, Shopify Flow/platform tooling, established third party, then custom code. The intended tracking chain is Apliiq to Shopify fulfillment/tracking to the customer. CP must prove it, expose the customer path, detect missing/stale tracking, and alert Operations. Controlled E2E proof covers the native happy path; representative exceptions may use test-store scenarios, synthetic events, safe simulations, or controlled drills when those provide valid evidence.
+
 ### podpipe
 
 - Saved: 2026-08-08
