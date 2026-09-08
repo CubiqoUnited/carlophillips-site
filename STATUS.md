@@ -1,5 +1,114 @@
 # Current Status
 
+## Phase 1 protected-Staging progression — 2026-09-08
+
+- Credential-regression analysis compares successful protected Staging run
+  `34041556159` with failed run `34184480979`. GitHub Staging
+  `VERCEL_ORG_ID=team_Q25fvpJOPiIeoG3hfxtCVkhW`,
+  `VERCEL_PROJECT_ID=prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`, and
+  `VERCEL_SCOPE=cubiqo-projects-d7156840` have been unchanged since September 3;
+  the workflow and pinned Vercel CLI were also unchanged between the runs.
+- The regressed secret was an interactive Vercel CLI Sign-in-with-Vercel token
+  created at `2026-09-06T14:54:37Z`, bound to GitHub Staging at
+  `15:12:04Z`, and expired at `22:54:37Z`. Run `34041556159` began one second
+  after binding and passed. No Git commit introduced the expiry: PR #115 / merge
+  `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f` documented the blocker, while
+  the September 6 Sushma repair task copied the short-lived CLI session into
+  GitHub.
+- A durable project-only Vercel token was tested without exposing its value,
+  but Vercel CLI 56.1.0 rejected that credential class at `vercel pull` with
+  `User not found (404)`. Boss then authorized the minimum durable Cubiqo
+  team/account credential required by the unchanged CLI, constrained to the
+  GitHub `Staging` environment and the unchanged canonical organization,
+  project and scope IDs. Aarti verified the exact project identity and Sushma
+  rebound the secret at `2026-09-08T07:59:10Z`.
+- Exact protected run
+  [34184480979](https://github.com/CubiqoUnited/carlophillips-site/actions/runs/34184480979)
+  attempt 4 passed for `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+  It passed repository verification, tests/build, Vercel pull/build/deploy,
+  canonical project identity, alias assignment, signed webhook probe,
+  desktop/mobile functional and accessibility checks, Production-unchanged
+  verification, and immutable receipt creation. Staging deployment
+  `dpl_28oNTseGJnoEfG8dtJ7keTagDeEc` is READY and
+  `staging.carlophillips.com` returns HTTP 200. `HI-P1-STAGING-VERCEL` is closed;
+  project-scoped/OIDC deployment alternatives remain a later hardening item,
+  not a Phase 1 blocker.
+
+- Aarti technical PASS, Pushpa business PASS where applicable, and Sushma
+  delivery APPROVE are recorded for governance PR #116. PR #116 merged through
+  the protected pull-request path to canonical
+  `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+- Protected Staging run `34184480979` attempts 1-3 preserve the failed
+  credential-regression evidence; attempt 4 is the successful canonical proof
+  for the same exact merged SHA and unchanged workflow architecture.
+- The first workflow dispatch, run `34184433700`, was rejected before a runner
+  because it used default ref `main`, which the Staging environment branch
+  policy denies. The corrected dispatch used `--ref staging`; no artifact or
+  alias was created by the rejected run.
+- PR #117 is reconciled without conflict onto `ce2bb181…`. Candidate head
+  before this durable-state update is
+  `87d62e676cde3690b293d455284ae1685409dff6`; 16 targeted tests, web typecheck
+  and Production-commerce lint pass locally. Its first exact-head `Verify`
+  attempt reached the dependency audit and received an external GitHub
+  Advisory Database HTTP 403; the unchanged-head rerun is active. Checkout E2E
+  and accessibility pass.
+- PR #117 is now the active merge candidate. Its latest governance/durable-state
+  update must pass both required exact-head checks before merge; PRs #118 and
+  #119 remain ordered afterward. External support, account, native-ops, policy
+  and transaction gates remain parked.
+
+This section is the current baseline and supersedes older branch, PR and
+deployment statements below when they conflict.
+
+## Phase 1 tranche readiness and deployed provenance — 2026-09-07
+
+- Canonical Git remains `staging@5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`
+  and `main@f814965730a42df481a7bf367ca8306cd1e4ce46`.
+- `staging.carlophillips.com` returns HTTP 200 from READY Preview deployment
+  `dpl_AEVZjWLEUxpuxu7RAeUW2HCTakih`; the authenticated Vercel deployment record
+  identifies source commit `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f` in
+  `CubiqoUnited/carlophillips-site`.
+- `www.carlophillips.com` returns HTTP 200 from READY Production deployment
+  `dpl_26T9f1b3jBex26zajTJyvEgHoJbS`; the authenticated Vercel deployment record
+  identifies source commit `f814965730a42df481a7bf367ca8306cd1e4ce46` in
+  `CubiqoUnited/carlophillips-site`.
+- Governance PR #116 is open against canonical `staging` at exact head
+  `8d7128ba5c125ede74de3273dfbfcb3ecb080018`; both required checks pass and
+  GitHub reports it `CLEAN`. It still requires the recorded Aarti technical,
+  Pushpa business where applicable, and Sushma delivery decisions before merge.
+- Support/customer-account PR #117 is open against canonical `staging`. Exact
+  head `eb7590e6563ed5f58d3baa2b1c7a7910d0c853f1` passes both required checks
+  and GitHub reports it `CLEAN`. Production Watch/webhook-recovery PR #118 is
+  also green and `CLEAN`; stacked controlled-lifecycle PR #119 remains ordered
+  after #118. All remain unmerged.
+- A read-only Vercel name/scope inventory confirms Preview and Production have
+  their respective Shopify commerce, checkout, webhook, durable-store and Clerk
+  variables. Neither environment has the three Resend support variables or its
+  environment-specific Shopify account/returns URLs. This proves presence or
+  absence of names only, not correctness of encrypted values or live operation.
+- Phase 1 remains active. No current controlled payment/order, Apliiq
+  production-to-tracking lifecycle, monitored support receipt, native account/
+  returns drill, or complete Production monitoring/reconciliation proof exists.
+- The 2026-09-07 executability audit proves PR #116 is not a runtime dependency
+  for #117/#118. It resumed the representative exception tabletop and a safe
+  Staging cart/checkout probe; the latter reached the dedicated Shopify Staging
+  store password gate without payment, order, customer data or provider action.
+- PR #119 exact head `1deed62861acaf5aaed9b32743210033f3339725`
+  now contains the completed ten-scenario representative exception tabletop.
+  It is reconciled onto PR #118's accepted `fb4bdfe` head. Its eight-file
+  synthetic support/webhook/lifecycle suite passes 55/55 locally and exact-head
+  GitHub `Verify` passes. This closes tabletop preparation only;
+  it does not prove live Shopify, Apliiq, tracking, support, Flow or operator execution.
+- Role-separated review is complete for PR #117 exact head
+  `ee71bbde03ac9fbda527c4a5f5678cd3fe68a2b8` and PR #118 exact head
+  `fb4bdfe607f380ce6ad772d3cceecad2942fcefd`. Both required checks pass;
+  Aarti approves technical/code readiness, Pushpa accepts business/code
+  readiness, and Sushma approves both for independent GitHub review. Neither
+  decision is live operational acceptance or Phase 1 closure.
+
+This section is the current baseline and supersedes older branch/deployment or
+capability statements below when they conflict.
+
 ## Production release and governance reconciliation — 2026-09-06
 
 - Governance PR #114 passed `Verify` and `Checkout E2E and accessibility` and
