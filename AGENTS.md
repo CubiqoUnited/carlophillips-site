@@ -72,6 +72,14 @@ Local success does not replace required canonical Staging validation. Staging an
 
 Staging must mirror the Production journey through the payment surface using a dedicated Shopify staging/development store and test payments. Never enable test mode on the Production Shopify store. Production payment must remain enabled through the live payment step.
 
+## SECRETS / TOKEN OWNERSHIP
+
+Aarti owns technical definition, least-privilege scope, environment separation, validation, and rotation requirements for credentials used by CP integrations and infrastructure.
+
+Sushma owns operational coordination of secret changes across GitHub, Vercel, Shopify, Redis/KV, Resend, and other approved services, including change tracking, correct environment placement, verification, and rollback/resume coordination.
+
+Secret changes must never be considered complete until the affected integration/workflow is re-verified in the intended environment.
+
 ## Staging-first delivery
 
 Standard path:
