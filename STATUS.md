@@ -15,31 +15,32 @@
   `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f` documented the blocker, while
   the September 6 Sushma repair task copied the short-lived CLI session into
   GitHub.
-- A durable no-expiry Vercel token scoped only to canonical project
-  `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` was created and rebound without exposing
-  its value. Exact run `34184480979` attempts 2 and 3 retained the same SHA and
-  inputs. Attempt 3 used the correctly captured `vcp` project credential but
-  Vercel CLI 56.1.0 rejected it at `vercel pull` with `User not found (404)`;
-  a separate non-mutating CLI check returned `Not authorized` without `--scope`
-  and the same 404 with `--scope`. No build, deployment or alias occurred.
-- The remaining blocker is credential-class compatibility, not lost IDs or
-  workflow architecture. A broader durable team/account token would exceed the
-  approved project-only boundary; changing the pinned CLI/authentication path
-  would violate the requested exact-workflow/no-architecture-change constraint.
-  Aarti owns the compatible least-privilege technical resolution; Sushma owns
-  rebinding and exact-workflow/alias verification afterward.
+- A durable project-only Vercel token was tested without exposing its value,
+  but Vercel CLI 56.1.0 rejected that credential class at `vercel pull` with
+  `User not found (404)`. Boss then authorized the minimum durable Cubiqo
+  team/account credential required by the unchanged CLI, constrained to the
+  GitHub `Staging` environment and the unchanged canonical organization,
+  project and scope IDs. Aarti verified the exact project identity and Sushma
+  rebound the secret at `2026-09-08T07:59:10Z`.
+- Exact protected run
+  [34184480979](https://github.com/CubiqoUnited/carlophillips-site/actions/runs/34184480979)
+  attempt 4 passed for `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+  It passed repository verification, tests/build, Vercel pull/build/deploy,
+  canonical project identity, alias assignment, signed webhook probe,
+  desktop/mobile functional and accessibility checks, Production-unchanged
+  verification, and immutable receipt creation. Staging deployment
+  `dpl_28oNTseGJnoEfG8dtJ7keTagDeEc` is READY and
+  `staging.carlophillips.com` returns HTTP 200. `HI-P1-STAGING-VERCEL` is closed;
+  project-scoped/OIDC deployment alternatives remain a later hardening item,
+  not a Phase 1 blocker.
 
 - Aarti technical PASS, Pushpa business PASS where applicable, and Sushma
   delivery APPROVE are recorded for governance PR #116. PR #116 merged through
   the protected pull-request path to canonical
   `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
-- Protected Staging run
-  [34184480979](https://github.com/CubiqoUnited/carlophillips-site/actions/runs/34184480979)
-  validated the exact merged SHA and passed repository verification, then
-  failed before build, deployment or alias assignment at `vercel pull`: the
-  encrypted GitHub `VERCEL_TOKEN` cannot access configured Cubiqo scope
-  `cubiqo-projects-d7156840`. `staging.carlophillips.com` therefore remains on
-  the previously verified deployment/SHA; Production was unchanged.
+- Protected Staging run `34184480979` attempts 1-3 preserve the failed
+  credential-regression evidence; attempt 4 is the successful canonical proof
+  for the same exact merged SHA and unchanged workflow architecture.
 - The first workflow dispatch, run `34184433700`, was rejected before a runner
   because it used default ref `main`, which the Staging environment branch
   policy denies. The corrected dispatch used `--ref staging`; no artifact or
@@ -51,9 +52,10 @@
   attempt reached the dependency audit and received an external GitHub
   Advisory Database HTTP 403; the unchanged-head rerun is active. Checkout E2E
   and accessibility pass.
-- PR #117 cannot merge until protected Staging verification for `ce2bb181…`
-  succeeds. PRs #118 and #119 remain ordered afterward. External support,
-  account, native-ops, policy and transaction gates remain parked.
+- PR #117 is now the active merge candidate. Its latest governance/durable-state
+  update must pass both required exact-head checks before merge; PRs #118 and
+  #119 remain ordered afterward. External support, account, native-ops, policy
+  and transaction gates remain parked.
 
 This section is the current baseline and supersedes older branch, PR and
 deployment statements below when they conflict.

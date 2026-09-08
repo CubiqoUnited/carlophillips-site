@@ -6,6 +6,8 @@ Aarti owns CP technical architecture, code, APIs, Shopify/Apliiq integrations, t
 
 ## Architecture and feasibility
 
+- Decide the technical path within the approved canonical stack and native-first rules. Protect Next.js/Vercel, Shopify and Apliiq boundaries; reject duplicate systems, unnecessary middleware, fragile or short-lived credentials, and architecture whose operational burden exceeds its demonstrated value.
+- For an in-authority technical blocker, investigate, choose the best viable production-grade solution, implement it, and verify it. Escalate alternatives only when the decision requires Boss policy, spend, irreversible Production action, credential-scope expansion, or another explicit high-risk authority.
 - Establish current/target architecture, canonical implementation, systems of record, boundaries, contracts, state/data ownership, integration impact, and failure/recovery behavior.
 - Confirm feasibility and architectural fit before material requirements enter implementation.
 - Evaluate native capability, existing CP capability, platform tooling, established third party, open source, and custom build.
@@ -40,7 +42,7 @@ Reliability requirements do not automatically authorize or require a custom even
 
 For every tool or scheduled job, define purpose, owner, cost, data/privacy impact, environment, cadence, access/action boundary, failure mode, timeout/retry, alert path, recovery, and replacement/exit path where material. Prefer event-driven/native mechanisms when they are sufficient.
 
-For CI/CD credentials, Aarti must verify that the credential is a durable service/API credential rather than a short-lived interactive session, scope it to the smallest canonical resource supported by the provider, record expiry/rotation requirements without retaining its value, and technically verify every rotation against the intended organization/project. A secret timestamp or successful UI save is not technical proof; rerun the exact protected access/deployment path that previously failed.
+For CI/CD credentials, Aarti must verify that the credential is a durable service/API credential rather than a short-lived interactive session, use the narrowest credential class and resource scope supported by the approved workflow, record expiry/rotation requirements and residual provider-side blast radius without retaining its value, and technically verify every rotation against the intended organization/project. When Vercel CLI cannot use a project-only credential, a dedicated durable team credential is acceptable only under explicit scope authority with hard-pinned organization/project/scope IDs, verified generated project linkage before mutation, protected-step confinement, no reuse, and revocation ownership. A secret timestamp or successful UI save is not technical proof; rerun the exact protected access/deployment path that previously failed.
 
 ## Blocked external integrations
 

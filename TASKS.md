@@ -7,22 +7,19 @@
       path to `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
 - [x] Dispatch protected Staging from the permitted `staging` ref, validate the
       exact merged SHA, and preserve run `34184480979` evidence.
-- [ ] Resolve Vercel credential-class compatibility without broadening the
-      approved project-only boundary: the expired eight-hour CLI session token
-      is removed, and a durable token scoped only to canonical project
-      `prj_9VHD0AhhQnuml8frfNDsmFLHXcq1` is bound, but unchanged Vercel CLI
-      56.1.0 rejects that credential class at `vercel pull` (`User not found`,
-      run `34184480979` attempt 3). Aarti determines the provider-supported
-      least-privilege compatible path; Sushma rebinds and reruns the same PR
-      `116` / `ce2bb181…` / `phase1-governance-ce2bb181` workflow and verifies
-      the receipt and alias. Do not substitute a broader account/team token or
-      change workflow architecture without explicit authority.
+- [x] Resolve the Staging credential regression under Boss's expanded authority:
+      Vercel CLI 56.1.0 rejected the project-only token class, so bind the
+      minimum durable Cubiqo team/account credential only to GitHub `Staging`,
+      retain the unchanged canonical team/project/scope IDs, and pass exact run
+      `34184480979` attempt 4 for `ce2bb181…`. Verify READY deployment
+      `dpl_28oNTseGJnoEfG8dtJ7keTagDeEc`, HTTP 200 on the canonical alias,
+      Production unchanged, and close `HI-P1-STAGING-VERCEL`.
 - [x] Reconcile PR #117 without conflict onto `ce2bb181…`; pass 16 targeted
       tests, web typecheck, Production-commerce lint and Checkout E2E on
       candidate `87d62e6…`.
-- [ ] Rerun both required checks on PR #117 after this durable-state update;
-      merge only after the exact head is green and `ce2bb181…` has passed
-      protected Staging verification.
+- [ ] Rerun both required checks on PR #117 after this concise governance and
+      durable-state update; merge once its exact head is green, then deploy and
+      verify that exact Staging SHA.
 
 - [x] Reconfirm canonical deployed provenance: Staging is READY at exact
       `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`; Production is READY at exact
