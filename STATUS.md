@@ -1,5 +1,65 @@
 # Current Status
 
+## Phase 1 protected-Staging progression — 2026-09-08
+
+- Credential-regression analysis compares successful protected Staging run
+  `34041556159` with failed run `34184480979`. GitHub Staging
+  `VERCEL_ORG_ID=team_Q25fvpJOPiIeoG3hfxtCVkhW`,
+  `VERCEL_PROJECT_ID=prj_9VHD0AhhQnuml8frfNDsmFLHXcq1`, and
+  `VERCEL_SCOPE=cubiqo-projects-d7156840` have been unchanged since September 3;
+  the workflow and pinned Vercel CLI were also unchanged between the runs.
+- The regressed secret was an interactive Vercel CLI Sign-in-with-Vercel token
+  created at `2026-09-06T14:54:37Z`, bound to GitHub Staging at
+  `15:12:04Z`, and expired at `22:54:37Z`. Run `34041556159` began one second
+  after binding and passed. No Git commit introduced the expiry: PR #115 / merge
+  `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f` documented the blocker, while
+  the September 6 Sushma repair task copied the short-lived CLI session into
+  GitHub.
+- A durable project-only Vercel token was tested without exposing its value,
+  but Vercel CLI 56.1.0 rejected that credential class at `vercel pull` with
+  `User not found (404)`. Boss then authorized the minimum durable Cubiqo
+  team/account credential required by the unchanged CLI, constrained to the
+  GitHub `Staging` environment and the unchanged canonical organization,
+  project and scope IDs. Aarti verified the exact project identity and Sushma
+  rebound the secret at `2026-09-08T07:59:10Z`.
+- Exact protected run
+  [34184480979](https://github.com/CubiqoUnited/carlophillips-site/actions/runs/34184480979)
+  attempt 4 passed for `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+  It passed repository verification, tests/build, Vercel pull/build/deploy,
+  canonical project identity, alias assignment, signed webhook probe,
+  desktop/mobile functional and accessibility checks, Production-unchanged
+  verification, and immutable receipt creation. Staging deployment
+  `dpl_28oNTseGJnoEfG8dtJ7keTagDeEc` is READY and
+  `staging.carlophillips.com` returns HTTP 200. `HI-P1-STAGING-VERCEL` is closed;
+  project-scoped/OIDC deployment alternatives remain a later hardening item,
+  not a Phase 1 blocker.
+
+- Aarti technical PASS, Pushpa business PASS where applicable, and Sushma
+  delivery APPROVE are recorded for governance PR #116. PR #116 merged through
+  the protected pull-request path to canonical
+  `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+- Protected Staging run `34184480979` attempts 1-3 preserve the failed
+  credential-regression evidence; attempt 4 is the successful canonical proof
+  for the same exact merged SHA and unchanged workflow architecture.
+- The first workflow dispatch, run `34184433700`, was rejected before a runner
+  because it used default ref `main`, which the Staging environment branch
+  policy denies. The corrected dispatch used `--ref staging`; no artifact or
+  alias was created by the rejected run.
+- PR #117 is reconciled without conflict onto `ce2bb181…`. Candidate head
+  before this durable-state update is
+  `87d62e676cde3690b293d455284ae1685409dff6`; 16 targeted tests, web typecheck
+  and Production-commerce lint pass locally. Its first exact-head `Verify`
+  attempt reached the dependency audit and received an external GitHub
+  Advisory Database HTTP 403; the unchanged-head rerun is active. Checkout E2E
+  and accessibility pass.
+- PR #117 is now the active merge candidate. Its latest governance/durable-state
+  update must pass both required exact-head checks before merge; PRs #118 and
+  #119 remain ordered afterward. External support, account, native-ops, policy
+  and transaction gates remain parked.
+
+This section is the current baseline and supersedes older branch, PR and
+deployment statements below when they conflict.
+
 ## Phase 1 tranche readiness and deployed provenance — 2026-09-07
 
 - Canonical Git remains `staging@5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`
