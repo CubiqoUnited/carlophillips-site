@@ -2,15 +2,39 @@
 
 ## Active Phase 1 tranche sequence — 2026-09-07
 
+- [x] Record Aarti technical PASS, Pushpa business PASS where applicable, and
+      Sushma delivery APPROVE for PR #116; merge it through the protected PR
+      path to `staging@ce2bb181d9a62e5b62af9086c4085b60163077e2`.
+- [x] Dispatch protected Staging from the permitted `staging` ref, validate the
+      exact merged SHA, and preserve run `34184480979` evidence.
+- [x] Resolve the Staging credential regression under Boss's expanded authority:
+      Vercel CLI 56.1.0 rejected the project-only token class, so bind the
+      minimum durable Cubiqo team/account credential only to GitHub `Staging`,
+      retain the unchanged canonical team/project/scope IDs, and pass exact run
+      `34184480979` attempt 4 for `ce2bb181…`. Verify READY deployment
+      `dpl_28oNTseGJnoEfG8dtJ7keTagDeEc`, HTTP 200 on the canonical alias,
+      Production unchanged, and close `HI-P1-STAGING-VERCEL`.
+- [x] Reconcile PR #117 without conflict onto `ce2bb181…`; pass 16 targeted
+      tests, web typecheck, Production-commerce lint and Checkout E2E on
+      candidate `87d62e6…`.
+- [x] Pass both required checks on PR #117 exact head `908b82c…`, merge to
+      `staging@42aade89cf1d2da310dce2c955ac8d0d20e6fb66`, and pass protected
+      Staging run `34203965788`; verify READY deployment
+      `dpl_7yoVoFWzorpEZDdPiyz6nSpjUCpM` and HTTP 200 on the canonical alias.
+- [ ] Pass both required checks on PR #118 after reconciliation onto verified
+      Staging, merge its exact green head, then run protected exact-SHA Staging
+      verification before reconciling PR #119.
+
 - [x] Reconfirm canonical deployed provenance: Staging is READY at exact
       `5c5e2cb26e9fa7f2cc70e84bbe6932b801c3c82f`; Production is READY at exact
       `f814965730a42df481a7bf367ca8306cd1e4ce46`; both public routes return 200.
 - [x] Prepare governance PR #116 and pass both required checks before the
       executability audit; require the same checks again on every later head.
-- [ ] Record Aarti technical PASS, Pushpa business PASS where applicable, and
+- [x] Record Aarti technical PASS, Pushpa business PASS where applicable, and
       Sushma delivery APPROVE for PR #116; then merge the green candidate to
       `staging`, run the protected Staging workflow, verify the canonical alias,
-      and promote the identical approved governance state normally.
+      and promote the identical approved governance state normally. Merge is
+      complete; protected deployment remains blocked on the scoped Vercel token.
 - [x] Prepare PR #117 bounded support retry/sanitized telemetry, native
       account/returns proposal, runbook and exact environment-name audit; pass
       both required checks on exact head

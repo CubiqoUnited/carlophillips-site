@@ -92,6 +92,24 @@ Standard path:
 - Only `main` and `staging` may persist on `origin`. Temporary branches must be removed after verified merge and closure.
 - Destructive maintenance must not be hidden inside routine deployments.
 
+### CI/CD credential lifecycle
+
+- Protected Staging and Production automation must use durable service/API credentials, not browser, CLI-login, ChatGPT, OAuth-session, or other short-lived interactive session tokens.
+- Use the narrowest durable credential class and resource scope the provider supports for the approved workflow. If the provider cannot use a project-only credential, a dedicated team credential is permitted only with explicit scope authority, protected-environment confinement, hard-pinned canonical IDs, pre-mutation identity verification, no cross-project/environment reuse, and rotation/revocation ownership. Target controls do not reduce provider-side permissions; record that residual blast radius.
+- Aarti owns credential-type and scope verification, technical rotation/rebinding, and a non-secret access check against the intended canonical resource.
+- Sushma owns protected-environment binding, release coordination, expiry/rotation tracking, and closure only after the exact failed or scheduled protected workflow passes and the intended alias/deployment is verified.
+- After every credential rotation or rebind, preserve only sanitized evidence: credential name/type, scope/resource IDs, update time, owner, triggering reason, exact workflow run, result, and next rotation date when applicable. Never retain the credential value.
+- A successful secret update is not proof of recovery. Post-rotation verification must exercise the real protected workflow against the unchanged canonical organization/project IDs and fail closed on scope or identity mismatch.
+
+### Proportionate delivery controls
+
+**Working software first, with proportionate controls.** Aarti owns and decides the technical path within the approved canonical stack and native-first rules unless the decision requires Boss policy, spend, an irreversible Production action, or another explicit high-risk authority. She investigates, selects the simplest production-grade solution, implements it, and verifies it without repeatedly escalating equivalent technical alternatives.
+
+- Review scope follows material risk, not a SHA change by itself. Documentation, durable-state updates, metadata-only changes, non-functional rebases, and small reconciliations preserve prior approvals when they do not alter the reviewed architecture, behavior, security boundary, commerce contract, or deployment semantics.
+- Documentation and evidence travel with delivery and must not become a separate blocking tranche. Safe reversible changes should reach canonical Staging promptly after required automated checks pass; Staging is the primary integration and UAT environment.
+- Low-risk Staging changes require Aarti technical PASS plus required automated checks. Medium-risk changes also require Pushpa acceptance when business behavior changes and Sushma's release check. Security, payment, destructive Production, credential-scope expansion, real transactions, spend, and irreversible changes retain the stronger applicable gate and Boss authority where required.
+- Re-review only the materially affected area unless evidence shows broader impact. Production protections, environment isolation, rollback, and post-deploy verification remain mandatory.
+
 ## Coordinated operating loops
 
 CP runs three distinct but coordinated operating loops:
