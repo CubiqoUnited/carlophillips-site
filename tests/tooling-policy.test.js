@@ -4,7 +4,7 @@ import packageDocument from '../package.json';
 
 describe('tooling and supported-runtime policy', () => {
   it('pins the verified supported framework and React runtime', () => {
-    expect(packageDocument.dependencies.next).toBe('15.5.21');
+    expect(packageDocument.dependencies.next).toBe('15.5.24');
     expect(packageDocument.dependencies.react).toBe('19.2.8');
     expect(packageDocument.dependencies['react-dom']).toBe('19.2.8');
   });
@@ -19,7 +19,7 @@ describe('tooling and supported-runtime policy', () => {
     expect(packageDocument.resolutions).toMatchObject({
       lodash: '4.18.1',
       postcss: '8.5.25',
-      sharp: '0.35.3',
+      sharp: '0.35.4',
     });
     expect(packageDocument.dependencies.axios).toBeUndefined();
     expect(packageDocument.dependencies.uuid).toBeUndefined();
