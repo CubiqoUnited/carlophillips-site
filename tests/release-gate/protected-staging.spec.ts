@@ -288,7 +288,23 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(page.locator('.cp-bag-stepper output')).toHaveText('2');
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(page.locator('.cp-bag-stepper output')).toHaveText('2');
+  const decreaseResponsePromise = page.waitForResponse(
+    (response) =>
+      response.request().method() === 'POST' &&
+      new URL(response.url()).pathname === '/api/cart' &&
+      response.request().postData()?.includes('cartAction') === true &&
+      response.request().postData()?.includes('update') === true
+  );
   await page.getByRole('button', { name: 'Decrease quantity' }).click();
+  const decreaseResponse = await decreaseResponsePromise;
+  expect(decreaseResponse.ok(), 'Shopify quantity update must succeed').toBe(
+    true
+  );
+  await expect(decreaseResponse.json()).resolves.toMatchObject({
+    ok: true,
+    count: 1,
+  });
+  await expect(page.locator('.cp-bag-stepper output')).toHaveText('1');
   await expect(page.getByRole('link', { name: /^Bag \(1\)$/i })).toBeVisible();
   const removeResponsePromise = page.waitForResponse(
     (response) =>
