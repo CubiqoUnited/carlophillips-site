@@ -26,6 +26,9 @@ class ShopifyConfigurationError extends Error {
   readonly code = 'SHOPIFY_NOT_CONFIGURED';
 }
 
+const SIGNATURE_HOODIE_HANDLE = 'carlophillips-signature-hoodie';
+const SIGNATURE_HOODIE_SALE_SIZES = new Set(['S', 'M', 'L']);
+
 export function createShopifyProductLoader({
   storeDomain,
   storefrontToken,
@@ -141,8 +144,9 @@ export function createShopifyCatalogLoader({
 export function toObservedProduct(
   product: StorefrontProductTransportInput
 ): RuntimeProduct {
-  const colors = distinctOptions(product.variants, 'color');
-  const sizes = distinctOptions(product.variants, 'size');
+  const offeredVariants = customerFacingVariants(product);
+  const colors = distinctOptions(offeredVariants, 'color');
+  const sizes = distinctOptions(offeredVariants, 'size');
   const tagline =
     canonicalCustomerText(product.content.tagline) ||
     canonicalCustomerText(product.productType).toUpperCase();
@@ -184,7 +188,7 @@ export function toObservedProduct(
       colors: colors.length ? colors : ['Default'],
       sizes: sizes.length ? sizes : ['One Size'],
     },
-    observedVariants: product.variants.map((variant) => ({
+    observedVariants: offeredVariants.map((variant) => ({
       id: variant.rawReference,
       title: variant.title,
       availableForSale: variant.availableForSale,
@@ -194,13 +198,26 @@ export function toObservedProduct(
       },
       selectedOptions: variant.selectedOptions.map((option) => ({ ...option })),
     })),
-    availableForSale: product.variants.some(
+    availableForSale: offeredVariants.some(
       (variant) => variant.availableForSale
     ),
     vendor: product.vendor,
     productType: product.productType,
     tags: [...product.tags],
   };
+}
+
+function customerFacingVariants(
+  product: StorefrontProductTransportInput
+): readonly StorefrontVariantTransportInput[] {
+  if (product.handle !== SIGNATURE_HOODIE_HANDLE) return product.variants;
+
+  return product.variants.filter((variant) => {
+    const size = variant.selectedOptions.find(
+      (option) => option.name.toLowerCase() === 'size'
+    )?.value;
+    return Boolean(size && SIGNATURE_HOODIE_SALE_SIZES.has(size.toUpperCase()));
+  });
 }
 
 function canonicalCustomerText(value: string): string {
