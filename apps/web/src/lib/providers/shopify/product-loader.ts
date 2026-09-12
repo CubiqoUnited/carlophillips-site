@@ -147,6 +147,15 @@ export function toObservedProduct(
   const offeredVariants = customerFacingVariants(product);
   const colors = distinctOptions(offeredVariants, 'color');
   const sizes = distinctOptions(offeredVariants, 'size');
+  const offeredPrices = offeredVariants.map((variant) =>
+    Number(canonicalMoneyAmount(variant.price.amount))
+  );
+  const minimumPrice = offeredPrices.length
+    ? Math.min(...offeredPrices)
+    : Number(product.priceRange.minimum.amount);
+  const maximumPrice = offeredPrices.length
+    ? Math.max(...offeredPrices)
+    : Number(product.priceRange.maximum.amount);
   const tagline =
     canonicalCustomerText(product.content.tagline) ||
     canonicalCustomerText(product.productType).toUpperCase();
@@ -167,8 +176,8 @@ export function toObservedProduct(
     name: product.title,
     collection:
       product.productType.toLowerCase().replace(/\s+/g, '-') || 'uncategorized',
-    price: Number(product.priceRange.minimum.amount),
-    compareAtPrice: Number(product.priceRange.maximum.amount),
+    price: minimumPrice,
+    compareAtPrice: maximumPrice,
     currency: product.priceRange.minimum.currency,
     tagline,
     description,

@@ -114,12 +114,12 @@ describe('monorepo Shopify Storefront product loader', () => {
   });
 
   it('offers only the approved S/M/L sizes while resolving current Shopify variant IDs', async () => {
-    const variant = (size, id, availableForSale = true) => ({
+    const variant = (size, id, availableForSale = true, amount = '128.00') => ({
       node: {
         id,
         title: `black / ${size.toLowerCase()}`,
         availableForSale,
-        price: { amount: '128.00', currencyCode: 'USD' },
+        price: { amount, currencyCode: 'USD' },
         selectedOptions: [
           { name: 'Color', value: 'black' },
           { name: 'Size', value: size },
@@ -135,7 +135,12 @@ describe('monorepo Shopify Storefront product loader', () => {
       variant('XXL', 'gid://shopify/ProductVariant/48353314996430'),
       variant('XXXL', 'gid://shopify/ProductVariant/48353315029198'),
       variant('4XL', 'gid://shopify/ProductVariant/48353315061966'),
-      variant('5XL', 'gid://shopify/ProductVariant/48353315094734'),
+      variant(
+        '5XL',
+        'gid://shopify/ProductVariant/48353315094734',
+        true,
+        '134.00'
+      ),
     ];
     const fetchImpl = vi.fn().mockResolvedValue({
       ok: true,
@@ -157,7 +162,7 @@ describe('monorepo Shopify Storefront product loader', () => {
             sizeGuide: null,
             priceRange: {
               minVariantPrice: { amount: '128.00', currencyCode: 'USD' },
-              maxVariantPrice: { amount: '128.00', currencyCode: 'USD' },
+              maxVariantPrice: { amount: '134.00', currencyCode: 'USD' },
             },
             media: { edges: [] },
             variants: { edges },
@@ -180,6 +185,8 @@ describe('monorepo Shopify Storefront product loader', () => {
       'black / l',
     ]);
     expect(product.variants.sizes).toEqual(['S', 'M', 'L']);
+    expect(product.price).toBe(128);
+    expect(product.compareAtPrice).toBe(128);
     expect(product.variantPresentation.combinations).toHaveLength(3);
     expect(JSON.stringify(product)).not.toContain('48353314832590');
     expect(JSON.stringify(product)).not.toContain('48353314963662');
