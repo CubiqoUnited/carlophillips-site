@@ -4652,6 +4652,68 @@ a:focus-visible {
   background: var(--cp-color-rule);
 }
 
+.cp-catalog-overlay .cp-discovery-category-grid,
+.cp-catalog-overlay .cp-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--cp-space-6);
+  width: 100%;
+  max-width: var(--cp-content-xl);
+  margin-inline: auto;
+  border: 0;
+  background: transparent;
+}
+
+.cp-catalog-overlay .cp-discovery-category-grid > button {
+  min-height: 0;
+  padding: 0;
+  border: var(--cp-border-rule);
+  background: var(--cp-color-canvas);
+}
+
+.cp-catalog-overlay .cp-discovery-category-media,
+.cp-catalog-overlay .cp-catalog-card-media {
+  min-height: 0;
+  aspect-ratio: var(--cp-aspect-product-portrait);
+}
+
+.cp-catalog-overlay .cp-discovery-category-grid strong,
+.cp-catalog-overlay .cp-discovery-category-grid small {
+  padding-inline: var(--cp-space-4);
+}
+
+.cp-catalog-overlay .cp-discovery-category-grid small {
+  padding-bottom: var(--cp-space-4);
+}
+
+.cp-catalog-overlay .cp-catalog-card {
+  min-height: 0;
+  border: var(--cp-border-rule);
+}
+
+.cp-catalog-overlay .cp-card-copy {
+  padding: var(--cp-space-4);
+  border-top: var(--cp-border-rule);
+  border-left: 0;
+}
+
+.cp-catalog-overlay .cp-catalog-card .cp-heading-product {
+  margin-top: var(--cp-space-3);
+  font-size: var(--cp-size-body-large);
+  line-height: var(--cp-leading-copy);
+  letter-spacing: var(--cp-tracking-body);
+}
+
+.cp-catalog-overlay .cp-catalog-card .cp-text-soft {
+  margin-top: var(--cp-space-2);
+  font-size: var(--cp-size-copy-small);
+}
+
+.cp-catalog-overlay .cp-catalog-card .cp-action {
+  min-height: var(--cp-touch-target-min);
+  margin-top: var(--cp-space-4);
+}
+
 .cp-shop-discovery-background {
   min-height: var(--cp-viewport-height);
   pointer-events: none;
@@ -4703,11 +4765,6 @@ a:focus-visible {
 
 .cp-catalog-overlay .cp-section {
   padding: 0 var(--cp-space-8) var(--cp-space-8);
-}
-
-.cp-catalog-overlay .cp-discovery-category-media,
-.cp-catalog-overlay .cp-catalog-card-media {
-  min-height: var(--cp-block-height-small);
 }
 
 .cp-discovery-category-grid > button {
@@ -4789,6 +4846,12 @@ a:focus-visible {
   .cp-catalog-overlay .cp-section {
     padding-right: var(--cp-space-4);
     padding-left: var(--cp-space-4);
+  }
+
+  .cp-catalog-overlay .cp-discovery-category-grid,
+  .cp-catalog-overlay .cp-catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--cp-space-3);
   }
 
   .cp-discovery-fixed-nav {

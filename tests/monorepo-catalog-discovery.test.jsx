@@ -147,4 +147,34 @@ describe('active Shopify catalog discovery', () => {
     expect(boundarySource).toContain('summarizeCatalog(decision, productHandle)');
     expect(boundarySource).toContain('discoveryOnly');
   });
+
+  it('uses the compact three-column desktop and two-column mobile grids', () => {
+    const styles = readFileSync(
+      'packages/design-system/styles/globals.css',
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.cp-catalog-overlay \.cp-discovery-category-grid,[\s\S]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 48rem\)[\s\S]*\.cp-catalog-overlay \.cp-discovery-category-grid,[\s\S]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/
+    );
+  });
+
+  it('matches the approved Discovery menu information architecture', () => {
+    const source = readFileSync(
+      'apps/web/src/components/editorial/WorkbookReplica.tsx',
+      'utf8'
+    );
+
+    expect(source).toContain('id="menu-discovery">DISCOVERY');
+    expect(source).toContain('ALL CATEGORIES');
+    expect(source).toContain('ALL {category.label}');
+    expect(source).toContain('CONTACT');
+    expect(source).toContain('PRIVATE LIST');
+    expect(source).not.toContain('>HOME<');
+    expect(source).not.toContain('>AFTERCARE<');
+    expect(source).not.toContain('>ACCOUNT<');
+  });
 });

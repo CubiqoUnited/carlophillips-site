@@ -388,6 +388,9 @@ export default function WorkbookReplica({
   const productCategoryLabel = productCategory
     .replaceAll('-', ' ')
     .toUpperCase();
+  const availableCategories = catalogSummary.categories?.length
+    ? catalogSummary.categories
+    : [{ key: productCategory, label: productCategoryLabel }];
   const productCtaLabel =
     productCategory === 'hoodies'
       ? 'SHOP THE HOODIE'
@@ -829,42 +832,39 @@ export default function WorkbookReplica({
         {surface === 'menu' && (
           <Panel title="NAVIGATION" onClose={close}>
             <nav className="cp-workbook-menu">
-              <ActionButton onClick={() => setSurface('discovery')}>
-                HOME
-              </ActionButton>
               <section
                 className="cp-workbook-menu-group"
-                aria-labelledby="menu-shop"
+                aria-labelledby="menu-discovery"
               >
-                <h2 id="menu-shop">SHOP</h2>
+                <h2 id="menu-discovery">DISCOVERY</h2>
                 <ActionButton onClick={() => window.location.assign('/shop')}>
                   ALL CATEGORIES
                 </ActionButton>
-                <ActionButton
-                  onClick={() =>
-                    window.location.assign(`/shop?category=${productCategory}`)
-                  }
-                >
-                  {productCategoryLabel}
-                </ActionButton>
+                {availableCategories.map((category) => (
+                  <ActionButton
+                    key={category.key}
+                    onClick={() =>
+                      window.location.assign(
+                        `/shop?category=${encodeURIComponent(category.key)}`
+                      )
+                    }
+                  >
+                    ALL {category.label}
+                  </ActionButton>
+                ))}
               </section>
               <section
                 className="cp-workbook-menu-group is-separated"
                 aria-labelledby="menu-private-support"
               >
-                <h2 id="menu-private-support">CUSTOMER CARE</h2>
-                <ActionButton
-                  onClick={() => window.location.assign('/aftercare')}
-                >
-                  AFTERCARE
-                </ActionButton>
+                <h2 id="menu-private-support">MORE</h2>
                 <ActionButton
                   onClick={() => window.location.assign('/contact')}
                 >
                   CONTACT
                 </ActionButton>
-                <ActionButton onClick={() => window.location.assign('/member')}>
-                  ACCOUNT
+                <ActionButton onClick={() => setSurface('private-list')}>
+                  PRIVATE LIST
                 </ActionButton>
               </section>
             </nav>

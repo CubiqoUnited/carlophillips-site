@@ -66,6 +66,19 @@ export function toHomeCatalogSummary(
   const media = (first?.media || [])
     .map((item) => toHomeMedia(item, first.title))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
+  const categories = Array.from(
+    new Map(
+      decision.products.map((product) => {
+        const type = (product.productType || 'products').trim();
+        const key = /hoodie|sweatshirt/i.test(type)
+          ? 'hoodies'
+          : /t[ -]?shirt|tshirt|tee/i.test(type)
+            ? 'tshirts'
+            : type.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'products';
+        return [key, { key, label: key.replaceAll('-', ' ').toUpperCase() }];
+      })
+    ).values()
+  );
   return {
     schemaVersion: 'cp.home-catalog-summary.v1',
     environment: decision.environment,
@@ -75,6 +88,7 @@ export function toHomeCatalogSummary(
     excludedCount: decision.excludedCount,
     commerceAllowed: decision.commerceAllowed,
     message: messageFor(decision),
+    categories,
     primaryProduct: first
       ? (() => {
           const productMedia = media.filter(
