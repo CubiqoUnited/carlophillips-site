@@ -13,7 +13,14 @@ import {
   Maximize2,
   Minimize2,
 } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+} from 'react';
 import type MuxVideoElement from '@mux/mux-video';
 import productArchitecturePoster from '../../../public/media/editorial/product-architecture-background-v1.png';
 import { getApprovedCampaignMotionAssets } from '@/lib/media/campaign-motion-registry';
@@ -92,7 +99,7 @@ function ScreenHeader({
   onBag,
   bagCount = 0,
 }: {
-  onMenu: () => void;
+  onMenu: (event: MouseEvent<HTMLButtonElement>) => void;
   onBag: () => void;
   bagCount?: number;
 }) {
@@ -118,7 +125,7 @@ function ActionButton({
   disabled = false,
 }: {
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   subtle?: boolean;
   className?: string;
   type?: 'button' | 'submit';
@@ -422,7 +429,11 @@ export default function WorkbookReplica({
     ].includes(visibleSurface);
   const close = useCallback(() => setSurface('discovery'), []);
   const modalRef = useRef<HTMLDivElement>(null);
-  const modalTriggerRef = useRef<HTMLElement>(null);
+  const modalTriggerRef = useRef<HTMLButtonElement>(null);
+  const openModal = useCallback((next: Surface, trigger: HTMLButtonElement) => {
+    modalTriggerRef.current = trigger;
+    setSurface(next);
+  }, []);
   const modalOpen = [
     'menu',
     'gallery',
@@ -569,7 +580,7 @@ export default function WorkbookReplica({
           revealed={entered}
           onReveal={enterExperience}
           onExplore={snapToProduct}
-          onMenu={() => setSurface('menu')}
+          onMenu={(event) => openModal('menu', event.currentTarget)}
           onBag={() => window.location.assign('/bag')}
           bagCount={bagCount}
         />
@@ -579,7 +590,7 @@ export default function WorkbookReplica({
           aria-label="Discovery default view"
         >
           <ScreenHeader
-            onMenu={() => setSurface('menu')}
+            onMenu={(event) => openModal('menu', event.currentTarget)}
             onBag={() => window.location.assign('/bag')}
             bagCount={bagCount}
           />
@@ -709,8 +720,11 @@ export default function WorkbookReplica({
             </div>
             <div className="cp-workbook-cta-stack">
               <ActionButton
-                onClick={() =>
-                  setSurface(mediaCount ? 'gallery' : 'gallery-unavailable')
+                onClick={(event) =>
+                  openModal(
+                    mediaCount ? 'gallery' : 'gallery-unavailable',
+                    event.currentTarget
+                  )
                 }
               >
                 VIEW GALLERY <span>{mediaCount} IMAGES</span>
@@ -734,9 +748,9 @@ export default function WorkbookReplica({
                   type="button"
                   key={still.id}
                   className={index === galleryIndex ? 'is-active' : ''}
-                  onClick={() => {
+                  onClick={(event) => {
                     setGalleryIndex(index);
-                    setSurface('gallery');
+                    openModal('gallery', event.currentTarget);
                   }}
                   aria-label={`Open ${still.alt}`}
                 >
