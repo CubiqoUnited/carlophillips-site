@@ -85,6 +85,9 @@ describe('monorepo home commerce projection', () => {
     expect(stepperSource).toContain('Increase quantity');
     expect(source).toContain('ADD TO BAG -');
     expect(source).toContain("'CHOOSE A SIZE'");
+    expect(source).toContain(
+      'Final sale · Shipping details available at checkout'
+    );
     expect(source).toContain('data-purchase-state="sold-out"');
     expect(source).toContain('SOLD OUT');
     expect(source).not.toContain('ADD TO TEST BAG');
