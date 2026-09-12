@@ -142,6 +142,7 @@ export function CommerceProductDetail({
           )?.value
       )
       .filter((size): size is string => Boolean(size))
+      .map((size) => size.toUpperCase())
       .sort((left, right) => {
         const order = [
           'XXS',
