@@ -99,6 +99,19 @@ describe('monorepo home commerce projection', () => {
     expect(source).not.toContain('userScrollIntent');
   });
 
+  it('keeps Discovery shortcuts off the landing hero until Discovery is visible', () => {
+    const source = readFileSync(
+      'apps/web/src/components/editorial/WorkbookReplica.tsx',
+      'utf8'
+    );
+
+    expect(source).toContain(
+      "const [discoveryVisible, setDiscoveryVisible] = useState(false)"
+    );
+    expect(source).toContain('{discoveryVisible && (');
+    expect(source).toContain("rootMargin: '-25% 0px -25% 0px'");
+  });
+
   it('uses one authoritative size selector and a bounded quantity stepper', () => {
     const source = readFileSync(
       'apps/web/src/components/product/ProductForm/index.tsx',

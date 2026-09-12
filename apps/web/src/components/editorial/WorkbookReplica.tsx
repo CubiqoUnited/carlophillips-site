@@ -393,6 +393,7 @@ export default function WorkbookReplica({
         ? 'SHOP THE TSHIRT'
         : `SHOP ${product?.title || 'PRODUCT'}`.toUpperCase();
   const [entered, setEntered] = useState(false);
+  const [discoveryVisible, setDiscoveryVisible] = useState(false);
   const [surface, setSurface] = useState<Surface>('discovery');
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get(
@@ -504,6 +505,16 @@ export default function WorkbookReplica({
   const enterExperience = () => {
     setEntered(true);
   };
+  useEffect(() => {
+    const discovery = document.getElementById('signature-runway');
+    if (!discovery) return;
+    const navigationObserver = new IntersectionObserver(
+      ([entry]) => setDiscoveryVisible(entry.isIntersecting),
+      { rootMargin: '-25% 0px -25% 0px', threshold: 0 }
+    );
+    navigationObserver.observe(discovery);
+    return () => navigationObserver.disconnect();
+  }, []);
   useEffect(() => {
     const discovery = document.getElementById('signature-runway');
     if (!discovery) return;
@@ -775,33 +786,37 @@ export default function WorkbookReplica({
                 </button>
               ))}
             </div>
-            <nav
-              className="cp-workbook-discovery-links"
-              aria-label="Discovery shortcuts"
-            >
-              <ActionButton
-                subtle
-                onClick={() => window.location.assign('/shop')}
+            {discoveryVisible && (
+              <nav
+                className="cp-workbook-discovery-links"
+                aria-label="Discovery shortcuts"
               >
-                ALL CATEGORIES
-              </ActionButton>
-              <ActionButton
-                subtle
-                onClick={() =>
-                  window.location.assign(`/shop?category=${productCategory}`)
-                }
-              >
-                ALL {productCategoryLabel}
-              </ActionButton>
-              <div role="group" aria-label="Discovery pagination">
-                {[0, 1, 2].map((index) => (
-                  <span
-                    key={index}
-                    className={index === 0 ? 'is-active' : ''}
-                  />
-                ))}
-              </div>
-            </nav>
+                <ActionButton
+                  subtle
+                  onClick={() => window.location.assign('/shop')}
+                >
+                  ALL CATEGORIES
+                </ActionButton>
+                <ActionButton
+                  subtle
+                  onClick={() =>
+                    window.location.assign(
+                      `/shop?category=${productCategory}`
+                    )
+                  }
+                >
+                  ALL {productCategoryLabel}
+                </ActionButton>
+                <div role="group" aria-label="Discovery pagination">
+                  {[0, 1, 2].map((index) => (
+                    <span
+                      key={index}
+                      className={index === 0 ? 'is-active' : ''}
+                    />
+                  ))}
+                </div>
+              </nav>
+            )}
           </div>
         </section>
       </div>
