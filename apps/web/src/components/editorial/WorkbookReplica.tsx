@@ -386,6 +386,12 @@ export default function WorkbookReplica({
   const productCategoryLabel = productCategory
     .replaceAll('-', ' ')
     .toUpperCase();
+  const productCtaLabel =
+    productCategory === 'hoodies'
+      ? 'SHOP THE HOODIE'
+      : productCategory === 'tshirts'
+        ? 'SHOP THE TSHIRT'
+        : `SHOP ${product?.title || 'PRODUCT'}`.toUpperCase();
   const [entered, setEntered] = useState(false);
   const [surface, setSurface] = useState<Surface>('discovery');
   useEffect(() => {
@@ -746,7 +752,7 @@ export default function WorkbookReplica({
                   window.location.assign(`${productHref}#product-options`)
                 }
               >
-                SHOP THE HOODIE
+                {productCtaLabel}
               </ActionButton>
             </div>
             <div

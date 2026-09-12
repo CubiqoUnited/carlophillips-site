@@ -51,7 +51,12 @@ function toHomeMedia(item: RuntimeMedia, title: string) {
 }
 
 export function toHomeCatalogSummary(decision: CatalogDecision) {
-  const first = decision.products[0] || null;
+  const first =
+    decision.products.find(
+      ({ handle }) => handle === 'carlophillips-signature-hoodie'
+    ) ||
+    decision.products[0] ||
+    null;
   const media = (first?.media || [])
     .map((item) => toHomeMedia(item, first.title))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));

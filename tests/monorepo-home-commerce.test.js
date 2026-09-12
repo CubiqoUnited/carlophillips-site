@@ -35,6 +35,36 @@ const decision = {
 };
 
 describe('monorepo home commerce projection', () => {
+  it('keeps the Signature Hoodie as the canonical home hero regardless of Shopify order', () => {
+    const summary = toHomeCatalogSummary({
+      ...decision,
+      candidateCount: 2,
+      visibleCount: 2,
+      products: [
+        {
+          ...decision.products[0],
+          handle: 'carlophillips-rapid-logo-tee',
+          title: 'CARLOPHILLIPS Rapid Logo Tee',
+          productType: 'T-Shirts',
+          price: 13.34,
+        },
+        {
+          ...decision.products[0],
+          handle: 'carlophillips-signature-hoodie',
+          title: 'CARLOPHILLIPS Signature Hoodie',
+          productType: 'Hoodies',
+          price: 128,
+        },
+      ],
+    });
+
+    expect(summary.primaryProduct).toMatchObject({
+      handle: 'carlophillips-signature-hoodie',
+      title: 'CARLOPHILLIPS Signature Hoodie',
+      price: 128,
+    });
+  });
+
   it('carries current product identity, copy, money, and choices into the home projection', () => {
     const summary = toHomeCatalogSummary(decision);
 
@@ -56,6 +86,7 @@ describe('monorepo home commerce projection', () => {
     );
 
     expect(source).toContain('formatCatalogPrice');
+    expect(source).toContain('{productCtaLabel}');
     expect(source).toContain('{productDescription}');
     expect(source).toContain('window.location.assign(productHref)');
     expect(source).not.toContain('€180');
