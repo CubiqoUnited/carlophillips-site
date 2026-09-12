@@ -1,4 +1,5 @@
 import React from 'react';
+import { readFileSync } from 'node:fs';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { CommerceCatalogState } from '../apps/web/src/components/commerce/catalog-state';
@@ -68,5 +69,17 @@ describe('active Shopify catalog discovery', () => {
     expect(html.match(/>1 piece</g)).toHaveLength(2);
     expect(html).toContain('aria-label="Discovery position"');
     expect(html).not.toContain('JACKETS');
+  });
+
+  it('opens shop as a closeable overlay on the canonical Discovery surface', () => {
+    const shopSource = readFileSync('apps/web/src/app/shop/page.tsx', 'utf8');
+    const boundarySource = readFileSync(
+      'apps/web/src/components/commerce/catalog-boundary.tsx',
+      'utf8'
+    );
+
+    expect(shopSource).toContain('discoveryOverlay');
+    expect(boundarySource).toContain('<HomeStorefront');
+    expect(boundarySource).toContain('overlay');
   });
 });

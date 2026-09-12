@@ -68,9 +68,11 @@ function environmentCopy(decision: CatalogDecision) {
 export function CommerceCatalogState({
   decision,
   pageLabel = 'Collection',
+  overlay = false,
 }: {
   decision: CatalogDecision;
   pageLabel?: string;
+  overlay?: boolean;
 }) {
   const copy = environmentCopy(decision);
   const available = decision.status === 'available';
@@ -112,18 +114,31 @@ export function CommerceCatalogState({
 
   return (
     <main
-      id="main-content"
+      id={overlay ? undefined : 'main-content'}
+      role={overlay ? 'dialog' : undefined}
+      aria-modal={overlay ? true : undefined}
+      aria-label={overlay ? 'Shop discovery' : undefined}
       data-catalog-status={decision.status}
       data-commerce-source={
         decision.source === 'shopify' ? 'store' : decision.source
       }
-      className="cp-commerce-page"
+      className={`cp-commerce-page ${overlay ? 'cp-catalog-overlay' : ''}`}
     >
-      <StorefrontHeader
-        pageLabel={pageLabel}
-        navigationAriaLabel="Catalog navigation"
-        categories={categoryLinks}
-      />
+      {overlay ? (
+        <Link
+          href="/"
+          className="cp-catalog-overlay-close"
+          aria-label="Close shop discovery"
+        >
+          ×
+        </Link>
+      ) : (
+        <StorefrontHeader
+          pageLabel={pageLabel}
+          navigationAriaLabel="Catalog navigation"
+          categories={categoryLinks}
+        />
+      )}
       <section className="cp-commerce-hero storefront-panel">
         <div className="cp-catalog-hero-layout cp-shell-wide grid gap-12 px-0 lg:items-end">
           <div>

@@ -9,5 +9,5 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 
 export default function ShopPage() {
-  return <CommerceCatalogBoundary pageLabel="Shop" />;
+  return <CommerceCatalogBoundary pageLabel="Shop" discoveryOverlay />;
 }

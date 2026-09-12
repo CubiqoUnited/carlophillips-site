@@ -4651,6 +4651,37 @@ a:focus-visible {
   background: var(--cp-color-rule);
 }
 
+.cp-shop-discovery-background {
+  min-height: var(--cp-viewport-height);
+  pointer-events: none;
+}
+
+.cp-catalog-overlay {
+  position: fixed;
+  inset: var(--cp-space-8);
+  z-index: var(--cp-component-dialog-layer);
+  overflow: auto;
+  border: var(--cp-border-rule-strong);
+  background: var(--cp-component-fixed-header-background);
+  box-shadow: var(--cp-shadow-dialog);
+  backdrop-filter: blur(var(--cp-blur-glass-strong));
+}
+
+.cp-catalog-overlay-close {
+  position: sticky;
+  top: var(--cp-space-4);
+  z-index: var(--cp-component-control-layer);
+  display: grid;
+  width: var(--cp-touch-target-min);
+  min-height: var(--cp-touch-target-min);
+  margin: var(--cp-space-4) var(--cp-space-4) 0 auto;
+  place-items: center;
+  border: var(--cp-border-rule-strong);
+  background: var(--cp-color-canvas);
+  color: var(--cp-color-ink);
+  font-size: var(--cp-size-body-large);
+}
+
 .cp-discovery-category-grid > button {
   display: grid;
   gap: var(--cp-space-4);
@@ -4721,6 +4752,11 @@ a:focus-visible {
 }
 
 @media (max-width: 48rem) {
+  .cp-catalog-overlay {
+    inset: 0;
+    border: 0;
+  }
+
   .cp-discovery-fixed-nav {
     right: var(--cp-space-3);
     bottom: var(--cp-space-3);
