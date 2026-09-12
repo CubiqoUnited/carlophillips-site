@@ -82,4 +82,69 @@ describe('active Shopify catalog discovery', () => {
     expect(boundarySource).toContain('<HomeStorefront');
     expect(boundarySource).toContain('overlay');
   });
+
+  it('renders the category grid in the initial shop overlay viewport', () => {
+    const html = renderToStaticMarkup(
+      <CommerceCatalogState
+        overlay
+        decision={{
+          schemaVersion: 'cp.catalog-decision.v1',
+          environment: 'preview',
+          status: 'available',
+          source: 'shopify',
+          candidateCount: 2,
+          visibleCount: 2,
+          excludedCount: 0,
+          commerceAllowed: true,
+          reason: 'CATALOG_ITEMS_AVAILABLE',
+          excludedReasons: [],
+          products: [
+            product({
+              handle: 'carlophillips-rapid-logo-tee',
+              title: 'CARLOPHILLIPS Rapid Logo Tee',
+              productType: 'tshirts',
+              price: 13.34,
+            }),
+            product({
+              handle: 'carlophillips-signature-hoodie',
+              title: 'CARLOPHILLIPS Signature Hoodie',
+              productType: 'hoodie',
+            }),
+          ],
+        }}
+      />
+    );
+
+    expect(html).toContain('role="dialog"');
+    expect(html).toContain('CATEGORIES / 2 groups');
+    expect(html).toContain('<strong>TSHIRTS</strong><small>1 piece</small>');
+    expect(html).toContain('<strong>HOODIES</strong><small>1 piece</small>');
+  });
+
+  it('keeps category selection inside the overlay product grid', () => {
+    const source = readFileSync(
+      'apps/web/src/components/commerce/catalog-state.tsx',
+      'utf8'
+    );
+
+    expect(source).toContain('setActiveCategory(category.key)');
+    expect(source).toContain('visibleProducts.map((product)');
+  });
+
+  it('opens a selected card as that Shopify product in Discovery', () => {
+    const catalogSource = readFileSync(
+      'apps/web/src/components/commerce/catalog-state.tsx',
+      'utf8'
+    );
+    const boundarySource = readFileSync(
+      'apps/web/src/components/commerce/catalog-boundary.tsx',
+      'utf8'
+    );
+
+    expect(catalogSource).toContain(
+      '`/shop?product=${encodeURIComponent(product.handle)}`'
+    );
+    expect(boundarySource).toContain('summarizeCatalog(decision, productHandle)');
+    expect(boundarySource).toContain('discoveryOnly');
+  });
 });

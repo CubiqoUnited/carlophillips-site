@@ -9,17 +9,32 @@ import HomeStorefront from '@/components/editorial/HomeStorefront';
 const loadCatalogDecision =
   getServerCatalogDecision as () => Promise<CatalogDecision>;
 const summarizeCatalog = toHomeCatalogSummary as (
-  decision: CatalogDecision
+  decision: CatalogDecision,
+  preferredHandle?: string
 ) => HomeCatalogSummary;
 
 export async function CommerceCatalogBoundary({
   pageLabel,
   discoveryOverlay = false,
+  productHandle,
 }: {
   pageLabel?: string;
   discoveryOverlay?: boolean;
+  productHandle?: string;
 }) {
   const decision = await loadCatalogDecision();
+  if (productHandle) {
+    return (
+      <HomeStorefront
+        campaignAsset={getApprovedCampaignAsset(
+          'at-edge-of-life-lofoten-runway-hero'
+        )}
+        catalogSummary={summarizeCatalog(decision, productHandle)}
+        previewJourney={null}
+        discoveryOnly
+      />
+    );
+  }
   if (!discoveryOverlay) {
     return <CommerceCatalogState decision={decision} pageLabel={pageLabel} />;
   }

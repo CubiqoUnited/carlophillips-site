@@ -352,9 +352,11 @@ function StatusSurface({
 export default function WorkbookReplica({
   campaignAsset: _campaignAsset,
   catalogSummary,
+  discoveryOnly = false,
 }: {
   campaignAsset: ApprovedCampaignAsset | null;
   catalogSummary: HomeCatalogSummary;
+  discoveryOnly?: boolean;
 }) {
   const product = catalogSummary.primaryProduct;
   const productHandle = product?.handle || 'carlophillips-signature-hoodie';
@@ -603,15 +605,17 @@ export default function WorkbookReplica({
   return (
     <main id="main-content" className="cp-workbook-site">
       <div inert={surface !== 'discovery' ? true : undefined}>
-        <HeroMorphPreview
-          embedded
-          revealed={entered}
-          onReveal={enterExperience}
-          onExplore={snapToProduct}
-          onMenu={(event) => openModal('menu', event.currentTarget)}
-          onBag={() => window.location.assign('/bag')}
-          bagCount={bagCount}
-        />
+        {!discoveryOnly && (
+          <HeroMorphPreview
+            embedded
+            revealed={entered}
+            onReveal={enterExperience}
+            onExplore={snapToProduct}
+            onMenu={(event) => openModal('menu', event.currentTarget)}
+            onBag={() => window.location.assign('/bag')}
+            bagCount={bagCount}
+          />
+        )}
         <section
           id="signature-runway"
           className="cp-workbook-discovery"
@@ -680,10 +684,11 @@ export default function WorkbookReplica({
               )}{' '}
               {!productAsset && (
                 <Image
-                  src={productArchitecturePoster}
-                  alt="Product runway placeholder"
+                  src={activeGalleryStill?.src || productArchitecturePoster}
+                  alt={activeGalleryStill?.alt || 'Product image unavailable'}
                   fill
-                  className="object-cover"
+                  sizes="(max-width: 768px) 80vw, 40vw"
+                  className="cp-workbook-discovery-product-image"
                 />
               )}
               {!playing && completedRuns >= 2 && (
@@ -696,7 +701,8 @@ export default function WorkbookReplica({
                   <Play />
                 </button>
               )}
-              <div className="cp-workbook-video-controls">
+              {productMotion.length > 0 && (
+                <div className="cp-workbook-video-controls">
                 <button
                   type="button"
                   onClick={toggleVideo}
@@ -744,7 +750,8 @@ export default function WorkbookReplica({
                     />
                   ))}
                 </div>
-              </div>
+                </div>
+              )}
             </div>
             <div className="cp-workbook-cta-stack">
               <ActionButton
@@ -759,9 +766,7 @@ export default function WorkbookReplica({
               </ActionButton>
               <ActionButton
                 className="cp-workbook-order-cta"
-                onClick={() =>
-                  window.location.assign(`${productHref}#product-options`)
-                }
+                onClick={(event) => openModal('order', event.currentTarget)}
               >
                 {productCtaLabel}
               </ActionButton>

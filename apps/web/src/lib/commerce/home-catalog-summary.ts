@@ -50,8 +50,14 @@ function toHomeMedia(item: RuntimeMedia, title: string) {
   };
 }
 
-export function toHomeCatalogSummary(decision: CatalogDecision) {
+export function toHomeCatalogSummary(
+  decision: CatalogDecision,
+  preferredHandle?: string
+) {
   const first =
+    (preferredHandle
+      ? decision.products.find(({ handle }) => handle === preferredHandle)
+      : null) ||
     decision.products.find(
       ({ handle }) => handle === 'carlophillips-signature-hoodie'
     ) ||

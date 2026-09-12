@@ -142,19 +142,27 @@ export function CommerceCatalogState({
       <section className="cp-commerce-hero storefront-panel">
         <div className="cp-catalog-hero-layout cp-shell-wide grid gap-12 px-0 lg:items-end">
           <div>
-            <p className="cp-label">{activeGroup ? 'Category' : 'Discovery'}</p>
-            <h1 className="cp-commerce-title mt-7 max-w-5xl">
-              {activeGroup
-                ? `ALL ${activeGroup.label}`
-                : available
-                  ? 'ALL CATEGORIES'
-                  : 'Coming soon.'}
-            </h1>
-            <p className="cp-body-large mt-8 max-w-3xl">
-              {available
-                ? 'Choose a category to discover the pieces currently available from Shopify.'
-                : copy.body}
+            <p className="cp-label">
+              {activeGroup ? 'Category' : 'Discovery'}
             </p>
+            <h1 className="cp-commerce-title mt-7 max-w-5xl">
+              {overlay
+                ? activeGroup
+                  ? `${activeGroup.label} / ${countLabel(activeGroup.products.length, 'piece')}`
+                  : `CATEGORIES / ${countLabel(categories.length, 'group')}`
+                : activeGroup
+                  ? `ALL ${activeGroup.label}`
+                  : available
+                    ? 'ALL CATEGORIES'
+                    : 'Coming soon.'}
+            </h1>
+            {!overlay && (
+              <p className="cp-body-large mt-8 max-w-3xl">
+                {available
+                  ? 'Choose a category to discover the pieces currently available from Shopify.'
+                  : copy.body}
+              </p>
+            )}
           </div>
           {!liveCollection && (
             <dl className="cp-grid-rule grid grid-cols-2 text-sm">
@@ -260,7 +268,7 @@ export function CommerceCatalogState({
                     {formatPrice(product)}
                   </p>
                   <Link
-                    href={`/product/${product.handle}`}
+                    href={`/shop?product=${encodeURIComponent(product.handle)}`}
                     className="cp-action cp-action-outline mt-10 min-h-14 lg:mt-14"
                   >
                     {product.commerceAllowed

@@ -8,6 +8,17 @@ export const metadata = {
 
 export const dynamic = 'force-dynamic';
 
-export default function ShopPage() {
-  return <CommerceCatalogBoundary pageLabel="Shop" discoveryOverlay />;
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ product?: string }>;
+}) {
+  const productHandle = (await searchParams)?.product;
+  return (
+    <CommerceCatalogBoundary
+      pageLabel="Shop"
+      discoveryOverlay={!productHandle}
+      productHandle={productHandle}
+    />
+  );
 }
