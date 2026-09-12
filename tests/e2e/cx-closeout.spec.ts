@@ -65,6 +65,16 @@ test('homepage gallery locks scroll, traps focus, closes and restores focus', as
     .toBe('');
 });
 
+test('workbook modal returns focus to its trigger', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'networkidle' });
+  const menuTrigger = page.getByRole('button', { name: 'MENU', exact: true });
+  await menuTrigger.click();
+  await expect(page.getByRole('dialog', { name: 'NAVIGATION' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog', { name: 'NAVIGATION' })).toBeHidden();
+  await expect(menuTrigger).toBeFocused();
+});
+
 test('customer copy and minimum target sizes are corrected', async ({
   page,
 }) => {
