@@ -214,7 +214,7 @@ jobs:
           const html = fs.readFileSync('preview-pdp.html', 'utf8');
           if (!html.includes('ADD TO BAG - $128')) throw new Error('Preview Shopify add-to-bag action is missing.');
           if (!html.includes('action="/api/cart"')) throw new Error('Preview Shopify cart endpoint is missing.');
-          if (!html.includes('isolated Shopify test checkout')) throw new Error('Preview test-checkout disclosure is missing.');
+          if (!html.includes('review delivery and payment securely in Shopify')) throw new Error('Preview Shopify checkout disclosure is missing.');
           NODE
 
       - name: Run exact-width Preview functional, a11y and screenshot checks
