@@ -16,7 +16,7 @@ function formatPrice(value: number, currency: string): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
-    maximumFractionDigits: 0,
+    maximumFractionDigits: 2,
   }).format(value);
 }
 
@@ -193,13 +193,12 @@ export function CommerceProductDetail({
               {product.tagline || product.productType || 'Product'}
             </p>
             <h1 className="cp-heading-product max-w-3xl">{product.title}</h1>
+            <p className="cp-product-price cp-text-copy mt-7 text-2xl font-light">
+              {formatPrice(product.price, product.currency)}
+            </p>
             <p className="cp-product-description cp-body-large mt-8 max-w-xl">
               {product.description ||
                 'Product details are currently unavailable.'}
-            </p>
-
-            <p className="cp-product-price cp-text-copy mt-7 text-2xl font-light">
-              {formatPrice(product.price, product.currency)}
             </p>
 
             {liveProduct && product.variantPresentation ? (

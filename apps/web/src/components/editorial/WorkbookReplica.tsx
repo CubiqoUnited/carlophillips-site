@@ -70,7 +70,8 @@ export function formatCatalogPrice(
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
   }).format(price);
 }
 
@@ -375,6 +376,16 @@ export default function WorkbookReplica({
     ? String(sizeGuide[1] || '')
     : '';
   const productHref = product?.href || `/product/${productHandle}`;
+  const productCategory = /hoodie|sweatshirt/i.test(product?.productType || '')
+    ? 'hoodies'
+    : /t[ -]?shirt|tshirt|tee/i.test(product?.productType || '')
+      ? 'tshirts'
+      : (product?.productType || 'products')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-');
+  const productCategoryLabel = productCategory
+    .replaceAll('-', ' ')
+    .toUpperCase();
   const [entered, setEntered] = useState(false);
   const [surface, setSurface] = useState<Surface>('discovery');
   useEffect(() => {
@@ -758,6 +769,33 @@ export default function WorkbookReplica({
                 </button>
               ))}
             </div>
+            <nav
+              className="cp-workbook-discovery-links"
+              aria-label="Discovery shortcuts"
+            >
+              <ActionButton
+                subtle
+                onClick={() => window.location.assign('/shop')}
+              >
+                ALL CATEGORIES
+              </ActionButton>
+              <ActionButton
+                subtle
+                onClick={() =>
+                  window.location.assign(`/shop?category=${productCategory}`)
+                }
+              >
+                ALL {productCategoryLabel}
+              </ActionButton>
+              <div role="group" aria-label="Discovery pagination">
+                {[0, 1, 2].map((index) => (
+                  <span
+                    key={index}
+                    className={index === 0 ? 'is-active' : ''}
+                  />
+                ))}
+              </div>
+            </nav>
           </div>
         </section>
       </div>
@@ -774,7 +812,14 @@ export default function WorkbookReplica({
               >
                 <h2 id="menu-shop">SHOP</h2>
                 <ActionButton onClick={() => window.location.assign('/shop')}>
-                  SHOP
+                  ALL CATEGORIES
+                </ActionButton>
+                <ActionButton
+                  onClick={() =>
+                    window.location.assign(`/shop?category=${productCategory}`)
+                  }
+                >
+                  {productCategoryLabel}
                 </ActionButton>
               </section>
               <section

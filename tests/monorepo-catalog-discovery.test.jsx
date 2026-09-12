@@ -1,0 +1,72 @@
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { describe, expect, it } from 'vitest';
+import { CommerceCatalogState } from '../apps/web/src/components/commerce/catalog-state';
+
+function product(overrides) {
+  return {
+    source: 'shopify',
+    sourceLabel: 'Shopify',
+    commerceAllowed: true,
+    reason: 'CURRENT_SHOPIFY_PRODUCT_AVAILABLE',
+    id: overrides.handle,
+    price: 128,
+    currency: 'USD',
+    description: '',
+    tagline: '',
+    story: '',
+    truthHeading: '',
+    commerceExplanation: '',
+    colors: ['black'],
+    sizes: ['s', 'm', 'l'],
+    variantPresentation: null,
+    availableForSale: true,
+    vendor: 'Apliiq',
+    media: [],
+    mediaReview: null,
+    details: [],
+    ...overrides,
+  };
+}
+
+describe('active Shopify catalog discovery', () => {
+  it('derives truthful categories and navigation from current products', () => {
+    const html = renderToStaticMarkup(
+      <CommerceCatalogState
+        pageLabel="Shop"
+        decision={{
+          schemaVersion: 'cp.catalog-decision.v1',
+          environment: 'preview',
+          status: 'available',
+          source: 'shopify',
+          candidateCount: 2,
+          visibleCount: 2,
+          excludedCount: 0,
+          commerceAllowed: true,
+          reason: 'CATALOG_ITEMS_AVAILABLE',
+          excludedReasons: [],
+          products: [
+            product({
+              handle: 'carlophillips-signature-hoodie',
+              title: 'CARLOPHILLIPS Signature Hoodie',
+              productType: 'hoodie',
+            }),
+            product({
+              handle: 'carlophillips-rapid-logo-tee',
+              title: 'CARLOPHILLIPS Rapid Logo Tee',
+              productType: 'tshirts',
+              price: 13.34,
+            }),
+          ],
+        }}
+      />
+    );
+
+    expect(html).toContain('ALL CATEGORIES');
+    expect(html).toContain('ALL HOODIES');
+    expect(html).toContain('ALL TSHIRTS');
+    expect(html.match(/>1 piece</g)).toHaveLength(2);
+    expect(html).toContain('aria-label="Discovery position"');
+    expect(html).not.toContain('JACKETS');
+  });
+});

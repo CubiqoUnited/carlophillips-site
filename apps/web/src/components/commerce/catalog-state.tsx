@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { CatalogDecision, ProductViewModel } from '@/types';
@@ -14,8 +16,20 @@ function formatPrice(product: ProductViewModel) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: product.currency,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
   }).format(product.price);
+}
+
+function categoryKey(product: ProductViewModel) {
+  const value = product.productType.trim().toLowerCase();
+  if (/hoodie|sweatshirt/.test(value)) return 'hoodies';
+  if (/t[ -]?shirt|tshirt|tee/.test(value)) return 'tshirts';
+  return value.replace(/[^a-z0-9]+/g, '-') || 'other';
+}
+
+function categoryLabel(key: string) {
+  return key.replaceAll('-', ' ').toUpperCase();
 }
 
 function environmentCopy(decision: CatalogDecision) {
@@ -63,6 +77,38 @@ export function CommerceCatalogState({
   const liveCollection = available && decision.commerceAllowed;
   const leadMedia = (product: ProductViewModel) =>
     product.media[1] || product.media[0];
+  const categories = useMemo(() => {
+    const grouped = new Map<string, ProductViewModel[]>();
+    decision.products.forEach((product) => {
+      const key = categoryKey(product);
+      grouped.set(key, [...(grouped.get(key) || []), product]);
+    });
+    return [...grouped.entries()].map(([key, products]) => ({
+      key,
+      label: categoryLabel(key),
+      products,
+    }));
+  }, [decision.products]);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get(
+      'category'
+    );
+    if (
+      requested &&
+      categories.some((category) => category.key === requested)
+    ) {
+      setActiveCategory(requested);
+    }
+  }, [categories]);
+  const activeGroup = categories.find(
+    (category) => category.key === activeCategory
+  );
+  const visibleProducts = activeGroup?.products || [];
+  const categoryLinks = categories.map((category) => ({
+    label: category.label,
+    href: `/shop?category=${encodeURIComponent(category.key)}`,
+  }));
 
   return (
     <main
@@ -76,23 +122,22 @@ export function CommerceCatalogState({
       <StorefrontHeader
         pageLabel={pageLabel}
         navigationAriaLabel="Catalog navigation"
+        categories={categoryLinks}
       />
       <section className="cp-commerce-hero storefront-panel">
         <div className="cp-catalog-hero-layout cp-shell-wide grid gap-12 px-0 lg:items-end">
           <div>
-            <p className="cp-label">
-              {liveCollection ? 'Signature Series / 001' : copy.eyebrow}
-            </p>
+            <p className="cp-label">{activeGroup ? 'Category' : 'Discovery'}</p>
             <h1 className="cp-commerce-title mt-7 max-w-5xl">
-              {liveCollection
-                ? 'The Collection'
+              {activeGroup
+                ? `ALL ${activeGroup.label}`
                 : available
-                  ? countLabel(decision.visibleCount, 'preview piece')
+                  ? 'ALL CATEGORIES'
                   : 'Coming soon.'}
             </h1>
             <p className="cp-body-large mt-8 max-w-3xl">
-              {liveCollection
-                ? 'One essential. Considered in every detail and available through secure checkout.'
+              {available
+                ? 'Choose a category to discover the pieces currently available from Shopify.'
                 : copy.body}
             </p>
           </div>
@@ -117,15 +162,53 @@ export function CommerceCatalogState({
         </div>
       </section>
 
-      {available ? (
+      {available && !activeGroup ? (
         <section
-          aria-label="Available products"
+          id="categories"
+          aria-label="All categories"
+          className="cp-section storefront-panel"
+        >
+          <div className="cp-shell-wide px-0">
+            <div className="cp-discovery-category-grid">
+              {categories.map((category) => {
+                const product = category.products[0];
+                const media = leadMedia(product);
+                return (
+                  <button
+                    key={category.key}
+                    type="button"
+                    onClick={() => setActiveCategory(category.key)}
+                  >
+                    <span className="cp-discovery-category-media">
+                      {media?.url ? (
+                        <Image
+                          src={media.url}
+                          alt=""
+                          fill
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                          className="object-contain"
+                        />
+                      ) : null}
+                    </span>
+                    <strong>{category.label}</strong>
+                    <small>
+                      {countLabel(category.products.length, 'piece')}
+                    </small>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : available && activeGroup ? (
+        <section
+          aria-label={`All ${activeGroup.label.toLowerCase()}`}
           className="cp-section storefront-panel"
         >
           <div
             className={`cp-shell-wide cp-grid-rule cp-catalog-grid grid px-0 ${liveCollection && decision.products.length === 1 ? 'cp-catalog-grid-featured' : 'cp-catalog-grid-standard md:grid-cols-2 xl:grid-cols-3'}`}
           >
-            {decision.products.map((product) => (
+            {visibleProducts.map((product) => (
               <article
                 key={product.handle}
                 className={`cp-surface-canvas ${liveCollection && decision.products.length === 1 ? 'contents' : 'cp-catalog-card flex flex-col'}`}
@@ -185,6 +268,45 @@ export function CommerceCatalogState({
             </div>
           </div>
         </section>
+      )}
+      {available && (
+        <nav
+          className="cp-discovery-fixed-nav"
+          aria-label="Discovery shortcuts"
+        >
+          <button
+            type="button"
+            onClick={() => setActiveCategory(null)}
+            aria-current={!activeGroup ? 'page' : undefined}
+          >
+            ALL CATEGORIES
+          </button>
+          {categories.map((category) => (
+            <button
+              key={category.key}
+              type="button"
+              onClick={() => setActiveCategory(category.key)}
+              aria-current={
+                activeGroup?.key === category.key ? 'page' : undefined
+              }
+            >
+              ALL {category.label}
+            </button>
+          ))}
+          <span role="group" aria-label="Discovery position">
+            {[null, ...categories.map((category) => category.key)].map(
+              (key, index) => (
+                <i
+                  key={key || 'all'}
+                  className={
+                    (activeCategory || null) === key ? 'is-active' : ''
+                  }
+                  aria-label={`Position ${index + 1}`}
+                />
+              )
+            )}
+          </span>
+        </nav>
       )}
     </main>
   );
