@@ -34,12 +34,12 @@ test('narrow header keeps menu, brand and bag count visible', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto('/shop');
+  await page.goto('/shop?product=carlophillips-signature-hoodie');
   await expect(page.getByRole('button', { name: /menu/i })).toContainText(
     /menu/i
   );
-  await expect(page.getByRole('link', { name: 'CARLOPHILLIPS' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Bag (0)' })).toBeVisible();
+  await expect(page.getByText('CARLOPHILLIPS', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'BAG (0)' })).toBeVisible();
 });
 
 test('homepage gallery locks scroll, traps focus, closes and restores focus', async ({

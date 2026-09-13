@@ -9,11 +9,13 @@ export function StorefrontHeader({
   navigationAriaLabel = 'Storefront navigation',
   fixed = false,
   bagCount = 0,
+  categories = [],
 }: {
   pageLabel?: string;
   navigationAriaLabel?: string;
   fixed?: boolean;
   bagCount?: number;
+  categories?: Array<{ label: string; href: string }>;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentBagCount, setCurrentBagCount] = useState(bagCount);
@@ -111,8 +113,17 @@ export function StorefrontHeader({
                 Home
               </Link>
               <Link href="/shop" onClick={() => setMenuOpen(false)}>
-                Shop
+                All categories
               </Link>
+              {categories.map((category) => (
+                <Link
+                  key={category.href}
+                  href={category.href}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {category.label}
+                </Link>
+              ))}
               <p className="cp-mobile-menu-label">Customer care</p>
               <Link href="/aftercare" onClick={() => setMenuOpen(false)}>
                 Aftercare

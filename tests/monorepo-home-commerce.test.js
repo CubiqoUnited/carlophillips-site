@@ -35,6 +35,65 @@ const decision = {
 };
 
 describe('monorepo home commerce projection', () => {
+  it('keeps the Signature Hoodie as the canonical home hero regardless of Shopify order', () => {
+    const summary = toHomeCatalogSummary({
+      ...decision,
+      candidateCount: 2,
+      visibleCount: 2,
+      products: [
+        {
+          ...decision.products[0],
+          handle: 'carlophillips-rapid-logo-tee',
+          title: 'CARLOPHILLIPS Rapid Logo Tee',
+          productType: 'T-Shirts',
+          price: 13.34,
+        },
+        {
+          ...decision.products[0],
+          handle: 'carlophillips-signature-hoodie',
+          title: 'CARLOPHILLIPS Signature Hoodie',
+          productType: 'Hoodies',
+          price: 128,
+        },
+      ],
+    });
+
+    expect(summary.primaryProduct).toMatchObject({
+      handle: 'carlophillips-signature-hoodie',
+      title: 'CARLOPHILLIPS Signature Hoodie',
+      price: 128,
+    });
+  });
+
+  it('allows an explicit Shopify handle to drive a category-selected Discovery view', () => {
+    const products = [
+      {
+        ...decision.products[0],
+        handle: 'carlophillips-rapid-logo-tee',
+        title: 'CARLOPHILLIPS Rapid Logo Tee',
+        productType: 'T-Shirts',
+        price: 13.34,
+      },
+      {
+        ...decision.products[0],
+        handle: 'carlophillips-signature-hoodie',
+        title: 'CARLOPHILLIPS Signature Hoodie',
+        productType: 'Hoodies',
+        price: 128,
+      },
+    ];
+    const summary = toHomeCatalogSummary(
+      { ...decision, candidateCount: 2, visibleCount: 2, products },
+      'carlophillips-rapid-logo-tee'
+    );
+
+    expect(summary.primaryProduct).toMatchObject({
+      handle: 'carlophillips-rapid-logo-tee',
+      title: 'CARLOPHILLIPS Rapid Logo Tee',
+      price: 13.34,
+    });
+  });
+
   it('carries current product identity, copy, money, and choices into the home projection', () => {
     const summary = toHomeCatalogSummary(decision);
 
@@ -56,6 +115,7 @@ describe('monorepo home commerce projection', () => {
     );
 
     expect(source).toContain('formatCatalogPrice');
+    expect(source).toContain('{productCtaLabel}');
     expect(source).toContain('{productDescription}');
     expect(source).toContain('window.location.assign(productHref)');
     expect(source).not.toContain('€180');
@@ -66,6 +126,19 @@ describe('monorepo home commerce projection', () => {
     expect(source).not.toContain('CONTINUE TO CHECKOUT');
     expect(source).not.toContain('ORDER —');
     expect(source).not.toContain('userScrollIntent');
+  });
+
+  it('keeps Discovery shortcuts off the landing hero until Discovery is visible', () => {
+    const source = readFileSync(
+      'apps/web/src/components/editorial/WorkbookReplica.tsx',
+      'utf8'
+    );
+
+    expect(source).toContain(
+      'const [discoveryVisible, setDiscoveryVisible] = useState(false)'
+    );
+    expect(source).toContain('{discoveryVisible && (');
+    expect(source).toContain("rootMargin: '-25% 0px -25% 0px'");
   });
 
   it('uses one authoritative size selector and a bounded quantity stepper', () => {
