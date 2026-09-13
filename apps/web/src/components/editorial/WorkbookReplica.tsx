@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -390,8 +389,8 @@ export default function WorkbookReplica({
     : /t[ -]?shirt|tshirt|tee/i.test(product?.productType || '')
       ? 'tshirts'
       : (product?.productType || 'products')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-');
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-');
   const productCategoryLabel = productCategory
     .replaceAll('-', ' ')
     .toUpperCase();
@@ -851,143 +850,155 @@ export default function WorkbookReplica({
                 aria-labelledby="menu-discovery"
               >
                 <h2 id="menu-discovery">DISCOVERY</h2>
-  <ActionButton
-    onClick={() =>
-      window.location.assign(STOREFRONT_MENU_ALL_CATEGORIES.href)
-    }
-  >
-    {STOREFRONT_MENU_ALL_CATEGORIES.menuLabel}
-  </ActionButton>
-  {
-    resolveStorefrontMenuCategories().map((category) => (
+                <ActionButton
+                  onClick={() =>
+                    window.location.assign(STOREFRONT_MENU_ALL_CATEGORIES.href)
+                  }
+                >
+                  {STOREFRONT_MENU_ALL_CATEGORIES.menuLabel}
+                </ActionButton>
+                {resolveStorefrontMenuCategories().map((category) => (
                   <ActionButton
                     key={category.key}
                     onClick={() => window.location.assign(category.href)}
                   >
                     {category.menuLabel}
-          </ActionButton>
-        ))}
-      </section>
-      <section
-        className="cp-workbook-menu-group is-separated"
-        aria-labelledby="menu-private-support"
-      >
-        <h2 id="menu-private-support">MORE</h2>
-      {
-        STOREFRONT_MENU_SUPPORT_LINKS.map((link) => (
-          <ActionButton
-            key={link.href}
-            onClick={() =>
-              link.href === '/private-list'
-                ? setSurface('private-list')
-                : window.location.assign(link.href)
-            }
+                  </ActionButton>
+                ))}
+              </section>
+              <section
+                className="cp-workbook-menu-group is-separated"
+                aria-labelledby="menu-private-support"
+              >
+                <h2 id="menu-private-support">MORE</h2>
+                {STOREFRONT_MENU_SUPPORT_LINKS.map((link) => (
+                  <ActionButton
+                    key={link.href}
+                    onClick={() =>
+                      link.href === '/private-list'
+                        ? setSurface('private-list')
+                        : window.location.assign(link.href)
+                    }
+                  >
+                    {link.menuLabel}
+                  </ActionButton>
+                ))}
+              </section>
+            </nav>
+          </Panel>
+        )}
+        {(surface === 'gallery' || surface === 'gallery-order') && (
+          <section
+            className={`cp-workbook-gallery-overlay${surface === 'gallery-order' ? ' has-order' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Gallery"
           >
-            {link.menuLabel}
-          </ActionButton>
-        ))
-      }
-              </section >
-            </nav >
-          </Panel >
-        )
-  }
-  {
-    (surface === 'gallery' || surface === 'gallery-order') && (
-      <section
-        className={`cp-workbook-gallery-overlay${surface === 'gallery-order' ? ' has-order' : ''}`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Gallery"
-      >
-        <div className="cp-workbook-gallery-media">
-          <header>
-            <ActionButton
-              subtle
-              onClick={() =>
-                window.location.assign(`${productHref}#product-options`)
-              }
-            >
-              CHOOSE A SIZE
-            </ActionButton>
-            <button
-              type="button"
-              onClick={close}
-              aria-label="Close gallery"
-            >
-              <X />
-            </button>
-          </header>
-          <div className="cp-workbook-gallery">
-            <button
-              type="button"
-              onClick={previousGalleryStill}
-              aria-label="Previous image"
-            >
-              <ChevronLeft />
-            </button>
-            <div className="cp-workbook-gallery-image">
-              {activeGalleryStill ? (
-                <Image
-                  src={activeGalleryStill.src}
-                  alt={activeGalleryStill.alt}
-                  fill
-                  sizes="(max-width: 768px) 72vw, 38vw"
-                  priority
-                  className="cp-workbook-gallery-product-image"
-                />
-              ) : (
-                <Image
-                  src={productArchitecturePoster}
-                  alt="Product gallery unavailable"
-                  fill
-                  className="cp-workbook-gallery-product-image"
-                />
-              )}
+            <div className="cp-workbook-gallery-media">
+              <header>
+                <ActionButton
+                  subtle
+                  onClick={() =>
+                    window.location.assign(`${productHref}#product-options`)
+                  }
+                >
+                  CHOOSE A SIZE
+                </ActionButton>
+                <button
+                  type="button"
+                  onClick={close}
+                  aria-label="Close gallery"
+                >
+                  <X />
+                </button>
+              </header>
+              <div className="cp-workbook-gallery">
+                <button
+                  type="button"
+                  onClick={previousGalleryStill}
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft />
+                </button>
+                <div className="cp-workbook-gallery-image">
+                  {activeGalleryStill ? (
+                    <Image
+                      src={activeGalleryStill.src}
+                      alt={activeGalleryStill.alt}
+                      fill
+                      sizes="(max-width: 768px) 72vw, 38vw"
+                      priority
+                      className="cp-workbook-gallery-product-image"
+                    />
+                  ) : (
+                    <Image
+                      src={productArchitecturePoster}
+                      alt="Product gallery unavailable"
+                      fill
+                      className="cp-workbook-gallery-product-image"
+                    />
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={nextGalleryStill}
+                  aria-label="Next image"
+                >
+                  <ChevronRight />
+                </button>
+              </div>
+              <p className="cp-workbook-gallery-labels">
+                {String(galleryIndex + 1).padStart(2, '0')} / {mediaCount}
+              </p>
+              <div
+                className="cp-workbook-gallery-thumbnails"
+                aria-label="Gallery thumbnails"
+              >
+                {galleryMedia.map((still, index) => (
+                  <button
+                    type="button"
+                    key={still.id}
+                    className={index === galleryIndex ? 'is-active' : ''}
+                    onClick={() => setGalleryIndex(index)}
+                    aria-label={`View ${still.alt}`}
+                  >
+                    <Image src={still.src} alt="" fill sizes="3rem" />
+                  </button>
+                ))}
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={nextGalleryStill}
-              aria-label="Next image"
-            >
-              <ChevronRight />
-            </button>
-          </div>
-          <p className="cp-workbook-gallery-labels">
-            {String(galleryIndex + 1).padStart(2, '0')} / {mediaCount}
-          </p>
-          <div
-            className="cp-workbook-gallery-thumbnails"
-            aria-label="Gallery thumbnails"
-          >
-            {galleryMedia.map((still, index) => (
-              <button
-                type="button"
-                key={still.id}
-                className={index === galleryIndex ? 'is-active' : ''}
-                onClick={() => setGalleryIndex(index)}
-                aria-label={`View ${still.alt}`}
+            {surface === 'gallery-order' && (
+              <aside
+                className="cp-workbook-gallery-order"
+                aria-label="Product options"
               >
-                <Image src={still.src} alt="" fill sizes="3rem" />
-              </button>
-            ))}
-          </div>
-        </div>
-        {surface === 'gallery-order' && (
-          <aside
-            className="cp-workbook-gallery-order"
-            aria-label="Product options"
-          >
-            <header>
-              <p>CHOOSE A SIZE</p>
-              <button
-                type="button"
-                onClick={() => setSurface('gallery')}
-                aria-label="Close order"
-              >
-                <X />
-              </button>
-            </header>
+                <header>
+                  <p>CHOOSE A SIZE</p>
+                  <button
+                    type="button"
+                    onClick={() => setSurface('gallery')}
+                    aria-label="Close order"
+                  >
+                    <X />
+                  </button>
+                </header>
+                <OrderWidgetBody
+                  size={size}
+                  sizes={sizeOptions}
+                  description={productDescription}
+                  priceLabel={priceLabel}
+                  onSize={setSize}
+                  onSizeGuide={() => setSurface('size')}
+                  onContinue={() =>
+                    window.location.assign(`${productHref}#product-options`)
+                  }
+                />
+              </aside>
+            )}
+          </section>
+        )}
+        {surface === 'order' && (
+          <Panel title="CHOOSE A SIZE" onClose={() => setSurface('discovery')}>
             <OrderWidgetBody
               size={size}
               sizes={sizeOptions}
@@ -999,42 +1010,20 @@ export default function WorkbookReplica({
                 window.location.assign(`${productHref}#product-options`)
               }
             />
-          </aside>
+          </Panel>
         )}
-      </section>
-    )
-  }
-  {
-    surface === 'order' && (
-      <Panel title="CHOOSE A SIZE" onClose={() => setSurface('discovery')}>
-        <OrderWidgetBody
-          size={size}
-          sizes={sizeOptions}
-          description={productDescription}
-          priceLabel={priceLabel}
-          onSize={setSize}
-          onSizeGuide={() => setSurface('size')}
-          onContinue={() =>
-            window.location.assign(`${productHref}#product-options`)
-          }
-        />
-      </Panel>
-    )
-  }
-  {
-    surface === 'size' && (
-      <Panel title="SIZE GUIDE" onClose={() => setSurface('order')}>
-        <p className="cp-workbook-copy">
-          {sizeGuideText ||
-            'Size guidance is currently unavailable in Shopify. Available sizes remain visible on the product page.'}
-        </p>
-        <ActionButton onClick={() => setSurface('order')}>
-          CLOSE
-        </ActionButton>
-      </Panel>
-    )
-  }
-      </div >
-    </main >
+        {surface === 'size' && (
+          <Panel title="SIZE GUIDE" onClose={() => setSurface('order')}>
+            <p className="cp-workbook-copy">
+              {sizeGuideText ||
+                'Size guidance is currently unavailable in Shopify. Available sizes remain visible on the product page.'}
+            </p>
+            <ActionButton onClick={() => setSurface('order')}>
+              CLOSE
+            </ActionButton>
+          </Panel>
+        )}
+      </div>
+    </main>
   );
 }
