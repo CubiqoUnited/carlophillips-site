@@ -113,8 +113,8 @@ describe('monorepo Shopify Storefront product loader', () => {
     );
   });
 
-  it('offers only the approved S/M/L sizes while resolving current Shopify variant IDs', async () => {
-    const variant = (size, id, availableForSale = true, amount = '128.00') => ({
+  it('offers only the approved Rapid Logo Tee S/M/L sizes while resolving current Shopify variant IDs', async () => {
+    const variant = (size, id, availableForSale = true, amount = '13.34') => ({
       node: {
         id,
         title: `black / ${size.toLowerCase()}`,
@@ -149,11 +149,11 @@ describe('monorepo Shopify Storefront product loader', () => {
         data: {
           product: {
             id: 'gid://shopify/Product/10',
-            handle: 'carlophillips-signature-hoodie',
-            title: 'CARLOPHILLIPS Signature Hoodie',
-            description: 'Heavyweight black pullover.',
+            handle: 'carlophillips-rapid-logo-tee',
+            title: 'CARLOPHILLIPS Rapid Logo Tee',
+            description: 'Rapid logo tee.',
             vendor: 'Apliiq',
-            productType: 'Hoodie',
+            productType: 'T-Shirt',
             tags: [],
             tagline: null,
             material: null,
@@ -161,7 +161,7 @@ describe('monorepo Shopify Storefront product loader', () => {
             care: null,
             sizeGuide: null,
             priceRange: {
-              minVariantPrice: { amount: '128.00', currencyCode: 'USD' },
+              minVariantPrice: { amount: '13.34', currencyCode: 'USD' },
               maxVariantPrice: { amount: '134.00', currencyCode: 'USD' },
             },
             media: { edges: [] },
@@ -177,7 +177,7 @@ describe('monorepo Shopify Storefront product loader', () => {
       environment: 'preview',
       observedAt: () => '2026-09-11T12:00:00Z',
       capabilityEvidence: 'shopify-storefront-runtime',
-    })('carlophillips-signature-hoodie');
+    })('carlophillips-rapid-logo-tee');
 
     expect(product.observedVariants.map((item) => item.title)).toEqual([
       'black / s',
@@ -185,8 +185,8 @@ describe('monorepo Shopify Storefront product loader', () => {
       'black / l',
     ]);
     expect(product.variants.sizes).toEqual(['S', 'M', 'L']);
-    expect(product.price).toBe(128);
-    expect(product.compareAtPrice).toBe(128);
+    expect(product.price).toBe(13.34);
+    expect(product.compareAtPrice).toBe(13.34);
     expect(product.variantPresentation.combinations).toHaveLength(3);
     expect(JSON.stringify(product)).not.toContain('48353314832590');
     expect(JSON.stringify(product)).not.toContain('48353314963662');
