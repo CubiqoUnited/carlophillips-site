@@ -47,6 +47,10 @@ const stagingPromotionVerifier = readFileSync(
   '.github/scripts/verify-staging-promotion.mjs',
   'utf8'
 );
+const vercelCiTokenVerifier = readFileSync(
+  '.github/scripts/verify-vercel-ci-token.mjs',
+  'utf8'
+);
 const releasePlaywright = readFileSync('playwright.release.config.ts', 'utf8');
 const verifierPath = join(
   process.cwd(),
@@ -59,6 +63,26 @@ const fallbackSelectorPath = join(
 const testSha = 'a'.repeat(40);
 
 describe('protected Staging workflow', () => {
+  it('fails fast when the Vercel token lacks user or canonical project access', () => {
+    expect(vercelCiTokenVerifier).toContain('https://api.vercel.com/v2/user');
+    expect(vercelCiTokenVerifier).toContain('/v9/projects/');
+    expect(vercelCiTokenVerifier).toContain('teamId=');
+    expect(vercelCiTokenVerifier).not.toContain('console.log(VERCEL_TOKEN');
+
+    for (const workflow of [staging, candidate, production]) {
+      expect(workflow).toContain('verify-vercel-ci-token.mjs');
+    }
+    expect(staging.indexOf('verify-vercel-ci-token.mjs')).toBeLessThan(
+      staging.indexOf('Install and verify repository')
+    );
+    expect(candidate.indexOf('verify-vercel-ci-token.mjs')).toBeLessThan(
+      candidate.indexOf('Install and verify')
+    );
+    expect(production.indexOf('verify-vercel-ci-token.mjs')).toBeLessThan(
+      production.indexOf('Install pinned Vercel CLI')
+    );
+  });
+
   it('uses authenticated Vercel requests before assigning the Staging alias', () => {
     expect(staging).toContain('vercel curl "$DEPLOYMENT_URL$route"');
     expect(staging).toContain(

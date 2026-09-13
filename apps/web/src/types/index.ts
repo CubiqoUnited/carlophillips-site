@@ -121,6 +121,7 @@ export interface HomeCatalogSummary {
   commerceAllowed: boolean;
   message: string;
   primaryProduct: HomeCatalogProduct | null;
+  categories?: Array<{ key: string; label: string }>;
 }
 
 export interface CartActivationSummary {

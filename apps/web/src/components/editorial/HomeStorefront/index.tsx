@@ -20,11 +20,13 @@ export function buildHomeGalleryMedia(
 export default function HomeStorefront({
   campaignAsset,
   catalogSummary,
-}: HomeStorefrontProps) {
+  discoveryOnly = false,
+}: HomeStorefrontProps & { discoveryOnly?: boolean }) {
   return (
     <WorkbookReplica
       campaignAsset={campaignAsset}
       catalogSummary={catalogSummary}
+      discoveryOnly={discoveryOnly}
     />
   );
 }

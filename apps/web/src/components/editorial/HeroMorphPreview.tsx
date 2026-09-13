@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type MouseEventHandler } from 'react';
 import runwayDesktop from '../../../public/media/editorial/runway-editorial-realism-cross-frame-warm-entry-cachefix-v6.png';
 import runwayMobile from '../../../public/media/editorial/runway-editorial-realism-tablet-warm-entry-cachefix-v6.png';
 
@@ -19,7 +19,7 @@ export default function HeroMorphPreview({
   revealed?: boolean;
   onReveal?: () => void;
   onExplore?: () => void;
-  onMenu?: () => void;
+  onMenu?: MouseEventHandler<HTMLButtonElement>;
   onBag?: () => void;
   bagCount?: number;
 }) {

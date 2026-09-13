@@ -86,7 +86,7 @@ function projectShopifyViewerItem(
     src,
     disclosure:
       approvalStatus === 'staging-review'
-        ? 'Shopify staging product view'
+        ? 'Shopify product view'
         : 'Release-bound product view',
   };
 }

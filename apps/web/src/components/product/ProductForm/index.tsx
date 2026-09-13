@@ -14,7 +14,8 @@ function money(amount: string, currency: string): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
   }).format(Number(amount));
 }
 
@@ -225,7 +226,7 @@ export default function ShopifyCheckoutForm({
         >
           Size guide
         </button>
-        <span>Shipping & returns available at checkout</span>
+        <span>Final sale · Shipping details available at checkout</span>
       </div>
       {sizeGuideOpen && (
         <div

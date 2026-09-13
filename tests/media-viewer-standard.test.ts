@@ -29,7 +29,7 @@ describe('controlled product media display', () => {
     );
   });
 
-  it('renders sanitized Shopify staging media without accepting arbitrary authorities', () => {
+  it('renders sanitized Shopify product media without accepting arbitrary authorities', () => {
     const projection = buildMediaViewerProjection({
       media: [
         {
@@ -40,7 +40,7 @@ describe('controlled product media display', () => {
           url: 'https://cdn.shopify.com/s/files/1/front.jpg',
           previewUrl: 'https://cdn.shopify.com/s/files/1/front.jpg',
           alt: 'Shopify front',
-          label: 'Shopify staging media',
+          label: 'Shopify product media',
           modalities: [],
         },
       ],
@@ -49,7 +49,7 @@ describe('controlled product media display', () => {
     expect(projection).toHaveLength(1);
     expect(projection[0]).toMatchObject({
       src: 'https://cdn.shopify.com/s/files/1/front.jpg',
-      disclosure: 'Shopify staging product view',
+      disclosure: 'Shopify product view',
       sourceAuthority: 'shopify-canonical-staging',
     });
   });
