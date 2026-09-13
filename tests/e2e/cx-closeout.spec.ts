@@ -34,12 +34,12 @@ test('narrow header keeps menu, brand and bag count visible', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto('/shop');
+  await page.goto('/shop?product=carlophillips-signature-hoodie');
   await expect(page.getByRole('button', { name: /menu/i })).toContainText(
     /menu/i
   );
-  await expect(page.getByRole('link', { name: 'CARLOPHILLIPS' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Bag (0)' })).toBeVisible();
+  await expect(page.getByText('CARLOPHILLIPS', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'BAG (0)' })).toBeVisible();
 });
 
 test('homepage gallery locks scroll, traps focus, closes and restores focus', async ({
@@ -63,6 +63,16 @@ test('homepage gallery locks scroll, traps focus, closes and restores focus', as
   await expect
     .poll(() => page.evaluate(() => document.body.style.overflow))
     .toBe('');
+});
+
+test('workbook modal returns focus to its trigger', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'networkidle' });
+  const menuTrigger = page.getByRole('button', { name: 'MENU', exact: true });
+  await menuTrigger.click();
+  await expect(page.getByRole('dialog', { name: 'NAVIGATION' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog', { name: 'NAVIGATION' })).toBeHidden();
+  await expect(menuTrigger).toBeFocused();
 });
 
 test('customer copy and minimum target sizes are corrected', async ({

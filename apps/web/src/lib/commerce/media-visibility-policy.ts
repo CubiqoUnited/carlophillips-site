@@ -119,8 +119,8 @@ function sanitizeShopifyMedia(
       sourceAuthority,
       label:
         approvalStatus === 'approved'
-          ? 'Approved Shopify staging media'
-          : 'Shopify staging media',
+          ? 'Approved Shopify media'
+          : 'Shopify product media',
       modalities: [],
     } as unknown as ReleaseBoundMediaItem);
   }
