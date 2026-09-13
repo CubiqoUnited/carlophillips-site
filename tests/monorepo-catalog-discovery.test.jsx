@@ -144,7 +144,9 @@ describe('active Shopify catalog discovery', () => {
     expect(catalogSource).toContain(
       '`/shop?product=${encodeURIComponent(product.handle)}`'
     );
-    expect(boundarySource).toContain('summarizeCatalog(decision, productHandle)');
+    expect(boundarySource).toContain(
+      'summarizeCatalog(decision, productHandle)'
+    );
     expect(boundarySource).toContain('discoveryOnly');
   });
 

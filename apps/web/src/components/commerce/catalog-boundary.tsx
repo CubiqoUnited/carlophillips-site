@@ -54,11 +54,7 @@ export async function CommerceCatalogBoundary({
           previewJourney={null}
         />
       </div>
-      <CommerceCatalogState
-        decision={decision}
-        pageLabel={pageLabel}
-        overlay
-      />
+      <CommerceCatalogState decision={decision} pageLabel={pageLabel} overlay />
     </>
   );
 }

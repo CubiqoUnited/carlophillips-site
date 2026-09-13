@@ -135,7 +135,7 @@ describe('monorepo home commerce projection', () => {
     );
 
     expect(source).toContain(
-      "const [discoveryVisible, setDiscoveryVisible] = useState(false)"
+      'const [discoveryVisible, setDiscoveryVisible] = useState(false)'
     );
     expect(source).toContain('{discoveryVisible && (');
     expect(source).toContain("rootMargin: '-25% 0px -25% 0px'");

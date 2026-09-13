@@ -706,53 +706,55 @@ export default function WorkbookReplica({
               )}
               {productMotion.length > 0 && (
                 <div className="cp-workbook-video-controls">
-                <button
-                  type="button"
-                  onClick={toggleVideo}
-                  aria-label={playing ? 'Pause motion' : 'Play motion'}
-                >
-                  {playing ? <Pause /> : <Play />}
-                </button>
-                <progress
-                  aria-label="Video progress"
-                  value={progress}
-                  max={1}
-                />
-                <button
-                  type="button"
-                  onClick={() => setVideoExpanded((expanded) => !expanded)}
-                  aria-label={videoExpanded ? 'Collapse video' : 'Expand video'}
-                >
-                  {videoExpanded ? <Minimize2 /> : <Maximize2 />}
-                </button>
-                <div
-                  className="cp-workbook-video-selector"
-                  aria-label="Product video selector"
-                >
-                  {[0, 1, 2].map((i) => (
-                    <button
-                      type="button"
-                      key={i}
-                      disabled={i >= productMotion.length}
-                      className={i === activeVideo ? 'is-active' : ''}
-                      onClick={() => {
-                        productEndHandled.current = false;
-                        productStartedRef.current = true;
-                        setProductStarted(true);
-                        setProductFrameReady(false);
-                        setActiveVideo(i);
-                        setCompletedRuns(0);
-                        setProgress(0);
-                        setPlaying(true);
-                      }}
-                      aria-label={
-                        i >= productMotion.length
-                          ? `Video ${i + 1} unavailable`
-                          : `Play video ${i + 1}`
-                      }
-                    />
-                  ))}
-                </div>
+                  <button
+                    type="button"
+                    onClick={toggleVideo}
+                    aria-label={playing ? 'Pause motion' : 'Play motion'}
+                  >
+                    {playing ? <Pause /> : <Play />}
+                  </button>
+                  <progress
+                    aria-label="Video progress"
+                    value={progress}
+                    max={1}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setVideoExpanded((expanded) => !expanded)}
+                    aria-label={
+                      videoExpanded ? 'Collapse video' : 'Expand video'
+                    }
+                  >
+                    {videoExpanded ? <Minimize2 /> : <Maximize2 />}
+                  </button>
+                  <div
+                    className="cp-workbook-video-selector"
+                    aria-label="Product video selector"
+                  >
+                    {[0, 1, 2].map((i) => (
+                      <button
+                        type="button"
+                        key={i}
+                        disabled={i >= productMotion.length}
+                        className={i === activeVideo ? 'is-active' : ''}
+                        onClick={() => {
+                          productEndHandled.current = false;
+                          productStartedRef.current = true;
+                          setProductStarted(true);
+                          setProductFrameReady(false);
+                          setActiveVideo(i);
+                          setCompletedRuns(0);
+                          setProgress(0);
+                          setPlaying(true);
+                        }}
+                        aria-label={
+                          i >= productMotion.length
+                            ? `Video ${i + 1} unavailable`
+                            : `Play video ${i + 1}`
+                        }
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -808,9 +810,7 @@ export default function WorkbookReplica({
                 <ActionButton
                   subtle
                   onClick={() =>
-                    window.location.assign(
-                      `/shop?category=${productCategory}`
-                    )
+                    window.location.assign(`/shop?category=${productCategory}`)
                   }
                 >
                   ALL {productCategoryLabel}

@@ -142,9 +142,7 @@ export function CommerceCatalogState({
       <section className="cp-commerce-hero storefront-panel">
         <div className="cp-catalog-hero-layout cp-shell-wide grid gap-12 px-0 lg:items-end">
           <div>
-            <p className="cp-label">
-              {activeGroup ? 'Category' : 'Discovery'}
-            </p>
+            <p className="cp-label">{activeGroup ? 'Category' : 'Discovery'}</p>
             <h1 className="cp-commerce-title mt-7 max-w-5xl">
               {overlay
                 ? activeGroup
