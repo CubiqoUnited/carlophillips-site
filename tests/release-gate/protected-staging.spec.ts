@@ -105,10 +105,13 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(navigation).toBeVisible();
   await expect(navigation.getByRole('button')).toHaveText([
     '',
+    'HOME',
     'ALL CATEGORIES',
     'ALL TSHIRTS',
     'ALL HOODIES',
+    'AFTERCARE',
     'CONTACT',
+    'ACCOUNT',
     'PRIVATE LIST',
   ]);
   await navigation.getByRole('button', { name: 'Close' }).click();
@@ -198,14 +201,14 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     .getByRole('button', { name: 'Size M', exact: true })
     .click();
   await page
-    .getByRole('button', { name: 'ADD TO BAG - $13.34', exact: true })
+    .getByRole('button', { name: 'ADD TO BAG - $14.34', exact: true })
     .click();
   await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
   await page.getByRole('link', { name: 'VIEW BAG' }).click();
   await page.waitForURL('**/bag');
   await expect(page.getByText('Size: M')).toBeVisible();
   await expect(
-    page.locator('.cp-bag-summary').getByText('$13.34', { exact: true })
+    page.locator('.cp-bag-summary').getByText('$14.34', { exact: true })
   ).toBeVisible();
   const teeCookies = await context.cookies();
   const teeCheckoutResponse = await page.request.post('/api/cart', {
