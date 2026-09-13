@@ -96,6 +96,11 @@ jobs:
         with:
           node-version: 24
 
+      - name: Validate Vercel CI credential before promotion work
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node .github/scripts/verify-vercel-ci-token.mjs
+
       - name: Install pinned Vercel CLI
         run: |
           corepack enable

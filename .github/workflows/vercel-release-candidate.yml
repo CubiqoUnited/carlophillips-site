@@ -82,6 +82,11 @@ jobs:
           node-version: 24
           cache: yarn
 
+      - name: Validate Vercel CI credential before expensive verification
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node .github/scripts/verify-vercel-ci-token.mjs
+
       - name: Download and verify the signed protected Staging receipt
         env:
           GH_TOKEN: ${{ github.token }}

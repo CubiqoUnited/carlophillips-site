@@ -226,7 +226,7 @@ export default function ShopifyCheckoutForm({
         >
           Size guide
         </button>
-        <span>Shipping & returns available at checkout</span>
+        <span>Final sale · Shipping details available at checkout</span>
       </div>
       {sizeGuideOpen && (
         <div

@@ -244,7 +244,7 @@ export interface ViewerMediaItem {
   constructionDetail?: ConstructionDetail;
   motionRole?: 'film' | 'preview';
   src: string;
-  disclosure: 'Release-bound product view' | 'Shopify staging product view';
+  disclosure: 'Release-bound product view' | 'Shopify product view';
 }
 
 export interface ApprovedCampaignAsset {
