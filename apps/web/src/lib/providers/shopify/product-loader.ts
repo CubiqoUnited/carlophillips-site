@@ -26,10 +26,6 @@ class ShopifyConfigurationError extends Error {
   readonly code = 'SHOPIFY_NOT_CONFIGURED';
 }
 
-const PHASE_ONE_PRODUCT_HANDLES = new Set([
-  'carlophillips-signature-hoodie',
-  'carlophillips-rapid-logo-tee',
-]);
 const PHASE_ONE_SALE_SIZES = new Set(['S', 'M', 'L']);
 
 export function createShopifyProductLoader({
@@ -222,7 +218,12 @@ export function toObservedProduct(
 function customerFacingVariants(
   product: StorefrontProductTransportInput
 ): readonly StorefrontVariantTransportInput[] {
-  if (!PHASE_ONE_PRODUCT_HANDLES.has(product.handle)) return product.variants;
+  const hasSizeOption = product.variants.some((variant) =>
+    variant.selectedOptions.some(
+      (option) => option.name.toLowerCase() === 'size'
+    )
+  );
+  if (!hasSizeOption) return product.variants;
 
   return product.variants.filter((variant) => {
     const size = variant.selectedOptions.find(
