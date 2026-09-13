@@ -171,12 +171,12 @@ describe('active Shopify catalog discovery', () => {
     );
 
     expect(source).toContain('id="menu-discovery">DISCOVERY');
-    expect(source).toContain('ALL CATEGORIES');
-    expect(source).toContain('ALL {category.label}');
-    expect(source).toContain('CONTACT');
-    expect(source).toContain('PRIVATE LIST');
-    expect(source).not.toContain('>HOME<');
-    expect(source).not.toContain('>AFTERCARE<');
-    expect(source).not.toContain('>ACCOUNT<');
+    expect(source).toContain('STOREFRONT_MENU_ALL_CATEGORIES.menuLabel');
+    expect(source).toContain('resolveStorefrontMenuCategories');
+    expect(source).toContain('link.href');
+    expect(source).toContain('link.menuLabel');
+    expect(source).toContain('STOREFRONT_MENU_HOME.menuLabel');
+    expect(source).toContain('STOREFRONT_MENU_SUPPORT_LINKS');
+    expect(source).toContain('STOREFRONT_MENU_SUPPORT_LINKS.map');
   });
 });

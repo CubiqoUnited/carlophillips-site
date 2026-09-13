@@ -30,6 +30,12 @@ import type { HomeCatalogSummary } from '@/types';
 import HeroMorphPreview from './HeroMorphPreview';
 import { useModalDialog } from '@/lib/a11y/use-modal-dialog';
 import { curateCustomerMedia } from '@/lib/media/customer-product-media';
+import {
+  resolveStorefrontMenuCategories,
+  STOREFRONT_MENU_ALL_CATEGORIES,
+  STOREFRONT_MENU_HOME,
+  STOREFRONT_MENU_SUPPORT_LINKS,
+} from '@/lib/navigation/storefront-menu';
 
 const MuxVideo = dynamic(() => import('@mux/mux-video/react'), { ssr: false });
 const disableMuxTracking =
@@ -832,24 +838,31 @@ export default function WorkbookReplica({
         {surface === 'menu' && (
           <Panel title="NAVIGATION" onClose={close}>
             <nav className="cp-workbook-menu">
+              <ActionButton
+                onClick={() =>
+                  window.location.assign(STOREFRONT_MENU_HOME.href)
+                }
+              >
+                {STOREFRONT_MENU_HOME.menuLabel}
+              </ActionButton>
               <section
                 className="cp-workbook-menu-group"
                 aria-labelledby="menu-discovery"
               >
                 <h2 id="menu-discovery">DISCOVERY</h2>
-                <ActionButton onClick={() => window.location.assign('/shop')}>
-                  ALL CATEGORIES
+                <ActionButton
+                  onClick={() =>
+                    window.location.assign(STOREFRONT_MENU_ALL_CATEGORIES.href)
+                  }
+                >
+                  {STOREFRONT_MENU_ALL_CATEGORIES.menuLabel}
                 </ActionButton>
-                {availableCategories.map((category) => (
+                {resolveStorefrontMenuCategories().map((category) => (
                   <ActionButton
                     key={category.key}
-                    onClick={() =>
-                      window.location.assign(
-                        `/shop?category=${encodeURIComponent(category.key)}`
-                      )
-                    }
+                    onClick={() => window.location.assign(category.href)}
                   >
-                    ALL {category.label}
+                    {category.menuLabel}
                   </ActionButton>
                 ))}
               </section>
@@ -858,14 +871,18 @@ export default function WorkbookReplica({
                 aria-labelledby="menu-private-support"
               >
                 <h2 id="menu-private-support">MORE</h2>
-                <ActionButton
-                  onClick={() => window.location.assign('/contact')}
-                >
-                  CONTACT
-                </ActionButton>
-                <ActionButton onClick={() => setSurface('private-list')}>
-                  PRIVATE LIST
-                </ActionButton>
+                {STOREFRONT_MENU_SUPPORT_LINKS.map((link) => (
+                  <ActionButton
+                    key={link.href}
+                    onClick={() =>
+                      link.href === '/private-list'
+                        ? setSurface('private-list')
+                        : window.location.assign(link.href)
+                    }
+                  >
+                    {link.menuLabel}
+                  </ActionButton>
+                ))}
               </section>
             </nav>
           </Panel>

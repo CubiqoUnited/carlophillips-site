@@ -3,6 +3,12 @@
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { useModalDialog } from '@/lib/a11y/use-modal-dialog';
+import {
+  resolveStorefrontMenuCategories,
+  STOREFRONT_MENU_ALL_CATEGORIES,
+  STOREFRONT_MENU_HOME,
+  STOREFRONT_MENU_SUPPORT_LINKS,
+} from '@/lib/navigation/storefront-menu';
 
 export function StorefrontHeader({
   pageLabel,
@@ -15,12 +21,13 @@ export function StorefrontHeader({
   navigationAriaLabel?: string;
   fixed?: boolean;
   bagCount?: number;
-  categories?: Array<{ label: string; href: string }>;
+  categories?: Array<{ label: string; href: string; key?: string }>;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentBagCount, setCurrentBagCount] = useState(bagCount);
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuCategories = resolveStorefrontMenuCategories(categories);
   useEffect(() => {
     const controller = new AbortController();
     fetch('/api/cart', { signal: controller.signal, cache: 'no-store' })
@@ -109,15 +116,21 @@ export function StorefrontHeader({
             </div>
             <nav aria-label="Mobile storefront navigation">
               <p className="cp-mobile-menu-label">Explore</p>
-              <Link href="/" onClick={() => setMenuOpen(false)}>
-                Home
+              <Link
+                href={STOREFRONT_MENU_HOME.href}
+                onClick={() => setMenuOpen(false)}
+              >
+                {STOREFRONT_MENU_HOME.label}
               </Link>
-              <Link href="/shop" onClick={() => setMenuOpen(false)}>
-                All categories
+              <Link
+                href={STOREFRONT_MENU_ALL_CATEGORIES.href}
+                onClick={() => setMenuOpen(false)}
+              >
+                {STOREFRONT_MENU_ALL_CATEGORIES.label}
               </Link>
-              {categories.map((category) => (
+              {menuCategories.map((category) => (
                 <Link
-                  key={category.href}
+                  key={category.key}
                   href={category.href}
                   onClick={() => setMenuOpen(false)}
                 >
@@ -125,15 +138,15 @@ export function StorefrontHeader({
                 </Link>
               ))}
               <p className="cp-mobile-menu-label">Customer care</p>
-              <Link href="/aftercare" onClick={() => setMenuOpen(false)}>
-                Aftercare
-              </Link>
-              <Link href="/contact" onClick={() => setMenuOpen(false)}>
-                Contact
-              </Link>
-              <Link href="/member" onClick={() => setMenuOpen(false)}>
-                Account
-              </Link>
+              {STOREFRONT_MENU_SUPPORT_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>
