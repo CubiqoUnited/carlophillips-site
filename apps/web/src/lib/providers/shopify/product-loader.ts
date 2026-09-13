@@ -26,8 +26,7 @@ class ShopifyConfigurationError extends Error {
   readonly code = 'SHOPIFY_NOT_CONFIGURED';
 }
 
-const SIGNATURE_HOODIE_HANDLE = 'carlophillips-signature-hoodie';
-const SIGNATURE_HOODIE_SALE_SIZES = new Set(['S', 'M', 'L']);
+const PHASE_ONE_SALE_SIZES = new Set(['S', 'M', 'L']);
 
 export function createShopifyProductLoader({
   storeDomain,
@@ -219,13 +218,18 @@ export function toObservedProduct(
 function customerFacingVariants(
   product: StorefrontProductTransportInput
 ): readonly StorefrontVariantTransportInput[] {
-  if (product.handle !== SIGNATURE_HOODIE_HANDLE) return product.variants;
+  const hasSizeOption = product.variants.some((variant) =>
+    variant.selectedOptions.some(
+      (option) => option.name.toLowerCase() === 'size'
+    )
+  );
+  if (!hasSizeOption) return product.variants;
 
   return product.variants.filter((variant) => {
     const size = variant.selectedOptions.find(
       (option) => option.name.toLowerCase() === 'size'
     )?.value;
-    return Boolean(size && SIGNATURE_HOODIE_SALE_SIZES.has(size.toUpperCase()));
+    return Boolean(size && PHASE_ONE_SALE_SIZES.has(size.toUpperCase()));
   });
 }
 
