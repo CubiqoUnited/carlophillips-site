@@ -1,0 +1,1 @@
+# Actual execution still lives in Vercel scheduled functions and Shopify Flow, same as before — this registry is the readable index of what's configured there and what its safety bounds are, not a second runtime.

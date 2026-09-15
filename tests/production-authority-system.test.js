@@ -33,12 +33,12 @@ describe('production authority system', () => {
   });
 
   it('binds deployment tooling to the read-only verified production project', () => {
-    expect(registry.vercel.expectedProjectName).toBe('carlophillips-site');
+    expect(registry.vercel.expectedProjectName).toBe('carlophillips');
     expect(registry.vercel.identityStatus).toBe(
-      'verified-read-only-2026-08-14'
+      'verified-read-only-2026-09-15'
     );
     expect(registry.vercel.projectId).toBe('prj_9VHD0AhhQnuml8frfNDsmFLHXcq1');
-    expect(registry.vercel.orgId).toBe('team_8ABMxicIAtMyzgNYsJawFad0');
+    expect(registry.vercel.orgId).toBe('team_Q25fvpJOPiIeoG3hfxtCVkhW');
   });
 
   it('runs all repository quality gates for pull requests and main pushes', () => {

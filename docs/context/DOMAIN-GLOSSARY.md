@@ -1,0 +1,1 @@
+	•	DOMAIN-GLOSSARY.md — CP's own vocabulary written down once: Product Release Record, APQ SKU, reference hash, commerce-facts fingerprint, Media Registry, canonical Staging. A new agent currently has to infer these from usage.

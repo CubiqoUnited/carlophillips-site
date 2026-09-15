@@ -1,6 +1,6 @@
 {
   "schemaVersion": "cp.production-authorities.v1",
-  "updatedAt": "2026-08-14",
+  "updatedAt": "2026-09-15",
   "releaseModel": {
     "productionBranch": "main",
     "stagingSurface": "vercel-preview",
@@ -9,11 +9,11 @@
     "promotionRequiresProductOwnerApproval": true
   },
   "vercel": {
-    "expectedProjectName": "carlophillips-site",
-    "expectedScopeSlug": "adityas-projects-261b17a9",
-    "identityStatus": "verified-read-only-2026-08-14",
+    "expectedProjectName": "carlophillips",
+    "expectedScopeSlug": "cubiqo-projects-d7156840",
+    "identityStatus": "verified-read-only-2026-09-15",
     "projectId": "prj_9VHD0AhhQnuml8frfNDsmFLHXcq1",
-    "orgId": "team_8ABMxicIAtMyzgNYsJawFad0"
+    "orgId": "team_Q25fvpJOPiIeoG3hfxtCVkhW"
   },
   "authorities": [
     { "id": "environments-secrets", "source": ".env.example and environment-scoped Vercel stores", "owner": "Platform/Security owner", "accountable": "Product Owner", "consumers": ["Next.js runtime", "Shopify adapter", "commerce gates", "CORS", "metadata"], "validation": ["tracked-file secret scan", "environment-name/scope review", "fail-closed smoke test"], "productionGate": "Verified Preview/Production variable inventory, least privilege, rotation owner, and no secret values in Git", "failureMode": "Missing or cross-environment credentials; fail closed", "rollback": "Restore the reviewed environment snapshot and promote only a separately verified safe fallback" },

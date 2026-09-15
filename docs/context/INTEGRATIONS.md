@@ -1,0 +1,1 @@
+	•	INTEGRATIONS.md — one section per integration (Shopify, Apliiq, Vercel, GitHub, Shopify Flow, Shopify Inbox): purpose, authoritative responsibility, environment mapping, expected handoff, verification method, failure owner, relevant runbook.

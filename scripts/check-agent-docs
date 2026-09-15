@@ -1,0 +1,143 @@
+#!/usr/bin/env node
+
+const fs = require("node:fs");
+const path = require("node:path");
+const { execFileSync } = require("node:child_process");
+
+const root = path.resolve(__dirname, "..");
+const failures = [];
+const unknowns = [];
+const passes = [];
+
+const required = [
+  "AGENTS.md", "README.md", "PRD.md", "ARCHITECTURE.md", "DEPLOYMENT.md", "DECISIONS.md",
+  "agents/sushma.md", "agents/aarti.md", "agents/pushpa.md", "agents/richa.md", "agents/malti.md",
+  "checklists/sushma-delivery.md", "checklists/aarti-technical.md", "checklists/pushpa-product-uat.md",
+  "checklists/richa-research.md", "checklists/malti-market.md", "docs/overview.md",
+  "docs/exec-plans/active/phase-1.md", "docs/context/PROJECT-MAP.md", "docs/context/ENVIRONMENTS.md",
+  "docs/context/INTEGRATIONS.md", "docs/context/DOMAIN-GLOSSARY.md", "docs/context/brand-voice-guide.md",
+  "docs/context/audience-personas.md", "docs/context/competitor-notes.md",
+  "docs/reference/CP-TFRD-v1-2026-09-14.docx", "docs/reference/UI-SPEC-v1-2026-09-14.pdf",
+  "docs/reference/v3.7.js-v1-2026-09-14.docx", "state/SCOPE.md", "state/NOW.md",
+  "state/BLOCKERS.md", "state/PROPOSALS.md", "state/CREDENTIALS.md", "state/BOSS-BRIEF.md",
+  "reports/INDEX.md", ".github/CODEOWNERS", "scripts/check-agent-docs", "knowledge/LEARNINGS.md",
+  "knowledge/GRAVEYARD.md", "operations/AUTOMATIONS.yaml", "operations/MONITORS.yaml",
+  "operations/TRIGGERS.yaml", "skills/verify-staging/SKILL.md", "skills/release-staging/SKILL.md",
+  "skills/run-uat/SKILL.md", "skills/shopify-reconciliation/SKILL.md",
+  "skills/production-incident/SKILL.md", "skills/production-monitoring/SKILL.md",
+  "skills/media-generation/SKILL.md", "skills/verify-staging/learnings.md",
+  "skills/release-staging/learnings.md", "skills/run-uat/learnings.md",
+  "skills/shopify-reconciliation/learnings.md", "skills/production-incident/learnings.md",
+  "skills/production-monitoring/learnings.md", "skills/media-generation/learnings.md"
+];
+
+const requiredDirectories = [
+  "docs/exec-plans/active", "docs/exec-plans/completed", "outputs/drafts", "outputs/approved"
+];
+
+const budgets = {
+  "AGENTS.md": 250,
+  "state/NOW.md": 100,
+  "state/BLOCKERS.md": 40,
+  "state/SCOPE.md": 60,
+  "docs/overview.md": 60,
+  "agents/sushma.md": 80,
+  "agents/aarti.md": 80,
+  "agents/pushpa.md": 80,
+  "agents/richa.md": 80,
+  "agents/malti.md": 80,
+  "checklists/sushma-delivery.md": 60,
+  "checklists/aarti-technical.md": 60,
+  "checklists/pushpa-product-uat.md": 60,
+  "checklists/richa-research.md": 60,
+  "checklists/malti-market.md": 60
+};
+
+function exists(rel) { return fs.existsSync(path.join(root, rel)); }
+function read(rel) { return fs.readFileSync(path.join(root, rel), "utf8"); }
+function listTracked() {
+  return execFileSync("git", ["ls-files"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
+}
+function listContextFiles() {
+  const prefixes = ["agents/", "checklists/", "docs/context/", "docs/exec-plans/", "knowledge/", "operations/", "skills/", "state/"];
+  const roots = new Set(["AGENTS.md", "ARCHITECTURE.md", "DECISIONS.md", "DEPLOYMENT.md", "PRD.md", "README.md"]);
+  const candidates = new Set([...listTracked(), ...required.filter(exists)]);
+  return [...candidates].filter((f) => roots.has(f) || prefixes.some((p) => f.startsWith(p)))
+    .filter((f) => /\.(md|ya?ml|json)$/.test(f) || f === "scripts/check-agent-docs");
+}
+
+for (const rel of required) {
+  if (!exists(rel)) failures.push(`missing required path: ${rel}`);
+}
+for (const rel of requiredDirectories) {
+  if (!exists(rel) || !fs.statSync(path.join(root, rel)).isDirectory()) failures.push(`missing required directory: ${rel}`);
+}
+const managedPrefixes = ["agents/", "checklists/", "docs/context/", "knowledge/", "operations/", "skills/", "state/"];
+const actualManaged = listContextFiles().filter((rel) => managedPrefixes.some((prefix) => rel.startsWith(prefix)));
+const unexpectedManaged = actualManaged.filter((rel) => !required.includes(rel));
+if (unexpectedManaged.length) failures.push(`unlisted managed context: ${unexpectedManaged.join(",")}`);
+if (!failures.some((f) => f.startsWith("missing required") || f.startsWith("unlisted managed"))) {
+  passes.push(`required/context inventory reconciled (${required.length} files, ${requiredDirectories.length} directories)`);
+}
+
+for (const [rel, max] of Object.entries(budgets)) {
+  if (!exists(rel)) continue;
+  const lines = read(rel).split(/\r?\n/).length;
+  if (lines > max) failures.push(`line budget exceeded: ${rel} ${lines}/${max}`);
+}
+passes.push("hot-file line budgets inspected");
+
+if (exists("DECISIONS.md")) {
+  const defined = new Set([...read("DECISIONS.md").matchAll(/CP-DEC-\d{3}/g)].map((m) => m[0]));
+  const referenced = new Map();
+  for (const rel of listContextFiles()) {
+    if (!exists(rel) || rel === "DECISIONS.md") continue;
+    for (const match of read(rel).matchAll(/CP-DEC-\d{3}/g)) {
+      if (!referenced.has(match[0])) referenced.set(match[0], []);
+      referenced.get(match[0]).push(rel);
+    }
+  }
+  for (const [id, files] of referenced) {
+    if (!defined.has(id)) failures.push(`undefined decision reference: ${id} in ${[...new Set(files)].join(",")}`);
+  }
+  passes.push(`decision-reference integrity inspected (${defined.size} defined)`);
+}
+
+const secretPatterns = [
+  /-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----/,
+  /gh[pousr]_[A-Za-z0-9_]{20,}/,
+  /sk_(?:live|test)_[A-Za-z0-9]{16,}/,
+  /AKIA[0-9A-Z]{16}/,
+  /(?:api[_-]?key|access[_-]?token|client[_-]?secret|password)\s*[:=]\s*[A-Za-z0-9_./+\-]{12,}/i
+];
+for (const rel of listContextFiles()) {
+  if (!exists(rel)) continue;
+  const content = read(rel);
+  if (secretPatterns.some((pattern) => pattern.test(content))) failures.push(`possible secret in tracked context: ${rel}`);
+}
+passes.push("tracked-context secret patterns inspected (values never printed)");
+
+for (const registry of ["operations/AUTOMATIONS.yaml", "operations/MONITORS.yaml", "operations/TRIGGERS.yaml"]) {
+  if (!exists(registry)) continue;
+  const body = read(registry).trim();
+  if (!body) failures.push(`empty automation registry: ${registry}`);
+}
+if (exists("operations/MONITORS.yaml")) {
+  const implementations = [...read("operations/MONITORS.yaml").matchAll(/^\s*implementation:\s*([^\s#]+)\s*$/gm)].map((match) => match[1]);
+  for (const implementation of implementations) {
+    if (!exists(implementation)) failures.push(`monitor implementation missing: ${implementation}`);
+  }
+  if (implementations.length && !failures.some((f) => f.startsWith("monitor implementation missing"))) {
+    passes.push(`automation registry/local implementation reconciliation (${implementations.length} monitor)`);
+  }
+}
+const platformSignals = ["vercel.json", ".github/workflows", ".vercel/project.json"].filter(exists);
+if (platformSignals.length === 0) unknowns.push("automation drift: no safely inspectable platform configuration found");
+else unknowns.push(`automation drift: local signals inspected (${platformSignals.join(", ")}); live Vercel/Shopify Flow inspection unavailable`);
+
+console.log("CARLOPHILLIPS agent-document validation");
+for (const item of passes) console.log(`PASS ${item}`);
+for (const item of unknowns) console.log(`UNKNOWN ${item}`);
+for (const item of failures) console.log(`FAIL ${item}`);
+console.log(`SUMMARY pass=${passes.length} unknown=${unknowns.length} fail=${failures.length}`);
+process.exitCode = failures.length ? 1 : 0;

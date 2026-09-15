@@ -18,7 +18,7 @@ customer surface may carry a raw visual literal.
 | "Approved source masters remain in private versioned storage; the site stores only Mux playback ID and poster reference" | Media identity stays a *reference*, never a committed master. The storefront renders only assets a readiness gate has confirmed. |
 | "Three approved clips: Runway Motion, Fit & Silhouette, and 360 Showcase" | Three declared slots. Only clips the readiness check confirms are offered; unconfirmed slots are withheld rather than faked (AGENTS.md: do not invent video/spin/3D evidence). |
 | `FULLSCREEN: Not available` on screens 03/04 | The existing fullscreen/expand affordance on the video stage is removed. |
-| Appendix exception widgets carry `Requirement / owner: ____` blanks | Every exception state is implemented as a real, reachable component; ownership blanks are recorded in `TASKS.md`, not rendered. |
+| Appendix exception widgets carry `Requirement / owner: ____` blanks | Every exception state is implemented as a real, reachable component; ownership blanks are recorded in `state/NOW.md` or the applicable active execution plan, not rendered. |
 
 ## 1. Current state
 
