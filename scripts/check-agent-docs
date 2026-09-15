@@ -117,7 +117,7 @@ function frontmatter(rel) {
   }
   return values;
 }
-const metadataFiles = ["state/NOW.md", "state/BLOCKERS.md", "state/SCOPE.md", "docs/exec-plans/active/phase-1.md", "state/rundowns/SCHEMA.md", "state/sessions/SCHEMA.md"];
+const metadataFiles = ["state/NOW.md", "state/BLOCKERS.md", "state/SCOPE.md", "docs/exec-plans/active/phase-1.md", "state/rundowns/SCHEMA.md", "state/sessions/SCHEMA.md", "knowledge/LEARNINGS.md", "knowledge/GRAVEYARD.md"];
 const metadataFields = ["id", "owner", "class", "version", "last_updated", "review_frequency"];
 for (const rel of metadataFiles) {
   if (!exists(rel)) continue;
@@ -222,6 +222,12 @@ if (!read("state/BLOCKERS.md").includes("Writers all five roles append-only")) f
 if (!read("state/NOW.md").includes("Sushma is the single writer/reconciler")) failures.push("NOW writer matrix mismatch");
 if (!read("state/CREDENTIALS.md").includes("Writers all five roles append within their credential scope")) failures.push("CREDENTIALS writer matrix mismatch");
 if (!read("state/BOSS-BRIEF.md").includes("never hand-edited")) failures.push("BOSS-BRIEF runtime-only contract missing");
+for (const rel of ["knowledge/LEARNINGS.md", "knowledge/GRAVEYARD.md"]) {
+  const data = frontmatter(rel);
+  const body = read(rel);
+  if (!data || data.owner !== "sushma" || data.class !== "evolving") failures.push(`knowledge authority metadata mismatch: ${rel}`);
+  if (!body.includes("Writers all five roles append") || !body.includes("Entries are immutable once written") || !body.includes("no role edits or deletes another role's entry") || !body.includes("Distilled, never append-everything")) failures.push(`knowledge append/immutability/distillation contract missing: ${rel}`);
+}
 if (!read("state/PROPOSALS.md").includes("2026-09-15T093616Z-sushma-file-authority-matrix-alignment") || !read("state/PROPOSALS.md").includes("Decision: approved")) failures.push("controlled-change proposal/approval trace missing");
 const durablePatterns = [
   /^state\/rundowns\/\d{4}-\d{2}-\d{2}(?:T\d{6}Z)?-[a-z]+(?:-[a-z0-9-]+)?\.md$/,
