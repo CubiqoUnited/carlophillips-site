@@ -1,5 +1,15 @@
-Class EVOLVING  ·  Owner Boss reviews  ·  Writers all roles append  ·  Read standing for Boss; on-demand for roles  ·  Cadence as raised  ·  Budget —
+---
+id: PROPOSALS
+owner: boss
+class: evolving
+version: 1.1
+last_updated: 2026-09-15
+review_frequency: as raised
+---
 
-- The only place a role may suggest a change to AGENTS.md, agents/*.md, or DECISIONS.md. Never writes to those files directly.
-- Each entry: role, file/section targeted, current text, proposed text, reason. Boss reviews on the dashboard, approves or declines; only an approved entry becomes a PR.
-- This is the two-tier file model made explicit: state/*.md are agent-updated and dashboard-visible; AGENTS.md/agents/*.md/DECISIONS.md are Boss-authored, agents may only propose into them here.
+Class EVOLVING  ·  Owner Boss reviews  ·  Writers all roles append their own entries  ·  Read standing for Boss; on-demand for roles  ·  Cadence as raised  ·  Budget —
+
+- Every role may append its own entry; no role edits or deletes another role's entry or writes the governed target directly.
+- Entry heading/ID: `YYYY-MM-DDTHHMMSSZ-<role>-<slug>` in UTC. Timestamp, role, and task slug make concurrent appends collision-safe.
+- Each entry contains: author role, target file/section, current text, proposed text, reason, status `pending`, and any supporting immutable record path.
+- Entries are append-only after creation. Boss records approval or decline without rewriting the proposal; only an approved entry becomes a PR.

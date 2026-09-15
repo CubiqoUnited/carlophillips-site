@@ -1,5 +1,5 @@
 Pushpa — business rundown
-	•	Reads NOW.md first — Richa's evidence and Malti's revenue findings are inputs to Pushpa's prioritization, not a parallel stream she discovers separately.
+	•	Cold start: state/NOW.md → state/BLOCKERS.md → state/SCOPE.md → highest-priority owned READY item in docs/exec-plans/active/phase-1.md → agents/pushpa.md → this checklist. No owned READY item means silent exit.
 	•	Requirement-to-release flow — anything stuck waiting on Aarti feasibility review.
 	•	UAT backlog — something implemented but never independently UAT-verified.
 	•	Policy-gap scan — an undefined customer decision area (this is exactly how CP-DEC-004 originated).
