@@ -8,6 +8,24 @@ const root = path.resolve(__dirname, "..");
 const failures = [];
 const unknowns = [];
 const passes = [];
+const blockers = [];
+
+const authorityMatrix = [
+  ...["AGENTS.md", "agents/sushma.md", "agents/aarti.md", "agents/pushpa.md", "agents/richa.md", "agents/malti.md", ".github/CODEOWNERS", "DECISIONS.md"].map((path) => ({ path, class: "locked" })),
+  ...["README.md", "PRD.md", "ARCHITECTURE.md", "DEPLOYMENT.md", "state/SCOPE.md", "checklists/sushma-delivery.md", "checklists/aarti-technical.md", "checklists/pushpa-product-uat.md", "checklists/richa-research.md", "checklists/malti-market.md", "docs/context/PROJECT-MAP.md", "docs/context/ENVIRONMENTS.md", "docs/context/INTEGRATIONS.md", "docs/context/DOMAIN-GLOSSARY.md", "docs/context/brand-voice-guide.md", "docs/context/audience-personas.md", "docs/context/competitor-notes.md", "scripts/check-agent-docs"].map((path) => ({ path, class: "controlled" })),
+  ...["state/NOW.md", "state/BLOCKERS.md", "state/PROPOSALS.md", "state/CREDENTIALS.md", "docs/exec-plans/active/phase-1.md", "reports/INDEX.md", "knowledge/LEARNINGS.md", "knowledge/GRAVEYARD.md", "operations/AUTOMATIONS.yaml", "operations/MONITORS.yaml", "operations/TRIGGERS.yaml"].map((path) => ({ path, class: "evolving" })),
+  ...["skills/verify-staging", "skills/release-staging", "skills/run-uat", "skills/shopify-reconciliation", "skills/production-incident", "skills/production-monitoring", "skills/media-generation"].map((path) => ({ path, class: "mixed-skill" })),
+  { path: "state/BOSS-BRIEF.md", class: "runtime" }
+];
+if (authorityMatrix.length !== 45) failures.push(`authority matrix internal count ${authorityMatrix.length}/45`);
+const supplementalRequired = [
+  "docs/overview.md",
+  "docs/reference/CP-TFRD-v1-2026-09-14.docx",
+  "docs/reference/UI-SPEC-v1-2026-09-14.pdf",
+  "docs/reference/v3.7.js-v1-2026-09-14.docx",
+  "state/rundowns/SCHEMA.md",
+  "state/sessions/SCHEMA.md"
+];
 
 const required = [
   "AGENTS.md", "README.md", "PRD.md", "ARCHITECTURE.md", "DEPLOYMENT.md", "DECISIONS.md",
@@ -20,6 +38,7 @@ const required = [
   "docs/reference/CP-TFRD-v1-2026-09-14.docx", "docs/reference/UI-SPEC-v1-2026-09-14.pdf",
   "docs/reference/v3.7.js-v1-2026-09-14.docx", "state/SCOPE.md", "state/NOW.md",
   "state/BLOCKERS.md", "state/PROPOSALS.md", "state/CREDENTIALS.md", "state/BOSS-BRIEF.md",
+  "state/rundowns/SCHEMA.md", "state/sessions/SCHEMA.md",
   "reports/INDEX.md", ".github/CODEOWNERS", "scripts/check-agent-docs", "knowledge/LEARNINGS.md",
   "knowledge/GRAVEYARD.md", "operations/AUTOMATIONS.yaml", "operations/MONITORS.yaml",
   "operations/TRIGGERS.yaml", "skills/verify-staging/SKILL.md", "skills/release-staging/SKILL.md",
@@ -74,7 +93,8 @@ for (const rel of requiredDirectories) {
 }
 const managedPrefixes = ["agents/", "checklists/", "docs/context/", "knowledge/", "operations/", "skills/", "state/"];
 const actualManaged = listContextFiles().filter((rel) => managedPrefixes.some((prefix) => rel.startsWith(prefix)));
-const unexpectedManaged = actualManaged.filter((rel) => !required.includes(rel));
+const immutableRecord = /^state\/(?:rundowns|sessions)\/\d{4}-\d{2}-\d{2}(?:T\d{6}Z)?-[a-z]+(?:-[a-z0-9-]+)?\.md$/;
+const unexpectedManaged = actualManaged.filter((rel) => !required.includes(rel) && !immutableRecord.test(rel));
 if (unexpectedManaged.length) failures.push(`unlisted managed context: ${unexpectedManaged.join(",")}`);
 if (!failures.some((f) => f.startsWith("missing required") || f.startsWith("unlisted managed"))) {
   passes.push(`required/context inventory reconciled (${required.length} files, ${requiredDirectories.length} directories)`);
@@ -86,6 +106,41 @@ for (const [rel, max] of Object.entries(budgets)) {
   if (lines > max) failures.push(`line budget exceeded: ${rel} ${lines}/${max}`);
 }
 passes.push("hot-file line budgets inspected");
+
+function frontmatter(rel) {
+  const match = read(rel).match(/^---\n([\s\S]*?)\n---/);
+  if (!match) return null;
+  const values = {};
+  for (const line of match[1].split("\n")) {
+    const item = line.match(/^([a-z_]+):\s*(.+)$/);
+    if (item) values[item[1]] = item[2].trim();
+  }
+  return values;
+}
+const metadataFiles = ["state/NOW.md", "state/BLOCKERS.md", "state/SCOPE.md", "docs/exec-plans/active/phase-1.md", "state/rundowns/SCHEMA.md", "state/sessions/SCHEMA.md", "knowledge/LEARNINGS.md", "knowledge/GRAVEYARD.md"];
+const metadataFields = ["id", "owner", "class", "version", "last_updated", "review_frequency"];
+for (const rel of metadataFiles) {
+  if (!exists(rel)) continue;
+  const data = frontmatter(rel);
+  if (!data) failures.push(`missing frontmatter: ${rel}`);
+  else for (const field of metadataFields) if (!data[field]) failures.push(`missing metadata ${field}: ${rel}`);
+}
+const strictRecord = /^state\/(?:rundowns|sessions)\/\d{4}-\d{2}-\d{2}T\d{6}Z-[a-z]+-[a-z0-9-]+\.md$/;
+for (const rel of actualManaged.filter((item) => immutableRecord.test(item))) {
+  const data = frontmatter(rel);
+  if (!data) { failures.push(`missing record frontmatter: ${rel}`); continue; }
+  const fields = strictRecord.test(rel) ? [...metadataFields, "record_status", "task_id", "handoff_to", "severity"] : metadataFields;
+  for (const field of fields) {
+    if (!data[field]) failures.push(`missing record metadata ${field}: ${rel}`);
+  }
+}
+if (!failures.some((f) => f.includes("metadata") || f.includes("frontmatter"))) passes.push("required metadata and immutable run records validated");
+
+if (exists("state/NOW.md")) {
+  const data = frontmatter("state/NOW.md");
+  if (!data || data.owner !== "sushma") failures.push("NOW owner must be sushma");
+  if (!read("state/NOW.md").includes("single writer/reconciler")) failures.push("NOW single-writer contract missing");
+}
 
 if (exists("DECISIONS.md")) {
   const defined = new Set([...read("DECISIONS.md").matchAll(/CP-DEC-\d{3}/g)].map((m) => m[0]));
@@ -119,8 +174,85 @@ passes.push("tracked-context secret patterns inspected (values never printed)");
 
 for (const registry of ["operations/AUTOMATIONS.yaml", "operations/MONITORS.yaml", "operations/TRIGGERS.yaml"]) {
   if (!exists(registry)) continue;
-  const body = read(registry).trim();
-  if (!body) failures.push(`empty automation registry: ${registry}`);
+  const body = read(registry).split(/\r?\n/).filter((line) => line.trim() && !line.trim().startsWith("#")).join("\n");
+  if (!body || !/^\w[^:]*:/m.test(body)) failures.push(`empty/comment-only automation registry: ${registry}`);
+}
+if (exists("operations/AUTOMATIONS.yaml")) {
+  const body = read("operations/AUTOMATIONS.yaml");
+  const fields = ["interval_minutes", "retry_limit", "backoff_seconds", "idempotency_key", "retry_attempt_id", "timeout_seconds", "concurrency", "cost_limit", "missed_run_policy", "ready_selection", "stop_conditions", "idle_behavior"];
+  for (const role of ["sushma", "aarti", "pushpa", "richa", "malti"]) {
+    const start = body.indexOf(`\n${role}:`);
+    const tail = start >= 0 ? body.slice(start + 1) : "";
+    const next = tail.slice(role.length + 1).search(/^\w[^\s]*:/m);
+    const record = next >= 0 ? tail.slice(0, role.length + 1 + next) : tail;
+    if (start < 0) failures.push(`missing automation role record: ${role}`);
+    else {
+      for (const field of fields) if (!new RegExp(`^\\s+${field}:`, "m").test(record)) failures.push(`missing automation field ${field}: ${role}`);
+      const work = record.match(/^\s+idempotency_key:\s*(\S+)/m)?.[1] || "";
+      const attempt = record.match(/^\s+retry_attempt_id:\s*(\S+)/m)?.[1] || "";
+      if (!work.includes("${ready_item_id}") || work.includes("${attempt_number}") || work.includes("${scheduled_at}")) failures.push(`invalid stable work idempotency template: ${role}`);
+      if (!attempt.includes("${ready_item_id}") || !attempt.includes("${attempt_number}") || attempt.includes("${scheduled_at}") || attempt === work) failures.push(`invalid retry attempt template: ${role}`);
+    }
+  }
+  if (!body.includes("null_cost_limit_means: zero_dollars_no_paid_action") || !body.includes("paid_action_authority: boss_only")) failures.push("automation monetary safety policy missing");
+  if (/idempotency_key:[^\n]*scheduled_at/.test(body)) failures.push("work idempotency must not vary by scheduled_at");
+}
+
+const coldStart = "state/NOW.md → state/BLOCKERS.md → state/SCOPE.md → highest-priority";
+for (const rel of Object.keys(budgets).filter((item) => item.startsWith("checklists/"))) {
+  if (exists(rel) && !read(rel).includes(coldStart)) failures.push(`cold-start order mismatch: ${rel}`);
+}
+for (const item of authorityMatrix) {
+  if (!exists(item.path)) failures.push(`authority matrix missing ${item.class} item: ${item.path}`);
+}
+const expandedMatrixCount = authorityMatrix.reduce((count, item) => count + (item.class === "mixed-skill" ? 2 : 1), 0);
+if (expandedMatrixCount + supplementalRequired.length !== required.length) failures.push(`58-item reconciliation mismatch: matrix-expanded=${expandedMatrixCount}, supplemental=${supplementalRequired.length}, required=${required.length}`);
+else passes.push(`58-item inventory reconciled: 45 matrix items expand to ${expandedMatrixCount} paths plus ${supplementalRequired.length} named support/reference paths`);
+for (const rel of supplementalRequired) if (!exists(rel)) failures.push(`missing supplemental matrix path: ${rel}`);
+const lockedPaths = authorityMatrix.filter((item) => item.class === "locked").map((item) => item.path);
+try {
+  const changedLocked = execFileSync("git", ["diff", "--name-only", "origin/staging", "--", ...lockedPaths], { cwd: root, encoding: "utf8" }).trim();
+  if (changedLocked) failures.push(`LOCKED file differs from origin/staging: ${changedLocked.split("\n").join(",")}`);
+} catch { failures.push("unable to prove LOCKED files match origin/staging"); }
+const codeowners = exists(".github/CODEOWNERS") ? read(".github/CODEOWNERS") : "";
+for (const rule of ["/AGENTS.md", "/agents/*.md", "/DECISIONS.md", "/.github/CODEOWNERS"]) {
+  if (!codeowners.includes(rule)) failures.push(`CODEOWNERS missing governed rule: ${rule}`);
+}
+if (!read("state/BLOCKERS.md").includes("Writers all five roles append-only")) failures.push("BLOCKERS writer matrix mismatch");
+if (!read("state/NOW.md").includes("Sushma is the single writer/reconciler")) failures.push("NOW writer matrix mismatch");
+if (!read("state/CREDENTIALS.md").includes("Writers all five roles append within their credential scope")) failures.push("CREDENTIALS writer matrix mismatch");
+if (!read("state/BOSS-BRIEF.md").includes("never hand-edited")) failures.push("BOSS-BRIEF runtime-only contract missing");
+for (const rel of ["knowledge/LEARNINGS.md", "knowledge/GRAVEYARD.md"]) {
+  const data = frontmatter(rel);
+  const body = read(rel);
+  if (!data || data.owner !== "sushma" || data.class !== "evolving") failures.push(`knowledge authority metadata mismatch: ${rel}`);
+  if (!body.includes("Writers all five roles append") || !body.includes("Entries are immutable once written") || !body.includes("no role edits or deletes another role's entry") || !body.includes("Distilled, never append-everything")) failures.push(`knowledge append/immutability/distillation contract missing: ${rel}`);
+}
+if (!read("state/PROPOSALS.md").includes("2026-09-15T093616Z-sushma-file-authority-matrix-alignment") || !read("state/PROPOSALS.md").includes("Decision: approved")) failures.push("controlled-change proposal/approval trace missing");
+const durablePatterns = [
+  /^state\/rundowns\/\d{4}-\d{2}-\d{2}(?:T\d{6}Z)?-[a-z]+(?:-[a-z0-9-]+)?\.md$/,
+  /^state\/sessions\/\d{4}-\d{2}-\d{2}(?:T\d{6}Z)?-[a-z]+(?:-[a-z0-9-]+)?\.md$/,
+  /^docs\/releases\/v\d+\.\d+(?:\.\d+)?\.md$/
+];
+const versionedReferences = listTracked().filter((rel) => rel.startsWith("docs/reference/") && !/-(?:v|V)\d+(?:\.\d+)*-\d{4}-\d{2}-\d{2}\.(?:docx|pdf)$/.test(rel));
+if (versionedReferences.length) failures.push(`unversioned durable reference: ${versionedReferences.join(",")}`);
+for (const rel of listTracked().filter((item) => /^(?:state\/(?:rundowns|sessions)|docs\/releases)\//.test(item) && !item.endsWith("SCHEMA.md") && !item.endsWith(".gitkeep"))) {
+  if (!durablePatterns.some((pattern) => pattern.test(rel))) failures.push(`invalid durable record name: ${rel}`);
+}
+const matrixFiles = new Set(authorityMatrix.flatMap((item) => item.class === "mixed-skill" ? [`${item.path}/SKILL.md`, `${item.path}/learnings.md`] : [item.path]));
+const inventoryOnly = actualManaged.filter((rel) => !matrixFiles.has(rel) && !durablePatterns.some((pattern) => pattern.test(rel)) && !rel.endsWith("SCHEMA.md"));
+if (inventoryOnly.length) unknowns.push(`inventory outside 45-item matrix (retained, review separately): ${inventoryOnly.join(", ")}`);
+if (exists("state/PROPOSALS.md")) {
+  const proposalData = frontmatter("state/PROPOSALS.md");
+  const proposalBody = read("state/PROPOSALS.md");
+  if (!proposalData || proposalData.owner !== "boss") failures.push("PROPOSALS review owner must be boss");
+  if (!proposalBody.includes("Writers all roles append their own entries") || !proposalBody.includes("Entries are append-only") || !proposalBody.includes("YYYY-MM-DDTHHMMSSZ-<role>-<slug>")) failures.push("PROPOSALS append-only collision-safe contract missing");
+}
+if (exists("docs/exec-plans/active/phase-1.md")) {
+  const plan = read("docs/exec-plans/active/phase-1.md");
+  if (!/\|\s*Priority\s*\|\s*ready_item_id\s*\|/.test(plan)) failures.push("active queue missing ready_item_id column");
+  const rows = [...plan.matchAll(/^\|\s*\d+\s*\|\s*([^|\s]+)\s*\|/gm)].map((match) => match[1]);
+  if (!rows.length || rows.some((id) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) || new Set(rows).size !== rows.length) failures.push("active queue ready_item_id values missing, invalid, or duplicate");
 }
 if (exists("operations/MONITORS.yaml")) {
   const implementations = [...read("operations/MONITORS.yaml").matchAll(/^\s*implementation:\s*([^\s#]+)\s*$/gm)].map((match) => match[1]);
@@ -133,11 +265,12 @@ if (exists("operations/MONITORS.yaml")) {
 }
 const platformSignals = ["vercel.json", ".github/workflows", ".vercel/project.json"].filter(exists);
 if (platformSignals.length === 0) unknowns.push("automation drift: no safely inspectable platform configuration found");
-else unknowns.push(`automation drift: local signals inspected (${platformSignals.join(", ")}); live Vercel/Shopify Flow inspection unavailable`);
+else blockers.push(`activation blocked: local signals inspected (${platformSignals.join(", ")}); live Vercel/Shopify registry parity not verified`);
 
 console.log("CARLOPHILLIPS agent-document validation");
 for (const item of passes) console.log(`PASS ${item}`);
 for (const item of unknowns) console.log(`UNKNOWN ${item}`);
+for (const item of blockers) console.log(`BLOCKED ${item}`);
 for (const item of failures) console.log(`FAIL ${item}`);
-console.log(`SUMMARY pass=${passes.length} unknown=${unknowns.length} fail=${failures.length}`);
-process.exitCode = failures.length ? 1 : 0;
+console.log(`SUMMARY pass=${passes.length} unknown=${unknowns.length} blocked=${blockers.length} fail=${failures.length}`);
+process.exitCode = failures.length || (process.env.CP_ACTIVATION_CHECK === "1" && blockers.length) ? 1 : 0;

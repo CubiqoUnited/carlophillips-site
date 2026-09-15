@@ -1,5 +1,7 @@
 # CARLOPHILLIPS Project Notes
 
+> HISTORICAL / NON-AUTHORITATIVE. Preserved as evidence only. Live routing starts at `state/NOW.md`; this file must not drive current work.
+
 ## Notes
 
 ### cp-three-operating-loops

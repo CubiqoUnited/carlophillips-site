@@ -7,7 +7,7 @@ storefront_checkout:
     - controls
     - cart_probe
   retry_limit: 1
-  backoff: none
+  backoff_seconds: 60
   concurrency: forbid
   idempotency_key: storefront-checkout-health-${environment}-${scheduled_at}
   timeout_seconds: 60
