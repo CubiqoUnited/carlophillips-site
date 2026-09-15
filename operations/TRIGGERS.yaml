@@ -1,1 +1,15 @@
-# Actual execution still lives in Vercel scheduled functions and Shopify Flow, same as before — this registry is the readable index of what's configured there and what its safety bounds are, not a second runtime.
+role_queue_wake:
+  source: scheduler
+  registry: operations/AUTOMATIONS.yaml
+  condition: interval_elapsed_and_owned_ready_item_exists
+  action: invoke_role_for_highest_priority_ready_owned
+  idle_behavior: exit_no_record_no_message
+  idempotency_key: ${role}-${ready_item_id}
+  retry_attempt_id: ${role}-${ready_item_id}-${attempt_number}
+
+storefront_monitor_alert:
+  source: scripts/verify-checkout-health.mjs
+  registry: operations/MONITORS.yaml
+  condition: verified_monitor_failure
+  action: create_incident_handoff_for_sushma
+  idempotency_key: storefront-alert-${environment}-${scheduled_at}

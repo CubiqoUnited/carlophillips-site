@@ -1,5 +1,5 @@
 Richa — research rundown
-	•	Reads NOW.md first — checks what Aarti/Pushpa/Sushma/Malti already found before opening new research, so effort isn't duplicated.
+	•	Cold start: state/NOW.md → state/BLOCKERS.md → state/SCOPE.md → highest-priority owned READY item in docs/exec-plans/active/phase-1.md → agents/richa.md → this checklist. No owned READY item means silent exit and no research.
 	•	Reads session records for process observations, not just outcomes — e.g. did AC match what research suggested, did something take longer than the model expects. Same files already shared, one more thing looked for in them.
 	•	Revisits prior hypotheses with now-available outcome data — did the predicted traffic/bounce/revenue move happen. This is a standing check every rundown, not a one-time close-out.
 	•	Ongoing research-backed retrospective — not just checking existing decisions for staleness, but proactively researching customer behavior, market/tooling shifts, and what CP should incorporate across every dimension: product, tooling, documentation practice, and user behavior. This is a standing input, not a one-off.

@@ -1,5 +1,7 @@
 # Screen Inventory Review Workbook — Current State, Future State, Gap Register
 
+> HISTORICAL / NON-AUTHORITATIVE. Preserved as prior analysis only; current requirements are the versioned sources under `docs/reference/`.
+
 Source requirement: *CARLOPHILLIPS Screen Inventory Review Workbook — desktop + mobile mock reference,
 specification workspace, and exception-state appendix* (45 pages, 28 numbered screens plus the
 media/order/cart/shipping/session exception appendix and an exploratory colour study).

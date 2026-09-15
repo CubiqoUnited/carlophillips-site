@@ -1,24 +1,76 @@
+policy:
+  null_cost_limit_means: zero_dollars_no_paid_action
+  paid_action_authority: boss_only
+  estimates: forecast_only_never_authorization
+  idle_behavior: exit_no_record_no_message
+  session_close_policy: only_when_material_truth_changed
+
 sushma:
   interval_minutes: 12
   concurrency: forbid
   cost_limit: null
+  retry_limit: 1
+  backoff_seconds: 60
+  idempotency_key: sushma-${ready_item_id}
+  retry_attempt_id: sushma-${ready_item_id}-${attempt_number}
+  timeout_seconds: 600
+  missed_run_policy: skip
+  ready_selection: highest_priority_ready_owned
+  stop_conditions: verified_or_genuine_blocker_or_reserved_authority
+  idle_behavior: exit_no_record_no_message
 
 aarti:
   interval_minutes: 15
   concurrency: forbid
   cost_limit: null
+  retry_limit: 1
+  backoff_seconds: 60
+  idempotency_key: aarti-${ready_item_id}
+  retry_attempt_id: aarti-${ready_item_id}-${attempt_number}
+  timeout_seconds: 600
+  missed_run_policy: skip
+  ready_selection: highest_priority_ready_owned
+  stop_conditions: verified_or_genuine_blocker_or_reserved_authority
+  idle_behavior: exit_no_record_no_message
 
 pushpa:
   interval_minutes: 15
   concurrency: forbid
   cost_limit: null
+  retry_limit: 1
+  backoff_seconds: 60
+  idempotency_key: pushpa-${ready_item_id}
+  retry_attempt_id: pushpa-${ready_item_id}-${attempt_number}
+  timeout_seconds: 600
+  missed_run_policy: skip
+  ready_selection: highest_priority_ready_owned
+  stop_conditions: verified_or_genuine_blocker_or_reserved_authority
+  idle_behavior: exit_no_record_no_message
 
 richa:
   interval_minutes: 30
   concurrency: forbid
   cost_limit: null
+  retry_limit: 1
+  backoff_seconds: 60
+  idempotency_key: richa-${ready_item_id}
+  retry_attempt_id: richa-${ready_item_id}-${attempt_number}
+  timeout_seconds: 600
+  missed_run_policy: skip
+  ready_selection: highest_priority_ready_owned
+  stop_conditions: verified_or_genuine_blocker_or_reserved_authority
+  idle_behavior: exit_no_record_no_message
 
 malti:
   interval_minutes: 30
   concurrency: forbid
   cost_limit: null
+  retry_limit: 1
+  backoff_seconds: 60
+  idempotency_key: malti-${ready_item_id}
+  retry_attempt_id: malti-${ready_item_id}-${attempt_number}
+  timeout_seconds: 600
+  missed_run_policy: skip
+  ready_selection: highest_priority_ready_owned
+  stop_conditions: verified_or_genuine_blocker_or_reserved_authority
+  idle_behavior: exit_no_record_no_message
