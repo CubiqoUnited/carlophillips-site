@@ -8,6 +8,24 @@ const root = path.resolve(__dirname, "..");
 const failures = [];
 const unknowns = [];
 const passes = [];
+const blockers = [];
+
+const authorityMatrix = [
+  ...["AGENTS.md", "agents/sushma.md", "agents/aarti.md", "agents/pushpa.md", "agents/richa.md", "agents/malti.md", ".github/CODEOWNERS", "DECISIONS.md"].map((path) => ({ path, class: "locked" })),
+  ...["README.md", "PRD.md", "ARCHITECTURE.md", "DEPLOYMENT.md", "state/SCOPE.md", "checklists/sushma-delivery.md", "checklists/aarti-technical.md", "checklists/pushpa-product-uat.md", "checklists/richa-research.md", "checklists/malti-market.md", "docs/context/PROJECT-MAP.md", "docs/context/ENVIRONMENTS.md", "docs/context/INTEGRATIONS.md", "docs/context/DOMAIN-GLOSSARY.md", "docs/context/brand-voice-guide.md", "docs/context/audience-personas.md", "docs/context/competitor-notes.md", "scripts/check-agent-docs"].map((path) => ({ path, class: "controlled" })),
+  ...["state/NOW.md", "state/BLOCKERS.md", "state/PROPOSALS.md", "state/CREDENTIALS.md", "docs/exec-plans/active/phase-1.md", "reports/INDEX.md", "knowledge/LEARNINGS.md", "knowledge/GRAVEYARD.md", "operations/AUTOMATIONS.yaml", "operations/MONITORS.yaml", "operations/TRIGGERS.yaml"].map((path) => ({ path, class: "evolving" })),
+  ...["skills/verify-staging", "skills/release-staging", "skills/run-uat", "skills/shopify-reconciliation", "skills/production-incident", "skills/production-monitoring", "skills/media-generation"].map((path) => ({ path, class: "mixed-skill" })),
+  { path: "state/BOSS-BRIEF.md", class: "runtime" }
+];
+if (authorityMatrix.length !== 45) failures.push(`authority matrix internal count ${authorityMatrix.length}/45`);
+const supplementalRequired = [
+  "docs/overview.md",
+  "docs/reference/CP-TFRD-v1-2026-09-14.docx",
+  "docs/reference/UI-SPEC-v1-2026-09-14.pdf",
+  "docs/reference/v3.7.js-v1-2026-09-14.docx",
+  "state/rundowns/SCHEMA.md",
+  "state/sessions/SCHEMA.md"
+];
 
 const required = [
   "AGENTS.md", "README.md", "PRD.md", "ARCHITECTURE.md", "DEPLOYMENT.md", "DECISIONS.md",
@@ -181,9 +199,43 @@ if (exists("operations/AUTOMATIONS.yaml")) {
 }
 
 const coldStart = "state/NOW.md → state/BLOCKERS.md → state/SCOPE.md → highest-priority";
-for (const rel of ["AGENTS.md", ...Object.keys(budgets).filter((item) => item.startsWith("checklists/"))]) {
+for (const rel of Object.keys(budgets).filter((item) => item.startsWith("checklists/"))) {
   if (exists(rel) && !read(rel).includes(coldStart)) failures.push(`cold-start order mismatch: ${rel}`);
 }
+for (const item of authorityMatrix) {
+  if (!exists(item.path)) failures.push(`authority matrix missing ${item.class} item: ${item.path}`);
+}
+const expandedMatrixCount = authorityMatrix.reduce((count, item) => count + (item.class === "mixed-skill" ? 2 : 1), 0);
+if (expandedMatrixCount + supplementalRequired.length !== required.length) failures.push(`58-item reconciliation mismatch: matrix-expanded=${expandedMatrixCount}, supplemental=${supplementalRequired.length}, required=${required.length}`);
+else passes.push(`58-item inventory reconciled: 45 matrix items expand to ${expandedMatrixCount} paths plus ${supplementalRequired.length} named support/reference paths`);
+for (const rel of supplementalRequired) if (!exists(rel)) failures.push(`missing supplemental matrix path: ${rel}`);
+const lockedPaths = authorityMatrix.filter((item) => item.class === "locked").map((item) => item.path);
+try {
+  const changedLocked = execFileSync("git", ["diff", "--name-only", "origin/staging", "--", ...lockedPaths], { cwd: root, encoding: "utf8" }).trim();
+  if (changedLocked) failures.push(`LOCKED file differs from origin/staging: ${changedLocked.split("\n").join(",")}`);
+} catch { failures.push("unable to prove LOCKED files match origin/staging"); }
+const codeowners = exists(".github/CODEOWNERS") ? read(".github/CODEOWNERS") : "";
+for (const rule of ["/AGENTS.md", "/agents/*.md", "/DECISIONS.md", "/.github/CODEOWNERS"]) {
+  if (!codeowners.includes(rule)) failures.push(`CODEOWNERS missing governed rule: ${rule}`);
+}
+if (!read("state/BLOCKERS.md").includes("Writers all five roles append-only")) failures.push("BLOCKERS writer matrix mismatch");
+if (!read("state/NOW.md").includes("Sushma is the single writer/reconciler")) failures.push("NOW writer matrix mismatch");
+if (!read("state/CREDENTIALS.md").includes("Writers all five roles append within their credential scope")) failures.push("CREDENTIALS writer matrix mismatch");
+if (!read("state/BOSS-BRIEF.md").includes("never hand-edited")) failures.push("BOSS-BRIEF runtime-only contract missing");
+if (!read("state/PROPOSALS.md").includes("2026-09-15T093616Z-sushma-file-authority-matrix-alignment") || !read("state/PROPOSALS.md").includes("Decision: approved")) failures.push("controlled-change proposal/approval trace missing");
+const durablePatterns = [
+  /^state\/rundowns\/\d{4}-\d{2}-\d{2}(?:T\d{6}Z)?-[a-z]+(?:-[a-z0-9-]+)?\.md$/,
+  /^state\/sessions\/\d{4}-\d{2}-\d{2}(?:T\d{6}Z)?-[a-z]+(?:-[a-z0-9-]+)?\.md$/,
+  /^docs\/releases\/v\d+\.\d+(?:\.\d+)?\.md$/
+];
+const versionedReferences = listTracked().filter((rel) => rel.startsWith("docs/reference/") && !/-(?:v|V)\d+(?:\.\d+)*-\d{4}-\d{2}-\d{2}\.(?:docx|pdf)$/.test(rel));
+if (versionedReferences.length) failures.push(`unversioned durable reference: ${versionedReferences.join(",")}`);
+for (const rel of listTracked().filter((item) => /^(?:state\/(?:rundowns|sessions)|docs\/releases)\//.test(item) && !item.endsWith("SCHEMA.md") && !item.endsWith(".gitkeep"))) {
+  if (!durablePatterns.some((pattern) => pattern.test(rel))) failures.push(`invalid durable record name: ${rel}`);
+}
+const matrixFiles = new Set(authorityMatrix.flatMap((item) => item.class === "mixed-skill" ? [`${item.path}/SKILL.md`, `${item.path}/learnings.md`] : [item.path]));
+const inventoryOnly = actualManaged.filter((rel) => !matrixFiles.has(rel) && !durablePatterns.some((pattern) => pattern.test(rel)) && !rel.endsWith("SCHEMA.md"));
+if (inventoryOnly.length) unknowns.push(`inventory outside 45-item matrix (retained, review separately): ${inventoryOnly.join(", ")}`);
 if (exists("state/PROPOSALS.md")) {
   const proposalData = frontmatter("state/PROPOSALS.md");
   const proposalBody = read("state/PROPOSALS.md");
@@ -207,11 +259,12 @@ if (exists("operations/MONITORS.yaml")) {
 }
 const platformSignals = ["vercel.json", ".github/workflows", ".vercel/project.json"].filter(exists);
 if (platformSignals.length === 0) unknowns.push("automation drift: no safely inspectable platform configuration found");
-else unknowns.push(`automation drift: local signals inspected (${platformSignals.join(", ")}); live Vercel/Shopify Flow inspection unavailable`);
+else blockers.push(`activation blocked: local signals inspected (${platformSignals.join(", ")}); live Vercel/Shopify registry parity not verified`);
 
 console.log("CARLOPHILLIPS agent-document validation");
 for (const item of passes) console.log(`PASS ${item}`);
 for (const item of unknowns) console.log(`UNKNOWN ${item}`);
+for (const item of blockers) console.log(`BLOCKED ${item}`);
 for (const item of failures) console.log(`FAIL ${item}`);
-console.log(`SUMMARY pass=${passes.length} unknown=${unknowns.length} fail=${failures.length}`);
-process.exitCode = failures.length ? 1 : 0;
+console.log(`SUMMARY pass=${passes.length} unknown=${unknowns.length} blocked=${blockers.length} fail=${failures.length}`);
+process.exitCode = failures.length || (process.env.CP_ACTIVATION_CHECK === "1" && blockers.length) ? 1 : 0;

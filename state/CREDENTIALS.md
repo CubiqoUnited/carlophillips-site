@@ -1,4 +1,7 @@
-Class EVOLVING  ·  Owner Sushma  ·  Writers Aarti rotates, Sushma closes  ·  Read standing in Sushma’s rundown  ·  Cadence per rotation  ·  Budget —
+Class EVOLVING  ·  Owner Sushma  ·  Writers all five roles append within their credential scope  ·  Read standing in Sushma’s rundown  ·  Cadence per rotation  ·  Budget —
+
+- Append-only metadata ledger. Each role may append only non-secret records for access it owns or directly verifies; no role rewrites another role's entry. Aarti records technical rotation, Sushma records protected-environment binding and closure.
+- Entry ID: `YYYY-MM-DDTHHMMSSZ-<role>-<credential-slug>`. Never include a credential value.
 
 - Answers a repeated real failure: the same Vercel token / API key conflict was rediscovered and re-fixed multiple times because no durable record existed.
 - Not a new agent role — record-keeping is already Aarti (technical rotation) + Sushma (protected-environment binding, closure). What was missing is a required file to write into.
