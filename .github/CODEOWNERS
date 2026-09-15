@@ -1,0 +1,6 @@
+# CARLOPHILLIPS governed files
+/AGENTS.md @avloy07-eng
+/agents/*.md @avloy07-eng
+/checklists/*.md @avloy07-eng
+/DECISIONS.md @avloy07-eng
+/.github/CODEOWNERS @avloy07-eng

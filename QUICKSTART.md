@@ -44,4 +44,4 @@ yarn test
 yarn build
 ```
 
-Then verify the relevant route at desktop and mobile widths, including browser console and network errors. See `TASKS.md` for the current cycle.
+Then verify the relevant route at desktop and mobile widths, including browser console and network errors. See `state/NOW.md` and the applicable plan under `docs/exec-plans/active/` for the current cycle.

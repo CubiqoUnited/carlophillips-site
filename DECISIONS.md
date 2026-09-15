@@ -9,7 +9,7 @@ Use this file for durable product and architecture decisions that affect multipl
 - **Status:** Accepted
 - **Decision:** Apply universal rules, then CP project rules, then the explicitly invoked CP role file, then Boss's current instruction.
 - **Reason:** Keep universal behavior role-neutral while version-controlling CP ownership and routing with the project.
-- **Consequence:** `agents/` contains role definitions only; changing project state belongs in `STATUS.md`, `TASKS.md`, `TEAM-BOARD.md`, this log, or evidence reports.
+- **Consequence:** `agents/` contains role definitions only; changing project state belongs in `state/NOW.md`, `state/BLOCKERS.md`, the applicable active execution plan, this log, or evidence reports.
 
 ### CP-DEC-002 — Durable team memory
 
@@ -36,6 +36,10 @@ Use this file for durable product and architecture decisions that affect multipl
 - **Boss decisions:** Before Production publication or real execution, approve preference-return postage/original-shipping treatment, authorize any real controlled payment through an approved human/payment method, and approve exceptions outside policy or above the original order value.
 - **Consequence:** Aarti may design the support/customer-account tranche now. No CP event platform, carrier database, or custom exception engine is implied.
 - **Verification or review trigger:** Revisit after the first controlled commerce lifecycle, a material policy change, or evidence that native Shopify/Apliiq behavior is insufficient.
+
+### CP-DEC-005 — Staging mimic method
+
+- **Decision:** Dedicated Shopify dev store, Test payment gateway, two-stage Apliiq proof with automatic processing off.
 
 ## New decision template
 

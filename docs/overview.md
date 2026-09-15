@@ -1,0 +1,5 @@
+Class CONTROLLED  ·  Owner Sushma  ·  Writers propose → Boss  ·  Read once, at orientation — never in the loop  ·  Cadence at Phase Retrospective  ·  Budget 1 page
+	•	The narrative one-pager — five roles, two pods, one week, told as a story. Not a rule file: it restates AGENTS.md/agents/*.md in prose, it doesn't add new ones.
+	•	Read once, not every session. Referenced from AGENTS.md as a pointer for orientation — a new agent, tool, or human reads it for the shape of the thing, then works from the actual rule files. Never part of the cold-start read chain.
+	•	Not read in the daily standup — standup level-sets on current state (NOW.md/BLOCKERS.md/rundowns), which changes daily; this doesn’t. Its natural re-read point is the Phase Retrospective, checking whether the model still matches how the team actually works.
+	•	Rule of thumb: if a change needs to alter behavior, it goes in AGENTS.md/agents/*.md. If it's context that helps someone understand *why* the rules are what they are, it goes here instead — keeps the operational files lean on purpose.

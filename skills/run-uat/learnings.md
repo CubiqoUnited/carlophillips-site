@@ -1,0 +1,1 @@
+learnings.md is what stops a reusable procedure from being reusable-but-static. A drill that failed for a reason nobody wrote down repeats the failure; the skill improves only if the run feeds back into it.

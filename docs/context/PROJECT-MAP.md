@@ -1,0 +1,1 @@
+	•	PROJECT-MAP.md — directories, services, entrypoints, test locations, generated/evidence directories, and ownership by component. The answer to “where does this live and whose is it” without grepping the tree.
