@@ -1,0 +1,15 @@
+# Every entry carries: retry_limit, backoff, concurrency (forbid / replace / allow — what happens if a run is still going when the next one is due), idempotency_key (so a retry can't duplicate an action already taken), timeout_seconds, cost_limit, and missed_run_policy (skip vs. catch-up vs. alert).
+
+storefront_checkout:
+  implementation: scripts/verify-checkout-health.mjs
+  staging_url: https://staging.carlophillips.com
+  modes:
+    - controls
+    - cart_probe
+  retry_limit: 1
+  backoff: none
+  concurrency: forbid
+  idempotency_key: storefront-checkout-health-${environment}-${scheduled_at}
+  timeout_seconds: 60
+  cost_limit: null
+  missed_run_policy: skip

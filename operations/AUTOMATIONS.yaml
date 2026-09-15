@@ -1,0 +1,24 @@
+sushma:
+  interval_minutes: 12
+  concurrency: forbid
+  cost_limit: null
+
+aarti:
+  interval_minutes: 15
+  concurrency: forbid
+  cost_limit: null
+
+pushpa:
+  interval_minutes: 15
+  concurrency: forbid
+  cost_limit: null
+
+richa:
+  interval_minutes: 30
+  concurrency: forbid
+  cost_limit: null
+
+malti:
+  interval_minutes: 30
+  concurrency: forbid
+  cost_limit: null
