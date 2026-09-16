@@ -4,12 +4,28 @@ policy:
   estimates: forecast_only_never_authorization
   idle_behavior: exit_no_record_no_message
   session_close_policy: only_when_material_truth_changed
-  # v3.8 (2026-09-16):
+  # v3.8 / v3.9 (2026-09-16):
   primary_executor: active_execution_thread_not_monitor
   operational_definition: verified_live_not_configured_only
   blocker_scope: affected_action_only_not_whole_project
   status_update_is_not_stop_condition: true
   delegated_completion_reconciliation: required_immediate
+  boss_override: unconditional_at_all_times
+
+pod_a_work_and_check:
+  interval_minutes: 15
+  concurrency: forbid
+  cost_limit: null
+  retry_limit: 1
+  backoff_seconds: 60
+  idempotency_key: pod-a-${ready_item_id}
+  retry_attempt_id: pod-a-${ready_item_id}-${attempt_number}
+  timeout_seconds: 900
+  missed_run_policy: skip
+  roles: [sushma, pushpa, aarti]
+  ready_selection: highest_priority_ready_owned
+  stop_conditions: scope_stop_condition_met_or_genuine_blocker_or_reserved_authority
+  idle_behavior: exit_no_record_no_message
 
 sushma:
   interval_minutes: 12

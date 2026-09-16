@@ -1,7 +1,7 @@
 # Boss Executive Brief
 
 **Class**: RUNTIME (Generated automatically by scripts/generate-boss-brief — never hand-edited)  
-**Last Generated**: 2026-09-16 14:24:23  
+**Last Generated**: 2026-09-16 15:05:33  
 **Source Baseline**: NOW.md + BLOCKERS.md  
 **Constraint**: ≤ 1 page. Never authoritative over NOW.md/BLOCKERS.md.
 
