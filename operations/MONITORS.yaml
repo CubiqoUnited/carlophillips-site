@@ -10,6 +10,7 @@
 #      execution to plan. Silence is a verified state, not a default.
 #   3. Message discipline: corrections use direct natural language — observed drift, exact next action, owner.
 #      No preambles, no routine-status noise. Remain silent while execution is correctly progressing.
+#   4. Boss override: unconditional at all times.
 
 storefront_checkout:
   implementation: scripts/verify-checkout-health.mjs
