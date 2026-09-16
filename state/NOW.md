@@ -2,14 +2,16 @@
 id: NOW
 owner: sushma
 class: evolving
-version: 1.8
-last_updated: 2026-09-15
-last_verified: 2026-09-15
+version: 1.9
+last_updated: 2026-09-16
+last_verified: 2026-09-16
 review_frequency: every material gate
 budget_lines: 100
 ---
 
-Class EVOLVING  ·  Owner Sushma  ·  Writers Sushma is the single writer/reconciler  ·  Read standing — first file read, every session  ·  Cadence every material gate  ·  Budget ≤ 100 lines
+Class EVOLVING  ·  Owner Sushma  ·  Writers Sushma is the single writer/reconciler  ·  Read standing — first file read, every session  ·  Cadence every material gate  ·  Budget ≤ 100 lines  ·  v3.8 (2026-09-16)
+
+v3.8 schema rule: every active gate below records owner, state, last verified result, remaining action, resume trigger, and closure authority where applicable. "Active / next" contains exactly one single next executable action (marked NEXT).
 
 ## Current position
 
@@ -21,10 +23,12 @@ Class EVOLVING  ·  Owner Sushma  ·  Writers Sushma is the single writer/reconc
 
 ## Active / next
 
+- NEXT: Sushma review — accept or return the Gate 12 evidence. Owner: Sushma. Resume trigger: Aarti's technical verification result. Closure authority: Sushma.
 - VERIFYING: Gate 12 implementation — derived five-role runtime contract is locally committed and under technical/reviewer verification. Owner: Aarti.
-- READY: Sushma review — accept or return the Gate 12 evidence; Pushpa joins only for an assigned business/UAT item.
+- READY: Pushpa joins only for an assigned business/UAT item once Gate 12 review completes.
 - DEFERRED: Gate 13 — begins only after Gate 12 is locked by review.
 - DEFERRED: permanent obsolete-Preview/quarantine deletion review on or after 2026-09-21. Gate 11 source cleanup itself is done.
+- DEFERRED: .quarantine/2026-09-16/ (v3.8 stale-file sweep: HUMAN_BLOCKERS.md, NEXT_ACTIONS.md, test_result.md) — deletion review 2026-09-23.
 
 ## Role-raised P1s
 
