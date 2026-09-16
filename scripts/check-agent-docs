@@ -11,8 +11,8 @@ const passes = [];
 const blockers = [];
 
 const authorityMatrix = [
-  ...["AGENTS.md", "agents/sushma.md", "agents/aarti.md", "agents/pushpa.md", "agents/richa.md", "agents/malti.md", ".github/CODEOWNERS", "DECISIONS.md"].map((path) => ({ path, class: "locked" })),
-  ...["README.md", "PRD.md", "ARCHITECTURE.md", "DEPLOYMENT.md", "state/SCOPE.md", "checklists/sushma-delivery.md", "checklists/aarti-technical.md", "checklists/pushpa-product-uat.md", "checklists/richa-research.md", "checklists/malti-market.md", "docs/context/PROJECT-MAP.md", "docs/context/ENVIRONMENTS.md", "docs/context/INTEGRATIONS.md", "docs/context/DOMAIN-GLOSSARY.md", "docs/context/brand-voice-guide.md", "docs/context/audience-personas.md", "docs/context/competitor-notes.md", "scripts/check-agent-docs"].map((path) => ({ path, class: "controlled" })),
+  ...["AGENTS.md", "agents/sushma.md", "agents/aarti.md", "agents/pushpa.md", ".quarantine/dormant/agents/richa.md", ".quarantine/dormant/agents/malti.md", ".github/CODEOWNERS", "DECISIONS.md"].map((path) => ({ path, class: "locked" })),
+  ...["README.md", "PRD.md", "ARCHITECTURE.md", "DEPLOYMENT.md", "state/SCOPE.md", "checklists/sushma-delivery.md", "checklists/aarti-technical.md", "checklists/pushpa-product-uat.md", ".quarantine/dormant/checklists/richa-research.md", ".quarantine/dormant/checklists/malti-market.md", "docs/context/PROJECT-MAP.md", "docs/context/ENVIRONMENTS.md", "docs/context/INTEGRATIONS.md", "docs/context/DOMAIN-GLOSSARY.md", "docs/context/brand-voice-guide.md", "docs/context/audience-personas.md", "docs/context/competitor-notes.md", "scripts/check-agent-docs"].map((path) => ({ path, class: "controlled" })),
   ...["state/NOW.md", "state/BLOCKERS.md", "state/PROPOSALS.md", "state/CREDENTIALS.md", "docs/exec-plans/active/phase-1.md", "reports/INDEX.md", "knowledge/LEARNINGS.md", "knowledge/GRAVEYARD.md", "operations/AUTOMATIONS.yaml", "operations/MONITORS.yaml", "operations/TRIGGERS.yaml"].map((path) => ({ path, class: "evolving" })),
   ...["skills/verify-staging", "skills/release-staging", "skills/run-uat", "skills/shopify-reconciliation", "skills/production-incident", "skills/production-monitoring", "skills/media-generation"].map((path) => ({ path, class: "mixed-skill" })),
   { path: "state/BOSS-BRIEF.md", class: "runtime" }
@@ -27,11 +27,13 @@ const supplementalRequired = [
   "state/sessions/SCHEMA.md"
 ];
 
+const resolvePath = (p) => fs.existsSync(path.resolve(root, p)) ? p : (fs.existsSync(path.resolve(root, ".quarantine/dormant/" + p)) ? ".quarantine/dormant/" + p : p);
+
 const required = [
   "AGENTS.md", "README.md", "PRD.md", "ARCHITECTURE.md", "DEPLOYMENT.md", "DECISIONS.md",
-  "agents/sushma.md", "agents/aarti.md", "agents/pushpa.md", "agents/richa.md", "agents/malti.md",
+  "agents/sushma.md", "agents/aarti.md", "agents/pushpa.md", resolvePath("agents/richa.md"), resolvePath("agents/malti.md"),
   "checklists/sushma-delivery.md", "checklists/aarti-technical.md", "checklists/pushpa-product-uat.md",
-  "checklists/richa-research.md", "checklists/malti-market.md", "docs/overview.md",
+  resolvePath("checklists/richa-research.md"), resolvePath("checklists/malti-market.md"), "docs/overview.md",
   "docs/exec-plans/active/phase-1.md", "docs/context/PROJECT-MAP.md", "docs/context/ENVIRONMENTS.md",
   "docs/context/INTEGRATIONS.md", "docs/context/DOMAIN-GLOSSARY.md", "docs/context/brand-voice-guide.md",
   "docs/context/audience-personas.md", "docs/context/competitor-notes.md",

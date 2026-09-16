@@ -4,6 +4,12 @@ policy:
   estimates: forecast_only_never_authorization
   idle_behavior: exit_no_record_no_message
   session_close_policy: only_when_material_truth_changed
+  # v3.8 (2026-09-16):
+  primary_executor: active_execution_thread_not_monitor
+  operational_definition: verified_live_not_configured_only
+  blocker_scope: affected_action_only_not_whole_project
+  status_update_is_not_stop_condition: true
+  delegated_completion_reconciliation: required_immediate
 
 sushma:
   interval_minutes: 12
