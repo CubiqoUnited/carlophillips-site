@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# scripts/generate-boss-brief — Compiles state/NOW.md + state/BLOCKERS.md into state/BOSS-BRIEF.md
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TARGET="$REPO_ROOT/state/BOSS-BRIEF.md"
+
+NOW_FILE="$REPO_ROOT/state/NOW.md"
+BLOCKERS_FILE="$REPO_ROOT/state/BLOCKERS.md"
+
+DATE_STR=$(date +"%Y-%m-%d %H:%M:%S")
+
+cat <<EOF > "$TARGET"
+# Boss Executive Brief
+
+**Class**: RUNTIME (Generated automatically by scripts/generate-boss-brief — never hand-edited)  
+**Last Generated**: $DATE_STR  
+**Source Baseline**: NOW.md + BLOCKERS.md  
+**Constraint**: ≤ 1 page. Never authoritative over NOW.md/BLOCKERS.md.
+
+---
+
+## Active State (Summary from NOW.md)
+$(cat "$NOW_FILE")
+
+---
+
+## Active Blockers (Summary from BLOCKERS.md)
+$(cat "$BLOCKERS_FILE")
+EOF
+
+echo "Regenerated state/BOSS-BRIEF.md successfully."
