@@ -1,3 +1,9 @@
+# v3.8 (2026-09-16) rule — not yet an active trigger, documented for future activation:
+#   delegated_completion_reconciliation: when a sub-agent/delegated role reports work done, the coordinator (Sushma)
+#   must read the result, update NOW.md, close/reopen the relevant gate, and select the next executable action
+#   immediately rather than waiting for the next scheduled wake. No trigger entry defined yet — Sushma's checklist
+#   (checklists/sushma-delivery.md) carries this as a manual-first rule until a trigger is authorized.
+
 role_queue_wake:
   source: scheduler
   registry: operations/AUTOMATIONS.yaml

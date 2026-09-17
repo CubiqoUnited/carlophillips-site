@@ -1,4 +1,16 @@
 # Every entry carries: retry_limit, backoff, concurrency (forbid / replace / allow — what happens if a run is still going when the next one is due), idempotency_key (so a retry can't duplicate an action already taken), timeout_seconds, cost_limit, and missed_run_policy (skip vs. catch-up vs. alert).
+#
+# v3.8 rules (2026-09-16) — apply to every monitor below, no per-entry field needed:
+#   1. Primary-executor distinction: the active execution thread is the primary executor. This monitor is a
+#      recovery mechanism, not the primary executor. An automation counts as "operational" only after scheduled
+#      execution, target access, prompt delivery, decision branches, and resulting behavior have all been verified
+#      live — configuration existing here is not sufficient evidence on its own.
+#   2. Silence requires positive verification: before staying silent, compare the exact checklist, validate any
+#      claimed blocker, check for unfinished executable work, and verify any correction actually returned
+#      execution to plan. Silence is a verified state, not a default.
+#   3. Message discipline: corrections use direct natural language — observed drift, exact next action, owner.
+#      No preambles, no routine-status noise. Remain silent while execution is correctly progressing.
+#   4. Boss override: unconditional at all times.
 
 storefront_checkout:
   implementation: scripts/verify-checkout-health.mjs

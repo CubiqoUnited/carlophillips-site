@@ -2,8 +2,9 @@
 id: SCOPE
 owner: boss
 class: controlled
-version: 1.1
-last_updated: 2026-09-15
+version: 1.2
+last_updated: 2026-09-16
+last_verified: 2026-09-16
 review_frequency: on authorization change
 budget_lines: 60
 ---
@@ -35,3 +36,5 @@ Class CONTROLLED  ·  Owner Boss  ·  Writers Boss authorizes; roles propose  ·
 ## Stop condition
 
 - Stop at any reserved Production or monetary action for Boss approval; otherwise park genuine external blockers and continue executable in-scope work.
+- v3.8: Every active initiative must define one measurable stop condition (this section). Completion requires the stated evidence and acceptance authority above; unrelated hardening must not be added once the stop condition is reached.
+- v3.8: A status update alone is never the stop condition — continue through the next executable action until this stop condition, a reserved authority gate, or a genuine blocker (recorded in state/BLOCKERS.md) is reached.
