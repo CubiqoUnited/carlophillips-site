@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# v3.5interim validator — schema, owners, links, transitions, staleness.
+# This is additive: existing scripts/check-agent-docs (line-cap/inventory
+# checks) still runs; this script adds the V3.5interim-specific checks.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+fail=0
+pass=0
+
+check() {
+  local desc="$1"; shift
+  if "$@"; then
+    echo "PASS: $desc"
+    pass=$((pass+1))
+  else
+    echo "FAIL: $desc"
+    fail=$((fail+1))
+  fi
+}
+
+# 1. Every governance/state/agents/checklists file has a Class/Owner header
+header_present() {
+  local f="$1"
+  head -15 "$f" | grep -qi "^Class \|^class:"
+}
+for f in AGENTS.md governance/*.md agents/*.md checklists/*.md state/SCOPE.md state/BOARD.md state/BLOCKERS.md state/ACCESS_REGISTRY.md state/STATUS-SCHEMA.md; do
+  [ -f "$f" ] && check "header present: $f" header_present "$f"
+done
+
+# 2. events.jsonl is valid JSON, one object per line
+jsonl_valid() {
+  while IFS= read -r line; do
+    [ -z "$line" ] && continue
+    echo "$line" | python3 -c "import json,sys; json.load(sys.stdin)" || return 1
+  done < state/events.jsonl
+}
+check "state/events.jsonl parses as JSONL" jsonl_valid
+
+# 3. No event stuck PENDING_RECONCILIATION past staleness threshold
+check "no stale PENDING_RECONCILIATION events" python3 scripts/check-stale-events.py
+
+# 4. Board items reference a real work/items/{id}.md file
+check "every BOARD.md item ID has a matching work/items/ file" python3 scripts/check-board-items.py
+
+echo ""
+echo "SUMMARY pass=$pass fail=$fail"
+[ "$fail" -eq 0 ]

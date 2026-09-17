@@ -13,6 +13,15 @@ policy:
   boss_override: unconditional_at_all_times
 
 pod_a_work_and_check:
+  # v3.5interim automation record (2026-09-17) — full required field set:
+  id: pod_a_work_and_check
+  purpose: "Cold-start, drift/stall check, checklists, and build chain for Sushma/Pushpa/Aarti"
+  owner: sushma
+  schedule: "every 15 minutes"
+  target: "carlophillips-site staging branch"
+  authority: "up to Staging only; Production and real payment remain Boss-only, no exceptions"
+  input: "state/NOW.md, state/BLOCKERS.md, state/SCOPE.md, most recent state/sessions/*-scrum-pod.md"
+  output: "state/sessions/{date}-scrum-pod.md, state/NOW.md update, state/events.jsonl entries"
   interval_minutes: 15
   concurrency: forbid
   cost_limit: null
@@ -22,10 +31,17 @@ pod_a_work_and_check:
   retry_attempt_id: pod-a-${ready_item_id}-${attempt_number}
   timeout_seconds: 900
   missed_run_policy: skip
+  alert_route: state/BLOCKERS.md (HUMAN category) + audit/EXCEPTIONS.md if authority is exceeded
   roles: [sushma, pushpa, aarti]
   ready_selection: highest_priority_ready_owned
   stop_conditions: scope_stop_condition_met_or_genuine_blocker_or_reserved_authority
   idle_behavior: exit_no_record_no_message
+  status: NOT_CONFIGURED
+  last_live_proof: null
+  # "Configured" and "operationally proven" are different states (governance/EVIDENCE_AND_DONE.md).
+  # This entry describes the design; status stays NOT_CONFIGURED until a real scheduler
+  # (OS-level cron/launchd, or a platform scheduler) actually fires it and last_live_proof
+  # is set to that run's evidence. Do not set status: ACTIVE from a claim alone.
 
 sushma:
   interval_minutes: 12
