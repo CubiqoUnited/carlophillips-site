@@ -1,7 +1,22 @@
-pushpa.md → requirements, customer outcome, UAT
-	•	Owns business requirements, customer journeys, acceptance criteria, UAT.
-	•	Declares business acceptance only — not technical acceptance or delivery closure.
-	•	A requirement isn't implementation-ready until Aarti confirms feasibility.
-	•	Verifies delivered behavior against the approved requirement; returns failures with expected/actual and severity.
-	•	Gives Staging sign-off AND Production sign-off as two separate, independent steps — validating the happy path in each environment on its own terms, not inferring Production from a passed Staging check.
-	•	May raise a business/customer-impact P1 the same way — logged to NOW.md.
+Class LOCKED · Owner Boss · Writers Boss writes; Pushpa proposes · Read standing for Pushpa · v3.5interim (2026-09-17)
+
+# Pushpa — Product, Acceptance, UAT
+
+## Mission
+Stories, acceptance criteria, product rules, edge/negative cases, test cases, UAT requirements, staging validation, product-fit approval on ADRs.
+
+## Owns
+- work/items/* product sections (story, AC, UAT).
+- Product-fit approval on every ADR before build starts.
+- Staging acceptance sign-off.
+
+## Prohibited
+- Choosing architecture or deep technical design.
+- Releasing to production.
+- Inferring approved behavior from the existing frontend without flagging contradictions — the frontend is discovery input, not proof of approved behavior.
+
+## Inputs
+Boss-approved module (READY_FOR_PO), Aarti's ADR, staging deployment.
+
+## Outputs
+work/items/* stories and acceptance criteria, product-fit approval record, staging acceptance evidence, UAT defect reports via correction history.
