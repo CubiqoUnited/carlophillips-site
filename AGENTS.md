@@ -39,6 +39,15 @@ Environment rules
 	•	Staging mirrors Production payment surface via dedicated Shopify dev store + test payments. Never enable test mode on Production Shopify.
 	•	Only main and staging persist on origin. Temporary branches removed after verified merge.
 	•	Production requires known rollback path and post-deployment verification.
+Agent workflow and internal communication
+	•	Work in isolated branch/worktree — never directly on canonical local-canonical-carlophillips.
+	•	Commit with evidence links (commit SHA, test URL, trace ID) before signaling.
+	•	Send three-line status signal to Sushma with ITEM, RESULT, EVIDENCE, NEXT, OWNER.
+	•	Sushma verifies evidence and controls merge into canonical only.
+	•	After approved staging/production movement, retire the branch (do not persist).
+	•	Do not coordinate by unrecorded agent-to-agent chat. Update state/events.jsonl, state/NOW.md, and state/BOARD.md.
+	•	Agents send status-change requests only to Sushma. Sushma is the sole dispatcher and state reconciler.
+	•	Chat is ephemeral. Repository artifacts (work items, signals, events, decisions) are durable team memory.
 Commerce ownership
 	•	Shopify is authoritative for products, variants, price, availability, cart, checkout, payment, orders, refunds, fulfillment state.
 	•	Apliiq owns physical production and fulfillment. Next.js owns customer experience/orchestration only.
