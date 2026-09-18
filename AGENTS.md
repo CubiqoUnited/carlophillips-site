@@ -1,68 +1,50 @@
-Class LOCKED  ·  Owner Boss  ·  Writers Boss only — proposals via PROPOSALS.md  ·  Read standing — every role  ·  Cadence rarely  ·  Budget 200–250 lines (now 443)
-CP project rules
-	•	Instruction order: universal AGENTS.md → this file → invoked role file → Boss's current instruction.
-	•	Standing authorization: default is approved. Only two reserved categories always require Boss regardless of anything else — real payment/financial transactions, and any push to Production. Nothing outside those two triggers an approval request or a wait; asking anyway is itself the failure, not caution.
-	•	Scope discipline: a role identifying work outside SCOPE.md's Included list — extra governance, security hardening, tooling nobody asked for — logs it as an INTAKE candidate or a PROPOSALS.md entry. It does not build it first and explain later. Good intentions don't exempt unscoped work from this.
-	•	Blocker time-box: 5–10 minutes on a governance/access/permission/credential-class blocker, then TABLE it and move to the next lane item. This is a number, not a feeling — open-ended “keep trying” on the same blocker is the failure this exists to prevent.
-	•	Repo files are durable team memory; chats are not. Update state/NOW.md, state/BLOCKERS.md, the applicable execution plan, rundown/session record, and release/decision record when project truth changes — not the legacy STATUS.md/TASKS.md/TEAM-BOARD.md, which the clean control plane replaces.
-	•	When files disagree: verify against live evidence, correct the stale one, record the reconciliation. Never treat chat alone as authoritative.
-	•	No tool-specific instruction file may restate role, priority, or governance content. If a tool requires its own config format (.cursorrules, .antigravity/*, copilot-instructions.md, or a future one), that file may contain only a pointer back to AGENTS.md and agents/*.md — never a parallel copy. Sushma, Aarti, Pushpa, Richa, Malti are project-level roles defined once, addressed by name regardless of which model or tool executes the work.
-	•	Same principle one layer up, at the global (user-level) config: ~/.claude/CLAUDE.md, ~/.gemini/GEMINI.md, and any other vendor global file are thin adapters pointing at ~/.codex/AGENTS.md — not separate copies of universal rules. One canonical file per layer, project and global alike.
-	•	AGENTS.md, agents/*.md, and DECISIONS.md are never autonomously edited by any lane, including HARDENING. A backlog entry that touches these files is a proposal only — draft on a branch, Boss reviews and approves the diff, then it merges. No role treats ‘it’s on the backlog’ as authorization to rewrite the rules that govern it.
-	•	Enforced technically, not just stated: a GitHub CODEOWNERS entry requires Boss as required reviewer on any PR touching AGENTS.md, agents/*.md, or DECISIONS.md. A written-only rule is optional; a required-reviewer gate is not.
-	•	Any role's recommended change to a governed file goes into state/PROPOSALS.md — never directly into the file itself, never chat-only.
-	•	See docs/overview.md for narrative orientation — read once, never part of required reading before a task.
-	•	Every revision of this document is diffed against an actual listing of the repository and the global layer — not only against its own previous version. Self-review detects contradictions; it cannot detect an omission, because a missing entry leaves no trace in the text. Four real files went unlisted through nine revisions for exactly this reason. scripts/check-agent-docs automates the check.
-	•	Any role with a genuine Shopify-capability question may consult Shopify's own agentic assistant directly — this is a native-first source, not a workaround. The chat itself is ephemeral and never authoritative on its own; the finding gets logged into that role's rundown or the relevant decision record, same discipline as any other evidence. A chat nobody wrote down didn't happen, for project-truth purposes.
-Role routing
-	•	Sushma → agents/sushma.md — delivery coordination and closure.
-	•	Aarti → agents/aarti.md — Technical Architect and Developer.
-	•	Pushpa → agents/pushpa.md — Business Analyst and Product Owner.
-	•	Richa → agents/richa.md — research and evidence.
-	•	Malti → agents/malti.md — marketing and customer-market interface.
-	•	Calling Sushma alone does not invoke the whole team.
-	•	User Story = 1 testable feature, broad enough to represent the feature. That's the sizing rule Pushpa writes Story/AC/DoD against — not a task, not an epic, one testable customer-visible unit.
-	•	Custom-engineering Boss gate: custom code for governance, tokens, WebSockets, URLs, or keys — anything the system would work fine without — requires Boss approval before Aarti builds it. This is stricter than the general native-first order; it's a named gate, not a preference.
-Delivery priorities
-INCIDENT (P0/P1) → current deployment blocker → PHASE (active gate) → INTAKE (scoped) → KTLO/BAU → HARDENING
-	•	Severity = customer/business/operational impact, not implementation difficulty. Uncertain → use the higher level.
-	•	5 lanes, one active item each — see Part 3, “Active lanes.”
-Environment rules
-	•	Local → dev/isolated testing. staging → staging.carlophillips.com, canonical Staging. main → Production, carlophillips.com.
-	•	Tooling path: code edited in Cursor (or equivalent local editor) on a feature branch → committed/pushed to GitHub → Vercel builds and deploys the alias. No environment is edited by hand outside this path.
-	•	Staging-first: branch → technical verification → staging → Sushma QA → Pushpa UAT → Boss validation when required → main → Production verification.
-	•	Staging mirrors Production payment surface via dedicated Shopify dev store + test payments. Never enable test mode on Production Shopify.
-	•	Only main and staging persist on origin. Temporary branches removed after verified merge.
-	•	Production requires known rollback path and post-deployment verification.
-Commerce ownership
-	•	Shopify is authoritative for products, variants, price, availability, cart, checkout, payment, orders, refunds, fulfillment state.
-	•	Apliiq owns physical production and fulfillment. Next.js owns customer experience/orchestration only.
-	•	No second commerce authority without an intentional architecture decision.
-	•	Evaluation order: native Shopify/Apliiq → existing CP capability → Shopify Flow/platform tooling → established third party → custom code.
-	•	Tracking chain: Apliiq → Shopify fulfillment/tracking → customer. CP exposes and monitors it; does not become a second tracking authority.
-Gate states — not interchangeable
-	•	IMPLEMENTED — the code exists. Nothing more is claimed.
-	•	TECHNICALLY VERIFIED — Aarti has proven it behaves correctly under test.
-	•	DEPLOYED — it is running in a named environment at a known SHA.
-	•	UAT PASS — Pushpa has independently confirmed the business behavior in that environment.
-	•	OPERATIONALLY PROVEN — it has worked on a real customer path with real evidence, not a test fixture.
-	•	DEFERRED — consciously not being done now, with an owner and a re-entry trigger recorded.
-	•	BLOCKED — cannot proceed, with the exact external action and resume trigger named.
-	•	COMPLETE — every applicable state above has been reached and Sushma has closed it.
-	•	These are never used as synonyms. “It’s implemented” is not “it works”; “it’s deployed” is not “customers can use it”; “UAT passed in Staging” is not “proven in Production.” Most false ‘done’ claims are this substitution, not deception.
-Phase model
-	•	Phase 1 — Site/commerce readiness: complete until support + checkout + payment/order + Apliiq handoff + tracking + cancellation/return/refund + monitoring/reconciliation + controlled E2E proof are all operational.
-	•	Phase 1 exit requires a retrospective (Keep/Change/Stop/Add) before Phase 2 opens.
-	•	Phase 2 — Production operations: monitor → detect → triage → assign → fix → UAT → release → verify → close.
-	•	Phase 3 — Merch/growth: research → hypothesis → positioning → merch/design → Apliiq → Shopify → Next.js → release → measure → scale/iterate/pause/kill.
-Execution loops
-	•	Development program — drives the active phase to its exit criteria.
-	•	Production Watch — permanent, condition-driven; monitors/alerts trigger incident work, resume phase work after closure.
-	•	Daily product/operations review — surfaces P1/P2, friction, anomalies into the backlog without displacing higher-severity work.
-	•	An external/Boss-only blocker pauses only that action, not the whole phase. Park it, record resume trigger, keep moving.
-	•	15-minute continuity watchdog: a standing check, separate from the daily standup and daily rundowns, that only intervenes if an agent is directionally wrong or has stalled with executable work remaining. It redirects; it doesn't replace the actual work loops or add a sixth cadence to plan around.
-Model / effort controller
-	•	Optimizes Total Cost = AI cost + Time + Rework + Delay — not AI cost alone. A cheaper model that loops for an hour costs more than a stronger one that finishes in ten minutes.
-	•	Role sets the default: Sushma — lower model, low effort. Pushpa — lower model, low effort. Aarti — stronger model, higher effort as needed. Richa/Malti follow Sushma's default unless a task's difficulty says otherwise.
-	•	Escalate when: loops + retries + wrong direction + no progress > the cost of a stronger model. Path is Low → Higher Effort → Stronger Model, in that order — not a straight jump to the top.
-	•	Scale back down once resolved. Staying on a stronger model after the hard part is done is the same waste as under-provisioning was.
+Class LOCKED · Owner Boss · Writers Boss only (agents propose via state/PROPOSALS.md) · Read every role, every session (standing) · Cadence rarely · v3.5interim (2026-09-17)
+
+# CARLOPHILLIPS — Agent Entry Map
+
+Project: CARLOPHILLIPS (Next.js storefront + Shopify + Apliiq)
+Local repo: /Users/edv/Developer/carlophillips-site
+Git remote: https://github.com/CubiqoUnited/carlophillips-site.git
+Branches: staging (staging.carlophillips.com) → main (carlophillips.com, Production)
+
+## Instruction order
+universal ~/.codex/AGENTS.md → this file → invoked role file → Boss's current instruction.
+
+## Role routing
+- Boss → reserved decisions, module approval, production/financial gates, constitutional authority.
+- Sushma → agents/sushma.md — delivery truth, dispatch, repo/environment ownership, release.
+- Pushpa → agents/pushpa.md — stories, acceptance criteria, staging validation, UAT.
+- Aarti → agents/aarti.md — technical proposals (ADR), implementation, technical tests, production engineering.
+- Watchdog → agents/watchdog.md — independent liveness/direction check of Sushma only. Never manages Pushpa or Aarti.
+
+## Cold start (every session)
+1. state/NOW.md
+2. state/BLOCKERS.md
+3. state/SCOPE.md
+4. Your own agents/<role>.md and checklists/<role>*.md
+
+## Core invariants
+- Never edit LOCKED files. Propose changes through state/PROPOSALS.md.
+- Do not coordinate by unrecorded agent-to-agent chat. Update the artifact, status, evidence, and signal.
+- Do not modify a file another role owns concurrently. Aarti uses isolated branches/worktrees per implementation stream.
+- Stop only for a true blocker or required human gate; otherwise pull the next ready item.
+- A bare PASS is prohibited. Every checklist/signal result names what was checked, what was found, and the evidence location.
+- Real payment/financial transactions and any push to Production always require Boss. Nothing else waits for Boss by default.
+- Boss override: unconditional at all times. Nothing in this file or any file it governs constrains Boss.
+
+## Protected paths
+AGENTS.md, agents/*.md, DECISIONS.md, governance/AUTHORITY_AND_GATES.md — LOCKED, Boss-only.
+
+## Where things live
+- governance/ — authority, workflow states, evidence/Done rules, Git/release policy, document lifecycle
+- state/ — SCOPE, NOW, BOARD, BLOCKERS (categorized), PROPOSALS, ACCESS_REGISTRY, generated briefs, signals/, sessions/
+- work/ — MODULES, modules/, items/, releases/
+- evidence/ — per-item evidence, kept outside work items so logs don't bloat them
+- decisions/ — ADR records (technical solution proposals, required before build)
+- operations/ — AUTOMATIONS.yaml, MONITORS.yaml, TRIGGERS.yaml, PRODUCTION.md, runbooks/
+- knowledge/ — LEARNINGS.md, GRAVEYARD.md
+- audit/ — WATCHDOG.md, RELEASES.md, EXCEPTIONS.md
+- .quarantine/{date}/ — reversible holding area, MANIFEST.md per date
+- .archive/ — retired material past its quarantine review
+
+This document supersedes the v3.7–v3.9 AGENTS.md line-item ruleset in structure (see governance/ for the durable policy text); content already verified true about this project — Vercel project ID, Shopify stores, GitHub repo — carries forward unchanged into state/ACCESS_REGISTRY.md and DEPLOYMENT.md.

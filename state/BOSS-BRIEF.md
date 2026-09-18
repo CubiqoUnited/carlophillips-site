@@ -1,5 +1,20 @@
-Class RUNTIME  ·  Owner generated  ·  Writers compiled from NOW.md + BLOCKERS.md + runtime state — never hand-edited  ·  Read Boss, on-demand  ·  Cadence regenerated on every NOW.md update  ·  Budget ≤ 1 page
+Class RUNTIME · Owner Generated · Writers scripts/generate-boss-brief only, never hand-edited · Read Boss, on-demand · v3.5interim (2026-09-17)
 
-- v3.6 addition. A derived file, not a source of truth — it exists so Boss has one short page to scan instead of five rundowns, without that convenience page ever becoming something an agent writes opinions into.
-- Rule: a dashboard failure cannot change the underlying truth. If BOSS-BRIEF.md fails to regenerate or goes stale, NOW.md and BLOCKERS.md are still authoritative — the brief is a view, not a record. This is the answer to the dashboard-liveness question that earlier versions never closed explicitly.
-- Never hand-edited by any role. A hand edit here would silently diverge from the files it's supposed to summarize — exactly the failure mode a generated file exists to prevent.
+# Boss Brief (generated projection — not canonical, see state/NOW.md and state/BOARD.md if this disagrees)
+
+**Last generated:** 2026-09-17T00:00:00Z
+**Source:** state/NOW.md + state/BOARD.md + state/BLOCKERS.md
+
+## Decision queue
+- BOSS-001: Confirm V3.5interim migration structure is acceptable, or request changes.
+- H-001: 58-vs-45 file reconciliation — assign to Aarti or defer with a trigger.
+- H-002: Phase 1 real-commerce closure — pursue now or explicitly defer.
+
+## Delivery position
+Migration branch feat/v3.5interim-migration open, not yet merged to staging.
+
+## Exceptions
+None new since last brief.
+
+## Releases
+No production release pending from this migration — structural change only.

@@ -1,7 +1,16 @@
-Pushpa — business rundown
-	•	Cold start: state/NOW.md → state/BLOCKERS.md → state/SCOPE.md → highest-priority owned READY item in docs/exec-plans/active/phase-1.md → agents/pushpa.md → this checklist. No owned READY item means silent exit.
-	•	Requirement-to-release flow — anything stuck waiting on Aarti feasibility review.
-	•	UAT backlog — something implemented but never independently UAT-verified.
-	•	Policy-gap scan — an undefined customer decision area (this is exactly how CP-DEC-004 originated).
-	•	PRD.md-vs-live drift — implementation quietly diverged from a stated requirement.
-	•	Truthful-state check — any fake-success or “coming soon” state exposed to a real customer.
+Class CONTROLLED · Owner Pushpa · Writers Pushpa proposes own; Sushma reconciles · v3.5interim (2026-09-17)
+
+# Pushpa — Daily/Checkpoint Checklist
+
+Every result: PASS/FAIL/UNKNOWN/BLOCKED/N-A + what was checked + what was found + evidence location.
+
+- Cold start completed.
+- Assigned module or item is Boss-approved before work proceeds.
+- Requirement-to-release trace intact for active items.
+- Acceptance criteria are observable, not vague.
+- Negative and edge cases covered for active stories.
+- Test/UAT backlog current.
+- PRD.md-vs-live drift checked.
+- Staging evidence and corrections verified against the approved story, not assumed.
+- Measurable stop condition in state/SCOPE.md checked — flag drift into unscoped hardening.
+- Independent P1/P2 grading of relevant backlog items, recorded in this checklist's own findings, not overwriting another role's grading.
