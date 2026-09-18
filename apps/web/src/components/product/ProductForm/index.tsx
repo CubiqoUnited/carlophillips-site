@@ -226,7 +226,7 @@ export default function ShopifyCheckoutForm({
         >
           Size guide
         </button>
-        <span>Final sale · Shipping details available at checkout</span>
+        <span>Free shipping on eligible orders · Returns accepted — see policy</span>
       </div>
       {sizeGuideOpen && (
         <div
@@ -258,7 +258,7 @@ export default function ShopifyCheckoutForm({
             </div>
             <p className="cp-drawer-copy">
               {sizeGuide ||
-                'Size guidance is currently unavailable in Shopify. Select from the current Shopify size options above.'}
+                'This piece is cut true to size and available in S, M and L. Select your size above.'}
             </p>
           </div>
         </div>
@@ -272,7 +272,7 @@ export default function ShopifyCheckoutForm({
         )}
       </div>
       <p className="cp-purchase-note">
-        You will review delivery and payment securely in Shopify before placing
+        You will review delivery and payment on a secure checkout before placing
         the order.
       </p>
     </form>

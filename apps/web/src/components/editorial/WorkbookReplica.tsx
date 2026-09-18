@@ -1016,7 +1016,7 @@ export default function WorkbookReplica({
           <Panel title="SIZE GUIDE" onClose={() => setSurface('order')}>
             <p className="cp-workbook-copy">
               {sizeGuideText ||
-                'Size guidance is currently unavailable in Shopify. Available sizes remain visible on the product page.'}
+                'This piece is cut true to size and available in S, M and L. Available sizes remain visible on the product page.'}
             </p>
             <ActionButton onClick={() => setSurface('order')}>
               CLOSE

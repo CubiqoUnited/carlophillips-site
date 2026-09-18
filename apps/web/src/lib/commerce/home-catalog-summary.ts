@@ -9,8 +9,8 @@ function messageFor(decision: CatalogDecision): string {
   }
   if (decision.environment === 'preview' && decision.visibleCount > 0) {
     return decision.commerceAllowed
-      ? `${decision.visibleCount} reviewed ${decision.visibleCount === 1 ? 'product is' : 'products are'} active in private staging.`
-      : `${decision.visibleCount} private Staged-or-later release ${decision.visibleCount === 1 ? 'candidate is' : 'candidates are'} available for review.`;
+      ? `${decision.visibleCount} reviewed ${decision.visibleCount === 1 ? 'product is' : 'products are'} active in this private preview.`
+      : `${decision.visibleCount} private release ${decision.visibleCount === 1 ? 'candidate is' : 'candidates are'} available for review.`;
   }
   if (decision.environment === 'production' && decision.visibleCount > 0) {
     return decision.commerceAllowed

@@ -41,12 +41,10 @@ function environmentCopy(decision: CatalogDecision) {
   }
   if (decision.environment === 'preview') {
     return {
-      eyebrow: decision.commerceAllowed
-        ? 'Private live-commerce staging'
-        : 'Private release review',
+      eyebrow: decision.commerceAllowed ? 'Private preview' : 'Private review',
       body: decision.commerceAllowed
-        ? 'The approved Hoodie is connected to current product facts and checkout for private staging verification.'
-        : 'Only observed products with complete review evidence can appear in this private Preview catalog.',
+        ? 'These products are connected to current store facts and checkout.'
+        : 'Only products with complete review evidence can appear in this private catalog.',
     };
   }
   if (decision.environment === 'production') {
