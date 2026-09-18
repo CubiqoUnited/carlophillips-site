@@ -128,6 +128,73 @@ A reader who sees `D-3` in `work/items/CP-COM-001.md` §9 lands here:
 
 ---
 
+## D-029 · 2026-09-18T160000Z · GOVERNING — Sidekick answers route to Pushpa FIRST
+**Status:** DECIDED by Boss 2026-09-18 · **Recorded by:** Sushma · **Amends D-021 and D-022**
+
+**Boss's correction:** Sushma owns the Sidekick **channel** but **is not the terminus for its answers.** Answers must be diverted to **Pushpa first** — as Product Owner and Business Analyst she is the one who turns an external answer into requirements, acceptance criteria and register entries. **Aarti receives it after her**, for technical solutioning, where relevant.
+
+**The error being corrected:** answers were being handed to Sushma and reported onward to Boss directly, **skipping the PO entirely.**
+
+**Sushma's role, restated precisely:** carry the exchange, log it as `SK-NNN` with question-as-asked and a grading, and **route it**. Deciding what an answer means for the product is Pushpa's, not hers. This is the same boundary as the standing prohibition on inventing product intent — an external answer is raw input, and converting it into product meaning is a PO act.
+
+Added to state/STATUS-SCHEMA.md as a mandatory ordered routing rule so it binds every future exchange rather than depending on memory.
+
+**DECISION:** issued by Boss. Binding. No Boss action required on this entry.
+
+---
+
+## D-030 · 2026-09-18T160000Z · A real return address is needed — a real-world decision, not a configuration gap
+**Status:** OPEN · **Raised by:** Sushma from SK-006 · **Owner: Boss (only Boss can supply a physical address)** · **Not launch-blocking; time-sensitive**
+
+**QUESTION:** What physical address receives returned packages?
+
+**Why it cannot be solved by configuration.** SK-006 is unambiguous: *"The address still needs to be a real place where somebody can receive and handle returned packages. Shopify does not provide a virtual return mailbox or a physical returns facility."* **Pushpa's blocker #1 is REAL and IRREDUCIBLE within Shopify.** No amount of Shopify setup resolves it.
+
+**OPTIONS (Sidekick's three, recorded as given):**
+- **A — Our own address or office.**
+- **B — A third-party warehouse or returns facility.**
+- **C — The POD supplier's address** — only if Apliiq accepts customer returns and we are comfortable with that address appearing on the customer's label.
+
+**IMPACT:**
+- A: simplest and available immediately; means someone physically receives garments.
+- B: proper solution; cost and lead time to arrange.
+- C: **Sidekick explicitly cautions against it** — the customer should not see the POD supplier. It would also expose the supply chain on every return label.
+
+**RECOMMENDATION (Sushma):** this is Boss's to decide and I will not recommend a business address. What I will say on delivery grounds: **it is time-sensitive rather than blocking.** The store is live and in live payment mode, so an order can arrive before this is answered — and a return request with no destination is a customer-facing failure at the worst possible moment. It costs nothing to answer now and is unpleasant to answer under pressure. Note the address can be a regular street address, need not be a warehouse, and can be added with "inventory available to fulfil online orders" disabled, so choosing A does not disturb fulfilment.
+
+**DECISION:** _(pending)_
+
+---
+
+## SK-006 · 2026-09-18 · Sidekick — returns and dispatch, Shopify-native
+**Asked by:** Sushma (channel owner) · **Source:** Shopify Sidekick · **Routed to:** Pushpa (first, per D-029), then Aarti · **Grading:** high value; one irreducible real-world constraint surfaced
+
+Asked under Boss's principle that all answers must lie in Shopify.
+
+### RETURNS — Shopify covers the whole workflow, no separate app
+Return and cancellation rules including eligibility windows and whether return shipping is free; customer-submitted return requests through Shopify customer accounts and the order status page; merchant approval or decline; Shopify-generated return shipping labels; return tracking, inspection, refunds, exchanges, optional inventory restocking. **The flow is not unattended** — the customer submits, we review, and on approval we create or send the label.
+
+**Return-label address comes from a SAVED SHOPIFY LOCATION** (Settings → Locations); Shopify lets you designate the default location for return labels. A location **can be a regular street address and need not be a warehouse**, and can be added with *"Inventory at this location is available to fulfill online orders"* **disabled**. Changing the location later **affects only newly purchased labels**, not labels already created.
+
+**THE HARD LIMIT → raised as D-030.** Shopify provides no virtual return mailbox and no returns facility. Real-world decision for Boss.
+
+**FREE PREPAID RETURNS are native** for US orders where the fulfilment location and customer address are both US. **PAY-ON-SCAN billing:** Shopify charges only if the carrier actually scans the package, billed to our Shopify account, never collected from the customer. **That materially reduces the cost of promising free returns** — relevant to whether we offer them at all.
+
+**Native setup sequence:** (1) set the return rule — window and free return shipping; (2) enable self-serve returns under Settings → Customer accounts; (3) add a real saved location as default return-label destination; (4) approve the request and send the Shopify label; (5) inspect, then refund or exchange.
+
+**CRITICAL — and it vindicates Pushpa's guard.** *"Shopify's written return-policy template is separate from the return rules, and Shopify does not automatically insert the rules into the prose of your policy. You should keep the policy wording aligned manually."* She bound policy text to her acceptance criteria to prevent exactly this drift. **Shopify's own behaviour now confirms the risk was real**, so the configured return RULES and the policy PROSE must be **verified against each other as an acceptance criterion**, never assumed consistent.
+
+### DISPATCH — native estimates, but not a made-to-order lead-time system
+Shopify **does** provide native checkout delivery estimates, but there is **no documented native per-product processing-time field** for giving different lead times to different products; the documented setting is under Shipping and delivery. **Workable for our single active product; not a full made-to-order system.**
+
+Recommendation: set a conservative custom fulfilment time reflecting the actual POD production window, combine with real transit time for the shipping service, and **verify the resulting checkout display with a test order.**
+
+Bottom line, as given: *"Shopify does provide native checkout delivery estimates, but it does not automatically write your policy, does not guarantee support for every POD integration, and does not replace a supplier-specific production-time system."*
+
+**Consequence for Pushpa:** the policy page still needs **manually written dispatch language**, and **`[[DISPATCH_WINDOW]]` cannot be resolved from Shopify alone** — it needs a number Boss can actually meet. That makes it a commitment, not a lookup.
+
+---
+
 ## SK-004 · 2026-09-18 · Sidekick — production payment gateway mode
 **Asked by:** Sushma (channel owner) · **Source:** Shopify Sidekick · **Grading:** exemplary — it refused to guess
 

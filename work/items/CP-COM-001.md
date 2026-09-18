@@ -1,4 +1,4 @@
-Class EVOLVING · Owner Sushma (state) · Writers Pushpa writes product sections; Sushma reconciles state · v3.5interim (2026-09-18) · Happy path: CP-HP-DELTA v2.3 on CP-TFRD-1.0 + UI-SPEC-v1 incl. V1.2 Addendum (see §17, §21, §22)
+Class EVOLVING · Owner Sushma (state) · Writers Pushpa writes product sections; Sushma reconciles state · v3.5interim (2026-09-18) · Happy path: CP-HP-DELTA v2.3 on CP-TFRD-1.0 + UI-SPEC-v1 incl. V1.2 Addendum (see §17, §21, §22) · Policies: CP-POLICY-v1.0
 
 # CP-COM-001 — Commerce Integrity Requirements (finalized against live store state)
 
@@ -1032,7 +1032,8 @@ These are the frontend being **correct under D-011** and the workbook being wron
 | S-3 | Checkout is the **default Shopify template**, no custom 3-step indicator (p.53) `[UNVERIFIED]` | TFRD FR-4/SR-26 **mandate** Shopify-hosted checkout. The workbook's "fully custom CARLOPHILLIPS-branded checkout" is a D-011 violation and a PCI question. |
 | S-4 | Private List **entirely unbuilt**, "coming soon" placeholder (p.55) `[UNVERIFIED]` | TFRD GAP-9 / NG-3 defer it past Phase 1. |
 | S-5 | Self-service returns **not configured**, routed to manual support (p.59) `[UNVERIFIED]` | Truthful per NFR-4. Feeds FR-8/GAP-6; not a launch defect. |
-| S-6 | "COMPLIMENTARY SHIPPING & RETURNS" → "SHIPPING & RETURNS AVAILABLE AT CHECKOUT" (p.49); "Secure checkout · taxes included" line **missing** (p.52) `[UNVERIFIED]` | Both original strings assert commerce facts Shopify determines at checkout. **The softened copy is the correction**, not the regression. AC-AUTH-1. |
+| S-6a | "Secure checkout · taxes included" line **missing** (p.52) `[UNVERIFIED]` | **SPEC-IS-WRONG, stands.** Tax inclusion is a commerce fact Shopify determines, and the NJ apparel exemption makes asserting it doubly unsafe. AC-AUTH-1. |
+| S-6b | "COMPLIMENTARY SHIPPING & RETURNS" → "SHIPPING & RETURNS AVAILABLE AT CHECKOUT" (p.49) `[UNVERIFIED]` | **RECLASSIFIED to BUCKET 3 — REAL DEFECT (2026-09-18).** I graded the softening a correction while free shipping and free returns were *undecided*. **Boss has now decided both: returns are free, shipping is free on eligible orders.** The original assertion is therefore true, and the live copy **understates a decided policy and a real trust signal**. Fix per AC-POL-5. See `docs/policies/CP-POLICIES-v1-2026-09-18.md` §3. |
 | S-7 | Cart — Optional CP Recognition (p.30), account + store credit | §18.2.3. Second identity and second monetary authority. POST-LAUNCH and re-spec as Shopify-native. |
 | S-8 | Gallery spec: 360 / AI-assisted 360 / 2.5D GLB (screen 06) | Contradicts TFRD NFR-5 and APP-20/21/22. No such asset exists. |
 | S-9 | "EUR 180" / "€180" throughout the workbook | **Settled with a source, not an inference:** p.49 records *"Pricing is in USD, not EUR as specified throughout the workbook (€180 → $128)."* Confirms §18.6. AC-CCY-1/-2 stand. **Closed — no Boss needed.** |
@@ -1086,3 +1087,39 @@ UI-SPEC-v1 pp.15–19 contain five appendix spreads of availability/recovery wid
 - **BKLG-1** Write `Requirement / owner` for all ten. **Owner: Pushpa. Status: NOT STARTED. Trigger: post-launch, or earlier if a state becomes reachable in the happy path.**
 - **Note for whoever picks this up:** the workbook already contains **approved copy** for several — p.19's *"Your order is confirmed. Tracking will appear when the shipment is handed to the carrier"* is exactly the truthful degradation AC-FUL-5 asks for. **Use the approved copy; do not write new.** Three of the ten (discount not recognised, size unavailable, bag empty) already have requirements in this item at AC-DSC-2, AC-CUR-10/E-CUR-4 and SR-16 — those need reconciling, not re-writing.
 - **BKLG-2** These ten are the spec's *unavailability* coverage. **None of them is a thin- or empty-category state** — which is the §21.2 gap, still open with Boss.
+
+
+---
+
+## 23. CUSTOMER-FACING POLICIES (Revision 12, 2026-09-18)
+
+**Authored as Product Owner at Boss's assignment. Artifact:** `docs/policies/CP-POLICIES-v1-2026-09-18.md` (**CP-POLICY-v1.0**) — that file is the **source of truth** for published policy text; the Shopify admin is a render target.
+
+**Scope:** Return and refund policy, Shipping policy, Terms of service, Contact information. The Privacy policy is already published and was **not** rewritten (flagged only).
+
+**Status: DRAFTED — NOT PUBLISHED.** Publication is Boss's step; it was correctly blocked as a shared-resource change, which is the right control for legal text. The artifact carries a publication record table to be filled on the day.
+
+### 23.1 Standing requirements — AC-POL-1..6, U-POL-1
+
+Specified in full at §5 of the artifact. Summary, because these are **launch requirements, not hygiene**:
+
+- **AC-POL-1** All four policies published + Contact information set. **A missing policy is launch-blocking** — per SK-005, Shopify's chargeback guidance lists the refund policy as evidence for exactly the dispute types we would face, and with nothing published there is nothing to submit. At $128 with no restockable inventory, a lost dispute costs the garment, the shipping and the fee.
+- **AC-POL-2** Policies render as reachable links in the checkout footer — **verified visually on the live checkout, not from the admin settings page.** Same discipline as AC-DEF-3: text saved in an admin is not proof a customer can reach it.
+- **AC-POL-3** Published text matches the versioned file exactly; drift is a defect and corrects file → Shopify.
+- **AC-POL-4 / E-POL-1** No customer-facing copy may name or imply an external producer, or use made-to-order / final-sale / personalised-goods language to limit returns. **Sourced, not invented:** `docs/design-system.md` production composition contract item 6 already requires "provider-neutral customer copy".
+- **AC-POL-5** Shipping/returns copy on product and checkout surfaces must not understate free shipping or free returns now that both are decided (drives S-6b).
+- **U-POL-1** Pre-launch verification. **Unverified as of 2026-09-18** — connector disconnected; nothing asserted about the live store.
+
+### 23.2 Reconciliation
+
+Checked against AC-REF-1..4, AC-FUL-5, AC-AUTH-1, AC-TAX-2, AC-CUR-4 and AC-ACC-4 — all consistent (table at §3 of the artifact). Two notes worth carrying here:
+- The shipping policy's tracking sentence **deliberately reuses the approved workbook copy at UI-SPEC p.19** ("Tracking will appear when the shipment is handed to the carrier") rather than inventing new copy — per BKLG-1's standing note, use the approved copy.
+- **AC-REF-3 is satisfied by omission, deliberately:** the policy makes no entitlement, credit or review-unlock promise, because §18.2.3 defers all of that.
+
+### 23.3 Open for Boss — blocks publication
+
+1. **Return destination (largest gap).** Free prepaid labels require an address returns physically go to and someone to check them before refund. **Unknown; not assumed.** This is the one item that could make the published policy untrue.
+2. **`[[DISPATCH_WINDOW]]`** — I will not invent a dispatch time. An unmeetable dispatch promise is a "product not received" chargeback risk.
+3. **Support alias** — recommend `support@carlophillips.com` over the personal Gmail, which appears five times across the policies. Trust, continuity, and chargeback evidence. **Also engages TFRD GAP-5**, still open on exactly this point.
+4. **`[[FREE_SHIPPING_THRESHOLD]]`** — undecided per constraint. The paragraph takes the figure without rewriting, and an all-orders alternative is supplied so publication is not gated on it.
+5. **Legal name casing** ("carlophillips" vs CARLOPHILLIPS) — confirm so all four policies agree.

@@ -89,6 +89,24 @@ Note the date. That audit is from the same day the mispriced Tee went live. Prod
 
 **Still true and still yours:** FR-5 is proven on staging's test gateway only. **No live-gateway transaction has ever completed on production.** Your happy-path criteria should distinguish "proven on test gateway" from "proven live" and never let the former satisfy the latter.
 
+## ROUTED TO YOU — SK-006, returns and dispatch (2026-09-18)
+
+**Process change first (D-029, Boss):** Sidekick answers now come **to you first**. I own the channel — I carry the exchange and log it as SK-NNN — but deciding what an answer means for requirements, acceptance criteria and register entries is yours, not mine. Aarti receives it after you, for technical solutioning. Answers had been going to me and onward to Boss, skipping the PO; that is the error being corrected. Full text of SK-006 is in state/DECISIONS-LOG.md — read it there, not this summary.
+
+**YOUR BLOCKER #1 IS REAL AND IRREDUCIBLE. You were right to raise it.** Sidekick: *"The address still needs to be a real place where somebody can receive and handle returned packages. Shopify does not provide a virtual return mailbox or a physical returns facility."* This is not a configuration gap you can specify around — it is a real-world decision. I have raised it as **D-030** for Boss with Sidekick's three options (our own address/office; a third-party returns facility; the POD supplier's address — which Sidekick explicitly cautions against, since the customer should not see the supplier). Do not design around it and do not treat it as pending config. Write criteria that assume a saved Shopify location exists, and treat the address value as a Boss input.
+
+**YOUR POLICY-DRIFT GUARD IS VINDICATED — by Shopify's own behaviour.** *"Shopify's written return-policy template is separate from the return rules, and Shopify does not automatically insert the rules into the prose of your policy. You should keep the policy wording aligned manually."* You bound policy text to your acceptance criteria to prevent exactly this. **Make it explicit:** the configured return RULES and the policy PROSE must be **verified against each other as an acceptance criterion**, never assumed consistent. This is the one place where a Shopify-native workflow does *not* keep itself honest.
+
+**Returns are otherwise fully Shopify-native** — no separate app. Rules and eligibility windows, self-serve requests via customer accounts and the order status page, merchant approve/decline, Shopify-generated labels, tracking, inspection, refunds, exchanges, optional restocking. Note the flow is **not unattended**: customer submits, we review, we send the label. That is an operational commitment, so your criteria should cover the review step, not just the happy automated path.
+
+**Free prepaid returns are native for US orders** (fulfilment location and customer both US — and we are US-only). **Pay-on-scan billing: Shopify charges only if the carrier actually scans the package, billed to us, never collected from the customer.** That materially lowers the cost of promising free returns — it is a genuine product option, not an aspiration. Worth a recommendation from you either way.
+
+**Setup sequence for your criteria:** (1) return rule — window + free return shipping; (2) enable self-serve returns under Settings → Customer accounts; (3) real saved location as default return-label destination; (4) approve and send label; (5) inspect, then refund or exchange. A location can be a plain street address, need not be a warehouse, and can have "available to fulfil online orders" disabled. Changing it later affects only **newly purchased** labels.
+
+**DISPATCH — `[[DISPATCH_WINDOW]]` cannot be resolved from Shopify.** Shopify gives native checkout delivery estimates, but there is **no documented per-product processing-time field**, so different lead times per product are not natively expressible. Workable for one active product; not a made-to-order system. Sidekick's bottom line: it *"does not automatically write your policy, does not guarantee support for every POD integration, and does not replace a supplier-specific production-time system."*
+
+So your placeholder needs **a number Boss can actually meet** — a commitment, not a lookup. Recommended approach: conservative custom fulfilment time reflecting the real POD production window, plus real transit time, then **verify the checkout display with a test order**. Flag the number you need to Boss through me; do not invent it.
+
 ## Also for CP-COM-001 revision 5
 
 - **D-016 is MITIGATED, not resolved** — purchase route closed, but the six curated-out sizes now display "sold out", which is untrue. SK-001 confirms our stopgap fails the "not shown as sold out" test.
