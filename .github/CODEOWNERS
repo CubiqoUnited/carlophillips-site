@@ -1,6 +1,7 @@
-# CARLOPHILLIPS governed files
+# CARLOPHILLIPS governed files — v3.5interim
 /AGENTS.md @avloy07-eng
 /agents/*.md @avloy07-eng
 /checklists/*.md @avloy07-eng
 /DECISIONS.md @avloy07-eng
+/governance/AUTHORITY_AND_GATES.md @avloy07-eng
 /.github/CODEOWNERS @avloy07-eng
