@@ -2,39 +2,29 @@
 id: SCOPE
 owner: boss
 class: controlled
-version: 1.2
-last_updated: 2026-09-16
-last_verified: 2026-09-16
+version: 2.0
+last_updated: 2026-09-17
 review_frequency: on authorization change
-budget_lines: 60
 ---
 
-Class CONTROLLED  ·  Owner Boss  ·  Writers Boss authorizes; roles propose  ·  Read standing  ·  Cadence only on authorization change  ·  Budget ≤ 60 lines
+Class CONTROLLED · Owner Boss · Writers Boss authorizes; roles propose · Read standing, every session · v3.5interim (2026-09-17)
 
-- Separate from NOW.md on purpose: SCOPE.md is the authorization boundary — objective, included, excluded, deferred, stop condition, Boss decisions. NOW.md is the live execution ledger against that boundary.
-- Changes only when Boss authorizes new scope, not on every status update — that's exactly what keeps a routine NOW.md edit from silently drifting what was actually approved.
-- Example content: “Order fulfillment/tracking observation is deferred. Extra sales-channel cleanup is deferred. Phase 2 has not started until explicitly authorized.” — concrete, dated, re-entry trigger named.
-- Class CONTROLLED, not EVOLVING: it's Boss-authored/authorized like AGENTS.md, not agent-updated like NOW.md — though it lives in state/ because it's specific to the current initiative, not durable across all of them.
 ## Objective
-
-- Install and validate the lean v3.7 Company OS without changing the authoritative source documents or production commerce behavior.
+Migrate governance from v3.7–v3.9 to the reconciled V3.5interim compact hierarchy without losing verified project facts (Vercel project, Shopify stores, GitHub repo) or in-flight Gate 12/Phase 1 evidence.
 
 ## Included
-
-- Gates 1–10 reset evidence; Gate 12 derived runtime repair and validation; Gate 13 acceptance preparation.
-- Reversible seven-day quarantine review for Gate 11.
+- Compact hierarchy installation (governance/, state/, work/, audit/, decisions/).
+- Categorized state/BLOCKERS.md ledger migration.
+- ADR gate installation for future builds.
+- Evidence-backed checklist rule (no bare PASS) across all four roles including Watchdog.
 
 ## Excluded
-
-- Production changes, paid actions, schedule activation, invented research/marketing work, and unsupported claims of operational commerce proof.
+- Production changes, paid actions, real commerce operations proof (Phase 1 commerce closure remains unresolved — see Deferred).
+- Automatic reconciliation of the known 58-vs-45 validator/matrix file-count discrepancy — that is a named open item, not silently resolved by this migration.
 
 ## Deferred
-
-- Permanent quarantine deletion until on/after 2026-09-21 and explicit review.
-- Commerce Phase 1 closure until real checkout/order/Apliiq/tracking/support/returns evidence exists.
+- Phase 1 real-commerce closure (checkout/order/Apliiq/tracking/support/returns) — unresolved, carried forward as-is.
+- Permanent deletion of anything already in .quarantine/ — review dates unchanged by this migration.
 
 ## Stop condition
-
-- Stop at any reserved Production or monetary action for Boss approval; otherwise park genuine external blockers and continue executable in-scope work.
-- v3.8: Every active initiative must define one measurable stop condition (this section). Completion requires the stated evidence and acceptance authority above; unrelated hardening must not be added once the stop condition is reached.
-- v3.8: A status update alone is never the stop condition — continue through the next executable action until this stop condition, a reserved authority gate, or a genuine blocker (recorded in state/BLOCKERS.md) is reached.
+Migration is complete when: every file in AGENTS.md's "Where things live" section exists with a class/owner header, the categorized BLOCKERS.md is live, and one module has been run through the Boss→Pushpa→ADR→build loop under the new structure. A status update alone is never the stop condition.
