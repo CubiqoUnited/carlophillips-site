@@ -15,3 +15,11 @@ Every result: PASS/FAIL/UNKNOWN/BLOCKED/N-A + what was checked + what was found 
 - Release cadence: commits accumulating with no new work/releases/ entry.
 - Incident and human blocker queue (state/BLOCKERS.md HUMAN category) governed, not stale.
 - Coordinator reconciliation on delegated completion: read the result, update NOW.md, close/reopen the gate, select next action immediately — do not let a completed handoff sit unread.
+
+---
+
+**Run format is binding: `governance/CHECKLIST_RUN_PROTOCOL.md`.** Write the run to
+`state/checklist-runs/{YYYY-MM-DD}/{role}.md`, one line per check:
+`- [VERDICT] C-n — <checked> — FOUND: <found> — EVIDENCE: <pointer>`.
+Verdicts are PASS / FAIL / UNKNOWN / BLOCKED / N-A. `EVIDENCE:` is mandatory on
+every line including PASS — an unevidenced PASS is counted as UNKNOWN.

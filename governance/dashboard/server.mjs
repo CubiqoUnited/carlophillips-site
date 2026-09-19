@@ -13,7 +13,7 @@
  * healthy rather than collapsing them into one green light.
  */
 import { createServer } from 'node:http';
-import { readFileSync, existsSync, statSync, watch } from 'node:fs';
+import { readFileSync, existsSync, statSync, watch, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -165,6 +165,71 @@ function board() {
   return { available: true, rows };
 }
 
+/*
+ * Checklist runs. Parsed from the markdown each role writes, because the run is
+ * meant to be readable by a person a month from now, not only by this server.
+ *
+ * Per CHECKLIST_RUN_PROTOCOL: EVIDENCE is mandatory on every line including
+ * PASS. An unevidenced PASS is counted as UNKNOWN here, deliberately — it is
+ * indistinguishable from a guess, and the whole point of the run is to stop
+ * treating a confident label as a checked fact.
+ */
+const VERDICTS = ['PASS', 'FAIL', 'UNKNOWN', 'BLOCKED', 'N-A'];
+const LINE = /^-\s*\[(PASS|FAIL|UNKNOWN|BLOCKED|N-A|N\/A)\]\s*([A-Za-z]+-?\d*)?\s*(?:[\u2014-]\s*)?(.*)$/i;
+
+function parseRun(rel) {
+  const raw = read(rel, 200_000);
+  if (raw === null) return null;
+  const header = /^RUN:\s*(\w+)\s*\|\s*DATE:\s*([\d-]+)\s*\|\s*TIER:\s*(\w+)/im.exec(raw);
+  const items = [];
+  const counts = Object.fromEntries(VERDICTS.map((v) => [v, 0]));
+  let unevidenced = 0;
+
+  for (const line of raw.split('\n')) {
+    const m = LINE.exec(line.trim());
+    if (!m) continue;
+    let verdict = m[1].toUpperCase().replace('N/A', 'N-A');
+    const id = (m[2] || '').replace(/[\u2014-]+$/, '') || `C-${items.length + 1}`;
+    const body = m[3] || '';
+    const hasEvidence = /EVIDENCE:\s*\S/i.test(body);
+    if (verdict === 'PASS' && !hasEvidence) { verdict = 'UNKNOWN'; unevidenced++; }
+    counts[verdict] = (counts[verdict] || 0) + 1;
+    items.push({ id, verdict, body: body.slice(0, 400), hasEvidence });
+  }
+
+  return {
+    path: rel,
+    role: header ? header[1].toLowerCase() : rel.split('/').pop().replace('.md', ''),
+    date: header ? header[2] : null,
+    tier: header ? header[3].toLowerCase() : 'daily',
+    total: items.length,
+    counts,
+    unevidenced,
+    // What Boss should look at first: anything that is not a clean pass.
+    attention: items.filter((i) => i.verdict !== 'PASS' && i.verdict !== 'N-A').slice(0, 12),
+    items,
+    updated: mtime(rel),
+  };
+}
+
+function checklists() {
+  const base = join(ROOT, 'state/checklist-runs');
+  if (!existsSync(base)) return { available: false, runs: [] };
+  const runs = [];
+  try {
+    const days = readdirSync(base).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort().reverse();
+    for (const day of days.slice(0, 3)) {
+      for (const f of readdirSync(join(base, day))) {
+        if (!f.endsWith('.md')) continue;
+        const run = parseRun(`state/checklist-runs/${day}/${f}`);
+        if (run && run.total) runs.push(run);
+      }
+    }
+  } catch { /* directory raced with a write; next tick picks it up */ }
+  runs.sort((a, b) => (b.updated || 0) - (a.updated || 0));
+  return { available: true, runs };
+}
+
 function decisions() {
   const raw = read('state/DECISIONS-LOG.md');
   if (raw === null) return { available: false, open: null };
@@ -206,6 +271,7 @@ function snapshot() {
     roles: roles(act),
     comms: comms(act),
     files: files(act),
+    checklists: checklists(),
     board: board(),
     decisions: decisions(),
     repo: repo(),
@@ -243,7 +309,7 @@ function nudge() {
     broadcast();
   }, 140);
 }
-for (const target of ['state', 'work', 'decisions']) {
+for (const target of ['state', 'work', 'decisions', 'checklists']) {
   const dir = join(ROOT, target);
   if (!existsSync(dir)) continue;
   try {

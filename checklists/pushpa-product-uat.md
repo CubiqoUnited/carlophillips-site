@@ -92,3 +92,11 @@ Boss posture: working happy path on staging.carlophillips.com and www.carlophill
 - **Survives, small:** a price sanity check at item intake, folded into AC-CAT-4 (deliberate retail figure, not a provider cost figure; tells are cost-table cents patterns, unapproved per-size variation, implausibility against the $128.00 benchmark). Not a blocker, not its own group. AC-PRICE-LB1/-LB2/-LB3 withdrawn as gates.
 - **LAUNCH-BLOCKING, re-issued:** LB-1 happy path never executed · LB-2 curation minimum · LB-4 staging→Apliiq dispatch leak · LB-5 minimum viable catalogue · LB-6 correct gateway per environment. **LB-3 removed.**
 - **Decisions:** D-10 withdrawn (Boss answered opposite). D-3 re-scoped — approved retail figures apply only to genuinely new products, not the parked Tee. D-8 and D-9 stand.
+
+---
+
+**Run format is binding: `governance/CHECKLIST_RUN_PROTOCOL.md`.** Write the run to
+`state/checklist-runs/{YYYY-MM-DD}/{role}.md`, one line per check:
+`- [VERDICT] C-n — <checked> — FOUND: <found> — EVIDENCE: <pointer>`.
+Verdicts are PASS / FAIL / UNKNOWN / BLOCKED / N-A. `EVIDENCE:` is mandatory on
+every line including PASS — an unevidenced PASS is counted as UNKNOWN.

@@ -117,7 +117,7 @@ function classify(verb, tool, target, input) {
   const i = input || {};
 
   // Running the role's own daily / deep review checklist.
-  if (/(^|\/)checklists\//.test(t)) {
+  if (/(^|\/)checklists\//.test(t) || /state\/checklist-runs\//.test(t)) {
     return { phase: 'CHECKLIST', comm: null };
   }
 

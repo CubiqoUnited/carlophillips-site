@@ -193,6 +193,34 @@ body{
 .dr-b{flex:1; overflow:auto; margin:0; padding:14px 16px; background:var(--sunk);
   font:400 11.5px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--ink-2);
   white-space:pre-wrap; word-break:break-word}
+/* checklist runs */
+.run{border-top:1px solid var(--line-2); padding:10px 11px}
+.run:first-child{border-top:none}
+.run-h{display:flex; align-items:center; gap:7px; margin-bottom:7px; flex-wrap:wrap}
+.run-r{font:800 10px/1 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.06em; padding:4px 6px; border-radius:4px}
+.run-r[data-r=sushma]{background:var(--sushma-bg); color:var(--sushma)}
+.run-r[data-r=pushpa]{background:var(--pushpa-bg); color:var(--pushpa)}
+.run-r[data-r=aarti]{background:var(--aarti-bg); color:var(--aarti)}
+.tier{font:700 8.5px/1 ui-monospace,monospace; padding:4px 6px; border-radius:4px; background:var(--sunk); color:var(--ink-3); letter-spacing:.05em}
+.run-n{margin-left:auto; font:650 9.5px/1 ui-monospace,monospace; color:var(--ink-3)}
+.meter{display:flex; height:7px; border-radius:99px; overflow:hidden; background:var(--sunk); margin-bottom:7px}
+.meter i{display:block; height:100%}
+.v-PASS{background:var(--green)} .v-FAIL{background:var(--red)}
+.v-UNKNOWN{background:var(--warn)} .v-BLOCKED{background:var(--purple)} .v-NA{background:var(--ink-3)}
+.tally{display:flex; gap:5px; flex-wrap:wrap; margin-bottom:6px}
+.t-x{font:700 8.5px/1 ui-monospace,monospace; padding:4px 6px; border-radius:4px; letter-spacing:.04em}
+.t-PASS{background:var(--green-bg); color:var(--green)}
+.t-FAIL{background:var(--red-bg); color:var(--red)}
+.t-UNKNOWN{background:color-mix(in srgb,var(--warn) 16%,transparent); color:var(--warn)}
+.t-BLOCKED{background:var(--purple-bg); color:var(--purple)}
+.t-NA{background:var(--sunk); color:var(--ink-3)}
+.att{font:600 10.5px/1.5 ui-monospace,monospace; color:var(--ink-2); padding:5px 7px; border-radius:5px;
+  background:var(--sunk); margin-top:5px; cursor:pointer; word-break:break-word}
+.att:hover{background:var(--line-2)}
+.att .vv{font-weight:800; margin-right:5px}
+.att .vv.FAIL{color:var(--red)} .att .vv.UNKNOWN{color:var(--warn)} .att .vv.BLOCKED{color:var(--purple)}
+.warnline{font:650 10px/1.5 ui-monospace,monospace; color:var(--warn); margin-top:6px}
+
 .empty{padding:16px 11px; text-align:center; color:var(--ink-3); font-size:11.5px}
 </style>
 </head>
@@ -267,6 +295,15 @@ body{
             <div class="l"><span>READY_FOR_SOLUTION / BUILD</span><span>&rarr; Aarti</span></div>
             <div class="l"><span>READY_FOR_RELEASE / DONE</span><span>&rarr; Sushma</span></div>
           </div>
+        </div>
+
+        <div class="node n-board" id="cl-node">
+          <div class="nh">
+            <span class="av board">&#10003;</span>
+            <div><div class="nn">Checklist runs</div><div class="nr">evidence-backed · a bare label satisfies nothing</div></div>
+            <span class="badge b-QUIET" id="cl-badge">NONE TODAY</span>
+          </div>
+          <div id="checklists"></div>
         </div>
 
         <div class="node n-board">
@@ -389,6 +426,48 @@ function renderComms(comms){
     + '<span class="w">'+esc(c.what)+'</span></div>').join('');
 }
 
+const VORDER = ['PASS','FAIL','UNKNOWN','BLOCKED','N-A'];
+function renderChecklists(cl){
+  const box = $('checklists'), badge = $('cl-badge');
+  if (!cl || !cl.available || !cl.runs.length){
+    box.innerHTML = '<div class="empty">No checklist run recorded yet. Runs appear here line by line as each role works through its checks.</div>';
+    badge.textContent = 'NONE TODAY'; badge.className = 'badge b-QUIET';
+    return;
+  }
+  const open = cl.runs.reduce((n,r) => n + (r.counts.FAIL||0) + (r.counts.BLOCKED||0), 0);
+  badge.textContent = open ? open + ' NEED ACTION' : cl.runs.length + ' RUNS';
+  badge.className = 'badge ' + (open ? 'b-IDLE' : 'b-ACTIVE');
+
+  box.innerHTML = cl.runs.map(r => {
+    const bar = VORDER.map(v => {
+      const n = r.counts[v] || 0;
+      if (!n) return '';
+      const cls = v === 'N-A' ? 'NA' : v;
+      return '<i class="v-'+cls+'" style="width:'+(n/r.total*100)+'%"></i>';
+    }).join('');
+    const tally = VORDER.map(v => {
+      const n = r.counts[v] || 0;
+      if (!n) return '';
+      const cls = v === 'N-A' ? 'NA' : v;
+      return '<span class="t-x t-'+cls+'">'+v+' '+n+'</span>';
+    }).join('');
+    const att = r.attention.map(i =>
+      '<div class="att" onclick="openFile(\''+esc(r.path)+'\')">'
+      + '<span class="vv '+esc(i.verdict)+'">'+esc(i.verdict)+'</span>'
+      + '<span style="color:var(--ink-3)">'+esc(i.id)+'</span> '
+      + esc(i.body.slice(0,170)) + '</div>').join('');
+    const unev = r.unevidenced
+      ? '<div class="warnline">'+r.unevidenced+' PASS line(s) carried no EVIDENCE and were counted UNKNOWN.</div>'
+      : '';
+    return '<div class="run">'
+      + '<div class="run-h"><span class="run-r" data-r="'+esc(r.role)+'">'+esc(r.role)+'</span>'
+      + '<span class="tier">'+esc(r.tier)+'</span>'
+      + '<span class="run-n">'+r.total+' checks · <span style="text-decoration:underline;cursor:pointer" onclick="openFile(\''+esc(r.path)+'\')">open run</span></span></div>'
+      + '<div class="meter">'+bar+'</div><div class="tally">'+tally+'</div>'
+      + att + unev + '</div>';
+  }).join('');
+}
+
 function renderStrip(s){
   const act = s.roles.filter(r => r.status === 'ACTIVE');
   const c = $('c-phase');
@@ -444,6 +523,7 @@ function apply(s){
   $('pulse').textContent = 'live · ' + clock(s.ts);
   ifChanged('agents', {r:s.roles, f:s.files}, () => renderAgents(s));
   ifChanged('board',  s.board, renderBoard);
+  ifChanged('cl',     s.checklists, renderChecklists);
   ifChanged('comms',  s.comms, renderComms);
   ifChanged('strip',  {a:s.activity.rows&&s.activity.rows[0], r:s.repo, e:s.events.freshness, ro:s.roles}, () => renderStrip(s));
   ifChanged('tick',   s.activity.rows && s.activity.rows[0], () => renderTicker(s));
