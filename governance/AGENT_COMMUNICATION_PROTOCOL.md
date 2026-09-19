@@ -136,3 +136,38 @@ never entered CI.
 Sushma checks Rules 1–8 on every activation and reports violations to Boss in
 the brief, ranked with everything else. A violation is a P2 by default and a P1
 when it has already cost delivery time.
+
+---
+
+## RULE 9 — Two standing mandates (Boss, 2026-09-19)
+
+### 9a. Jira is tied from push to deploy. Every change.
+
+Nothing is pushed or deployed without a Jira issue that carries the specifics
+and the evidence, and the issue and the change must reference each other.
+
+- The **branch name carries the issue key** (`KAN-3-tightening-agents-access`).
+- The **PR title and body reference the key**, and the issue gets the PR URL
+  written back into it.
+- The **deploy reports to Jira**, so the issue shows what shipped and where.
+  Tracked as KAN-11; not yet built.
+
+**Jira is the ongoing source of truth for what was done and why.** A change with
+no issue is not ready to move, however finished the code looks.
+
+**Why:** a launch-blocking fix sat unshipped for a full day because "committed"
+was read as "delivered", and nothing outside one machine could see otherwise.
+
+### 9b. The status board shows live agent movement, always.
+
+`governance/dashboard/` runs against real repository state, recorded by the
+harness on every tool call rather than self-reported. It shows which role is
+active, which of the three phases it is in, which files it is touching, and
+every dispatch and status-change request between roles.
+
+It is **not** a report anyone writes. It cannot be flattered, and the board
+never appears in its own feed — building it is instrumentation, not delivery.
+
+**Division of labour, as Boss set it:** the dashboard is for live activity in
+the moment; Jira is the durable record. Neither replaces the other, and
+`state/BOARD.md` remains canonical for delivery state.
