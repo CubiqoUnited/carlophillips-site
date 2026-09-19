@@ -57,9 +57,9 @@ const NOT_WORK = ['governance/dashboard', '.claude/hooks', 'state/activity.jsonl
                   '.claude/settings.json', '.claude/launch.json'];
 const NOT_WORK_TOOLS = /preview_start|preview_stop|preview_logs|preview_list|read_console_messages|read_network_requests/;
 const isInstrumentation = (r) => {
-  // Boundary records written by crafted test payloads carry no session id.
-  // Showing them makes a synthetic probe look like a real denied attempt.
-  if (r.phase === 'BOUNDARY' && !r.session) return true;
+  // A real denial carries no session id either, so filtering on that would
+  // hide the very events the boundaries exist to make visible. The crafted
+  // test rows were purged from the log once instead.
   if (NOT_WORK_TOOLS.test(r.tool || '')) return true;
   const t = (r.target || '') + ' ' + (r.what || '');
   return NOT_WORK.some((p) => t.includes(p));
