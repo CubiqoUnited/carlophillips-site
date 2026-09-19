@@ -51,6 +51,12 @@ function git(args) {
   }
 }
 
+/* Past instrumentation noise is filtered on read too, so the history the board
+ * shows is delivery work only — not the board's own construction. */
+const NOT_WORK = ['governance/dashboard/', '.claude/hooks/', 'state/activity.jsonl',
+                  '.claude/settings.json', '.claude/launch.json'];
+const isInstrumentation = (t) => NOT_WORK.some((p) => (t || '').includes(p));
+
 /* ---- activity: the live feed, written by the PostToolUse hook ---- */
 function activity(limit = 220) {
   const raw = read('state/activity.jsonl', 900_000);
@@ -67,6 +73,7 @@ function activity(limit = 220) {
       }
     })
     .filter(Boolean)
+    .filter((r) => !isInstrumentation(r.target))
     .reverse();
   return { available: true, rows };
 }

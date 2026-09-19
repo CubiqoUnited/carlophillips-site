@@ -95,6 +95,24 @@ const CANONICAL = [
   'state/events.jsonl',
 ];
 
+/*
+ * The board is a projection, not a participant. Work on the dashboard, the
+ * recorder itself, or the log it writes is instrumentation — it is not
+ * delivery, and showing it as an agent action makes the feed narrate its own
+ * plumbing instead of the work Boss is watching for.
+ */
+const NOT_WORK = [
+  'governance/dashboard/',
+  '.claude/hooks/',
+  'state/activity.jsonl',
+  '.claude/settings.json',
+  '.claude/launch.json',
+];
+function isInstrumentation(target) {
+  const t = target || '';
+  return NOT_WORK.some((p) => t.includes(p));
+}
+
 /* Context a role loads before it may act. Reading these is cold start. */
 const COLD_START = [
   'AGENTS.md', 'CLAUDE.md',
@@ -184,6 +202,9 @@ try {
 
   const touched = typeof target === 'string' ? target : '';
   const canonical = CANONICAL.some((c) => touched.endsWith(c));
+
+  // Instrumentation never enters the log at all.
+  if (isInstrumentation(touched)) process.exit(0);
 
   const { phase, comm } = classify(verb, tool, touched, payload.tool_input);
   if (comm && comm.from === null) comm.from = role;
