@@ -95,6 +95,54 @@ const CANONICAL = [
   'state/events.jsonl',
 ];
 
+/* Context a role loads before it may act. Reading these is cold start. */
+const COLD_START = [
+  'AGENTS.md', 'CLAUDE.md',
+  'state/NOW.md', 'state/BOARD.md', 'state/BLOCKERS.md', 'state/SCOPE.md',
+  'state/STATUS-SCHEMA.md', 'state/DECISIONS-LOG.md',
+  'agents/', 'checklists/', 'governance/', 'work/items/', 'docs/reference/',
+];
+
+/*
+ * The three phases every role moves through, in order, plus communication.
+ * Phase is derived from the artifact actually touched — never from a claim.
+ *
+ *   COLD_START   loading the context it is required to load
+ *   WORK         the actual work: code, documents, research, tools
+ *   RECONCILE    writing the agentic files back at the end of the work
+ *   COMMS        dispatch out, or a status-change request in
+ */
+function classify(verb, tool, target, input) {
+  const t = target || '';
+  const i = input || {};
+
+  // Communication: Sushma dispatching out.
+  if (tool === 'Agent') {
+    return {
+      phase: 'COMMS',
+      comm: { kind: 'DISPATCH', from: 'sushma', to: (i.subagent_type || 'agent').toLowerCase() },
+    };
+  }
+
+  // Communication: a role filing its three-line signal to Sushma.
+  if (/state\/signals\//.test(t) && (verb === 'WRITE' || verb === 'EDIT')) {
+    return { phase: 'COMMS', comm: { kind: 'SIGNAL', from: null, to: 'sushma' } };
+  }
+
+  // Reconcile: writing canonical delivery state.
+  if ((verb === 'WRITE' || verb === 'EDIT') &&
+      CANONICAL.some((c) => t.endsWith(c))) {
+    return { phase: 'RECONCILE', comm: null };
+  }
+
+  // Cold start: reading required context.
+  if (verb === 'READ' && COLD_START.some((c) => t.includes(c))) {
+    return { phase: 'COLD_START', comm: null };
+  }
+
+  return { phase: 'WORK', comm: null };
+}
+
 let raw = '';
 try {
   raw = readFileSync(0, 'utf8');
@@ -121,6 +169,9 @@ try {
   const touched = typeof target === 'string' ? target : '';
   const canonical = CANONICAL.some((c) => touched.endsWith(c));
 
+  const { phase, comm } = classify(verb, tool, touched, payload.tool_input);
+  if (comm && comm.from === null) comm.from = role;
+
   const line = {
     ts: new Date().toISOString(),
     role,
@@ -129,6 +180,8 @@ try {
     what,
     target: touched.slice(0, 240),
     canonical,
+    phase,
+    comm,
     session: (payload.session_id || '').slice(0, 8),
   };
 

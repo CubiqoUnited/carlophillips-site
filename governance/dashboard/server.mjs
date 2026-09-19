@@ -92,7 +92,7 @@ function events(limit = 40) {
 }
 
 /* Per-role status derived from real activity, never from self-report. */
-const ROLES = ['sushma', 'pushpa', 'aarti', 'watchdog'];
+const ROLES = ['sushma', 'pushpa', 'aarti'];
 function roles(act) {
   const now = Date.now();
   return ROLES.map((role) => {
@@ -105,9 +105,16 @@ function roles(act) {
       else if (age < 10 * 60_000) status = 'IDLE';
       else status = 'QUIET';
     }
+    /* Which of the three phases the role is in, and how much of each it has
+     * done in this window. Derived from artifacts touched, never claimed. */
+    const phaseCounts = { COLD_START: 0, WORK: 0, RECONCILE: 0, COMMS: 0 };
+    for (const r of mine) phaseCounts[r.phase || 'WORK'] = (phaseCounts[r.phase || 'WORK'] || 0) + 1;
+
     return {
       role,
       status,
+      phase: last ? last.phase || 'WORK' : null,
+      phaseCounts,
       last: last ? { what: last.what, verb: last.verb, ts: last.ts, target: last.target } : null,
       ageMs: age,
       count: mine.length,
@@ -116,6 +123,20 @@ function roles(act) {
 }
 
 /* Board rows, parsed from the markdown table Sushma maintains. */
+/* Every dispatch out and every status-change request in, newest first. */
+function comms(act, limit = 30) {
+  return act.rows
+    .filter((r) => r.comm)
+    .slice(0, limit)
+    .map((r) => ({
+      ts: r.ts,
+      kind: r.comm.kind,
+      from: r.comm.from,
+      to: r.comm.to,
+      what: r.what,
+    }));
+}
+
 function board() {
   const raw = read('state/BOARD.md');
   if (raw === null) return { available: false, rows: [] };
@@ -169,6 +190,7 @@ function snapshot() {
         : 'STALE',
     },
     roles: roles(act),
+    comms: comms(act),
     board: board(),
     decisions: decisions(),
     repo: repo(),

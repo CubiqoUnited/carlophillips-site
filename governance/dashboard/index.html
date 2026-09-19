@@ -81,6 +81,38 @@ body{
 .rmeta{margin-top:7px; font:650 10px/1 ui-monospace,monospace; color:var(--ink-3); display:flex; gap:9px}
 .rcard.live{box-shadow:0 0 0 2px color-mix(in srgb,var(--rc) 40%,transparent)}
 
+/* phase pipeline: cold start -> work -> reconcile */
+.pipe{display:flex; gap:3px; margin-top:9px}
+.seg{flex:1; border-radius:4px; padding:5px 3px; text-align:center;
+  font:700 8px/1.2 ui-monospace,monospace; letter-spacing:.03em;
+  background:var(--sunk); color:var(--ink-3); border:1px solid transparent; transition:all .25s}
+.seg.done{color:var(--ink-2)}
+.seg.on{background:color-mix(in srgb,var(--rc) 20%,transparent); color:var(--rc); border-color:color-mix(in srgb,var(--rc) 45%,transparent); font-weight:800}
+.seg small{display:block; font-size:8.5px; opacity:.75; font-weight:600; margin-top:2px}
+
+/* communication lane */
+.wire{display:grid; grid-template-columns:86px 1fr; gap:10px; padding:9px 14px;
+  border-bottom:1px solid var(--line-2); align-items:baseline; animation:slide .35s ease}
+.wire:last-child{border-bottom:none}
+.wire-t{font:650 10.5px/1.5 ui-monospace,monospace; color:var(--ink-3)}
+.hop{display:flex; align-items:center; gap:6px; flex-wrap:wrap; font:700 10.5px/1.5 ui-monospace,monospace}
+.who-c{padding:3px 6px; border-radius:4px; text-transform:uppercase; letter-spacing:.04em; font-size:9.5px}
+.who-c[data-r=sushma]{background:color-mix(in srgb,var(--sushma) 16%,transparent); color:var(--sushma)}
+.who-c[data-r=pushpa]{background:color-mix(in srgb,var(--pushpa) 16%,transparent); color:var(--pushpa)}
+.who-c[data-r=aarti]{background:color-mix(in srgb,var(--aarti) 16%,transparent); color:var(--aarti)}
+.arrow{color:var(--ink-3); font-size:12px}
+.kind{font:700 8.5px/1 ui-monospace,monospace; letter-spacing:.05em; padding:3px 5px; border-radius:3px}
+.k-DISPATCH{background:color-mix(in srgb,var(--live) 15%,transparent); color:var(--live)}
+.k-SIGNAL{background:color-mix(in srgb,var(--warn) 15%,transparent); color:var(--warn)}
+.wire-w{font-size:12px; color:var(--ink-2); margin-top:3px; word-break:break-word}
+.verb.RECONCILE{background:color-mix(in srgb,var(--boss) 18%,transparent); color:var(--boss)}
+.ph{font:700 8.5px/1 ui-monospace,monospace; letter-spacing:.04em; padding:3px 5px; border-radius:3px;
+  background:var(--sunk); color:var(--ink-3); margin-right:6px}
+.ph.COLD_START{background:color-mix(in srgb,var(--aarti) 14%,transparent); color:var(--aarti)}
+.ph.WORK{background:color-mix(in srgb,var(--live) 14%,transparent); color:var(--live)}
+.ph.RECONCILE{background:color-mix(in srgb,var(--boss) 18%,transparent); color:var(--boss)}
+.ph.COMMS{background:color-mix(in srgb,var(--watchdog) 16%,transparent); color:var(--watchdog)}
+
 /* ---------- feed ---------- */
 .feed{max-height:560px; overflow-y:auto}
 .ev{display:grid; grid-template-columns:86px 68px 1fr; gap:10px; padding:8px 14px;
@@ -127,13 +159,18 @@ body{
     <span class="tag">V3.5interim · read-only</span>
     <span class="pulse"><span class="led" id="led"></span><span id="pulse-text">connecting…</span></span>
   </div>
-  <p class="note">Live projection of the repository. Activity is recorded by the harness on every tool call, not self-reported — so what you see here is what actually happened, including work nobody remembered to log.</p>
+  <p class="note">Live projection of the repository. Every agent moves through three phases — cold start, work, reconcile — and communicates only through Sushma. All of it is recorded by the harness on every tool call, not self-reported, so this shows what actually happened rather than what anyone remembered to report.</p>
 
   <div class="grid">
     <div>
       <div class="card">
         <div class="card-h"><h2>Who is working</h2><span class="aside" id="roles-aside"></span></div>
         <div class="card-b"><div class="roles" id="roles"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>Communication</h2><span class="aside">dispatch out · status request in</span></div>
+        <div class="card-b flush" id="comms"></div>
       </div>
 
       <div class="card">
@@ -179,6 +216,39 @@ function clock(ts){
 }
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+const PHASES = [
+  ['COLD_START','1 · COLD START'],
+  ['WORK','2 · WORK'],
+  ['RECONCILE','3 · RECONCILE'],
+];
+function pipeline(r){
+  return '<div class="pipe">' + PHASES.map(([key,label]) => {
+    const n = (r.phaseCounts && r.phaseCounts[key]) || 0;
+    const on = r.phase === key ? 'on' : (n ? 'done' : '');
+    return `<span class="seg ${on}">${label}<small>${n}</small></span>`;
+  }).join('') + '</div>';
+}
+
+function renderComms(comms){
+  if (!comms || !comms.length){
+    $('comms').innerHTML = `<div class="empty"><strong>No messages yet</strong>Dispatches and status-change requests appear here.</div>`;
+    return;
+  }
+  $('comms').innerHTML = comms.map(c => `
+    <div class="wire">
+      <span class="wire-t">${clock(c.ts)}</span>
+      <div>
+        <div class="hop">
+          <span class="who-c" data-r="${esc(c.from)}">${esc(c.from)}</span>
+          <span class="arrow">&rarr;</span>
+          <span class="who-c" data-r="${esc(c.to)}">${esc(c.to)}</span>
+          <span class="kind k-${esc(c.kind)}">${c.kind === 'DISPATCH' ? 'ASSIGNS WORK' : 'STATUS CHANGE REQUEST'}</span>
+        </div>
+        <div class="wire-w">${esc(c.what)}</div>
+      </div>
+    </div>`).join('');
+}
+
 function renderRoles(roles){
   const active = roles.filter(r => r.status === 'ACTIVE').length;
   $('roles-aside').textContent = active ? `${active} active now` : 'none active';
@@ -189,6 +259,7 @@ function renderRoles(roles){
         <span class="rstat s-${r.status}">${r.status.replace('_',' ')}</span>
       </div>
       <div class="rwhat">${r.last ? esc(r.last.what) : 'No recorded activity.'}</div>
+      ${pipeline(r)}
       <div class="rmeta"><span>${ago(r.ageMs)}</span><span>${r.count} actions</span></div>
     </div>`).join('');
 }
@@ -208,7 +279,7 @@ function renderFeed(act){
     <div class="ev ${r.canonical?'canon':''}">
       <span class="ev-t">${clock(r.ts)}</span>
       <span class="ev-r" data-role="${esc(r.role)}">${esc(r.role)}</span>
-      <span class="ev-w"><span class="verb ${esc(r.verb)}">${esc(r.verb)}</span>${esc(r.what)}</span>
+      <span class="ev-w"><span class="ph ${esc(r.phase||'WORK')}">${esc((r.phase||'WORK').replace('_',' '))}</span><span class="verb ${esc(r.verb)}">${esc(r.verb)}</span>${esc(r.what)}</span>
     </div>`).join('');
 }
 
@@ -260,6 +331,7 @@ async function tick(){
     $('pulse-text').textContent = 'live · ' + clock(s.ts);
     renderRoles(s.roles);
     renderFeed(s.activity);
+    renderComms(s.comms);
     renderBoard(s.board);
     renderRepo(s.repo);
     renderGov(s);
