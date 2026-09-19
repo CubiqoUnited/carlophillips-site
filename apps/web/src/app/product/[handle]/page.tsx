@@ -53,11 +53,23 @@ const loadObservedShopifyProduct = loadShopifyProduct as (
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = {
-  title: 'Product Review | CARLOPHILLIPS',
-  description: 'A private CARLOPHILLIPS product review surface.',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ handle: string }>;
+}) {
+  const { handle } = await params;
+  const name = handle
+    .split('-')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  return {
+    title: `${name} | CARLOPHILLIPS`,
+    description: `${name} from CARLOPHILLIPS.`,
+  };
+}
 
 export default async function ProductPage({
   params,

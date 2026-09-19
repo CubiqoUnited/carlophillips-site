@@ -13,6 +13,26 @@ NEXT: <requested transition or exact action> | OWNER: <next owner> | RESUME: <tr
 
 A bare PASS is prohibited. The signal does not change canonical state by itself — Sushma verifies the evidence, accepts or rejects the transition, updates NOW.md/BOARD.md, records any correction or blocker, and dispatches the next owner.
 
+## READY_FOR_SIDEKICK — external-consultation request (added 2026-09-18, Boss instruction)
+
+Shopify Sidekick is consulted through **Sushma alone**. Pushpa and Aarti do not contact it. A role wanting a Shopify behaviour question answered raises `RESULT: READY_FOR_SIDEKICK` on its item; Sushma composes the question, carries the exchange, and records the answer. This keeps one voice to an external source and one place where its answers are graded.
+
+```
+ITEM: <item-id> | RESULT: READY_FOR_SIDEKICK
+QUESTION: <the Shopify behaviour question, one sentence, answerable>
+WHY IT MATTERS: <what is built, skipped, or changed depending on the answer>
+ALREADY CHECKED: <Admin API reads or docs already consulted — required, see below>
+BLOCKS: <the item is blocked pending answer / proceeds in parallel>
+```
+
+Rules:
+- **ALREADY CHECKED is mandatory.** If the Admin API can answer it, use the API — it is cheaper, faster, and outranks Sidekick. A request that skipped an available API read is returned.
+- Ask only "is this the right way to do X in Shopify" or "does Shopify already do this". Never business judgment (Boss's), never facts we can read ourselves.
+- Sushma records every exchange in state/DECISIONS-LOG.md as `SK-NNN` with the date, the question exactly as asked, the answer, and her own grading of it.
+- **ROUTING IS MANDATORY AND ORDERED (Boss, 2026-09-18). Sushma owns the channel but is NOT the terminus.** Every answer goes **to Pushpa first** — she is Product Owner and Business Analyst, so she decides what an external answer means for requirements, acceptance criteria and register entries. **Aarti receives it after her**, for technical solutioning, where relevant. Sushma carries the exchange, logs it, and routes it; she does not convert it into product meaning herself, and she does not report it onward while skipping the PO.
+- **Sidekick answers are external input, not authority.** They never override a Boss decision, and they lose to a verified Admin API read. Every recorded answer carries an explicit confidence note naming any part that is unverified.
+- No role may write "confirmed with Sidekick" without a recorded `SK-NNN`. Without it the claim is a bare PASS and is invalid.
+
 ## Sushma → Watchdog brief (different contract, do not confuse with the above)
 ```
 ACTIVE: <assigned roles, item IDs, states, latest evidence and freshness>
