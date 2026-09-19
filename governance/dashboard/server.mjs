@@ -119,7 +119,7 @@ function roles(act) {
     }
     /* Which of the three phases the role is in, and how much of each it has
      * done in this window. Derived from artifacts touched, never claimed. */
-    const phaseCounts = { COLD_START: 0, WORK: 0, RECONCILE: 0, COMMS: 0 };
+    const phaseCounts = { COLD_START: 0, WORK: 0, RECONCILE: 0, COMMS: 0, BOUNDARY: 0 };
     for (const r of mine) phaseCounts[r.phase || 'WORK'] = (phaseCounts[r.phase || 'WORK'] || 0) + 1;
 
     return {
@@ -283,6 +283,7 @@ function snapshot() {
     roles: roles(act),
     comms: comms(act),
     files: files(act),
+    boundaries: act.rows.filter((r) => r.phase === 'BOUNDARY').slice(0, 10),
     checklists: checklists(),
     board: board(),
     decisions: decisions(),
