@@ -35,7 +35,9 @@ export default function CheckoutDesignReviewPage() {
         <Link href="/" className="cp-checkout-review-brand">
           CARLOPHILLIPS
         </Link>
-        <span className="cp-checkout-review-status">Internal review · Draft</span>
+        <span className="cp-checkout-review-status">
+          Internal review · Draft
+        </span>
       </header>
 
       <section

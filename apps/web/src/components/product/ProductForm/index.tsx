@@ -226,7 +226,9 @@ export default function ShopifyCheckoutForm({
         >
           Size guide
         </button>
-        <span>Free shipping on eligible orders · Returns accepted — see policy</span>
+        <span>
+          Free shipping on eligible orders · Returns accepted — see policy
+        </span>
       </div>
       {sizeGuideOpen && (
         <div
