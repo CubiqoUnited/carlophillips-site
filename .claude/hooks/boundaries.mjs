@@ -137,7 +137,22 @@ try {
   const role = roleOf(payload);
 
   const path = relPath(input.file_path || input.path || input.notebook_path);
-  const command = tool === 'Bash' ? String(input.command || '') : '';
+  /*
+   * Match only what the shell will EXECUTE, never what it merely carries.
+   *
+   * A real false positive proved this necessary: Aarti was denied
+   * `mkdir -p .../decisions/...` — his own lane — because the heredoc body he
+   * was writing quoted `git push` and `gh workflow run` inside an ADR. A role
+   * must be able to DOCUMENT a command it may not RUN, or the boundary blocks
+   * exactly the design work it is meant to protect.
+   */
+  const rawCommand = tool === 'Bash' ? String(input.command || '') : '';
+  const command = rawCommand
+    // drop heredoc bodies: <<'EOF' ... EOF
+    .replace(/<<-?\s*['"]?(\w+)['"]?[\s\S]*?^\s*\1\s*$/gm, ' <<HEREDOC> ')
+    // drop quoted strings, which carry prose rather than invocations
+    .replace(/'[^']{20,}'/g, " '<STR>' ")
+    .replace(/"[^"]{20,}"/g, ' "<STR>" ');
 
   for (const [lane, l] of Object.entries(LANES)) {
     if (!l.denied.includes(role)) continue;
