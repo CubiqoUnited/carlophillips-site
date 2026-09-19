@@ -65,3 +65,4 @@ Thumbs.db
 /tmp_make_chat_pdf.py
 /mock-asset-factory-data/
 /.env.mock-assets.local
+state/activity.jsonl

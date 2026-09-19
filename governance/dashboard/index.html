@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control Plane</title>
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#ffffff; --panel-2:#fbfcfd; --sunk:#f1f3f6;
+  --ink:#0d1117; --ink-2:#4b5563; --ink-3:#9aa4b2;
+  --line:#e3e7ec; --line-2:#eef1f5;
+  --sushma:#d6336c; --pushpa:#e8590c; --aarti:#1971c2; --watchdog:#7048e8; --boss:#b8860b;
+  --live:#0ca678; --warn:#f08c00; --bad:#e03131; --quiet:#9aa4b2;
+  --shadow:0 1px 2px rgba(13,17,23,.05), 0 8px 24px -12px rgba(13,17,23,.12);
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --bg:#0a0d12; --panel:#121820; --panel-2:#0e141b; --sunk:#0b1016;
+    --ink:#e6edf3; --ink-2:#9aa8b8; --ink-3:#5b6675;
+    --line:#1e2733; --line-2:#182029;
+    --sushma:#f06595; --pushpa:#ff922b; --aarti:#4dabf7; --watchdog:#9775fa; --boss:#e0b341;
+    --live:#38d9a9; --warn:#ffa94d; --bad:#ff6b6b; --quiet:#5b6675;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a0d12; --panel:#121820; --panel-2:#0e141b; --sunk:#0b1016;
+  --ink:#e6edf3; --ink-2:#9aa8b8; --ink-3:#5b6675;
+  --line:#1e2733; --line-2:#182029;
+  --sushma:#f06595; --pushpa:#ff922b; --aarti:#4dabf7; --watchdog:#9775fa; --boss:#e0b341;
+  --live:#38d9a9; --warn:#ffa94d; --bad:#ff6b6b; --quiet:#5b6675;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:14px; line-height:1.45; -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace}
+
+/* ---------- shell ---------- */
+.app{max-width:1360px; margin:0 auto; padding:20px 16px 56px}
+.top{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:4px}
+.brand{font-size:19px; font-weight:750; letter-spacing:-.015em}
+.tag{font:650 10px/1 ui-monospace,monospace; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-3); border:1px solid var(--line); padding:5px 7px; border-radius:5px}
+.pulse{margin-left:auto; display:flex; align-items:center; gap:7px; font:650 11px/1 ui-monospace,monospace; color:var(--ink-3)}
+.led{width:7px;height:7px;border-radius:50%;background:var(--quiet)}
+.led.on{background:var(--live); box-shadow:0 0 0 3px color-mix(in srgb, var(--live) 22%, transparent); animation:beat 2s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:1}50%{opacity:.45}}
+.note{color:var(--ink-2); font-size:13px; margin:0 0 18px; max-width:76ch}
+
+/* ---------- layout ---------- */
+.grid{display:grid; grid-template-columns:minmax(0,1.32fr) minmax(0,1fr); gap:14px; align-items:start}
+@media (max-width:980px){ .grid{grid-template-columns:1fr} }
+
+.card{background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); overflow:hidden}
+.card + .card{margin-top:14px}
+.card-h{display:flex; align-items:center; gap:9px; padding:11px 14px; border-bottom:1px solid var(--line-2); background:var(--panel-2)}
+.card-h h2{margin:0; font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-2)}
+.card-h .aside{margin-left:auto; font:650 10.5px/1 ui-monospace,monospace; color:var(--ink-3)}
+.card-b{padding:13px 14px}
+.card-b.flush{padding:0}
+
+/* ---------- roles ---------- */
+.roles{display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:10px}
+.rcard{border:1px solid var(--line); border-radius:10px; padding:11px 12px; background:var(--panel-2); position:relative; overflow:hidden}
+.rcard::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--rc,var(--quiet))}
+.rcard[data-role=sushma]{--rc:var(--sushma)} .rcard[data-role=pushpa]{--rc:var(--pushpa)}
+.rcard[data-role=aarti]{--rc:var(--aarti)} .rcard[data-role=watchdog]{--rc:var(--watchdog)}
+.rtop{display:flex; align-items:center; gap:7px; margin-bottom:6px}
+.rname{font-weight:700; font-size:13.5px; text-transform:capitalize}
+.rstat{margin-left:auto; font:700 9.5px/1 ui-monospace,monospace; letter-spacing:.06em; padding:4px 6px; border-radius:4px}
+.s-ACTIVE{background:color-mix(in srgb,var(--live) 16%,transparent); color:var(--live)}
+.s-IDLE{background:color-mix(in srgb,var(--warn) 16%,transparent); color:var(--warn)}
+.s-QUIET,.s-NOT_ASSIGNED{background:var(--sunk); color:var(--ink-3)}
+.rwhat{font-size:12px; color:var(--ink-2); min-height:34px;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word}
+.rmeta{margin-top:7px; font:650 10px/1 ui-monospace,monospace; color:var(--ink-3); display:flex; gap:9px}
+.rcard.live{box-shadow:0 0 0 2px color-mix(in srgb,var(--rc) 40%,transparent)}
+
+/* ---------- feed ---------- */
+.feed{max-height:560px; overflow-y:auto}
+.ev{display:grid; grid-template-columns:86px 68px 1fr; gap:10px; padding:8px 14px;
+  border-bottom:1px solid var(--line-2); align-items:baseline; animation:slide .35s ease}
+@keyframes slide{from{opacity:0; transform:translateY(-4px)}to{opacity:1; transform:none}}
+.ev:last-child{border-bottom:none}
+.ev.canon{background:color-mix(in srgb,var(--boss) 7%,transparent)}
+.ev-t{font:650 10.5px/1.5 ui-monospace,monospace; color:var(--ink-3)}
+.ev-r{font:700 10px/1.5 ui-monospace,monospace; letter-spacing:.04em; text-transform:uppercase}
+.ev-r[data-role=sushma]{color:var(--sushma)} .ev-r[data-role=pushpa]{color:var(--pushpa)}
+.ev-r[data-role=aarti]{color:var(--aarti)} .ev-r[data-role=watchdog]{color:var(--watchdog)}
+.ev-w{font-size:12.5px; color:var(--ink-2); word-break:break-word}
+.verb{font:700 9px/1 ui-monospace,monospace; letter-spacing:.05em; padding:3px 5px; border-radius:3px;
+  background:var(--sunk); color:var(--ink-3); margin-right:6px; vertical-align:1px}
+.verb.WRITE,.verb.EDIT{background:color-mix(in srgb,var(--live) 15%,transparent); color:var(--live)}
+.verb.DISPATCH{background:color-mix(in srgb,var(--watchdog) 15%,transparent); color:var(--watchdog)}
+.verb.SHELL{background:color-mix(in srgb,var(--aarti) 15%,transparent); color:var(--aarti)}
+
+/* ---------- board / rows ---------- */
+.row{display:flex; gap:10px; align-items:center; padding:9px 14px; border-bottom:1px solid var(--line-2); font-size:12.5px}
+.row:last-child{border-bottom:none}
+.row .id{font:700 11px/1 ui-monospace,monospace; min-width:130px; color:var(--ink)}
+.row .st{font:650 10px/1 ui-monospace,monospace; padding:4px 6px; border-radius:4px; background:var(--sunk); color:var(--ink-2); white-space:nowrap}
+.row .who{margin-left:auto; color:var(--ink-3); font-size:11.5px; text-align:right}
+.p1{color:var(--bad); font-weight:700} .p2{color:var(--warn)} .p3{color:var(--ink-3)}
+
+/* ---------- health ---------- */
+.kv{display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:12.5px; align-items:baseline}
+.kv dt{color:var(--ink-3); font:650 10.5px/1.6 ui-monospace,monospace; letter-spacing:.04em; text-transform:uppercase}
+.kv dd{margin:0; color:var(--ink); font-family:ui-monospace,monospace; font-size:12px; word-break:break-all}
+.chip{display:inline-block; font:700 9.5px/1 ui-monospace,monospace; padding:4px 6px; border-radius:4px; letter-spacing:.05em}
+.c-FRESH{background:color-mix(in srgb,var(--live) 16%,transparent); color:var(--live)}
+.c-STALE{background:color-mix(in srgb,var(--warn) 16%,transparent); color:var(--warn)}
+.c-NOT_CONFIGURED{background:color-mix(in srgb,var(--bad) 14%,transparent); color:var(--bad)}
+.empty{padding:26px 14px; text-align:center; color:var(--ink-3); font-size:12.5px}
+.empty strong{display:block; color:var(--ink-2); margin-bottom:5px; font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top">
+    <span class="brand">Control Plane</span>
+    <span class="tag">V3.5interim · read-only</span>
+    <span class="pulse"><span class="led" id="led"></span><span id="pulse-text">connecting…</span></span>
+  </div>
+  <p class="note">Live projection of the repository. Activity is recorded by the harness on every tool call, not self-reported — so what you see here is what actually happened, including work nobody remembered to log.</p>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <div class="card-h"><h2>Who is working</h2><span class="aside" id="roles-aside"></span></div>
+        <div class="card-b"><div class="roles" id="roles"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>Live activity</h2><span class="aside" id="feed-aside"></span></div>
+        <div class="card-b flush"><div class="feed" id="feed"></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-h"><h2>Board</h2><span class="aside" id="board-aside"></span></div>
+        <div class="card-b flush" id="board"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>Repository</h2></div>
+        <div class="card-b"><dl class="kv" id="repo"></dl></div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>Governance log</h2></div>
+        <div class="card-b"><dl class="kv" id="gov"></dl></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let failures = 0;
+
+function ago(ms){
+  if (ms == null) return '—';
+  const s = Math.round(ms/1000);
+  if (s < 60) return s + 's ago';
+  const m = Math.round(s/60);
+  if (m < 60) return m + 'm ago';
+  return Math.round(m/60) + 'h ago';
+}
+function clock(ts){
+  try { return new Date(ts).toLocaleTimeString([], {hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+  catch { return '--:--:--'; }
+}
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function renderRoles(roles){
+  const active = roles.filter(r => r.status === 'ACTIVE').length;
+  $('roles-aside').textContent = active ? `${active} active now` : 'none active';
+  $('roles').innerHTML = roles.map(r => `
+    <div class="rcard ${r.status==='ACTIVE'?'live':''}" data-role="${r.role}">
+      <div class="rtop">
+        <span class="rname">${r.role}</span>
+        <span class="rstat s-${r.status}">${r.status.replace('_',' ')}</span>
+      </div>
+      <div class="rwhat">${r.last ? esc(r.last.what) : 'No recorded activity.'}</div>
+      <div class="rmeta"><span>${ago(r.ageMs)}</span><span>${r.count} actions</span></div>
+    </div>`).join('');
+}
+
+function renderFeed(act){
+  if (!act.available){
+    $('feed').innerHTML = `<div class="empty"><strong>Activity recorder not configured</strong>
+      The PostToolUse hook has not written <code>state/activity.jsonl</code> yet. Restart the session so the hook loads.</div>`;
+    return;
+  }
+  if (!act.rows.length){
+    $('feed').innerHTML = `<div class="empty"><strong>No activity recorded yet</strong>Waiting for the first tool call.</div>`;
+    return;
+  }
+  $('feed-aside').textContent = act.rows.length + ' recent';
+  $('feed').innerHTML = act.rows.map(r => `
+    <div class="ev ${r.canonical?'canon':''}">
+      <span class="ev-t">${clock(r.ts)}</span>
+      <span class="ev-r" data-role="${esc(r.role)}">${esc(r.role)}</span>
+      <span class="ev-w"><span class="verb ${esc(r.verb)}">${esc(r.verb)}</span>${esc(r.what)}</span>
+    </div>`).join('');
+}
+
+function renderBoard(board){
+  if (!board.available || !board.rows.length){
+    $('board').innerHTML = `<div class="empty"><strong>No board rows parsed</strong>state/BOARD.md has no item rows.</div>`;
+    return;
+  }
+  $('board-aside').textContent = board.rows.length + ' items';
+  $('board').innerHTML = board.rows.map(r => {
+    const p = /P1/.test(r.priority) ? 'p1' : /P2/.test(r.priority) ? 'p2' : 'p3';
+    return `<div class="row">
+      <span class="id">${esc(r.id)}</span>
+      <span class="st">${esc(r.state)}</span>
+      <span class="${p} mono" style="font-size:10.5px">${esc((r.priority||'').split(' ')[0])}</span>
+      <span class="who">${esc(r.assigned)}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderRepo(repo){
+  const unpushed = repo.unpushed == null
+    ? '<span class="chip c-NOT_CONFIGURED">NO REMOTE REF</span>'
+    : repo.unpushed > 0
+      ? `<span class="chip c-STALE">${repo.unpushed} UNPUSHED</span>`
+      : '<span class="chip c-FRESH">IN SYNC</span>';
+  $('repo').innerHTML = `
+    <dt>Branch</dt><dd>${esc(repo.branch)} @ ${esc(repo.head)}</dd>
+    <dt>Remotes</dt><dd>${esc((repo.remotes||[]).join(', ')) || '—'}</dd>
+    <dt>Delivery</dt><dd>${unpushed}</dd>
+    <dt>Uncommitted</dt><dd>${repo.dirtyCount} file(s)</dd>
+    <dt>Worktrees</dt><dd>${repo.worktrees}</dd>`;
+}
+
+function renderGov(s){
+  $('gov').innerHTML = `
+    <dt>events.jsonl</dt><dd><span class="chip c-${s.events.freshness}">${s.events.freshness.replace('_',' ')}</span></dd>
+    <dt>Last event</dt><dd>${s.events.rows[0] ? esc(s.events.rows[0].type || s.events.rows[0].id) : 'none'}</dd>
+    <dt>Decisions</dt><dd>${s.decisions.available ? s.decisions.open + ' logged' : 'not found'}</dd>`;
+}
+
+async function tick(){
+  try {
+    const r = await fetch('/api/state', {cache:'no-store'});
+    if (!r.ok) throw new Error(r.status);
+    const s = await r.json();
+    failures = 0;
+    $('led').classList.add('on');
+    $('pulse-text').textContent = 'live · ' + clock(s.ts);
+    renderRoles(s.roles);
+    renderFeed(s.activity);
+    renderBoard(s.board);
+    renderRepo(s.repo);
+    renderGov(s);
+  } catch {
+    failures++;
+    $('led').classList.remove('on');
+    $('pulse-text').textContent = failures > 2 ? 'server unreachable' : 'reconnecting…';
+  }
+}
+tick();
+setInterval(tick, 2000);
+</script>
+</body>
+</html>
