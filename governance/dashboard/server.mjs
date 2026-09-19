@@ -57,6 +57,9 @@ const NOT_WORK = ['governance/dashboard', '.claude/hooks', 'state/activity.jsonl
                   '.claude/settings.json', '.claude/launch.json'];
 const NOT_WORK_TOOLS = /preview_start|preview_stop|preview_logs|preview_list|read_console_messages|read_network_requests/;
 const isInstrumentation = (r) => {
+  // Boundary records written by crafted test payloads carry no session id.
+  // Showing them makes a synthetic probe look like a real denied attempt.
+  if (r.phase === 'BOUNDARY' && !r.session) return true;
   if (NOT_WORK_TOOLS.test(r.tool || '')) return true;
   const t = (r.target || '') + ' ' + (r.what || '');
   return NOT_WORK.some((p) => t.includes(p));
@@ -122,9 +125,27 @@ function roles(act) {
     const phaseCounts = { COLD_START: 0, WORK: 0, RECONCILE: 0, COMMS: 0, BOUNDARY: 0 };
     for (const r of mine) phaseCounts[r.phase || 'WORK'] = (phaseCounts[r.phase || 'WORK'] || 0) + 1;
 
+    /* What this role was actually assigned — the last dispatch addressed to it.
+     * Without this the card says what a role is doing this second but never
+     * what it is doing it FOR. */
+    /* Sushma is the dispatcher, never a dispatchee — her current focus is the
+     * last assignment she SENT. Pushpa and Aarti show what they were given. */
+    const dispatch = role === 'sushma'
+      ? act.rows.find((r) => r.comm && r.comm.kind === 'DISPATCH' && r.comm.from === 'sushma')
+      : act.rows.find((r) => r.comm && r.comm.kind === 'DISPATCH' && r.comm.to === role);
+
     return {
       role,
       status,
+      assignment: dispatch
+        ? {
+            what: role === 'sushma'
+              ? dispatch.what
+              : dispatch.what.replace(/^dispatching \w+:\s*/, ''),
+            ts: dispatch.ts,
+          }
+        : null,
+      recent: mine.slice(0, 5).map((r) => ({ ts: r.ts, verb: r.verb, phase: r.phase, what: r.what })),
       phase: last ? last.phase || 'WORK' : null,
       phaseCounts,
       last: last ? { what: last.what, verb: last.verb, ts: last.ts, target: last.target } : null,
@@ -150,14 +171,30 @@ function comms(act, limit = 30) {
 }
 
 /* The artifacts currently in play — what to click to see what an agent saw. */
-function files(act, limit = 18) {
+const PATHS_IN_TEXT = /(?:^|[\s'"`(])((?:apps|packages|tests|state|work|governance|decisions|agents|checklists|contracts|scripts|\.github|\.claude)\/[\w./@-]+\.\w{1,6})/g;
+
+function pathsFrom(r) {
+  const t = r.target || '';
+  // A plain file path: use it directly.
+  if (t && !t.includes(' ') && !t.startsWith('/') && /\.(md|ts|tsx|js|jsx|mjs|json|yaml|yml|jsonl)$/.test(t)) {
+    return [t];
+  }
+  // A shell command: mine it for repo paths, otherwise Bash-heavy work shows
+  // nothing at all and Boss cannot tell what a role is actually touching.
+  const out = [];
+  let m;
+  PATHS_IN_TEXT.lastIndex = 0;
+  while ((m = PATHS_IN_TEXT.exec(t)) !== null) if (!out.includes(m[1])) out.push(m[1]);
+  return out;
+}
+
+function files(act, limit = 20) {
   const seen = new Map();
   for (const r of act.rows) {
-    const t = r.target;
-    if (!t || !/\.(md|ts|tsx|js|jsx|json|yaml|yml|jsonl)$/.test(t)) continue;
-    if (t.includes(' ') || t.startsWith('/')) continue;   // shell commands, absolute paths
-    if (seen.has(t)) { seen.get(t).touches++; continue; }
-    seen.set(t, { path: t, role: r.role, verb: r.verb, phase: r.phase, ts: r.ts, touches: 1 });
+    for (const p of pathsFrom(r)) {
+      if (seen.has(p)) { seen.get(p).touches++; continue; }
+      seen.set(p, { path: p, role: r.role, verb: r.verb, phase: r.phase, ts: r.ts, touches: 1 });
+    }
     if (seen.size >= limit) break;
   }
   return [...seen.values()];
@@ -255,14 +292,20 @@ function repo() {
   const dirty = git(['status', '--porcelain']);
   const worktrees = (git(['worktree', 'list']) || '').split('\n').filter(Boolean);
   const remotes = (git(['remote']) || '').split('\n').filter(Boolean);
-  const ahead = git(['rev-list', '--count', 'github/staging..HEAD']);
+  /* Two different questions, and conflating them made the board lie:
+   *   unpushed  — commits on HEAD not yet on THIS branch's own remote
+   *   aheadOfBase — commits ahead of staging, i.e. awaiting a PR merge
+   * A pushed branch with an open PR is 0 unpushed and N ahead. */
+  const unpushed = branch ? git(['rev-list', '--count', `github/${branch}..HEAD`]) : null;
+  const aheadOfBase = git(['rev-list', '--count', 'github/staging..HEAD']);
   return {
     branch,
     head,
     dirtyCount: dirty ? dirty.split('\n').filter(Boolean).length : 0,
     worktrees: worktrees.length,
     remotes,
-    unpushed: ahead === null ? null : Number(ahead),
+    unpushed: unpushed === null ? null : Number(unpushed),
+    aheadOfBase: aheadOfBase === null ? null : Number(aheadOfBase),
   };
 }
 

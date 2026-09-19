@@ -143,6 +143,21 @@ body{
 .brick.p{background:var(--purple-bg); border-color:var(--purple); color:var(--purple)}
 .bricks .none{font:600 10px/1 ui-monospace,monospace; color:var(--ink-3)}
 
+/* what the role was actually assigned */
+.onit{display:flex; gap:7px; align-items:flex-start; margin-bottom:8px; padding:7px 8px;
+  border-radius:6px; background:var(--sunk); border-left:3px solid var(--rc,var(--ink-3))}
+.n-sushma .onit{--rc:var(--sushma)} .n-aarti .onit{--rc:var(--aarti)} .n-pushpa .onit{--rc:var(--pushpa)}
+.onit .k{font:700 8px/1.5 ui-monospace,monospace; letter-spacing:.07em; color:var(--ink-3); flex:none}
+.onit .v{font-size:11.5px; color:var(--ink); font-weight:600; word-break:break-word}
+.onit.none .v{color:var(--ink-3); font-weight:400}
+
+/* the last few actions, so a single line is not the whole story */
+.trail{margin-top:9px; border-top:1px solid var(--line-2); padding-top:7px}
+.tr{display:flex; gap:6px; align-items:baseline; font:600 10px/1.65 ui-monospace,monospace; color:var(--ink-3)}
+.tr .t{flex:none; opacity:.8}
+.tr .w{color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.tr:first-child .w{color:var(--ink); font-weight:700}
+
 /* ---------- team grid ---------- */
 .team{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr); gap:14px; align-items:start}
 @media (max-width:1080px){ .team{grid-template-columns:1fr} }
@@ -387,8 +402,16 @@ function nodeHTML(r, files){
     + '<div><div class="nn">'+esc(r.role[0].toUpperCase()+r.role.slice(1))+'</div>'
     + '<div class="nr">'+(SUBTITLE[r.role]||'')+'</div></div>'
     + '<span class="badge b-'+r.status+'">'+r.status.replace('_',' ')+'</span></div>'
-    + '<div class="nb"><div class="doing">'+(r.last ? esc(r.last.what) : 'No recorded activity.')+'</div>'
+    + '<div class="nb">'
+    + (r.assignment
+        ? '<div class="onit"><span class="k">ON</span><span class="v">'+esc(r.assignment.what)+'</span></div>'
+        : '<div class="onit none"><span class="k">ON</span><span class="v">no assignment dispatched</span></div>')
+    + '<div class="doing">'+(r.last ? esc(r.last.what) : 'No recorded activity.')+'</div>'
     + '<div class="pipe">'+pipe+'</div><div class="bricks">'+bricks+'</div>'
+    + (r.recent && r.recent.length > 1
+        ? '<div class="trail">' + r.recent.map(x =>
+            '<div class="tr"><span class="t">'+clock(x.ts)+'</span><span class="w">'+esc(x.what)+'</span></div>').join('') + '</div>'
+        : '')
     + '<div class="nr" style="margin-top:9px">'+ago(r.ageMs)+' · '+r.count+' actions</div></div></div>';
 }
 
@@ -480,9 +503,10 @@ function renderStrip(s){
   $('headline').textContent = newest ? newest.what : 'Waiting for the first recorded action.';
 
   const r = s.repo;
-  const unp = r.unpushed == null ? ''
-    : r.unpushed > 0 ? ' · ' + r.unpushed + ' UNPUSHED' : ' · IN SYNC';
-  $('tick-r').textContent = r.branch+'@'+r.head+' · '+r.dirtyCount+' uncommitted'+unp
+  const unp = r.unpushed == null ? ' · NO REMOTE BRANCH'
+    : r.unpushed > 0 ? ' · ' + r.unpushed + ' UNPUSHED' : ' · PUSHED';
+  const ahead = r.aheadOfBase ? ' · ' + r.aheadOfBase + ' AHEAD OF STAGING' : '';
+  $('tick-r').textContent = r.branch+'@'+r.head+' · '+r.dirtyCount+' uncommitted'+unp+ahead
     + ' · events ' + s.events.freshness.replace('_',' ');
 }
 
