@@ -147,6 +147,36 @@ body{
 .c-FRESH{background:color-mix(in srgb,var(--live) 16%,transparent); color:var(--live)}
 .c-STALE{background:color-mix(in srgb,var(--warn) 16%,transparent); color:var(--warn)}
 .c-NOT_CONFIGURED{background:color-mix(in srgb,var(--bad) 14%,transparent); color:var(--bad)}
+/* files in play */
+.fl{display:flex; align-items:center; gap:9px; padding:8px 14px; border-bottom:1px solid var(--line-2);
+  cursor:pointer; transition:background .12s; font-size:12.5px}
+.fl:last-child{border-bottom:none}
+.fl:hover{background:var(--sunk)}
+.fl-p{font:650 11.5px/1.4 ui-monospace,monospace; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.fl-r{margin-left:auto; font:700 9.5px/1 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.04em; flex:none}
+.fl-r[data-r=sushma]{color:var(--sushma)} .fl-r[data-r=pushpa]{color:var(--pushpa)} .fl-r[data-r=aarti]{color:var(--aarti)}
+.fl-n{font:650 9.5px/1 ui-monospace,monospace; color:var(--ink-3); flex:none}
+
+/* drawer */
+.scrim{position:fixed; inset:0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .2s; z-index:40}
+.scrim.open{opacity:1; pointer-events:auto}
+.drawer{position:fixed; top:0; right:0; bottom:0; width:min(760px,94vw); background:var(--panel);
+  border-left:1px solid var(--line); box-shadow:-16px 0 48px -16px rgba(0,0,0,.4);
+  transform:translateX(100%); transition:transform .24s cubic-bezier(.3,1,.4,1); z-index:41; display:flex; flex-direction:column}
+.drawer.open{transform:none}
+.dr-h{display:flex; align-items:center; gap:10px; padding:13px 16px; border-bottom:1px solid var(--line-2); background:var(--panel-2)}
+.dr-h .p{font:700 12px/1.3 ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.dr-h .m{margin-left:auto; font:650 10px/1 ui-monospace,monospace; color:var(--ink-3); flex:none}
+.dr-x{border:1px solid var(--line); background:var(--panel); color:var(--ink-2); border-radius:6px;
+  width:26px; height:26px; cursor:pointer; font-size:14px; line-height:1; flex:none}
+.dr-x:hover{border-color:var(--bad); color:var(--bad)}
+.dr-b{flex:1; overflow:auto; margin:0; padding:14px 16px; font:400 11.5px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:var(--ink-2); white-space:pre-wrap; word-break:break-word; background:var(--sunk)}
+
+.ph.CHECKLIST{background:color-mix(in srgb,var(--pushpa) 16%,transparent); color:var(--pushpa)}
+.ph.NOTE{background:color-mix(in srgb,var(--watchdog) 14%,transparent); color:var(--watchdog)}
+.ph.PROPOSE{background:color-mix(in srgb,var(--aarti) 20%,transparent); color:var(--aarti)}
+
 .empty{padding:26px 14px; text-align:center; color:var(--ink-3); font-size:12.5px}
 .empty strong{display:block; color:var(--ink-2); margin-bottom:5px; font-size:13px}
 </style>
@@ -186,6 +216,11 @@ body{
       </div>
 
       <div class="card">
+        <div class="card-h"><h2>Files in play</h2><span class="aside">click to open</span></div>
+        <div class="card-b flush" id="files"></div>
+      </div>
+
+      <div class="card">
         <div class="card-h"><h2>Repository</h2></div>
         <div class="card-b"><dl class="kv" id="repo"></dl></div>
       </div>
@@ -197,6 +232,16 @@ body{
     </div>
   </div>
 </div>
+
+<div class="scrim" id="scrim" onclick="closeDrawer()"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dr-h">
+    <span class="p" id="dr-path">—</span>
+    <span class="m" id="dr-meta"></span>
+    <button class="dr-x" onclick="closeDrawer()" aria-label="Close">&times;</button>
+  </div>
+  <pre class="dr-b" id="dr-body"></pre>
+</aside>
 
 <script>
 const $ = (id) => document.getElementById(id);
@@ -321,28 +366,84 @@ function renderGov(s){
     <dt>Decisions</dt><dd>${s.decisions.available ? s.decisions.open + ' logged' : 'not found'}</dd>`;
 }
 
-async function tick(){
+/* ---- files in play + drawer ---- */
+function renderFiles(list){
+  if (!list || !list.length){
+    $('files').innerHTML = `<div class="empty"><strong>No files touched yet</strong>Artifacts appear as agents read and write them.</div>`;
+    return;
+  }
+  $('files').innerHTML = list.map(f => `
+    <div class="fl" onclick="openFile('${esc(f.path)}')" title="${esc(f.path)}">
+      <span class="ph ${esc(f.phase||'WORK')}">${esc((f.phase||'WORK').replace('_',' '))}</span>
+      <span class="fl-p">${esc(f.path)}</span>
+      <span class="fl-n">x${f.touches}</span>
+      <span class="fl-r" data-r="${esc(f.role)}">${esc(f.role)}</span>
+    </div>`).join('');
+}
+
+async function openFile(path){
+  $('dr-path').textContent = path;
+  $('dr-meta').textContent = 'loading…';
+  $('dr-body').textContent = '';
+  $('drawer').classList.add('open');
+  $('scrim').classList.add('open');
+  $('drawer').setAttribute('aria-hidden','false');
   try {
-    const r = await fetch('/api/state', {cache:'no-store'});
-    if (!r.ok) throw new Error(r.status);
-    const s = await r.json();
-    failures = 0;
-    $('led').classList.add('on');
-    $('pulse-text').textContent = 'live · ' + clock(s.ts);
-    renderRoles(s.roles);
-    renderFeed(s.activity);
-    renderComms(s.comms);
-    renderBoard(s.board);
-    renderRepo(s.repo);
-    renderGov(s);
+    const r = await fetch('/api/file?path=' + encodeURIComponent(path), {cache:'no-store'});
+    const f = await r.json();
+    if (f.error){ $('dr-meta').textContent = 'not readable'; $('dr-body').textContent = f.error; return; }
+    $('dr-meta').textContent = (f.size/1024).toFixed(1) + ' KB';
+    $('dr-body').textContent = f.text;
   } catch {
+    $('dr-meta').textContent = 'failed';
+  }
+}
+function closeDrawer(){
+  $('drawer').classList.remove('open');
+  $('scrim').classList.remove('open');
+  $('drawer').setAttribute('aria-hidden','true');
+}
+addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+/*
+ * Repaint only what changed. The board used to rebuild every panel on a timer
+ * whether or not the data had moved, which is what made it flicker and what
+ * threw away scroll position mid-read.
+ */
+const marks = {};
+function ifChanged(key, data, draw){
+  const sig = JSON.stringify(data);
+  if (marks[key] === sig) return;
+  marks[key] = sig;
+  draw(data);
+}
+
+function apply(s){
+  $('led').classList.add('on');
+  $('pulse-text').textContent = 'live · ' + clock(s.ts);
+  ifChanged('roles', s.roles,        renderRoles);
+  ifChanged('feed',  s.activity,     renderFeed);
+  ifChanged('comms', s.comms,        renderComms);
+  ifChanged('files', s.files,        renderFiles);
+  ifChanged('board', s.board,        renderBoard);
+  ifChanged('repo',  s.repo,         renderRepo);
+  ifChanged('gov',   {e:s.events,d:s.decisions}, () => renderGov(s));
+}
+
+/* Push, not poll: the server sends only when something actually changed. */
+let es;
+function connect(){
+  es = new EventSource('/api/stream');
+  es.onmessage = (m) => { failures = 0; try { apply(JSON.parse(m.data)); } catch {} };
+  es.onerror = () => {
     failures++;
     $('led').classList.remove('on');
     $('pulse-text').textContent = failures > 2 ? 'server unreachable' : 'reconnecting…';
-  }
+    try { es.close(); } catch {}
+    setTimeout(connect, Math.min(1000 * failures, 6000));
+  };
 }
-tick();
-setInterval(tick, 2000);
+connect();
 </script>
 </body>
 </html>

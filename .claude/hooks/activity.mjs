@@ -116,6 +116,22 @@ function classify(verb, tool, target, input) {
   const t = target || '';
   const i = input || {};
 
+  // Running the role's own daily / deep review checklist.
+  if (/(^|\/)checklists\//.test(t)) {
+    return { phase: 'CHECKLIST', comm: null };
+  }
+
+  // Taking note: distilled lessons, or evidence captured for a gate.
+  if ((verb === 'WRITE' || verb === 'EDIT') &&
+      /(knowledge\/LEARNINGS|knowledge\/GRAVEYARD|^evidence\/|\/evidence\/)/.test(t)) {
+    return { phase: 'NOTE', comm: null };
+  }
+
+  // Writing an ADR is the solution proposal, not ordinary work.
+  if ((verb === 'WRITE' || verb === 'EDIT') && /(^|\/)decisions\//.test(t)) {
+    return { phase: 'PROPOSE', comm: null };
+  }
+
   // Communication: Sushma dispatching out.
   if (tool === 'Agent') {
     return {

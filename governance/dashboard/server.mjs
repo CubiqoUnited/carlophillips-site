@@ -13,7 +13,7 @@
  * healthy rather than collapsing them into one green light.
  */
 import { createServer } from 'node:http';
-import { readFileSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, existsSync, statSync, watch } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -137,6 +137,20 @@ function comms(act, limit = 30) {
     }));
 }
 
+/* The artifacts currently in play — what to click to see what an agent saw. */
+function files(act, limit = 18) {
+  const seen = new Map();
+  for (const r of act.rows) {
+    const t = r.target;
+    if (!t || !/\.(md|ts|tsx|js|jsx|json|yaml|yml|jsonl)$/.test(t)) continue;
+    if (t.includes(' ') || t.startsWith('/')) continue;   // shell commands, absolute paths
+    if (seen.has(t)) { seen.get(t).touches++; continue; }
+    seen.set(t, { path: t, role: r.role, verb: r.verb, phase: r.phase, ts: r.ts, touches: 1 });
+    if (seen.size >= limit) break;
+  }
+  return [...seen.values()];
+}
+
 function board() {
   const raw = read('state/BOARD.md');
   if (raw === null) return { available: false, rows: [] };
@@ -191,6 +205,7 @@ function snapshot() {
     },
     roles: roles(act),
     comms: comms(act),
+    files: files(act),
     board: board(),
     decisions: decisions(),
     repo: repo(),
@@ -199,8 +214,85 @@ function snapshot() {
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript' };
 
+/* Push rather than poll. Clients used to repaint every two seconds whether or
+ * not anything had changed, which is what made the board flicker. Now the
+ * server watches the log and pushes only when there is something new. */
+const clients = new Set();
+let lastPayload = '';
+
+function broadcast(force = false) {
+  const payload = JSON.stringify(snapshot());
+  if (!force && payload === lastPayload) return;   // nothing changed: stay silent
+  lastPayload = payload;
+  for (const res of clients) {
+    try {
+      res.write(`data: ${payload}\n\n`);
+    } catch {
+      clients.delete(res);
+    }
+  }
+}
+
+/* Watch the activity log and canonical state. Coalesce bursts so a flurry of
+ * tool calls produces one update, not twenty. */
+let pending = null;
+function nudge() {
+  if (pending) return;
+  pending = setTimeout(() => {
+    pending = null;
+    broadcast();
+  }, 140);
+}
+for (const target of ['state', 'work', 'decisions']) {
+  const dir = join(ROOT, target);
+  if (!existsSync(dir)) continue;
+  try {
+    watch(dir, { recursive: true }, nudge);
+  } catch {
+    /* recursive watch is not available everywhere; the interval below covers it */
+  }
+}
+setInterval(() => broadcast(), 1500);          // safety net, still silent when unchanged
+setInterval(() => {
+  for (const res of clients) { try { res.write(': ping\n\n'); } catch { clients.delete(res); } }
+}, 25_000);
+
+/* Read one repository file for the drawer. Read-only, inside the repo only. */
+function safeRead(rel) {
+  if (!rel || rel.includes('..') || rel.startsWith('/')) return null;
+  const abs = join(ROOT, rel);
+  if (!abs.startsWith(ROOT) || !existsSync(abs)) return null;
+  try {
+    const st = statSync(abs);
+    if (!st.isFile() || st.size > 400_000) return null;
+    return { path: rel, size: st.size, mtime: st.mtimeMs, text: readFileSync(abs, 'utf8') };
+  } catch {
+    return null;
+  }
+}
+
 createServer((req, res) => {
   const url = (req.url || '/').split('?')[0];
+
+  if (url === '/api/stream') {
+    res.writeHead(200, {
+      'content-type': 'text/event-stream',
+      'cache-control': 'no-store',
+      connection: 'keep-alive',
+    });
+    res.write(`data: ${JSON.stringify(snapshot())}\n\n`);
+    clients.add(res);
+    req.on('close', () => clients.delete(res));
+    return;
+  }
+
+  if (url === '/api/file') {
+    const rel = decodeURIComponent((req.url.split('?')[1] || '').replace(/^path=/, ''));
+    const file = safeRead(rel);
+    res.writeHead(file ? 200 : 404, { 'content-type': 'application/json', 'cache-control': 'no-store' });
+    res.end(JSON.stringify(file || { error: 'not readable', path: rel }));
+    return;
+  }
 
   if (url === '/api/state') {
     res.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' });
