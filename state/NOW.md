@@ -57,6 +57,15 @@ v3.8 schema rule: every active gate below records owner, state, last verified re
 - **Standing rule (new, from this root cause): no item may be graded built or shipped without the remote SHA that CI ran on. A local commit SHA is not evidence of delivery.**
 
 
+## Verified variant read, 2026-09-19 (Admin API, production) — corrects the record
+
+- **Signature Hoodie has THREE variants, not nine.** Verified: `options` are Color `["black"]` and Size `["s","m","l"]`; variants are `black/s`, `black/m`, `black/l`, all `$128.00`, all `availableForSale: true`. Every prior statement of "9 variants" in NOW.md and BOARD.md was wrong and is withdrawn.
+- **Consequence for CP-CAT-001, and it unblocks Aarti's ADR-0001:** removing the `PHASE_ONE_SALE_SIZES` filter is a **no-op for the Hoodie**, because the product carries only S/M/L in Shopify. The curation lives in the store, not in the code filter. ADR-0001 Option A is therefore safe; the blocking input Aarti could not obtain is answered.
+- **Supports D-011:** the code filter was never what made the Hoodie S/M/L-only. Shopify was. Removing it returns authority to the store, which is what the directive requires.
+- Size option values are **lowercase** (`s`,`m`,`l`) while the code constant is uppercase (`S`,`M`,`L`). The production storefront demonstrably sells the Hoodie, so the loader must normalise case — **recorded as an observation, not yet read in code.** Aarti must confirm the normalisation survives his change.
+- Rapid Logo Tee re-verified DRAFT: 6 variants (`s`..`xxxl`) still at **$14.34** cost-basis. Unchanged, still parked, still must not go ACTIVE at that price.
+
+
 ## Active / next
 
 - NEXT (dispatch, parallel): Boss answers D-020 so CP-CAT-001 can start — catalogue depth is now the dominant blocker with one sellable product on production. Aarti continues CP-DEF2-001 meanwhile.
