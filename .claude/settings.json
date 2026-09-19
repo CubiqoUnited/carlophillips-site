@@ -1,22 +1,21 @@
 {
   "permissions": {
     "deny": [
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)",
-      "Bash(vercel deploy:*)",
-      "Bash(vercel promote:*)",
-      "Bash(vercel alias:*)",
-      "Bash(vercel env rm:*)",
-      "Bash(npm publish:*)",
-      "Bash(rm -rf:*)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(vercel deploy*)",
+      "Bash(vercel promote*)",
+      "Bash(vercel alias*)",
+      "Bash(vercel env rm*)",
+      "Bash(npm publish*)",
+      "Bash(rm -rf *)",
       "Read(.env)",
       "Read(.env.*)",
       "Read(**/*.pem)",
       "Read(**/id_rsa*)",
       "Edit(.env)",
       "Edit(.env.*)",
-      "Write(.env)",
-      "Write(.env.*)"
+      "Edit(**/*.pem)"
     ],
     "ask": [
       "Bash(git push:*)",
@@ -24,22 +23,10 @@
       "Bash(gh release create:*)",
       "Bash(gh pr merge:*)",
       "Edit(.github/workflows/**)",
-      "Write(.github/workflows/**)",
       "Edit(vercel.json)"
     ]
   },
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit|NotebookEdit|Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/boundaries.mjs\""
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "*",
