@@ -53,9 +53,14 @@ function git(args) {
 
 /* Past instrumentation noise is filtered on read too, so the history the board
  * shows is delivery work only — not the board's own construction. */
-const NOT_WORK = ['governance/dashboard/', '.claude/hooks/', 'state/activity.jsonl',
+const NOT_WORK = ['governance/dashboard', '.claude/hooks', 'state/activity.jsonl',
                   '.claude/settings.json', '.claude/launch.json'];
-const isInstrumentation = (t) => NOT_WORK.some((p) => (t || '').includes(p));
+const NOT_WORK_TOOLS = /preview_start|preview_stop|preview_logs|preview_list|read_console_messages|read_network_requests/;
+const isInstrumentation = (r) => {
+  if (NOT_WORK_TOOLS.test(r.tool || '')) return true;
+  const t = (r.target || '') + ' ' + (r.what || '');
+  return NOT_WORK.some((p) => t.includes(p));
+};
 
 /* ---- activity: the live feed, written by the PostToolUse hook ---- */
 function activity(limit = 220) {
@@ -73,7 +78,7 @@ function activity(limit = 220) {
       }
     })
     .filter(Boolean)
-    .filter((r) => !isInstrumentation(r.target))
+    .filter((r) => !isInstrumentation(r))
     .reverse();
   return { available: true, rows };
 }

@@ -102,14 +102,18 @@ const CANONICAL = [
  * plumbing instead of the work Boss is watching for.
  */
 const NOT_WORK = [
-  'governance/dashboard/',
-  '.claude/hooks/',
+  'governance/dashboard',
+  '.claude/hooks',
   'state/activity.jsonl',
   '.claude/settings.json',
   '.claude/launch.json',
 ];
-function isInstrumentation(target) {
-  const t = target || '';
+/* Tools that only ever serve the board itself. */
+const NOT_WORK_TOOLS = /preview_start|preview_stop|preview_logs|preview_list|read_console_messages|read_network_requests/;
+
+function isInstrumentation(target, tool, what) {
+  const t = (target || '') + ' ' + (what || '');
+  if (NOT_WORK_TOOLS.test(tool || '')) return true;
   return NOT_WORK.some((p) => t.includes(p));
 }
 
@@ -204,7 +208,7 @@ try {
   const canonical = CANONICAL.some((c) => touched.endsWith(c));
 
   // Instrumentation never enters the log at all.
-  if (isInstrumentation(touched)) process.exit(0);
+  if (isInstrumentation(touched, tool, what)) process.exit(0);
 
   const { phase, comm } = classify(verb, tool, touched, payload.tool_input);
   if (comm && comm.from === null) comm.from = role;
