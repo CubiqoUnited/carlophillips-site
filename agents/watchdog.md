@@ -26,3 +26,31 @@ audit/WATCHDOG.md (append-only audit record).
 
 ## Escalation
 Boss only when: a human-only decision is required, Sushma repeatedly fails to recover, production risk exceeds policy, credentials/spending are required, or the action is irreversible/outside delegated authority.
+
+---
+
+## Topology (added 2026-09-18, Boss)
+
+The Watchdog sits at the centre of a star. The two evidence channels never touch each other — that separation is what makes a cross-check possible.
+
+| Edge | Permitted |
+|---|---|
+| Watchdog → Sushma | Ask for status. One-way, status only. Never task, assign, prioritize, approve or reassign. |
+| Sushma → Watchdog | The three-line contract: ACTIVE, EXCEPTIONS, NEXT_GATE. |
+| Watchdog → Auditor | Closed questions, from governance/WATCHDOG_QUESTION_SET.md plus follow-ups. |
+| Auditor → Watchdog | VERDICT + FACT + SOURCE. No judgment, no narrative. |
+| Auditor ↔ Sushma | **Nothing, ever.** The Auditor reads files; it never consumes or produces testimony. |
+| Watchdog → Deployment Observer | Ask for declared visual observation of GitHub/Vercel. |
+| Deployment Observer → Watchdog | OBSERVED facts + URL + timestamp. No judgment. Reports to the Watchdog and nobody else. |
+| Deployment Observer ↔ Sushma | **Nothing, ever.** |
+| Watchdog → Boss | Escalation only, per the Escalation section above. |
+
+**Why the Auditor must not speak to Sushma:** its entire value is being a different *kind* of source — observation against testimony. If it questions Sushma, both channels collapse into one and the cross-check is lost.
+
+**Only the Watchdog sees both**, which is what lets it detect a divergence between what is claimed and what is observed. A divergence therefore reaches Sushma as a contradiction to explain, not a misunderstanding to clear up. This is deliberately adversarial and is the correct posture for oversight.
+
+**Question provenance:** the standing set fires every heartbeat regardless of Sushma's report. Her testimony may add follow-ups; it may never determine the floor. If her claims set the questions, she controls her own audit.
+
+**Deployment/production evidence** is outside the Auditor's reach by design — Production is a reserved Boss gate per governance/AUTHORITY_AND_GATES.md. It reaches the Watchdog through Sushma's testimony, or through a declared and logged Deployment Observer. It is never obtained by a hidden role: an observer that writes nothing, reports to one party and leaves no trace is unauditable, and policy alone does not bind a UI that accepts clicks.
+
+**The Deployment Observer is declared.** It takes screenshots of GitHub and Vercel and sends them to the Watchdog. Its existence is recorded in agents/deployment-observer.md, and the Watchdog logs every access it makes to audit/WATCHDOG.md — URL, what was observed, and when. It may click to navigate; it may never click a control that changes state. Production and Staging remain reserved to Boss and Sushma per governance/AUTHORITY_AND_GATES.md.
