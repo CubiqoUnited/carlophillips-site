@@ -102,7 +102,6 @@ export function toProductViewModel(
         ? product.variantPresentation
         : null,
     availableForSale: Boolean(product.availableForSale),
-    vendor: product.vendor || 'Not observed',
     productType: product.productType || product.category || 'Not observed',
     media:
       decision.source === 'fixture'

@@ -163,6 +163,7 @@ export function normalizePublicShopifyProduct(
       };
     })
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
+  const shopifyId = `gid://shopify/Product/${payload.id}`;
   const canonicalMedia = media.length
     ? media
     : images.map((url, index) => ({
@@ -188,7 +189,6 @@ export function normalizePublicShopifyProduct(
         .map((option) => option.value)
     ),
   ];
-  const shopifyId = `gid://shopify/Product/${payload.id}`;
 
   return {
     id: payload.handle,
@@ -214,7 +214,6 @@ export function normalizePublicShopifyProduct(
     availableForSale: observedVariants.some(
       (variant) => variant.availableForSale
     ),
-    vendor: String(payload.vendor || ''),
     productType,
     tags,
   };

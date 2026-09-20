@@ -165,7 +165,6 @@ export function CommerceProductDetail({
     ['Source', product.source === 'shopify' ? 'Shopify' : product.sourceLabel],
     ['Status', product.availableForSale ? 'Available' : 'Unavailable'],
     ['Availability', product.availableForSale ? 'Available' : 'Unavailable'],
-    ['Maker', product.vendor],
     ['Category', product.productType],
   ];
   const attributes = attributeEntries(product);

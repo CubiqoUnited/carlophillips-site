@@ -254,7 +254,6 @@ export interface ProductViewModel extends RuntimeProduct {
   sizes: string[];
   variantPresentation: VariantPresentation | null;
   availableForSale: boolean;
-  vendor: string;
   productType: string;
   media: ViewerMediaItem[];
   mediaReview: { status: string; missingModalities: string[] } | null;

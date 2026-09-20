@@ -57,7 +57,6 @@ export interface ProductViewModel {
   sizes: string[];
   variantPresentation: VariantPresentation | null;
   availableForSale: boolean;
-  vendor: string;
   productType: string;
   media: ViewerMediaItem[];
   mediaReview: MediaReview | null;
