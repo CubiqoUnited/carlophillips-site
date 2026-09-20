@@ -1,9 +1,10 @@
 {
-  "item": null,
-  "stage": "IDLE",
-  "owner": null,
-  "opened": null,
-  "checkpoint": null,
-  "note": "No item in flight. Under governance/BUG-LIFECYCLE.md, Aarti cannot mutate apps/** or packages/** while this is not BUILD. Sushma writes this record when she dispatches; she cannot set BUILD unless work/items/<KEY>.md records both Pushpa's confirmation and the solution consensus.",
-  "history": []
+  "item": "KAN-29",
+  "stage": "BUILD",
+  "owner": "aarti",
+  "opened": "2026-09-19",
+  "checkpoint": "blocking the release chain — immediate",
+  "scope": "minimumFractionDigits 0 -> 2 in four named files, plus the test that pins the defect. Formatting configuration only. No customer-facing string literal. In WorkbookReplica.tsx only line 79 moves; line 223 is untouched.",
+  "note": "Advanced to BUILD because work/items/KAN-29.md records both PUSHPA_CONFIRMED and SOLUTION_CONSENSUS, verified by the hook rather than asserted by Sushma. Pushpa re-issued her R-2 waiver scoped to these terms; it voids if any customer-facing string literal moves.",
+  "history": ["TRIAGE", "PO_DEFINE", "CONFIRMED_BUG", "RCA", "SOLUTION_CONSENSUS", "BUILD"]
 }

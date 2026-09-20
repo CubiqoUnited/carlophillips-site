@@ -1,0 +1,88 @@
+name: Regenerate Playwright visual baselines
+
+# Visual baselines are platform-specific. They live under
+# tests/e2e/visual-baselines/linux/ because the gate that judges them runs on
+# ubuntu-latest. No contributor on macOS can produce them honestly — darwin
+# pixels committed to the linux directory would be fabricated evidence, and
+# Aarti refused to write them, correctly.
+#
+# So the runner that judges the baselines generates them. This workflow renders
+# on the same platform as the gate and uploads the result as an artifact.
+# Sushma downloads it and commits it, so the update still passes through a
+# reviewed commit rather than a bot push to a protected branch.
+#
+# Manual only. A baseline refresh is a product sign-off — Pushpa rules it,
+# Sushma executes it — and it must never fire automatically on a push, because
+# a baseline that regenerates itself can never fail.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or SHA to render from
+        required: true
+        type: string
+      reason:
+        description: Jira key and the ruling that authorised this refresh
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-baselines-${{ github.event.inputs.ref }}
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    name: Render baselines on the gate's own platform
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Record the authorisation in the run itself
+        run: |
+          echo "### Baseline regeneration" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- ref: \`${{ github.event.inputs.ref }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- authorised by: ${{ github.event.inputs.reason }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- requested by: @${{ github.actor }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: yarn playwright install --with-deps chromium
+
+      - name: Render baselines
+        env:
+          CP_A11Y_OUTPUT_DIR: test_reports/ci/playwright
+        # --update-snapshots rewrites the committed PNGs in place. The step is
+        # expected to succeed; a failure here means the spec itself is broken,
+        # not that the baseline differs.
+        run: yarn test:e2e --update-snapshots
+
+      - name: Show what changed
+        if: always()
+        run: |
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git -c core.pager=cat diff --stat -- tests/e2e/visual-baselines/ >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload regenerated baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines-${{ github.event.inputs.ref }}
+          path: tests/e2e/visual-baselines/
+          if-no-files-found: error
+          retention-days: 7
