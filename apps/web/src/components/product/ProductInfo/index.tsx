@@ -208,6 +208,7 @@ export function CommerceProductDetail({
                 presentation={product.variantPresentation}
                 environment={environment}
                 sizeGuide={sizeGuide}
+                productType={product.productType}
               />
             ) : (
               <VariantPresentation presentation={product.variantPresentation} />
