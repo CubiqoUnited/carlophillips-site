@@ -6,6 +6,21 @@ import type {
   RuntimeMedia,
 } from './runtime-types';
 
+/**
+ * KAN-25: a price that does not resolve is an error, not zero.
+ *
+ * `Number(price || 0)` rendered an unresolved price as `$0` while leaving
+ * add-to-bag enabled — a quoted price that does not match the price charged.
+ * Patching `||` to `??` narrows that bug without removing the class, because
+ * the result is still a number and every caller still treats it as one. The
+ * type has to carry the failure, so callers cannot ignore it.
+ */
+function resolvedPrice(value: unknown): number | null {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+  return amount;
+}
+
 function normalizeMediaItem(
   item: RuntimeMedia,
   index: number,
@@ -87,7 +102,7 @@ export function toProductViewModel(
     id: product.id,
     title,
     handle: product.handle || product.id,
-    price: Number(product.price || 0),
+    price: resolvedPrice(product.price),
     currency: product.currency || 'USD',
     description: product.description || '',
     tagline: product.tagline || '',

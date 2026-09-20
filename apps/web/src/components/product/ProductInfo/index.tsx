@@ -10,8 +10,9 @@ import type {
   VariantPresentation as VariantPresentationData,
 } from '@/types';
 
-function formatPrice(value: number, currency: string): string {
-  if (!Number.isFinite(value) || value <= 0) return 'Price unavailable';
+function formatPrice(value: number | null, currency: string): string {
+  if (value === null || !Number.isFinite(value) || value <= 0)
+    return 'Price unavailable';
 
   return new Intl.NumberFormat('en-US', {
     style: 'currency',

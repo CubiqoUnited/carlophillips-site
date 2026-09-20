@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import {
   CommerceProductDetail,
   CommerceProductUnavailable,
@@ -53,6 +54,16 @@ const loadObservedShopifyProduct = loadShopifyProduct as (
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * KAN-22: reasons that mean "no such product", as distinct from "the product
+ * exists but we cannot serve it right now". Only the former may 404 — a 404 on
+ * an infrastructure fault would tell a crawler the catalogue shrank.
+ */
+const HANDLE_NOT_FOUND_REASONS = new Set([
+  'SHOPIFY_PRODUCT_UNAVAILABLE',
+  'LOCAL_FIXTURE_NOT_FOUND',
+]);
+
 export async function generateMetadata({
   params,
 }: {
@@ -65,9 +76,13 @@ export async function generateMetadata({
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
+  // KAN-22: never title a page with internal vocabulary, and never let an
+  // arbitrary handle mint an indexable-looking title. Unknown handles 404
+  // below; this metadata is only ever seen for a handle that resolves.
   return {
     title: `${name} | CARLOPHILLIPS`,
     description: `${name} from CARLOPHILLIPS.`,
+    alternates: { canonical: `/product/${handle}` },
   };
 }
 
@@ -101,8 +116,25 @@ export default async function ProductPage({
   });
 
   const product = normalizeProduct(decision);
+
+  // KAN-22: an unknown handle is an honest 404, not a 200 saying "unavailable".
+  if (HANDLE_NOT_FOUND_REASONS.has(decision.reason)) {
+    notFound();
+  }
+
   if (!product || !decision.visibilityAllowed) {
     return <CommerceProductUnavailable decision={decision} />;
+  }
+
+  // KAN-25: a price that does not resolve must not render a purchasable PDP.
+  // Quoting $0 against a Shopify-authoritative price is a misrepresentation,
+  // not a display glitch.
+  if (product.price === null) {
+    return (
+      <CommerceProductUnavailable
+        decision={{ ...decision, reason: 'PRODUCT_PRICE_UNRESOLVED' }}
+      />
+    );
   }
 
   return (

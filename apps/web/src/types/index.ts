@@ -46,7 +46,7 @@ export interface ProductViewModel {
   id: string;
   title: string;
   handle: string;
-  price: number;
+  price: number | null;
   currency: string;
   description: string;
   tagline: string;
@@ -175,7 +175,7 @@ export interface FixtureProduct {
   id: string;
   handle: string;
   title: string;
-  price: number;
+  price: number | null;
   currency: string;
   color: string;
   category: string;

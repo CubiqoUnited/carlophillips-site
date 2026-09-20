@@ -11,7 +11,11 @@ function countLabel(count: number, singular: string, plural = `${singular}s`) {
 }
 
 function formatPrice(product: ProductViewModel) {
-  if (!Number.isFinite(product.price) || product.price <= 0)
+  if (
+    product.price === null ||
+    !Number.isFinite(product.price) ||
+    product.price <= 0
+  )
     return 'Price unavailable';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
