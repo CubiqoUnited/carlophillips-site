@@ -20,7 +20,7 @@ function formatPrice(product: ProductViewModel) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: product.currency,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(product.price);
 }
