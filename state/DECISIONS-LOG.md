@@ -128,6 +128,77 @@ A reader who sees `D-3` in `work/items/CP-COM-001.md` §9 lands here:
 
 ---
 
+## M-003 · 2026-09-19 · STANDING MANDATE (Boss) — nothing moves but a Jira ticket
+
+**Rule, as Boss stated it:** *"nothing moves — but a jira ticket."*
+
+Every unit of work carries a Jira key before it starts. No commit, no branch, no
+merge, no deploy, no dispatch to a role, and no change to any tracked file
+happens without one. A ticket is not paperwork raised after the fact; it is the
+thing that authorises the move.
+
+**Binding on all four of us.** Boss drafts or allows epics and features. Sushma
+drafts them and, on approval, the stories, tasks, subtasks and comment-section
+communication. Pushpa and Aarti do not open tickets — they signal Sushma, who
+carries it into Jira.
+
+**Consequences, recorded so this is not re-litigated:**
+- Every dispatch names the Jira key it serves. A role that receives a dispatch
+  without a key is entitled to refuse it.
+- Every commit message begins with the key. Partially in force already:
+  commits from `159c4ee` onward carry `KAN-3` or `KAN-11`; everything before
+  `26059a9` does not. The gap is historical and is not being rewritten.
+- Work found in the tree with no key is not deleted — it is tied to a key
+  retrospectively and the tie is recorded, or it is reverted. Silently keeping
+  untied work is what this mandate exists to stop.
+
+**Enforcement status — stated plainly rather than assumed.** This is a mandate,
+not yet a control. The commit-key requirement is KAN-12 and is unimplemented;
+the deploy tie is KAN-11 / ADR-0002, PROPOSED with CHANGES_REQUESTED and C1–C4
+not yet written in. A recorded caveat is not a control, and neither is this
+entry. Until KAN-11 and KAN-12 land, compliance is a discipline we keep, not a
+rule the system holds us to.
+
+**Sushma's own breach, recorded:** the Jira-lane changes to
+`.claude/hooks/boundaries.mjs` made today were started and completed without a
+key. Tied retrospectively to KAN-12. It is the first thing this mandate would
+have caught and I did it while writing the enforcement for it.
+---
+
+## D-031 · 2026-09-19T221500Z · BLOCKING — `[[DISPATCH_WINDOW]]` has no drafted escape hatch
+
+**QUESTION:** How many business days between order placed and order dispatched do we state publicly in the shipping policy?
+
+**OPTIONS**
+- **A.** State a window now — e.g. "ships within 3–5 business days" — chosen by Boss from what Apliiq actually does.
+- **B.** Publish the shipping policy with every other clause and omit the dispatch window entirely.
+- **C.** Hold the shipping policy unpublished until the window is known.
+
+**IMPACT**
+- **A.** Shipping policy publishes today. Risk: a number we cannot meet becomes a public promise on a live-payment store. Raised by observation, not by measurement — Apliiq's real dispatch window has not been measured on our account.
+- **B.** A shipping policy silent on when goods leave is the one question the page exists to answer. Pushpa's AC treat an undefined qualifier as worse than no claim; this is that fault at page scale.
+- **C.** Blocks publication, which blocks the link target, which blocks the approved PDP string, which blocks KAN-14.
+
+**RECOMMENDATION: A, with a deliberately wide window.** Boss states a window he is confident Apliiq beats, and we tighten it once we have measured runs. A wide honest window is a smaller risk than silence on the central term, and far smaller than a tight window we miss. The FR-6/FR-7 evidence we hold is from staging orders and is not a measurement of production dispatch — one data point is not a pattern.
+
+**Assumption, flagged:** that Boss can state a window from knowledge of his Apliiq account. If he cannot, this becomes a measurement task and C is forced.
+
+---
+
+## D-032 · 2026-09-19T221500Z · NON-BLOCKING — `[[FREE_SHIPPING_THRESHOLD]]` unset
+
+**QUESTION:** Is there a free-shipping threshold, and what is it?
+
+**OPTIONS**
+- **A.** Set a threshold — e.g. free shipping over $X.
+- **B.** No free shipping. Shipping calculated at checkout, full stop.
+- **C.** Defer. Ship the interim PDP string Pushpa approved, which makes no free-shipping claim at all.
+
+**IMPACT** — A and B are both shippable and both honest. C is already the approved interim: the PDP says "Shipping is calculated at checkout" and claims nothing further, so nothing is promised that is not delivered. AC-12 reinstates the claim the moment a threshold exists, because at that point silence *understates* the offer.
+
+**RECOMMENDATION: C now, A or B when convenient.** This does not block launch and should not consume a launch decision slot. Pushpa correctly refused to invent a dollar figure — a PO-invented commerce fact becomes authoritative on first customer contact.
+
+---
 ## D-029 · 2026-09-18T160000Z · GOVERNING — Sidekick answers route to Pushpa FIRST
 **Status:** DECIDED by Boss 2026-09-18 · **Recorded by:** Sushma · **Amends D-021 and D-022**
 

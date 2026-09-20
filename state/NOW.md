@@ -2,9 +2,9 @@
 id: NOW
 owner: sushma
 class: evolving
-version: 1.10
-last_updated: 2026-09-18
-last_verified: 2026-09-18
+version: 1.11
+last_updated: 2026-09-19
+last_verified: 2026-09-19
 review_frequency: every material gate
 budget_lines: 100
 ---
@@ -14,6 +14,61 @@ Class EVOLVING  ·  Owner Sushma  ·  Writers Sushma is the single writer/reconc
 v3.8 schema rule: every active gate below records owner, state, last verified result, remaining action, resume trigger, and closure authority where applicable. "Active / next" contains exactly one single next executable action (marked NEXT).
 
 ## Current position
+
+### 2026-09-19 reconciliation — supersedes anything below that contradicts it
+
+Reconciled by Sushma after four deferrals. Everything here is a verified read of
+the authoritative surface on 2026-09-19, with the date it was verified.
+
+- **VERCEL IS OFF THE BOARD (Boss, 2026-09-19).** The unpaid-invoice P0 is
+  withdrawn on Boss's instruction. **No P0 remains.**
+- **PRODUCTION STORE, Admin API read.** Two products. Signature Hoodie ACTIVE,
+  $128.00, three variants black S/M/L, `availableForSale: true`,
+  `inventoryPolicy: CONTINUE`, `tracked: false` — correct for print-on-demand and
+  genuinely buyable. **Rapid Logo Tee ARCHIVED by Sushma on Boss's instruction**,
+  which closes KAN-18's $14.34 cost-price exposure and KAN-10's soft 404 with it.
+- **THE CATALOGUE IS STRUCTURALLY EMPTY.** The Hoodie belongs to **zero
+  collections**; all ten collections hold **zero products**; no product carries a
+  category metafield. ADR-0001 sweeps metafields that do not exist. Collection
+  assignment is product curation and is **Pushpa's to rule, not Sushma's** —
+  queued to her, deliberately not guessed.
+- **PRODUCTION HAS NEVER TAKEN A REAL PAYMENT.** `ordersCount: 2`, both
+  `test: true`, both UNFULFILLED, **zero fulfillment records**. Boss reports a
+  live tee shipped; it is **not in the production store**, so it went through
+  staging — **KAN-9 is confirmed, not superseded**, and Pushpa was right to
+  refuse D-026's supersession. Unverifiable from here under H-007; the
+  confirmation is in Boss's Apliiq account.
+- **STORE IDENTITY CLOSED.** Every `SHOPIFY_STAGING_*` variable is Preview-scoped
+  only, so a Production deployment cannot resolve them. Production cannot be
+  reading the staging store. Aarti's hard-commerce-outage assumption is
+  **disproven** — recorded as confirming evidence, not dropped.
+- **ANALYTICS DO NOT FIRE ON WWW.** `NEXT_PUBLIC_CLARITY_PROJECT_ID` and
+  `NEXT_PUBLIC_GA4_MEASUREMENT_ID` both unset on Production. KAN-21 holds at P2 on
+  both legs. `NEXT_PUBLIC_STAGING_REVIEW` also unset, so `/media-lab` 404s on www
+  **by configuration, not luck**.
+- **LIVE EXPOSURE, UNFIXED:** `"vendor":"Apliiq"` in the production `/shop`
+  payload (KAN-19). The same product's **PDP carries zero occurrences** — the leak
+  is per-surface, not per-product. The real finding is that **no product-level
+  field scrub exists anywhere**.
+- **KAN-5 STILL UNSHIPPED.** `3f1d634` and `5ef4469` are not ancestors of
+  `github/main` (`d5ac7de`). Every `getCommerceEnvironment()` guard is inert in
+  production. Root cause confirmed; blast radius **smaller than graded** — no
+  wrong store, no wrong webhook secret.
+- **RETRACTED TODAY, recorded so the log is not only failures:** KAN-20's
+  store-provenance claim (Aarti withdrew it on his own evidence; the marker is a
+  fallback-branch name); Pushpa's compound P0; Pushpa's "media-lab 404s in
+  production" assertion; Sushma's KAN-15 P1, which duplicated closed decision
+  D-019.
+- **GOVERNANCE:** Boss mandate **M-003 — nothing moves but a Jira ticket**.
+  Jira lane and content gates live in `.claude/hooks/boundaries.mjs`; the hook now
+  fires on MCP. Pushpa and Aarti hold **read-only** Jira access, enforced on two
+  layers and proven against twelve payloads.
+- **OPEN, BOSS TABLED:** D-030 return address (deferred, interim holds — no
+  returns promise on any surface). **D-031 withdrawn by Pushpa** — the shipping
+  policy publishes today with no timing stated. **KAN-16 remains Boss's reserved
+  gate and Sushma will not execute a live payment unilaterally.**
+
+---
 
 - Company OS reset Gates 1–10 are verified and accepted. Gate 10 established non-transactional Production proof at main `9981291c9e1a17c0e806c49297023b9ba61d1069`; staging is `73dd67d99d97cb652b2c3c65d2610ecc319f6086`.
 - **DEPLOYMENT DRIFT, unresolved:** Aarti reports the deployment actually serving production differs from the ID recorded below. Sushma could not confirm the serving ID from response headers (`x-vercel-id` gives a request trace, not a deployment ID), so the recorded value is **SUSPECT, not corrected** — I will not overwrite one unverified ID with another. Action: Aarti supplies the serving deployment ID with its source command; Sushma then updates this line and the Gate 10 provenance that cites it. Until then, treat the Production deployment ID below as stale.
@@ -68,7 +123,9 @@ v3.8 schema rule: every active gate below records owner, state, last verified re
 
 ## Active / next
 
-- NEXT (dispatch, parallel): Boss answers D-020 so CP-CAT-001 can start — catalogue depth is now the dominant blocker with one sellable product on production. Aarti continues CP-DEF2-001 meanwhile.
+- **ADR-0001 product-fit gate APPROVED (Pushpa, §12, signal 071500Z).** §11's revision (Aarti) satisfied all three of §10's blocking points: DRAFT products in the metafield sweep, curation-not-stock exclusion with mandatory logging, depth-3 nav floor plus slug allowlist. AC-18 added to §10.5 (size copy must derive from actual curated sizes, not the hardcoded "S, M and L" in `ProductForm/index.tsx:261,268`), gated in §10.6's staging probes. A2 (no other size-filter enforcement point) closed by Aarti's grep.
+- **A3 closed for ADR-0001's purposes (§13, Aarti).** The four cited files (`product-loader.ts`, `storefront-menu.ts`, `home-catalog-summary.ts`, `ProductForm/index.tsx`) are byte-identical between local HEAD and both `github/main` and `github/staging` — no code divergence, the ADR's facts describe the pushed tree. What remains open is **not new**: it's the pre-existing DEPLOYMENT DRIFT note above (line 19) — which *deployment ID* Vercel is actually serving on production is still SUSPECT, independent of this ADR and not a gate on it. **NEXT: ADR-0001 build starts. Aarti proceeds on CP-CAT-001's engineering side (metafield sweep, exclusion logic, nav depth/vocabulary gates) against the pushed tree.**
+- Boss answers D-020 so CP-CAT-001 can start — catalogue depth is now the dominant blocker with one sellable product on production. Aarti continues CP-DEF2-001 meanwhile.
 - Aarti on CP-DEF2-001 — `/checkout-design-review` returns 200 on production carrying "Private staging review · Draft" (independently confirmed). Fix `getCommerceEnvironment()` to honour `VERCEL_ENV` and confirm all four call sites, not just the one URL. Owner: Aarti. Resume: immediate. Only launch blocker not gated on H-005.
 - **PRODUCTION IS LIVE AND HEALTHY.** CP-ENV-001 RETRACTED — not a defect. `CP_RELEASE_ID`/`CP_RELEASE_COMMIT_SHA` are deployment-scoped, injected by the GitHub workflow at deploy time; `vercel env ls production` lists only project-scoped vars, so their absence there is the designed state. The PDP returns 200 with live Shopify facts, which is only possible if preflight passed. Fifth instance today of reading one surface and concluding about another — caught by loading the actual site, the cheap check that was skipped. The validator passing confirms the env conditions are mutually consistent; it does NOT prove `SHOPIFY_STORE_DOMAIN` targets the intended store — that still needs H-005.
 - **HP-1..HP-4 PROVEN on production** (real browser): PDP, price/copy, S/M/L-only selection, CTA transition, add-to-bag, /bag correct at $128. Stopped deliberately before CHECKOUT — past it is real payment, a reserved Boss gate.
