@@ -2,6 +2,60 @@ Class EVOLVING · Owner Sushma (state) · Writers Pushpa writes product sections
 
 # CP-COM-001 — Commerce Integrity Requirements (finalized against live store state)
 
+---
+
+> ## SUPERSEDED IN PART — Pushpa, 2026-09-19. Read this block before reading anything below it.
+>
+> **`work/items/CP-REQ-001-consolidated-requirement-position.md` is the controlling product
+> document. Where the two disagree, CP-REQ-001 wins.** This is a re-derivation of *disposition*,
+> which is the part that was actually load-bearing. It is not a rewrite of the body, and §"Cost of
+> not rewriting the body" below states plainly what that leaves on the table.
+>
+> **Why disposition and not a rewrite:** the danger in a stale requirements document is not that it
+> is long, it is that a reader cannot tell which lines are still requirements. Every AC family below
+> now has a verdict. Nothing is left for a reader to judge from context.
+>
+> **Store-state facts in this document are WRONG and must not be cited.** Verified 2026-09-19:
+> production holds **two orders, both `test: true`, both UNFULFILLED, zero fulfillment records**;
+> the Rapid Logo Tee is **ARCHIVED** on production; the header's "4 products, 5 orders" and its
+> staging basis describe `carlophillips-staging`, not the production store. **Any ground-truth
+> citation from this file is stale by construction. Re-read the store.**
+>
+> ### Disposition by family
+>
+> | Family | Verdict | Controlling document |
+> |---|---|---|
+> | AC-AUTH-1..5 | **LIVE. The strongest thing in this file.** AC-AUTH-2 (render absence truthfully, never substitute a zero) is the parent of AC-PUB-2 and of the `$0` defect. | this file |
+> | AC-CUR-1..7 | **LIVE.** Curation is an approved-allowlist product rule. AC-CUR-4 is also AC-PUB-3. | this file + CP-POLICIES §6 |
+> | AC-INV-5 | **LIVE, and promoted.** No scarcity copy. Restated and widened as AC-OVS-1. | CP-REQ-001 R-4 |
+> | AC-INV-1,-2,-3,-4,-6,-7 | **RETIRED.** Shopify configuration, already satisfied (untracked + CONTINUE + availableForSale true). AC-INV-7's `-1` was never a defect (R-3). | — |
+> | AC-PRICE-2 | **LIVE.** Approved retail figure per ACTIVE product, fails closed. This is AC-PUB-1. | CP-POLICIES §6 |
+> | AC-PRICE-1,-3,-4,-5,-6,-7 | **RETIRED as app criteria** (0b.2) and **withdrawn as a systemic risk** (R-4). One mispriced sample, built to be thrown away, is not a pattern. | — |
+> | AC-FUL-1,-3,-4,-5,-6 | **LIVE as presentation rules**, and now more relevant, not less: production has zero fulfillment records, so every fulfilment surface is running on the unevidenced path AC-FUL-5 governs. | this file |
+> | AC-FUL-2 | **RETIRED as an app criterion.** Shopify produces the record. | — |
+> | AC-FUL-8 | **LIVE and UNMET.** Live-gateway fulfilment has never been exercised. | CP-REQ-001 R-5 |
+> | AC-TAX-1,-2 | **LIVE.** AC-TAX-2 is AC-AUTH-2 applied to tax. | this file |
+> | AC-TAX-3,-4,-5 | **RETIRED.** Shopify's tax engine. | — |
+> | AC-CAP-1,-2,-3 | **LIVE, and now firing.** Both production orders are `test: true`. No closure claim may cite either as commerce readiness. | this file |
+> | AC-REF-1..4 | **LIVE but DORMANT.** No refund has ever occurred. Untested, not satisfied. | this file |
+> | AC-DEMO-1..5 | **CLOSED, satisfied.** | — |
+> | AC-ENV-1 | **LIVE and BREACHED.** See KAN-9. Staging dispatched a real order from a TEST payment; a real tee shipped and it is not in the production store. | CP-REQ-001 R-8 |
+> | AC-TEE-1,-2,-3 | **LIVE and DORMANT.** The Tee is ARCHIVED, so nothing can fire — but archival is not a fix. These three are the conditions on any reactivation and they must travel with the product. | this file |
+> | §4, §15.4 pricing grading | **SUPERSEDED** by R-4, Boss override. | — |
+>
+> ### Cost of not rewriting the body — stated, not hidden
+>
+> What the disposition table does **not** buy: the §8 priority grading is pre-D-014 and pre-Shopify-
+> authoritative, so **no priority in this file may be quoted**; the §9 Boss-decision list is stale and
+> is replaced by CP-REQ-001 §4; the §10 dependency graph was drawn against 4 products and 5 orders on
+> staging and is not a map of anything current; and the R-1..R-4 retraction narrative is kept for
+> trace, which means a hurried reader can still lift a retracted claim out of it. **Mitigation, and
+> it is only a mitigation: no one derives a build from this file.** Aarti derives from CP-REQ-001 §5.
+> If anything in the body is ever needed for a build, it gets re-read against the store on that day
+> and the disposition table gets the row, before the build.
+
+---
+
 **State:** REQUIREMENTS_DRAFTED — awaiting Boss approval + Aarti ADR before any build.
 **Product owner section author:** Pushpa
 **Ground truth basis:** first-hand Shopify Admin read, 2026-09-18, CORRECTED by direct GraphQL re-read the same day (see section 0), store `carlophillips-staging.myshopify.com` ("CARLOPHILLIPS Staging", Basic App Development plan, USD, EDT). 4 products, 5 orders.

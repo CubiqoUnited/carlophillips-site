@@ -6,6 +6,8 @@ Class CONTROLLED · Owner Pushpa (Product Owner) · Writers Pushpa proposes; Bos
 If the text in Shopify and the text here ever differ, this file is correct and Shopify is stale. Do not edit policy copy in the Shopify admin directly; change it here, re-version, and re-paste.
 
 **Artifact ID:** CP-POLICY-v1.0 · **Date:** 2026-09-18 · **Author:** Pushpa · **Status:** DRAFTED — NOT PUBLISHED
+
+**AMENDMENT 2026-09-19 — §6 added (AC-PUB-1..8, pre-publish gate).** This does **not** trigger AC-POL-6's new-dated-file rule and does not re-version the artifact. AC-POL-6 governs **published customer-facing policy text**; §6 is an internal standing-criteria block and **no paste block in §2 was touched**. The policy text of v1.0 is unchanged and remains NOT PUBLISHED per §0.
 **Supersedes:** the coordinator's unblocking draft (raw input, replaced in full, not edited).
 **Applies to:** the production store only. Policies are customer-facing legal text and are not staging artifacts.
 
@@ -235,3 +237,59 @@ Added to CP-COM-001's criteria set. These are launch requirements, not hygiene.
 - **AC-POL-5** Customer-facing shipping and returns copy MUST match the published policy. **Specifically, PDP/checkout copy MUST NOT understate free shipping or free returns once decided** (see §3, S-6 split).
 - **AC-POL-6** A policy change is a **versioned artifact change**: new dated file, Boss publishes, §0 table updated in the same commit.
 - **U-POL-1** Before launch: confirm all four policies plus Contact information are published, and open a live checkout to confirm the footer links resolve. **Unverified as of 2026-09-18 — the connector is disconnected and I have asserted nothing about the live store.**
+
+---
+
+## 6. STANDING REQUIREMENTS — PRE-PUBLISH GATE FOR ANY PRODUCT GOING ACTIVE
+
+**Added 2026-09-19. Accepted by Sushma in the LAUNCH-CHECKLIST consensus round; carried to Boss alongside the P1 set.**
+
+**Why this block exists.** KAN-13 (1 ACTIVE product, zero collection memberships, 10 empty collections) and KAN-18 (Rapid Logo Tee priced at $14.34, a cost price, six sizes S-XXXL, DRAFT today) are not two bugs. They are one missing rule. The fix proposed for KAN-13 — publish the Tee to reach catalogue depth — is a single admin click, and that click fires **four** defects at once on a live-payment store:
+
+1. the $14.34 cost price becomes a live retail price (KAN-18);
+2. the PDP tells a six-size tee customer *"Choose S, M or L before adding this **hoodie** to your bag"* and *"available in S, M and L"* — hardcoded at `apps/web/src/components/product/ProductForm/index.tsx:261-264` and `:269-271`, a direct breach of **AC-CUR-4** (no signal that unsold sizes exist);
+3. the product joins zero collections, so it is reachable only by direct URL;
+4. the product carries no category metafield, so ADR-0001's sweep cannot see it.
+
+**A product that is ACTIVE but invisible to our own catalogue logic is not published. It is merely switched on.**
+
+### The gate
+
+**AC-PUB-1..AC-PUB-8. No product may be set ACTIVE on the production store until every line passes.** Verification is a read of the **authoritative Shopify Admin API record**, not the admin UI badge and not a convenience surface. This follows the standing source ranking: a displayed status is the weakest evidence available.
+
+- **AC-PUB-1 — Price is a retail price, confirmed by Boss against intended margin.** Not a cost, not a placeholder, not a figure inherited from a supplier record. **KAN-18 exists because no one owned this line.**
+- **AC-PUB-2 — Price resolves on the rendered PDP and is not `$0`.** `product-view-model.ts:90` coerces an absent price to `0`, which renders as `$0` on an enabled add-to-bag button. A product whose price does not resolve MUST NOT render a purchasable PDP; it renders the unavailable state. **There is no customer-facing circumstance in which `$0` is correct for this store.**
+- **AC-PUB-3 — Every size named in customer copy is a size the product actually sells, and no size it does not sell is named anywhere on the surface.** This is **AC-CUR-4** at publication time. It currently **fails for every product that is not an S/M/L hoodie.**
+- **AC-PUB-4 — Product-type-neutral copy.** No customer-facing string may hardcode a garment type. *"this hoodie"* must not appear on a tee. Strings must derive from the product's own option values and type.
+- **AC-PUB-5 — At least one collection membership**, or an explicit recorded Boss decision that the product is direct-URL-only, with the reason.
+- **AC-PUB-6 — Category metafield present**, so ADR-0001's sweep can see the product.
+- **AC-PUB-7 — Vendor field scrubbed from every client payload for that product.** **Per-product verification, every time — never a one-time check.** KAN-19 (Apliiq in the live production `/shop` payload) is exactly what happens when scrubbing is assumed rather than verified per product.
+- **AC-PUB-8 — At least one image, and no image filename carries a vendor or fulfilment tell.** Precedent: `01-factual-apliiq-front.png` (KAN-17). The asset path is a customer-reachable surface.
+
+### E-PUB-1 — Publication is a THREE-role act (revised 2026-09-19, supersedes the two-person form)
+
+**The two-person form is withdrawn. It was unexecutable as written and is corrected here rather than discovered broken at the first publication.** AC-PUB-1, -2 and -7 require Shopify Admin API and served-payload reads that Pushpa cannot perform. A rule its own owner cannot run is not a control.
+
+**The three roles, and none of them is optional:**
+
+- **Aarti — instrument.** Supplies the AC-PUB readings. He gains no authority by doing so; he does not grade and does not publish.
+- **Pushpa — grader.** Grades each reading against AC-PUB-1..8 and records the result with the date verified in the CP-PUB-001 verification log.
+- **Boss — activator.** Sets the product ACTIVE. Only Boss.
+
+**E-PUB-1a — Every reading carries a date and a source.** A reading without both is not evidence and MUST NOT be graded. The source names the surface read (Admin API record, served PDP document, served listing payload) — never "the store" or "the site", because AC-PUB-7 is decided per surface.
+
+**E-PUB-1b — A reading that could not be taken blocks the gate; it never passes it.** NOT READ is a blocking state, not a neutral one. This is Aarti's condition on accepting the instrument role and it is normative: *not examined is never fine.* A gate line may be marked PASS, FAIL or NOT READ. There is no fourth value and NOT READ stops publication.
+
+**E-PUB-1c — A PASS is a property of the payload read, not of the mechanism.** Where a line passes because a given payload happened to be clean, and no code path enforces it, the log MUST record the pass as **unguarded**. An unguarded pass expires at the next change to that product or that surface and must be re-read. A denylist, an allowlist and a per-render derivation are not equivalent evidence, and the log says which one backed the pass.
+
+**E-PUB-1d — Boss out of the loop does not create a fourth path.** Where a gate line requires a Boss input he has not given, the line is graded on the objective evidence available and recorded as **PROVISIONAL**, with the exact input still owed and the interim rule in force named beside it. PROVISIONAL permits an already-ACTIVE product to remain ACTIVE. It NEVER permits a new product to go ACTIVE. Nothing in this gate is ever recorded as waiting.
+
+A product set ACTIVE without a recorded AC-PUB verification is an **untracked change to a live-payment commerce surface**, in the same class as a policy published without the §0 table updated (AC-POL-6).
+
+### Sequencing ruling — Pushpa, 2026-09-19
+
+**Do not publish the Rapid Logo Tee in order to fix KAN-13.** Fixing an empty-catalogue discovery defect by publishing a product that fails four gates trades one defect for four live-store defects, and does so on a store taking live payment.
+
+Two acceptable paths:
+1. **Fix the Signature Hoodie's collection membership first.** That resolves KAN-13's "zero collections" without publishing anything new, and it is the lower-risk move.
+2. **Run the Tee through AC-PUB-1..8 and publish it clean.**
