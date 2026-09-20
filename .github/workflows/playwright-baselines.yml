@@ -15,7 +15,24 @@ name: Regenerate Playwright visual baselines
 # Sushma executes it — and it must never fire automatically on a push, because
 # a baseline that regenerates itself can never fail.
 
+# TEMPORARY TRIGGER — removed before this branch merges.
+#
+# workflow_dispatch only fires for workflows already on the default branch, and
+# this one is not there yet, so it cannot be dispatched to generate the very
+# baselines the gate needs in order to let it reach main. The pull_request
+# trigger below breaks that circle by rendering from the PR head.
+#
+# It is scoped to this one branch and Sushma deletes it in the commit that lands
+# the baselines. It must not survive the merge: a baseline job that fires
+# automatically on every PR would let a baseline regenerate itself, and a
+# baseline that regenerates itself can never fail.
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'tests/e2e/visual-baseline.spec.ts'
+      - '.github/workflows/playwright-baselines.yml'
   workflow_dispatch:
     inputs:
       ref:
@@ -31,7 +48,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: playwright-baselines-${{ github.event.inputs.ref }}
+  group: playwright-baselines-${{ github.event.inputs.ref || github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -45,13 +62,13 @@ jobs:
         run: |
           echo "### Baseline regeneration" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- ref: \`${{ github.event.inputs.ref }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- authorised by: ${{ github.event.inputs.reason }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- ref: \`${{ github.event.inputs.ref || github.event.pull_request.head.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- authorised by: ${{ github.event.inputs.reason || 'KAN-29 temporary PR trigger' }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- requested by: @${{ github.actor }}" >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.ref }}
+          ref: ${{ github.event.inputs.ref || github.event.pull_request.head.sha }}
 
       - uses: actions/setup-node@v4
         with:
@@ -82,7 +99,7 @@ jobs:
       - name: Upload regenerated baselines
         uses: actions/upload-artifact@v4
         with:
-          name: visual-baselines-${{ github.event.inputs.ref }}
+          name: visual-baselines
           path: tests/e2e/visual-baselines/
           if-no-files-found: error
           retention-days: 7
