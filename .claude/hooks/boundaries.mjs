@@ -109,6 +109,50 @@ const LANES = {
  */
 const JIRA_WRITE = /^mcp__.*__(createJiraIssue|editJiraIssue|addOrEditJiraIssueComment)$/i;
 
+/*
+ * BUG LIFECYCLE — governance/BUG-LIFECYCLE.md, Boss mandate 2026-09-19.
+ *
+ * Report -> PO_DEFINE -> CONFIRMED_BUG -> RCA -> SOLUTION_CONSENSUS -> BUILD
+ * -> UAT -> SIGNOFF -> CLOSED.
+ *
+ * Two gates, because ordering that depends on discipline is not ordering:
+ *
+ *   1. Aarti may not touch application code unless the active dispatch says
+ *      BUILD. Stages RCA and SOLUTION_CONSENSUS are analysis and proposal only.
+ *   2. Sushma may not advance a dispatch to BUILD unless the item file records
+ *      BOTH Pushpa's bug confirmation AND the solution consensus. Sushma writes
+ *      the dispatch record, so the gate against skipping stages must bind her at
+ *      the moment she writes it.
+ */
+const DISPATCH_FILE = 'state/dispatch/current.json';
+const BUILD_PATHS = [/^apps\//, /^packages\//];
+const BUILD_EXEMPT = [/^governance\//, /^\.claude\//, /^scripts\//, /^tests?\//];
+
+const CONFIRM_MARKER = /PUSHPA_CONFIRMED|CONFIRMED_BUG/;
+const CONSENSUS_MARKER = /SOLUTION_CONSENSUS|SOLUTION_AGREED/;
+
+function activeDispatch() {
+  try {
+    return JSON.parse(readFileSync(`${ROOT}/${DISPATCH_FILE}`, 'utf8'));
+  } catch {
+    return null; /* no dispatch record: the gate is silent, never inventing one */
+  }
+}
+
+function denyLifecycle(role, target, reason, instead) {
+  record(role, 'lifecycle', target, reason);
+  process.stdout.write(JSON.stringify({
+    hookSpecificOutput: {
+      hookEventName: 'PreToolUse',
+      permissionDecision: 'deny',
+      permissionDecisionReason:
+        `BUG LIFECYCLE: ${reason} Do this instead: ${instead} ` +
+        `(governance/BUG-LIFECYCLE.md, enforced by .claude/hooks/boundaries.mjs)`,
+    },
+  }));
+  process.exit(0);
+}
+
 const JIRA_CONTENT_GATES = [
   {
     lane: 'stories',
@@ -236,6 +280,60 @@ try {
      * path, so neither the path nor the command check can see them. */
     if (tool && (l.tools || []).some((re) => re.test(tool))) {
       deny(role, lane, tool);
+    }
+  }
+
+  /*
+   * BUG LIFECYCLE GATES. Ordering, not judgement — the hook can prove Aarti did
+   * not build before consensus; it cannot prove the consensus was sound.
+   */
+  if (path && MUTATES.has(tool)) {
+    const d = activeDispatch();
+
+    /* Gate 1 — Aarti builds only at BUILD. */
+    if (
+      role === 'aarti' &&
+      d &&
+      d.stage !== 'BUILD' &&
+      !BUILD_EXEMPT.some((re) => re.test(path)) &&
+      BUILD_PATHS.some((re) => re.test(path))
+    ) {
+      denyLifecycle(
+        role,
+        path,
+        `${d.item || 'the active item'} is at stage ${d.stage}, not BUILD. ` +
+          `Stages RCA and SOLUTION_CONSENSUS are analysis and proposal only — no application code.`,
+        'signal Sushma with the root cause and the proposed solution, and wait for consensus.'
+      );
+    }
+
+    /* Gate 2 — Sushma cannot advance to BUILD without both records. Binds the
+     * role that writes the dispatch file, which is the only place it can bind. */
+    if (role === 'sushma' && path === DISPATCH_FILE) {
+      const text = String(input.new_string || input.content || '');
+      if (/"stage"\s*:\s*"BUILD"/.test(text)) {
+        const item = (text.match(/"item"\s*:\s*"([A-Z]+-\d+)"/) || [])[1];
+        let itemDoc = '';
+        try {
+          itemDoc = readFileSync(`${ROOT}/work/items/${item}.md`, 'utf8');
+        } catch { /* missing item file fails the gate below */ }
+
+        const confirmed = CONFIRM_MARKER.test(itemDoc);
+        const consensus = CONSENSUS_MARKER.test(itemDoc);
+        if (!confirmed || !consensus) {
+          const missing = [
+            !confirmed && "Pushpa's bug confirmation",
+            !consensus && 'the solution consensus',
+          ].filter(Boolean).join(' and ');
+          denyLifecycle(
+            role,
+            `${DISPATCH_FILE} -> BUILD (${item || 'no item key'})`,
+            `work/items/${item || '<KEY>'}.md does not record ${missing}. ` +
+              `A report is not a bug until Pushpa confirms it, and no fix starts before consensus.`,
+            'dispatch the missing stage and record its signal before advancing.'
+          );
+        }
+      }
     }
   }
 

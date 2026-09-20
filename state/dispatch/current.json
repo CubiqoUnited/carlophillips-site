@@ -1,0 +1,9 @@
+{
+  "item": null,
+  "stage": "IDLE",
+  "owner": null,
+  "opened": null,
+  "checkpoint": null,
+  "note": "No item in flight. Under governance/BUG-LIFECYCLE.md, Aarti cannot mutate apps/** or packages/** while this is not BUILD. Sushma writes this record when she dispatches; she cannot set BUILD unless work/items/<KEY>.md records both Pushpa's confirmation and the solution consensus.",
+  "history": []
+}
