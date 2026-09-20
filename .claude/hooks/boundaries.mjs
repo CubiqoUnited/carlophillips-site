@@ -20,7 +20,7 @@
  *
  * Boss is never restricted.
  */
-import { appendFileSync, mkdirSync, readFileSync } from 'node:fs';
+import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, relative, isAbsolute } from 'node:path';
 
 const ROOT = process.env.CLAUDE_PROJECT_DIR || process.cwd();
@@ -188,6 +188,67 @@ const JIRA_CONTENT_GATES = [
   },
 ];
 
+/*
+ * FILE EXCLUSION — Boss mandate, 2026-09-19:
+ * "when one agent is writing the files, another cant and wont access it."
+ *
+ * A role that writes a file takes a lock on it. While that lock is fresh, no
+ * OTHER role may write it, and no other role may read it either — Boss said
+ * access, not just writing, and a read of a file mid-edit returns a state that
+ * was never true.
+ *
+ * TTL rather than explicit release, and the limit is stated rather than hidden:
+ * a PreToolUse hook sees the start of a call, never the end of a role's work.
+ * So a lock means "this role touched this file recently", which approximates
+ * "is working on it" and does not prove it. Too long and the roles block each
+ * other over finished work; too short and a slow edit loses its lock mid-task.
+ * Ten minutes, refreshed on every write, is the compromise — and a lock that
+ * has gone stale is ignored rather than requiring a sweep.
+ *
+ * The same role is never blocked by its own lock, and Boss is never restricted.
+ */
+const LOCK_DIR = `${ROOT}/state/locks`;
+const LOCK_TTL_MS = 10 * 60 * 1000;
+
+function lockPathFor(p) {
+  return `${LOCK_DIR}/${p.replace(/[^A-Za-z0-9._-]/g, '_')}.json`;
+}
+
+function heldByOther(role, p) {
+  try {
+    const held = JSON.parse(readFileSync(lockPathFor(p), 'utf8'));
+    if (held.role === role) return null;
+    if (Date.now() - Date.parse(held.ts) > LOCK_TTL_MS) return null; /* stale */
+    return held;
+  } catch {
+    return null; /* no lock, or unreadable: never block on a broken check */
+  }
+}
+
+function takeLock(role, p) {
+  try {
+    mkdirSync(LOCK_DIR, { recursive: true });
+    writeFileSync(lockPathFor(p), JSON.stringify({ role, path: p, ts: new Date().toISOString() }));
+  } catch { /* a lock we cannot take must not stop the work */ }
+}
+
+function denyLocked(role, p, held, verb) {
+  record(role, 'file-exclusion', p, `held by ${held.role}`);
+  process.stdout.write(JSON.stringify({
+    hookSpecificOutput: {
+      hookEventName: 'PreToolUse',
+      permissionDecision: 'deny',
+      permissionDecisionReason:
+        `FILE IN USE: ${p} is being written by ${held.role} (since ${held.ts}). ` +
+        `You may not ${verb} it while another role holds it. ` +
+        `Do this instead: work on something else and signal Sushma if you need it; ` +
+        `the hold lapses ${Math.round(LOCK_TTL_MS / 60000)} minutes after ${held.role}'s last write. ` +
+        `(Boss mandate 2026-09-19, enforced by .claude/hooks/boundaries.mjs)`,
+    },
+  }));
+  process.exit(0);
+}
+
 function roleOf(payload) {
   const raw = (payload.subagent_type || payload.agent_type || payload.agent || '').toLowerCase();
   for (const known of ['sushma', 'pushpa', 'aarti']) if (raw.includes(known)) return known;
@@ -296,6 +357,21 @@ try {
      * path, so neither the path nor the command check can see them. */
     if (tool && (l.tools || []).some((re) => re.test(tool))) {
       deny(role, lane, tool);
+    }
+  }
+
+  /*
+   * FILE EXCLUSION. Checked before the lane gates: a file another role is
+   * working is off-limits regardless of whose lane it sits in.
+   */
+  if (path) {
+    if (MUTATES.has(tool)) {
+      const held = heldByOther(role, path);
+      if (held) denyLocked(role, path, held, 'write');
+      takeLock(role, path);
+    } else if (tool === 'Read') {
+      const held = heldByOther(role, path);
+      if (held) denyLocked(role, path, held, 'read');
     }
   }
 

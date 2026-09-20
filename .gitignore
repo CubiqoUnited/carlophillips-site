@@ -66,3 +66,4 @@ Thumbs.db
 /mock-asset-factory-data/
 /.env.mock-assets.local
 state/activity.jsonl
+state/locks/
