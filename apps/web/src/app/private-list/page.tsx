@@ -5,6 +5,8 @@ export const metadata = {
   title: 'Private list | CARLOPHILLIPS',
   description:
     'Join the CARLOPHILLIPS private list for private releases, early access and selected notes.',
+  // KAN-24: internal surface. noindex is a stopgap, not a gate.
+  robots: { index: false, follow: false },
 };
 
 export default function PrivateListPage() {

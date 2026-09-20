@@ -1,5 +1,11 @@
 import Link from 'next/link';
 
+// KAN-24: this route is reachable on a direct GET and must never be indexed.
+export const metadata = {
+  title: 'Checkout information | CARLOPHILLIPS',
+  robots: { index: false, follow: false },
+};
+
 export default function CheckoutConfirmPage() {
   return (
     <div className="cp-checkout-confirmation">
