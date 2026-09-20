@@ -15,24 +15,19 @@ name: Regenerate Playwright visual baselines
 # Sushma executes it — and it must never fire automatically on a push, because
 # a baseline that regenerates itself can never fail.
 
-# TEMPORARY TRIGGER — removed before this branch merges.
+# Manual dispatch only, and it stays that way.
 #
-# workflow_dispatch only fires for workflows already on the default branch, and
-# this one is not there yet, so it cannot be dispatched to generate the very
-# baselines the gate needs in order to let it reach main. The pull_request
-# trigger below breaks that circle by rendering from the PR head.
+# A pull_request trigger lived here for exactly one run, to break a circle: this
+# workflow could not be dispatched until it reached the default branch, and it
+# could not reach the default branch until the gate passed, and the gate could
+# not pass without the baselines this workflow produces. It rendered once from
+# the PR head and was removed in the same commit that landed its output.
 #
-# It is scoped to this one branch and Sushma deletes it in the commit that lands
-# the baselines. It must not survive the merge: a baseline job that fires
-# automatically on every PR would let a baseline regenerate itself, and a
-# baseline that regenerates itself can never fail.
+# It must not come back. A baseline job that fires automatically lets a baseline
+# regenerate itself, and a baseline that regenerates itself can never fail — it
+# would have silently absorbed both of today's findings, the vendor-card removal
+# and the conditional-cents regression, instead of surfacing them.
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'tests/e2e/visual-baseline.spec.ts'
-      - '.github/workflows/playwright-baselines.yml'
   workflow_dispatch:
     inputs:
       ref:
