@@ -85,14 +85,30 @@ const LANES = {
   jira: {
     owner: 'sushma',
     denied: ['pushpa', 'aarti'],
+    /*
+     * Boss, 2026-09-19, overriding Pushpa's own ruling against expanding her
+     * access: all three roles hold COMMENT access. He may override anything,
+     * and he did.
+     *
+     * So the lane splits. Ticket AUTHORSHIP — creating, editing, transitioning
+     * or deleting an issue — stays Sushma's, because that is what M-003 is
+     * about: only Sushma drafts epics and features, and on approval the
+     * stories, tasks and subtasks. COMMENTING is the conversation on a ticket,
+     * not the ticket, and it is now open to every role.
+     *
+     * Note what this costs and what it does not. The relay exemption stays —
+     * Sushma still quotes roles in the record — but a role's ruling no longer
+     * depends on her transcription. The content gates below are unchanged and
+     * still bind by lane: Aarti cannot write acceptance criteria in a comment,
+     * Pushpa cannot prescribe implementation in one.
+     */
     tools: [
       /^mcp__.*__(create|edit|transition|delete)Jira/i,
-      /^mcp__.*__addOrEditJiraIssueComment$/i,
       /^mcp__.*__(create|update)ConfluenceContent$/i,
       /^mcp__.*__execute(Write|Destructive)$/i,
     ],
-    why: 'the Jira record is Sushma\'s; roles signal her rather than writing it themselves',
-    instead: 'raise your three-line signal (ITEM / RESULT / EVIDENCE) and Sushma carries it into Jira',
+    why: 'creating and transitioning issues is Sushma\'s; commenting is open to every role',
+    instead: 'comment on the issue instead, or raise your three-line signal so Sushma opens the ticket',
   },
 };
 

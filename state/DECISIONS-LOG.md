@@ -128,6 +128,46 @@ A reader who sees `D-3` in `work/items/CP-COM-001.md` §9 lands here:
 
 ---
 
+## M-005 · 2026-09-19 · STANDING MANDATE (Boss) — Sushma reconciles the main section; the roles reach consensus in comments
+
+**Rule, as Boss stated it:** *"you will only reconcile as it to jira main section -
+and let aarti and pushpa collaborate there for consensus - you will interject when
+they are directionally wrong or are using some incorrect factual logistics."*
+
+**Supersedes** the no-direct-contact rule in `governance/BUG-LIFECYCLE.md` v1.0.
+
+**The split**
+- **Comment thread** — Pushpa and Aarti, working in the open, reaching consensus
+  in their own words. This is the working surface.
+- **Main section (issue description)** — Sushma alone, reconciling the settled
+  outcome into the canonical record.
+
+**Sushma's two grounds for interjecting, and only these two**
+1. The collaboration is **directionally wrong**.
+2. It rests on an **incorrect fact**.
+
+She does not arbitrate taste, re-open settled points, break ties on preference,
+or add her voice to a thread that is going correctly. **Silence is not absence.**
+
+**Why this is enforceable rather than aspirational.** The tool configuration
+already implements it exactly, and that alignment was not designed for it — it
+fell out of Boss's earlier comment-access override:
+- The two roles hold comment access and cannot create, edit, transition or delete
+  an issue. **They cannot write the main section.**
+- Sushma holds issue authorship. **The description is hers and only hers.**
+- Neither role holds `SendMessage`. Collaboration runs **through the record**,
+  dated and attributed, not through a side channel.
+- The lane content gates follow them into comments: Aarti cannot write acceptance
+  criteria there, Pushpa cannot prescribe implementation there.
+
+**The risk this introduces, recorded rather than discovered later.** A reconciler
+who interjects rarely is a reconciler who can be wrong quietly. If Sushma stays
+silent on a thread that was directionally wrong, nothing in the system catches
+it — the roles will have reached a consensus and she will have ratified it by not
+objecting. The counterweight is that her interjections are now few enough to be
+individually reviewable, and every one is in the record with its grounds stated.
+---
+
 ## M-004 · 2026-09-19 · STANDING MANDATE (Boss) — Boss is FYI; Pushpa receives decisions
 
 **Rule, as Boss stated it:** *"i am not a blocker here - i am to be kept in fyi and

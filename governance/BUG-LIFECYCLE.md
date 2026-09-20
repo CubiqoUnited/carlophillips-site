@@ -17,13 +17,37 @@ travelled this path is not closed, whatever its Jira status says.
 
 ## The rule that makes the rest work
 
-**No direct role-to-role contact.** Pushpa and Aarti never talk to each other.
-Every handoff is a **signal to Sushma**, who reconciles it and dispatches onward.
-A role that believes it needs the other's answer raises the signal and stops.
+**Amended by Boss, 2026-09-19.** The earlier rule was that Pushpa and Aarti never
+contact each other at all and every handoff routes through Sushma. That is
+superseded.
 
-Enforced by construction: neither role holds `SendMessage`, and their tool
-allowlists contain no outbound channel. There is no path for them to reach each
-other even by accident.
+**Pushpa and Aarti collaborate in the Jira comment thread.** Consensus is reached
+there, in the open, in their own words. The comment section is the working
+surface.
+
+**Sushma does not participate in that thread.** She reconciles the settled
+outcome into the issue's **main section** — the description, the canonical
+record — and she interjects only on two grounds:
+
+- the collaboration is **directionally wrong**, or
+- it rests on an **incorrect fact**.
+
+She does not arbitrate taste, re-open settled points, or add her voice to a
+discussion that is going correctly. Silence from Sushma on a thread is not
+absence; it is the reconciler declining to interfere with work that is sound.
+
+**This is already how the tools are configured**, which is why the split is
+enforceable rather than aspirational:
+
+- Pushpa and Aarti hold **comment** access. They cannot create, edit,
+  transition or delete an issue — so they cannot write the main section.
+- Sushma holds issue authorship. **The description is hers and only hers.**
+- Neither role holds `SendMessage` or any outbound channel. There is still no
+  peer-to-peer path — collaboration happens **through the record**, where it is
+  dated, attributed and auditable, not in a side channel.
+- The lane content gates follow them into the comment box: Aarti cannot write
+  acceptance criteria there, Pushpa cannot prescribe implementation there.
+  Widening *who may speak* did not widen *what each may say*.
 
 ## Stages
 
