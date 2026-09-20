@@ -128,6 +128,96 @@ A reader who sees `D-3` in `work/items/CP-COM-001.md` §9 lands here:
 
 ---
 
+## M-004 · 2026-09-19 · STANDING MANDATE (Boss) — Boss is FYI; Pushpa receives decisions
+
+**Rule, as Boss stated it:** *"i am not a blocker here - i am to be kept in fyi and
+pushpa should receneyeve for deceisions."*
+
+Decision requests no longer queue on Boss. They go to **Pushpa**, who rules in his
+stead. Boss receives briefs for information and may override any ruling at any
+time without notice or re-litigation.
+
+**What this changes**
+- Sushma raises decisions to Pushpa in the same shape as before: QUESTION,
+  OPTIONS, IMPACT, RECOMMENDATION. A request without a recommendation is still
+  incomplete.
+- Pushpa's rulings are recorded in `state/DECISIONS-LOG.md` as **DECISION**
+  entries carrying her name, not Boss's. Boss's own decisions remain marked as
+  his. The log must never let a reader mistake one for the other.
+- "Waiting on Boss" is no longer a valid state for anything. Every previously
+  Boss-blocked item is re-routed to Pushpa or, where it is not a decision at all,
+  executed.
+
+**What this does not change**
+- Pushpa rules on *what*; Aarti rules on *how*. Delegated authority does not move
+  the lane. A decision that is technical in substance still goes to Aarti through
+  Sushma, and Pushpa would refuse it — she has already refused one.
+- Sushma still does not decide what gets fixed.
+
+**One carve-out, recorded as Sushma's judgement rather than as a Boss
+instruction.** Actions that spend Boss's money or move real funds are not
+delegated by this mandate: KAN-16's live checkout, any purchase, any credential
+Boss must issue. Sushma will not execute those on a Pushpa ruling alone. Boss can
+strike this line whenever he likes; until he does, it stands, and it is stated
+here so it is visible rather than merely assumed.
+---
+
+## D-035 · 2026-09-19 · TOPOLOGY DECLARED BY BOSS, AND R-1 CLOSED BY EVIDENCE
+
+**Boss, 2026-09-19:** `local-canonical-carlophillips` is the canonical local tree.
+Git `staging` → `staging.carlophillips.com`. Git `main` → `www.carlophillips.com`
+and `carlophillips.com`.
+
+**That declaration is not only intent — it is already implemented.** Verified by
+Sushma the same day, and it reverses what both Aarti and Sushma reported.
+
+**VERIFIED FACTS, 2026-09-19**
+
+1. `www.carlophillips.com` is served by `dpl_7acwDFo9hMyZaZvuLUjUBAGq1JbV`,
+   created 2026-09-15T18:52:57Z. Build log: *"Using prebuilt build artifacts from
+   `.vercel/output`"* — which is why `vercel inspect` shows no source, no commit
+   and no branch. A prebuilt upload carries no git metadata. **Absence of metadata
+   was never absence of provenance.**
+2. `vercel-release-candidate.yml` ran 2026-09-15T18:49 on branch **`main`**, SHA
+   **`8cde6a90`**; `vercel-production.yml` promoted it at 18:53. The serving
+   deployment was created between those two runs.
+3. `8cde6a90` is a commit **in this repository** — *"Merge pull request #146 from
+   CubiqoUnited/staging"*, 2026-09-15 — and is an **ancestor of `github/main`**.
+4. That commit contains `title: 'Product Review | CARLOPHILLIPS'` at
+   `apps/web/src/app/product/[handle]/page.tsx:57`, with `robots: index:false`.
+   It is a deliberate private review surface, not a stray artefact.
+5. `staging.carlophillips.com` is served from `vercel-staging.yml` run on branch
+   **`staging`** at `d6a85afc`, target `preview`.
+
+**WHAT THIS REVERSES**
+
+- **"Production is not running this tree" is WRONG.** Aarti reported it, Sushma
+  repeated it in three briefs. Production runs **an older commit of this tree**:
+  `main` at `8cde6a9`. `main` has since advanced to `d5ac7de`, which is not
+  deployed. The real condition is **deployment lag, not a foreign artefact.**
+- **The second clone is exonerated.** It was an assumption, flagged as one by
+  Pushpa, and it is now disproven rather than merely unconfirmed.
+- **Pushpa's R-3 is satisfied.** What serves `Product Review` is explained, and it
+  was explained *before* anything was replaced, as she required.
+- **R-1 is CLOSED.** The tree and commit are identified and recorded.
+- **Aarti's staging release risk does not materialise.** Staging deploys with
+  target `preview`, so a `VERCEL_ENV=production` fix cannot make staging read the
+  production store.
+
+**WHAT IT DOES NOT CHANGE**
+
+Deploys are `workflow_dispatch`, not merge-triggered. Merging to `main` still
+deploys nothing by itself. Pushpa's ruling for **B as destination** stands on its
+own reasoning — every deployment attributable to a named commit at the moment it
+serves customers, without asking a person what they ran. Today that attribution
+exists only by correlating two workflow runs against a deployment timestamp,
+which is reconstruction, not attribution.
+
+**OWED TO PUSHPA, NOT DECIDED BY SUSHMA:** her mass withdrawal of production web
+readings rested on the artefact being unidentifiable. It is now identified. Which
+withdrawals she reinstates is her grading call and hers alone.
+---
+
 ## M-003 · 2026-09-19 · STANDING MANDATE (Boss) — nothing moves but a Jira ticket
 
 **Rule, as Boss stated it:** *"nothing moves — but a jira ticket."*

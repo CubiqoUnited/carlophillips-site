@@ -346,11 +346,29 @@ try {
       .filter((t) => typeof t === 'string')
       .join('\n');
 
-    if (body) {
+    /*
+     * RELAY EXEMPTION — Pushpa's ruling, 2026-09-19, on the Jira relay conflict.
+     *
+     * "Relay of a verbatim block explicitly attributed to another role is not
+     * authorship." She declined comment-only Jira write for herself rather than
+     * route around a gate that is working correctly, and ruled this instead —
+     * against her own interest, and preserving M-003's single writer into Jira.
+     *
+     * Narrow by construction: only a fenced block whose info string is `quote`
+     * and whose first line names an author and a date is exempt. Sushma's own
+     * words live OUTSIDE the fence and are gated exactly as before, so she
+     * cannot author criteria by wrapping them in a quotation of nobody.
+     */
+    const relayed = body.replace(
+      /```quote[ \t]*\r?\n[ \t]*(?:FROM|VERBATIM):[^\n]*\r?\n[\s\S]*?```/gi,
+      ' <RELAYED-VERBATIM> '
+    );
+
+    if (relayed) {
       for (const gate of JIRA_CONTENT_GATES) {
         const l = LANES[gate.lane];
         if (!l || !l.denied.includes(role)) continue;
-        if (gate.markers.some((re) => re.test(body))) {
+        if (gate.markers.some((re) => re.test(relayed))) {
           deny(role, gate.lane, `${tool} (body)`);
         }
       }
