@@ -73,7 +73,60 @@ const LANES = {
     why: 'the technical solution is Aarti\'s; the other roles hold gates on it, not the pen',
     instead: 'record your gate verdict in the ADR\'s own approval section, or request changes',
   },
+
+  /* 5. JIRA — the delivery record. Sushma only.
+   *
+   * Boss, 2026-09-19: only Sushma drafts epics and features, and on approval
+   * the stories, tasks, subtasks and comment-section communication too.
+   * Pushpa and Aarti raise a three-line signal; Sushma carries it into Jira.
+   *
+   * Matched on TOOL NAME, not path — Jira lives behind MCP, which is why the
+   * first four lanes never reached it. */
+  jira: {
+    owner: 'sushma',
+    denied: ['pushpa', 'aarti'],
+    tools: [
+      /^mcp__.*__(create|edit|transition|delete)Jira/i,
+      /^mcp__.*__addOrEditJiraIssueComment$/i,
+      /^mcp__.*__(create|update)ConfluenceContent$/i,
+      /^mcp__.*__execute(Write|Destructive)$/i,
+    ],
+    why: 'the Jira record is Sushma\'s; roles signal her rather than writing it themselves',
+    instead: 'raise your three-line signal (ITEM / RESULT / EVIDENCE) and Sushma carries it into Jira',
+  },
 };
+
+/*
+ * Content gates on a Jira write.
+ *
+ * These bind SUSHMA, and they exist because she broke both on 2026-09-19:
+ * she wrote "Done when" acceptance criteria into eleven issues, and prescribed
+ * the implementation ("scrub at the adapter boundary", "must notFound()") in
+ * four more. Owning the record is not owning its content. The what is Pushpa's
+ * and the how is Aarti's, in Jira exactly as on disk.
+ *
+ * Pushpa and Aarti never reach these — the jira lane stops them first.
+ */
+const JIRA_WRITE = /^mcp__.*__(createJiraIssue|editJiraIssue|addOrEditJiraIssueComment)$/i;
+
+const JIRA_CONTENT_GATES = [
+  {
+    lane: 'stories',
+    /* Acceptance criteria, however it is dressed. */
+    markers: [
+      /\bacceptance criteria\b/i,
+      /^\s*#{0,4}\s*\**\s*done when\b/im,
+      /^\s*#{0,4}\s*\**\s*definition of done\b/im,
+      /\bAC-[A-Z]*-?\d+\b/,
+      /\bgiven\b[\s\S]{0,120}\bwhen\b[\s\S]{0,120}\bthen\b/i,
+    ],
+  },
+  {
+    lane: 'solutioning',
+    /* A fenced implementation block is a design decision, not a finding. */
+    markers: [/```\s*(ts|tsx|js|jsx|javascript|typescript)\b/i],
+  },
+];
 
 function roleOf(payload) {
   const raw = (payload.subagent_type || payload.agent_type || payload.agent || '').toLowerCase();
@@ -177,6 +230,32 @@ try {
      * easiest way around a path rule, so it is checked separately. */
     if (command && (l.commands || []).some((re) => re.test(command))) {
       deny(role, lane, command.slice(0, 120));
+    }
+
+    /* Tool-name boundaries. Jira and Confluence live behind MCP and carry no
+     * path, so neither the path nor the command check can see them. */
+    if (tool && (l.tools || []).some((re) => re.test(tool))) {
+      deny(role, lane, tool);
+    }
+  }
+
+  /*
+   * Content gates on a Jira write. Reached only by whoever may write Jira at
+   * all — today, Sushma. Owning the record is not owning its content.
+   */
+  if (JIRA_WRITE.test(tool)) {
+    const body = [input.description, input.commentBody, input.summary]
+      .filter((t) => typeof t === 'string')
+      .join('\n');
+
+    if (body) {
+      for (const gate of JIRA_CONTENT_GATES) {
+        const l = LANES[gate.lane];
+        if (!l || !l.denied.includes(role)) continue;
+        if (gate.markers.some((re) => re.test(body))) {
+          deny(role, gate.lane, `${tool} (body)`);
+        }
+      }
     }
   }
 } catch { /* never block delivery on a broken check: fail open, stay silent */ }

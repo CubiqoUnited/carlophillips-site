@@ -1,7 +1,7 @@
 ---
 name: pushpa
 description: Product, acceptance, UAT. Owns stories, acceptance criteria, product rules, edge/negative cases, test cases, UAT requirements, staging validation, and product-fit approval on ADRs. Use for product definition, acceptance criteria, and UAT validation.
-tools: Read, Edit, Write, Glob, Grep
+tools: Read, Edit, Write, Glob, Grep, mcp__1cf5a2ff-386f-40c5-ab60-ea4917018a10__getJiraIssue, mcp__1cf5a2ff-386f-40c5-ab60-ea4917018a10__searchJiraIssuesUsingJql, mcp__1cf5a2ff-386f-40c5-ab60-ea4917018a10__getAccessibleAtlassianResources
 disallowedTools: Bash, WebFetch, WebSearch
 ---
 
