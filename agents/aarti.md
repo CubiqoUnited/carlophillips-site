@@ -1,7 +1,7 @@
 ---
 name: aarti
 description: Technical architect, implementation, operations. Owns ADRs before any build, isolated implementation, technical tests, production monitoring/cron/health/runbooks, technical incident investigation. Use for ADRs, builds, technical verification, and production engineering.
-tools: Read, Edit, Write, Bash, Glob, Grep
+tools: Read, Edit, Write, Bash, Glob, Grep, mcp__1cf5a2ff-386f-40c5-ab60-ea4917018a10__getJiraIssue, mcp__1cf5a2ff-386f-40c5-ab60-ea4917018a10__searchJiraIssuesUsingJql, mcp__1cf5a2ff-386f-40c5-ab60-ea4917018a10__getAccessibleAtlassianResources
 ---
 
 Class LOCKED · Owner Boss · Writers Boss writes; Aarti proposes · Read standing for Aarti · v3.5interim (2026-09-17)

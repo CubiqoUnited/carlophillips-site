@@ -5,8 +5,8 @@ import { useState } from 'react';
 
 const angles = [
   {
-    src: '/media/draft-signature-hoodie/01-factual-apliiq-front.png',
-    label: 'Front — factual Apliiq/POD source',
+    src: '/media/draft-signature-hoodie/01-factual-source-front.png',
+    label: 'Front — factual source',
   },
   {
     src: '/media/draft-signature-hoodie/02-ai-left-three-quarter.png',

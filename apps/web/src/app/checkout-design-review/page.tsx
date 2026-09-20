@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { getCommerceEnvironment } from '@/lib/config/product-visibility';
 import './checkout-design-review.css';
 
 export const metadata = {
   title: 'Checkout Design Review | CARLOPHILLIPS',
   description:
-    'Private staging review of the proposed CARLOPHILLIPS Shopify checkout direction.',
+    'Private internal review of the proposed CARLOPHILLIPS Shopify checkout direction.',
   robots: { index: false, follow: false },
 };
 
@@ -18,6 +20,15 @@ const paymentMethods = [
 ];
 
 export default function CheckoutDesignReviewPage() {
+  // Internal design-review surface. It is not a customer route and must never be
+  // reachable on the live storefront. This guard is secondary to the
+  // getCommerceEnvironment() fix in product-visibility.ts: the gate is what was
+  // broken; this is defence in depth for one route that should never have been
+  // publicly served (it returned 200 on www.carlophillips.com).
+  if (getCommerceEnvironment() === 'production') {
+    notFound();
+  }
+
   return (
     <main id="main-content" className="cp-checkout-review">
       <header className="cp-checkout-review-header">
@@ -25,7 +36,7 @@ export default function CheckoutDesignReviewPage() {
           CARLOPHILLIPS
         </Link>
         <span className="cp-checkout-review-status">
-          Staging review · Draft
+          Internal review · Draft
         </span>
       </header>
 

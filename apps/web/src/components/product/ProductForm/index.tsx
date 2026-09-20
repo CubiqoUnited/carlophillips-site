@@ -14,7 +14,7 @@ function money(amount: string, currency: string): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(Number(amount));
 }
@@ -24,6 +24,18 @@ const SIZE_ORDER = new Map<string, number>(
     (size, index) => [size, index] as const
   )
 );
+
+/**
+ * AC-18 / AC-PUB-3/4: customer copy about sizes and product type must derive
+ * from the curated option values actually offered, never from a literal. The
+ * first product that is not S/M/L would otherwise ship false size copy, and
+ * that failure is silent — the page still renders, it just lies.
+ */
+function joinList(values: string[], conjunction: 'and' | 'or'): string {
+  if (values.length === 0) return '';
+  if (values.length === 1) return values[0];
+  return `${values.slice(0, -1).join(', ')} ${conjunction} ${values[values.length - 1]}`;
+}
 
 function sizeFor(item: VariantCombination): string {
   return (
@@ -37,11 +49,13 @@ export default function ShopifyCheckoutForm({
   presentation,
   environment: _environment,
   sizeGuide,
+  productType,
 }: {
   handle: string;
   presentation: VariantPresentation;
   environment: CommerceEnvironment;
   sizeGuide?: string;
+  productType?: string;
 }) {
   const available = (presentation.combinations || [])
     .filter((item) => item.availableForSale)
@@ -51,6 +65,10 @@ export default function ShopifyCheckoutForm({
         (SIZE_ORDER.get(sizeFor(left).toUpperCase()) ?? 999) -
         (SIZE_ORDER.get(sizeFor(right).toUpperCase()) ?? 999)
     );
+  const offeredSizes = [...new Set(available.map(sizeFor))].filter(Boolean);
+  const sizesAnd = joinList(offeredSizes, 'and');
+  const sizesOr = joinList(offeredSizes, 'or');
+  const productNoun = (productType || '').trim().toLowerCase() || 'piece';
   const [referenceHash, setReferenceHash] = useState('');
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const sizeGuideRef = useRef<HTMLDivElement>(null);
@@ -226,7 +244,9 @@ export default function ShopifyCheckoutForm({
         >
           Size guide
         </button>
-        <span>Final sale · Shipping details available at checkout</span>
+        <span>
+          Free shipping on eligible orders · Returns accepted — see policy
+        </span>
       </div>
       {sizeGuideOpen && (
         <div
@@ -258,21 +278,27 @@ export default function ShopifyCheckoutForm({
             </div>
             <p className="cp-drawer-copy">
               {sizeGuide ||
-                'Size guidance is currently unavailable in Shopify. Select from the current Shopify size options above.'}
+                (sizesAnd
+                  ? `This piece is cut true to size and available in ${sizesAnd}. Select your size above.`
+                  : 'This piece is cut true to size. Select your size above.')}
             </p>
           </div>
         </div>
       )}
       <div className="cp-purchase-feedback" aria-live="polite">
         {status === 'size-required' && (
-          <p>Choose S, M or L before adding this hoodie to your bag.</p>
+          <p>
+            {sizesOr
+              ? `Choose ${sizesOr} before adding this ${productNoun} to your bag.`
+              : `Choose a size before adding this ${productNoun} to your bag.`}
+          </p>
         )}
         {status === 'failed' && (
           <p>This item was not added. Check availability and try again.</p>
         )}
       </div>
       <p className="cp-purchase-note">
-        You will review delivery and payment securely in Shopify before placing
+        You will review delivery and payment on a secure checkout before placing
         the order.
       </p>
     </form>

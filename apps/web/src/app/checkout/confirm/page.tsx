@@ -1,5 +1,11 @@
 import Link from 'next/link';
 
+// KAN-24: this route is reachable on a direct GET and must never be indexed.
+export const metadata = {
+  title: 'Checkout information | CARLOPHILLIPS',
+  robots: { index: false, follow: false },
+};
+
 export default function CheckoutConfirmPage() {
   return (
     <div className="cp-checkout-confirmation">
@@ -17,11 +23,11 @@ export default function CheckoutConfirmPage() {
 
         <div className="cp-checkout-confirmation-panel">
           <h2 className="cp-checkout-confirmation-panel-title cp-label">
-            Shopify-hosted checkout
+            Secure checkout
           </h2>
           <p className="text-sm">
-            Your cart, payment, and order status are confirmed only in Shopify
-            Checkout and its order communications.
+            Your cart, payment, and order status are confirmed at secure
+            checkout and in its order communications.
           </p>
           <p className="cp-checkout-confirmation-copy">
             This page does not create or confirm an order. For help after an
