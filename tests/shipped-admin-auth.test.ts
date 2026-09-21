@@ -119,9 +119,27 @@ describe('shipped Admin authentication', () => {
     expect(route.indexOf('await requireAdminAccess')).toBeLessThan(
       route.indexOf('adminSections.find')
     );
-    expect(middleware).toContain(
-      "matcher: ['/admin/:path*', '/api/admin/:path*']"
-    );
+    // KAN-23 AC-ADM-7 widened the matcher to name /admin and /api/admin
+    // themselves, because `:path*` matches children only and /admin itself was
+    // therefore unmatched. The assertion is rewritten from a literal to the
+    // intent it was protecting — Clerk stays scoped to admin and nothing else —
+    // so it survives a superset change without being weakened.
+    expect(middleware).toContain("'/admin'");
+    expect(middleware).toContain("'/admin/:path*'");
+    expect(middleware).toContain("'/api/admin'");
+    expect(middleware).toContain("'/api/admin/:path*'");
+    const matcherEntries = (
+      middleware.match(/matcher: \[([^\]]*)\]/)?.[1] || ''
+    )
+      .split(',')
+      .map((entry) => entry.trim().replace(/^'|'$/g, ''))
+      .filter(Boolean);
+    expect(matcherEntries).toHaveLength(4);
+    for (const entry of matcherEntries) {
+      expect(entry.startsWith('/admin') || entry.startsWith('/api/admin')).toBe(
+        true
+      );
+    }
     expect(
       resolveAdminRuntimeSurface({
         vercelEnvironment: 'production',

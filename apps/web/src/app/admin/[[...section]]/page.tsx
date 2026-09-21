@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import React from 'react';
 import { requireAdminAccess } from '@/lib/admin/access-server';
 
@@ -66,6 +66,18 @@ export default async function AdminPage(props: {
       ? 'product_owner'
       : null,
   });
+  // KAN-23 AC-ADM-7, and Pushpa's §6 term 4. The blanket notFound() told an
+  // anonymous caller on a correctly configured environment that admin does not
+  // exist. On staging admin DOES exist, so that 404 was dishonest and an
+  // operator had no way in. Only that one denial becomes the redirect.
+  //
+  // Every other denial keeps the fail-closed 404 deliberately: it is the
+  // behaviour Pushpa asked to keep, and it is what a keyless artifact does
+  // instead of throwing a library error at the edge (R-ADM-4). A 200 here for an
+  // anonymous caller would be worse than the 500 this item began as.
+  if (!access.allowed && access.reason === 'authenticated_session_required') {
+    redirect('/admin/sign-in');
+  }
   if (!access.allowed) notFound();
 
   const role = access.role;

@@ -8,5 +8,9 @@ export default function middleware(request: Request, event: unknown) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  // KAN-23 AC-ADM-7. `/admin` and `/api/admin` are named explicitly rather than
+  // left to `:path*`, which matches children only. `/admin.rsc` reaching the
+  // matcher depends on Next normalising the RSC suffix onto `/admin`; naming
+  // `/admin` removes the dependence on that unverified assumption.
+  matcher: ['/admin', '/admin/:path*', '/api/admin', '/api/admin/:path*'],
 };
