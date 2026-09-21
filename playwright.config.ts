@@ -49,6 +49,15 @@ export default defineConfig({
     timeout: 120_000,
     env: {
       ...process.env,
+      // KAN-23: this server is a test fixture, never a deployable artifact, and
+      // no Clerk publishable key is set for it in CI or locally. The prebuild
+      // gate's existing local opt-out was built but was never wired into this
+      // path, so verify:admin-clerk-build-config failed the webServer build and
+      // killed the whole E2E run. The gate itself is unchanged and still fails
+      // closed: the opt-out is ignored when VERCEL=1, so a deployable build
+      // with no key still fails (AC-ADM-5). Do not set this anywhere a real
+      // artifact is produced.
+      CP_ADMIN_CLERK_OPTIONAL: 'true',
       COMMERCE_DATA_MODE: 'fixture',
       NEXT_PUBLIC_COMMERCE_ENVIRONMENT: 'local',
       NEXT_PUBLIC_PREVIEW_DRAFT_PRODUCTS: 'true',

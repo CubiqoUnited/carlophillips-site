@@ -18,8 +18,10 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const SERVED = resolve(__dirname, '../apps/web/src');
-const read = (relativePath) => readFileSync(resolve(SERVED, relativePath), 'utf8');
-const servedExists = (relativePath) => existsSync(resolve(SERVED, relativePath));
+const read = (relativePath) =>
+  readFileSync(resolve(SERVED, relativePath), 'utf8');
+const servedExists = (relativePath) =>
+  existsSync(resolve(SERVED, relativePath));
 
 describe('root cause — the guard and Clerk must read the same build-time value', () => {
   // Next.js inlines NEXT_PUBLIC_* only on a static `process.env.NEXT_PUBLIC_X`
@@ -120,6 +122,10 @@ describe('AC-ADM-8 / AC-ADM-9 WITHDRAWN — the admin API paths are not a built 
   // This is not "the assertion was relaxed until it passed". A test that
   // demanded unspecified product surface into existence was asserting something
   // nobody had decided.
+  // EXPIRY (Pushpa, binding): the two absence tests below for /api/admin and
+  // /api/admin/health EXPIRE on Boss approval of the admin API surface —
+  // deleting them is the expected first act of the item that creates those
+  // endpoints, and is not a regression.
   const CATCH_ALL = 'app/api/[[...path]]/route.ts';
 
   it('AC-ADM-8 withdrawn — /api/admin is not created under KAN-23', () => {
@@ -166,9 +172,10 @@ describe('AC-ADM-2 / AC-ADM-10 — no served admin response names an internal li
     for (const relativePath of adminSources) {
       if (!servedExists(relativePath)) continue;
       const source = read(relativePath);
-      expect(source, `${relativePath} must not serialise an error stack`).not.toMatch(
-        /\.stack/
-      );
+      expect(
+        source,
+        `${relativePath} must not serialise an error stack`
+      ).not.toMatch(/\.stack/);
       expect(
         source,
         `${relativePath} must not put a caught error into a response body`
@@ -190,7 +197,9 @@ describe('scope — the affected surface is eighteen paths, not five', () => {
   // therefore shared the 500.
   it('every declared admin section is under the same middleware match', () => {
     const page = read('app/admin/[[...section]]/page.tsx');
-    const sectionIds = [...page.matchAll(/id:\s*'([a-z-]+)'/g)].map((m) => m[1]);
+    const sectionIds = [...page.matchAll(/id:\s*'([a-z-]+)'/g)].map(
+      (m) => m[1]
+    );
     expect(sectionIds.length).toBeGreaterThanOrEqual(13);
 
     const matcher = read('middleware.ts');

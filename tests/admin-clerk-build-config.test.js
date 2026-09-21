@@ -14,7 +14,10 @@ import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-const SCRIPT = resolve(__dirname, '../scripts/verify-admin-clerk-build-config.mjs');
+const SCRIPT = resolve(
+  __dirname,
+  '../scripts/verify-admin-clerk-build-config.mjs'
+);
 
 const GOOD_PUBLISHABLE = 'pk_test_ZmFrZS1zdGFnaW5nLWtleQ';
 const GOOD_LIVE_PUBLISHABLE = 'pk_live_ZmFrZS1wcm9kdWN0aW9uLWtleQ';
@@ -39,7 +42,9 @@ describe('AC-ADM-5 — the build fails when the publishable key is absent', () =
     const result = runGate({ VERCEL: '1', VERCEL_ENV: 'preview' });
     expect(result.code).toBe(1);
     expect(result.output).toContain('FAILED');
-    expect(result.output).toContain('NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is absent');
+    expect(result.output).toContain(
+      'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is absent'
+    );
   });
 
   it('fails on a Vercel build with the key set to an empty string', () => {
