@@ -414,3 +414,39 @@ fresh staging-only run must use baseline updates `false` and prove those four
 comparisons green alongside the full functional/a11y suite. The immutable signed
 receipt and independent Pushpa UAT remain pending until that green run. No
 production action is authorised.
+
+---
+
+## Revision 7 — 2026-09-25: final independent Staging UAT
+
+Pushpa independently verified protected Staging run `36147672270`: **SUCCESS**
+at exact SHA `b8e91be29f205db71772fb26157c6f2a7f74675b`, PR `161`, release
+`cp-staging-20260925-b8e91be`. All seven functional, accessibility, and visual
+checks passed with catalogue cleanup `false` and baseline updates `false`.
+Credential validation, build, project identity, deploy, alias, signed webhook,
+and production-health invariance also passed.
+
+The staging receipt is artifact `10870399052`, digest
+`sha256:f3a6e14935f7f7b98405b0f37c73f9a0a4f9434190dbd9d3ec1d7d20ba6b3d4f`.
+Diagnostics artifact `10870394099` has digest
+`sha256:4ced39756203aef34ff717c86ad97419f85b5e381ae7290ad8a7eb1d30b860ec`.
+Immutable proof run `36148637741` succeeded at the same SHA. Its signed artifact
+is `10870583913`, digest
+`sha256:c7978cacb0e24d0f851d35f4964c8741a97d59c77fe0b27d256ccbbdf1aa3797`.
+
+The signed receipt binds deployment `dpl_DTQN4QpKdhpAicx55WD6aKJDtzZ6`, the
+immutable deployment URL, `staging.carlophillips.com`, PR 161, release id, and
+exact SHA. It proves S/M/L at USD 128.00, bag truth, trusted checkout handoff,
+visual/accessibility health, zero console/network failures, webhook HMAC and
+durable idempotency, and PII-free evidence. No payment or order occurred.
+Production remained the same healthy deployment before and after the staging
+release, and the production store was not mutated.
+
+### UAT and signoff verdict
+
+**PASS — KAN-33 independent Staging UAT and staging-only signoff are complete.**
+
+AC-KAN33-1A/1B, 2, 3A, 4A, 5–15, 16–24, and 25–28 are satisfied for the exact
+SHA above. KAN-33 is `DONE` within its explicitly authorised Staging scope. This
+does not authorise Production, close unrelated P1s, publish policy copy, create
+an order, or approve a payment.
