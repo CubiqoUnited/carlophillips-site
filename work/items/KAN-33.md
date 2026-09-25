@@ -137,3 +137,96 @@ the release actually needs — access to the exact configured project — and re
 fail-closed handling for every missing, invalid, ambiguous, or wrong-project
 case. Aarti owns root-cause confirmation, the ADR, implementation, and technical
 tests. Pushpa returns for product-fit on the ADR and for staging UAT only.
+
+---
+
+## Revision 2 — 2026-09-25: full-pipeline credential ruling after protected run 36098244788
+
+### New verified boundary
+
+The original definition described the REST validator correctly but described the
+release credential too narrowly.
+
+- Run `36098244788` proved the repaired exact-project REST validator works: it
+  passed against the project-scoped token, and repository verification passed.
+- The same protected run then failed at pinned Vercel CLI `56.1.0` during
+  `vercel pull --scope`, because the CLI loads `/v2/user` while resolving its
+  user/team context.
+- Aarti's follow-on RCA against primary CLI source found that removing `--scope`
+  or pre-linking does not remove the dependency: `pull`, `deploy`, `inspect`, and
+  `alias` still resolve team/org context. The latest CLI available in the RCA
+  provides no evidence that a project-only token can execute the approved
+  prebuilt release pipeline.
+- Replacing those CLI operations with raw REST calls is not a credential repair.
+  It is a different release architecture and would require a new ADR, build,
+  regression plan, rollback plan, and release proof.
+
+The protected run therefore disproves **AC-KAN33-1 as a credential requirement
+for the complete pipeline**. It does not disprove the exact-project validator or
+its tests; those are useful fail-closed controls, but they cannot by themselves
+prove the CLI can execute.
+
+### Product ruling
+
+**R-KAN33-1 is amended.** The staging release credential MUST use the least-
+privilege credential class that the complete approved Vercel CLI pipeline
+actually supports. For the current pipeline, that class is a **team-scoped
+classic Vercel token for the exact Cubiqo team that owns the configured
+`VERCEL_PROJECT_ID`**. A project-only token is insufficient for this pipeline and
+must not be represented as release-capable merely because the REST preflight
+passes.
+
+The larger raw-REST deployment redesign is **not authorised under KAN-33**. The
+release architecture remains the approved prebuilt Vercel CLI path. If a future
+item proposes removing the team-scoped credential requirement, it must treat the
+REST rewrite as a new architecture and pass the full governed ADR/build/staging
+sequence independently.
+
+### Amended acceptance criteria
+
+- **AC-KAN33-1A — supported credential class.** The protected Staging
+  `VERCEL_TOKEN` is a classic token scoped to the exact configured Cubiqo team,
+  and the full pinned-CLI pipeline can use it. A project-only token is not an
+  acceptable production-like release credential for this pipeline.
+- **AC-KAN33-1B — exact project remains mandatory.** The repaired REST preflight
+  must still retrieve and exactly match `VERCEL_PROJECT_ID`. Team-level access
+  does not permit deploying an arbitrary project, and a broad account/team check
+  cannot replace the exact-project assertion.
+- **AC-KAN33-3A — user lookup is an operational dependency, not the acceptance
+  target.** The custom validator must not reintroduce `/v2/user`; however, the
+  Vercel CLI may perform the user/team resolution its supported pipeline
+  requires. The credential is accepted only when the subsequent CLI operations
+  actually succeed.
+- **AC-KAN33-4A — team context is constrained.** The configured
+  `VERCEL_ORG_ID`/scope must identify the exact team that owns the configured
+  project. A token capable of resolving an unrelated team, without access to the
+  exact configured project, fails under AC-KAN33-1B.
+- **AC-KAN33-13 — no architecture substitution.** KAN-33 may change the
+  credential class and retain the repaired REST preflight; it may not replace
+  `vercel pull`, prebuilt build/deploy, inspect, or alias operations with raw REST
+  implementations.
+- **AC-KAN33-14 — protected containment.** The token remains only in the protected
+  Staging environment secret, is never printed or persisted in an artifact, and
+  receives no production use under this item. Rotation/expiry follows the
+  credential record without recording the value.
+- **AC-KAN33-15 — operational proof supersedes preflight proof.** Acceptance now
+  requires one fresh protected run in which exact-project REST validation,
+  `vercel pull`, prebuilt build/deploy, inspect, alias, regression, immutable
+  receipt, and Pushpa UAT all succeed for the exact approved SHA. A green REST
+  preflight followed by CLI failure is a failed KAN-33 run.
+
+All original criteria remain in force except where explicitly amended above:
+AC-KAN33-1 is replaced by AC-KAN33-1A/1B; AC-KAN33-3 and AC-KAN33-4 continue to
+govern the custom validator but no longer prohibit the Vercel CLI's own required
+user/team resolution. AC-KAN33-2 and AC-KAN33-5..12 remain unchanged.
+
+### SOLUTION_CONSENSUS revision
+
+**APPROVED:** retain ADR-0004's exact-project REST validator as the first
+fail-closed check, keep the approved prebuilt Vercel CLI release architecture,
+and use the least-privilege supported credential class: an exact-team-scoped
+classic token. **NOT APPROVED:** a raw REST rewrite of pull/deploy/inspect/alias
+under KAN-33.
+
+This ruling changes credential acceptance, not code architecture. No production
+action is authorised. Pushpa returns for UAT only after AC-KAN33-15 is green.

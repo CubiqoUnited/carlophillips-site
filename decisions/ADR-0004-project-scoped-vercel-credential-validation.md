@@ -1,11 +1,11 @@
 ---
 id: ADR-0004
-title: Validate Vercel CI credentials against the exact configured project
+title: Validate the exact Vercel project before the approved team-scoped CLI pipeline
 owner: aarti
-status: IMPLEMENTED — both gates approved; technical verification green; awaiting PR review, staging release, regression, and Pushpa UAT.
+status: REVISION 2 APPROVED — exact-project validator remains implemented; Pushpa solution consensus and Sushma readiness approved; awaiting protected-secret rotation and fresh staging proof.
 date: 2026-09-24
 item: KAN-33
-governing: work/items/KAN-33.md R-KAN33-1..4 and AC-KAN33-1..12
+governing: work/items/KAN-33.md Revision 2, including amended R-KAN33-1, AC-KAN33-1A/1B, AC-KAN33-3A/4A, and AC-KAN33-13..15
 implementer: aarti
 supersedes: the user-profile-first validation design in .github/scripts/verify-vercel-ci-token.mjs
 ---
@@ -200,3 +200,124 @@ receipt, regression, and independent Pushpa UAT remain unchanged. Production is
 out of scope.
 
 Both approval gates are recorded as APPROVED. BUILD is authorised.
+
+## 9. Revision 2 — complete CLI-pipeline credential contract (controlling)
+
+Date: 2026-09-25. Trigger: protected Staging run
+[`36098244788`](https://github.com/CubiqoUnited/carlophillips-site/actions/runs/36098244788).
+
+This section supersedes §§1, 2, 4, 6, and 8 only where those sections describe
+a project-only token as sufficient for the **complete release pipeline**. The
+implemented exact-project validator, its failure taxonomy, its tests, and its
+position before expensive work remain unchanged.
+
+### 9.1 Operational RCA
+
+Run `36098244788` established two separate facts in sequence:
+
+1. The custom validator passed against the configured project and repository
+   verification completed successfully. The validator now proves the capability
+   it claims without requiring user/team-profile access.
+2. Pinned Vercel CLI `56.1.0` then failed at `vercel pull --scope` with
+   `Not able to load user ... User not found (404)`. Build, deploy, inspect,
+   alias, receipt, regression, and UAT did not run.
+
+Primary CLI source at tag `vercel@56.1.0` explains the behavior:
+
+- `packages/cli/src/index.ts` resolves every explicit `--scope` by calling
+  `getUser()` and then loading teams before dispatching `pull`, `deploy`,
+  `inspect`, `list`, or `alias`.
+- Removing `--scope` does not make the lane project-only. `pull` calls
+  `ensureLink()`; `getLinkedProject()` concurrently resolves the linked org via
+  `/teams/{VERCEL_ORG_ID}` and the project via
+  `/v9/projects/{VERCEL_PROJECT_ID}`.
+- Pre-writing `.vercel/project.json` selects the link but still follows that
+  org/project resolution path.
+- `deploy --prebuilt` also calls `ensureLink()` before reading the prebuilt
+  output, so it has the same org-resolution requirement.
+
+The current published CLI (`60.0.1` at investigation time) is not an evidenced
+repair. Its published source still user-resolves explicit scopes. Its app-token
+fallback is feature-flagged and applies to `NOT_AUTHORIZED`; the protected run
+observed a 404 for this project-only token. Upgrading merely to test a theory
+would weaken the pinned-tool control and is rejected.
+
+### 9.2 Revised decision
+
+The complete approved staging lane uses a **classic Vercel token scoped to the
+exact Cubiqo team that owns `VERCEL_PROJECT_ID`**. This is the least-privilege
+credential class evidenced to support the existing Vercel CLI sequence.
+
+The custom validator remains intentionally narrower and first:
+
+`GET https://api.vercel.com/v9/projects/{VERCEL_PROJECT_ID}`
+
+It must still return the exact configured project id before repository
+verification or any Vercel CLI action. Team-level CLI capability supplements
+this project assertion; it never replaces it. A broad token that cannot access
+the exact configured project still fails closed.
+
+No source or workflow architecture change is required by Revision 2. In
+particular:
+
+- keep Vercel CLI pinned at `56.1.0`;
+- keep `--scope="$VERCEL_SCOPE"` and the existing `VERCEL_ORG_ID`/project-link
+  checks;
+- keep `vercel pull`, local prebuilt build/deploy, inspect, list, curl, and alias
+  operations unchanged;
+- do not introduce a raw REST deployment implementation under KAN-33;
+- do not use or modify Production.
+
+The remaining mutation is external configuration: Boss replaces the protected
+Staging `VERCEL_TOKEN` with the exact-team-scoped classic token. Its value is
+never recorded. Sushma then reruns the canonical workflow with catalogue cleanup
+and visual-baseline updates both false.
+
+### 9.3 Alternatives re-evaluated
+
+| Option                                                | Disposition           | Evidence                                                                                                                          |
+| ----------------------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Remove `--scope`                                      | Rejected              | Avoids only the top-level lookup; link resolution still reads the owning team and project.                                        |
+| Pre-link `.vercel/project.json`                       | Rejected              | Selects ids but does not bypass `getLinkedProject()` org resolution.                                                              |
+| Upgrade the CLI                                       | Rejected              | No primary-source evidence that the observed 404 becomes a supported project-token path; it also changes the pinned release tool. |
+| Replace CLI operations with raw REST                  | Rejected under KAN-33 | Would replace pull/build/deploy/inspect/list/alias semantics and needs a separate ADR and release proof.                          |
+| Exact-team classic token plus exact-project preflight | Chosen                | Preserves the approved CLI architecture while keeping project identity fail-closed.                                               |
+
+### 9.4 Revised acceptance and evidence
+
+The controlling product criteria are `work/items/KAN-33.md` Revision 2:
+
+- AC-KAN33-1A/1B: supported exact-team classic credential plus exact-project
+  match;
+- AC-KAN33-3A/4A: the custom validator stays free of user/team endpoints while
+  the CLI may perform its required constrained team resolution;
+- AC-KAN33-13/14: no architecture substitution, no secret exposure, protected
+  Staging only;
+- AC-KAN33-15: only a full green protected run proves acceptance.
+
+The earlier 15 validator tests remain correct because they test the custom
+validator's deliberately narrow contract. No test may relabel their success as
+proof that the downstream CLI can run. Operational acceptance requires a fresh
+exact-SHA run in which validation, `pull`, prebuilt build/deploy, inspect, alias,
+full regression, immutable receipt, and Pushpa UAT all succeed.
+
+### 9.5 Revision approvals
+
+#### Pushpa solution consensus — APPROVED
+
+Recorded 2026-09-25 in `work/items/KAN-33.md` Revision 2 and
+`state/signals/2026-09-25/kan-33-pushpa-solution-consensus-revision.md`. Pushpa
+approved the exact-team classic credential for the unchanged CLI lane, retained
+the exact-project validator, and rejected a raw REST rewrite under KAN-33.
+
+#### Sushma revision readiness — APPROVED
+
+Recorded 2026-09-25. Sushma verified that Revision 2 is a configuration-only
+recovery: workflow, validator, pinned CLI architecture, and protected branch
+restriction remain unchanged; the exact-project fail-closed preflight remains
+first; the credential class is limited to the exact Cubiqo team required by the
+approved CLI; and the raw REST redesign remains rejected.
+
+Rollback is replacement of the protected Staging secret only. The next run is
+Staging-only with `cleanup_demo_catalog=false` and
+`update_visual_baselines=false`. Production is excluded.
