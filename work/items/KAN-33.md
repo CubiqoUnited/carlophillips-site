@@ -280,3 +280,76 @@ current Signature Hoodie path remains explicit.
 
 The release remains **UAT NOT READY** until a fresh run is green. Visual baseline
 updates remain `false`; no Production action is authorised.
+
+## Revision 5 — 2026-09-25: mobile product-selected visual verdict
+
+### Evidence inspected
+
+- Protected run `36105632777`, exact SHA
+  `4f872d52a89058909a4a50e92286278b1f09cf7f`.
+- Preserved artifact `10851710162`, digest
+  `sha256:818c2a08202355cd9c598029c8c7e9afe037e0029584df1b1f54d87ad45811ce`.
+- Expected, actual, and diff images for `staging-product-selected` at mobile
+  widths 320, 360, 390, and 430.
+- Live staging `/product/carlophillips-signature-hoodie` independently rendered
+  at those four widths and compared with the artifact actuals.
+
+Artifact dimensions confirm 320 is unchanged at 320×2649. The other actuals are
+21 px taller than their baselines: 360×2630 vs 360×2609, 390×2635 vs 390×2614,
+and 430×2638 vs 430×2617. The diffs are not an unexplained 21 px spacer. They
+show a mixed content change across the purchase panel:
+
+- price and bag price changed from `$128` to `$128.00`;
+- price moved before the short description;
+- purchase-support copy changed from the baseline's generic checkout wording to
+  `Free shipping on eligible orders · Returns accepted — see policy`;
+- the downstream vertical displacement is a consequence of those upstream text
+  and ordering changes, while the editorial image, gallery, product story, and
+  facts remain visually coherent.
+
+Live staging reproduces the artifact's current composition. Across all four
+widths, the title, price, S/M/L controls, quantity, add-to-bag control, image,
+gallery CTA, product story, colour, sizes, availability, and checkout fact are
+readable with no horizontal overflow, clipping, overlap, or unreachable control.
+
+### Product verdict
+
+**CURRENT MOBILE PRESENTATION: NOT APPROVED AS A NEW BASELINE.**
+
+The responsive layout is product-fit, and two-fraction money (`$128.00`) is the
+approved KAN-29 behaviour. Those facts do not make the composite screenshot
+acceptable. The current purchase-support copy is explicitly unapproved product
+copy: `Free shipping on eligible orders` makes an undefined eligibility promise,
+and `Returns accepted — see policy` makes a returns promise without the approved
+linked policy treatment. CP-COPY-001 and the KAN-14 signal reject that text; the
+current interim rule is silence rather than an unsupported promise.
+
+The 21 px increase is therefore not independently approved or rejected as a
+height. Height is an outcome, not the product rule. The intended final height
+must be established by a fresh capture after the purchase-support copy is brought
+back into the approved policy state. Updating baselines now would ratify a known
+content defect and hide it inside a visual acceptance operation.
+
+### Acceptance correction
+
+- **AC-KAN33-25 — mixed visual change cannot be bulk-approved.** Intended money
+  formatting and responsive stability may pass while unapproved copy fails. The
+  screenshot is accepted only when every visible product assertion is approved.
+- **AC-KAN33-26 — purchase-support copy gate.** The product-selected state must
+  contain either the approved linked shipping/returns treatment with its actual
+  policy targets available, or the governed interim silence. It must not render
+  `Free shipping on eligible orders · Returns accepted — see policy` as plain,
+  unsupported text.
+- **AC-KAN33-27 — mobile integrity.** At 320/360/390/430, the final state must keep
+  title, two-fraction price, S/M/L, quantity, bag CTA, size guide, checkout
+  assurance, image, gallery, product story and product facts readable and
+  operable without horizontal overflow, clipping, overlap, or hidden controls.
+- **AC-KAN33-28 — baseline update gate.** Baseline changes remain prohibited until
+  AC-KAN33-26/27 pass on live staging and Pushpa inspects the fresh expected,
+  actual, and diff set. A lower diff ratio or matching height alone is not
+  approval.
+
+KAN-33 remains **UAT NOT READY**. This verdict authorises no baseline mutation,
+production action, policy publication, or financial operation. Sushma subsequently
+approved the narrow implementation boundary: governed interim silence only,
+preserving two-fraction money and all unrelated presentation.
