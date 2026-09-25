@@ -10,6 +10,7 @@ A blocked item retains its real lifecycle state as a compound value, e.g. `IN_BU
 
 | Item ID | Module | Priority | State | Assigned | Blocker overlay | Evidence | Evidence @ | Checkpoint | Next transition | Owner | Freshness |
 |---|---|---|---|---|---|---|---|---|---|---|---|
+| KAN-33 | Staging release credential | P1 | DONE — staging-only | Sushma | none | Protected run 36147672270 and signed proof run 36148637741 green at `b8e91be`; Pushpa independent UAT PASS | 2026-09-25T14:37:35Z | Signed immutable receipt + UAT | DONE | Sushma | FRESH |
 **DEPLOYMENT BOUNDARY (ADR-001, verified 2026-09-18): only `apps/web` is deployed.** `vercel.json` sets `outputDirectory` to `apps/web/.next` and builds that workspace alone. Root `app/`, `components/`, `lib/commerce/`, `lib/releases/`, `contracts/` are never built or served. All work targets `apps/web`; evidence cited from the root tree is evidence about code that does not run.
 
 **2026-09-19 RECONCILIATION — read this before any row below.** Rows carrying dates of 2026-09-18 or earlier were graded before today's verified reads and several are now wrong. Corrections, each verified 2026-09-19:
