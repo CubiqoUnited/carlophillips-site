@@ -387,7 +387,18 @@ describe('CI/CD policy', () => {
     expect(staging).toContain('workflow_dispatch:');
     expect(staging).toContain('pr_number:');
     expect(staging).toContain('name: Staging');
-    expect(staging).toContain('STAGING_REVIEWER_REQUIRED');
+    expect(staging).toContain(
+      'environments/Staging/deployment-branch-policies?per_page=100'
+    );
+    expect(staging).toContain('custom_branch_policies !== true');
+    expect(staging).toContain('policies.total_count !== 1');
+    expect(staging).toContain("branches[0]?.name !== 'staging'");
+    expect(staging).toContain("branches[0]?.type !== 'branch'");
+    expect(staging).toContain('STAGING_CUSTOM_BRANCH_POLICY_REQUIRED');
+    expect(staging).toContain('STAGING_ONLY_BRANCH_POLICY_REQUIRED');
+    expect(staging).not.toContain('STAGING_REVIEWER_REQUIRED');
+    expect(staging).not.toContain("rule.type === 'required_reviewers'");
+    expect(staging).not.toContain("rule.type === 'wait_timer'");
     expect(staging).toContain('test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"');
     expect(staging).toContain("pull.state !== 'closed' || !pull.merged_at");
     expect(staging).toContain("pull.base?.ref !== 'staging'");

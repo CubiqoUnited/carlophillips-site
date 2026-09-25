@@ -321,3 +321,19 @@ approved CLI; and the raw REST redesign remains rejected.
 Rollback is replacement of the protected Staging secret only. The next run is
 Staging-only with `cleanup_demo_catalog=false` and
 `update_visual_baselines=false`. Production is excluded.
+
+## 10. Boss override — current Staging environment protection
+
+Recorded 2026-09-25. Boss removed the Staging environment wait timer and
+required reviewers. The custom deployment branch policy remains the controlling
+environment protection and must allow only the exact `staging` branch.
+
+The workflow guard therefore fails closed unless the GitHub environment reports
+custom branch policies enabled and the complete policy response contains exactly
+one branch policy with type `branch` and name `staging`. It no longer requires
+the removed reviewer or timer rules. The existing exact merged-staging SHA and
+pull-request checks remain unchanged and run after this environment preflight.
+
+This is a staging-only guard correction to match the authorised live policy. It
+does not change the Vercel validator, credential ruling, CLI architecture,
+release controls, or any Production configuration or workflow.
