@@ -2,7 +2,7 @@
 id: ADR-0004
 title: Validate the exact Vercel project before the approved team-scoped CLI pipeline
 owner: aarti
-status: REVISION 2 PROPOSED — exact-project validator remains implemented; Pushpa solution consensus approved; awaiting Sushma revision-readiness and protected-secret rotation before rerun.
+status: REVISION 2 APPROVED — exact-project validator remains implemented; Pushpa solution consensus and Sushma readiness approved; awaiting protected-secret rotation and fresh staging proof.
 date: 2026-09-24
 item: KAN-33
 governing: work/items/KAN-33.md Revision 2, including amended R-KAN33-1, AC-KAN33-1A/1B, AC-KAN33-3A/4A, and AC-KAN33-13..15
@@ -310,9 +310,14 @@ Recorded 2026-09-25 in `work/items/KAN-33.md` Revision 2 and
 approved the exact-team classic credential for the unchanged CLI lane, retained
 the exact-project validator, and rejected a raw REST rewrite under KAN-33.
 
-#### Sushma revision readiness — PENDING
+#### Sushma revision readiness — APPROVED
 
-Sushma must confirm that this is a configuration-only recovery with unchanged
-workflow architecture and release controls, that the protected secret rotation
-is the exact remaining external action, and that the next run remains Staging-
-only with cleanup and visual-baseline updates false.
+Recorded 2026-09-25. Sushma verified that Revision 2 is a configuration-only
+recovery: workflow, validator, pinned CLI architecture, and protected branch
+restriction remain unchanged; the exact-project fail-closed preflight remains
+first; the credential class is limited to the exact Cubiqo team required by the
+approved CLI; and the raw REST redesign remains rejected.
+
+Rollback is replacement of the protected Staging secret only. The next run is
+Staging-only with `cleanup_demo_catalog=false` and
+`update_visual_baselines=false`. Production is excluded.
