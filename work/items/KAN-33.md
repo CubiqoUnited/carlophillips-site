@@ -230,3 +230,12 @@ under KAN-33.
 
 This ruling changes credential acceptance, not code architecture. No production
 action is authorised. Pushpa returns for UAT only after AC-KAN33-15 is green.
+
+## Boss override — 2026-09-25: Staging environment protection
+
+Boss removed the Staging environment wait timer and required reviewers. The
+custom deployment branch restriction remains mandatory and must allow only the
+exact `staging` branch. The protected workflow guard must enforce that remaining
+live policy and must not fail on the deliberately removed reviewer or timer
+rules. Existing exact merged-staging SHA, pull-request, release, credential,
+regression, receipt, and UAT controls remain unchanged. Production is excluded.
