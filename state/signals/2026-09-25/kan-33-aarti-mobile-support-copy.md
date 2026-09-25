@@ -1,0 +1,3 @@
+ITEM: KAN-33 / Revision 5 | RESULT: IMPLEMENTED — governed interim silence ready for review
+EVIDENCE: Removed only the unsupported shipping/returns span from ProductForm while preserving Size guide, two-fraction money, product ordering, catalogue behaviour, and unrelated UI. Focused tests pass (10/10); shipped suite passes (138/138); contracts pass (106/106); lint, typecheck, formatting, and diff checks pass. No visual baseline or Production file changed.
+NEXT: Review PR, merge to staging, run protected workflow with cleanup=false and baseline updates false, then route fresh mobile actual/diff evidence to Pushpa | OWNER: Sushma, then Pushpa | RESUME: after staging merge

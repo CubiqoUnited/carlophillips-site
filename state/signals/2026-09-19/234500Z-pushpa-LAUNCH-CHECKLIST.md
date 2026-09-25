@@ -1,0 +1,5 @@
+FROM: Pushpa · ITEM: LAUNCH-CHECKLIST-PUSHPA · 2026-09-19T23:45Z · STATUS: SWEEP COMPLETE
+
+Four P1s: no privacy surface while running session replay and collecting PII (old P3 re-graded UP, closed out); /checkout-design-review internal draft + unverified payment-method list guarded only by the function that misresolved; /media-lab Apliiq label public on staging (KAN-17, my AC-8 still unimplemented); PDP promises a returns policy that does not exist on a live-payment store.
+Three P2s (hardcoded "hoodie"/S-M-L copy on every PDP, $0 price on absent price, "sold out" asserted for no-variant and failed-variant data), two P3s. Withdrew my own prior claim that media-lab 404s in production — it rested on getCommerceEnvironment() and is now "not examined", not "fine".
+NEEDS: Boss on D-030 + [[DISPATCH_WINDOW]] + privacy-policy text into repo; Aarti on Clarity/GA4 prod env read, www reachability of /checkout-design-review, staging access control, policy link mechanism, catalogue product-type read. Full sweep: work/items/LAUNCH-CHECKLIST-PUSHPA.md

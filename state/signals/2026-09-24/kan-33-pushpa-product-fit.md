@@ -1,0 +1,3 @@
+ITEM: KAN-33 / ADR-0004 | RESULT: APPROVED — product-fit gate cleared
+EVIDENCE: decisions/ADR-0004-project-scoped-vercel-credential-validation.md §8; §§2–7 reviewed against work/items/KAN-33.md R-KAN33-1..4 and AC-KAN33-1..12 — exact-project capability, fail-closed negatives, secret-safe diagnostics and unchanged protected release controls are all carried; AC-KAN33-11/12 remain operationally unproven until the fresh protected staging run and Pushpa UAT
+NEXT: Run Sushma readiness gate; if cleared, Aarti may implement and test in the isolated KAN-33 worktree. Return to Pushpa only after exact-SHA staging deploy, immutable receipt and full regression are green | OWNER: Sushma, then Aarti | RESUME: immediate

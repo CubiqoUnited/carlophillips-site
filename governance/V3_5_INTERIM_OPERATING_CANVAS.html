@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V3.5interim Operating Canvas</title>
+<style>
+:root{
+  --bg:#f1f5f9; --surface:#ffffff; --surface-2:#f8fafc;
+  --ink:#0f172a; --ink-2:#475569; --ink-3:#94a3b8;
+  --line:#cbd5e1; --line-2:#e2e8f0;
+  --boss:#d97706; --boss-bg:#fffbeb;
+  --sushma:#db2777; --sushma-bg:#fdf2f8;
+  --aarti:#0284c7; --aarti-bg:#f0f9ff;
+  --pushpa:#e11d48; --pushpa-bg:#fff1f2;
+  --watch:#7c3aed; --watch-bg:#f5f3ff;
+  --board:#0f172a; --board-bg:#e2e8f0;
+  --ok:#16a34a; --ok-bg:#f0fdf4;
+  --no:#dc2626; --no-bg:#fef2f2;
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --bg:#0b1120; --surface:#131c2e; --surface-2:#0f1728;
+    --ink:#e8edf5; --ink-2:#a3b1c6; --ink-3:#64748b;
+    --line:#2b3950; --line-2:#1e293b;
+    --boss-bg:#2a2008; --sushma-bg:#2a0f1c; --aarti-bg:#07202f;
+    --pushpa-bg:#2a0d14; --watch-bg:#1c1035; --board-bg:#1a2438;
+    --ok-bg:#062512; --no-bg:#2a0b0b;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1120; --surface:#131c2e; --surface-2:#0f1728;
+  --ink:#e8edf5; --ink-2:#a3b1c6; --ink-3:#64748b;
+  --line:#2b3950; --line-2:#1e293b;
+  --boss-bg:#2a2008; --sushma-bg:#2a0f1c; --aarti-bg:#07202f;
+  --pushpa-bg:#2a0d14; --watch-bg:#1c1035; --board-bg:#1a2438;
+  --ok-bg:#062512; --no-bg:#2a0b0b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:32px 16px 72px}
+header{margin-bottom:8px}
+.eyebrow{font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--sushma)}
+h1{font-size:clamp(26px,4vw,38px); margin:10px 0 6px; letter-spacing:-.02em}
+.sub{color:var(--ink-2); font-size:15px; max-width:62ch; margin:0}
+.meta{margin-top:14px; font:600 12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--ink-3)}
+
+section{margin-top:44px}
+h2{font-size:19px; margin:0 0 4px; letter-spacing:-.01em; display:flex; align-items:center; gap:9px}
+h2 .n{
+  width:24px;height:24px;border-radius:7px;background:var(--ink);color:var(--bg);
+  display:inline-flex;align-items:center;justify-content:center;
+  font:800 12px/1 ui-monospace,monospace;flex:none;
+}
+.lede{color:var(--ink-2); font-size:14px; margin:0 0 18px; max-width:70ch}
+
+/* ---- prohibition banner ---- */
+.banner{
+  border:2px solid var(--no); background:var(--no-bg); border-radius:12px;
+  padding:18px 20px; display:flex; gap:16px; align-items:flex-start;
+}
+.banner .mark{font-size:26px; line-height:1; flex:none}
+.banner h3{margin:0 0 6px; font-size:16px; color:var(--no)}
+.banner p{margin:0; font-size:14px; color:var(--ink-2)}
+
+/* ---- planes ---- */
+.planes{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px}
+.plane{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface)}
+.plane-head{padding:11px 14px; font:700 12px/1 ui-monospace,monospace; letter-spacing:.06em; text-transform:uppercase; border-bottom:1px solid var(--line-2)}
+.plane-body{padding:14px}
+.p-exec .plane-head{background:var(--boss-bg); color:var(--boss)}
+.p-team .plane-head{background:var(--sushma-bg); color:var(--sushma)}
+.p-watch .plane-head{background:var(--watch-bg); color:var(--watch)}
+
+.role{border:1px solid var(--line-2); border-radius:9px; padding:12px; margin-bottom:10px; background:var(--surface-2)}
+.role:last-child{margin-bottom:0}
+.role-top{display:flex; align-items:center; gap:9px; margin-bottom:7px}
+.dot{width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font:800 12px/1 ui-monospace,monospace;color:#fff;flex:none}
+.d-boss{background:var(--boss)} .d-sushma{background:var(--sushma)}
+.d-aarti{background:var(--aarti)} .d-pushpa{background:var(--pushpa)}
+.d-watch{background:var(--watch)} .d-board{background:var(--board)}
+.role-name{font-weight:700; font-size:14px}
+.role-sub{font-size:11px; color:var(--ink-3); font-family:ui-monospace,monospace}
+.role ul{margin:0; padding-left:17px; font-size:13px; color:var(--ink-2)}
+.role li{margin:3px 0}
+.files{display:flex; flex-wrap:wrap; gap:5px; margin-top:9px}
+.f{font:700 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace; padding:5px 7px; border-radius:5px; border:1px solid var(--line); background:var(--surface); color:var(--ink-2)}
+.f.w{border-color:var(--sushma); color:var(--sushma)}
+
+/* ---- tables ---- */
+.tbl{width:100%; border-collapse:collapse; font-size:13px; border:1px solid var(--line); border-radius:10px; overflow:hidden}
+.tbl th{background:var(--surface-2); text-align:left; padding:10px 12px; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); border-bottom:1px solid var(--line)}
+.tbl td{padding:10px 12px; border-bottom:1px solid var(--line-2); color:var(--ink-2); vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl code{font:600 12px/1 ui-monospace,monospace; color:var(--ink)}
+.yes{color:var(--ok); font-weight:700}
+.nope{color:var(--no); font-weight:700}
+.scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+
+/* ---- loop ---- */
+.loop{border:1px solid var(--line); border-radius:12px; background:var(--surface); overflow:hidden}
+.loop-bar{display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid var(--line-2); background:var(--surface-2); flex-wrap:wrap}
+button{
+  font:700 12px/1 inherit; padding:8px 13px; border-radius:7px; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink); cursor:pointer;
+}
+button:hover{border-color:var(--sushma); color:var(--sushma)}
+button.primary{background:var(--sushma); border-color:var(--sushma); color:#fff}
+button.primary:hover{opacity:.9; color:#fff}
+.badge{font:800 11px/1 ui-monospace,monospace; padding:6px 9px; border-radius:6px; background:var(--board-bg); color:var(--ink); letter-spacing:.05em}
+.loop-body{padding:16px}
+.step-title{font-weight:700; font-size:15px; margin:0 0 5px}
+.step-desc{font-size:13.5px; color:var(--ink-2); margin:0 0 12px}
+.evt{
+  font:600 11.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;
+  background:var(--surface-2); border:1px solid var(--line-2); border-radius:7px;
+  padding:10px 12px; color:var(--ink-2); overflow-x:auto; white-space:pre-wrap; word-break:break-word;
+}
+.dots{display:flex; gap:5px; margin-top:13px; flex-wrap:wrap}
+.pip{flex:1; min-width:26px; height:5px; border-radius:3px; background:var(--line)}
+.pip.on{background:var(--sushma)}
+.actor{display:inline-flex; align-items:center; gap:6px; font:700 11px/1 ui-monospace,monospace; padding:5px 8px; border-radius:6px; margin-bottom:10px}
+.a-sushma{background:var(--sushma-bg); color:var(--sushma)}
+.a-boss{background:var(--boss-bg); color:var(--boss)}
+.a-aarti{background:var(--aarti-bg); color:var(--aarti)}
+.a-pushpa{background:var(--pushpa-bg); color:var(--pushpa)}
+
+/* ---- rules ---- */
+.rules{display:grid; grid-template-columns:repeat(auto-fit,minmax(265px,1fr)); gap:12px}
+.rule{border:1px solid var(--line); border-left:3px solid var(--sushma); border-radius:9px; padding:13px 15px; background:var(--surface)}
+.rule h4{margin:0 0 5px; font-size:13.5px}
+.rule p{margin:0; font-size:13px; color:var(--ink-2)}
+.rule .why{margin-top:7px; font-size:12px; color:var(--ink-3); font-style:italic}
+
+footer{margin-top:52px; padding-top:18px; border-top:1px solid var(--line-2); font-size:12px; color:var(--ink-3)}
+@media (max-width:640px){ .wrap{padding:24px 16px 56px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">CARLOPHILLIPS · Governance</div>
+  <h1>V3.5interim Operating Canvas</h1>
+  <p class="sub">The canonical agentic operating model. Corrected 2026-09-19 to state what we <em>should</em> be doing, and to make the communication rule explicit rather than implied.</p>
+  <div class="meta">Class LOCKED · Owner Boss · Sushma proposes · Binding on all agentic work</div>
+</header>
+
+<section>
+  <div class="banner">
+    <div class="mark">⛔</div>
+    <div>
+      <h3>Rule 1 — No agent-to-agent communication. None.</h3>
+      <p>Pushpa and Aarti never talk to each other, and never to Watchdog. Direct agent chatter burns tokens restating context that already exists on disk, and every restatement is a chance for facts to drift. <strong>Sushma is the only hub.</strong> Handoff happens by changing a file and requesting a state change — never by conversation.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">1</span>Who may talk to whom</h2>
+  <p class="lede">Exhaustive. Anything not listed here is prohibited.</p>
+  <div class="scroll">
+  <table class="tbl">
+    <thead><tr><th>From</th><th>To</th><th>Channel</th><th>Allowed</th></tr></thead>
+    <tbody>
+      <tr><td>Boss</td><td>Sushma</td><td>Direct — intent, approvals, decisions</td><td class="yes">YES</td></tr>
+      <tr><td>Sushma</td><td>Boss</td><td>Brief: ranked problem + proposal + recommendation</td><td class="yes">YES</td></tr>
+      <tr><td>Sushma</td><td>Pushpa / Aarti</td><td>Dispatch — a <em>pointer to files</em>, never a payload</td><td class="yes">YES</td></tr>
+      <tr><td>Pushpa / Aarti</td><td>Sushma</td><td>Three-line signal file + evidence on disk</td><td class="yes">YES</td></tr>
+      <tr><td>Watchdog</td><td>Sushma</td><td>Exception report only; quiet when healthy</td><td class="yes">YES</td></tr>
+      <tr><td>Pushpa</td><td>Aarti</td><td>—</td><td class="nope">NEVER</td></tr>
+      <tr><td>Aarti</td><td>Pushpa</td><td>—</td><td class="nope">NEVER</td></tr>
+      <tr><td>Any agent</td><td>Boss</td><td>—</td><td class="nope">NEVER</td></tr>
+      <tr><td>Any agent</td><td>Shopify Sidekick</td><td>Raise <code>READY_FOR_SIDEKICK</code> to Sushma instead</td><td class="nope">NEVER</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">2</span>The three planes</h2>
+  <p class="lede">Board is canonical. Sushma alone writes it; everyone else reads it and requests a change.</p>
+  <div class="planes">
+
+    <div class="plane p-exec">
+      <div class="plane-head">🏛 Executive &amp; Constitutional</div>
+      <div class="plane-body">
+        <div class="role">
+          <div class="role-top"><span class="dot d-boss">B</span><div><div class="role-name">Boss</div><div class="role-sub">program owner</div></div></div>
+          <ul>
+            <li>Owns intent, priorities, module approval.</li>
+            <li>Resolves decisions, policy exceptions, credentials.</li>
+            <li>Hands decisions to Sushma — never to an agent.</li>
+          </ul>
+          <div class="files"><span class="f">BOSS-BRIEF.md</span><span class="f">state/SCOPE.md</span><span class="f">PROPOSALS.md</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="plane p-team">
+      <div class="plane-head">⚙ Active Delivery Team</div>
+      <div class="plane-body">
+        <div class="role">
+          <div class="role-top"><span class="dot d-sushma">S</span><div><div class="role-name">Sushma</div><div class="role-sub">delivery · dispatch · release</div></div></div>
+          <ul>
+            <li>Sole writer of the Board. Verifies evidence; rejects bare PASS.</li>
+            <li>Dispatches by pointer. Owns the Sidekick channel.</li>
+            <li>Logs every event and every decision before asking.</li>
+          </ul>
+          <div class="files"><span class="f w">state/NOW.md</span><span class="f w">state/BOARD.md</span><span class="f w">events.jsonl</span><span class="f w">DECISIONS-LOG.md</span></div>
+        </div>
+        <div class="role">
+          <div class="role-top"><span class="dot d-board">▦</span><div><div class="role-name">The Board</div><div class="role-sub">canonical state</div></div></div>
+          <ul>
+            <li><code>READY_FOR_BOSS</code> → Boss</li>
+            <li><code>READY_FOR_PO / STAGING</code> → Pushpa</li>
+            <li><code>READY_FOR_SOLUTION / BUILD</code> → Aarti</li>
+            <li><code>READY_FOR_RELEASE / DONE</code> → Sushma</li>
+          </ul>
+        </div>
+        <div class="role">
+          <div class="role-top"><span class="dot d-pushpa">P</span><div><div class="role-name">Pushpa</div><div class="role-sub">PO · BA · UAT</div></div></div>
+          <ul>
+            <li>Converts approved modules into observable stories and AC.</li>
+            <li>Validates staging; records defects with evidence.</li>
+            <li>Sends a three-line signal to Sushma. Nothing else.</li>
+          </ul>
+          <div class="files"><span class="f">work/items/{id}.md</span><span class="f">evidence/{id}/</span><span class="f">signals/</span></div>
+        </div>
+        <div class="role">
+          <div class="role-top"><span class="dot d-aarti">A</span><div><div class="role-name">Aarti</div><div class="role-sub">architect · tech · dev</div></div></div>
+          <ul>
+            <li>ADR before build. Always.</li>
+            <li>Builds in an <strong>isolated worktree</strong>, never a shared branch.</li>
+            <li>Sends an evidence-backed signal to Sushma. Nothing else.</li>
+          </ul>
+          <div class="files"><span class="f">decisions/ADR.md</span><span class="f">evidence/{id}/</span><span class="f">signals/</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="plane p-watch">
+      <div class="plane-head">🛡 Independent Oversight</div>
+      <div class="plane-body">
+        <div class="role">
+          <div class="role-top"><span class="dot d-watch">W</span><div><div class="role-name">Watchdog</div><div class="role-sub">external · out-of-band</div></div></div>
+          <ul>
+            <li>Audits claimed status against the live repository and environment.</li>
+            <li>Detects stale work, drift, unsupported green status.</li>
+            <li>Quiet when healthy. Never manages Pushpa or Aarti.</li>
+          </ul>
+          <div class="files"><span class="f">EXCEPTIONS.md</span><span class="f">audit/WATCHDOG</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">3</span>The loop</h2>
+  <p class="lede">Seven steps. Each ends with a file on disk and an event in the log — not a message.</p>
+  <div class="loop">
+    <div class="loop-bar">
+      <button class="primary" id="btn-play" onclick="togglePlay()">▶ Play</button>
+      <button onclick="step(1)">Step →</button>
+      <button onclick="reset()">↺ Reset</button>
+      <span class="badge" id="badge">STEP 0 / 6</span>
+      <span class="badge" id="boardstate">IDLE</span>
+    </div>
+    <div class="loop-body">
+      <div class="actor a-sushma" id="actor">S&nbsp; SUSHMA</div>
+      <p class="step-title" id="title">Step 0 — Sushma initialises delivery state</p>
+      <p class="step-desc" id="desc">Reads NOW.md, reconciles BOARD and BLOCKERS, prepares the brief, sets the Board to READY_FOR_BOSS.</p>
+      <div class="evt" id="evt">{"event":"LOOP_STARTED","actor":"sushma","board":"READY_FOR_BOSS"}</div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">4</span>File classes</h2>
+  <p class="lede">Four classes. Permissions, review, automation and lifecycle all follow from the class.</p>
+  <div class="scroll">
+  <table class="tbl">
+    <thead><tr><th>Class</th><th>Meaning</th><th>Change path</th></tr></thead>
+    <tbody>
+      <tr><td><code>LOCKED</code></td><td>Boss-owned constitutional or authority material</td><td>Agents propose; Boss approves and edits</td></tr>
+      <tr><td><code>CONTROLLED</code></td><td>Canonical project or governance truth with a named owner</td><td>Owner applies within policy; reserved changes need Boss</td></tr>
+      <tr><td><code>EVOLVING</code></td><td>Operational records updated within delegated authority</td><td>Named writers update with evidence and conflict controls</td></tr>
+      <tr><td><code>RUNTIME</code></td><td>Generated projection or transient execution signal</td><td>Automation writes; never hand-edited</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">5</span>The 17 canonical states</h2>
+  <p class="lede"><code>BLOCKED</code> is an <em>overlay</em>, never a replacement. An item keeps its lifecycle position — <code>IN_BUILD + BLOCKED_HUMAN</code> — while <code>BLOCKERS.md</code> carries the category, owner, exact action and resume trigger.</p>
+  <div class="scroll">
+  <table class="tbl">
+    <thead><tr><th>#</th><th>State</th><th>Meaning</th><th>Owner</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>DISCOVERED</code></td><td>Potential module or artifact identified</td><td>Sushma</td></tr>
+      <tr><td>2</td><td><code>IN_INVENTORY</code></td><td>Collecting UI, data, integration, document evidence</td><td>Sushma</td></tr>
+      <tr><td>3</td><td><code>READY_FOR_BOSS</code></td><td>Complete enough for Boss review</td><td>Boss</td></tr>
+      <tr><td>4</td><td><code>BOSS_CHANGES_REQUESTED</code></td><td>Boss edits or requests correction</td><td>Sushma</td></tr>
+      <tr><td>5</td><td><code>READY_FOR_PO</code></td><td>Boss approved scope; Pushpa may begin</td><td>Pushpa</td></tr>
+      <tr><td>6</td><td><code>PRODUCT_DEFINITION</code></td><td>Stories, AC, tests, UAT being written</td><td>Pushpa</td></tr>
+      <tr><td>7</td><td><code>READY_FOR_SOLUTION</code></td><td>Product definition complete enough for Aarti</td><td>Aarti</td></tr>
+      <tr><td>8</td><td><code>SOLUTION_PROPOSED</code></td><td>ADR submitted — before any code</td><td>Pushpa + Sushma</td></tr>
+      <tr><td>9</td><td><code>SOLUTION_CHANGES_REQUESTED</code></td><td>Pushpa or Sushma requires correction</td><td>Aarti</td></tr>
+      <tr><td>10</td><td><code>READY_FOR_BUILD</code></td><td><strong>Both</strong> gates passed: product fit + readiness</td><td>Aarti</td></tr>
+      <tr><td>11</td><td><code>IN_BUILD</code></td><td>Implementing in an isolated branch or worktree</td><td>Aarti</td></tr>
+      <tr><td>12</td><td><code>READY_FOR_STAGING</code></td><td>Technical tests meet staging entry criteria</td><td>Aarti</td></tr>
+      <tr><td>13</td><td><code>IN_STAGING_VALIDATION</code></td><td>Pushpa validates; Aarti fixes defects</td><td>Pushpa</td></tr>
+      <tr><td>14</td><td><code>READY_FOR_RELEASE</code></td><td>Product acceptance + release evidence complete</td><td>Sushma</td></tr>
+      <tr><td>15</td><td><code>IN_PRODUCTION_RELEASE</code></td><td>Sushma controls release execution</td><td>Sushma</td></tr>
+      <tr><td>16</td><td><code>PRODUCTION_VALIDATION</code></td><td>Smoke tests and monitoring confirm</td><td>Sushma</td></tr>
+      <tr><td>17</td><td><code>DONE</code></td><td>Definition of Done met; ready for archive</td><td>Sushma</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">6</span>The three-line signal</h2>
+  <p class="lede">Only the role <strong>currently assigned</strong> owes a signal. An unassigned role sends nothing and is <em>not</em> treated as stalled. <code>IN_PROGRESS</code> alone is not a useful return.</p>
+  <div class="evt">ITEM: &lt;item-id&gt; | RESULT: READY_FOR_&lt;STATE&gt; / BLOCKED / FAILED / DIRECTION_CHECK
+EVIDENCE: &lt;artifact, commit, test, deployment, trace, or finding&gt;
+NEXT: &lt;requested transition&gt; | OWNER: &lt;next owner&gt; | RESUME: &lt;trigger or immediate&gt;</div>
+  <p class="lede" style="margin-top:12px">Written to <code>state/signals/{YYYY-MM-DD}/{timestamp}-{role}-{item}.md</code>. The signal is <strong>not</strong> canonical state — Sushma verifies the evidence, accepts or rejects, then updates NOW and BOARD.</p>
+
+  <h2 style="margin-top:26px"><span class="n">7</span>Blocker categories</h2>
+  <p class="lede">One ledger, category as data. A blocker pauses the affected action, not the project.</p>
+  <div class="scroll">
+  <table class="tbl">
+    <thead><tr><th>Category</th><th>Use</th><th>Who acts</th></tr></thead>
+    <tbody>
+      <tr><td><code>HUMAN</code></td><td>Product choice, credentials, spending, reserved approval, irreversible action</td><td>Boss; Sushma tracks</td></tr>
+      <tr><td><code>INTERNAL_AGENT</code></td><td>Missing artifact, failed handoff, test defect, design conflict</td><td>Sushma assigns</td></tr>
+      <tr><td><code>EXTERNAL</code></td><td>Vendor outage, third-party access, platform limitation</td><td>Sushma coordinates</td></tr>
+      <tr><td><code>RESOLVED</code></td><td>Closed with resolution, proof, date, preventive action</td><td>Sushma, after verification</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">8</span>Boss control plane</h2>
+  <p class="lede">A thin projection over repository state — never a second planning database. Read-only first; audited write-backs only after the state machine is proven.</p>
+  <div class="scroll">
+  <table class="tbl">
+    <thead><tr><th>View</th><th>What Boss sees</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Agent activity</td><td>Role, item, state, latest evidence, next action, stall/drift indicator</td><td><code>BOARD.md</code>, <code>signals/</code></td></tr>
+      <tr><td>Approvals</td><td>Decisions with options, recommendation, impact, due date</td><td><code>HUMAN</code> blockers, <code>DECISIONS-LOG.md</code></td></tr>
+      <tr><td>Pipeline</td><td>Counts across all 17 states</td><td><code>BOARD.md</code>, work items</td></tr>
+      <tr><td>Environments</td><td>Staging and production routes, candidate versions, smoke result</td><td>Vercel, release records</td></tr>
+      <tr><td>Git</td><td>Branch and worktree state, merge status, commit freshness</td><td>Git provider</td></tr>
+      <tr><td>Production</td><td>Health, cron, alerts, incidents, post-release watch</td><td><code>operations/</code>, monitoring</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="banner" style="margin-top:16px; border-color:var(--boss); background:var(--boss-bg)">
+    <div class="mark">⚠️</div>
+    <div>
+      <h3 style="color:var(--boss)">Truth and freshness rules</h3>
+      <p>Every tile shows source and last refresh. The dashboard must distinguish <strong>not configured</strong>, <strong>unavailable</strong>, <strong>stale</strong>, <strong>failing</strong> and <strong>healthy</strong> — they are not the same thing. <strong>No green status may rely on an agent's self-report when repository or environment evidence should exist.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">9</span>Enforced rules</h2>
+  <p class="lede">Sushma checks all eight on every activation. A violation is a P2 by default, P1 once it has cost delivery time.</p>
+  <div class="rules">
+    <div class="rule"><h4>1 · No agent-to-agent comms</h4><p>Sushma is the only hub. No exceptions.</p><p class="why">Chatter costs tokens and creates two versions of the truth.</p></div>
+    <div class="rule"><h4>2 · Dispatch is a pointer</h4><p>Name the files to read. Never paste their contents into a prompt.</p><p class="why">The board is the memory, not the prompt.</p></div>
+    <div class="rule"><h4>3 · Handoff by file and state</h4><p>Change a file, request a state change. Sushma verifies and moves the Board.</p><p class="why">Aarti learns of Pushpa's work from the item file, never from Pushpa.</p></div>
+    <div class="rule"><h4>4 · Every state change writes an event</h4><p><code>state/events.jsonl</code>, append-only, by the actor who caused it.</p><p class="why">A transition with no event did not happen.</p></div>
+    <div class="rule"><h4>5 · Log the decision before asking</h4><p>D-number with QUESTION / OPTIONS / IMPACT / RECOMMENDATION, then ask.</p><p class="why">A decision raised in conversation and not logged does not exist.</p></div>
+    <div class="rule"><h4>6 · Bare PASS prohibited</h4><p>Carry the command or file:line. Separate verified fact from assumption.</p><p class="why">"Not examined" may never be graded "fine".</p></div>
+    <div class="rule"><h4>7 · Build in an isolated worktree</h4><p>Never on a shared branch. Sushma deletes it at release.</p><p class="why">Isolation is what makes a rollback cheap.</p></div>
+    <div class="rule"><h4>8 · Delivery is proven by a remote SHA</h4><p>Never grade shipped on a local commit.</p><p class="why">Four commits once sat in a clone whose origin was a folder.</p></div>
+  </div>
+</section>
+
+<footer>
+  Canonical companion: <code>governance/AGENT_COMMUNICATION_PROTOCOL.md</code> · Supersedes the FigJam draft of 2026-09-19 01:25 · Corrected after a retrospect found events.jsonl silent for a full working day.
+</footer>
+
+</div>
+
+<script>
+const steps=[
+ {a:"sushma",n:"SUSHMA",b:"IDLE",t:"Step 0 — Sushma initialises delivery state",
+  d:"Reads NOW.md, reconciles BOARD and BLOCKERS, prepares the brief, sets the Board to READY_FOR_BOSS.",
+  e:'{"event":"LOOP_STARTED","actor":"sushma","board":"READY_FOR_BOSS"}'},
+ {a:"boss",n:"BOSS",b:"READY_FOR_BOSS",t:"Step 1 — Boss decision gate",
+  d:"Boss reads the brief and decides. The decision goes to Sushma, never to an agent. Sushma logs the D-number and moves the Board. Silence is not approval.",
+  e:'{"event":"MODULE_APPROVED","actor":"boss","handed_to":"sushma","decision":"D-0NN","next":"READY_FOR_PO"}'},
+ {a:"pushpa",n:"PUSHPA",b:"READY_FOR_PO",t:"Step 2 — Pushpa grooms stories and AC",
+  d:"Reads the Board and the item file. Writes observable acceptance criteria to work/items/{id}.md. Sends a three-line signal to Sushma. Does not contact Aarti.",
+  e:'{"event":"STORY_GROOMED","actor":"pushpa","signal_to":"sushma","req":"READY_FOR_SOLUTION"}'},
+ {a:"aarti",n:"AARTI",b:"READY_FOR_SOLUTION",t:"Step 3 — Aarti writes the ADR",
+  d:"Reads the item file — never Pushpa's message. Writes the ADR and requests build entry. No build may start without an approved ADR.",
+  e:'{"event":"ADR_SUBMITTED","actor":"aarti","signal_to":"sushma","req":"READY_FOR_BUILD"}'},
+ {a:"aarti",n:"AARTI",b:"READY_FOR_BUILD",t:"Step 4 — Aarti builds in an isolated worktree",
+  d:"Implements in a worktree, not a shared branch. Tests pass with captured evidence. Signal carries the evidence hash and the remote SHA CI ran on.",
+  e:'{"event":"BUILD_COMPLETED","actor":"aarti","evidence":"sha256:4a9f…","remote_sha":"…"}'},
+ {a:"pushpa",n:"PUSHPA",b:"READY_FOR_STAGING",t:"Step 5 — Pushpa runs staging UAT",
+  d:"Verifies staging against the AC she wrote. Records defects with evidence. Bare PASS is rejected. Signs off to Sushma only.",
+  e:'{"event":"UAT_SIGNED_OFF","actor":"pushpa","signal_to":"sushma","req":"READY_FOR_RELEASE"}'},
+ {a:"sushma",n:"SUSHMA",b:"DONE (RELEASED)",t:"Step 6 — Sushma releases and closes",
+  d:"Verifies the release checklist, merges the PR, deletes the worktree, promotes to production, sets the Board to DONE and writes the closing event.",
+  e:'{"event":"RELEASE_DEPLOYED","actor":"sushma","board":"DONE","worktree":"deleted"}'}
+];
+let i=0,playing=false,timer=null;
+const $=id=>document.getElementById(id);
+$("dots").innerHTML=steps.map(()=>'<span class="pip"></span>').join("");
+function render(){
+  const s=steps[i];
+  $("badge").textContent=`STEP ${i} / 6`;
+  $("boardstate").textContent=s.b;
+  $("title").textContent=s.t;
+  $("desc").textContent=s.d;
+  $("evt").textContent=s.e;
+  const ac=$("actor");
+  ac.className="actor a-"+s.a;
+  ac.innerHTML=s.n.charAt(0)+"&nbsp; "+s.n;
+  [...$("dots").children].forEach((p,n)=>p.classList.toggle("on",n<=i));
+}
+function step(d){ i=(i+d+steps.length)%steps.length; render(); }
+function reset(){ if(playing) togglePlay(); i=0; render(); }
+function togglePlay(){
+  playing=!playing;
+  $("btn-play").textContent=playing?"⏸ Pause":"▶ Play";
+  if(playing){ timer=setInterval(()=>step(1),2600); } else { clearInterval(timer); }
+}
+render();
+</script>
+</body>
+</html>

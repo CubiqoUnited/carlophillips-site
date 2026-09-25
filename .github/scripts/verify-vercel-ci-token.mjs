@@ -1,30 +1,43 @@
-const { VERCEL_ORG_ID, VERCEL_PROJECT_ID, VERCEL_TOKEN } = process.env;
+const { VERCEL_PROJECT_ID, VERCEL_TOKEN } = process.env;
 
 for (const [name, value] of Object.entries({
-  VERCEL_ORG_ID,
   VERCEL_PROJECT_ID,
   VERCEL_TOKEN,
 })) {
-  if (!value) throw new Error(`${name}_REQUIRED`);
+  if (!value?.trim()) throw new Error(`${name}_REQUIRED`);
 }
 
-async function requireAccess(label, url) {
-  const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${VERCEL_TOKEN}` },
-    signal: AbortSignal.timeout(15_000),
-  });
-
-  if (!response.ok) {
-    throw new Error(`${label}_FAILED_${response.status}`);
-  }
+let response;
+try {
+  response = await fetch(
+    `https://api.vercel.com/v9/projects/${encodeURIComponent(VERCEL_PROJECT_ID)}`,
+    {
+      headers: { Authorization: `Bearer ${VERCEL_TOKEN}` },
+      signal: AbortSignal.timeout(15_000),
+    }
+  );
+} catch {
+  throw new Error('VERCEL_PROJECT_REQUEST_FAILED');
 }
 
-await requireAccess('VERCEL_USER_AUTH', 'https://api.vercel.com/v2/user');
-await requireAccess(
-  'VERCEL_PROJECT_ACCESS',
-  `https://api.vercel.com/v9/projects/${encodeURIComponent(VERCEL_PROJECT_ID)}?teamId=${encodeURIComponent(VERCEL_ORG_ID)}`
-);
+if (!response.ok) {
+  const label = response.status === 401 ? 'AUTH' : 'ACCESS';
+  throw new Error(`VERCEL_PROJECT_${label}_FAILED_${response.status}`);
+}
 
-console.log(
-  'Vercel CI credential is valid for the configured team and project.'
-);
+let project;
+try {
+  project = await response.json();
+} catch {
+  throw new Error('VERCEL_PROJECT_RESPONSE_INVALID');
+}
+
+if (!project || typeof project !== 'object' || Array.isArray(project)) {
+  throw new Error('VERCEL_PROJECT_RESPONSE_INVALID');
+}
+
+if (project.id !== VERCEL_PROJECT_ID) {
+  throw new Error('VERCEL_PROJECT_ID_MISMATCH');
+}
+
+console.log('Vercel CI credential can access the exact configured project.');

@@ -113,7 +113,7 @@ export interface RuntimeProduct {
   name?: string;
   title?: string;
   collection?: string;
-  price?: number | string;
+  price?: number | string | null;
   compareAtPrice?: number | string;
   currency?: string;
   color?: string;
@@ -243,7 +243,7 @@ export interface ProductViewModel extends RuntimeProduct {
   commerceAllowed: boolean;
   reason: string;
   title: string;
-  price: number;
+  price: number | null;
   currency: string;
   description: string;
   tagline: string;
@@ -254,7 +254,6 @@ export interface ProductViewModel extends RuntimeProduct {
   sizes: string[];
   variantPresentation: VariantPresentation | null;
   availableForSale: boolean;
-  vendor: string;
   productType: string;
   media: ViewerMediaItem[];
   mediaReview: { status: string; missingModalities: string[] } | null;

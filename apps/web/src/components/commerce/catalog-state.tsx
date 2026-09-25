@@ -11,12 +11,16 @@ function countLabel(count: number, singular: string, plural = `${singular}s`) {
 }
 
 function formatPrice(product: ProductViewModel) {
-  if (!Number.isFinite(product.price) || product.price <= 0)
+  if (
+    product.price === null ||
+    !Number.isFinite(product.price) ||
+    product.price <= 0
+  )
     return 'Price unavailable';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: product.currency,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(product.price);
 }
@@ -41,12 +45,10 @@ function environmentCopy(decision: CatalogDecision) {
   }
   if (decision.environment === 'preview') {
     return {
-      eyebrow: decision.commerceAllowed
-        ? 'Private live-commerce staging'
-        : 'Private release review',
+      eyebrow: decision.commerceAllowed ? 'Private preview' : 'Private review',
       body: decision.commerceAllowed
-        ? 'The approved Hoodie is connected to current product facts and checkout for private staging verification.'
-        : 'Only observed products with complete review evidence can appear in this private Preview catalog.',
+        ? 'These products are connected to current store facts and checkout.'
+        : 'Only products with complete review evidence can appear in this private catalog.',
     };
   }
   if (decision.environment === 'production') {

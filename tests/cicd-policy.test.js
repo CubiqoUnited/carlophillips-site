@@ -52,6 +52,10 @@ const vercelCiTokenVerifier = readFileSync(
   'utf8'
 );
 const releasePlaywright = readFileSync('playwright.release.config.ts', 'utf8');
+const protectedStagingSpec = readFileSync(
+  'tests/release-gate/protected-staging.spec.ts',
+  'utf8'
+);
 const verifierPath = join(
   process.cwd(),
   '.github/scripts/verify-vercel-receipt.mjs'
@@ -63,10 +67,12 @@ const fallbackSelectorPath = join(
 const testSha = 'a'.repeat(40);
 
 describe('protected Staging workflow', () => {
-  it('fails fast when the Vercel token lacks user or canonical project access', () => {
-    expect(vercelCiTokenVerifier).toContain('https://api.vercel.com/v2/user');
+  it('fails fast unless the Vercel token accesses the exact canonical project', () => {
     expect(vercelCiTokenVerifier).toContain('/v9/projects/');
-    expect(vercelCiTokenVerifier).toContain('teamId=');
+    expect(vercelCiTokenVerifier).toContain('project.id !== VERCEL_PROJECT_ID');
+    expect(vercelCiTokenVerifier).not.toContain('/v2/user');
+    expect(vercelCiTokenVerifier).not.toContain('teamId=');
+    expect(vercelCiTokenVerifier).toContain('AbortSignal.timeout(15_000)');
     expect(vercelCiTokenVerifier).not.toContain('console.log(VERCEL_TOKEN');
 
     for (const workflow of [staging, candidate, production]) {
@@ -92,6 +98,27 @@ describe('protected Staging workflow', () => {
     expect(staging.indexOf('Verify deployment before aliasing')).toBeLessThan(
       staging.indexOf('Assign protected Staging domain')
     );
+  });
+
+  it('derives release catalogue expectations while retaining the Hoodie path', () => {
+    expect(protectedStagingSpec).toContain('categoryProjection.length');
+    expect(protectedStagingSpec).toContain(
+      "getByRole('navigation', { name: 'Discovery shortcuts' })"
+    );
+    expect(protectedStagingSpec).toContain("label === 'HOODIES'");
+    expect(protectedStagingSpec).toContain("toHaveText(['S', 'M', 'L'])");
+    expect(protectedStagingSpec).toContain(
+      "getByText('CARLOPHILLIPS Signature Hoodie')"
+    );
+    expect(protectedStagingSpec).toContain('const authoritativePrice =');
+    expect(protectedStagingSpec).toContain("toHaveText('1')");
+    expect(protectedStagingSpec).toContain(
+      'checkoutResponse.status()).toBe(303)'
+    );
+    expect(protectedStagingSpec).not.toContain('CATEGORIES / 2 GROUPS');
+    expect(protectedStagingSpec).not.toContain('TSHIRTS 1 PIECE');
+    expect(protectedStagingSpec).not.toContain('const TEE_HANDLE =');
+    expect(protectedStagingSpec).not.toContain('$14.34');
   });
 });
 
@@ -385,7 +412,18 @@ describe('CI/CD policy', () => {
     expect(staging).toContain('workflow_dispatch:');
     expect(staging).toContain('pr_number:');
     expect(staging).toContain('name: Staging');
-    expect(staging).toContain('STAGING_REVIEWER_REQUIRED');
+    expect(staging).toContain(
+      'environments/Staging/deployment-branch-policies?per_page=100'
+    );
+    expect(staging).toContain('custom_branch_policies !== true');
+    expect(staging).toContain('policies.total_count !== 1');
+    expect(staging).toContain("branches[0]?.name !== 'staging'");
+    expect(staging).toContain("branches[0]?.type !== 'branch'");
+    expect(staging).toContain('STAGING_CUSTOM_BRANCH_POLICY_REQUIRED');
+    expect(staging).toContain('STAGING_ONLY_BRANCH_POLICY_REQUIRED');
+    expect(staging).not.toContain('STAGING_REVIEWER_REQUIRED');
+    expect(staging).not.toContain("rule.type === 'required_reviewers'");
+    expect(staging).not.toContain("rule.type === 'wait_timer'");
     expect(staging).toContain('test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"');
     expect(staging).toContain("pull.state !== 'closed' || !pull.merged_at");
     expect(staging).toContain("pull.base?.ref !== 'staging'");

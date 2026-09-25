@@ -31,3 +31,30 @@ Boss may override, bypass, or directly edit any file — including LOCKED files 
 
 ## Blocker time-box
 5–10 minutes on a governance/access/permission/credential-class blocker, then record it in state/BLOCKERS.md and move to the next ready item.
+
+---
+
+## Enforced boundaries (Boss, 2026-09-19) — machine-checked, not advisory
+
+Four lanes are denied at the tool call by `.claude/hooks/boundaries.mjs`. This
+matrix was previously true on paper and false in practice: every role held Read,
+Edit, Write and Bash, so nothing but good intentions kept a role in its lane.
+
+| Lane | Owner | Denied to | Enforced on |
+|---|---|---|---|
+| Development | Aarti | Sushma, Pushpa | writes to `apps/`, `packages/`, `tests/`, and source files |
+| Deployment | Sushma | Pushpa, Aarti | writes to `.github/workflows/`, `vercel.json`, `work/releases/`; and `git push`, `vercel deploy/promote`, `gh workflow run`, `gh release create`, `npm publish` |
+| User stories | Pushpa | Sushma, Aarti | writes to `work/items/`, `work/modules/` |
+| Technical solutioning | Aarti | Sushma, Pushpa | writes to `decisions/`, `contracts/`, `ARCHITECTURE.md` |
+
+Three deliberate carve-outs:
+
+- **Reading is never denied.** A role must be able to see what it may not change.
+- **Gate verdicts stay with the gate-holders.** Pushpa and Sushma may edit an
+  ADR's approval sections to record APPROVED or CHANGES_REQUESTED — they hold
+  gates on the solution, not the pen for it.
+- **Governance tooling is not the product.** `governance/`, `.claude/` and
+  `scripts/` are exempt from the development lane.
+
+Every denial is written to the activity log with phase `BOUNDARY` and appears on
+the board. A boundary nobody can watch being enforced is a policy again.

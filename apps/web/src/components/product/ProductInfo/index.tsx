@@ -10,13 +10,14 @@ import type {
   VariantPresentation as VariantPresentationData,
 } from '@/types';
 
-function formatPrice(value: number, currency: string): string {
-  if (!Number.isFinite(value) || value <= 0) return 'Price unavailable';
+function formatPrice(value: number | null, currency: string): string {
+  if (value === null || !Number.isFinite(value) || value <= 0)
+    return 'Price unavailable';
 
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
 }
@@ -165,7 +166,6 @@ export function CommerceProductDetail({
     ['Source', product.source === 'shopify' ? 'Shopify' : product.sourceLabel],
     ['Status', product.availableForSale ? 'Available' : 'Unavailable'],
     ['Availability', product.availableForSale ? 'Available' : 'Unavailable'],
-    ['Maker', product.vendor],
     ['Category', product.productType],
   ];
   const attributes = attributeEntries(product);
@@ -208,6 +208,7 @@ export function CommerceProductDetail({
                 presentation={product.variantPresentation}
                 environment={environment}
                 sizeGuide={sizeGuide}
+                productType={product.productType}
               />
             ) : (
               <VariantPresentation presentation={product.variantPresentation} />

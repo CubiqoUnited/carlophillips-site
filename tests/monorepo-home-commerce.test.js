@@ -162,9 +162,12 @@ describe('monorepo home commerce projection', () => {
     expect(stepperSource).toContain('Increase quantity');
     expect(source).toContain('ADD TO BAG -');
     expect(source).toContain("'CHOOSE A SIZE'");
-    expect(source).toContain(
-      'Final sale · Shipping details available at checkout'
-    );
+    expect(source).toContain('cp-purchase-support');
+    expect(source).toContain('Size guide');
+    expect(source).not.toContain('Free shipping on eligible orders');
+    expect(source).not.toContain('Returns accepted — see policy');
+    expect(source).not.toMatch(/final sale/i);
+    expect(source).not.toMatch(/made[ -]to[ -]order/i);
     expect(productInfoSource).toContain('.map((size) => size.toUpperCase())');
     expect(source).toContain('data-purchase-state="sold-out"');
     expect(source).toContain('SOLD OUT');
