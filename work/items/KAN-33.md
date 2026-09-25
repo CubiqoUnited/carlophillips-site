@@ -239,3 +239,44 @@ exact `staging` branch. The protected workflow guard must enforce that remaining
 live policy and must not fail on the deliberately removed reviewer or timer
 rules. Existing exact merged-staging SHA, pull-request, release, credential,
 regression, receipt, and UAT controls remain unchanged. Production is excluded.
+
+---
+
+## Revision 4 — 2026-09-25: catalogue-derived release regression
+
+Protected run `36104034451` deployed and aliased exact SHA `7f2ab90`. The
+credential preflight, Vercel CLI pull/build/deploy/inspect/alias sequence, and
+webhook probe passed with destructive catalogue cleanup `false`. Regression
+failed at all seven widths because it required stale fixed strings
+`CATEGORIES / 2 GROUPS` and `TSHIRTS 1 PIECE` while authoritative Staging
+presented one current `HOODIES` group.
+
+**R-KAN33-5.** Release regression must assert category navigation, counts,
+labels, and product totals from the catalogue projection used by the deployed
+storefront. It must not require an obsolete category or product, while the
+current Signature Hoodie path remains explicit.
+
+- **AC-KAN33-16:** the rendered `CATEGORIES / <n> group(s)` count and grammar
+  match the rendered catalogue projection at all seven governed widths.
+- **AC-KAN33-17:** every projected navigable category is rendered exactly once,
+  with no assertion for `TSHIRTS` when that group is absent.
+- **AC-KAN33-18:** duplicate, padded, retained, or otherwise phantom categories
+  fail regression.
+- **AC-KAN33-19:** the current catalogue renders `HOODIES` and the Signature
+  Hoodie at all seven widths.
+- **AC-KAN33-20:** the Signature Hoodie exposes exactly S, M, and L as selectable
+  storefront sizes.
+- **AC-KAN33-21:** at least one Hoodie size can be added to a bag that preserves
+  product identity, size, quantity, and authoritative price without a stale
+  T-shirt line or zero/null fallback.
+- **AC-KAN33-22:** checkout produces the approved Shopify handoff without
+  completing payment, fulfilment, or dispatch.
+- **AC-KAN33-23:** projection, Hoodie presence, navigation reachability, and
+  absence of stale T-shirt copy pass at all seven widths. Shared bag/checkout
+  behaviour may run once at the designated interaction width.
+- **AC-KAN33-24:** fresh evidence records its run, exact SHA, deployed Staging
+  identity, catalogue projection/fixture identity, and per-width result. A
+  screenshot-only baseline update is insufficient.
+
+The release remains **UAT NOT READY** until a fresh run is green. Visual baseline
+updates remain `false`; no Production action is authorised.

@@ -4,7 +4,6 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 
 const HANDLE = 'carlophillips-signature-hoodie';
-const TEE_HANDLE = 'carlophillips-rapid-logo-tee';
 const expectedCheckoutHosts = new Set(
   (process.env.SHOPIFY_STAGING_CHECKOUT_HOSTS || '')
     .split(',')
@@ -76,47 +75,72 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   );
 
   await page.goto('/shop', { waitUntil: 'domcontentloaded' });
+  const categoryButtons = page.locator(
+    'section[aria-label="All categories"] button'
+  );
+  const categoryProjection = await categoryButtons.evaluateAll((buttons) =>
+    buttons.map((button) => ({
+      label: button.querySelector('strong')?.textContent?.trim() || '',
+      countLabel: button.querySelector('small')?.textContent?.trim() || '',
+    }))
+  );
+  expect(categoryProjection.length).toBeGreaterThan(0);
+  expect(categoryProjection.every(({ label }) => label.length > 0)).toBe(true);
+  expect(
+    categoryProjection.every(({ countLabel }) =>
+      /^\d+ pieces?$/.test(countLabel)
+    )
+  ).toBe(true);
+  expect(new Set(categoryProjection.map(({ label }) => label)).size).toBe(
+    categoryProjection.length
+  );
   await expect(
-    page.getByRole('heading', { name: 'CATEGORIES / 2 GROUPS' })
+    page.getByRole('heading', {
+      name: `CATEGORIES / ${categoryProjection.length} ${categoryProjection.length === 1 ? 'GROUP' : 'GROUPS'}`,
+    })
+  ).toBeVisible();
+  const projectedCategoryNavigation = await page
+    .getByRole('navigation', { name: 'Discovery shortcuts' })
+    .getByRole('button')
+    .allTextContents();
+  expect(projectedCategoryNavigation).toEqual([
+    'ALL CATEGORIES',
+    ...categoryProjection.map(({ label }) => `ALL ${label}`),
+  ]);
+  const hoodieCategory = categoryProjection.find(
+    ({ label }) => label === 'HOODIES'
+  );
+  expect(hoodieCategory).toBeDefined();
+  await page
+    .getByRole('button', {
+      name: `${hoodieCategory!.label} ${hoodieCategory!.countLabel}`,
+      exact: true,
+    })
+    .click();
+  await expect(
+    page.getByRole('heading', {
+      name: `${hoodieCategory!.label} / ${hoodieCategory!.countLabel.toUpperCase()}`,
+    })
   ).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'TSHIRTS 1 PIECE' })
-  ).toBeVisible();
-  await expect(
-    page.getByRole('button', { name: 'HOODIES 1 PIECE' })
-  ).toBeVisible();
-  await page.getByRole('button', { name: 'TSHIRTS 1 PIECE' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'TSHIRTS / 1 PIECE' })
-  ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'CARLOPHILLIPS Rapid Logo Tee' })
+    page.getByRole('heading', { name: 'CARLOPHILLIPS Signature Hoodie' })
   ).toBeVisible();
   await page.getByRole('link', { name: 'VIEW PRODUCT' }).click();
-  await expect(page).toHaveURL(/\/shop\?product=carlophillips-rapid-logo-tee$/);
+  await expect(page).toHaveURL(
+    /\/shop\?product=carlophillips-signature-hoodie$/
+  );
   await expect(
     page.locator('#signature-runway[aria-label="Discovery default view"]')
   ).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'SHOP THE TSHIRT' })
+    page.getByRole('button', { name: 'SHOP THE HOODIE' })
   ).toBeVisible();
   await page.getByRole('button', { name: 'MENU', exact: true }).click();
   const navigation = page.getByRole('dialog', { name: 'NAVIGATION' });
   await expect(navigation).toBeVisible();
-  await expect(navigation.getByRole('button')).toHaveText([
-    '',
-    'HOME',
-    'ALL CATEGORIES',
-    'ALL TSHIRTS',
-    'ALL HOODIES',
-    'AFTERCARE',
-    'CONTACT',
-    'ACCOUNT',
-    'PRIVATE LIST',
-  ]);
   await navigation.getByRole('button', { name: 'Close' }).click();
   const discoveryGallery = page.getByRole('button', {
-    name: /VIEW GALLERY 1 IMAGES/i,
+    name: /VIEW GALLERY/i,
   });
   await discoveryGallery.click();
   const discoveryGalleryDialog = page.getByRole('dialog', { name: 'Gallery' });
@@ -176,61 +200,6 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(page.getByRole('dialog', { name: 'Gallery' })).toBeHidden();
   await expect(galleryTrigger).toBeFocused();
 
-  const teeCartHydration = page.waitForResponse(
-    (response) =>
-      response.request().method() === 'GET' &&
-      new URL(response.url()).pathname === '/api/cart'
-  );
-  const teeProductResponse = await page.goto(`/product/${TEE_HANDLE}`, {
-    waitUntil: 'domcontentloaded',
-  });
-  await teeCartHydration;
-  expect(teeProductResponse?.ok()).toBe(true);
-  await expect(
-    page.getByRole('heading', {
-      level: 1,
-      name: 'CARLOPHILLIPS Rapid Logo Tee',
-    })
-  ).toBeVisible();
-  const teeSizeButtons = page
-    .getByRole('group', { name: 'Choose a size' })
-    .getByRole('button');
-  await expect(teeSizeButtons).toHaveText(['S', 'M', 'L']);
-  await page
-    .getByRole('group', { name: 'Choose a size' })
-    .getByRole('button', { name: 'Size M', exact: true })
-    .click();
-  await page
-    .getByRole('button', { name: 'ADD TO BAG - $14.34', exact: true })
-    .click();
-  await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
-  await page.getByRole('link', { name: 'VIEW BAG' }).click();
-  await page.waitForURL('**/bag');
-  await expect(page.getByText('Size: M')).toBeVisible();
-  await expect(
-    page.locator('.cp-bag-summary').getByText('$14.34', { exact: true })
-  ).toBeVisible();
-  const teeCookies = await context.cookies();
-  const teeCheckoutResponse = await page.request.post('/api/cart', {
-    form: { cartAction: 'checkout' },
-    headers: {
-      cookie: teeCookies
-        .map(({ name, value }) => `${name}=${value}`)
-        .join('; '),
-      origin: new URL(process.env.CP_RELEASE_GATE_BASE_URL!).origin,
-    },
-    maxRedirects: 0,
-  });
-  expect(teeCheckoutResponse.status()).toBe(303);
-  const teeCheckoutLocation = teeCheckoutResponse.headers().location;
-  expect(teeCheckoutLocation).toBeTruthy();
-  expect(new URL(teeCheckoutLocation!).protocol).toBe('https:');
-  await teeCheckoutResponse.dispose();
-  await page.getByRole('button', { name: 'Remove', exact: true }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Your bag is empty.' })
-  ).toBeVisible();
-
   const cartHydration = page.waitForResponse(
     (response) =>
       response.request().method() === 'GET' &&
@@ -264,9 +233,14 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
   await expect(page.locator('input[name="referenceHash"]')).toHaveValue(
     /^sha256:[a-f0-9]{64}$/
   );
-  await expect(
-    page.getByRole('button', { name: 'ADD TO BAG - $128', exact: true })
-  ).toBeEnabled();
+  const addToBagButton = page.getByRole('button', {
+    name: /^ADD TO BAG - \$\d+(?:\.\d{2})?$/,
+  });
+  await expect(addToBagButton).toBeEnabled();
+  const authoritativePrice = (await addToBagButton.textContent())
+    ?.replace('ADD TO BAG - ', '')
+    .trim();
+  expect(authoritativePrice).toMatch(/^\$[1-9]\d*(?:\.\d{2})?$/);
   await hideNonCustomerUi();
   await page.screenshot({
     path: testInfo.outputPath('01-shopify-product-sml.png'),
@@ -277,7 +251,7 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     { animations: 'disabled', fullPage: true, maxDiffPixelRatio: 0.01 }
   );
 
-  await page.getByRole('button', { name: 'ADD TO BAG - $128' }).click();
+  await addToBagButton.click();
   await expect(page.getByText('Added to bag.', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Bag (1)' })).toBeVisible();
   await page.getByRole('link', { name: 'VIEW BAG' }).click();
@@ -287,9 +261,14 @@ test('Shopify-authoritative S/M/L, bag, checkout handoff, a11y and browser healt
     'store'
   );
   await expect(page.getByText('Size: M')).toBeVisible();
+  await expect(page.getByText('CARLOPHILLIPS Signature Hoodie')).toBeVisible();
+  await expect(page.getByText('CARLOPHILLIPS Rapid Logo Tee')).toHaveCount(0);
+  await expect(page.locator('.cp-bag-stepper output')).toHaveText('1');
   await expect(page.getByRole('link', { name: /^Bag \(1\)$/i })).toBeVisible();
   await expect(
-    page.locator('.cp-bag-summary').getByText('$128.00', { exact: true })
+    page
+      .locator('.cp-bag-summary')
+      .getByText(authoritativePrice!, { exact: true })
   ).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Checkout', exact: true })
