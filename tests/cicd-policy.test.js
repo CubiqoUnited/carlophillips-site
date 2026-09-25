@@ -63,10 +63,12 @@ const fallbackSelectorPath = join(
 const testSha = 'a'.repeat(40);
 
 describe('protected Staging workflow', () => {
-  it('fails fast when the Vercel token lacks user or canonical project access', () => {
-    expect(vercelCiTokenVerifier).toContain('https://api.vercel.com/v2/user');
+  it('fails fast unless the Vercel token accesses the exact canonical project', () => {
     expect(vercelCiTokenVerifier).toContain('/v9/projects/');
-    expect(vercelCiTokenVerifier).toContain('teamId=');
+    expect(vercelCiTokenVerifier).toContain('project.id !== VERCEL_PROJECT_ID');
+    expect(vercelCiTokenVerifier).not.toContain('/v2/user');
+    expect(vercelCiTokenVerifier).not.toContain('teamId=');
+    expect(vercelCiTokenVerifier).toContain('AbortSignal.timeout(15_000)');
     expect(vercelCiTokenVerifier).not.toContain('console.log(VERCEL_TOKEN');
 
     for (const workflow of [staging, candidate, production]) {
