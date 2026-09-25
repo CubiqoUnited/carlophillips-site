@@ -353,3 +353,64 @@ KAN-33 remains **UAT NOT READY**. This verdict authorises no baseline mutation,
 production action, policy publication, or financial operation. Sushma subsequently
 approved the narrow implementation boundary: governed interim silence only,
 preserving two-fraction money and all unrelated presentation.
+
+## Revision 6 — 2026-09-25: corrected interim-silence visual approval
+
+### Evidence inspected
+
+- Protected run `36116914434`, exact SHA
+  `9320d43e59f3f52f1cb46a7623111cffef53d61f`.
+- Diagnostics artifact `10855925296`, digest
+  `sha256:5fb790776fe6bd70d173b038a3cea5ea6d7c0f97c7b9700ac6110f385d6aa63e`.
+- Preserved expected, actual, and diff images for
+  `staging-product-selected` at 320, 360, 390, and 430.
+- Live staging independently rendered at the same four widths.
+- Reported run results: functional/accessibility green; tablet/desktop three
+  green; credential, build, project identity, deploy/alias and signed webhook
+  green; cleanup `false`; baseline updates `false`; production untouched.
+
+The corrected actual heights are 320×2591, 360×2572, 390×2577, and 430×2580.
+The shorter state is the expected result of governed interim silence. Height is
+again treated as an outcome, not as the pass criterion.
+
+### Product verdict
+
+**AC-KAN33-26 — PASS.** The unsupported free-shipping and returns promise is
+absent at all four widths. The purchase-support area uses governed interim
+silence. Checkout assurance remains visible.
+
+**AC-KAN33-27 — PASS.** At all four widths, the Signature Hoodie title,
+two-fraction `$128.00` price, S/M/L controls with M selected, quantity controls,
+`ADD TO BAG - $128.00`, size guide, checkout assurance, editorial image, gallery
+CTA, product story, colour, sizes, availability, and checkout fact remain
+readable and aligned. The inspected actuals show no clipping, overlap,
+horizontal overflow, phantom control, or missing product content. Live staging
+matches the corrected composition.
+
+The residual diff is explained and product-intended: old one-decimal-free money
+and old purchase-support text are replaced by approved two-fraction money,
+current content order, and interim silence. It does not reveal an unintended
+mobile regression.
+
+### Baseline ruling
+
+**APPROVED — baseline regeneration is authorised, narrowly scoped.**
+
+Authorisation covers only these four files/states:
+
+1. `staging-product-selected-mobile-320-linux.png`
+2. `staging-product-selected-mobile-360-linux.png`
+3. `staging-product-selected-mobile-390-linux.png`
+4. `staging-product-selected-mobile-430-linux.png`
+
+The regenerated baselines must be byte-for-state representations of the four
+inspected actuals from run `36116914434` / artifact `10855925296`. This approval
+does not authorise changes to tablet, desktop, contact, gallery, catalogue, bag,
+or any other baseline; does not approve tolerance increases; and does not permit
+new content or layout changes during regeneration.
+
+After the four baseline files are updated through the governed change path, a
+fresh staging-only run must use baseline updates `false` and prove those four
+comparisons green alongside the full functional/a11y suite. The immutable signed
+receipt and independent Pushpa UAT remain pending until that green run. No
+production action is authorised.
