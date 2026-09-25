@@ -541,6 +541,8 @@ describe('CI/CD policy', () => {
     expect(candidate).not.toContain('PROTECTED_PROOF_SHA_MISMATCH');
     expect(candidate).toContain('VERCEL_PROJECT_LINK_MISMATCH');
     expect(candidate).toContain('VERCEL_ORG_LINK_MISMATCH');
+    expect(candidate).toContain('VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE }}');
+    expect(candidate).toContain('test -n "$VERCEL_SCOPE"');
     expect(candidate).toContain('vercel build --prod');
     expect(
       candidate.match(
@@ -589,6 +591,8 @@ describe('CI/CD policy', () => {
 
   it('promotes only the reviewed candidate and restores only the prior checkout-enabled deployment', () => {
     expect(production).toContain('previous_checkout_enabled_deployment:');
+    expect(production).toContain('VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE }}');
+    expect(production).toContain('test -n "$VERCEL_SCOPE"');
     expect(production).toContain('fetch-depth: 0');
     expect(production).toContain('verify-checkout-health.mjs');
     expect(checkoutHealthVerifier).toContain('action="/api/cart"');
@@ -609,6 +613,21 @@ describe('CI/CD policy', () => {
     expect(production).not.toMatch(/vercel\s+rollback/);
     expect(production).not.toMatch(/vercel\s+(build|deploy)/);
     expect(production).not.toContain('pull_request_target');
+  });
+
+  it('keeps every Production Vercel CLI command in the configured team scope', () => {
+    for (const workflow of [candidate, production]) {
+      const commands = workflow
+        .split('\n')
+        .filter((line) =>
+          /\bvercel (pull|inspect|build|deploy|api|promote)\b/.test(line)
+        );
+
+      expect(commands.length).toBeGreaterThan(0);
+      for (const command of commands) {
+        expect(command).toContain('--scope="$VERCEL_SCOPE"');
+      }
+    }
   });
 
   it('encodes artifact role, distinctness, promotion-source, and unsafe-anchor invariants', () => {
