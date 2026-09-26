@@ -51,6 +51,10 @@ const vercelCiTokenVerifier = readFileSync(
   '.github/scripts/verify-vercel-ci-token.mjs',
   'utf8'
 );
+const productionPromotionReceipt = readFileSync(
+  '.github/scripts/production-promotion-receipt.mjs',
+  'utf8'
+);
 const releasePlaywright = readFileSync('playwright.release.config.ts', 'utf8');
 const protectedStagingSpec = readFileSync(
   'tests/release-gate/protected-staging.spec.ts',
@@ -613,6 +617,30 @@ describe('CI/CD policy', () => {
     expect(production).not.toMatch(/vercel\s+rollback/);
     expect(production).not.toMatch(/vercel\s+(build|deploy)/);
     expect(production).not.toContain('pull_request_target');
+  });
+
+  it('signs and independently verifies a complete Production receipt before acceptance', () => {
+    expect(productionPromotionReceipt).toContain(
+      'cp.production-promotion-receipt.v2'
+    );
+    expect(production).toContain('production-promotion-receipt.mjs assemble');
+    expect(production).toContain('production-promotion-receipt.mjs sign');
+    expect(production).toContain('production-promotion-receipt.mjs verify');
+    expect(production).toContain('CP_RELEASE_RECEIPT_SIGNING_SECRET');
+    expect(production).toContain("steps.receipt_sign.outcome != 'success'");
+    expect(production).toContain("steps.receipt_verify.outcome != 'success'");
+    expect(production).toContain('candidate-api.json');
+    expect(production).toContain(
+      'vercel inspect carlophillips.com --format=json --scope="$VERCEL_SCOPE"'
+    );
+    expect(production).toContain('PRODUCTION_ALIAS_DRIFT_DETECTED');
+    expect(production).toContain('PROMOTED_APEX_IDENTITY_MISMATCH');
+    expect(productionPromotionReceipt).toContain(
+      'verifyProtectedReleaseReceipt'
+    );
+    expect(productionPromotionReceipt).toContain(
+      'PROTECTED_STAGING_RECEIPT_HASH_MISMATCH'
+    );
   });
 
   it('keeps every Production Vercel CLI command in the configured team scope', () => {
